@@ -1,0 +1,57 @@
+﻿    <!-- Order notes -->
+    <script type="text/html" id="checkoutOrderNotes-template">
+        <div class="checkoutSection" data-bind="attr: { 'id': id }"> 
+            <div id="checkoutOrderNotesContainer">
+                <h3 data-bind="text: textStrings.checkExtraInfo"></h3>
+
+                <!-- Directions -->
+                <div class="checkoutAddressLine">
+                    <div class="orderNotesColumn1">
+                        <label for="checkoutDirections" data-bind="text: textStrings.checkDirections"></label>
+                        <br />
+                        <span data-bind="text: textStrings.checkDirectionsEx"></span>
+                    </div>
+                    <div class="checkoutAddressColumn2">
+                        <textarea id="checkoutDirections" data-bind="value: checkoutHelper.checkoutDetails.address.directions"></textarea>
+                    </div>
+                </div>
+
+                <!-- One off delivery notes -->
+                <div data-bind="visible: $root.orderType() == 'delivery'" class="checkoutAddressLine">
+                    <div class="orderNotesColumn1">
+                        <label for="orderNotes" data-bind="text: textStrings.checkDelivNotes"></label>
+                        <br />
+                        <span data-bind="text: textStrings.checkDelivNotesEx"></span>
+                    </div>
+                    <div class="checkoutAddressColumn2">
+                        <textarea id="orderNotes" data-bind="value: checkoutHelper.checkoutDetails.orderNotes"></textarea>
+                    </div>
+                </div>
+
+                <!-- Chef notes -->
+                <div class="checkoutAddressLine">
+                    <div class="orderNotesColumn1">
+                        <label for="chefNotes" data-bind="text: textStrings.checkChefNotes"></label>
+                        <br />
+                        <span data-bind="text: textStrings.checkChefNotesEx"></span>
+                    </div>
+                    <div class="checkoutAddressColumn2">
+                        <textarea id="chefNotes" data-bind="value: checkoutHelper.checkoutDetails.chefNotes"></textarea>
+                    </div>
+                </div>
+
+                <!-- Next & back buttons -->
+                <div class="checkoutButtons" data-bind="visible: !guiHelper.isMobileMode()">
+                    <!-- Back -->
+                    <div class="button backButton">
+                        <a data-bind="click: checkoutHelper.backButtonClicked, text: checkoutHelper.backButton.displayText, visible: checkoutHelper.backButton.visible" href="#"></a>
+                    </div>
+
+                    <!-- Next -->
+                    <div class="button nextButton">
+                        <a data-bind="click: checkoutHelper.nextButtonClicked, text: checkoutHelper.nextButton.displayText" href="#"></a>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </script>

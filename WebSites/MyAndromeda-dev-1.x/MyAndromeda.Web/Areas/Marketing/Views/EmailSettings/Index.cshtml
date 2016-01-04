@@ -1,0 +1,24 @@
+﻿@using MyAndromeda.Web.Areas.Marketing.ViewModels;
+
+@model EditEmailSettingsViewModel
+@{
+    ViewBag.Title = "Email Settings";
+}
+<div class="header">
+    <h3>Email Settings</h3>
+</div>
+@if (Model.Settings == null) 
+{
+    <p>There are no SMTP settings associated to this chain/site.</p>
+    <a class="k-button" href="@Url.Action("create")">Create</a>
+}else{
+    <div>   
+        <p>Only change these settings if you know what you are doing.</p>
+    
+        @using (Html.BeginForm("Edit", "EmailSettings"))
+        { 
+            @Html.AntiForgeryToken()
+            @Html.Partial("EmailSettingEditView", this.Model)
+        }
+    </div>
+}

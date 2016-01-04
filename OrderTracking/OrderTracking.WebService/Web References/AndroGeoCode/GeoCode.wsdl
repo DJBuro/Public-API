@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://gps.andromedagps.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://gps.andromedagps.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://gps.andromedagps.com">
+      <s:element name="GeoCodeAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalStoreId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="buildingNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="buildingName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="roadName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="townCity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="postCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="country" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GeoCodeAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GeoCodeAddressResult" type="tns:Coordinates" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Coordinates">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GeoCodeAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:GeoCodeAddress" />
+  </wsdl:message>
+  <wsdl:message name="GeoCodeAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:GeoCodeAddressResponse" />
+  </wsdl:message>
+  <wsdl:portType name="GeoCodeSoap">
+    <wsdl:operation name="GeoCodeAddress">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">GeoCode an address</wsdl:documentation>
+      <wsdl:input message="tns:GeoCodeAddressSoapIn" />
+      <wsdl:output message="tns:GeoCodeAddressSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GeoCodeSoap" type="tns:GeoCodeSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GeoCodeAddress">
+      <soap:operation soapAction="http://gps.andromedagps.com/GeoCodeAddress" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="GeoCodeSoap12" type="tns:GeoCodeSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GeoCodeAddress">
+      <soap12:operation soapAction="http://gps.andromedagps.com/GeoCodeAddress" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GeoCode">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+    <wsdl:port name="GeoCodeSoap" binding="tns:GeoCodeSoap">
+      <soap:address location="http://geocode.androtechnology.co.uk/GeoCode.asmx" />
+    </wsdl:port>
+    <wsdl:port name="GeoCodeSoap12" binding="tns:GeoCodeSoap12">
+      <soap12:address location="http://geocode.androtechnology.co.uk/GeoCode.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

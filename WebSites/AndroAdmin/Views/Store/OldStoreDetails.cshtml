@@ -1,0 +1,1512 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@{
+    // House Number, Street Direction, Street Name, Street Suffix, City, State, Zip, Country
+    string addressString = "";
+
+    if (ViewBag.Edit && ViewBag.Selected == "StoreGPSLocation")
+    {
+        // House Number
+        if (Model.Store.Address.RoadNum != null && Model.Store.Address.RoadNum.Length > 0)
+        {
+            addressString += Model.Store.Address.RoadNum;
+        }
+
+        // Street Direction
+
+        // Street Name
+        if (Model.Store.Address.RoadName != null && Model.Store.Address.RoadName.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.RoadName;
+        }
+            
+        // Street Suffix
+
+        // City
+        if (Model.Store.Address.Town != null && Model.Store.Address.Town.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.Town;
+        }
+            
+        // State
+        if (Model.Store.Address.State != null && Model.Store.Address.State.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.State;
+        }
+        else if (Model.Store.Address.County != null && Model.Store.Address.County.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.County;
+        }
+            
+        // Zip
+        if (Model.Store.Address.PostCode != null && Model.Store.Address.PostCode.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.PostCode;
+        }
+            
+        // Country
+        addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.Country.CountryName;
+    }
+}
+
+@section Head 
+{
+    <script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-timepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/checkbox.js")" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/timepicker.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/checkbox.css")" media="screen" />
+}
+
+@section Script 
+{
+    var map = undefined;
+    var storeMarker = undefined;
+    var markersLayer = undefined;
+    var urls =
+    [
+        "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
+    ];
+
+    $(document).ready
+    (
+        function() 
+        {
+            $("#StoreDetailsPage").tabs();
+            @if (ViewBag.Selected == "StoreLocation" || ViewBag.Selected == "StoreAddress")
+            {
+                @: $("#StoreDetailsPage").tabs().tabs('option', 'selected', 1);
+            }
+            else if (ViewBag.Selected == "StoreGPSLocation")
+            {
+                @: $("#StoreDetailsPage").tabs().tabs('option', 'selected', 2);
+
+                // We're on the map tab so initialise the map
+                @: initialiseMap();
+            }
+            else if (ViewBag.Selected == "StoreOpeningTimes")
+            {
+                @: $("#StoreDetailsPage").tabs().tabs('option', 'selected', 3);
+            }
+
+            // Get JQuery to tell us when the user changes tab
+            // Sadly, we can't initialise the map because the map tab might not be selected and we can't
+            // initialise the map when it's hidden - it breaks becuase it has no size :(
+            // Instead, we initialise the map the first time the map tab is shown
+            $('#StoreDetailsPage').bind
+            (
+                'tabsshow', 
+                function(event, ui)
+                {
+                    // Was the map tab selected?
+                    if (ui.index == 2)
+                    {
+                        // Do we need to initialise the map
+                        if (map === undefined)
+                        {
+                            initialiseMap();
+                        }
+                    }
+                }
+            );
+        }
+    );
+
+    function initialiseMap()
+    {
+        map = new OpenLayers.Map
+        (
+            {
+                div: "map",
+                layers: [
+                    new OpenLayers.Layer.XYZ("OSM (with buffer)", urls, {
+                        transitionEffect: "resize", buffer: 2, sphericalMercator: true,
+                        attribution: "Data CC-By-SA by <a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+                    }),
+                    new OpenLayers.Layer.XYZ("OSM (without buffer)", urls, {
+                        transitionEffect: "resize", buffer: 0, sphericalMercator: true,
+                        attribution: "Data CC-By-SA by <a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+                    })
+                ],
+                controls: [
+                    new OpenLayers.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    }),
+                    new OpenLayers.Control.PanZoom(),
+                    new OpenLayers.Control.Attribution()
+                ],
+                center: [0, 0],
+                zoom: 3
+            }
+        );
+
+        var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        // allow testing of specific renderers via "?renderer=Canvas", etc
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+        var wgs84 = new OpenLayers.Projection("EPSG:4326");
+        markersLayer = new OpenLayers.Layer.Vector
+        (
+            "Markers", 
+            {
+                /*renderers: renderer*/
+                styleMap: new OpenLayers.StyleMap
+                (
+                    {
+                        externalGraphic: "@Url.Content("~/Content/Images/store.png")",
+                        graphicOpacity: 1.0,
+                        graphicWidth: 32,
+                        graphicHeight: 37,
+                        graphicYOffset: -37
+                    }
+                ),
+                projection: wgs84
+            }
+        );
+        window.mapped="yes";
+
+        map.addLayer(markersLayer);
+
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreGPSLocation")
+        {
+            @: enableMarkerDrag();
+        }
+
+        // Do we need to add the store marker?
+        @if (Model.Store.Address.Lat != null && Model.Store.Address.Lat.Length > 0 &&
+                Model.Store.Address.Long != null && Model.Store.Address.Long.Length > 0)
+        {
+            @: setStoreMarker();
+        }
+        else
+        {
+            @: var position = new OpenLayers.LonLat(-0.15022, 51.36037).transform(fromProjection, toProjection);
+
+            @: map.setCenter(position, 8);
+        }
+    }
+
+    function enableMarkerDrag()
+    {
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        var dragFeature = new OpenLayers.Control.DragFeature
+        (
+            markersLayer, 
+            {
+                onComplete: function(feature, pixel)
+                {
+                    var pixel = new OpenLayers.Pixel(pixel.x, pixel.y);
+                    var lonlat = map.getLonLatFromPixel(pixel);
+
+                    var newLatLon = new OpenLayers.LonLat(lonlat.lon, lonlat.lat).transform(toProjection, fromProjection)
+
+                    $('#Store_Address_Lat').attr('value', newLatLon.lat);
+                    $('#Store_Address_Long').attr('value', newLatLon.lon);
+                }
+            }
+        );
+            
+        dragFeature.handlers['drag'].stopDown = false; 
+        dragFeature.handlers['drag'].stopUp = false; 
+        dragFeature.handlers['drag'].stopClick = false; 
+
+        map.addControls([dragFeature]);
+
+        dragFeature.activate();
+    }
+
+    function findAddress()
+    {
+        var geocoder = new google.maps.Geocoder();
+        var addressString = $('#addressString').attr('value');
+   
+        geocoder.geocode
+        ( 
+            { 'address': addressString }, 
+            function(results, status) 
+            {
+                if (status == google.maps.GeocoderStatus.OK) 
+                {
+                    $('#Store_Address_Lat').attr('value', results[0].geometry.location.lat());
+                    $('#Store_Address_Long').attr('value', results[0].geometry.location.lng());
+
+                    setStoreMarker();
+                }
+                else 
+                {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            }
+        );
+    }
+
+    function setStoreMarker()
+    {
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreGPSLocation")
+        {
+            @: var storeLat = $('#Store_Address_Lat').attr('value');
+            @: var storeLon = $('#Store_Address_Long').attr('value');
+        }
+        else
+        {
+            @: var storeLat = '@Model.Store.Address.Lat';
+            @: var storeLon = '@Model.Store.Address.Long';
+        }
+
+        // Is there already a store feature on the map?
+        if (typeof(storeMarker) == 'object')
+        {
+            // Remove the store feature
+            markersLayer.removeAllFeatures();
+            markersLayer.destroyFeatures();
+            storeMarker = undefined;
+        }
+
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        // Is there a gps location?
+        if (storeLat.length > 0 && storeLon.length > 0)
+        {
+            var lonLat = new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection);
+
+            // Create a new feature
+            storeMarker = 
+            {
+                "type" : "Feature",
+                "geometry" : 
+                {
+                    "type": "Point", 
+                    "coordinates": [ lonLat.lon, lonLat.lat ]
+                }
+            };
+
+            // Add the feature to the map
+            var features = 
+            {
+                "type": "FeatureCollection",
+                "features": [ storeMarker ]
+            };
+
+            var reader = new OpenLayers.Format.GeoJSON();
+
+            var locator = reader.read(features);
+
+            markersLayer.addFeatures(locator);
+        }
+
+        // Center the map on the feature
+        var latLonBounds = new OpenLayers.Bounds();
+
+        latLonBounds.extend(new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection));
+
+        // Set the zoom level and center position
+        map.zoomToExtent(latLonBounds, false);
+    }
+}
+
+<h2>@Html.ActionLink("Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreDetailsPage">
+    <ul>
+        <li><a href="#tabs-1">Store details</a></li>
+        <li><a href="#tabs-2">Store address</a></li>
+        <li><a href="#tabs-3">Store GPS location</a></li>
+        <li><a href="#tabs-4">Store opening times</a></li>
+    </ul>
+    
+    <div id="tabs-1">
+        <!-- Store details -->
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreDetails")
+        {
+            using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.Store.Id)
+                
+                <div>
+                    @*Andromeda store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>Internal store details used within Andromeda only</span>
+                            <input type="submit" value="update" class="button" />
+                            @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreDetails" }, new { @class = "changeLink" })
+                        </legend>
+
+                        <!-- AndromedaSiteId -->
+                        <div class="editor-label">
+                            Store ID:
+                        </div>
+                        <div class="editor-field">
+                            @Model.Store.AndromedaSiteId
+                            @*@Html.TextBoxFor(model => model.Store.AndromedaSiteId) 
+                            @Html.ValidationMessageFor(model => model.Store.AndromedaSiteId) *@
+                        </div>
+                        <div class="formFieldHelp">The site id used internally by Andromeda</div>
+
+                        <!-- StoreName -->
+                        <div class="editor-label">
+                            Store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Name) 
+                        </div>
+                        <div class="formFieldHelp">The store name used internally by Andromeda</div>
+
+                        <!-- StoreStatus -->
+                        <div class="editor-label">
+                            Store status: 
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => model.StoreStatusId,
+                                new SelectList(Model.StoreStatuses, "Id", "Status", Model.StoreStatusId))
+                            @Html.ValidationMessageFor(model => model.Store.StoreStatus.Status)
+                        </div>
+                        <div class="formFieldHelp">Live, Disabled or Future</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            }
+        }
+        else
+        {
+            @*Andromeda store details*@
+            <fieldset>
+
+                <legend>
+                    <span>Internal store details used within Andromeda only</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreDetails" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <!-- AndromedaSiteId -->
+                <div class="editor-label">
+                    Store ID:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.AndromedaSiteId
+                </div>
+                <div class="formFieldHelp">The site id used internally by Andromeda</div>
+
+                <!-- StoreName -->
+                <div class="editor-label">
+                    Store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Name
+                </div>
+                <div class="formFieldHelp">The store name used internally by Andromeda</div>
+
+                <!-- StoreStatus -->
+                <div class="editor-label">
+                    Store status: 
+                </div>
+                <div class="editor-field">
+                    @Model.Store.StoreStatus.Status
+                </div>
+                <div class="formFieldHelp">Live, Disabled or Future</div>
+
+            </fieldset>
+        }
+
+        @if (ViewBag.Edit && ViewBag.Selected == "CustomerStoreDetails")
+        {
+            using (Html.BeginForm())
+            { 
+                @Html.HiddenFor(model => model.Store.Id)
+
+                <div>
+                    @Html.ValidationSummary(true)
+
+                    @*Customer store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>Customer store details</span>
+                            <input type="submit" value="update" class="button" />
+                            @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "CustomerStoreDetails" }, new { @class = "changeLink" })
+                        </legend>
+
+                        <!-- CustomerSiteId -->
+                        <div class="editor-label">
+                            Customer store ID:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.CustomerSiteId) 
+                        </div>
+                        <div class="formFieldHelp">The customer (PJ, Herbies etc...) internal site id</div>
+
+                        <!-- CustomerName -->
+                        <div class="editor-label">
+                            Customer store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.CustomerSiteName) 
+                        </div>
+                        <div class="formFieldHelp">The customer (PJ, Herbies etc...) internal name for the store</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            }
+        }
+        else
+        {
+            @*Customer store details*@
+            <fieldset>
+
+                <legend>
+                    <span>Customer store details</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "CustomerStoreDetails" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <!-- CustomerSiteId -->
+                <div class="editor-label">
+                    Customer store ID:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.CustomerSiteId
+                </div>
+                <div class="formFieldHelp">The customer (PJ, Herbies etc...) internal site id</div>
+
+                <!-- CustomerName -->
+                <div class="editor-label">
+                    Customer store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.CustomerSiteName
+                </div>
+                <div class="formFieldHelp">The customer (PJ, Herbies etc...) internal name for the store</div>
+
+            </fieldset> 
+        }
+
+        @if (ViewBag.Edit && ViewBag.Selected == "ExternalStoreDetails")
+        {
+            using (Html.BeginForm())
+            { 
+                @Html.HiddenFor(model => model.Store.Id)
+
+                <div>
+                    @Html.ValidationSummary(true)
+
+                    @*External store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>External store details visible to third parties or the general public</span>
+                            <input type="submit" value="update" class="button" />
+                            @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "ExternalStoreDetails" }, new { @class = "changeLink" })
+                        </legend>
+
+                        <!-- ExternalSiteId -->
+                        <div class="editor-label">
+                            External store ID: 
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.ExternalSiteId) 
+                        </div>
+                        <div class="formFieldHelp">The store id visible to 3rd parties e.g. companies working for the customer</div>
+
+                        <!-- ExternalStoreName -->
+                        <div class="editor-label">
+                            External store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.ExternalSiteName) 
+                        </div>
+                        <div class="formFieldHelp">The store name visible to the general public</div>
+
+                        <!-- Telephone -->
+                        <div class="editor-label">
+                            Store telephone number:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Telephone) 
+                        </div>
+                        <div class="formFieldHelp">The store phone number visible to the general public</div>
+
+                        <!-- Timezone -->
+                        <div class="editor-label">
+                            Timezone:
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => Model.Store.TimeZone,
+                                new List<SelectListItem>{
+                                    new SelectListItem() {Text = "GMT-12 (IDLW:International Date Line West)", Value = "GMT-12"},	
+                                    new SelectListItem() {Text = "GMT-11 (NT:Nome)", Value = "GMT-11"},
+                                    new SelectListItem() {Text = "GMT-10 (AHST:Alaska-Hawaii Standard, CAT:Central Alaska, HST:Hawaii Standard)", Value = "GMT-10"},		
+                                    new SelectListItem() {Text = "GMT-9:30", Value = "GMT-9:30"},
+                                    new SelectListItem() {Text = "GMT-9 (YST:Yukon Standard)", Value = "GMT-9"},
+                                    new SelectListItem() {Text = "GMT-8:30", Value = "GMT-8:30"},
+                                    new SelectListItem() {Text = "GMT-8 (PST:Pacific Standard)", Value = "GMT-8"},
+                                    new SelectListItem() {Text = "GMT-7 (MST:Mountain Standard)", Value = "GMT-7"},
+                                    new SelectListItem() {Text = "GMT-6 (CST:Central Standard)", Value = "GMT-6"},
+                                    new SelectListItem() {Text = "GMT-5 (EST:Eastern Standard)", Value = "GMT-5"},
+                                    new SelectListItem() {Text = "GMT-4 (AST:Atlantic Standard)", Value = "GMT-4"},
+                                    new SelectListItem() {Text = "GMT-3:30", Value = "GMT-3:30"},
+                                    new SelectListItem() {Text = "GMT-3", Value = "GMT-3"},
+                                    new SelectListItem() {Text = "GMT-2 (AT:Azores)", Value = "GMT-2"},
+                                    new SelectListItem() {Text = "GMT-1 (WAT:West Africa)", Value = "GMT-1"},
+                                    new SelectListItem() {Text = "GMT (UTC)", Value = "GMT"},
+                                    new SelectListItem() {Text = "GMT+1 (CET:Central European)", Value = "GMT+1"},
+                                    new SelectListItem() {Text = "GMT+2 (EET:Eastern European)", Value = "GMT+2"},
+                                    new SelectListItem() {Text = "GMT+3 (BT:Baghdad)", Value = "GMT+3"},
+                                    new SelectListItem() {Text = "GMT+3:30", Value = "GMT+3:30"},
+                                    new SelectListItem() {Text = "GMT+4", Value = "GMT+4"},
+                                    new SelectListItem() {Text = "GMT+4:30", Value = "GMT+4:30"},
+                                    new SelectListItem() {Text = "GMT+5", Value = "GMT+5"},
+                                    new SelectListItem() {Text = "GMT+5:30", Value = "GMT+5:30"},
+                                    new SelectListItem() {Text = "GMT+6", Value = "GMT+6"},
+                                    new SelectListItem() {Text = "GMT+6:30", Value = "GMT+6:30"},
+                                    new SelectListItem() {Text = "GMT+7", Value = "GMT+7"},
+                                    new SelectListItem() {Text = "GMT+8 (CCT:China Coast)", Value = "GMT+8"},
+                                    new SelectListItem() {Text = "GMT+9 (JST:Japan Standard)", Value = "GMT+9"},
+                                    new SelectListItem() {Text = "GMT+9:30 (Australia Central Standard)", Value = "GMT+9:30"},
+                                    new SelectListItem() {Text = "GMT+10 (GST:Guam Standard)", Value = "GMT+10"},
+                                    new SelectListItem() {Text = "GMT+10:30", Value = "GMT+10:30"},
+                                    new SelectListItem() {Text = "GMT+11", Value = "GMT+11"},
+                                    new SelectListItem() {Text = "GMT+11:30", Value = "GMT+11:30"},
+                                    new SelectListItem() {Text = "GMT+12 (IDLE:International Date Line East, NZST:New Zealand Standard)", Value = "GMT+12"},
+                                    new SelectListItem() {Text = "GMT+13:00", Value = "GMT+13:00"},
+                                    new SelectListItem() {Text = "GMT+14:00", Value = "GMT+14:00"}
+                                })
+                        </div>
+
+                        <!-- Payment provider -->
+                        <div class="editor-label">
+                            Web payment provider:
+                        </div>
+                        <div class="editor-field">
+                            @{
+                                List<SelectListItem> paymentProviders = new List<SelectListItem>();
+                                paymentProviders.Add(new SelectListItem() { Text = "None", Value = "-1" });
+                                if (Model.StorePaymentProviders != null)
+                                {
+                                    foreach (AndroAdminDataAccess.Domain.StorePaymentProvider storePaymentProvider in Model.StorePaymentProviders)
+                                    {
+                                        paymentProviders.Add(new SelectListItem() 
+                                            { 
+                                                Text = storePaymentProvider.DisplayText, 
+                                                Value = storePaymentProvider.Id.ToString()
+                                            });
+                                    }
+                                }
+                            }
+                            @Html.DropDownListFor(model => Model.PaymentProviderId, paymentProviders)
+                        </div>
+                        <div class="formFieldHelp">The payment provider used to take payments for web ordering</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            }
+        }
+        else
+        {
+            @*External store details*@
+            <fieldset>
+
+                <legend>
+                    <span>External store details visible to third parties or the general public</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "ExternalStoreDetails" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <!-- ExternalSiteId -->
+                <div class="editor-label">
+                    External store ID: 
+                </div>
+                <div class="editor-field">
+                    @Model.Store.ExternalSiteId
+                </div>
+                <div class="formFieldHelp">The store id visible to 3rd parties e.g. companies working for the customer</div>
+
+                <!-- ExternalStoreName -->
+                <div class="editor-label">
+                    External store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.ExternalSiteName
+                </div>
+                <div class="formFieldHelp">The store name visible to the general public</div>
+
+                <!-- Telephone -->
+                <div class="editor-label">
+                    Store telephone number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Telephone
+                </div>
+                <div class="formFieldHelp">The store phone number visible to the general public</div>
+
+                <!-- Timezone -->
+                <div class="editor-label">
+                    Timezone:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.TimeZone
+                </div>
+                <div class="formFieldHelp">The timezone that the store is in</div>
+
+                <!-- Payment provider -->
+                <div class="editor-label">
+                    Web payment provider:
+                </div>
+                <div class="editor-field">
+                    @(Model.Store.PaymentProvider != null ? Model.Store.PaymentProvider.DisplayText : "None")
+                </div>
+                <div class="formFieldHelp">The payment provider used to take payments for web ordering</div>
+
+            </fieldset>
+        }
+    </div>
+
+    <div id="tabs-2">
+
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreLocation")
+        {
+            using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.Store.Id)
+
+                <!-- Country -->
+                <fieldset>
+
+                    <legend>
+                        <span>Store location</span>
+                        <input type="submit" value="update" class="button" />
+                        @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreLocation" }, new { @class = "changeLink" })
+                    </legend>
+
+                    <div class="editor-label">
+                        Country:
+                    </div>
+                    <div class="editor-field" style="width:350px">
+                        @Html.DropDownListFor(model => Model.CountryId,
+                            new SelectList(Model.Countries, "Id", "CountryName"))
+                    </div>
+                    <div class="formFieldHelp">The country that the store is in</div>
+
+                    <div style="clear:both;">
+                        @Html.ValidationSummary() 
+                    </div>
+
+                </fieldset>
+            }
+        }
+        else
+        {
+            <!-- Country -->
+            <fieldset>
+
+                <legend>
+                    <span>Store location</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreLocation" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <div class="editor-label">
+                    Country:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Country.CountryName
+                </div>
+                <div class="formFieldHelp">The country that the store is in</div>
+
+            </fieldset>
+        }
+
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreAddress")
+        {
+            using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.Store.Id)
+
+                if (@Model.Address.Country.ISO3166_1_alpha_2 == "GB")
+                {
+                    // UK Address Details
+                    <fieldset>
+
+                        <legend>
+                            <span>UK address details</span>
+                            <input type="submit" value="update" class="button" />
+                            @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreAddress" }, new { @class = "changeLink" })
+                        </legend>
+
+                        <div>
+                            @Html.ValidationSummary(true) 
+                        </div>
+
+                        <!-- Org1 -->
+                        <div class="editor-label">
+                            Organisation 1:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                        </div>
+                        <div class="formFieldHelp">E.g. Sales Department</div>
+
+                        <!-- Org2 -->
+                        <div class="editor-label">
+                            Organisation 2:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Org2) 
+                        </div>
+                        <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                        <!-- Prem1 -->
+                        <div class="editor-label">
+                            Premises 1:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                        </div>
+                        <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                        <!-- Prem2 -->
+                        <div class="editor-label">
+                            Premises 2:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                        </div>
+                        <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+                        <!-- RoadNum -->
+                        <div class="editor-label">
+                            Road number:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                        </div>
+                        <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                        <!-- RoadName -->
+                        <div class="editor-label">
+                            Road name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                        </div>
+                        <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                        <!-- City -->
+                        <div class="editor-label">
+                            City/Town:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Town) 
+                        </div>
+                        <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                        <!-- Locality -->
+                        <div class="editor-label">
+                            Locality:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Locality) 
+                        </div>
+                        <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                        <!-- County -->
+                        <div class="editor-label">
+                            County:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.County) 
+                        </div>
+                        <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                        <!-- PostCode -->
+                        <div class="editor-label">
+                            PostCode:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                        </div>
+                        <div class="formFieldHelp">The post code E.g. "SM6 0DZ"</div>
+            
+                        <!-- DPS -->
+                        <div class="editor-label">
+                            DPS:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.DPS) 
+                        </div>
+                        <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                }
+                else
+                {
+                    // Generic Address Details
+                    <fieldset>
+
+                        <legend>
+                            <span>Generic address details</span>
+                            <input type="submit" value="update" class="button" />
+                            @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreAddress" }, new { @class = "changeLink" })
+                        </legend>
+
+                        <!-- Org1 -->
+                        <div class="editor-label">
+                            Organisation 1:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                        </div>
+                        <div class="formFieldHelp">E.g. Sales Department</div>
+
+                        <!-- Org2 -->
+                        <div class="editor-label">
+                            Organisation 2:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Org2) 
+                        </div>
+                        <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                        <!-- Org3 -->
+                        <div class="editor-label">
+                            Organisation 3:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Org3) 
+                        </div>
+
+                        <!-- Prem1 -->
+                        <div class="editor-label">
+                            Premises 1:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                        </div>
+                        <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                        <!-- Prem2 -->
+                        <div class="editor-label">
+                            Premises 2:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                        </div>
+                        <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+                        
+                        <!-- Prem3 -->
+                        <div class="editor-label">
+                            Premises 3:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem3) 
+                        </div>
+
+                        <!-- Prem4 -->
+                        <div class="editor-label">
+                            Premises 4:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem4) 
+                        </div>
+
+                        <!-- Prem5 -->
+                        <div class="editor-label">
+                            Premises 5:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem5) 
+                        </div>
+
+                        <!-- Prem6 -->
+                        <div class="editor-label">
+                            Premises 6:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Prem6) 
+                        </div>
+
+                        <!-- RoadNum -->
+                        <div class="editor-label">
+                            Road number:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                        </div>
+                        <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                        <!-- RoadName -->
+                        <div class="editor-label">
+                            Road name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                        </div>
+                        <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                        <!-- City/Town -->
+                        <div class="editor-label">
+                            City/Town:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Town) 
+                        </div>
+                        <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                        <!-- Locality -->
+                        <div class="editor-label">
+                            Locality:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.Locality) 
+                        </div>
+                        <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                        <!-- County -->
+                        <div class="editor-label">
+                            County:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.County) 
+                        </div>
+                        <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                        <!-- State -->
+                        <div class="editor-label">
+                            State:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.State) 
+                        </div>
+                        <div class="formFieldHelp">The state or region name.  E.g. "Norfolk"</div>
+
+                        <!-- ZipCode -->
+                        <div class="editor-label">
+                            ZipCode/Postcode:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                        </div>
+                        <div class="formFieldHelp">The post code or zip code. E.g. "SM6 0DZ" or “86400"</div>
+            
+                        <!-- DPS -->
+                        <div class="editor-label">
+                            DPS:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Address.DPS) 
+                        </div>
+                        <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                }
+            }
+        }
+        else
+        {
+            if (@Model.Address.Country.ISO3166_1_alpha_2 == "GB")
+            {
+                // UK Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>UK address details </span>
+                        @if (ViewBag.Permissions.Contains("EditStore"))
+                        {
+                            @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreAddress" }, new { @class = "changeLink" })
+                        }
+                    </legend>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Organisation 1:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Org1
+                    </div>
+                    <div class="formFieldHelp">E.g. Sales Department</div>
+
+                    <!-- Org2 -->
+                    <div class="editor-label">
+                        Organisation 2:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Org2
+                    </div>
+                    <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Premises 1:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem1
+                    </div>
+                    <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Premises 2:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem2
+                    </div>
+                    <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Road number:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.RoadNum
+                    </div>
+                    <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Road name:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.RoadName
+                    </div>
+                    <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                    <!-- City -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Town
+                    </div>
+                    <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                    <!-- Locality -->
+                    <div class="editor-label">
+                        Locality:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Locality
+                    </div>
+                    <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                    <!-- County -->
+                    <div class="editor-label">
+                        County:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.County
+                    </div>
+                    <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                    <!-- PostCode -->
+                    <div class="editor-label">
+                        PostCode:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.PostCode
+                    </div>
+                    <div class="formFieldHelp">The post code E.g. "SM6 0DZ"</div>
+            
+                    <!-- DPS -->
+                    <div class="editor-label">
+                        DPS:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.DPS
+                    </div>
+                    <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+                </fieldset>
+            }
+            else
+            {
+                // Generic Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>Generic address details </span>
+                        @if (ViewBag.Permissions.Contains("EditStore"))
+                        {
+                            @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreAddress" }, new { @class = "changeLink" })
+                        }
+                    </legend>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Organisation 1:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Org1
+                    </div>
+                    <div class="formFieldHelp">E.g. Sales Department</div>
+
+                    <!-- Org2 -->
+                    <div class="editor-label">
+                        Organisation 2:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Org2
+                    </div>
+                    <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                    <!-- Org3 -->
+                    <div class="editor-label">
+                        Organisation 3:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Org3
+                    </div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Premises 1:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem1
+                    </div>
+                    <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Premises 2:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem2
+                    </div>
+                    <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+
+                    <!-- Prem3 -->
+                    <div class="editor-label">
+                        Premises 3:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem3
+                    </div>
+
+                    <!-- Prem4 -->
+                    <div class="editor-label">
+                        Premises 4:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem4
+                    </div>
+
+                    <!-- Prem5 -->
+                    <div class="editor-label">
+                        Premises 5:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem5
+                    </div>
+
+                    <!-- Prem6 -->
+                    <div class="editor-label">
+                        Premises 6:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Prem6
+                    </div>
+
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Road number:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.RoadNum
+                    </div>
+                    <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Road name:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.RoadName
+                    </div>
+                    <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                    <!-- City/Town -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Town
+                    </div>
+                    <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                    <!-- Locality -->
+                    <div class="editor-label">
+                        Locality
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.Locality
+                    </div>
+                    <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                    <!-- County -->
+                    <div class="editor-label">
+                        County:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.County
+                    </div>
+                    <div class="formFieldHelp">The county.  E.g. "Norfolk"</div>
+
+                    <!-- State -->
+                    <div class="editor-label">
+                        State:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.State
+                    </div>
+                    <div class="formFieldHelp">The state or region name.  E.g. "Norfolk"</div>
+
+                    <!-- ZipCode -->
+                    <div class="editor-label">
+                        ZipCode/Postcode:
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.PostCode
+                    </div>
+                    <div class="formFieldHelp">The post code or zip code. E.g. "SM6 0DZ" or “86400"</div>
+
+                    <!-- DPS -->
+                    <div class="editor-label">
+                        DPS
+                    </div>
+                    <div class="editor-field">
+                        @Model.Store.Address.DPS
+                    </div>
+
+                </fieldset>
+            }
+        }
+    </div>
+
+    <div id="tabs-3">
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreGPSLocation")
+        {
+            using (Html.BeginForm())
+            { 
+                @Html.HiddenFor(model => model.Store.Id)
+
+                <fieldset>
+
+                    <legend>
+                        <span>Store GPS location</span>
+                        <input type="submit" value="update" class="button" />
+                        @Html.ActionLink("cancel", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreGPSLocation" }, new { @class = "changeLink" })
+                    </legend>
+
+                    <!-- Lat -->
+                    <div class="editor-label">
+                        GPS Latitude:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Lat, new {onkeyup = "setStoreMarker();"}) 
+                        @Html.ValidationMessageFor(model => model.Store.Address.Lat)
+                    </div>
+                    <div class="formFieldHelp">The GPS latitude of the address</div>
+
+                    <!-- Long -->
+                    <div class="editor-label">
+                        GPS Longitude:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Long, new {onkeyup = "setStoreMarker();"}) 
+                        @Html.ValidationMessageFor(model => model.Store.Address.Long)
+                    </div>
+                    <div class="formFieldHelp">The GPS longitude of the address</div>
+
+                    <div style="clear:both; padding-top:10px;">
+                        <input type="text" id="addressString" value="@addressString" style="width:600px;" />
+                        <a href="#" onclick="findAddress(); return false;" style="margin-left:10px;">Find address on map</a>
+                    </div>
+                    
+                    <div id="mapContainer">
+                        <div id="map"></div>
+                    </div>
+
+                    <div style="clear:both;"></div>
+
+                </fieldset>
+            }
+        }
+        else
+        {
+            <fieldset>
+
+                <legend>
+                    <span>Store GPS location</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreGPSLocation" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <!-- Lat -->
+                <div class="editor-label">
+                    GPS Latitude:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Lat
+                </div>
+                <div class="formFieldHelp">The GPS latitude of the address</div>
+
+                <!-- Long -->
+                <div class="editor-label">
+                    GPS Longitude:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Long
+                </div>
+                <div class="formFieldHelp">The GPS longitude of the address</div>
+                
+                <div id="mapContainer" style="clear:both; padding-top:10px;">
+                    <div id="map"></div>
+                </div>
+
+            </fieldset>
+        }
+
+    </div>
+
+    <div id="tabs-4">
+        @if (ViewBag.Edit && ViewBag.Selected == "StoreOpeningTimes")
+        {
+            using (Html.BeginForm())
+            { 
+                @Html.HiddenFor(model => model.Store.Id)
+
+                <!-- Opening times -->               
+                <fieldset>
+
+                    <legend>
+                        <span>Store opening times</span>
+                        @Html.ActionLink("view", "StoreDetails", new { id = Model.Store.Id, edit = false, selected = "StoreOpeningTimes" }, new { @class = "changeLink" })
+                    </legend>
+                    <div>
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Monday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Tuesday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Wednesday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Thursday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Friday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Saturday"}})
+                        </div>
+
+                        <div style="float:left;">
+                            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Sunday"}})
+                        </div>
+                    </div>
+                </fieldset>
+            
+                <div style="clear:both;"></div>
+            }
+        }
+        else
+        {
+            <fieldset>
+
+                <legend>
+                    <span>Store opening times</span>
+                    @if (ViewBag.Permissions.Contains("EditStore"))
+                    {
+                        @Html.ActionLink("change", "StoreDetails", new { id = Model.Store.Id, edit = true, selected = "StoreOpeningTimes" }, new { @class = "changeLink" })
+                    }
+                </legend>
+
+                <div>
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Monday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Tuesday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Wednesday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Thursday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Friday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Saturday"}})
+                    </div>
+
+                    <div style="float:left;">
+                        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Sunday"}})
+                    </div>
+                </div>
+            
+            </fieldset>
+            <div style="clear:both;"></div>
+        }
+    </div>
+</div>

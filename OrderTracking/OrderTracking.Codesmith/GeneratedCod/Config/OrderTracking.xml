@@ -1,0 +1,30 @@
+
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data/OrderTracking.cfg" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/AccountValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/ApnValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/CommandTypeValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/CoordinateValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/CustomerValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/CustomerOrderValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/DriverValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/DriverOrderValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/ItemValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/LogValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/OrderValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/OrderStatusValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/PostCodeValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/SmsCredentialValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/StatusValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/StoreValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/TrackerValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/TrackerCommandValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/TrackerStatusValidator.xml" />
+<resource uri="assembly://OrderTracking.Dao.Domain/OrderTracking.Data.Config/TrackerTypeValidator.xml" />
+		
+
+
+		
+
+
+
+

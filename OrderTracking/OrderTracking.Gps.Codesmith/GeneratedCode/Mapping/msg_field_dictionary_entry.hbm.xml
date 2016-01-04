@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Msgfielddictionaryentry, OrderTracking.Gps.Dao" table="msg_field_dictionary_entry">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="entry_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__msg_fiel__810FDCE15A846E65"/>
+			<generator class="native" />
+		</id>
+		<property name="Multiplicator" type="Double">
+			<column name="multiplicator" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Constant" type="Double">
+			<column name="constant" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Enabled" type="Int16">
+			<column name="enabled" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<property name="Savewithpos" type="Int16">
+			<column name="save_with_pos" length="2" sql-type="smallint" not-null="false"/>
+		</property>
+		<property name="Savechangesonly" type="Int16">
+			<column name="save_changes_only" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<property name="Multiplicatorformula" type="String">
+			<column name="multiplicator_formula" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="in_" class="OrderTracking.Gps.Dao.Domain.Msgfield, OrderTracking.Gps.Dao">
+			<column name="in_msg_field_id" length="4" sql-type="int" not-null="true" index="Index_in_msg_field_id"/>
+		</many-to-one>
+		<many-to-one name="out_" class="OrderTracking.Gps.Dao.Domain.Msgfield, OrderTracking.Gps.Dao">
+			<column name="out_msg_field_id" length="4" sql-type="int" not-null="true" index="Index_out_msg_field_id"/>
+		</many-to-one>
+		<many-to-one name="Msgfielddictionary" class="OrderTracking.Gps.Dao.Domain.Msgfielddictionary, OrderTracking.Gps.Dao">
+			<column name="msg_field_dict_id" length="4" sql-type="int" not-null="true" index="Index_msg_field_dict_id"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

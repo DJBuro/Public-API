@@ -1,0 +1,39 @@
+﻿@using MyAndromeda.Services.Gprs;
+
+@{
+    var workContext = Html.GetWorkContext();
+    var gprsService = Html.GetService<IGprsService>();
+    var isGprsStore = gprsService.IsStoreGprsDeviceBySiteId(workContext.CurrentSite.SiteId);
+    var authorizer = Html.GetAuthorizer();
+}
+
+
+<div class="header">
+    <h3>Estimated delivery time</h3>
+    @if (isGprsStore)
+    {
+        if (authorizer.Authorize(MyAndromeda.Web.Areas.Store.StoreUserPermissions.EditEdtTime))
+        {
+            <a class="k-button" href="@Url.Action("ChangeEdt")">Edit</a>
+        }
+    }
+</div>
+<div class="content">
+    <div>
+        @if (workContext.CurrentSite.Store.EstimatedDeliveryTime == null && isGprsStore)
+        {
+            <span>No time has been entered. The default is 45 minutes</span>
+        }
+        @if (isGprsStore)
+        {
+            @workContext.CurrentSite.Store.EstimatedDeliveryTime
+        }
+    </div>
+
+    <div>
+        @if (!isGprsStore)
+        {
+            <span>This value is managed by Rameses.</span>
+        }
+    </div>
+</div>

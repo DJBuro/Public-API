@@ -1,0 +1,138 @@
+﻿    <script type="text/html" id="loginRegisterView">
+        <div id="loginRegisterInner">
+            <!-- Header -->
+            
+            <div>
+
+                <!-- Sign in -->
+                <h1>Sign in</h1>
+
+                <div id="signIn">
+
+                    <div id="loginUsingFacebook">
+
+                        <!-- Login using facebook -->
+                        <p>If you're a facebook user you don't need to sign up for an account with our website</p>
+                        <div id="facebookLoginButtonOuter">
+                            <div class="button" id="facebookLoginButton">
+                                <a href="#" title="Login using facebook" data-bind="click: accountHelper.facebookLogin">Sign in using facebook</a>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div id="facebookLoginDivider">
+                        <div id="facebookLoginDividerTop">
+                            &nbsp;
+                        </div>
+                        <div>OR</div>
+                        <div id="facebookLoginDividerBottom">
+                            &nbsp;
+                        </div>
+                    </div>
+
+                    <div id="loginSection">
+                        <!-- Login -->
+
+                        <div id="loginSectionInner">
+                            <p>Sign in using the email address and password you used when you created your account</p>
+                            <div class="loginFormPrompt">
+                                <label>Email address</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="email" data-bind="value: accountHelper.loginDetails.emailAddress" />
+                            </div>
+
+                            <div class="loginFormPrompt">
+                                <label>Password</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="password" data-bind="value: accountHelper.loginDetails.password" />
+                            </div>
+                        </div>
+
+                        <div id="loginButtonContainer">
+                            <div class="button" id="loginButton">
+                                <a href="#" title="Login" data-bind="click: accountHelper.normalLogin">Login</a>
+                            </div>
+
+                            <div id="loginError" data-bind="text: accountHelper.loginDetails.errorMessage"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Register -->
+                <div id="registerContainer">
+                    <h1 id="createAnAccount">Create an account</h1>
+                    <div id="registerContainerInner">
+                        <div class="registerSection">
+
+                            <div class="loginFormPrompt">
+                                <label>First name</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="text" data-bind="value: accountHelper.newAccount.firstName, attr: { class: accountHelper.newAccount.firstNameHasError() ? 'checkoutDataError' : '' }" />
+                            </div>
+
+                            <div class="loginFormPrompt">
+                                <label>Surname</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="text" data-bind="value: accountHelper.newAccount.surname, attr: { class: accountHelper.newAccount.surnameHasError() ? 'checkoutDataError' : '' }" />
+                            </div>
+
+                            <div class="loginFormPrompt">
+                                <label>Email address</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="email" data-bind="value: accountHelper.newAccount.emailAddress, attr: { class: accountHelper.newAccount.emailAddressHasError() ? 'checkoutDataError' : '' }" />
+                            </div>
+
+                        </div>
+                        <div class="registerSection">
+
+                            <div class="loginFormPrompt">
+                                <label>Phone number</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="tel" data-bind="value: accountHelper.newAccount.phoneNumber, attr: { class: accountHelper.newAccount.phoneNumberHasError() ? 'checkoutDataError' : '' }" />
+                            </div>
+
+                            <div class="loginFormPrompt">
+                                <label>Password</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="password" data-bind="value: accountHelper.newAccount.password, attr: { class: accountHelper.newAccount.passwordHasError() ? 'checkoutDataError' : '' }" />
+                            </div>
+
+                            <div class="loginFormPrompt">
+                                <label>Re-enter password</label>
+                            </div>
+                            <div class="loginFormInput">
+                                <input type="password" data-bind="value: accountHelper.newAccount.reenterPassword" />
+                            </div>
+
+                        </div>
+
+                        <div id="registerMarketing">
+                            <input type="checkbox" data-bind="checked: accountHelper.newAccount.marketing" />
+                            <label>Let me know about new products and special offers</label>
+                        </div>
+
+                        <div id="registerErrorMessage" data-bind="text: accountHelper.newAccount.errorMessage"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div id="loginRegisterButtons">
+                <div class="highlightedButton" id="signUpButton">
+                    <a href="#"  title="Sign up now" data-bind="click: accountHelper.showRegister">Sign up</a>
+                </div>
+                <div class="highlightedButton" id="closeLoginRegisterPopupButton">
+                    <a href="#"  title="Close the popup" data-bind="click: accountHelper.cancel">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </script>

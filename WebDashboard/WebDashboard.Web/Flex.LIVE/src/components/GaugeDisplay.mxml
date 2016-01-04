@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import components.Gauge;
+			
+			[Bindable]
+			private var thisGauge :Gauge;
+			
+					
+		]]>
+	</fx:Script>
+	
+	<degrafa:fills>
+		<degrafa:RadialGradientFill id="greyRadFill" cx="40" cy="20" radius="440">
+			<degrafa:GradientStop color="#333"/>
+			<degrafa:GradientStop color="#000"/>
+		</degrafa:RadialGradientFill>
+		
+		<degrafa:SolidFill id="whiteFill" color="#FFF"/>
+		<degrafa:SolidFill id="greyFill" color="#CCCCCC" alpha=".6" />
+		<degrafa:SolidFill id="blackFill" color="#000000" alpha=".3"/>
+		
+		<degrafa:SolidFill id="greenFill" color="Green" />
+		<degrafa:SolidFill id="redFill" color="Red" />
+		
+		<paint:LinearGradientFill angle="90" id="reflectionFillTop">
+			<paint:GradientStop alpha=".6" color="#FFFFFF" ratio="0"/>
+			<paint:GradientStop alpha="0" color="#FFFFFF" ratio=".65"/>
+		</paint:LinearGradientFill>
+		
+		<paint:LinearGradientFill angle="270" id="reflectionFillBottom">
+			<paint:GradientStop alpha=".2" color="#FFFFFF"/>
+			<paint:GradientStop alpha="0" color="#FFFFFF" ratio=".3"/>
+		</paint:LinearGradientFill>
+		
+		<paint:LinearGradientFill id="indicatorFill">
+			<paint:GradientStop color="red"/>
+			<paint:GradientStop color="ColorUtil.adjustBrightness2(red,-15)"/>
+		</paint:LinearGradientFill>
+	</degrafa:fills>
+	
+	
+	<degrafa:strokes>
+		<degrafa:SolidStroke id="greyStroke" color="#CCCCCC" weight="2" caps="none" alpha=".3"/>
+		<degrafa:SolidStroke id="whiteStroke" color="#FFFFFF" weight="1" caps="none" alpha="1"/> 
+		<degrafa:SolidStroke id="blackStroke" color="#000000" weight="2" caps="none" alpha=".3"/>
+		
+		<paint:RadialGradientStroke id="blueGradient" weight="8">
+			<paint:GradientStop alpha=".3"
+								ratio=".8"
+								color="#CCCCCC"/>
+			<paint:GradientStop alpha=".8"
+								ratio="1"
+								color="#FFFFFF"/>
+		</paint:RadialGradientStroke>
+		<paint:SolidStroke id="majorMarksStroke" color="#FFF" weight="{_fontSize/10}" alpha=".7"/>
+		
+		<paint:SolidStroke id="redIndicatorStroke" color="Red" weight="{_fontSize}" suppressEventProcessing="true" caps="none"/>
+		<paint:SolidStroke id="greenIndicatorStroke" color="Green" weight="{_fontSize}" suppressEventProcessing="true" caps="none"/>
+		
+	</degrafa:strokes>
+	
+	<!-- GAUGE 01 -->
+	<degrafa:GeometryGroup id="column01">            
+		<geometry:RegularRectangle fill="{blackFill}"
+								   stroke="{blackStroke}"
+								   height="{_columnHeight}" 
+								   width="{_columnWidth}"/>
+		<!-- 01 Face  -->
+		<degrafa:Circle id="gauge01" fill="{ greyRadFill }" stroke="{blueGradient}"/>
+		
+		<!-- 01 text  -->      
+		<degrafa:RasterText id="gauge01Label" fontSize="{_fontSize}" fontWeight="bold" textColor="#FFF"  fontFamily="Arial"/>
+		
+		<degrafa:RasterText id="gauge01LegendLabel" fontSize="{_fontSize}"  fontWeight="bold"  fontFamily="Arial"  textColor="#FFF"   />
+		
+		<degrafa:RasterText id="gauge01RankText" fontSize="{_fontSize}" text="Rankings"  fontFamily="Arial"  textColor="#999"  />
+		<degrafa:RasterText id="gauge01SiteRankText" fontSize="{_fontSize}"  fontFamily="Arial"  textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01RegionRankText" fontSize="{_fontSize}"  fontFamily="Arial"  textColor="#FFF"  />
+		
+		<!-- Up/Down Arrow-->
+		<degrafa:GeometryGroup id="gauge01ArrowDS">
+			<!-- Indicator a Polygon. -->
+			<degrafa:Polygon id="gauge01ArrowIndicatorDS" fill="{blackFill}"
+							 data="{
+							 String(_gaugeRadius*-.1) + ',' + String(_gaugeRadius*-.1) + ' ' + 
+							 String(0) + ',' + String(_gaugeRadius*.1) + ' ' +
+							 String(_gaugeRadius*.1) + ',' + String(_gaugeRadius*-.1)
+							 }"/>
+		</degrafa:GeometryGroup>		 
+		<degrafa:GeometryGroup id="gauge01Arrow">
+			<!-- Indicator a Polygon. -->
+			<degrafa:Polygon id="gauge01ArrowIndicator"
+							 data="{
+							 String(_gaugeRadius*-.1) + ',' + String(_gaugeRadius*-.1) + ' ' + 
+							 String(0) + ',' + String(_gaugeRadius*.1) + ' ' +
+							 String(_gaugeRadius*.1) + ',' + String(_gaugeRadius*-.1)
+							 }"/>
+		</degrafa:GeometryGroup>
+		
+		<!--Leaders/Laggers-->	
+		<degrafa:RasterText id="gauge01LeadersText" fontSize="{_fontSize}" text="Leaders"  fontFamily="Arial" fontWeight="bold" textColor="#999"  />
+		<degrafa:RasterText id="gauge01Leaders1" fontSize="{_fontSize}" width="{_gaugeRadius}"  fontFamily="Arial"  textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01Leaders2" fontSize="{_fontSize}" width="{_gaugeRadius}"  fontFamily="Arial"  textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01Leaders3" fontSize="{_fontSize}" width="{_gaugeRadius}"  fontFamily="Arial" textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01LaggersText" fontSize="{_fontSize}" text="Laggers"  fontFamily="Arial" fontWeight="bold" textColor="#999"  />
+		<degrafa:RasterText id="gauge01Laggers1" fontSize="{_fontSize}" width="{_gaugeRadius}" fontFamily="Arial" textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01Laggers2" fontSize="{_fontSize}" width="{_gaugeRadius}" fontFamily="Arial" textColor="#FFF"  />
+		<degrafa:RasterText id="gauge01Laggers3" fontSize="{_fontSize}" width="{_gaugeRadius}" fontFamily="Arial" textColor="#FFF"  />
+		
+		<!-- Benchmark arcs -->
+		<geometry:EllipticalArc closureType="open" id="Gauge01BenchmarkArc"
+								arc="{-_gauge01BenchmarkArc}" width="{_gaugeRadius*.89}"  height="{_gaugeRadius*.89}" x="{_gaugeRadius*.055}" y="{_gaugeRadius*.063}" 
+								startAngle="{_GAUGESTART}"/>
+		<!-- Green arcs -->
+		<geometry:EllipticalArc closureType="open" id="Gauge01GreenArc"
+								arc="{-_gauge01GreenArc}" width="{_gaugeRadius*.89}"  height="{_gaugeRadius*.89}" x="{_gaugeRadius*.055}" y="{_gaugeRadius*.063}" 
+								startAngle="{_gauge01GreenArcStart}" />
+		
+		<degrafa:GeometryRepeater count="{_gauge01MajorTickCount}">
+			<degrafa:RegularRectangle height="{_fontSize *.5}" width="2" x="{_gaugeRadius*.5}" y="{_gaugeRadius*.05}" stroke="{majorMarksStroke}">
+				<degrafa:transform>
+					<degrafa:RotateTransform 
+						angle="{_gaugeAngle}"
+						id="Rtransform01"
+						centerX="{_gaugeHandLocation}" 
+						centerY="{_gaugeHandLocation}" 
+						/>
+				</degrafa:transform>
+			</degrafa:RegularRectangle>
+			<degrafa:modifiers>
+				<degrafa:PropertyModifier  targets="{[Rtransform01]}" property="angle" modifier="{_gauge01MajorTickOffset}" modifierOperator="add" />
+			</degrafa:modifiers>
+		</degrafa:GeometryRepeater>
+		
+		<degrafa:GeometryRepeater count="{_gauge01MajorTickCount}">
+			<degrafa:RasterText id="gauge01GaugeText"  align="left" fontSize="{_fontSize *.8}" textColor="#999"  fontWeight="bold" fontFamily="Arial" x="{_gaugeRadius*.5}" y="{_gaugeRadius*.1}">
+				<degrafa:transform>
+					<degrafa:TransformGroup>
+						<degrafa:RotateTransform 
+							angle="{_gaugeAngle -5}"
+							id="RtransformG01"
+							centerX="{_gaugeHandLocation}" 
+							centerY="{_gaugeHandLocation}"
+							/>
+						<!-- <degrafa:RotateTransform id="numberRotate" registrationPoint="center" /> -->
+					</degrafa:TransformGroup>
+				</degrafa:transform>
+			</degrafa:RasterText>
+			<degrafa:modifiers>
+				<degrafa:PropertyModifier  targets="{[RtransformG01]}" property="angle" modifier="{_gauge01MajorTickOffset}" modifierOperator="add" />
+				<!--<degrafa:PropertyModifier targets="{[numberRotate]}" property="angle"  modifier="{_gauge01MajorTickOffset-20}"  modifierOperator="add"/>-->
+				<degrafa:PropertyModifier  targets="{[gauge01GaugeText]}" property="text" modifier="{gauge01TickLabels}" modifierOperator="none" />
+			</degrafa:modifiers>
+		</degrafa:GeometryRepeater>
+		
+		
+	</degrafa:GeometryGroup>
+	
+	
+	<!-- 01 hand --> 
+	<degrafa:GeometryGroup id="gauge01HandDS">
+		<!-- Indicator a Polygon Shadow. -->
+		<degrafa:Polygon id="gauge01LineDS" fill="{blackFill}"
+						 data="{
+						 String(_gaugeRadius*-.03) + ',' + String(_gaugeRadius*-.16) + ' ' + 
+						 String(_gaugeRadius*-.04) + ',' + String(_gaugeRadius*-.15) + ' ' +
+						 String(_gaugeRadius*-.01) + ',' + String(_gaugeRadius*.45) + ' ' +
+						 String(0) + ',' + String(_gaugeRadius*.46) + ' ' +
+						 String(_gaugeRadius*.01) + ',' + String(_gaugeRadius*.45) + ' ' +
+						 String(_gaugeRadius*.04) + ',' + String(_gaugeRadius*-.15) + ' ' +
+						 String(_gaugeRadius*.03) + ',' + String(_gaugeRadius*-.16) 
+						 }"/>
+	</degrafa:GeometryGroup>
+	<degrafa:GeometryGroup id="gauge01Hand">
+		<!-- Indicator a Polygon. -->
+		<degrafa:Polygon id="gauge01Line" fill="{indicatorFill}"
+						 data="{
+						 String(_gaugeRadius*-.03) + ',' + String(_gaugeRadius*-.16) + ' ' + 
+						 String(_gaugeRadius*-.04) + ',' + String(_gaugeRadius*-.15) + ' ' +
+						 String(_gaugeRadius*-.01) + ',' + String(_gaugeRadius*.45) + ' ' +
+						 String(0) + ',' + String(_gaugeRadius*.46) + ' ' +
+						 String(_gaugeRadius*.01) + ',' + String(_gaugeRadius*.45) + ' ' +
+						 String(_gaugeRadius*.04) + ',' + String(_gaugeRadius*-.15) + ' ' +
+						 String(_gaugeRadius*.03) + ',' + String(_gaugeRadius*-.16) 
+						 }"/>
+	</degrafa:GeometryGroup>
+	
+</s:Group>

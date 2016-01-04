@@ -1,0 +1,56 @@
+﻿<script type="text/template" id="accountDetailTemplate">
+    
+    <div class="lrLoginFormInput">
+        <input name="Name" autofocus type="text" maxlength="48" class="checkoutDataError"
+            data-bind="value: customerHelper.bindableCustomer().firstName, valueUpdate: 'afterkeydown', attr: { 'class': customerHelper.bindableCustomer().firstName.isValid() ? '' : 'checkoutDataError', placeholder: textStrings.lrFullName }" />
+    </div>
+
+    <!-- ko if: $root.contentViewModel().canModifyEmailAddress -->
+    <div class="lrLoginFormInput">
+        <input type="email"
+            name="Email" 
+            maxlength="64"
+            data-bind="value: customerHelper.bindableCustomer().emailAddress, valueUpdate: 'afterkeydown change', attr: { 'class': customerHelper.bindableCustomer().emailAddress.isValid() ? '' : 'checkoutDataError', placeholder: textStrings.lrEmail }" />
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: accountHelper.isFacebookLogin -->
+
+    <div class="lrLoginFormInput">
+        <input name="Password" type="password" class="checkoutDataError"
+            data-bind="value: customerHelper.bindableCustomer().password, valueUpdate: 'afterkeydown', attr: { 'class': customerHelper.bindableCustomer().password.isValid() ? '' : 'checkoutDataError', placeholder: textStrings.mpNewPassword }" />
+    </div>
+
+    <div class="lrLoginFormInput">
+        <input name="ReEnterPassword" type="password"
+            data-bind="value: customerHelper.bindableCustomer().reenterPassword, valueUpdate: 'afterkeydown', attr: { placeholder: textStrings.mpConfirmNewPassword }" />
+    </div>
+
+    <!-- /ko -->
+
+    <div class="lrLoginFormInput">
+        <input type="text" 
+            name="Phone"
+            maxlength="15"
+            data-bind="value: customerHelper.bindableCustomer().phoneNumber, valueUpdate: 'afterkeydown', event: { keypress: helper.numbersOnly }, attr: { 'class': customerHelper.bindableCustomer().phoneNumber.isValid() ? '' : 'checkoutDataError', placeholder: textStrings.lrPhoneNumber }" />
+    </div>
+
+    <!-- ko if: $root.contentViewModel().showMarketingOptions === undefined || $root.contentViewModel().showMarketingOptions -->
+    <div class="lrLoginFormInput">
+        <p data-bind="text: textStrings.lrRegisterMarketingInterests"></p>
+        <div>
+            <label>
+                <input id="lrEmailRegisterMarketingCheckbox" name="SpamEmail" type="checkbox" data-bind="checked: customerHelper.bindableCustomer().marketing" />
+                <span data-bind="text: textStrings.lrEmail"></span>
+            </label>
+        </div>
+        <div>
+            <label>
+                <input id="lrSMSRegisterMarketingCheckbox" name="SpamSms" type="checkbox" data-bind="checked: customerHelper.bindableCustomer().smsMarketing" />
+                <span data-bind="text: textStrings.lrSms"></span>
+            </label>
+        </div>
+    </div>
+    <!-- /ko -->
+
+</script>

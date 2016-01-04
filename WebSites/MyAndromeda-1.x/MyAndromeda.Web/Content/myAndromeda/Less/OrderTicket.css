@@ -1,0 +1,21 @@
+.ticket {
+  margin: 0 auto;
+  width: 350px;
+  box-shadow: 0 0 5px #989898 inset;
+  background: #FDF8E0;
+  border-radius: 4px;
+  padding: 1em;
+  text-align: center;
+}
+.ticket .customer {
+  text-align: left;
+  word-wrap: break-word;
+}
+.ticket .order-line-grid {
+  table-layout: fixed;
+}
+.ticketColumn {
+  float: left;
+  width: 350px;
+  margin-left: 70px;
+}

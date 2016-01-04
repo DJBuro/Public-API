@@ -1,0 +1,30 @@
+﻿@model AndroAdminDataAccess.Domain.HubItem
+@{
+    ViewBag.Title = "Edit hub";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";    
+}
+@using (Html.BeginForm()) { 
+    <div>
+            @Html.HiddenFor(e=> e.Id)
+        <div>
+            <div class="editor-label">@Html.LabelFor(e => e.Name)</div>
+            <div class="editor-field">
+                <input name="@Html.FieldNameFor(e=> e.Name)" placeholder="Reference for the hub" value="@Model.Name" />
+            </div>
+            <div class="editor-description"></div>
+        </div>
+        <div>
+            <div class="editor-label">@Html.LabelFor(e=> e.Address)</div>
+            <div class="editor-field"><input name="@Html.FieldNameFor(e=> e.Address)" placeholder="Url of the hub" value="@Model.Address" /></div>
+
+            <div class="editor-description"></div>
+        </div>
+        <div>
+            <div class="editor-label">@Html.LabelFor(e=> e.Active)</div>
+            <div class="editor-field"> @Html.CheckBoxFor(e=> e.Active)</div>
+
+            <div class="editor-description"></div>
+        </div>
+    </div>
+    <input type="submit" value="Save" />
+}

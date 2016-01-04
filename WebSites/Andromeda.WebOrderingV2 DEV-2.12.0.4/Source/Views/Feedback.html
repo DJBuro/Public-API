@@ -1,0 +1,64 @@
+﻿<!-- FEEDBACK PAGE -->
+<script type="text/html" id="feedbackView">
+    <div id="feedbackContent" class="content">
+        <div id="feedbackBox">
+            <div id="feedbackBoxInner">
+                <p data-bind="text:textStrings.feedbackPrompt"></p>
+
+                <!-- Name -->
+                <div class="feedbackFormRow">
+                    <div class="feedbackFormPrompt">
+                        <label data-bind="text:textStrings.feedbackName"></label>
+                    </div>
+                    <div class="feedbackFormInput">
+                        <input id="feedbackNameInput" maxlength="96" type="text" data-bind="value: viewModel.contentViewModel().name" />
+                    </div>
+                    <div class="feedbackOptional" data-bind="text:textStrings.feedbackOptional"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="feedbackFormRow">
+                    <div class="feedbackFormPrompt">
+                        <label data-bind="text:textStrings.feedbackEmail"></label>
+                    </div>
+                    <div class="feedbackFormInput">
+                        <input id="feedbackEmailInput" maxlength="255" type="text" data-bind="value: viewModel.contentViewModel().email" />
+                    </div>
+                    <div class="feedbackOptional" data-bind="text:textStrings.feedbackOptional"></div>
+                </div>
+
+                <!-- Feedback category -->
+                <div class="feedbackFormRow">
+                    <div class="feedbackFormPrompt">
+                        <label data-bind="text:textStrings.feedbackCategory"></label>
+                    </div>
+                    <div class="feedbackFormInput">
+                        <select id="feedbackCategorySelect" data-bind="value: viewModel.contentViewModel().feedbackCategory, options: viewModel.contentViewModel().feedbackCategories, optionsText: 'displayText'"></select>
+                    </div>
+                </div>
+
+                <!-- Feedback -->
+                <div class="feedbackFormRow">
+                    <div class="feedbackFormPrompt">
+                        <label data-bind="text:textStrings.feedbackFeedback"></label>
+                    </div>
+                    <div class="feedbackFormInput">
+                        <textarea id="feedbackFeedbackInput" maxlength="255" type="text" data-bind="value: viewModel.contentViewModel().feedback"></textarea>
+                    </div>
+                </div>
+
+                <!-- ko if: $root.contentViewModel().hasError -->
+                <div id="feedbackError" >
+                    <p data-bind="text: $root.contentViewModel().errorMessage"></p>
+                </div>
+                <!-- /ko -->
+
+                <!-- Buttons -->
+                <div class="button" id="submitFeedbackButtonWrapper">
+                    <a id="submitFeedbackButton" data-bind="html: textStrings.feedbackSubmitButton, click: $root.contentViewModel().submitFeedback, attr: { title: textStrings.feedbackSubmitButton } "></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

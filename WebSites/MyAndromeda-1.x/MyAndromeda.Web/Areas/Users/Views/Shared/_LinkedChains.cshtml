@@ -1,0 +1,20 @@
+﻿@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Users.ViewModels.UserChainViewModel>()
+                        .Name("chainAddedTo_#=Id#")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(col => col.Name);
+                            columns.Command(e => e.Destroy().Text("Remove"));
+                            //columns.Bound(col => col.ChainId).Title("Actions")
+                            //    .ClientTemplate(string.Format("<a class='k-button' href='{0}'>Remove</a>", removeUserUrl));
+                        })
+                        .DataSource(dataSource =>
+                            dataSource.Ajax()
+                                .Sort(sort => sort.Add(field => field.Name))
+                                .PageSize(10)
+                                .Model(m => m.Id(e => e.Id))
+                                .Read(read => read.Action("Connections", "UserManagement", new { UserId = "#=Id#" }))
+                                .Destroy(destroy => destroy.Action("RemoveUserComposite", "UserManagement"))
+                        ).Pageable()
+                        .Sortable()
+                        .ToClientTemplate()
+)                    

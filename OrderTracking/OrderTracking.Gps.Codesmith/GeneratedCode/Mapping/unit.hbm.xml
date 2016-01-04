@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Unit, OrderTracking.Gps.Dao" table="unit">
+		<id name="Id" type="String" unsaved-value="null">
+			<column name="unit_name" length="32" sql-type="varchar" not-null="true" unique="true" index="PK__unit__69DEF0B24B422AD5"/>
+			<generator class="native" />
+		</id>
+		<property name="Symbol" type="String">
+			<column name="symbol" length="10" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Measure" type="String">
+			<column name="measure" length="32" sql-type="varchar" not-null="false"/>
+		</property>
+		<bag name="msg_fields" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="unit_name"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Msgfield, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

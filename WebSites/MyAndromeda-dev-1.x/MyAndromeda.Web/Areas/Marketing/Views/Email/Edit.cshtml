@@ -1,0 +1,47 @@
+﻿@model MyAndromeda.Web.Areas.Marketing.ViewModels.EditEmailCampaignViewModel
+@{
+    ViewBag.Title = "Edit Email Campaign";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="header">
+        <h3>Edit Template</h3>
+        <a class="k-button k-button-back" href="@Url.Action("Index")">Back</a>
+@*        <input type="submit" value="Save" class="k-button" />*@
+    </div>
+
+    @Html.AntiForgeryToken()
+    
+    <div class="clearfix">
+        <div class="sb-right content1">
+            <div class="header">
+                <h3>Detail</h3>
+            </div>
+            <div class="content">
+                @Html.LabelFor(e => e.Reference, "Reference:")
+                @Html.TextBoxFor(e => e.Reference, new { Placeholder = "A Memorable reference for this campaign" })
+            </div>
+            <div class="content">
+                @Html.LabelFor(e => e.Subject, "Subject:")
+                @Html.TextBoxFor(e => e.Subject, new { PlaceHolder = "Subject line of the email" })
+            </div>
+        </div>
+        <div class="sb-right content2">
+            <div class="header">
+                <h3>Email Template</h3>
+
+            </div>
+            <div class="k-reset">
+                @Html.Partial("KendoEmailEditor", this.Model)
+            </div>
+        </div>
+    </div>
+    
+    <div class="header">
+        <h3>Finished?</h3>
+    </div>
+    <div>
+        <input type="submit" value="Save" class="k-button" />
+    </div>
+}

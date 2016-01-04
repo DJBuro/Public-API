@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.TrackerType, OrderTracking.Dao" table="tbl_TrackerType">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_TrackerType"/>
+			<generator class="native" />
+		</id>
+		<property name="Name" type="String">
+			<column name="Name" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="GpsGateId" type="Int32">
+			<column name="GpsGateId" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<bag name="TypeIdTrackers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="TypeId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.Tracker, OrderTracking.Dao"/>
+		</bag>
+		<bag name="TrackerTypeIdTrackerCommandses" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="TrackerTypeId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.TrackerCommand, OrderTracking.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

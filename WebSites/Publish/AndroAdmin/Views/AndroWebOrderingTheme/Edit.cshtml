@@ -1,0 +1,152 @@
+﻿@model AndroAdminDataAccess.Domain.ThemeAndroWebOrdering
+@{
+    ViewBag.Title = "Edit";
+}
+<style>
+    .thumbnail {
+        height: 150px;
+        width: 150px;
+        border: 1px solid;
+        border-radius: 4px;
+        margin-right: 5px;
+    }
+
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+    }
+
+        .fileUpload input.upload {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0);
+        }
+
+    .btn {
+        padding: 4px 2px 4px;
+        font-size: 13px;
+        color: white;
+        line-height: 18px;
+        text-align: center;
+        width: 70px;
+        border-radius: 4px;
+        background-color: #1a84c8;
+    }
+
+    .thumbnail img {
+        height: 150px;
+        width: 150px;
+    }
+
+    .text {
+        height: 60px;
+        width: 250px;
+    }
+
+    .saveDiv {
+        margin-top: 10px;
+        width: 320px;
+        text-align: center;
+    }
+
+        .saveDiv input[type="button"] {
+            width: 100px;
+        }
+
+        .saveDiv button {
+            width: 100px;
+        }
+</style>
+<h2>Manage Andro Web Ordering</h2>
+@{
+    var rnd = new Random();
+    string randomNum = string.Empty;
+    if (!string.IsNullOrEmpty(Model.Source))
+    {
+        randomNum = "?" + rnd.Next(10000);
+    }
+}
+ 
+
+@using (Html.BeginForm("Edit", "AndroWebOrderingTheme", FormMethod.Post, new { id = Model.Id, enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(e => e.Id);
+    @Html.HiddenFor(e => e.Height);
+    @Html.HiddenFor(e => e.Width);
+
+    <div style="height:320px;margin-top:15px;">
+        <div class="editor-label"></div>
+        <div class="editor-label">
+            File Name :
+        </div>
+        <div class="editor-field">
+            <input type="text" id="@Html.IdFor(e=>e.FileName)" name="@Html.IdFor(e=>e.FileName)" style="width:250px;" required="required" title="Theme name is required."
+                   value="@Model.FileName" />
+        </div>
+        <div class="editor-label">Description : </div>
+        <div class="editor-field">
+            <textarea id="@Html.IdFor(e=>e.Description)" name="@Html.IdFor(e=>e.Description)" style="width:250px;height:60px;border-radius:4px;">@Html.ValueFor(e=>e.Description)</textarea>
+        </div>
+        <div class="editor-label">
+            Website Theme :
+        </div>
+        <div class="editor-field" style="width:350px;">
+            <div class="thumbnail" style="float:left;">
+                <img id="websiteTheme" src="@Model.Source@randomNum" alt="@Model.FileName">
+            </div>
+            <div class="fileUpload btn btn-primary" style="margin-top:47px;">
+                <span>Browse</span>
+                <input type="file" name="file" class="upload" />
+            </div>
+        </div>
+        @*<div class="editor-label">
+            Upload Theme Files (zip):
+        </div>
+        <div class="editor-field" style="width:350px;">
+            <div class="fileUpload btn btn-primary" style="margin-top:47px;">
+                <span>Browse</span>
+                <input type="file" name="zipfile" class="upload" />
+            </div>
+        </div>*@
+        <div class="editor-label saveDiv">
+            <input type="submit" id="btnApplychanges" name="Apply Changes" class="k-button k-primary" value="Save" onclick="validate();"/>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#websiteTheme').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+            var name = "";        
+        }
+    }
+
+    $(".upload").change(function () {
+        readURL(this);
+    });
+
+    function validate() {
+        if ($("#websiteTheme").attr("src") == null || $("#websiteTheme").attr("src") == "") {
+            $(".upload").attr("required", "required");
+            $(".upload").attr("title", "Please select an image");
+        }
+        else {
+            $(".upload").removeAttr("required");
+            $(".upload").attr("title", "");
+        }
+    };
+</script>

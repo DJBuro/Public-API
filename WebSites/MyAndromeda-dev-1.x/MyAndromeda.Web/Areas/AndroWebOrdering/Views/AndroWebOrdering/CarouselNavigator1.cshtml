@@ -1,0 +1,24 @@
+﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
+
+@using (Html.BeginForm("CarouselNavigator1", "AndroWebOrdering", FormMethod.Post, new { Id = Request.QueryString["id"] }))
+{
+    @Html.Hidden("Id", Request.QueryString["id"])
+    <div style="height:430px;width:auto;">
+
+        <div>
+            <div style="height:130px;margin-top:20px;">
+                <div class="editor-label1">Class : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel1.CarouselNavigator.Class)</div>
+                <div class="editor-label1">Chance To Show : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel1.CarouselNavigator.ChanceToShow)</div>
+                <div class="editor-label1">Auto Center : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel1.CarouselNavigator.AutoCenter)</div>
+                <div class="editor-label1">Steps : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel1.CarouselNavigator.Steps)</div>
+            </div>
+        </div>
+        <div class="editor-label saveDiv" style="margin-top:15px;">
+            <button id="saveNavigatorSettings1" class="k-button k-primary">Save</button>
+        </div>
+    </div>
+}

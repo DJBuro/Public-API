@@ -1,0 +1,33 @@
+﻿    <!-- Delivery address -->
+    <script type="text/html" id="checkoutDeliveryAddress-template">
+        <div class="checkoutSection" data-bind="'attr': { 'id': id }">
+            <div id="checkoutDeliveryAddressContainer">
+                <h3 data-bind="text: textStrings.checkDeliveryAddress"></h3>
+                <div data-bind="template: { name: $root.addressType() }"></div>
+
+                <div class="requiredLine" data-bind="text: textStrings.checkRequired"></div>
+
+                <div id="registerErrorMessage" data-bind="text: addressHelper.bindableAddress().errorMessage"></div>
+
+                <!-- ko if: settings.checkoutUpdateCustomerAccount -->
+                <div id="rememberAddressWrapper">
+                    <input type="checkbox" data-bind="checked: checkoutHelper.checkoutDetails.rememberAddress" id="rememberAddress" />
+                    <label for="rememberAddress" data-bind="text: textStrings.checkRememberAddress"></label> 
+                </div>
+                <!-- /ko -->
+
+                <!-- Next & back buttons -->
+                <div class="checkoutButtons">
+                    <!-- Back -->
+                    <div class="button backButton" data-bind="visible: checkoutHelper.backButton.visible">
+                        <a data-bind="click: checkoutHelper.backButtonClicked, text: checkoutHelper.backButton.displayText" href="#"></a>
+                    </div>
+
+                    <!-- Next -->
+                    <div class="button nextButton">
+                        <a data-bind="click: checkoutHelper.nextButtonClicked, text: checkoutHelper.nextButton.displayText" href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>

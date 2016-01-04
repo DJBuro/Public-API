@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Andro Admin Home";
+}
+
+<div class="helpPage" id="helpIndex">
+    <h2>Help</h2>
+
+    <ul>
+        <li>@Html.ActionLink("Overview", "Overview")</li>
+        <li>@Html.ActionLink("Navigating the website", "Navigation")</li>
+        <li>Stores
+            <ul>
+                <li>@Html.ActionLink("Manage stores", "ManageStores")</li>
+                <li>@Html.ActionLink("Add store", "AddStore")</li>
+                <li>@Html.ActionLink("View store details", "ViewStoreDetails")
+                    <ul>
+                        <li>@Html.ActionLink("Store details", "StoreDetails")</li>
+                        <li>@Html.ActionLink("Store address", "StoreAddress")</li>
+                        <li>@Html.ActionLink("Store GPS location", "StoreGPSlocation")</li>
+                        <li>@Html.ActionLink("Store opening times", "StoreOpeningTimes")</li>
+                        <li>@Html.ActionLink("Store AMS upload", "StoreAMSUpload")</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+

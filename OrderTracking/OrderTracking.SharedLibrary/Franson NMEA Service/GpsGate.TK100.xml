@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.TK100</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.TK100.TK100Base">
+            <summary>
+            Base class for all TK100 sentences
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100DeviceDefinition">
+            <summary>
+            Defines the capabilities of PlugSec TK100 device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Message fields for TK100
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listFields"></param>
+        </member>
+        <member name="P:GpsGate.TK100.TK100DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.TK100.TK100DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="P:GpsGate.TK100.TK100DeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Unit ID"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100GetPos">
+            <summary>
+            A #GETPOS sentence
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TK100.TK100GetPos.IsGetPos(Franson.Nmea.Sentence)">
+            <summary>
+            Returns true if sentence is a TK100 sentence
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100GetPos.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse TK100 sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.TK100.TK100GetPos.UnitID">
+            <summary>
+            UNIT ID.
+            </summary>
+        </member>
+        <member name="P:GpsGate.TK100.TK100GetPos.TrackPoint">
+            <summary>
+            TrackPoint
+            </summary>
+        </member>
+        <member name="P:GpsGate.TK100.TK100GetPos.Status">
+            <summary>
+            Returns status dictionary. Resturns new object each call.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100Parser">
+            <summary>
+            Parses TK100 data
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Parser.ParseTK100DateTime(System.String)">
+            <summary>
+            Parses a string with the following format "YYYYMMDDHHMMDD" e.g. "20080124200123"
+            </summary>
+            <param name="strField">Format "YYYYMMDDHHMMDD"</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Parser.ParseTK100Coordinate(System.String)">
+            <summary>
+            Parses a string with a TK100 coordinate. Format "SDDDMM.mmmm" where S is an optional sign.
+            </summary>
+            <param name="strField">"SDDDMM.mmmm"</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Parser.#ctor">
+            <summary>
+            Create TK100 parser
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Parser.ValidateSentence(System.Byte[])">
+            <summary>
+            Returns true. There is no checksum for TK100.
+            </summary>
+            <param name="arrData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Parser.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a <see cref="T:GpsGate.TK100.TK100Sentence"/> object.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TK100.TK100Protocol">
+            <summary>
+            Protocol for TK100
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Protocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create TK100 protocol.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Protocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Translate data from TK100 protocol to GpsGate Protocol.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="M:GpsGate.TK100.TK100Protocol.CheckCrLf(System.Byte[])">
+            <summary>
+            Appends "\r\n" to arrData if it is missing. 
+            </summary>
+            <param name="arrData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.TK100.TK100Protocol.StringID">
+            <summary>
+            Returns "TK100"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100Sentence">
+            <summary>
+            Flex sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="T:GpsGate.TK100.TK100SmsConnection">
+            <summary>
+            Handles a SMS connection to/from one client.
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100SmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create SMS conneciton for TK100
+            </summary>
+            <param name="msisdn"></param>
+        </member>
+        <member name="M:GpsGate.TK100.TK100SmsConnection.CreateProtocol">
+            <summary>
+            Returns TK100Protocol object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.TK100.TK100SmsConnection.UpdateGateUserWithOlderPosition">
+            <summary>
+            Returns false
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100SmsListener">
+            <summary>
+            TK-100 SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TK100.TK100SmsListener.OnStart">
+            <summary>
+            Install protocol and start listener-
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100SmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a new <see cref="T:GpsGate.TK100.TK100SmsConnection"/> object.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100SmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Install and enable listener.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.TK100.TK100SmsListener.ProtocolID">
+            <summary>
+            Returns "TK100"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100TcpConnection">
+            <summary>
+            Handles connection to TK100 
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a TK100 device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpConnection.CreateProtocol">
+            <summary>
+            Create protocol for this connection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r\n" to end of outgoing commands.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.TK100.TK100TcpListener">
+            <summary>
+            Listens for connection from TK100 device over TCP/IP
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpListener.OnStart">
+            <summary>
+            Install protocol and start listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.TK100.TK100TcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100TcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 6999
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.TK100.TK100TcpListener.ProtocolID">
+            <summary>
+            Returns "TK100"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TK100.TK100UdpConnection">
+            <summary>
+            Connection to TK100 using UDP
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpConnection.#ctor(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Creates a TK100 device connection from a client over UDP.
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpConnection.CreateProtocol">
+            <summary>
+            Create protocol for this connection
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r\n" to end of outgoing commands.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.TK100.TK100UdpListener">
+            <summary>
+            Listens to connection from TK100 device over UDP
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpListener.OnStart">
+            <summary>
+            Install protocol and start listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpListener.CreateUdpConnection(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create new connection object for a TK100 device.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TK100.TK100UdpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 6999
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.TK100.TK100UdpListener.ProtocolID">
+            <summary>
+            Returns "TK100"
+            </summary>
+        </member>
+    </members>
+</doc>

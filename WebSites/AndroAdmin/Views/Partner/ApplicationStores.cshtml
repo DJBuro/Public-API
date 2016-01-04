@@ -1,0 +1,62 @@
+﻿@model AndroAdmin.Model.ACSApplicationModel
+
+@{
+    ViewBag.Title = "Application stores";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+}
+
+<h2>@Html.ActionLink("Partners", "Index", "Partner", new { }) / @Html.ActionLink(@Model.Partner.Name, "Details", new { id = @Model.Partner.Id.ToString() }) / @Html.ActionLink(@Model.ACSApplication.Name, "Application", new { id = @Model.ACSApplication.Id.ToString() }) / Stores</h2>
+
+<p>Tick the stores that application has permission to access.  Untick stores that the application does not have permission to access.</p>
+<p>Don't forget to click the "Save changes" button if you make any changes.</p>
+@{Html.EnableClientValidation(false);}
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Partner.Id);
+    @Html.HiddenFor(model => model.ACSApplication.Id);
+    
+    <div class="editButton">
+        <input type="submit" value="Save changes" class="button" />
+        @Html.ActionLink("Cancel", "Application", new { id = Model.ACSApplication.Id })
+    </div>
+    <!--<div id="loading">One moment please...</div>-->
+    <div id="sitesContainer" > <!-- style="display:none;" -->
+        <table class="listTable" id="stores">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Andromeda store name</th>
+                    <th>Andromeda site id</th>
+                    <th>Customer site id</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (int index = 0; index < Model.Stores.Count; index++)
+            {
+                AndroAdminDataAccess.Domain.Store store = Model.Stores[index].Store;
+                <tr>
+                    @Html.HiddenFor(model => model.Stores[index].Store.Id)
+                    <td>@Html.CheckBoxFor(model => model.Stores[index].Selected)</td>
+                    <td>@store.Name</td>
+                    <td>@store.AndromedaSiteId</td>
+                    <td>@store.CustomerSiteId</td>
+                    <td>@store.StoreStatus.Status</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+<script type="text/javascript">
+    $('#stores').dataTable(
+        {
+            "sScrollY": "500px",
+            "bScrollCollapse": false,
+            "bPaginate": false,
+            "bFilter": false,
+            "sPaginationType": "scrolling"
+        }
+     );
+</script>

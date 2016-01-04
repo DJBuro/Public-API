@@ -1,0 +1,56 @@
+﻿<script type="text/html" id="mobileMenuView">
+
+    <div id="mmMenuWrapper">
+        
+        <!-- ko if: settings.isHomePageEnabled -->
+        <div class="button mmButton" id="hmHomeButton">
+            <a data-bind="click: $root.contentViewModel().showHome, text: textStrings.mmHome, attr: { href: ($root.selectedSite() === undefined ? '' : ('/' + $root.selectedSite().name)) + '/Home/' }"></a>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: viewModel.selectedSite() != undefined -->
+            <div class="button mmButton" id="hmMenuButton">
+                <a data-bind="click: $root.contentViewModel().showMenu, text: textStrings.mmMenu, attr: { href: '/' + $root.selectedSite().name + '/Menu/' + viewModel.sections()[0].display.Name }"></a>
+            </div>
+
+            <!-- ko if: settings.isStoreDetailsPageEnabled -->
+            <div class="button mmButton" id="hmStoreDetailsButton">
+                <a data-bind="click: $root.contentViewModel().showStoreDetails, text: textStrings.pmmHome, attr: { href: '/' + $root.selectedSite().name + '/StoreDetails/' }"></a>
+            </div>
+            <!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: accountHelper.isLoggedIn() -->
+            <div class="button mmButton" id="hmMyProfileButton">
+                <a data-bind="click: $root.contentViewModel().myProfile, html: textStrings.hMyProfileButton" href="#"></a>
+            </div>
+            <div class="button mmButton" id="hmMyOrdersButton">
+                <a data-bind="click: $root.contentViewModel().myOrders, html: textStrings.hMyOrdersButton" href="#"></a>
+            </div>
+            <div class="button mmButton" id="hmLogoutButton">
+                <a data-bind="click: $root.contentViewModel().logout, html: textStrings.hLogoutButton" href="#"></a>
+            </div>
+        <!-- /ko -->
+
+        <div class="button mmButton" id="hmFeedbackButton">
+            <a data-bind="click: $root.contentViewModel().showFeedback, text: textStrings.hMFeedbackButton" href="#"></a>
+        </div>
+
+        <!-- ko if: viewModel.selectedSite() && viewModel.sites() !== undefined && viewModel.sites().length > 1 -->
+        <div class="button mmButton" id="hmChooseStoreButton">
+            <a data-bind="click: homePageActionHelper.ClearCurrentStore, text: textStrings.hMChangeStoreButton" href="#"></a>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: accountHelper.isLoggedIn() -->
+            <div class="button mmButton" id='hmMyProfileButton'>
+                <a data-bind="click: $root.contentViewModel().mobileLogin, html: textStrings.hmLoginRegisterButton" href="#"></a>
+            </div>
+        <!-- /ko -->
+
+        <div class="button mmButton" id='hmCancelButton'>
+            <a data-bind="click: $root.contentViewModel().mobileCancel, html: textStrings.mmBack" href="#"></a>
+        </div>
+
+    </div>
+</script>

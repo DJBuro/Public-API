@@ -1,0 +1,152 @@
+﻿@model AndroAdmin.ViewModels.Chains.ChainViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<style>
+    .ddl
+    {
+        margin-left: 150px;
+    }
+
+    .hidden
+    {
+        display: none;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    <h2>
+        @Html.ActionLink("Manage Chains", "Index", "Chain", new AjaxOptions { HttpMethod = "GET" }, new { @class = "actionLink" })
+        /
+        @if (string.IsNullOrEmpty(Model.Name))
+        {
+            <span>New Chain</span>
+        }
+        else
+        {
+            @Model.Name
+        }
+    </h2>
+
+    <div style="margin-top:13px;">
+
+        <div class="editChainRow">
+            <div class="editChainColumn1">Chain name</div>
+            <div class="editChainColumn2">@Html.TextBoxFor(m => m.Name)</div>
+        </div>
+        <div class="editChainRow">
+            <div class="editChainColumn1">Description</div>
+            <div class="editChainColumn2 editChainDescription">@Html.TextBoxFor(m => m.Description)</div>
+        </div>
+        <div class="editChainRow">
+            <div class="editChainColumn1">Master menu</div>
+            <div class="editChainColumn2">@Html.DropDownListFor(m => m.MasterMenuId, Model.MappedStores, "- Select -")</div>
+        </div>
+        <div class="editChainRow">
+            <div class="editChainColumn1">Parent chain</div>
+            <div class="editChainColumn2">@Html.DropDownListFor(m => m.ParentChainId, new SelectList(Model.ChainList, "ChainId", "ChainName", Model.ParentChainId), "- Select -")</div>
+        </div>
+
+    </div>
+    <div id="filters" class="k-toolbar k-widget k-toolbar-resizable" style="padding-top:13px;padding-bottom:3px;">
+        <b style="text-align:left">Select stores for this chain:</b>
+        <b style="text-align: right; margin-left: 545px;">Search: </b><input class="k-textbox" style="width: 200px; " type="text" data-bind="value: searchText" data-value-update="keyup" />
+    </div>
+    @Html.HiddenFor(m => m.UpdatedMappedStores);
+    @(Html.Kendo().Grid(Model.AllStores)
+        .Name("ChainStoresGrid")
+        .Columns(
+            cols =>
+            {
+                @*cols.Template(@<text>
+                        <label>
+                            <input type="checkbox" data-name="@item.Name" value="@item.Id" name="@Html.NameFor(e => e.SelectedMapStores)" @if (item.IsMappedToChain) { <text> checked="checked" </text>           } />
+                            @item.AndromedaSiteId
+                        </label>
+                    </text>).Title("Andro Id");*@
+                cols
+                    .Bound(e => e.IsMappedToChain).Title("Andro Id").ClientTemplate(
+                             "<input type='checkbox' name='#= Name #' value='#= Id #' " +
+                                "# if (IsMappedToChain) { #" +
+                                    "checked='checked'" +
+                                "# } #" +
+                             "/><label>#= AndromedaSiteId #</label>"
+                    );
+                cols.Bound(e => e.Name).Title("Store Name");
+                cols.Bound(e => e.StoreStatus.Status).Title("Status");
+            }).Filterable().Sortable().Pageable(paging => paging.Refresh(true))
+                                             .DataSource(
+                                             dataSource =>
+                                             {
+                                                 dataSource
+                                                     .Ajax()
+                                                     .ServerOperation(false);
+                                             }
+                                             )
+    )
+    <div>
+        <button class="k-button k-primary" id="btnSubmit" type="submit">Save</button>
+    </div>
+}
+
+
+
+<script src="~/Scripts/app/Chains/ChainStores.js"></script>
+<script type="text/javascript">
+
+    $(function ()
+    {
+        var service = new AndroAdminChain.Services.ChainStores.ChainsListService();
+        service.Init();
+    });
+
+
+
+</script>
+
+<script type="text/javascript">
+    $("#ChainStoresGrid").on("change", "input", function (e)
+    {
+        var $element = $(this);
+        var name = $element.attr("name");
+        var name1 = $element.data('name');
+        var value = $element.val();
+        var exists = false;
+        var val = $("#UpdatedMappedStores").val() == "" ? [] : $("#UpdatedMappedStores").val().split(',');
+
+        for (i = 0; i < val.length; i++)
+        {
+            if (val[i].trim() == value)
+            {
+                exists = true;
+                val.splice(i, 1);
+            }
+        }
+        if (!exists)
+        {
+            val.push(value);
+        }
+        var commaSeperatedValues = val.join(',');
+        $("#UpdatedMappedStores").val(commaSeperatedValues);
+        exists = false;
+
+        $("#MasterMenuId option").each(function ()
+        {
+            if ($(this).attr('value') == value)
+            {
+                exists = true;
+                $(this).remove();
+
+            }
+        });
+
+        if (!exists)
+        {
+            $("<option value=" + value + ">" + name + "</option>").appendTo("#MasterMenuId");
+        }
+
+    });
+
+</script>

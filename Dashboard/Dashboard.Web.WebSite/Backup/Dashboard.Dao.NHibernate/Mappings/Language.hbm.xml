@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.Language, Dashboard.Dao" table="`Language`">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="LanguageID" length="4" sql-type="int" not-null="true" unique="true" index="PK_Language"/>
+			<generator class="native" />
+		</id>
+		<property name="LanguageName" type="String">
+			<column name="LanguageName" length="50" sql-type="varchar" not-null="true"/>
+		</property>
+		<bag name="InterfaceTextLangauges" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="LanguageID"/>
+			<one-to-many class="Dashboard.Dao.Domain.InterfaceTextLangauge, Dashboard.Dao"/>
+		</bag>
+		<bag name="IndicatorTranslations" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="LanguageID"/>
+			<one-to-many class="Dashboard.Dao.Domain.IndicatorTranslation, Dashboard.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

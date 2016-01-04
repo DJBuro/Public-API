@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="ApplicationdefValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="ApplicationdefdescriptionValidator" test="Applicationdefdescription"><v:message id="error.Applicationdefdescription.required" providers="ApplicationdefdescriptionErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

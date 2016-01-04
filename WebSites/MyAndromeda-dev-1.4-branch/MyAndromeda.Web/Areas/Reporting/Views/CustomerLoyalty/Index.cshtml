@@ -1,0 +1,17 @@
+﻿@model IEnumerable<MyAndromeda.Web.Areas.Reporting.ViewModels.CustomerLoyaltyViewModel>
+
+
+@(Html.Kendo().Grid(Model)
+.Name("TheCrapLoyaltyGrid")
+    .Filterable(f => f.Mode(GridFilterMode.Row))
+.Sortable()
+.Pageable()
+.Columns(cols =>
+{
+    cols.Bound(e => e.FirstName).Title("Name").Filterable((filter) => filter.Mode(GridFilterMode.Row));
+    cols.Bound(e => e.Points);
+    cols.Bound(e => e.EarnedPoints);
+    cols.Bound(e => e.PendingPoints);
+})
+.Excel(e => e.AllPages(true)).DataSource(data => { data.Ajax().ServerOperation(false); })
+)

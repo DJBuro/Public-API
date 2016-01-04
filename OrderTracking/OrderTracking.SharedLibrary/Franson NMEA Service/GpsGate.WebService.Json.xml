@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.WebService.Json</name>
+    </assembly>
+    <members>
+        <member name="F:GpsGate.WebService.Json.APIGateUserStruct.Id">
+            <summary>
+            The user ID
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebService.Json.APIGateUserStruct.Username">
+            <summary>
+            The user name
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebService.Json.APIGateUserStruct.Name">
+            <summary>
+            The name of the vehicle. 
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebService.Json.APIGateUserStruct.Description">
+            <summary>
+            The description of the vehicle. 
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebService.Json.APIGateUserStruct.TrackPoint">
+            <summary>
+            The last reported track point for this user. 
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebService.Json.GpsTrackingBase">
+            <summary>
+            Base class for public WebService API methods.
+            
+            Test by GpsGate.WebService.Json.Test
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetUsersInGroup(System.Int32,System.String)">
+            <summary>
+            Get users in a specified group.
+            
+            Limit search to active last 14 days from today.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetGroupInfo(System.Int32,System.String)">
+            <summary>
+            Get information about a specified group such as name, description etc.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetUpdatedUsersInGroup(System.Int32,System.String,System.DateTime)">
+            <summary>
+            Get users in a specified group.
+            
+            Limit search users who have their position updated since sinceTime parameter. 
+            Max search period is 14 day from now.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetTracksByUser(System.Int32,System.String,System.String)">
+            <summary>
+            Get TrackInfos for a given user in a specified group. 
+            The user must have explicit approved this operation for the given group.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetTrackData(System.Int32,System.String,System.Int32,System.DateTime,System.DateTime)">
+            <summary>
+            Get TrackPoints recorded for the given trackId.
+            
+            The user must have explicit approved this operation for the given track in the given group.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <param name="trackId"></param>
+            <param name="start"></param>
+            <param name="stop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebService.Json.GpsTrackingBase.GetReferrerLogInfo(System.Int32,System.String)">
+            <summary>
+            Used to check sites referrers to the given group.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

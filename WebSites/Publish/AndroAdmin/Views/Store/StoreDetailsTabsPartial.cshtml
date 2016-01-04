@@ -1,0 +1,41 @@
+﻿@model dynamic
+
+@*<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+    <li class="@(ViewData["SelectedTab"].ToString() == "StoreDetails" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true">
+        @Html.ActionLink("Store details", "StoreDetails", "Store", new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "StoreAddress" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-2" aria-labelledby="ui-id-2" aria-selected="false">
+        @Html.ActionLink("Store address", "StoreAddress", "Store", new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "StoreGPSLocation" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-3" aria-labelledby="ui-id-3" aria-selected="false">
+        @Html.ActionLink("Store GPS location", "StoreGPSLocation", "Store", new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "StoreOpeningTimes" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-4" aria-labelledby="ui-id-4" aria-selected="false">
+        @Html.ActionLink("Opening times (web)", "StoreOpeningTimes", "Store", new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "StoreAMSUpload" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-4" aria-labelledby="ui-id-4" aria-selected="false">
+        @Html.ActionLink("AMS Upload", "StoreAMSUpload", "Store", new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "Hubs" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-4" aria-labelledby="ui-id-4" aria-selected="false">
+        @Html.ActionLink("Hubs", "Index", "StoreHubs",  new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+    <li class="@(ViewData["SelectedTab"].ToString() == "ServiceHosts" ? "ui-state-default ui-corner-top ui-tabs-active ui-state-active" : "ui-state-default ui-corner-top")" role="tab" tabindex="-1" aria-controls="tabs-4" aria-labelledby="ui-id-4" aria-selected="false">
+        @Html.ActionLink("Service Hosts", "Index", "HostV2ForStores",  new { id = Model.Store.Id.ToString() }, new { @class = "ui-tabs-anchor" })
+    </li>
+</ul>*@
+
+@(Html.Kendo().TabStrip().Name("StoreMenu").Items(items =>
+{
+    dynamic store = Model.Store;
+    dynamic storeId = store.Id;
+    items.Add().Text("Store Details").Action("StoreDetails", "Store", new { id = storeId });
+    items.Add().Text("Store address").Action("StoreAddress", "Store", new { id = storeId });
+    items.Add().Text("Store GPS location").Action("StoreGPSLocation", "Store", new { id = storeId });
+    items.Add().Text("Opening times (web)").Action("StoreOpeningTimes", "Store", new { id = storeId });
+    items.Add().Text("AMS Upload").Action("StoreAMSUpload", "Store", new { id = storeId });
+    items.Add().Text("Hubs").Action("Index", "StoreHubs", new { id = storeId });
+    items.Add().Text("Service Hosts").Action("Index", "HostV2ForStores", new { id = storeId });
+    items.Add().Text("Store Devices").Action("Index", "StoreDevices", new { StoreId = storeId });
+})
+
+)

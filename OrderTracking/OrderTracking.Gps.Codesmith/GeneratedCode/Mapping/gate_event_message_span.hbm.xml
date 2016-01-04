@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateeventmessagespan, OrderTracking.Gps.Dao" table="gate_event_message_span">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="gate_event_id" length="8" sql-type="bigint" not-null="true" index="PK__gate_eve__324BF42231D75E8D"/>
+			<column name="msg_id" length="8" sql-type="bigint" not-null="true" index="PK__gate_eve__324BF42231D75E8D"/>
+			<generator class="native" />
+		</id>
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,49 @@
+﻿
+body {
+    font-size:80%;
+    background-color: #FFFFFF;
+    color:#695744;
+    font-family:Arial,Helvetica,sans-serif;
+}
+.page{ width:768px;}
+
+.content_tables {
+    border: solid 1px #695744;
+    width: 100%;
+    padding:0;
+    margin:0;
+}
+
+.content_tablesPad {
+    padding:5px 0 5px 10px;
+}
+
+.content_header {
+    color: #E0B799;
+    background:url(ContentSlug.gif) repeat-x;
+    height:26px;
+    font-weight:bold;
+    margin:0;
+    padding: 0 10px 0 10px;
+}
+
+
+ #map{
+    background:#2B2A2F;
+}
+
+
+#mapTest{
+    background:#2B2A2F;
+}
+
+#logo {
+    background:url(logo.gif) no-repeat right top;
+    background-color: #695744;
+    height:118px;
+    width:768px;
+}
+
+input {
+    border:solid 1px #883A02;
+}

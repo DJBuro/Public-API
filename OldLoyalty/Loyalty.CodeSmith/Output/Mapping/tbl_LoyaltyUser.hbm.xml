@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Loyalty.Dao.Domain.TblLoyaltyUser, Loyalty.Dao" table="tbl_LoyaltyUser">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_LoyaltyUser"/>
+			<generator class="native" />
+		</id>
+		<property name="FirstName" type="String">
+			<column name="FirstName" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="MiddleInitial" type="String">
+			<column name="MiddleInitial" length="1" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="SurName" type="String">
+			<column name="SurName" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="DateTimeCreated" type="DateTime">
+			<column name="DateTimeCreated" length="4" sql-type="smalldatetime" not-null="true"/>
+		</property>
+		<property name="EmailAddress" type="String">
+			<column name="EmailAddress" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="Password" type="String">
+			<column name="Password" length="20" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<many-to-one name="LoyaltyAccountId" class="Loyalty.Dao.Domain.TblLoyaltyAccount, Loyalty.Dao">
+			<column name="LoyaltyAccountId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="UserTitleId" class="Loyalty.Dao.Domain.TblUserTitle, Loyalty.Dao">
+			<column name="UserTitleId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

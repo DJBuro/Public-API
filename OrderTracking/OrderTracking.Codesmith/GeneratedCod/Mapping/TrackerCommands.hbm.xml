@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.TrackerCommand, OrderTracking.Dao" table="tbl_TrackerCommands">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_TrackerCommands"/>
+			<generator class="native" />
+		</id>
+		<property name="Priority" type="Byte">
+			<column name="Priority" length="1" sql-type="tinyint" not-null="true"/>
+		</property>
+		<property name="Name" type="String">
+			<column name="Name" length="30" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="Command" type="String">
+			<column name="Command" length="150" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<many-to-one name="TrackerTypeId" class="OrderTracking.Dao.Domain.TrackerType, OrderTracking.Dao">
+			<column name="TrackerTypeId" length="8" sql-type="bigint" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="CommandTypeId" class="OrderTracking.Dao.Domain.CommandType, OrderTracking.Dao">
+			<column name="CommandTypeId" length="8" sql-type="bigint" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

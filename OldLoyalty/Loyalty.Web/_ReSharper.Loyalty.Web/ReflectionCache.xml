@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Assemblies Version="1073741833">
+  <Assembly Name="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="92409f60-ecfe-47ec-b116-50dfdeeb106a" Timestamp="633529716480000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="21005219-71fd-4d8a-9a4b-0edbf6bcbd10" Timestamp="633529716480000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="4740386a-014c-4292-b6e5-ee7ac1733059" Timestamp="633529716480000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="JetBrains.Annotations, Version=4.0.819.19, Culture=neutral, PublicKeyToken=1010a0d8d6380325" Image="a450ab3c-247b-48ff-993a-db8fec06db65" Timestamp="633486455860000000" XmlDocIndexTimestamp="633486455860000000" />
+  <Assembly Name="Spring.Core, Version=1.2.0.20288, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="e0c779d0-ed3f-4c40-bf78-f0d0f8cc4209" Timestamp="633597073800000000" />
+  <Assembly Name="Spring.Data, Version=1.2.0.20288, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="e3f84e65-6776-4f7d-806a-9b995414e043" Timestamp="633597073800000000" />
+  <Assembly Name="Spring.Data.NHibernate12, Version=1.2.0.20288, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="f750670e-e16b-4c13-9a0a-24b109007a1b" Timestamp="633597073800000000" XmlDocIndexTimestamp="633735899411654867" />
+  <Assembly Name="Spring.Services, Version=1.2.0.20313, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="c090777e-7f45-4d6e-a57a-463ea4936412" Timestamp="633618516600000000" XmlDocIndexTimestamp="633735899412279883" />
+  <Assembly Name="Spring.Web, Version=1.2.0.20288, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="b3f942f4-d92c-4546-9625-5964e331b7d1" Timestamp="633597073800000000" />
+  <Assembly Name="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="250f390a-0712-42e6-a082-1de8c536017a" Timestamp="633529716480000000" XmlDocIndexTimestamp="633492643960000000" />
+  <Assembly Name="NHibernate, Version=1.2.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4" Image="5743a493-32ee-48c8-96b6-cf7244e3e8f8" Timestamp="633315217800000000" />
+  <Assembly Name="System.Runtime.Serialization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="4a12f1b8-47f8-4448-aa84-d21f0456d669" Timestamp="633529557980000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="System.WorkflowServices, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="f55ff001-e80e-4058-b78e-3e2c082e9389" Timestamp="633529716480000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="System.ServiceModel.Web, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Image="30c78228-3523-4dd1-a9e1-6c5503757912" Timestamp="633529716480000000" XmlDocIndexTimestamp="633480540880000000" />
+  <Assembly Name="System.ServiceModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="d6a7c424-188c-4766-bf62-25bc0c37e2a2" Timestamp="633529557980000000" XmlDocIndexTimestamp="633489168100000000" />
+  <Assembly Name="System.IdentityModel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" Image="905ad0ea-b76e-451b-a2c4-7a9a90983ad6" Timestamp="633529557980000000" XmlDocIndexTimestamp="633490039300000000" />
+  <Assembly Name="App_WebReferences, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" Image="4b8bea4a-b1f4-463d-bbcc-052a161c1f70" Timestamp="633747840279837158" />
+  <Assembly Name="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821" Image="fea9ca6d-bd70-4580-bf96-9958d4cac18f" Timestamp="633272112600000000" XmlDocIndexTimestamp="633782311331964658" />
+  <Assembly Name="Spring.Aop, Version=1.2.0.20288, Culture=neutral, PublicKeyToken=65e474d141e25e07" Image="26aa7798-7fba-4995-909a-0e8d55bdc644" Timestamp="633597073800000000" />
+  <Assembly Name="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e" Image="4451f9d5-2fea-4533-9a4c-4d5f57d5e0a5" Timestamp="633271740600000000" />
+  <Assembly Name="Common.Logging.Log4Net, Version=1.2.0.2, Culture=neutral, PublicKeyToken=af08829b84f0328e" Image="d874ea28-cdab-4127-b78e-6b979a65aa5e" Timestamp="633271741200000000" />
+  <Assembly Name="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Image="c6f3e459-7d6c-4fc1-b184-09589f273e9f" Timestamp="633530287220000000" />
+</Assemblies>

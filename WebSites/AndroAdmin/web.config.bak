@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=152368
+  -->
+<configuration>
+  <connectionStrings>
+    <!-- live -->
+    <!--<add name="AndroAdmin" connectionString="Server=83.138.144.122;initial catalog=androadmin;password=r2Is!islMM$;user=AndroAdminUser;" providerName="System.Data.SqlClient" />
+    <add name="AndroUsers" connectionString="Server=83.138.144.122;initial catalog=AndroUsers;password=AndroPass;user=AndroUser;" providerName="System.Data.SqlClient" />
+    <add name="AndroUsersEntities1" connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=83.138.144.122;initial catalog=AndroUsers;persist security info=True;user id=Robert.Dunn;password=XuS4UsaW;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="AndroAdminEntities" connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=83.138.144.122;initial catalog=AndroAdmin;persist security info=True;user id=Robert.Dunn;password=XuS4UsaW;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <!-- Web Release -->
+    <!--<add name="AndroAdmin" connectionString="Server=AMAZONA-UDQHFLK;initial catalog=androadmin;password=r2Is!islMM$;user=AndroAdminUser;" providerName="System.Data.SqlClient"/>
+    <add name="AndroUsers" connectionString="Server=AMAZONA-UDQHFLK;initial catalog=androadmin;password=r2Is!islMM$;user=AndroAdminUser;" providerName="System.Data.SqlClient"/>
+    <add name="AndroUsersEntities1" connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=AMAZONA-UDQHFLK;initial catalog=AndroUsers;persist security info=True;user id=androadmin;password=r2Is!islMM$;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient"/>
+    <add name="AndroAdminEntities" connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=AMAZONA-UDQHFLK;initial catalog=AndroAdmin;persist security info=True;user id=androadmin;password=r2Is!islMM$;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient"/>-->
+
+
+    <!-- dev -->
+    <add name="AndroAdminEntities" connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dev-sql-01;initial catalog=AndroAdmin2;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="AndroUsersEntities" connectionString="metadata=res://*/EntityFramework.AndroUsersEntityModel.csdl|res://*/EntityFramework.AndroUsersEntityModel.ssdl|res://*/EntityFramework.AndroUsersEntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dev-sql-01;initial catalog=AndroUsers;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+
+    <!-- test1 -->
+    <!--<add name="AndroAdminEntities" 
+         connectionString="metadata=res://*/EntityFramework.EntityModel.csdl|res://*/EntityFramework.EntityModel.ssdl|res://*/EntityFramework.EntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=54.246.96.124;initial catalog=AndroAdmin;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;multipleactiveresultsets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="AndroUsersEntities" 
+         connectionString="metadata=res://*/EntityFramework.AndroUsersEntityModel.csdl|res://*/EntityFramework.AndroUsersEntityModel.ssdl|res://*/EntityFramework.AndroUsersEntityModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=54.246.96.124;initial catalog=AndroUsers;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+
+    <!-- dev sql 01-->
+    <!--<add name="AndroAdminEntities" connectionString="metadata=res://*/Model.AndroAdmin.DbContext.csdl|res://*/Model.AndroAdmin.DbContext.ssdl|res://*/Model.AndroAdmin.DbContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dev-sql-01;initial catalog=AndroAdmin;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="AndroUsersEntities" connectionString="metadata=res://*/Model.AndroAdminUsers.DbContext.csdl|res://*/Model.AndroAdminUsers.DbContext.ssdl|res://*/Model.AndroAdminUsers.DbContext.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=dev-sql-01;initial catalog=AndroUsers;persist security info=True;user id=AndroAdminUser;password=r2Is!islMM$;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />-->
+
+    <add name="MenuSyncSource" connectionString="Data Source=54.247.90.227;Initial Catalog=ACS;Persist Security Info=True;User ID=ACSUser;Password=Pass123;MultipleActiveResultSets=True;Application Name=EntityFramework" />
+    <add name="MenuSyncTarget" connectionString="Data Source=dmel6muo0u.database.windows.net;Initial Catalog=ACS;Persist Security Info=True;User ID=andromeda;Password=h6ruh7kS2#4;MultipleActiveResultSets=True;Application Name=EntityFramework" />
+
+  </connectionStrings>
+  <appSettings>
+    <!--<add key="ShowMachineDetails" value="DEV"/>
+    <add key="DiagnosticsACSSignpostServer" value="https://localhost/services/AndroCloudAPI/weborderapi/" />
+    <add key="DiagnosticsACSServer" value="https://localhost/services/AndroCloudAPI/weborderapi/" />-->
+
+    <!-- test 1 -->
+    <add key="ShowMachineDetails" value="TEST 1" />
+    <add key="DiagnosticsACSSignpostServer" value="https://test1.androcloudservices.com/AndroCloudAPI/weborderapi/" />
+    <add key="DiagnosticsACSServer" value="https://test1.androcloudservices.com/AndroCloudAPI/weborderapi/" />
+    <add key="DiagnosticsACSSignpostServers" value="https://signpost1.androcloudservices.com,https://signpost2.androcloudservices2.com" />
+    <add key="DiagnosticsACSTestApplicationId" value="AA79CD8E-7750-400C-8330-7FD6E31A29A4" />
+
+    <add key="webpages:Version" value="2.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="PreserveLoginUrl" value="true" />
+	<add key="enableSimpleMembership" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+    <add key="aspnet:MaxHttpCollectionKeys" value="2000" />
+  </appSettings>
+  <system.web>
+    <compilation debug="true" targetFramework="4.0">
+      <assemblies>
+        <add assembly="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+        <add assembly="System.Web.Routing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+      </assemblies>
+    </compilation>
+    <authentication mode="Forms">
+      <forms loginUrl="~/Account/LogOn" timeout="2880" />
+    </authentication>
+    <profile defaultProvider="DefaultProfileProvider">
+      <providers>
+        <add name="DefaultProfileProvider" type="System.Web.Providers.DefaultProfileProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" connectionStringName="DefaultConnection" applicationName="/" />
+      </providers>
+    </profile>
+    <membership defaultProvider="DefaultMembershipProvider">
+      <providers>
+        <add name="DefaultMembershipProvider" type="System.Web.Providers.DefaultMembershipProvider, System.Web.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" connectionStringName="DefaultConnection" enablePasswordRetrieval="false" enablePasswordReset="true" requiresQuestionAndAnswer="false" requiresUniqueEmail="false" maxInvalidPasswordAttempts="5" minRequiredPasswordLength="6" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10" applicationName="/" />
+      </providers>
+    </membership>
+
+    <roleManager enabled="false" />
+
+    <pages controlRenderingCompatibilityVersion="3.5" clientIDMode="AutoID">
+      <namespaces>
+        <add namespace="System.Web.Helpers" />
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.Optimization" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="System.Web.WebPages" />
+        <add namespace="Kendo.Mvc.UI" />
+      </namespaces>
+    </pages>
+  </system.web>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.0.0" newVersion="4.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+    <dependentAssembly>
+      <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+      <bindingRedirect oldVersion="0.0.0.0-2.0.0.0" newVersion="2.0.0.0" />
+    </dependentAssembly>
+  </runtime>
+</configuration>

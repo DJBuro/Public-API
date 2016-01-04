@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Amount" xml:space="preserve">
+    <value>(#)</value>
+  </data>
+  <data name="Avg" xml:space="preserve">
+    <value>Moy</value>
+  </data>
+  <data name="AvgSpend" xml:space="preserve">
+    <value>Tic moy</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Reseau</value>
+  </data>
+  <data name="CompOrders" xml:space="preserve">
+    <value>Comp Tickets</value>
+  </data>
+  <data name="CompResults" xml:space="preserve">
+    <value>Comp Result</value>
+  </data>
+  <data name="CompSales" xml:space="preserve">
+    <value>Comp CA</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Tableau de bord</value>
+  </data>
+  <data name="DeliveryTime" xml:space="preserve">
+    <value>Tps Liv</value>
+  </data>
+  <data name="Drive" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="Drivers" xml:space="preserve">
+    <value>Livreurs</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Adresse email</value>
+  </data>
+  <data name="EnterEmailAndPassword" xml:space="preserve">
+    <value>Veuillez saisir votre adresse et mot de passe</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Executive" xml:space="preserve">
+    <value>Executif</value>
+  </data>
+  <data name="InvalidLogin" xml:space="preserve">
+    <value>Ce login n'est pas reconnu ou n'est plus actif</value>
+  </data>
+  <data name="LessThan30" xml:space="preserve">
+    <value>&lt;30</value>
+  </data>
+  <data name="LessThan30Min" xml:space="preserve">
+    <value>&lt; 30 min</value>
+  </data>
+  <data name="LessThan45" xml:space="preserve">
+    <value>&lt;45</value>
+  </data>
+  <data name="LessThan45Min" xml:space="preserve">
+    <value>&lt; 45 min</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Deconnecter</value>
+  </data>
+  <data name="LogOn" xml:space="preserve">
+    <value>Connecter</value>
+  </data>
+  <data name="LogOnTitle" xml:space="preserve">
+    <value>Connecter</value>
+  </data>
+  <data name="LW" xml:space="preserve">
+    <value>Sem dern </value>
+  </data>
+  <data name="LWCurrency" xml:space="preserve">
+    <value>Sem dern ({currency})</value>
+  </data>
+  <data name="LWPercent" xml:space="preserve">
+    <value>Sem dern (%)</value>
+  </data>
+  <data name="LY" xml:space="preserve">
+    <value>An dern</value>
+  </data>
+  <data name="LYCount" xml:space="preserve">
+    <value>An dern (#)</value>
+  </data>
+  <data name="LYCurrency" xml:space="preserve">
+    <value>An dern ({currency})</value>
+  </data>
+  <data name="LYPercent" xml:space="preserve">
+    <value>An dern (%)</value>
+  </data>
+  <data name="Make" xml:space="preserve">
+    <value>Prep</value>
+  </data>
+  <data name="Minimum" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="NotHeadOfficeUser" xml:space="preserve">
+    <value>Vous devez etre utilisateur siege pour acceder a cette zone</value>
+  </data>
+  <data name="OnRoad" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="OPR" xml:space="preserve">
+    <value>Tic/Liv</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Tickets</value>
+  </data>
+  <data name="OTD" xml:space="preserve">
+    <value>TpsDep</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="Please" xml:space="preserve">
+    <value>Veuillez  </value>
+  </data>
+  <data name="Region" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="Road" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="RoadCount" xml:space="preserve">
+    <value>Route (#)</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>CA</value>
+  </data>
+  <data name="Sites" xml:space="preserve">
+    <value>Sites</value>
+  </data>
+  <data name="Spend" xml:space="preserve">
+    <value>Tick moy</value>
+  </data>
+  <data name="Store" xml:space="preserve">
+    <value>Magasin</value>
+  </data>
+  <data name="StoreAverage" xml:space="preserve">
+    <value>Moy mag</value>
+  </data>
+  <data name="Stores" xml:space="preserve">
+    <value>Magasins</value>
+  </data>
+  <data name="StoresReporting" xml:space="preserve">
+    <value>{storecount} magasins connectes</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="Times" xml:space="preserve">
+    <value>Tps  </value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Ce jour</value>
+  </data>
+  <data name="TodayCount" xml:space="preserve">
+    <value>Ce jour (#)</value>
+  </data>
+  <data name="TodayCurrency" xml:space="preserve">
+    <value>Ce jour ({currency})</value>
+  </data>
+  <data name="TTD" xml:space="preserve">
+    <value>TpsLiv</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Bienvenu</value>
+  </data>
+  <data name="Work" xml:space="preserve">
+    <value>Travail</value>
+  </data>
+  <data name="WorkingCount" xml:space="preserve">
+    <value>Travail (#)</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>mis a jour</value>
+  </data>
+  <data name="MinimumBrackets" xml:space="preserve">
+    <value>(minimum)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Percentage" xml:space="preserve">
+    <value>(%)</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Mis a jour</value>
+  </data>
+  <data name="Working" xml:space="preserve">
+    <value>Travail (#)</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Мoyenne</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Moyen</value>
+  </data>
+  <data name="ShowDataFor" xml:space="preserve">
+    <value>afficher les données d'aujourd'hui:</value>
+    <comment>Show data for a date (user selects a date)</comment>
+  </data>
+  <data name="TodayFull" xml:space="preserve">
+    <value>aujourd'hui</value>
+  </data>
+</root>

@@ -1,0 +1,283 @@
+﻿@model MyAndromeda.Services.Orders.Emails.SuccessMessage
+@using MyAndromeda.Data.DataWarehouse.Models;
+@using AndroAdminDataAccess.Domain.WebOrderingSetup;
+@using MyAndromeda.Services.WebOrdering.Services;
+@using MyAndromeda.Services.Orders.Helpers;
+@{
+    this.Layout = "_CustomerOrderEmailLayout.cshtml";
+    var translator = Html.GetTranslator();
+    //line item includes price of item x quantity
+    var total = Model.Order.OrderLines.Sum(orderLine => (orderLine.Price.Value + orderLine.Qty.GetValueOrDefault(1) * orderLine.modifiers.Sum(modifier => modifier.Price.Value)));
+
+    var baseStyle = "margin:0; padding:0; font-size: 16px; line-height:17px;";
+    var paragraphStyle = baseStyle + "text-align: left;";
+    var paragraphStyleRight = baseStyle + "text-align: right;";
+    var boldParagraphStyle = baseStyle + "font-weight:bold;";
+   
+}
+@section Header
+{
+    To: @Model.Contact.Value
+    Bcc: @Html.SuccessDistribution()
+    From: donotreply@androtech.com
+    Reply-To: matthew.green@androtech.com
+    Subject: Order update: @Model.Order.RamesesOrderNum - accepted - @Model.Store.ClientSiteName
+}
+
+@section OrderHeader
+{
+    <table border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" width="100%" style="width: 100%;">
+        <tr>
+            <td style="padding: 4px 7px;">
+                <p style="@paragraphStyle">
+                    Dear @Model.Customer.FirstName,
+                </p>
+
+                <p style="@boldParagraphStyle">Thanks for your order!</p>
+                <!-- spacing -->
+                <div style="height: 25px">&nbsp;</div>
+                <div>
+                    @if (Model.Order.OrderType.Equals("Delivery", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        <p style="@paragraphStyle">
+                            We aim to deliver your order by
+                            <span style="@boldParagraphStyle">
+                                @Html.ConvertUtcToLocal(Model.Order.OrderWantedTime.Value).Value.ToString("t")
+                            </span>
+                            on
+                            <span style="@boldParagraphStyle">@Html.ConvertUtcToLocal(Model.Order.OrderWantedTime.Value).Value.ToString("D")</span>
+                        </p>
+                    }
+                    @if (Model.Order.OrderType.Equals("Collection", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        <p style="@paragraphStyle">
+                            Your order will be ready for collection at
+                            <span style="@boldParagraphStyle">@Html.ConvertUtcToLocal(Model.Order.OrderWantedTime.Value).Value.ToString("t")</span>
+                            on
+                            <span style="@boldParagraphStyle">@Html.ConvertUtcToLocal(Model.Order.OrderWantedTime.Value).Value.ToString("D")</span>
+                        </p>
+                    }
+                </div>
+
+                <p style="@paragraphStyle">
+                    Your order reference number is: <span style="@boldParagraphStyle">@Model.Order.RamesesOrderNum </span>
+                </p>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- spacing -->
+    <div style="height: 25px">&nbsp;</div>
+}
+
+@section OrderDetail{
+
+    <table border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="width: 100%;">
+        <colgroup>
+            <col style="width: 30px;" />
+            <col style="width: 30px;" />
+            <col style="width: 30px;" />
+            <col style="width: 30px;" />
+            <col style="width: 30px;" />
+            <col style="width: 30px;" />
+        </colgroup>
+        <thead>
+            <tr>
+                <td colspan="1" style="width: 30px; padding: 4px 7px;">
+                    <p style="@paragraphStyle">Qty</p>
+                </td>
+                <td colspan="4" style="padding: 4px 7px;">
+                    <p style="@paragraphStyle">Description</p>
+                </td>
+                <td colspan="1" style="padding: 4px 7px; width: 55px; text-align: right;">
+                    <p style="@paragraphStyleRight">Price</p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Start building order lines -->
+            @foreach (var item in this.Model.Order.OrderLines)
+            {
+@* includes the modifiers *@
+                <text>
+                @this.BuildLineItem(item)
+                </text>
+            }
+            <!-- End building order lines -->
+        </tbody>
+        <tfoot>
+            @this.BuildSubTotal(total)
+            @this.BuildSavings(this.Model.Order, total)
+            @this.BuildTotal(this.Model.Order, total)
+            <tr>
+                <td colspan="6">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="padding: 4px 7px;">
+                    <p style="@paragraphStyle">
+                        Payment:
+                        @if (Model.Order.paytype.Equals("PAYLATER") && Model.Order.OrderType.Equals("DELIVERY", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            <span>To be paid on delivery</span>
+                        }
+                        else if (Model.Order.paytype.Equals("PAYLATER") && Model.Order.OrderType.Equals("COLLECTION", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            <span>To be paid on collection</span>
+                        }
+                        else
+                        {
+                            <span>Order paid</span>
+                        }
+                    </p>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+}
+
+@section StoreDetails
+{
+    <table border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#FFFFFF" style="width: 100%;">
+
+        <tbody>
+            @if (!string.IsNullOrWhiteSpace(Model.Store.Telephone))
+            {
+                <tr>
+                    <td style="padding: 4px 7px;">
+                        <p style="@paragraphStyle">You can contact us on: <b>@Model.Store.Telephone</b></p>
+                    </td>
+                </tr>
+            }
+            @if (this.Model.Store.Address != null)
+            {
+                <tr>
+                    <td valign="top" style="vertical-align: top; padding: 4px 7px;">
+                        <p style="@paragraphStyle">Store Address:</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 7px;">
+                        <p style="@paragraphStyle">
+                            @Html.WriteIfNotNullOrEmpty(e => e.Store.Address.RoadNum)
+                            @Html.WriteIfNotNullOrEmpty(e => e.Store.Address.RoadName)
+                            @Html.WriteIfNotNullOrEmpty(e => e.Store.Address.Town)
+                            @Html.WriteIfNotNullOrEmpty(e => e.Store.Address.PostCode)
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 7px;">
+                        <p>&nbsp;</p>
+                        <p style="@paragraphStyle">Thank you for ordering from @Model.Store.ClientSiteName</p>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+}
+
+@helper BuildLineItem(OrderLine item)
+{
+    var baseStyle = "margin:0; padding:0; font-size: 16px; line-height:17px;";
+    var paragraphStyle = baseStyle + "text-align: left;";
+    var paragraphStyleRight = baseStyle + "text-align: right;";
+    var boldParagraphStyle = baseStyle + "font-weight: bold;";
+
+    var lineItemPrice = (decimal)item.Price.Value + item.modifiers.Sum(modifier => ((decimal)modifier.Price.GetValueOrDefault()) * item.Qty.GetValueOrDefault(1));
+    
+    <tr>
+        <td colspan="1" style="@paragraphStyle; padding: 4px 7px; vertical-align: top" valign="top">
+            @item.Qty.GetValueOrDefault(1)
+        </td>
+        <td colspan="4" valign="top" style="@paragraphStyle; vertical-align: top; padding: 4px 7px;">
+
+            @if (!string.IsNullOrWhiteSpace(item.Cat1) || !string.IsNullOrWhiteSpace(item.Cat2))
+            {
+                <span>
+                    @Html.WriteIfNotNullOrEmpty(item.Cat1)
+                    @Html.WriteIfNotNullOrEmpty(item.Cat2)
+                </span>
+            }
+
+            @item.Description
+
+            @foreach (var modifier in item.modifiers.OrderBy(e => !e.Removed))
+            {
+                <br />
+                if (!modifier.Removed.Value)
+                {
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <text> + @modifier.Qty x @modifier.Description</text>
+                }
+                else
+                {
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <text>@(modifier.Qty.Value * -1) x @modifier.Description
+            </text>
+                }
+            }
+
+        </td>
+
+        <td colspan="1" valign="bottom" style="@paragraphStyleRight; vertical-align: bottom; padding: 4px 7px; text-align: right">
+            @( string.Format("{0:0.00}", lineItemPrice / 100))
+        </td>
+    </tr>
+}
+
+@helper BuildSubTotal(int total)
+{
+    var baseStyle = "margin:0; padding:0; font-size: 16px; line-height:17px;";
+    var paragraphStyle = baseStyle + "text-align: left;";
+    var paragraphStyleRight = baseStyle + "text-align: right;";
+    var boldParagraphStyle = baseStyle + "font-weight:bold;";
+    var subTotal = (decimal)total / 100;
+            //string.Format("{0:0.00}", (decimal) );
+    <tr>
+        <td colspan="3"></td>
+        <td colspan="2" style="@paragraphStyleRight; padding: 4px 7px">Subtotal:
+        </td>
+        <td colspan="1" style="@paragraphStyleRight; padding: 4px 7px">
+            @( string.Format("{0:0.00}", subTotal))
+        </td>
+    </tr>
+}
+
+@helper BuildSavings(OrderHeader header, int total)
+{
+    var baseStyle = "margin:0; padding:0; font-size: 16px; line-height:17px;";
+    var paragraphStyle = baseStyle + "text-align: left;";
+    var paragraphStyleRight = baseStyle + "text-align: right;";
+    var boldParagraphStyle = baseStyle + "font-weight:bold;";
+    var savings = (((decimal)total - header.FinalPrice * 100) / 100);
+    <tr>
+        <td colspan="3"></td>
+        <td colspan="2" style="@paragraphStyleRight; padding: 4px 7px">Savings:
+        </td>
+        <td colspan="1" style="@paragraphStyleRight; padding: 4px 7px">
+            @savings.ToString("#0.00")
+        </td>
+    </tr>
+}
+
+@helper BuildTotal(OrderHeader header, int total)
+{
+    var baseStyle = "margin:0; padding:0; font-size: 16px; line-height:17px;";
+    var paragraphStyle = baseStyle + "text-align: left;";
+    var paragraphStyleRight = baseStyle + "text-align: right;";
+    var boldParagraphStyle = baseStyle + "font-weight:bold;";
+    
+    <tr>
+        <td colspan="3"></td>
+        <td colspan="2" style="@paragraphStyleRight; padding: 4px 7px">
+            Total:
+        </td>
+        <td colspan="1" style="text-align: right; padding: 4px 7px">
+            @header.FinalPrice.ToString("c")
+        </td>
+    </tr>
+}

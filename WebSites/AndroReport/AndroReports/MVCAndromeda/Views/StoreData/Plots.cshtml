@@ -1,0 +1,59 @@
+﻿@model mdx.Store
+@using mdx;
+@{
+    ViewBag.Title = "Individual store data for " + @Model.StoreName + " from " + @Model.Country;
+}
+<header>
+    <div class="content-wrapper">
+        <div class="float-left">
+            <nav>
+                <ul id="menu">             
+                    @foreach (var period in DateUtilities.weekDayAveragingPeriod)
+                    {
+                        if (ViewBag.term == period)
+                        {
+                        <li>@period</li>
+                        }
+                        else
+                        {
+                        <li>@Html.ActionLink(@period, "Individual",
+                            new { storeName = @Model.StoreName, country = Model.Country, term = @period, unitsAgo = 0})</li>
+                        }
+                    }
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<br />
+<p>
+    <button onclick="location.href='@Url.Action("Index", "StoreData")'">Back to all stores</button>
+</p>
+<h3>Individual store data for "@Model.StoreName" from @Model.Country</h3>
+<h4>@ViewBag.TimeDesc</h4>
+
+
+@{
+    int storeDataIndex = 0;
+    <p>
+        @foreach (var storeData in Model.StoreData)
+        {
+            <img src='@Url.Action("DrawChart", new
+                 {
+                     storeName = Model.StoreName,
+                     country = Model.Country,
+                     term = ViewBag.term,
+                     unitsAgo = ViewBag.unitsAgo,
+                     _storeDataIndex = storeDataIndex
+                 })' alt="" />           
+            storeDataIndex++;
+            if (storeDataIndex % 2 == 0)
+            {
+            <br />
+            }
+        }
+
+    </p>
+}

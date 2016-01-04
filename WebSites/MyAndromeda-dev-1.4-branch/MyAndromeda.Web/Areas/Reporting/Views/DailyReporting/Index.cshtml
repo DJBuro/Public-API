@@ -1,0 +1,110 @@
+﻿@using MyAndromeda.Web.Areas.Reporting.Context;
+@using MyAndromedaDataAccess.Domain.Reporting.Query;
+
+@model IReportingContext
+@{
+    var today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
+
+    var dailyFilter = new FilterQuery() { FilterFrom = today, FilterTo = DateTime.Today.AddDays(1).AddSeconds(-1) };
+    var weeklyFilter = new FilterQuery() { FilterFrom = today.AddDays(-7), FilterTo = today };
+    var monthlyFilter = new FilterQuery() { FilterFrom = today.AddDays(-30), FilterTo = today };
+}
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var service = new MyAndromeda.Reporting.Services.ReportingServiceWatcher({
+                id: "#dashboardreport"
+            });
+            var today = new Date();
+
+            //set the time going
+            //service.Tick();
+            service.Set("from", today);
+            //console.log("dashboard");
+            //service.Init();
+        });
+    </script>
+}
+
+<div id="dashboardreport">
+    <div class="header">
+        @*<a class="k-button k-button-change-date">Change Date</a>*@
+        <h3>Store Dashboard for @Model.SiteName</h3>
+
+    </div>
+    <div id="ChartWrapper">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <div class="clearfix">
+                        <h3>Today's Online Orders</h3>
+                        <a class="k-button" href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo })">More</a>
+                    </div>
+                    <div>
+                        @dailyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                        @dailyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    </div>
+                </div>
+                @Html.Action("Daily", "Orders", dailyFilter)
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <div class="clearfix">
+                        <h3>All Orders - Last 7 days</h3>
+                        <a class="k-button" href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo })">More</a>
+                    </div>
+                    <div>
+                        @weeklyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                        @weeklyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    </div>
+                </div>
+
+                @Html.Action("Range", "DailyReporting", weeklyFilter)
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <div class="clearfix">
+                        <h3>All Orders - Last 30 Days</h3>
+                        <a class="k-button" href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo })">More</a>
+                    </div>
+                    <div>
+                        @monthlyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                        @monthlyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    </div>
+
+                </div>
+                @Html.Action("Range", "DailyReporting", monthlyFilter)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var datePicker = $("#fromPicker").data("kendoDatePicker");
+            var today = new Date();
+            if (datePicker) {
+                datePicker.max(today);
+            }
+        });
+    </script>
+}
+
+@using (Html.BeginHelpSection("Charts", TabArea.Help, true))
+{
+    <div class="header">
+        <h3>Charts</h3>
+    </div>
+
+    <p>Hover over the spark lines to reveal more data.</p>
+    <p>Click on a a chart to see a bigger representation</p>
+}

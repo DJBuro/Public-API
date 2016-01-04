@@ -1,0 +1,324 @@
+﻿* {
+    margin:0;
+    padding:0;
+}
+
+body {
+	color:#FFF;
+	font:Arial, sans-serif;
+	font-size: 80%;
+	background: #201F24;
+    font-family:Arial;
+}
+
+/*be nice to Opera*/
+html>body {
+	color:#FFF;
+	font:Arial, sans-serif;
+	font-size: 80%;
+	background: #201F24; 
+    font-family:Arial;
+}
+
+a{
+    color:#FFF;
+    text-decoration:underline;
+}
+a:hover{ 
+    padding: 5px 0 5px 0;
+    color:#FFF;
+    text-decoration:none;
+}
+img{
+ border: none;
+}
+
+.page {	
+	margin: auto;
+	width: 990px; 
+}
+
+.separatorLite{
+    height:1px;
+    background-color:#C5C5C5;
+    padding: 0;
+    margin: 0;
+    border:0;
+}
+
+.separator{
+    height:2px;
+    background-color:#323136;
+}
+
+.True{
+    background:url(http://dashboard.androtechnology.co.uk/dashboard/Images/active.gif) no-repeat left bottom; 
+    height:17px;     
+    width:17px;
+}
+
+.False{
+    background:url(http://dashboard.androtechnology.co.uk/dashboard/Images/inactive.gif) no-repeat left bottom; 
+    height:17px;
+    width:17px;
+}
+
+.Tick{
+    background:url(http://dashboard.androtechnology.co.uk/dashboard/Images/tick.png) no-repeat center bottom; 
+    height:18px;
+}
+
+.Error{
+    color:Red;
+}
+.error{
+    float:left;
+}
+
+input.error {
+    border:1px dotted red;
+}
+
+.container{
+   /* border: solid 3px #7FACBB; */
+    margin:20px 30px 0 30px; 
+    padding:2px; 
+    display:none;
+}
+
+.container h3{
+	padding-left:20px; 
+	color:#7FACBB;
+}
+
+.container ul{
+	list-style: none; 
+	padding-left:20px; float:left;
+}
+.container li{
+    padding-top: 3px;
+}
+
+
+#header{  
+    height:130px;  
+    width:100%; 
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/headerBg.gif);
+}
+
+#title{
+    float:left; 
+    margin-top: 20px;
+    font-size:160%; 
+    width:65%;
+}
+
+#title h1{
+    float:left;
+    margin-top: 50px; 
+}
+
+#title h2{
+    float:left;
+    margin-top: 68px;
+    padding-left:5px; 
+    color:#7FACBB;
+    font-size:16pt;
+}
+
+#logindisplay{ 
+    margin-top:10px;
+    float:right; width:30%; text-align:right;
+}
+
+#main{
+    float:left;
+    background-color:#323136; 
+    width: 100%; 
+    min-height:390px; margin-top:20px;
+}
+
+/*Main Content*/
+#content{ 
+    margin-top:20px;
+    float:left;
+    width:600px;
+    background-color:#E2E0E1;
+    color:#201F24;
+}
+
+
+
+#mainContent{ 
+    min-height:290px;
+}
+
+#content h2{ 
+    padding: 20px 0 20px 20px;
+}
+
+#content p{ 
+    padding-left:20px;
+}
+
+#content table{ 
+    padding-left:20px;
+}
+
+#content td{ 
+    padding: 5px 0 0 20px;
+}
+
+
+#content a{
+    color:#201F24;
+    text-decoration:underline;
+}
+
+
+#content a:hover{
+    color:#201F24;
+    text-decoration:none;
+}
+
+
+#logon p{
+    padding-top:20px;
+}
+
+/*HeadOffice*/
+.hoOptions{
+    width: 320px;
+    background-color:#E2E0E1; 
+    float:left;
+    color:#201F24; 
+    margin: 20px 0 0 20px;
+}
+
+.hoOptions h2{ 
+    padding: 20px 0 22px 50px;
+}
+
+.hoOptions p{
+    padding:10px;
+}
+.hoOptions a{
+    color:#201F24;
+    text-decoration:underline;
+}
+
+.hoOptions a:hover{
+    color:#201F24;
+    text-decoration:none;
+}
+
+.hoOptions ul{
+	list-style: none; 
+	padding-left:20px;
+}
+.hoOptions li{
+    padding-top: 10px;  font-weight:bold;
+}
+
+.hoHelp h2{
+   background:url(http://dashboard.androtechnology.co.uk/dashboard/Images/icoHelp.gif) no-repeat center; 
+    height:22px;
+    width:22px;
+}
+.hoMenu h2{
+   background:url(http://dashboard.androtechnology.co.uk/dashboard/Images/icoMenu.gif) no-repeat center; 
+    height:22px;
+    width:22px;
+}
+
+.hoHelp li{
+    font-weight:normal;
+    padding-bottom:10px;
+}
+
+
+/*Edging*/
+.lfBotCurve{ 
+    margin-top:107px;  
+    clear:left;
+    float:left;
+    width:22px;
+    height:22px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/lfBotCurve.gif);
+}
+
+.rgBotCurveMain{ 
+    float:right;
+    width:22px;
+    height:22px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/rgBotCurve.gif);
+}
+
+
+.lfBotCurveMain{ 
+    clear:left;
+    float:left;
+    width:22px;
+    height:22px;
+    background: url(http://dashboard.androtechnology.co.uk/dashboard/Images/lfBotCurve.gif);
+    background-color:#323136; 
+}
+
+.botMain{ 
+    float:left;
+    width:946px;
+    height:22px;
+    background-color:#323136; 
+}
+
+.rgBotCurve{ 
+    margin-top:107px; 
+    float:right;
+    width:22px;
+    height:22px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/rgBotCurve.gif);
+}
+
+
+.lfTopCurve{ 
+    float:left;
+    width:22px;
+    height:22px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/lfTopCurve.gif);
+}
+
+.rgTopCurve{ 
+    float:right;
+    width:22px;
+    height:22px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/rgTopCurve.gif);
+}
+
+/*White edging*/
+.lfBotCurveWhite{ 
+    float:left;
+    width:18px;
+    height:18px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/lfBotCurveWhite.gif);
+}
+
+.rgBotCurveWhite{ 
+    float:right;
+    width:18px;
+    height:18px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/rgBotCurveWhite.gif);
+}
+
+.lfTopCurveWhite{ 
+    float:left;
+    width:18px;
+    height:18px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/lfTopCurveWhite.gif);
+}
+
+.rgTopCurveWhite{ 
+    float:right;
+    width:18px;
+    height:18px;
+    background-image: url(http://dashboard.androtechnology.co.uk/dashboard/Images/rgTopCurveWhite.gif);
+}

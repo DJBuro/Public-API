@@ -1,0 +1,379 @@
+2014-12-18 11:11:07,403 [1] INFO  Andromeda.WebOrdering.Global [(null)] - Application_Start
+2014-12-18 11:11:07,437 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mappings
+2014-12-18 11:11:07,447 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=speedrabbit appId=DB02C02D-F7B0-4867-B1E4-7A37098D756E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,447 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=localhost appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,447 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=dev1.androtest.co.uk appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo1.androtest.co.uk appId=80DEDBBC-90A4-4E77-BA18-CF64FD4C034C signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo2.androtest.co.uk appId=9B086064-1E8B-4D4D-B9A1-48CF86B0892A signpostServerText=https://localhost/services/androcloudapi/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo3.androtest.co.uk appId=5CA145C2-6939-4F42-B97B-C952D28154DE signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo4.androtest.co.uk appId=84CBE32F-1431-4251-805B-847F190DD23E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=andromedapizza.com appId=86A65D08-8A7E-49FC-B172-F3E87EC5636F signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=ezeepizza.com appId=36D84082-0798-43AC-8325-1E04494950A5 signpostServerText=https://cloud1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=value1.androtest.co.uk appId=D17F95D0-458C-4ECA-A30F-B4058ADFF0E1 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=design1.androtest.co.uk appId=2A31AC47-6FED-4F0D-8CA0-DB92CBC35F81 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,448 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=olivepizza-online.co.uk appId=57617112-7D04-481E-BC21-2830B4F59AD3 signpostServerText=https://cloud3.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:07,449 [1] ERROR Andromeda.WebOrdering.Global [(null)] - Unhandled exception
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\AndroWebOrdering\mappings'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.InternalGetFileDirectoryNames(String path, String userPathOriginal, String searchPattern, Boolean includeFiles, Boolean includeDirs, SearchOption searchOption, Boolean checkHost)
+   at System.IO.Directory.InternalGetFiles(String path, String searchPattern, SearchOption searchOption)
+   at Andromeda.WebOrdering.Global.GetMappings() in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 119
+   at Andromeda.WebOrdering.Global.Application_Start(Object sender, EventArgs e) in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 41
+2014-12-18 11:11:07,566 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 11:11:07,567 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:25,646 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 11:11:26,170 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites?deliveryZone=&applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 11:11:26,170 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - GET SiteList?deliveryZone= SourceIP:127.0.0.1 Status: OK Response:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 11:11:26,202 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 11:11:26,202 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 11:11:26,247 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 11:11:28,333 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a&gotMenuVersion=-1&statusCheck=False requestData: responseStatusCode:OK responseData:Logging disabled
+2014-12-18 11:11:28,342 [7] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Sites/AB622361-7757-4B19-A0E3-26E7D82CACBF&gotMenuVersion=-1&statusCheck=function (){viewModel.storeSelected()} SourceIP:127.0.0.1 Status: OK Response:Logging disabled
+2014-12-18 14:33:16,549 [1] INFO  Andromeda.WebOrdering.Global [(null)] - Application_Start
+2014-12-18 14:33:16,575 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mappings
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=speedrabbit appId=DB02C02D-F7B0-4867-B1E4-7A37098D756E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=localhost appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=dev1.androtest.co.uk appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo1.androtest.co.uk appId=80DEDBBC-90A4-4E77-BA18-CF64FD4C034C signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo2.androtest.co.uk appId=9B086064-1E8B-4D4D-B9A1-48CF86B0892A signpostServerText=https://localhost/services/androcloudapi/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo3.androtest.co.uk appId=5CA145C2-6939-4F42-B97B-C952D28154DE signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo4.androtest.co.uk appId=84CBE32F-1431-4251-805B-847F190DD23E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=andromedapizza.com appId=86A65D08-8A7E-49FC-B172-F3E87EC5636F signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=ezeepizza.com appId=36D84082-0798-43AC-8325-1E04494950A5 signpostServerText=https://cloud1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=value1.androtest.co.uk appId=D17F95D0-458C-4ECA-A30F-B4058ADFF0E1 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=design1.androtest.co.uk appId=2A31AC47-6FED-4F0D-8CA0-DB92CBC35F81 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,582 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=olivepizza-online.co.uk appId=57617112-7D04-481E-BC21-2830B4F59AD3 signpostServerText=https://cloud3.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:16,583 [1] ERROR Andromeda.WebOrdering.Global [(null)] - Unhandled exception
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\AndroWebOrdering\mappings'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.InternalGetFileDirectoryNames(String path, String userPathOriginal, String searchPattern, Boolean includeFiles, Boolean includeDirs, SearchOption searchOption, Boolean checkHost)
+   at System.IO.Directory.InternalGetFiles(String path, String searchPattern, SearchOption searchOption)
+   at Andromeda.WebOrdering.Global.GetMappings() in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 119
+   at Andromeda.WebOrdering.Global.Application_Start(Object sender, EventArgs e) in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 41
+2014-12-18 14:33:16,717 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:33:16,717 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:34,461 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:33:34,914 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites?deliveryZone=&applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 14:33:34,914 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - GET SiteList?deliveryZone= SourceIP:127.0.0.1 Status: OK Response:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 14:33:34,984 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:33:34,984 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:33:35,404 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:33:38,374 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a&gotMenuVersion=-1&statusCheck=False requestData: responseStatusCode:OK responseData:Logging disabled
+2014-12-18 14:33:38,384 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Sites/AB622361-7757-4B19-A0E3-26E7D82CACBF&gotMenuVersion=-1&statusCheck=function (){viewModel.storeSelected()} SourceIP:127.0.0.1 Status: OK Response:Logging disabled
+2014-12-18 14:34:23,092 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:34:23,092 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:34:23,216 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:34:23,815 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew.green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:{"accountNumber":"b064ad3a-25c0-4406-852a-d5aed473773b","title":"","firstname":"Matthew","surname":"Green","contacts":[{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"3rdParty"},{"type":"Mobile","value":"0123456789","marketingLevel":"3rdParty"}],"address":{"long":null,"lat":null,"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","town":"wallington","postcode":"sm6 0dz","dps":null,"county":"","state":"","locality":"","directions":"","country":"United Kingdom"},"facebookId":null,"facebookUsername":null}
+2014-12-18 14:34:23,816 [9] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Customers/matthew.green@androtech.com SourceIP:127.0.0.1 Status: OK Response:{"accountNumber":"b064ad3a-25c0-4406-852a-d5aed473773b","title":"","firstname":"Matthew","surname":"Green","contacts":[{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"3rdParty"},{"type":"Mobile","value":"0123456789","marketingLevel":"3rdParty"}],"address":{"long":null,"lat":null,"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","town":"wallington","postcode":"sm6 0dz","dps":null,"county":"","state":"","locality":"","directions":"","country":"United Kingdom"},"facebookId":null,"facebookUsername":null}
+2014-12-18 14:58:37,775 [1] INFO  Andromeda.WebOrdering.Global [(null)] - Application_Start
+2014-12-18 14:58:37,797 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mappings
+2014-12-18 14:58:37,803 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=speedrabbit appId=DB02C02D-F7B0-4867-B1E4-7A37098D756E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,803 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=localhost appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,803 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=dev1.androtest.co.uk appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,803 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo1.androtest.co.uk appId=80DEDBBC-90A4-4E77-BA18-CF64FD4C034C signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,803 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo2.androtest.co.uk appId=9B086064-1E8B-4D4D-B9A1-48CF86B0892A signpostServerText=https://localhost/services/androcloudapi/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo3.androtest.co.uk appId=5CA145C2-6939-4F42-B97B-C952D28154DE signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo4.androtest.co.uk appId=84CBE32F-1431-4251-805B-847F190DD23E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=andromedapizza.com appId=86A65D08-8A7E-49FC-B172-F3E87EC5636F signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=ezeepizza.com appId=36D84082-0798-43AC-8325-1E04494950A5 signpostServerText=https://cloud1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=value1.androtest.co.uk appId=D17F95D0-458C-4ECA-A30F-B4058ADFF0E1 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=design1.androtest.co.uk appId=2A31AC47-6FED-4F0D-8CA0-DB92CBC35F81 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,804 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=olivepizza-online.co.uk appId=57617112-7D04-481E-BC21-2830B4F59AD3 signpostServerText=https://cloud3.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:37,805 [1] ERROR Andromeda.WebOrdering.Global [(null)] - Unhandled exception
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\AndroWebOrdering\mappings'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.InternalGetFileDirectoryNames(String path, String userPathOriginal, String searchPattern, Boolean includeFiles, Boolean includeDirs, SearchOption searchOption, Boolean checkHost)
+   at System.IO.Directory.InternalGetFiles(String path, String searchPattern, SearchOption searchOption)
+   at Andromeda.WebOrdering.Global.GetMappings() in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 119
+   at Andromeda.WebOrdering.Global.Application_Start(Object sender, EventArgs e) in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 41
+2014-12-18 14:58:37,914 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:58:37,915 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:55,854 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:58:56,340 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites?deliveryZone=&applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 14:58:56,341 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GET SiteList?deliveryZone= SourceIP:127.0.0.1 Status: OK Response:[{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0}]
+2014-12-18 14:58:56,400 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:58:56,400 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:58:56,549 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:59:02,698 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a&gotMenuVersion=-1&statusCheck=False requestData: responseStatusCode:OK responseData:Logging disabled
+2014-12-18 14:59:02,707 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Sites/AB622361-7757-4B19-A0E3-26E7D82CACBF&gotMenuVersion=-1&statusCheck=function (){viewModel.storeSelected()} SourceIP:127.0.0.1 Status: OK Response:Logging disabled
+2014-12-18 14:59:39,006 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:59:39,006 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:59:39,122 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:59:39,537 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":1036,"message":"Unknown username"}
+2014-12-18 14:59:39,537 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew,green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:BadRequest responseData:{"errorCode":1036,"message":"Unknown username"}
+2014-12-18 14:59:39,657 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":1036,"message":"Unknown username"}
+2014-12-18 14:59:39,657 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew,green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:BadRequest responseData:{"errorCode":1036,"message":"Unknown username"}
+2014-12-18 14:59:39,657 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Customers/matthew,green@androtech.com SourceIP:127.0.0.1 Status: InternalServerError Response:{"errorCode":1036,"message":"Unknown username"}
+2014-12-18 14:59:56,956 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 14:59:56,957 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 14:59:57,112 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 14:59:57,261 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":1042,"message":"Incorrect password"}
+2014-12-18 14:59:57,261 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew.green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:BadRequest responseData:{"errorCode":1042,"message":"Incorrect password"}
+2014-12-18 14:59:57,803 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":1042,"message":"Incorrect password"}
+2014-12-18 14:59:57,804 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew.green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:BadRequest responseData:{"errorCode":1042,"message":"Incorrect password"}
+2014-12-18 14:59:57,804 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Customers/matthew.green@androtech.com SourceIP:127.0.0.1 Status: InternalServerError Response:{"errorCode":1042,"message":"Incorrect password"}
+2014-12-18 15:00:03,958 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 15:00:03,958 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:00:04,085 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 15:00:04,348 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/customers/matthew.green@androtech.com?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:{"accountNumber":"b064ad3a-25c0-4406-852a-d5aed473773b","title":"","firstname":"Matthew","surname":"Green","contacts":[{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"3rdParty"},{"type":"Mobile","value":"0123456789","marketingLevel":"3rdParty"}],"address":{"long":null,"lat":null,"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","town":"wallington","postcode":"sm6 0dz","dps":null,"county":"","state":"","locality":"","directions":"","country":"United Kingdom"},"facebookId":null,"facebookUsername":null}
+2014-12-18 15:00:04,348 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GET Customers/matthew.green@androtech.com SourceIP:127.0.0.1 Status: OK Response:{"accountNumber":"b064ad3a-25c0-4406-852a-d5aed473773b","title":"","firstname":"Matthew","surname":"Green","contacts":[{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"3rdParty"},{"type":"Mobile","value":"0123456789","marketingLevel":"3rdParty"}],"address":{"long":null,"lat":null,"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","town":"wallington","postcode":"sm6 0dz","dps":null,"county":"","state":"","locality":"","directions":"","country":"United Kingdom"},"facebookId":null,"facebookUsername":null}
+2014-12-18 15:00:19,130 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 15:00:19,130 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:00:19,276 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 15:00:20,143 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call PUT https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF/ordervouchers?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData:{"vouchers":[{"voucherCode":"1off"}],"partnerReference":"","type":"delivery","orderTimeType":"TIMED","orderWantedTime":"2014-12-18T16:30:18Z","orderPlacedTime":"2014-12-18T15:00:18Z","timeToTake":102,"chefNotes":"","oneOffDirections":"","estimatedDeliveryTime":0,"customer":{"title":"","firstName":"Matthew","surname":"Green","contacts":[{"type":"Mobile","value":"0123456789","marketingLevel":"OrderOnly"},{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"OrderOnly"}],"address":{"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","city":"","town":"wallington","postcode":"sm6 0dz","county":"","state":"","locality":"","directions":"","userLocality1":"","userLocality2":"","userLocality3":"","country":"UK"},"customerId":"b064ad3a-25c0-4406-852a-d5aed473773b"},"pricing":{"pricesIncludeTax":"false","priceBeforeDiscount":599,"discounts":[],"priceAfterDiscount":599},"orderLines":[{"productId":169,"cat1":"Thin","cat2":"10\"","menuSection":"Pizza","quantity":"1","price":599,"name":"Margherita","orderLineIndex":0,"lineType":1,"inDealFlag":false,"addToppings":[],"removeToppings":[]}],"orderPayments":[]} responseStatusCode:OK responseData:[{"VoucherCode":"1off","IsValid":true,"ErrorCode":0,"EffectType":"Fixed","EffectValue":1.0000}]
+2014-12-18 15:00:20,143 [10] INFO  Andromeda.WebOrdering.Global [(null)] - OrderServices.SendCheckOrderVouchers returned json: [{"VoucherCode":"1off","IsValid":true,"ErrorCode":0,"EffectType":"Fixed","EffectValue":1.0000}]
+2014-12-18 15:00:20,243 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - PUT OrderVouchers/AB622361-7757-4B19-A0E3-26E7D82CACBF/CheckVouchers SourceIP:127.0.0.1 Status: OK Request:{"vouchers":[{"voucherCode":"1off"}],"partnerReference":"","type":"delivery","orderTimeType":"TIMED","orderWantedTime":"2014-12-18T16:30:18Z","orderPlacedTime":"2014-12-18T15:00:18Z","timeToTake":102,"chefNotes":"","oneOffDirections":"","estimatedDeliveryTime":0,"customer":{"title":"","firstName":"Matthew","surname":"Green","contacts":[{"type":"Mobile","value":"0123456789","marketingLevel":"OrderOnly"},{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"OrderOnly"}],"address":{"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","city":"","town":"wallington","postcode":"sm6 0dz","county":"","state":"","locality":"","directions":"","userLocality1":"","userLocality2":"","userLocality3":"","country":"UK"},"customerId":"b064ad3a-25c0-4406-852a-d5aed473773b"},"pricing":{"pricesIncludeTax":"false","priceBeforeDiscount":599,"discounts":[],"priceAfterDiscount":599},"orderLines":[{"productId":169,"cat1":"Thin","cat2":"10\"","menuSection":"Pizza","quantity":"1","price":599,"name":"Margherita","orderLineIndex":0,"lineType":1,"inDealFlag":false,"addToppings":[],"removeToppings":[]}],"orderPayments":[]} Response:[{"VoucherCode":"1off","IsValid":true,"ErrorCode":0,"EffectType":"Fixed","EffectValue":1.0000}]
+2014-12-18 15:36:54,646 [1] INFO  Andromeda.WebOrdering.Global [(null)] - Application_Start
+2014-12-18 15:36:54,666 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mappings
+2014-12-18 15:36:54,673 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=speedrabbit appId=DB02C02D-F7B0-4867-B1E4-7A37098D756E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,673 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=localhost appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=dev1.androtest.co.uk appId=646c84d0-92e1-4c12-a66d-29a47fa9112a signpostServerText=https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo1.androtest.co.uk appId=80DEDBBC-90A4-4E77-BA18-CF64FD4C034C signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo2.androtest.co.uk appId=9B086064-1E8B-4D4D-B9A1-48CF86B0892A signpostServerText=https://localhost/services/androcloudapi/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo3.androtest.co.uk appId=5CA145C2-6939-4F42-B97B-C952D28154DE signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=demo4.androtest.co.uk appId=84CBE32F-1431-4251-805B-847F190DD23E signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=andromedapizza.com appId=86A65D08-8A7E-49FC-B172-F3E87EC5636F signpostServerText=https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=ezeepizza.com appId=36D84082-0798-43AC-8325-1E04494950A5 signpostServerText=https://cloud1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=value1.androtest.co.uk appId=D17F95D0-458C-4ECA-A30F-B4058ADFF0E1 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=design1.androtest.co.uk appId=2A31AC47-6FED-4F0D-8CA0-DB92CBC35F81 signpostServerText=https://localhost/services/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,674 [1] DEBUG Andromeda.WebOrdering.Global [(null)] - Added mapping: domain=olivepizza-online.co.uk appId=57617112-7D04-481E-BC21-2830B4F59AD3 signpostServerText=https://cloud3.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,675 [1] ERROR Andromeda.WebOrdering.Global [(null)] - Unhandled exception
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\AndroWebOrdering\mappings'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.InternalGetFileDirectoryNames(String path, String userPathOriginal, String searchPattern, Boolean includeFiles, Boolean includeDirs, SearchOption searchOption, Boolean checkHost)
+   at System.IO.Directory.InternalGetFiles(String path, String searchPattern, SearchOption searchOption)
+   at Andromeda.WebOrdering.Global.GetMappings() in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 119
+   at Andromeda.WebOrdering.Global.Application_Start(Object sender, EventArgs e) in c:\Andromeda Development Source\Rameses Web Components\Services\Andromeda.WebOrdering\Global.asax.cs:line 41
+2014-12-18 15:36:54,781 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Getting mapping for LOCALHOST
+2014-12-18 15:36:54,782 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - Using appid: 646c84d0-92e1-4c12-a66d-29a47fa9112a, signpost servers: https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host
+2014-12-18 15:36:54,922 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GetPaymentProviderDetails
+2014-12-18 15:37:12,669 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 15:37:13,533 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF/details?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:{"siteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","name":"Dev1","menuVersion":297960881,"isOpen":false,"estDelivTime":0,"timeZone":"GMT","phone":"0123456789","address":{"long":"-0.151209600000","lat":"51.360660499999","prem1":"Dev house","prem2":"Dev building","prem3":null,"prem4":null,"prem5":null,"prem6":null,"org1":"Dev organisation","org2":"Dev company","org3":null,"roadNum":"1","roadName":null,"town":"Dev City","postcode":"SM6000","dps":null,"county":"Dev county","state":null,"locality":"Dev locaility","country":"United Kingdom"},"openingHours":[{"day":"Monday","startTime":"16:30","endTime":"17:00","openAllDay":false},{"day":"Monday","startTime":"20:30","endTime":"23:30","openAllDay":false},{"day":"Saturday","startTime":"16:30","endTime":"18:30","openAllDay":false},{"day":"Friday","startTime":"16:30","endTime":"20:30","openAllDay":false},{"day":"Wednesday","startTime":"16:30","endTime":"18:30","openAllDay":false},{"day":"Thursday","startTime":"16:30","endTime":"18:30","openAllDay":false},{"day":"Sunday","startTime":"16:30","endTime":"17:30","openAllDay":false},{"day":"Tuesday","startTime":"16:30","endTime":"17:00","openAllDay":false}],"paymentProvider":"DataCashTest","paymentClientId":"99005860","paymentClientPassword":"HVaEGxTM"}
+2014-12-18 15:37:13,540 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - GetPaymentProvider
+2014-12-18 15:37:13,544 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - PutOrder paymentType=PayLater
+2014-12-18 15:37:14,470 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call GET https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData: responseStatusCode:OK responseData:<Hosts><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapi</Url><Version>1</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>1</Order></Host><Host><Type>WebOrderingAPI</Type><Url>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2</Url><Version>2</Version><Order>2</Order></Host></Hosts>
+2014-12-18 15:37:18,171 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":2511,"message":"+OK 10000047"}
+2014-12-18 15:37:18,172 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call PUT https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF/orders/e4bad6be2e2e423aac80f336f5ccc81c?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData:{
+  "vouchers": [
+    {
+      "VoucherCode": "1off",
+      "IsValid": true,
+      "ErrorCode": 0,
+      "EffectType": "Fixed",
+      "EffectValue": 1
+    }
+  ],
+  "partnerReference": "e4bad6be2e2e423aac80f336f5ccc81c",
+  "type": "delivery",
+  "orderTimeType": "TIMED",
+  "orderWantedTime": "2014-12-18T16:30:54Z",
+  "orderPlacedTime": "2014-12-18T15:36:54Z",
+  "timeToTake": 2297,
+  "chefNotes": "",
+  "oneOffDirections": "",
+  "estimatedDeliveryTime": 0,
+  "customer": {
+    "title": "",
+    "firstName": "Matthew",
+    "surname": "Green",
+    "contacts": [
+      {
+        "type": "Mobile",
+        "value": "0123456789",
+        "marketingLevel": "OrderOnly"
+      },
+      {
+        "type": "Email",
+        "value": "matthew.green@androtech.com",
+        "marketingLevel": "OrderOnly"
+      }
+    ],
+    "address": {
+      "prem1": "",
+      "prem2": "",
+      "prem3": "",
+      "prem4": "",
+      "prem5": "",
+      "prem6": "",
+      "org1": "",
+      "org2": "",
+      "org3": "",
+      "roadNum": "",
+      "roadName": "bob",
+      "city": "",
+      "town": "wallington",
+      "postcode": "sm6 0dz",
+      "county": "",
+      "state": "",
+      "locality": "",
+      "directions": "",
+      "userLocality1": "",
+      "userLocality2": "",
+      "userLocality3": "",
+      "country": "UK"
+    },
+    "customerId": "b064ad3a-25c0-4406-852a-d5aed473773b"
+  },
+  "pricing": {
+    "pricesIncludeTax": "false",
+    "priceBeforeDiscount": 599,
+    "discounts": [
+      {
+        "type": "Voucher",
+        "discountType": "Fixed",
+        "discountTypeAmount": 1,
+        "discountAmount": 1,
+        "initialDiscountReason": "1off"
+      }
+    ],
+    "priceAfterDiscount": 499
+  },
+  "orderLines": [
+    {
+      "productId": 169,
+      "cat1": "Thin",
+      "cat2": "10\"",
+      "menuSection": "Pizza",
+      "quantity": "1",
+      "price": 599,
+      "name": "Margherita",
+      "orderLineIndex": 0,
+      "lineType": 1,
+      "inDealFlag": false,
+      "addToppings": [],
+      "removeToppings": []
+    }
+  ],
+  "orderPayments": [
+    {
+      "PaymentType": "PayLater",
+      "Value": "499",
+      "AuthCode": null,
+      "CVVStatus": null,
+      "PaytypeName": null,
+      "LastFourDigits": null,
+      "PayProcessor": null,
+      "PSPSpecificDetails": null
+    }
+  ]
+} responseStatusCode:BadRequest responseData:{"errorCode":2511,"message":"+OK 10000047"}
+2014-12-18 15:37:18,172 [10] INFO  Andromeda.WebOrdering.Global [(null)] - OrderServices.SendOrder returned json: {"errorCode":2511,"message":"+OK 10000047"}
+2014-12-18 15:37:18,485 [10] ERROR Andromeda.WebOrdering.Global [(null)] - ACS error 'status code=400 ' response={"errorCode":2511,"message":"+OK 10000048"}
+2014-12-18 15:37:18,485 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - External REST call PUT https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/AB622361-7757-4B19-A0E3-26E7D82CACBF/orders/e4bad6be2e2e423aac80f336f5ccc81c?applicationid=646c84d0-92e1-4c12-a66d-29a47fa9112a requestData:{
+  "vouchers": [
+    {
+      "VoucherCode": "1off",
+      "IsValid": true,
+      "ErrorCode": 0,
+      "EffectType": "Fixed",
+      "EffectValue": 1
+    }
+  ],
+  "partnerReference": "e4bad6be2e2e423aac80f336f5ccc81c",
+  "type": "delivery",
+  "orderTimeType": "TIMED",
+  "orderWantedTime": "2014-12-18T16:30:54Z",
+  "orderPlacedTime": "2014-12-18T15:36:54Z",
+  "timeToTake": 2297,
+  "chefNotes": "",
+  "oneOffDirections": "",
+  "estimatedDeliveryTime": 0,
+  "customer": {
+    "title": "",
+    "firstName": "Matthew",
+    "surname": "Green",
+    "contacts": [
+      {
+        "type": "Mobile",
+        "value": "0123456789",
+        "marketingLevel": "OrderOnly"
+      },
+      {
+        "type": "Email",
+        "value": "matthew.green@androtech.com",
+        "marketingLevel": "OrderOnly"
+      }
+    ],
+    "address": {
+      "prem1": "",
+      "prem2": "",
+      "prem3": "",
+      "prem4": "",
+      "prem5": "",
+      "prem6": "",
+      "org1": "",
+      "org2": "",
+      "org3": "",
+      "roadNum": "",
+      "roadName": "bob",
+      "city": "",
+      "town": "wallington",
+      "postcode": "sm6 0dz",
+      "county": "",
+      "state": "",
+      "locality": "",
+      "directions": "",
+      "userLocality1": "",
+      "userLocality2": "",
+      "userLocality3": "",
+      "country": "UK"
+    },
+    "customerId": "b064ad3a-25c0-4406-852a-d5aed473773b"
+  },
+  "pricing": {
+    "pricesIncludeTax": "false",
+    "priceBeforeDiscount": 599,
+    "discounts": [
+      {
+        "type": "Voucher",
+        "discountType": "Fixed",
+        "discountTypeAmount": 1,
+        "discountAmount": 1,
+        "initialDiscountReason": "1off"
+      }
+    ],
+    "priceAfterDiscount": 499
+  },
+  "orderLines": [
+    {
+      "productId": 169,
+      "cat1": "Thin",
+      "cat2": "10\"",
+      "menuSection": "Pizza",
+      "quantity": "1",
+      "price": 599,
+      "name": "Margherita",
+      "orderLineIndex": 0,
+      "lineType": 1,
+      "inDealFlag": false,
+      "addToppings": [],
+      "removeToppings": []
+    }
+  ],
+  "orderPayments": [
+    {
+      "PaymentType": "PayLater",
+      "Value": "499",
+      "AuthCode": null,
+      "CVVStatus": null,
+      "PaytypeName": null,
+      "LastFourDigits": null,
+      "PayProcessor": null,
+      "PSPSpecificDetails": null
+    }
+  ]
+} responseStatusCode:BadRequest responseData:{"errorCode":2511,"message":"+OK 10000048"}
+2014-12-18 15:37:18,485 [10] INFO  Andromeda.WebOrdering.Global [(null)] - OrderServices.SendOrder returned json: {"errorCode":2511,"message":"+OK 10000048"}
+2014-12-18 15:37:18,490 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - ProcessErrors error0=ok
+2014-12-18 15:37:18,490 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - ProcessErrors sending order alert email
+2014-12-18 15:37:18,505 [10] INFO  Andromeda.WebOrdering.Global [(null)] - Alerts.SendAlert
+2014-12-18 15:37:18,507 [10] INFO  Andromeda.WebOrdering.Global [(null)] - Alerts.SendAlert Email queued
+2014-12-18 15:37:18,507 [10] DEBUG Andromeda.WebOrdering.Global [(null)] - PUT Order/AB622361-7757-4B19-A0E3-26E7D82CACBF SourceIP:127.0.0.1 Status: InternalServerError Request:{"toSiteId":"AB622361-7757-4B19-A0E3-26E7D82CACBF","paymentType":"PayLater","order":{"vouchers":[{"VoucherCode":"1off","IsValid":true,"ErrorCode":0,"EffectType":"Fixed","EffectValue":1}],"partnerReference":"","type":"delivery","orderTimeType":"TIMED","orderWantedTime":"2014-12-18T16:30:54Z","orderPlacedTime":"2014-12-18T15:36:54Z","timeToTake":2297,"chefNotes":"","oneOffDirections":"","estimatedDeliveryTime":0,"customer":{"title":"","firstName":"Matthew","surname":"Green","contacts":[{"type":"Mobile","value":"0123456789","marketingLevel":"OrderOnly"},{"type":"Email","value":"matthew.green@androtech.com","marketingLevel":"OrderOnly"}],"address":{"prem1":"","prem2":"","prem3":"","prem4":"","prem5":"","prem6":"","org1":"","org2":"","org3":"","roadNum":"","roadName":"bob","city":"","town":"wallington","postcode":"sm6 0dz","county":"","state":"","locality":"","directions":"","userLocality1":"","userLocality2":"","userLocality3":"","country":"UK"},"customerId":"b064ad3a-25c0-4406-852a-d5aed473773b"},"pricing":{"pricesIncludeTax":"false","priceBeforeDiscount":599,"discounts":[{"type":"Voucher","discountType":"Fixed","discountTypeAmount":1,"discountAmount":1,"initialDiscountReason":"1off"}],"priceAfterDiscount":499},"orderLines":[{"productId":169,"cat1":"Thin","cat2":"10\"","menuSection":"Pizza","quantity":"1","price":599,"name":"Margherita","orderLineIndex":0,"lineType":1,"inDealFlag":false,"addToppings":[],"removeToppings":[]}],"orderPayments":[]}} Response:{ "errorCode":"2511"}

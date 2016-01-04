@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
+  <propertySets>
+    <propertySet output="NHibernate.cs" template="C:\My Documents\CodeSmith\Samples\v4.0\Templates\NHibernate\NHibernate.cst">
+      <property name="Namespace">Cacd.Domain.User</property>
+      <property name="FormNamespace">TheRightInfo.Web.Search.Users</property>
+      <property name="Assembly">Cacd.core</property>
+      <property name="DAOName">this.Page.UserDAO</property>
+      <property name="RemoveTablePrefix">tbl</property>
+      <property name="SourceDatabaseAlias">User</property>
+      <property name="ForceId">False</property>
+      <property name="SourceDatabase">
+        <connectionString>Server=localhost\server;initial catalog=WilliamReed_users;User Id=sa;Password=welcome</connectionString>
+        <providerType>SchemaExplorer.SqlSchemaProvider,SchemaExplorer.SqlSchemaProvider</providerType>
+      </property>
+      <property name="OutputDirectory">C:\Projects\CodeSmith\Users</property>
+    </propertySet>
+  </propertySets>
+</codeSmith>

@@ -1,0 +1,34 @@
+﻿@using UsersPermissions = MyAndromeda.Web.Areas.Users.UserManagementUserPermissions;
+@{
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+}
+
+@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Users.ViewModels.UserIpViewModel>()
+        .Name("userIpLock_#=Id#")
+        .ToolBar(tools =>
+        {
+            if (authorizer.Authorize(UsersPermissions.EditIpLock))
+            {
+                tools.Create();
+            }
+        })
+        .Columns(columns =>
+        {
+            columns.Bound(e => e.IpAddress).Title(translator.T("IP Address"));
+            if (authorizer.Authorize(UsersPermissions.DeleteIpLock))
+            {
+                columns.Command(e => e.Destroy()).Width(100);
+            }
+        })
+        .Editable(e => e.Mode(GridEditMode.PopUp))
+        .DataSource(
+            data => data.Ajax()
+                .Model(model => model.Id(e => e.IpAddress))
+                .Read(read => read.Action("List", "UserIPLock", new { Area = "Users", UserId = "#=Id#" }))
+                .Create(create => create.Action("Create", "UserIPLock", new { Area = "Users", UserId = "#=Id#" }))
+                .Destroy(destroy => destroy.Action("Destroy", "UserIPLock", new { Area = "Users", UserId = "#=Id#" }))
+        )
+        .Sortable()
+        .ToClientTemplate()
+)

@@ -1,0 +1,14 @@
+﻿@model object
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="header">
+    <h3>Create emails settings</h3>
+    <a class="k-button" href="@Url.Action("Index")">Back</a>
+</div>
+
+@using (Html.BeginForm()) { 
+    @Html.AntiForgeryToken()
+    @Html.Partial("EmailSettingEditView", this.Model)
+}

@@ -1,0 +1,88 @@
+﻿@{
+    var translator = Html.GetTranslator();
+    var applicationSettings = Html.GetApplicationSettings(); 
+}
+
+@if (applicationSettings.DisplayDebugViews)
+{
+    @Html.Action("Index", "Debug", new { Area = "" })
+}
+
+@Html.Action("Index", "Glossary", new { Area = "" })
+
+@helper TabSection(TabArea tab, string height, string topOffset, string color)
+{
+    var heightStyle = string.IsNullOrWhiteSpace(height) ? "" : string.Format("height:{0};", height);
+    var topStyle = string.IsNullOrWhiteSpace(topOffset) ? "" : string.Format("top:{0};", topOffset);
+    var backgroundStyle = string.IsNullOrWhiteSpace(color) ? "" : string.Format("background-color:{0};", color);
+
+    if (Html.HelpSections(tab).Count() > 0)
+    {
+    <div class="container slide-in-help slide-in-help-debug hidden-xs show-animation" style="padding: 0">
+        <div style="float: right; height: 0; width:0; margin-top: @topOffset; position: relative">
+            <div class="pull-right slide-in-hide-handle handle-hide" style="@(topStyle)@(backgroundStyle)">
+                <span class="k-icon k-i-cancel"></span>
+            </div>
+
+            <div class="pull-right slide-in-open-handle handle-help show-animation" style="@(heightStyle)@(topStyle)@(backgroundStyle)">
+                <span class="span-message">@tab</span>
+                <span class="k-icon k-i-expand"></span>
+            </div>
+        </div>
+        <div class="navbar-fixed-top" style="height: 557px; overflow: auto; position: relative;">
+
+            @(Html.Kendo().TabStrip().Name(string.Format("{0}Tabstrip", tab)).Items(items =>
+            {
+                foreach (var helpItem in Html.HelpSections(tab))
+                {
+                    items.Add().Text(helpItem.Name)
+                        .Selected(helpItem.Selected)
+                        .Content(@<text>@helpItem.Content</text>);
+                }
+            })
+            )
+
+        </div>
+
+    </div>
+    }
+}
+
+@TabSection(TabArea.Help, height: "", topOffset: "", color: "")
+
+@TabSection(TabArea.Glossary, height: "120px", topOffset: "100px", color: "#F29A00")
+
+
+@using (Html.BeginScripts())
+{ 
+    <script type="text/javascript">
+        $(function () {
+            var elements = $(".slide-in-help");
+
+            elements.each(function (index, item) {
+                var element = $(item),
+                    slideFromLeft = kendo.fx(element).slideIn("left"),
+                    visible = true;
+
+                element.on("click", ".slide-in-open-handle", function (e) {
+                    if (visible) {
+                        slideFromLeft.reverse();
+                    } else {
+                        slideFromLeft.play();
+                    }
+
+                    $(this).find(".k-icon").toggleClass("k-i-arrow-w");
+                    $(this).find(".k-icon").toggleClass("k-i-expand");
+
+                    visible = !visible;
+                    e.preventDefault();
+                });
+
+                element.on("click", ".slide-in-hide-handle", function (e) {
+                    $(element).fadeOut();
+                });
+            });
+
+        });
+    </script>
+}

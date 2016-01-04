@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="AccountValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="UserNameValidator" test="UserName"><v:message id="error.UserName.required" providers="UserNameErrors, ValidationSummary"/></v:required>
+	<v:required id="PasswordValidator" test="Password"><v:message id="error.Password.required" providers="PasswordErrors, ValidationSummary"/></v:required>
+	<v:required id="GpsEnabledValidator" test="GpsEnabled"><v:message id="error.GpsEnabled.required" providers="GpsEnabledErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+  <object id="DashboardData" type="Dashboard.UploadWebService.DashboardData" singleton="false">
+    <property name="SiteDao" ref="SiteDao" />
+    <property name="RegionDao" ref="RegionDao" />
+    <property name="HistoricalDataDao" ref="HistoricalDataDao" />
+  </object>
+
+  <!--<object name="DashboardData" type="Dashboard.UploadWebService.DashboardData, Dashboard.UploadWebService">
+    <property name="DashboardData" ref="DashboardData" />
+  </object>-->
+  
+    <object id="DashboardUpload" type="Spring.Web.Services.WebServiceExporter, Spring.Web">
+        <property name="TargetName" value="DashboardData"/>
+        <property name="Namespace" value="http://www.androservices.com/DashboardUpload"/>
+        <property name="Description" value="Defines operations"/>
+        <property name="MemberAttributes">
+            <dictionary>
+                <entry key="UploadData">
+                    <object type="System.Web.Services.WebMethodAttribute, System.Web.Services">
+                        <property name="Description" value="Send store data to the dashboard"/>
+                    </object>
+                </entry>
+            </dictionary>
+        </property>
+    </object>
+</objects>

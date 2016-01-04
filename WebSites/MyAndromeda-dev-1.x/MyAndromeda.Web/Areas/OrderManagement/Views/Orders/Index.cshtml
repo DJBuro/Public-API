@@ -1,0 +1,125 @@
+﻿@using MyAndromeda.Web.Areas.OrderManagement.Models;
+@model MyAndromeda.Web.Areas.OrderManagement.Models.OrderHeaderViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+
+<style>
+    .OrdersGrid table {
+        table-layout: fixed !important;
+    }
+</style>
+
+
+<div class="header">
+    <h3>Order Management</h3>
+</div>
+
+<div id="OrderManagementSection">
+    <div class="row">
+        <div class="col-xs-12">
+
+            @(Html.Kendo().Grid<MyAndromeda.Web.Areas.OrderManagement.Models.OrderHeaderViewModel>()
+    .Name("OrdersGrid")
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.ID).Hidden();
+        cols.Bound(e => e.RamesesOrderNum).Title("Order").Width(80);
+        cols.Bound(e => e.Customer.FullName).Title("Name")
+            .ClientTemplate("#:Customer.FirstName # #:Customer.LastName#").Width(100);
+        cols.Bound(e => e.Customer.Email).Title("Email");
+        cols.Bound(e => e.Customer.Mobile).Title("Phone Number").Width(80);
+        cols.Bound(e => e.OrderWantedTime).Title("Wanted Time")
+            .ClientTemplate("#: OrderWantedTimeLocalString #").Width(100);
+        cols.Bound(e => e.OrderPlacedTime)
+            .ClientTemplate("#: OrderPlacedTimeLocalString #").Hidden().Width(140);
+        cols.Bound(e => e.Paytype).Title("Pay Type").Width(90);
+        cols.Bound(e => e.OrderType).Width(100);
+        cols.Bound(e => e.ApplicationName).Hidden();
+        cols.Bound(e => e.FinalPrice).Format("{0:c}").Width(100);
+        cols.Bound(e => e.Status).EditorTemplateName("StatusTemplate")
+            .ClientTemplate("#: OrderStatus.Description #").Width(100);
+        cols.Command(c => c.Edit()).Width(100);
+    })
+    .Resizable(r => r.Columns(true))
+    .Scrollable(s => s.Height(500))
+    .ClientDetailTemplateId("OrdersGridTemplate")
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .Events(e => e.DetailInit("manageDetailInit"))
+    .Filterable()
+    .Sortable()
+    .ColumnMenu()
+    .Pageable(paging => paging.Refresh(true))
+            .HtmlAttributes(new { @class = "OrdersGrid" })
+                //.Mobile(MobileMode.Auto)
+    .DataSource(dataSource =>
+    {
+        dataSource.Ajax()
+            .ServerOperation(false)
+            .Read(r => r.Action("Read", "Orders"))
+            .Update(u => u.Action("Update", "Orders"))
+            .Create(c => c.Action("Create", "Orders"))
+            .Destroy(d => d.Action("Destroy", "Orders"))
+            .Model(model =>
+            {
+                model.Id(e => e.ID);
+                model.Field(e => e.ID).Editable(false);
+                model.Field(e => e.RamesesOrderNum).Editable(false);
+                model.Field(e => e.Customer.FullName).Editable(false);
+                model.Field(e => e.OrderPlacedTime).Editable(false);
+                model.Field(e => e.OrderWantedTime).Editable(false);
+                //public string OrderPlacedTimeDisplay { get; set; }
+                //public string OrderWantedTimeDisplay { get; set; }
+                model.Field(e => e.Paytype).Editable(false);
+                model.Field(e => e.OrderType).Editable(false);
+                model.Field(e => e.ApplicationName).Editable(false);
+                model.Field(e => e.FinalPrice).Editable(false);
+            });
+    })
+            )
+
+        </div>
+    </div>
+</div>
+<script type="text/html" id="OrdersGridTemplate">
+    @(Html.Kendo()
+    .TabStrip()
+    .Name("OrdersGridTabs_#=ID#")
+    .Items(tabs =>
+    {
+        tabs.Add()
+            .Text("Order Details")
+            .Content(@<text>
+                <div>
+                    <a href="\\#" class="k-button k-print-button" data-order-id="#=ID#">Print</a>
+                </div>
+                @Html.Partial("~/Areas/Reporting/Views/Orders/_List_TicketTemplates.cshtml")
+            </text>)
+            .Selected(true);
+
+    }).ToClientTemplate())
+
+</script>
+
+@using (Html.BeginHelpSection("Order Monitoring", TabArea.Help, selected: true))
+{
+    <div class="header">
+        <h3>Getting Started</h3>
+    </div>
+    <p>This view gives you all orders due in the next 24 hours, and shows orders 12 hours into the past.</p>
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#OrderManagementSection").on("click", ".k-print-button", function (e) {
+            e.preventDefault();
+            var id = $(this).data("orderId");
+            var promise = $.getJSON("/api/GprsGateway/reprint/" + id);
+
+            promise.success(function () {
+                alert("Sent maybe");
+            });
+        });
+    });
+</script>

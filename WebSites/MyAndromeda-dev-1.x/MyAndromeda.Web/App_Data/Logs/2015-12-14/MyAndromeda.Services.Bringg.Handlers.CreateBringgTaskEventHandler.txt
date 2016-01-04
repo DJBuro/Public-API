@@ -1,0 +1,1 @@
+2015-12-14 18:39:27.3753 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Sending the order to BRINGG: W635852763112551025440255

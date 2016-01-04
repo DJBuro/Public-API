@@ -1,0 +1,108 @@
+﻿@model AndroAdmin.Model.UpdateAMSandFTPSitesModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+}
+
+<!-- Breadcrumb -->
+<h2>@Html.ActionLink("Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreDetailsPage" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <!-- Tabs -->
+    @Html.Partial("StoreDetailsTabsPartial", Model, new ViewDataDictionary { { "SelectedTab", "StoreAMSUpload" } })
+
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+
+        @using (Html.BeginForm("StoreAMSUpload", "Store", new { id = Model.Store.Id.ToString() }))
+        {
+            <!-- Store AMS -->
+            <div>
+                <div>
+                    <span style="float: right;">@Html.ActionLink("Help", "StoreAMSUpload", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear: both;"></div>
+
+                @*Upload to AMS servers*@
+                <fieldset>
+
+                    <legend>
+                        <span>Upload data to the following AMS Servers</span>
+                    </legend>
+
+                    @if (Model.StoreAMSServerFtpSites != null && Model.StoreAMSServerFtpSites.Count > 0)
+                    {
+                        foreach (List<AndroAdminDataAccess.Domain.StoreAMSServerFtpSite> storeAmsServerFtpSites in Model.StoreAMSServerFtpSites.Values)
+                        {
+                            if (storeAmsServerFtpSites != null && storeAmsServerFtpSites.Count > 0)
+                            {
+                        <div class="amsServerBox">
+                            <div>
+                                <span class="amsServerTitle">Upload data to AMS Server: </span>
+                                <span>@storeAmsServerFtpSites[0].StoreAMSServer.AMSServer.Name</span> - <span>@storeAmsServerFtpSites[0].StoreAMSServer.AMSServer.Description</span>
+                            </div>
+                            <div class="amsServerTitle">Via the following FTP sites:</div>
+                            @foreach (AndroAdminDataAccess.Domain.StoreAMSServerFtpSite storeAmsServerFtpSite in storeAmsServerFtpSites)
+                            {
+                                <div>
+                                    @storeAmsServerFtpSite.FTPSite.Name
+                                    &nbsp;
+                                    @if (ViewBag.Permissions.Contains("DeleteAMSStore"))
+                                    {
+                                        <a href="#" onclick="showConfirmDialog(function() {window.location.href ='@Url.Action("StoreAMSUploadDelete", new { siteId = Model.Store.Id, id = storeAmsServerFtpSite.Id.ToString() })'}, confirmationMessage)">delete</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div style="padding: 20px; text-align: center;">This store is not configured to upload to an AMS server</div> 
+                    }
+                </fieldset>
+            </div>    
+    
+                    if (ViewBag.Permissions.Contains("EditAMSStore"))
+                    {
+            <div>
+                @*Customer store details*@
+                <fieldset>
+
+                    <legend>
+                        <span>Upload to another AMS server or via another FTP site</span>
+                    </legend>
+
+                    @if (Model.AMSServers.Count() == 0 || Model.FTPSites.Count() == 0)
+                    {
+                        <div style="padding: 20px; text-align: center;">This store is part of a chain that does not have any AMS servers</div>
+                    }
+                    else
+                    {
+                        <div style="margin-top: 20px;">
+                            Upload data to AMS server: @Html.DropDownList("AMSServerId", Model.AMSServers) via FTP site: @Html.DropDownList("FTPSiteId", Model.FTPSites)
+                            <span class="editor-submitButton">
+                                <input type="submit" value="Upload to this AMS server &amp; FTP site" />
+                            </span>
+                        </div>
+                    }
+                </fieldset>
+            </div>
+                    }
+    
+            <script type="text/javascript">
+                var confirmationMessage = 'Are you sure you no longer want to upload via the ftp site?';
+            </script>
+        }
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<AndroAdminDataAccess.Domain.Partner>
+
+@{
+    ViewBag.Title = "Partners";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+}
+
+<h2>Partners</h2>
+
+    <p>A partner is a company that uses the ACS web services (Andromeda Cloud Services) API.  A partner company usually writes applications that allow customers to order food online for Rameses stores.  An application might be a web site, smartphone app (e.g. iPhone or Android app) or any other kind of program that calls our cloud API.</p> 
+
+@if (ViewBag.Permissions.Contains("AddACSPartner"))
+{
+    <div class="topLink">
+        @Html.ActionLink("Add a new partner", "Add")
+    </div>
+}
+
+<table class="listTable" id="partners">
+    <thead>
+        <tr>
+            <th>Partner</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (AndroAdminDataAccess.Domain.Partner partner in Model)
+{ 
+    <tr>
+        <td>@Html.ActionLink(partner.Name, "Details", new { id = partner.Id.ToString() })</td>
+    </tr>
+}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#partners').dataTable(
+        {
+            "iDisplayLength": 50
+        }
+     );   
+</script>
+

@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Host V2 Types</h2>
+
+<a class="k-primary k-button" href="@Url.Action("Index", "HostV2")">Edit hostV2 records</a>
+
+@(Html.Kendo().Grid<AndroAdminDataAccess.EntityFramework.HostType>()
+    .Name("HostV2Type")
+    .Columns(columns =>
+    {
+        columns.Bound(e => e.Name);
+        columns.Command(command => command.Edit()).Width(110);
+        columns.Command(command => command.Destroy()).Width(110);
+    })
+    .ToolBar(toolBar =>
+        {
+            toolBar.Create();
+        })
+    .ClientDetailTemplateId("HostTypeDetail")
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .Filterable()
+    .Groupable()
+    .Pageable()     
+    .Scrollable()
+    .HtmlAttributes(new { style = "height:430px;" })    
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        //.Batch(true)
+        .PageSize(20)
+        .ServerOperation(false)
+        //.Events(events => events.Error("errorHandler"))
+        .Model(model =>
+        {
+            model.Id(p => p.Id);   
+        })
+        .Read(read => read.Action("Read", "HostV2Type"))
+        .Update(update => update.Action("Update", "HostV2Type"))
+        .Create(create => create.Action("Create", "HostV2Type"))
+        .Destroy(destroy => destroy.Action("Destroy", "HostV2Type"))
+    )
+
+)
+
+<script type="text/template" id="HostTypeDetail">
+    @(Html.Kendo().Grid<AndroAdmin.ViewModels.HostV2.HostTypeDetailViewModel>()
+        .Name("HostDetail_#=Id#")
+        .Columns(cols =>
+        {
+            cols.Bound(e => e.Url);
+            cols.Bound(e => e.Enabled);
+            cols.Bound(e => e.Version);
+            cols.Bound(e => e.OptInOnly);
+        })
+        .DataSource(data => data.Ajax().Read(read => read.Action("ReadHostsByTypeId", "HostV2Type", new { Id = "#=Id#" })))
+        .ToClientTemplate()
+    )
+</script>

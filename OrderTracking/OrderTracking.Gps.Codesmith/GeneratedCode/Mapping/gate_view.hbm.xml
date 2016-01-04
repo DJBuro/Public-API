@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateview, OrderTracking.Gps.Dao" table="gate_view">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="gate_view_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__gate_vie__AF93A81A153B1FDF"/>
+			<generator class="native" />
+		</id>
+		<property name="Viewname" type="String">
+			<column name="view_name" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Viewdescription" type="String">
+			<column name="view_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Statusfilter" type="Int32">
+			<column name="status_filter" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="Matchalltags" type="Int16">
+			<column name="match_all_tags" length="2" sql-type="smallint" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+			<column name="application_id" length="4" sql-type="int" not-null="true" index="Index_application_id"/>
+		</many-to-one>
+		<one-to-one name="Gateviewtag" class="OrderTracking.Gps.Dao.Domain.Gateviewtag, OrderTracking.Gps.Dao"/>
+	</class>
+</hibernate-mapping>
+
+
+

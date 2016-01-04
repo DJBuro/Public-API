@@ -1,0 +1,18 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="SchedulertaskparameterValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="ParameternameValidator" test="Parametername"><v:message id="error.Parametername.required" providers="ParameternameErrors, ValidationSummary"/></v:required>
+	<v:required id="ParameterassemblynameValidator" test="Parameterassemblyname"><v:message id="error.Parameterassemblyname.required" providers="ParameterassemblynameErrors, ValidationSummary"/></v:required>
+	<v:required id="ParametertypenameValidator" test="Parametertypename"><v:message id="error.Parametertypename.required" providers="ParametertypenameErrors, ValidationSummary"/></v:required>
+	<v:required id="ParameterdataValidator" test="Parameterdata"><v:message id="error.Parameterdata.required" providers="ParameterdataErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

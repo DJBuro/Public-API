@@ -1,0 +1,493 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="This Template Generates C# domain objects for NHibernate" Debug="true" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="FormNamespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="WebAssembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="DAOName" Type="System.String" Default="DatabaseDAO" Category="Object" Description="The DAO class that will be used to retrieve elements of this type" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="SourceDatabaseAlias" Type="System.String" Default="DatabaseName" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="ForceId" Type="System.Boolean" Default="true" Category="Object" Description="Force Id for identity column" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Windows.Forms.Design" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<script runat="template">
+/*
+	Title    : NHibernate.cst
+	Author   : Scott Beeler  (Modified from version provided by Simon Green (simon@intesoft.net) http://www.intesoft.net/nhibernate)
+
+	Summary  : Codesmith template to iterate the tables in a database and generate C# class files and NHibername xml mapping files
+	Notes    : Will recognise & Handle (most) many-to-many linking tables, both sides of self-joins, one-to-one joins and polymorphism
+			   Uses NHibernate.class.cst, NHibernate.hbm.cst and NHibernate.inc which should be in the same folder
+*/
+
+	private DatabaseSchema _sourceDatabase;
+	private string _outputDirectory;
+    private bool _implementNotification = true;
+
+	private CodeTemplate _csharpTemplate;
+	private CodeTemplate _mappingTemplate;
+	
+	private CodeTemplate _editFormTemplate;
+	private CodeTemplate _editFormResourceTemplate;
+	private CodeTemplate _editFormCodeBehindTemplate;
+	
+	
+	private CodeTemplate _listFormTemplate;
+	private CodeTemplate _listFormCodeBehindTemplate;
+	
+	
+	private CodeTemplate _validatorTemplate;
+	private CodeTemplate _DAOFactoryTemplate = null;
+	private CodeTemplate _DAOTemplate = null;
+	private CodeTemplate _ConfigTemplate = null;
+	private CodeTemplate _ReferenceTemplate = null;
+	
+	
+
+    [Category("Database")]
+    [Description("Database that the mapping file should be based on.")]
+    public DatabaseSchema SourceDatabase {
+        get { return _sourceDatabase; }
+        set { _sourceDatabase = value; }
+    }
+
+	[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
+	[Category("Class")]
+    [Description("The folder to save the generated class files.")]
+	public string OutputDirectory
+	{
+		get {return _outputDirectory;}
+		set {_outputDirectory= value;}
+	}
+
+	[Browsable(false)]
+	public CodeTemplate ClassTemplate
+	{
+		get
+		{
+			if (_csharpTemplate == null)
+				_csharpTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernate.class.cst");
+
+			return _csharpTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate ValidatorTemplate
+	{
+		get
+		{
+			if (_validatorTemplate == null)
+				_validatorTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateForm.validator.cst");
+
+			return _validatorTemplate;
+		}
+	}
+	
+	
+	
+
+	[Browsable(false)]
+	public CodeTemplate MappingTemplate
+	{
+		get
+		{
+			if (_mappingTemplate == null)
+				_mappingTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernate.hbm.cst");
+
+			return _mappingTemplate;
+		}
+	}
+	
+	
+	[Browsable(false)]
+	public CodeTemplate EditFormTempate
+	{
+		get
+		{
+			if (_editFormTemplate == null)
+				_editFormTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateForm.ascx.cst");
+
+			return _editFormTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate EditFormResourceTempate
+	{
+		get
+		{
+			if (_editFormResourceTemplate == null)
+				_editFormResourceTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateForm.resx.cst");
+
+			return _editFormResourceTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate EditFormCodeBehindTempate
+	{
+		get
+		{
+			if (_editFormCodeBehindTemplate == null)
+				_editFormCodeBehindTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateForm.class.cst");
+
+			return _editFormCodeBehindTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate ListFormTemplate
+	{
+		get
+		{
+			if (_listFormTemplate == null)
+				_listFormTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateListForm.ascx.cst");
+
+			return _listFormTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate ListFormCodeBehindTemplate
+	{
+		get
+		{
+			if (_listFormCodeBehindTemplate == null)
+				_listFormCodeBehindTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateListForm.class.cst");
+
+			return _listFormCodeBehindTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate DAOTemplate
+	{
+		get
+		{
+			if (_DAOTemplate == null)
+				_DAOTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernate.DAO.cst");
+
+			return _DAOTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate DAOFactoryTemplate
+	{
+		get
+		{
+			if (_DAOFactoryTemplate == null)
+				_DAOFactoryTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernate.DAO.Factory.cst");
+
+			return _DAOFactoryTemplate;
+		}
+	}
+	
+	public CodeTemplate ConfigTemplate
+	{
+		get
+		{
+			if (_ConfigTemplate == null)
+				_ConfigTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateConfig.cfg.cst");
+			return _ConfigTemplate;
+		}
+	}
+	
+	
+	public CodeTemplate ReferenceTemplate
+	{
+		get
+		{
+			if (_ReferenceTemplate == null)
+				_ReferenceTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "NHibernateReferences.cst");
+			return _ReferenceTemplate;
+		}
+	}
+	
+	
+	
+	public CodeTemplate CompileTemplate(string templateName)
+	{
+		CodeTemplateCompiler compiler = new CodeTemplateCompiler(templateName);
+		compiler.Compile();
+
+		if (compiler.Errors.Count == 0)
+		{
+			return compiler.CreateInstance();
+		}
+		else
+		{
+			for (int i = 0; i < compiler.Errors.Count; i++)
+			{
+				Response.WriteLine(compiler.Errors[i].ToString());
+			}
+			return null;
+		}
+
+	}
+	
+	
+	public void SetTemplateProperties(CodeTemplate template){
+		
+		
+		template.SetProperty("Namespace", Namespace);
+		template.SetProperty("FormNamespace", FormNamespace);
+		template.SetProperty("Assembly", Assembly);
+		template.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+		template.SetProperty("ForceId", ForceId);
+		template.SetProperty("DAOName", DAOName);
+		
+	}
+	
+	
+	public void SetDAOTemplateProperties(CodeTemplate template){
+		template.SetProperty("SourceDatabaseAlias", SourceDatabaseAlias);
+		template.SetProperty("SourceDatabase", SourceDatabase);
+		template.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+		template.SetProperty("ForceId", ForceId);
+	}
+
+	public void Generate()
+	{
+		
+		string daoFileName = SourceDatabaseAlias + "HibernateDAOImpl.cs";
+		daoFileName = Path.Combine(OutputDirectory + "/DAO/", daoFileName);
+		SetDAOTemplateProperties(this.DAOTemplate);
+		this.DAOTemplate.RenderToFile(daoFileName, true);
+		Response.Write(string.Format("{0} ", daoFileName));
+		
+		
+		daoFileName = SourceDatabaseAlias + "HibernateDAOFactory.cs";
+		daoFileName = Path.Combine(OutputDirectory + "/DAO/", daoFileName);
+		SetDAOTemplateProperties(this.DAOFactoryTemplate);
+		this.DAOFactoryTemplate.RenderToFile(daoFileName, true);
+		Response.Write(string.Format("{0} ", daoFileName));
+		
+		
+		string referenceFileName = SourceDatabaseAlias + ".xml";
+		referenceFileName = Path.Combine(OutputDirectory + "/Config/", referenceFileName);
+		SetDAOTemplateProperties(this.ReferenceTemplate);
+		this.ReferenceTemplate.SetProperty("FormNamespace", FormNamespace);
+		this.ReferenceTemplate.SetProperty("WebAssembly", WebAssembly);
+		this.ReferenceTemplate.RenderToFile(referenceFileName, true);
+		Response.Write(string.Format("{0} ", referenceFileName));
+		
+		string configFileName = SourceDatabaseAlias + ".cfg";
+		configFileName = Path.Combine(OutputDirectory + "/Config/", configFileName);
+		SetDAOTemplateProperties(this.ConfigTemplate);
+		this.ConfigTemplate.RenderToFile(configFileName, true);
+		Response.Write(string.Format("{0} ", configFileName));
+		
+		
+		foreach(TableSchema sourceTable in SourceDatabase.Tables)
+		{
+			Response.Write(string.Format("Processing Table {0} ... ", sourceTable.Name));
+			if (IsManyToManyTable(sourceTable))
+			{
+				Response.WriteLine("skipped, many-to-many link table");
+			}
+			else if (IsSubClassTable(sourceTable))
+			{
+				Response.WriteLine("skipped, sub-class table");
+			}
+			else if (sourceTable.PrimaryKey == null)
+			{
+				Response.WriteLine("skipped, no primary key");
+			}
+			else
+			{
+				try
+				{
+				string className = sourceTable.Name;
+				
+				if(RemoveTablePrefix=="*_" && className.IndexOf("_")>-1)
+				{
+					className = className.Substring(className.IndexOf("_")+1);
+				}
+				else
+				{
+					if (className.StartsWith(RemoveTablePrefix))
+						className = className.Substring(RemoveTablePrefix.Length);
+				}
+
+				string classFileName = className;
+				classFileName += ".cs";
+				classFileName = Path.Combine(OutputDirectory + "/Class/", classFileName);
+
+				string mappingFileName = className + ".hbm.xml";
+				mappingFileName = Path.Combine(OutputDirectory+ "/Mapping/", mappingFileName);
+
+				this.ClassTemplate.SetProperty("SourceTable", sourceTable);
+				this.ClassTemplate.SetProperty("Namespace", Namespace);
+				this.ClassTemplate.SetProperty("Assembly", Assembly);
+				this.ClassTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+				this.ClassTemplate.SetProperty("ForceId", ForceId);
+
+				this.ClassTemplate.RenderToFile(classFileName, true);
+
+				Response.Write(string.Format("{0} ", classFileName));
+
+				this.MappingTemplate.SetProperty("SourceTable", sourceTable);
+				this.MappingTemplate.SetProperty("Namespace", Namespace);
+				this.MappingTemplate.SetProperty("Assembly", Assembly);
+				this.MappingTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+				this.MappingTemplate.SetProperty("ForceId", ForceId);
+
+				this.MappingTemplate.RenderToFile(mappingFileName, true);
+
+				Response.WriteLine(string.Format("{0} ", mappingFileName));
+				
+				string editFormFilename = className + "Form.ascx";
+				editFormFilename = Path.Combine(OutputDirectory + "/EditForm/", editFormFilename);
+				
+				SetTemplateProperties(this.EditFormTempate);
+				this.EditFormTempate.SetProperty("SourceTable", sourceTable);
+				this.EditFormTempate.RenderToFile(editFormFilename, true);
+				Response.Write(string.Format("{0} ", editFormFilename));
+				
+				string editFormResourceFilename = className + "Form.ascx.resx";
+				editFormResourceFilename = Path.Combine(OutputDirectory + "/EditFormResource/", editFormResourceFilename);
+				
+				SetTemplateProperties(this.EditFormResourceTempate);
+				this.EditFormResourceTempate.SetProperty("SourceTable", sourceTable);
+				this.EditFormResourceTempate.RenderToFile(editFormResourceFilename, true);
+				Response.Write(string.Format("{0} ", editFormResourceFilename));
+				
+				
+				string editFormCodeBehindFilename = className + "Form.ascx.cs";
+				editFormCodeBehindFilename = Path.Combine(OutputDirectory + "/EditForm/", editFormCodeBehindFilename);
+				SetTemplateProperties(this.EditFormCodeBehindTempate);
+				this.EditFormCodeBehindTempate.SetProperty("SourceTable", sourceTable);
+				this.EditFormCodeBehindTempate.RenderToFile(editFormCodeBehindFilename, true);
+				Response.Write(string.Format("{0} ", editFormCodeBehindFilename));
+				
+				string listFormFilename = className + "ListForm.ascx";
+				listFormFilename = Path.Combine(OutputDirectory + "/ListForm/", listFormFilename);
+				SetTemplateProperties(this.ListFormTemplate);
+				this.ListFormTemplate.SetProperty("SourceTable", sourceTable);
+				this.ListFormTemplate.RenderToFile(listFormFilename, true);
+				Response.Write(string.Format("{0} ", listFormFilename));
+				
+				string listFormCodeBehindFilename = className + "ListForm.ascx.cs";
+				listFormCodeBehindFilename = Path.Combine(OutputDirectory + "/ListForm/", listFormCodeBehindFilename);
+				SetTemplateProperties(this.ListFormCodeBehindTemplate);
+				this.ListFormCodeBehindTemplate.SetProperty("SourceTable", sourceTable);
+				this.ListFormCodeBehindTemplate.RenderToFile(listFormCodeBehindFilename, true);
+				Response.Write(string.Format("{0} ", listFormCodeBehindFilename));
+				
+
+				string validatorOutputFile = className + "Validator.xml";
+				validatorOutputFile = Path.Combine(OutputDirectory + "/Validator/", validatorOutputFile);
+				SetTemplateProperties(this.ValidatorTemplate);
+				this.ValidatorTemplate.SetProperty("SourceTable", sourceTable);
+				this.ValidatorTemplate.RenderToFile(validatorOutputFile, true);
+				Response.Write(string.Format("{0} ", validatorOutputFile));
+				
+				
+				}
+				catch (Exception ex)
+				{
+					Response.WriteLine("Error: " + ex);
+				}
+			}
+		}
+	}
+</script>
+<script runat="template">
+private Regex cleanRegEx = new Regex(@"\s+|_|-|\.", RegexOptions.Compiled);
+private Regex cleanID = new Regex(@"(_ID|_id|_Id|\.ID|\.id|\.Id|ID|Id)", RegexOptions.Compiled);
+
+public string CleanName(string name)
+{
+	return cleanRegEx.Replace(name, "");
+}
+
+public string CamelCase(string name)
+{
+	string output = CleanName(name);
+	return char.ToLower(output[0]) + output.Substring(1);
+}
+
+public string PascalCase(string name)
+{
+	string output = CleanName(name);
+	return char.ToUpper(output[0]) + output.Substring(1);
+}
+
+public string MakePlural(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhy])$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}ies");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}s");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}es");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}s");
+
+	return name;
+}
+
+public string MakeSingle(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])ies$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)s$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])es$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhyu])s$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}y");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}");
+
+	return name;
+}
+
+public bool IsManyToManyTable(TableSchema table)
+{
+	if (table.Columns.Count == 2 && table.PrimaryKey != null && table.PrimaryKey.MemberColumns.Count == 2 && table.ForeignKeys.Count == 2)
+//	if (table.Columns.Count >= 2 && table.PrimaryKey != null && table.PrimaryKey.MemberColumns.Count == 2 && table.ForeignKeys.Count >= 2)
+		return true;
+	else
+		return false;
+}
+
+public bool IsSubClassTable(TableSchema sourceTable)
+{
+	int count = 0;
+	foreach(TableKeySchema foreignKey in sourceTable.ForeignKeys)
+	{
+		if (foreignKey.ForeignKeyMemberColumns[0].IsPrimaryKeyMember)
+		{
+			//Response.Write(String.Format(" {0}:", foreignKey.PrimaryKeyTable.Name));
+			foreach(TableKeySchema primaryKey in foreignKey.PrimaryKeyTable.PrimaryKeys)
+			{
+				//Response.Write(String.Format(" {0} ", primaryKey.ForeignKeyTable.Name ));
+				if (primaryKey.ForeignKeyMemberColumns[0].IsPrimaryKeyMember && primaryKey.ForeignKeyTable.PrimaryKey.MemberColumns.Count == 1)
+					count++;
+			}
+		}
+	}
+	if (count > 1)
+		return true;
+
+	return false;
+}
+</script>
+<% this.Generate();  %>

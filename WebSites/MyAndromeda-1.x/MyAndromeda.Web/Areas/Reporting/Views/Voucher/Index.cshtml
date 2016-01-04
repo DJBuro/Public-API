@@ -1,0 +1,76 @@
+﻿@model  MyAndromeda.Web.Areas.Reporting.ViewModels.VoucherSummaryViewModel
+
+@{
+    ViewBag.Title = "VoucherReports";
+    var translator = Html.GetTranslator();
+}
+
+<div class="clearfix">
+    <div class="header">
+        <h3>Voucher Usage</h3>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="editor-label">
+            <b>Select a coupon:</b>
+        </div>
+        <div style="height: 20px"></div>
+        <div>
+            @(Html.Kendo().DropDownListFor(m => m.VoucherId)
+              .HtmlAttributes(new { style = "width:200px" })
+              .OptionLabel("Select Voucher")
+              .DataTextField("VoucherCode")
+              .DataValueField("Id")
+              .Value(Model.VoucherId.ToString())
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetVoucherCodeList", "Voucher");
+                  });
+              }))
+        </div>
+        <div style="height: 10px"></div>
+        <button class="k-button" type="submit">View Report</button>
+        <div style="height: 20px"></div>
+    }
+    <hr />
+    <div class="editor-label">Turnover:</div>
+    <div>@String.Format("{0:C}", @Model.VoucherSummary.TotalTurnover)</div>
+    <div class="editor-label">Nb Uses:</div>
+    <div>@Model.VoucherSummary.TotalNumberofUses</div>
+    <div class="editor-label">Avg Order:</div>
+    <div>@String.Format("{0:C}", @Model.VoucherSummary.TotalAverage)</div>
+    <hr />
+    <div style="height: 20px"></div>
+    <div class="editor-label">
+        <b>Sales History:</b>
+    </div>
+    <div style="height: 20px"></div>
+    <div>
+        @(Html.Kendo().Grid(Model.VoucherSummary.voucherData).Name("SalesHistory")
+            .Filterable(f => f.Enabled(true))
+            .Columns(cols =>
+            {
+                cols.Bound(e => e.Day)
+                    .Filterable(true).Title("")
+                    .Format("{0: dd-MM-yyyy}");
+                cols.Bound(e => e.Total)
+                    .Title(translator.T("Turnover"))
+                    .Format("{0:c}");
+                cols.Bound(e => e.NumberOfUses)
+                    .Title(translator.T("Used"))
+                    .Format("{0:0}");
+                cols.Bound(e => e.Average)
+                    .Title("Avg Order")
+                    .Format("{0:c}");
+            }))
+    </div>
+
+</div>
+
+@using (Html.BeginScripts())
+{
+
+}

@@ -1,0 +1,64 @@
+﻿@model IEnumerable<AndroAdminDataAccess.Domain.Partner>
+
+@{
+    ViewBag.Title = "ACS diagnostic tests";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery.signalR-1.0.0.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
+    <style>
+        .acsTestError { color: red; }
+        .acsTestSuccess { color: green; }
+    </style>
+}
+
+@section Script 
+{
+    function startMenuSync() 
+    {
+        var menuSync = $.connection.menuSync;
+
+        $('#messagesContainer').html('<div id="messages"></div>');
+
+        menuSync.client.message = function (message) 
+        {
+            $('#messages').append(message);
+
+            var objDiv = document.getElementById('messagesContainer');
+            objDiv.scrollTop = objDiv.scrollHeight;
+        };
+
+        $.connection.hub.start()
+            .done
+            (
+                function() 
+                {
+                    menuSync.server.startACSDiagnosticTests();
+                }
+            )
+            .fail
+            (
+                function() 
+                { 
+                    alert("Could not Connect!"); 
+                }
+            );
+    }
+}
+
+<h2>ACS Diagnostic Tests</h2>
+
+<div class="topLink">
+    <a href="#" onclick="startMenuSync()">Start ACS diagnostic tests</a>
+</div>
+
+<div>
+    Performs a series of diagnostic tests to ensure that the ACS servers are working correctly.
+</div>
+
+<div id="messagesContainer" style="max-height:600px; overflow-y:auto;">
+    
+</div>

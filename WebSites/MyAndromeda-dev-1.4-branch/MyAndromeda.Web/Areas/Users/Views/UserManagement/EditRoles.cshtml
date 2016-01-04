@@ -1,0 +1,74 @@
+﻿@model MyAndromeda.Web.Areas.Users.ViewModels.UserRoleViewModel
+@using MyAndromeda.Core.Authorization;
+@{
+    var context = Html.GetWorkContext();
+}
+<div class="header">
+    <h3>Edit Roles</h3>
+    <p>@Model.User.Username</p>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(e => e.User.Id)
+    <div class="well">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>
+                    Select applicable roles:
+                </h3>
+            </div>
+        </div>
+
+        @foreach (var role in Model.AvailableRoles)
+        {
+            <div class="row">
+                <div class="col-xs-12">
+                    @if (role.Name.Equals(ExpectedUserRoles.Administrator) || role.Name.Equals(ExpectedUserRoles.SuperAdministrator))
+                    {
+                        if (!context.CurrentUser.Roles.Any(e => e.Name.Equals(ExpectedUserRoles.Administrator) || e.Name.Equals(ExpectedUserRoles.SuperAdministrator)))
+                        {
+                            <input type="hidden" name="@Html.NameFor(e => e.SelectedRoles)" value="@role.Id" />
+                        }
+                        else
+                        {
+                            <label>
+                                <input type="checkbox" name="@Html.NameFor(e=> e.SelectedRoles)" value="@role.Id" @if (Model.SelectedRoles.Any(e => e == role.Id)) { <text> checked="checked" </text>       } />
+                                @role.Name
+                            </label>
+                        }
+                    }
+                    else if (role.Name.Equals(ExpectedUserRoles.User))
+                    {
+                        <label>
+                            <input type="checkbox"
+                                   disabled="disabled"
+                                   name="@Html.NameFor(e=> e.SelectedRoles)"
+                                   value="@role.Id"
+                                   checked="checked" />
+                            @role.Name
+                        </label>
+                    }
+                    else
+                    {
+                        <label>
+                            <input type="checkbox" name="@Html.NameFor(e=> e.SelectedRoles)"
+                                   value="@role.Id" @if (Model.SelectedRoles.Any(e => e == role.Id)) { <text> checked="checked" </text>       } />
+                            @role.Name
+                        </label>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+    <div>
+        <input class="k-button" type="submit" value="Save" />
+    </div>
+}
+
+
+@using (Html.BeginScripts())
+{
+
+}

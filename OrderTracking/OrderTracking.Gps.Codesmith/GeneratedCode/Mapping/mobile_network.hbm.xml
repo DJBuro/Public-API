@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Mobilenetwork, OrderTracking.Gps.Dao" table="mobile_network">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="mobile_network_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__mobile_n__A9E491465B0E7E4A"/>
+			<generator class="native" />
+		</id>
+		<property name="Operator" type="String">
+			<column name="operator" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Username" type="String">
+			<column name="username" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Password" type="String">
+			<column name="password" length="32" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Apn" type="String">
+			<column name="apn" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Dns1" type="String">
+			<column name="dns1" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Dns2" type="String">
+			<column name="dns2" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Description" type="String">
+			<column name="description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="Country" class="OrderTracking.Gps.Dao.Domain.Country, OrderTracking.Gps.Dao">
+			<column name="country" length="64" sql-type="varchar" not-null="true" index="Index_country"/>
+		</many-to-one>
+		<bag name="devices" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="mobile_network_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Device, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

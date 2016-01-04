@@ -1,0 +1,35 @@
+﻿    <script type="text/html" id="postcodeCheckView">
+        <div id="postcodeCheckInner">
+            <!-- Header -->
+            <h1>Enter your postcode below to check if you are in our delivery area</h1>
+            
+            <div id="postcodeCheckTop">
+                <div id="postcodeCheckInput">
+                    <input type="text" id="postcodeCheckTextbox" autofocus data-bind="value: checkoutHelper.checkoutDetails.address.zipCode, event: { 'keypress': postcodeCheckHelper.checkPostcodeKeypress }" />
+                </div>
+                <div id="postcodeCheckButton" class="button">
+                    <a href="#" title="Check my postcode" data-bind="click: postcodeCheckHelper.checkPostcode">Check my postcode</a>
+                </div>
+            </div>
+            <!-- ko if: postcodeCheckHelper.isInDeliveryZone() != undefined -->
+            <div id="postcodeCheckResult">
+                <!-- ko if: !postcodeCheckHelper.isInDeliveryZone() -->
+                <p id="postcodeCheckFail">Sorry, you're not in our delivery area but you are welcome to collect your order from our store</p>
+                <!-- /ko -->
+                <!-- ko if: postcodeCheckHelper.isInDeliveryZone() -->
+                <p id="postcodeCheckOk">You are in our delivery area</p>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: viewModel.sites().length > 1 -->
+            <div id="postcodeCheckChangeStoreButton" class="highlightedButton">
+                <a href="#"  title="Check my postcode" data-bind="click: postcodeCheckHelper.changeStore">Change store</a>
+            </div>
+            <!-- /ko -->
+
+            <div id="postcodeCheckShowMenuButton" class="highlightedButton">
+                <a href="#"  title="Check my postcode" data-bind="click: postcodeCheckHelper.showMenu">Return to the menu</a>
+            </div>
+        </div>
+    </script>

@@ -1,0 +1,359 @@
+﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
+@{
+    var translator = Html.GetTranslator();
+
+}
+<!-- kendo validator is the important part. You can find it in the controller. -->
+<div kendo-validator="SocialNetworkSettingsValidator">
+    @*<div class="row">
+            <input type="text" required="required" placeholder="im required - test"  />
+        </div>*@
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="header">
+                <h3>Facebook</h3>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label>
+
+                <input type="checkbox" value="true"
+                       name="FacebookSettings.IsEnable"
+                       @*   yes i have put both in for a reason:
+                            FacebookSettings is not on the ng scope,
+                            and it cant really exist there due to the observable get, set, bind nature of the model.
+                       *@
+                       ng-model="ShowFacebookSettings" @* this does not need to part of the scope schema (it is there ... just typescript doesn't know about it) *@
+                       data-bind="checked: FacebookSettings.IsEnable" />
+                &nbsp;Enable Facebook
+            </label>
+        </div>
+        <div class="col-sm-6 col-sm-6 form-horizontal form-widgets" ng-show="ShowFacebookSettings">
+
+            <div class="header">
+                <h3>Website Appearance</h3>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    Facebook URL:
+                </label>
+                <div class="col-sm-8">
+                    <input type="text" class="k-textbox col-sm-12"
+                           @*data-required-if-facebook="true"*@
+                           placeholder="https://www.facebook.com/MyPizzaStore"
+                           name="Model.WebsiteConfigurations.SocialNetworkSettings.FacebookSettings.FollowURL"
+                           data-bind="value: FacebookSettings.FollowURL"
+                           data-required-msg='@translator.T("The facebook url is required when this is enabled.")'
+                           ng-required="ShowFacebookSettings" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4 col-xs-12">
+                    Enable Follow Icon:
+                </label>
+                <div class="col-sm-8">
+                    <label>
+                        <input type="checkbox" value="true"
+                               name="FacebookSettings.IsFollow"
+                               data-bind="checked: FacebookSettings.IsFollow" />
+
+                        Follow icon
+                    </label>
+                    <br />
+
+                    <label>
+                        <input type="checkbox" value="true"
+                               name="FacebookSettings.EnableFacebookLike"
+                               data-bind="checked: FacebookSettings.EnableFacebookLike" />
+
+                        Like button
+                    </label>
+                    <br />
+
+                    <label>
+                        <input type="checkbox"
+                               ng-disabled="(true)"
+                               value="true"
+                               name="FacebookSettings.EnableFacebookActivityFeeds"
+                               data-bind="checked: FacebookSettings.EnableFacebookActivityFeeds" />
+
+                        Activity feed
+                    </label>
+                   
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6 form-horizontal form-widgets" ng-show="ShowFacebookSettings">
+            <div class="header">
+                <h3>Facebook Share</h3>
+                <a class="k-button" target="_blank" href="https://developers.facebook.com/docs/sharing/reference/feed-dialog/v2.5">About</a>
+            </div>
+            <div class="" ng-if="!CustomerAccountSettings.FacebookAccountId">
+                Setup the Facebook id in 'General settings' first. 
+            </div>
+            <div ng-if="CustomerAccountSettings.FacebookAccountId">
+                <div class="form-group">
+                    <label class="control-label col-sm-4">
+                        Enable sharing:
+                    </label>
+                    <div class="col-sm-8">
+                        <label>
+                            <input type="checkbox" name="enableOrderShare" ng-model="SocialNetworkSettings.FacebookSettings.IsShare" placeholder="optional" />
+                            show a button after checkout for the user to announce on social media that it is take out day.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-if="SocialNetworkSettings.FacebookSettings.IsShare">
+                    <label class="control-label col-sm-4">
+                        Caption:
+                    </label>
+                    <div class="col-sm-8">
+                        <input class="k-textbox col-sm-12" type="text" name="FacebookSettings.ShareCaption" placeholder="optional" ng-model="SocialNetworkSettings.FacebookSettings.Caption" />
+                        <br />
+                        The caption of the link (appears beneath the link name). If not specified, this field is automatically populated with the URL of the link.
+                    </div>
+                </div>
+                <div class="form-group" ng-if="SocialNetworkSettings.FacebookSettings.IsShare">
+                    <label class="control-label col-sm-4">
+                        Description
+                    </label>
+                    <div class="col-sm-8">
+                        <textarea class="col-sm-12" rows="4" name="FacebookSettings.ShareDescription" ng-model="SocialNetworkSettings.FacebookSettings.Description"></textarea>
+                        <br />
+                        The description of the link (appears beneath the link caption). If not specified, this field is automatically populated by information scraped from the link, typically the title of the page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="header">
+                <h3>Twitter</h3>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label>
+                <input type="checkbox"
+                       value="true"
+                       name="TwitterSettings.IsEnable"
+                       ng-model="ShowTwitterSettings"
+                       data-bind="checked: TwitterSettings.IsEnable" />
+                Enable Twitter Follow Icon
+            </label>
+            <div style="padding-left: 20px" ng-show="ShowTwitterSettings">
+                Twitter URL: @*<i>https://www.twitter.com/</i>*@
+                <input type="text" class="k-textbox" style="width: 400px"
+                       placeholder="https://www.twitter.com/MyPizzaStore"
+                       name="Model.WebsiteConfigurations.SocialNetworkSettings.TwitterSettings.FollowURL"
+                       ng-required="ShowTwitterSettings"
+                       data-required-msg='@translator.T("The twitter url is required when this is enabled.")'
+                       data-bind="value: TwitterSettings.FollowURL" />
+                @*                <label class="control-label col-md-3 col-xs-3">
+                        <input type="radio"
+                            value="true"
+                            name="TwitterSettings.IsFollow"
+                            data-bind="checked: TwitterSettings.IsFollow" />
+                        Follow:
+                    </label>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="header">
+                <h3>Instagram</h3>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <label>
+                <input type="checkbox" value="true"
+                       name="InstagramSettings.IsEnable"
+                       ng-model="ShowInstagramSettings"
+                       data-bind="checked: InstagramSettings.IsEnable" />
+                Enable Instagram Follow Icon
+            </label>
+            <div style="padding-left: 20px" ng-show="ShowInstagramSettings">
+                Instagram URL: @*<i>https://www.instagram.com/</i>*@
+                <input type="text" class="k-textbox" style="width: 400px"
+                       placeholder="https://www.instagram.com/MyPizzaStore"
+                       name="Model.WebsiteConfigurations.SocialNetworkSettings.InstagramSettings.FollowURL"
+                       ng-required="ShowInstagramSettings"
+                       data-required-msg='@translator.T("The Instagram url is required when this is enabled.")'
+                       data-bind="value: InstagramSettings.FollowURL" />
+
+                @*                <label class="control-label col-md-3 col-xs-3">
+                        <input type="radio"
+                            value="true"
+                            name="InstagramSettings.IsFollow"
+                            data-bind="checked: InstagramSettings.IsFollow" />
+                        Follow:
+                    </label>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            Trip Advisor
+        </div>
+        <div class="col-sm-12">
+
+            <div id="TripAdvisorSettingsController" ng-controller="TripAdvisorSettingsController">
+                <label>
+                    <input type="checkbox" value="true"
+                           name="TripAdvisorSettings.IsEnable"
+                           ng-model="ShowTripAdvisorSettings"
+                           data-bind="checked:TripAdvisorSettings.IsEnable">
+                    Enable Trip Advisor Widget
+                </label>
+                <div style="padding-left: 20px" ng-show="ShowTripAdvisorSettings">
+                    Widget Script:
+                    <textarea class="k-textbox" style="width: 400px"
+                              name="Model.WebsiteConfigurations.SocialNetworkSettings.TripAdvisorSettings.Script"
+                              ng-required="ShowTripAdvisorSettings"
+                              data-required-msg='@translator.T("The widget script is required when this is enabled.")'
+                              data-bind="value: TripAdvisorSettings.Script"
+                              rows="5"></textarea>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="k-button k-primary" ng-click="SaveChanges()">Save</button>
+        </div>
+    </div>
+</div>
+
+@*<div class="row">
+        <div class="col-xs-12 form-horizontal form-widgets">
+
+            <div class="form-group">
+
+                <label class="control-label col-md-2 col-xs-2">
+                    Facebook:
+                </label>
+                <div class="col-md-10 col-xs-10">
+                    <label class="control-label col-md-2">
+                        <input type="checkbox" value="true"
+                            name="FacebookSettings.IsEnable"
+                            data-bind="checked: FacebookSettings.IsEnable" />
+                        Enable
+                    </label>
+                    <div class="col-md-8 col-xs-8">
+                        <label class="control-label col-md-3 col-xs-3">
+                            <input type="radio"
+                                value="true"
+                                name="FacebookSettings.IsShareOrFollow"
+                                data-bind="checked: FacebookSettings.IsFollow" />
+                            Follow:
+                        </label>
+                        <div class="col-md-5 col-xs-5">
+                            <input type="text" class="form-control"
+                                name="Model.WebsiteConfigurations.SocialNetworkSettings.FacebookSettings.FollowURL"
+                                data-bind="value: FacebookSettings.FollowURL" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="control-label col-md-2 col-xs-2">
+                    Facebook Like Button:
+                </label>
+
+                <div class="col-md-10 col-xs-10">
+                    <label class="control-label col-md-2">
+                        <input type="checkbox" value="true"
+                               name="FacebookSettings.EnableFacebookLike"
+                               data-bind="checked: FacebookSettings.EnableFacebookLike" />
+                        Enable
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="control-label col-md-2 col-xs-2">
+                    Facebook Like button Script:
+                </label>
+
+                <div class="col-md-10 col-xs-10">
+                    <textarea class="form-control" id="FacebookSettings.FacebookLikeButtonScript" style="height:150px;"
+                              name="FacebookSettings.FacebookLikeButtonScript"
+                              data-bind="value: FacebookSettings.FacebookLikeButtonScript"
+                              data-role="editor"
+                              data-tools="[]">
+                        {{FacebookLikeButtonScript}}
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-xs-2">
+                    Twitter:
+                </label>
+                <div class="col-md-10 col-xs-10">
+                    <label class="control-label col-md-2">
+                        <input type="checkbox" value="true"
+                            name="TwitterSettings.IsEnable"
+                            data-bind="checked: TwitterSettings.IsEnable" />
+                        Enable
+                    </label>
+                    <div class="col-md-8 col-xs-8">
+                        <label class="control-label col-md-3 col-xs-3">
+                            <input type="radio"
+                                value="true"
+                                name="TwitterSettings.IsFollow"
+                                data-bind="checked: TwitterSettings.IsFollow" />
+                            Follow:
+                        </label>
+                        <div class="col-md-5 col-xs-5">
+                            <input type="text" class="form-control"
+                                name="Model.WebsiteConfigurations.SocialNetworkSettings.TwitterSettings.FollowURL"
+                                data-bind="value: TwitterSettings.FollowURL" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-xs-2">
+                    Instagram:
+                </label>
+                <div class="col-md-10 col-xs-10">
+                    <label class="control-label col-md-2">
+                        <input type="checkbox" value="true"
+                            name="InstagramSettings.IsEnable"
+                            data-bind="checked: InstagramSettings.IsEnable" />
+                        Enable
+                    </label>
+
+                    <div class="col-md-8 col-xs-8">
+                        <label class="control-label col-md-3 col-xs-3">
+                            <input type="radio"
+                                value="true"
+                                name="InstagramSettings.IsFollow"
+                                data-bind="checked: InstagramSettings.IsFollow" />
+                            Follow:
+                        </label>
+                        <div class="col-md-5 col-xs-5">
+                            <input type="text" class="form-control"
+                                name="Model.WebsiteConfigurations.SocialNetworkSettings.InstagramSettings.FollowURL"
+                                data-bind="value: InstagramSettings.FollowURL" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <button type="button" class="k-button k-primary center" ng-click="SaveChanges()">Save</button>
+        </div>
+    </div>*@
+
+

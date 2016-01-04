@@ -1,0 +1,1113 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.GlobalSat</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.GlobalSat.GlobalSatHeader">
+            <summary>
+            GlobalSat has different headers depending on if message is sent over SMS or GPRS.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatHeader.UnknownHeader">
+            <summary>
+            Value not defined.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatHeader.GprsHeader">
+            <summary>
+            GPRS messages (sentences) starts with "$"
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatHeader.SmsHeader">
+            <summary>
+            SMS messages starts with "?"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatBase">
+            <summary>
+            Base class for all GlobalSat sentences.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBase.#ctor(System.String)">
+            <summary>
+            Create sentence from parameters
+            </summary>
+            <param name="strIMEI"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBase.#ctor(System.String,System.String)">
+            <summary>
+            Create sentence from paramaters.
+            </summary>
+            <param name="strIMEI"></param>
+            <param name="strReturn_Phone_Number"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBase.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Create from generic GlobalSentence object
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatBase.Header">
+            <summary>
+            Returns type of sentences. SMS or GPRS.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatBase.IMEI">
+            <summary>
+            IMEI number.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatBase.Return_Phone_Number">
+            <summary>
+            The confirmed SMS sent to the phone number to indicate the setting is successful.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatBuilder">
+            <summary>
+            Builds GlobalSat messages
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBuilder.CreateSentence(System.Byte[])">
+            <summary>
+            Creates Globalsat sentence from byte array.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBuilder.GetPrefix">
+            <summary>
+            Returns "?" if building SMS message and "$" if building GPRS message.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBuilder.GetPostfix">
+            <summary>
+            Returns "!"
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatBuilder.HasChecksum">
+            <summary>
+            GlobalSat messages has no checksum. Returns false.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatBuilder.Header">
+            <summary>
+            Sets if building a GPRS or SMS message. SMS is default.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatDeviceDefinition">
+            <summary>
+            All GlobalSat device definitions inherit from this class
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatDeviceDefinition.MapStatus(GpsGate.GlobalSat.GlobalSatTrackPointStatus)">
+            <summary>
+            Override to change default mapping of status signals for a device definition.
+            By default this method returns the value of the argument.
+            </summary>
+            <param name="statusTP"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatDeviceDefinition.NamespaceName">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatDeviceDefinition.ProtocolID">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatInvalidTrackPointException">
+            <summary>
+            Thrown if incoming message isn't a valid.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatInvalidTrackPointException.#ctor(System.String)">
+            <summary>
+            Create exception.
+            </summary>
+            <param name="strMessage">Message</param>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatHumanStatus.Unknown">
+            <summary>
+            Status not set
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatHumanStatus.EmergencyReport">
+            <summary>
+            Emergency report. (Or as GlobalSat calls it "Emergence report"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatHumanParser">
+            <summary>
+            Parses one GlobalSat human readable SMS
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatHumanParser.Parse(Franson.Message.Sms.SmsMessage)">
+            <summary>
+            Write SMS for parsing. Read results from public properties after parsing. Returns if parsing was ok.
+            </summary>
+            <param name="sms"></param>
+            <returns>Returns true if this was a valid GlobalSat human readable SMS</returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatHumanParser.m_SkipBlankLines(System.String[],System.Int32)">
+            <summary>
+            Returns index of next line that isn't blank, or only contains whitespaces.
+            Checks the current line first.
+            Returns -1 if there are no more lines.
+            </summary>
+            <param name="arrRows"></param>
+            <param name="iStartIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatHumanParser.TrackPoint">
+            <summary>
+            Track point from SMS
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatHumanParser.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatParser">
+            <summary>
+            Parses GlobalSat messages.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatParser.#ctor">
+            <summary>
+            Create a GlobalSat message parser
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatParser.ValidateSentence(System.Byte[])">
+            <summary>
+            Returns true if arrData is a valid GlobalSat sentence with a valid checksum
+            </summary>
+            <param name="arrData">Data to be validated</param>
+            <returns>True if ok</returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatParser.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a <see cref="T:GpsGate.GlobalSat.GlobalSatSentence"/> object.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatProtocol">
+            <summary>
+            Generic parts of GlobalSat protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.IsTR151(GpsGate.Online.Directory.Device)">
+            <summary>
+            Returns true if specified device is a TR-151 according to the device definition.
+            </summary>
+            <param name="dev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.IsTR102(GpsGate.Online.Directory.Device)">
+            <summary>
+            Returns true if device is a TR-102 according to device definition (or one of its derivates like TR-102A).
+            </summary>
+            <param name="dev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.DisconnectInterval(System.Int32)">
+            <summary>
+            If TimeFilter is greater than this value the GlobalSat device will be instructed to disconnect between updates.
+            The value is in seconds. It is a settings value in the GlobalSat namespace.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.AdjustLocalTime(System.Int32)">
+            <summary>
+            If true the protocol object will assume that time stamp can be in a local time zone and try to change those to UTC.
+            If true, buffered data cannot be handled.
+            Default is false. This is a settings value in the GlobalSat namespace.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create GlobalSat protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Translate from GlobalSat protocol to GpsGate Protocol.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.SendOK">
+            <summary>
+            Override to send back OK, if relevant for protocol variant.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatProtocol.SendUpdateInterval(Franson.Geo.TrackPoint,Franson.Geo.TrackPoint)">
+            <summary>
+            Override to send back update interval to device.
+            </summary>
+            <param name="tpNew"></param>
+            <param name="tpLast"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatProtocol.StringID">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatSentence">
+            <summary>
+            GlobatSat sentence
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSentence.#ctor(System.Byte[])">
+            <summary>
+            Create Globalsat sentence. Called by <see cref="T:GpsGate.GlobalSat.GlobalSatParser"/>
+            </summary>
+            <param name="arrSentence"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatSentence.Header">
+            <summary>
+            Indicates if this is a message sent over SMS or GPRS
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatSmsConnection">
+            <summary>
+            Handles a SMS connection to/from one client.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS conneciton for GlobalSat
+            </summary>
+            <param name="msisdn"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.GlobalSat.GlobalSatSmsProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Check there is SMS formats on commands sent to tracker.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatSmsListener">
+            <summary>
+            GlobalSat SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsListener.OnStart">
+            <summary>
+            Installs GlobalSat protocol and starts up listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a new <see cref="T:GpsGate.GlobalSat.GlobalSatSmsConnection"/> object.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Install. Enable by default.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatSmsListener.ProtocolID">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatSmsProtocol">
+            <summary>
+            Handles GlobalSat SMS protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create GlobalSat protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsProtocol.SendOK">
+            <summary>
+            NOP
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatSmsProtocol.SendUpdateInterval(Franson.Geo.TrackPoint,Franson.Geo.TrackPoint)">
+            <summary>
+            NOP
+            </summary>
+            <param name="tpNew"></param>
+            <param name="tpLast"></param>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatTcpConnection">
+            <summary>
+            Handles connection to a GlobalSat device. E.g. TR-102 or TR-151
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a GlobalSat device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpConnection.Start">
+            <summary>
+            Start connection. Sets timeout to 15 minutes.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpConnection.CreateProtocol">
+            <summary>
+            Returns GlobalSat protocol object. <see cref="T:GpsGate.GlobalSat.GlobalSatTcpProtocol"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Check there is TCP formats on commands sent to tracker.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatTcpListener">
+            <summary>
+            Handles a GlobalSat device connected over TCP/IP
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpListener.OnStart">
+            <summary>
+            Called when listener is started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.GlobalSat.GlobalSatTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 5000
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatTcpListener.ProtocolID">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatTcpProtocol">
+            <summary>
+            Handles GlobalSat TCP protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTcpProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create GlobalSat protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatTrackPointStatus">
+            <summary>
+            Status of GlobalSat TrackPoint
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.UnknownStatus">
+            <summary>
+            Unknown status
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.ImmediateReport">
+            <summary>
+            0: Immediate report
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.PeriodReport">
+            <summary>
+            1: Period report
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.StopConnect">
+            <summary>
+            2: Stop connect
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.StopConnectAndSetPeriodReport">
+            <summary>
+            3: Stop connect and set period report
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.Geofence">
+            <summary>
+            Geofence breach
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.EmergencyReport">
+            <summary>
+            5: SOS button.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.X_ImmediateReport">
+            <summary>
+            8: ImmediateReport duplicate
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.X_PeriodReport">
+            <summary>
+            9: PeriodReport duplicate
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.X_StopConnect">
+            <summary>
+            10: StopConnect duplicate
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.X_Geofence">
+            <summary>
+            Geofence duplicate
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.ParkingToMotion">
+            <summary>
+            12: Motion after parking button was pressed.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.SleepToMotion">
+            <summary>
+            13: Motion after device was put into sleep mode
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.BatteryLow">
+            <summary>
+            14: Battery low
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.ParkingModeRegular">
+            <summary>
+            19: When device is in parking mode, it wakes up and sends this signal with a defined time interval.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.SleepModeRegular">
+            <summary>
+            20: When device is sleeping, it wakes up and sends this signal with a defined time interval.
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.X2_Geofence">
+            <summary>
+            23: SMS/GPRS Geofence (?)
+            </summary>
+        </member>
+        <member name="F:GpsGate.GlobalSat.GlobalSatTrackPointStatus.MotionReportActivate">
+            <summary>
+            24: 
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.GlobalSatTrackPoint">
+            <summary>
+            A GlobalSat <see cref="T:Franson.Geo.TrackPoint"/> for TR-151 and TR-102
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTrackPoint.#ctor(Franson.Nmea.Sentence)">
+            <summary>
+            Create TrackPoint from TR-102 message
+            </summary>
+            <param name="sentence"></param>
+            <param name="bAdjustLocalTime">Set to true if timestamp should be adjusted if suspected local time.</param>
+            <exception cref="!:TR102InvalidTrackPointException">If the track point is invalid.</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.GlobalSatTrackPoint.IsTrackPoint(Franson.Nmea.Sentence)">
+            <summary>
+            Returns true if sentence is a GlobalSat TrackPoint.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatTrackPoint.Status">
+            <summary>
+            Status <see cref="T:GpsGate.GlobalSat.GlobalSatTrackPointStatus"/>
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatTrackPoint.SatelliteCount">
+            <summary>
+            Number of satellites used in fix.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatTrackPoint.DeviceDateTime">
+            <summary>
+            Time stamp sent from device. Can be UTC or localtime.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.GlobalSatTrackPoint.UnchangedTrackPoint">
+            <summary>
+            Track point that isn't adjusted for localtime.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.MsgAck">
+            <summary>
+            A GlobalSat ACK message. E.g "?7,IMEI,OK!"
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgAck.#ctor(System.String)">
+            <summary>
+            Create.
+            </summary>
+            <param name="strIMEI"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgAck.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Create from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Invalid sentence</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgAck.IsMsgAck(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Returns true if genric sentence is an ACK sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgAck.BuildSentence">
+            <summary>
+            Build sentence.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgAck.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Invalid sentence</exception>
+        </member>
+        <member name="T:GpsGate.GlobalSat.MsgGprsSettings">
+            <summary>
+            GPRS settings
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGprsSettings.#ctor(System.String,System.String,System.String,System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Create GPRS settings.
+            </summary>
+            <param name="strIMEI">Device IMEI. Needed to authenticate message.</param>
+            <param name="strAPN">GPRS APN</param>
+            <param name="strGPRS_Name">GPRS username.</param>
+            <param name="strGPRS_pwd">GPRS password.</param>
+            <param name="strHost_Name">GpsGate Server address.</param>
+            <param name="iPort">GpsGate Server port.</param>
+            <param name="strReturn_Phone_Number"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGprsSettings.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Create from generic sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Invalid sentence</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGprsSettings.IsGprsSettings(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Returns true if generic sentence is a GprsSettings sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGprsSettings.BuildSentence">
+            <summary>
+            Build sentence
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGprsSettings.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Invalid sentence</exception>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.APN">
+            <summary>
+            GPRS APN.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.GPRS_Name">
+            <summary>
+            GPRS username.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.GPRS_pwd">
+            <summary>
+            GPRS password
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.DNS1">
+            <summary>
+            DNS1
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.DNS2">
+            <summary>
+            DNS2
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.Host_Name">
+            <summary>
+            Address to GpsGate Server.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGprsSettings.Port">
+            <summary>
+            GpsGate Server port.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.MsgGpsFixing">
+            <summary>
+            The time that allows for GPS fixing. If GPS fixing is not achieved within the
+            time, it will close GPS and send back the previous location info.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGpsFixing.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            The time, in minutes,  that allows for GPS fixing. If GPS fixing is not achieved within the
+            time, it will close GPS and send back the previous location info.
+            </summary>
+            <param name="strIMEI"></param>
+            <param name="iMaximum_GPS_Fixing_Time">Allowed time to get a fix (before old position is sent). Specified in minutes.</param>
+            <param name="strReturn_Phone_Number"></param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGpsFixing.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Parse generic sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Wrong type of generic sentence.</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGpsFixing.IsGpsFixing(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Returns true if sentence is a GpsFixing sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGpsFixing.BuildSentence">
+            <summary>
+            Build sentence
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgGpsFixing.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Wrong type of generic sentence</exception>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgGpsFixing.Maximum_GPS_Fixing_Time">
+            <summary>
+            The time in minutes that allows for GPS fixing. If GPS fixing is not achieved within the
+            time, it will close GPS and send back the previous location info.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.MsgReportSettings">
+            <summary>
+            Configures update intervals for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.#ctor(System.String,GpsGate.GlobalSat.GlobalSatTrackPointStatus,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Configures update interval. Use this constructor for Period Reports
+            </summary>
+            <param name="strIMEI"></param>
+            <param name="iDefault_Report_Mode">0- immediate report, 1 - period report, 2 - stop</param>
+            <param name="iReport_Interval">Time interval of sending data report. The unit is second.</param>
+            <param name="iNumber_of_Reports">Set how many report will be sent. 0 - continuous report. X - X times report</param>
+            <param name="iReport_Format">0 - Format0, 1 - Format1</param>
+            <param name="strReturnPhoneNnumberForDefaultReportMode">Return phone number for default report mode.</param>
+            <param name="strReturn_Phone_Number">The confirmed SMS sent to the phone number to indicate the setting is successful.</param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.#ctor(System.String,GpsGate.GlobalSat.GlobalSatTrackPointStatus,System.Int32,System.String,System.String)">
+            <summary>
+            Configures update interval. Use this constructor for Immediately and Stop reports.
+            </summary>
+            <param name="strIMEI"></param>
+            <param name="iDefault_Report_Mode">0- immediate report, 1 - period report, 2 - stop</param>
+            <param name="iReport_Format">0 - Format0, 1 - Format1</param>
+            <param name="strReturnPhoneNnumberForDefaultReportMode">Return phone number for default report mode.</param>
+            <param name="strReturn_Phone_Number">The confirmed SMS sent to the phone number to indicate the setting is successful.</param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Create from generic GlobalSat sentence.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">If invalid genric sentence</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.IsReportSettings(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Returns true if generic sentence is a ReportSettings sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.BuildSentence">
+            <summary>
+            Build sentence
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReportSettings.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">If invalid genric sentence</exception>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReportSettings.Default_Report_Mode">
+            <summary>
+            0- immediate report, 1 - period report, 2 - stop
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReportSettings.Report_Interval">
+            <summary>
+            Time interval of sending data report. The unit is second.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReportSettings.Number_of_Reports">
+            <summary>
+            Set how many report will be sent. 0 - continuous report. X - X times report
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReportSettings.Report_Format">
+            <summary>
+            0 - Format0, 1 - Format1
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReportSettings.ReturnPhoneNnumberForDefaultReportMode">
+            <summary>
+            Return phone number for default report mode.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.MsgReturnPhoneNumber">
+            <summary>
+            In the SMS tracking commands (immediate report, period report,
+            stop report, Geofence), if the field Return_Phone_Number is
+            empty, TR-151 will send data report to this
+            SMSDefaultReturnPhoneNumber.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReturnPhoneNumber.#ctor(System.String,System.Boolean,System.String,System.String)">
+            <summary>
+            In the SMS tracking commands (immediate report, period report,
+            stop report, Geofence), if the field Return_Phone_Number is
+            empty, TR-151 will send data report to this
+            SMSDefaultReturnPhoneNumber.
+            </summary>
+            <param name="strIMEI">IMEI number of device.</param>
+            <param name="bEnable">Enable default SMS phone number</param>
+            <param name="strSMSDefaultReturnPhoneNumber"></param>
+            <param name="strReturn_Phone_Number">The confirmed SMS sent to the phone number to indicate the
+            setting is successful.</param>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReturnPhoneNumber.#ctor(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Create from generic sentence
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.InvalidOperationException">Not a ReturnPhoneNumber sentence.</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReturnPhoneNumber.IsReturnPhoneNumber(GpsGate.GlobalSat.GlobalSatSentence)">
+            <summary>
+            Returns tru if specified generic sentence is a ReturnPhoneNumber sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReturnPhoneNumber.BuildSentence">
+            <summary>
+            Build sentence from parameters.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.MsgReturnPhoneNumber.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReturnPhoneNumber.Enable_SMSDefaultReturnPhoneNumber">
+            <summary>
+            Enable/disable default return phone number for SMS.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.MsgReturnPhoneNumber.SMSDefaultReturnPhoneNumber">
+            <summary>
+            In the SMS tracking commands (immediate report, period report,
+            stop report, Geofence), if the field Return_Phone_Number is
+            empty, TR-151 will send data report to this
+            SMSDefaultReturnPhoneNumber.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.TR102ADeviceDefinition">
+            <summary>
+            Defines the capabilities of EasyDevice.co.uk TR-102A device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR102ADeviceDefinition.MapStatus(GpsGate.GlobalSat.GlobalSatTrackPointStatus)">
+            <summary>
+            Remaps status 5 to BatteryLow and 6 to EmercencyReport
+            </summary>
+            <param name="statusTP"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR102ADeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns the Device specific <see cref="T:Franson.Message.MessageField"/> upon installation,
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listFields"></param>
+            <returns>Return a list of <see cref="T:GpsGate.Online.Directory.DeviceFieldProperty">DeviceFieldProperties</see> to be added to the system.</returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR102ADeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Called for each time a new <see cref="T:Franson.Message.MessageField"/> registers in the server for the device to let the <see cref="T:GpsGate.Online.Directory.DeviceDefinition"/>
+            create an entry in the default mapper.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR102ADeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR102ADeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.TR102DeviceDefinition">
+            <summary>
+            Defines the capabilities of GlobalSat TR-102 device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR102DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns the Device specific <see cref="T:Franson.Message.MessageField"/> upon installation,
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns>Return a list of <see cref="T:GpsGate.Online.Directory.DeviceFieldProperty">DeviceFieldProperties</see> to be added to the system.</returns>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR102DeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Called for each time a new <see cref="T:Franson.Message.MessageField"/> registers in the server for the device to let the <see cref="T:GpsGate.Online.Directory.DeviceDefinition"/>
+            create an entry in the default mapper.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR102DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR102DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.TR151DeviceDefinition">
+            <summary>
+            Defines the capabilities of GlobalSat TR-151 device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.TR151DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listFields"></param>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR151DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.TR151DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.Command.GlobalSatGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatGprsSettingsCmdExe.Execute">
+            <summary>
+            Sends GPRS settings over SMS to device.
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException">Unexpected error building GlobalSat native command.</exception>
+            <exception cref="T:System.InvalidOperationException">If the outgoing connection isn't SMS</exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatGprsSettingsCmdExe.PendingCommit(System.Object,System.String)">
+            <summary>
+            Continue processing pending command
+            </summary>
+            <param name="oDeviceData"></param>
+            <param name="strCustomState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            Require ACK for GlobalSat.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.Command.GlobalSatPollPositionCmdExe">
+            <summary>
+            Handles outgoing _PollPosition command for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatPollPositionCmdExe.Execute">
+            <summary>
+            Send position request to GlobalSat device.
+            If the device is online over tcp, the request is made over TCP. Otherwise an SMS is sent.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatPollPositionCmdExe.PendingCommit(System.Object,System.String)">
+            <summary>
+            Stops tracking for TR-102 to emulate poll position.
+            </summary>
+            <param name="oDeviceData"></param>
+            <param name="strCustomState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatPollPositionCmdExe.Namespace">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatPollPositionCmdExe.RequiresAck">
+            <summary>
+            Returns true. Do require ACK for GlobalSat.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.Command.GlobalSatSetDeviceTrackRecorderCmdExe">
+            <summary>
+            Handles outgoing _SetDeviceTrackRecorder command for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatSetDeviceTrackRecorderCmdExe.Execute">
+            <summary>
+            Sends command to GlobalSat device to change update interval.
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatSetDeviceTrackRecorderCmdExe.Namespace">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatSetDeviceTrackRecorderCmdExe.RequiresAck">
+            <summary>
+            Returns false. Does not require ack from device.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.Command.GlobalSatStartTrackingCmdExe">
+            <summary>
+            Handles outgoing _StartTracking command for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatStartTrackingCmdExe.Execute">
+            <summary>
+            Send request to start position updates to GlobalSat device.
+            </summary>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatStartTrackingCmdExe.PendingCommit(System.Object,System.String)">
+            <summary>
+            Continue pending command
+            </summary>
+            <param name="oDeviceData"></param>
+            <param name="strCustomState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatStartTrackingCmdExe.Namespace">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatStartTrackingCmdExe.RequiresAck">
+            <summary>
+            Returns true. Require ACK for GlobalSat.
+            </summary>
+        </member>
+        <member name="T:GpsGate.GlobalSat.Command.GlobalSatStopTrackingCmdExe">
+            <summary>
+            Handles outgoing _StopTracking command for GlobalSat
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatStopTrackingCmdExe.Execute">
+            <summary>
+            Sends command to GlobalSat device to stop tracking.
+            </summary>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:GpsGate.GlobalSat.Command.GlobalSatStopTrackingCmdExe.PendingCommit(System.Object,System.String)">
+            <summary>
+            Sends back stop stracing for TR-151
+            </summary>
+            <param name="oDeviceData"></param>
+            <param name="strCustomState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatStopTrackingCmdExe.Namespace">
+            <summary>
+            Returns "GlobalSat"
+            </summary>
+        </member>
+        <member name="P:GpsGate.GlobalSat.Command.GlobalSatStopTrackingCmdExe.RequiresAck">
+            <summary>
+            Returns true. Require ACK for GlobalSat.
+            </summary>
+        </member>
+    </members>
+</doc>

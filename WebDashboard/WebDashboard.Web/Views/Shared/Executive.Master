@@ -1,0 +1,47 @@
+﻿<%@ Import Namespace="WebDashboard.Web.Models"%>
+<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage<WebDashboardViewData.MasterPageViewData>" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="Head1" runat="server">
+    <title></title>
+    <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/Executive.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://dashboard.androtechnology.co.uk/dashboard/scripts/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="http://dashboard.androtechnology.co.uk/dashboard/scripts/jquery.metadata.js"></script>
+    <meta http-equiv="refresh" content="90" />
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div class="lfBotCurve"></div>
+            <div id="title">
+                <h1><%=WebDashboard.Web.ResourceHelper.GetString("Dashboard")%></h1><h2><asp:ContentPlaceHolder ID="TitleContent" runat="server" /></h2>  
+            </div>
+            <div class="rgBotCurve"></div>
+            <div id="logindisplay">
+                <% Html.RenderPartial("CultureChooserUserControl"); %>
+                <% Html.RenderPartial("LogOnUserControl"); %>
+            </div>
+            <div class="hoDashboard"><h2><%= Html.ActionLink(WebDashboard.Web.ResourceHelper.GetString("Sites"), "Sites","Home") %></h2></div> 
+            
+        </div>
+        <div class="container"><h3><%=WebDashboard.Web.ResourceHelper.GetString("Error")%></h3>
+        <ul>
+        </ul>
+        </div> 
+        <div id="main">
+            <div class="lfTopCurve"></div><div class="rgTopCurve"></div>
+            <div id="executiveContent">
+                <div class="lfTopCurveWhite"></div><div class="rgTopCurveWhite"></div>
+                <div id="mainContent"><asp:ContentPlaceHolder ID="MainContent" runat="server" /></div>
+                <div class="lfBotCurveWhite"></div><div class="rgBotCurveWhite"></div>
+            </div>
+        </div>            
+        <div class="lfBotCurveMain"></div><div class="botMain"></div><div class="rgBotCurveMain"></div>
+    </div>
+    <asp:ContentPlaceHolder ID="ValidatorContent" runat="server" />
+</body>
+</html>

@@ -1,0 +1,50 @@
+﻿    <!-- SITES VIEW -->
+    <script type="text/html" id="sitesView">
+        <div class="content">
+            <div class="sitesBox">
+                <!-- Site list -->
+                <h1 class="welcomeHeader" data-bind="html: textStrings.welcomeHeader"></h1>
+                <h2 class="chooseStorePrompt" data-bind="html: $root.contentViewModel().checkPostcode "></h2>
+
+                <div id="siteListPromptContainer">
+                    <!-- ko if: siteSelectorHelper.isSorryVisible() -->
+                    <h2 class="chooseStorePrompt" id="slSorry" data-bind="text: textStrings.slSorry"></h2>
+                    <div id="slChangePostcodeWrapper">
+                        <span id="slChangePostcodePrompt" data-bind="text: textStrings.slChangePostcodePrompt"></span>
+                        <span id="slSelectedPostcode" data-bind="text: siteSelectorHelper.postcode"></span>
+                        <a href="#" id="slChangePostcodeButton" data-bind="text: textStrings.slChangePostcodeButton, click: $root.contentViewModel().changePostcode"></a>
+                    </div>
+                    <!-- /ko -->
+                    <h2 class="chooseStorePrompt" id="slChooseRestaurant" data-bind="text: textStrings.slChooseRestaurant"></h2>
+                </div>
+
+                <div class="siteButtonsContainer">
+                    <div class="siteButtonsInner">
+
+                    <!-- ko foreach: siteSelectorHelper.siteDetails -->
+
+                        <div class="siteListSite">
+                            <div class="siteListSiteName" data-bind="text: site.name"></div>
+                            <div class="siteListSiteRoad" data-bind="text: (site.address.roadNum != null ? site.address.roadNum + ' ' : '') + (site.address.roadName != null ? site.address.roadName : '')"></div>
+                            <div class="siteListSiteCityPostcode" data-bind="text: site.address.town + ' ' + site.address.postcode"></div>
+                            
+                            <div class="<!--siteListMapWrapper-->">
+                                <div class="siteListClickForLocation">
+                                    <!--<a href="#" data-bind="attr: {href: mapUrl}" target="_blank">click for location</a>-->
+                                    <a data-bind="click: $root.storeListStoreSelected, attr: { href: '/' + site.name + '/Home/' }">click for location</a>
+                                </div>
+                                <a class="siteListMapContainer">
+                                    <div class="siteListMap" data-bind="attr: { id: id }, click: $root.storeListStoreSelected"></div>
+                                </a>
+                                <a class="siteListCollectFromHere" data-bind="click: $root.storeListStoreSelected, attr: { href: '/' + site.name + '/Home/' }">order from here</a>
+                            </div>
+                        </div>
+
+                    <!-- /ko -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </script>

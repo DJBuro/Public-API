@@ -1,0 +1,1282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.Androtechnology.co.uk/OrderTracking" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.Androtechnology.co.uk/OrderTracking" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.Androtechnology.co.uk/OrderTracking">
+      <s:element name="ZTest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalStoreId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ZTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ZTestResult" type="tns:ArrayOfDriver" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfDriver">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Driver" nillable="true" type="tns:Driver" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Driver">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="DriverOrder" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Trackers" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalDriverId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Vehicle" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Store" type="tns:Store" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Entity" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Customer">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CustomerOrders" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Credentials" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:Coordinates" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Coordinates">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+              <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="CustomerOrder">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Order" type="tns:Order" />
+              <s:element minOccurs="0" maxOccurs="1" name="Customer" type="tns:Customer" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Order">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="CustomerOrder" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalOrderId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="TicketNumber" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExtraInformation" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="ProximityDelivered" nillable="true" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="Store" type="tns:Store" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Store">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Drivers" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Orders" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Trackers" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalStoreId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="DeliveryRadius" type="s:short" />
+              <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:Coordinates" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Status">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="OrderStatus">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Processor" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Time" type="s:dateTime" />
+              <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:Status" />
+              <s:element minOccurs="0" maxOccurs="1" name="Order" type="tns:Order" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Item">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Order" type="tns:Order" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="DriverOrder">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Driver" type="tns:Driver" />
+              <s:element minOccurs="0" maxOccurs="1" name="Order" type="tns:Order" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TrackerStatus">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Tracker">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Driver" type="tns:Driver" />
+              <s:element minOccurs="0" maxOccurs="1" name="Status" type="tns:TrackerStatus" />
+              <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:Coordinates" />
+              <s:element minOccurs="0" maxOccurs="1" name="Store" type="tns:Store" />
+              <s:element minOccurs="1" maxOccurs="1" name="BatteryLevel" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GetTrackerNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Results">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorMessages" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="WarningMessages" type="tns:ArrayOfString" />
+          <s:element minOccurs="1" maxOccurs="1" name="Success" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTrackerNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTrackerNamesResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="trackers" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTrackers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTracker">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Tracker" nillable="true" type="tns:Tracker" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTrackersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTrackersResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="trackers" type="tns:ArrayOfTracker" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUpdateDriver">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalDriverId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="driverName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="vehicle" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="trackerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUpdateDriverResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddUpdateDriverResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDriver">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalDriverId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDriverResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDriverResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="driver" type="tns:Driver" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDrivers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDriversResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDriversResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="drivers" type="tns:ArrayOfDriver" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrderToDriver">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalOrderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalDriverId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="dateTimeAdded" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrderToDriverResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddOrderToDriverResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveOrderFromDriver">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalOrderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalDriverId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveOrderFromDriverResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveOrderFromDriverResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="orderName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ticketNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalOrderId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="orderProcessor" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="extraInformation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="dateTimeCreated" type="s:dateTime" />
+            <s:element minOccurs="0" maxOccurs="1" name="orderItems" type="tns:ArrayOfOrderItem" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerDetails" type="tns:CustomerDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOrderItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="OrderItem" nillable="true" type="tns:OrderItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="OrderItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Quantity" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CustomerDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Credentials" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HouseNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoadName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TownCity" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddOrderResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllStatuses">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfStatus">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Status" nillable="true" type="tns:Status" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetAllStatusesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllStatusesResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="tns:ArrayOfStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOrderStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalOrderId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="status" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="processor" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="dateTimeChanged" type="s:dateTime" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateOrderStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateOrderStatusResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUndeliveredOrders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfOrder">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUndeliveredOrdersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUndeliveredOrdersResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="orders" type="tns:ArrayOfOrder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="externalOrderId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrderResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="order" type="tns:Order" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrdersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrdersResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="orders" type="tns:ArrayOfOrder" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearStore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ClearStoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ClearStoreResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Last20Logs">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLog">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Log" nillable="true" type="tns:Log" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Log">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="StoreId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Severity" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Method" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Source" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="Created" nillable="true" type="s:dateTime" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="Last20LogsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Last20LogsResult" type="tns:Results" />
+            <s:element minOccurs="0" maxOccurs="1" name="logs" type="tns:ArrayOfLog" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ArrayOfDriver" nillable="true" type="tns:ArrayOfDriver" />
+      <s:element name="Results" nillable="true" type="tns:Results" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ZTestSoapIn">
+    <wsdl:part name="parameters" element="tns:ZTest" />
+  </wsdl:message>
+  <wsdl:message name="ZTestSoapOut">
+    <wsdl:part name="parameters" element="tns:ZTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTrackerNames" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTrackerNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTrackers" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTrackersResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverSoapIn">
+    <wsdl:part name="parameters" element="tns:AddUpdateDriver" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverSoapOut">
+    <wsdl:part name="parameters" element="tns:AddUpdateDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDriverSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDriver" />
+  </wsdl:message>
+  <wsdl:message name="GetDriverSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDriversSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDrivers" />
+  </wsdl:message>
+  <wsdl:message name="GetDriversSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDriversResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverSoapIn">
+    <wsdl:part name="parameters" element="tns:AddOrderToDriver" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverSoapOut">
+    <wsdl:part name="parameters" element="tns:AddOrderToDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveOrderFromDriver" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveOrderFromDriverResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:AddOrder" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:AddOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllStatusesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllStatuses" />
+  </wsdl:message>
+  <wsdl:message name="GetAllStatusesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllStatusesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUndeliveredOrdersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUndeliveredOrders" />
+  </wsdl:message>
+  <wsdl:message name="GetUndeliveredOrdersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUndeliveredOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOrder" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOrdersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOrders" />
+  </wsdl:message>
+  <wsdl:message name="GetOrdersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreSoapIn">
+    <wsdl:part name="parameters" element="tns:ClearStore" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreSoapOut">
+    <wsdl:part name="parameters" element="tns:ClearStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="Last20LogsSoapIn">
+    <wsdl:part name="parameters" element="tns:Last20Logs" />
+  </wsdl:message>
+  <wsdl:message name="Last20LogsSoapOut">
+    <wsdl:part name="parameters" element="tns:Last20LogsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpGetIn">
+    <wsdl:part name="externalStoreId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfDriver" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+    <wsdl:part name="driverName" type="s:string" />
+    <wsdl:part name="vehicle" type="s:string" />
+    <wsdl:part name="trackerName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+    <wsdl:part name="dateTimeAdded" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="status" type="s:string" />
+    <wsdl:part name="processor" type="s:string" />
+    <wsdl:part name="dateTimeChanged" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpPostIn">
+    <wsdl:part name="externalStoreId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfDriver" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+    <wsdl:part name="driverName" type="s:string" />
+    <wsdl:part name="vehicle" type="s:string" />
+    <wsdl:part name="trackerName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateDriverHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+    <wsdl:part name="dateTimeAdded" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderToDriverHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="externalDriverId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="RemoveOrderFromDriverHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="externalOrderId" type="s:string" />
+    <wsdl:part name="status" type="s:string" />
+    <wsdl:part name="processor" type="s:string" />
+    <wsdl:part name="dateTimeChanged" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateOrderStatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ClearStoreHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:portType name="TrackSoap">
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestSoapIn" />
+      <wsdl:output message="tns:ZTestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackerNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a list of GPS trackers registered for a store, it is these tracker names you would assign to a driver</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackerNamesSoapIn" />
+      <wsdl:output message="tns:GetTrackerNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a list of GPS trackers and their status, and the drivers that are assigned to the tracker</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackersSoapIn" />
+      <wsdl:output message="tns:GetTrackersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a driver with a tracker, or updates a currently available driver.  Pass an empty string as trackerName to remove a tracker from a driver, or for delivery drivers without trackers</wsdl:documentation>
+      <wsdl:input message="tns:AddUpdateDriverSoapIn" />
+      <wsdl:output message="tns:AddUpdateDriverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a driver, the associated tracker, and any orders with the driver</wsdl:documentation>
+      <wsdl:input message="tns:GetDriverSoapIn" />
+      <wsdl:output message="tns:GetDriverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDrivers">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a list of drivers, their associated trackers, and any orders with the drivers</wsdl:documentation>
+      <wsdl:input message="tns:GetDriversSoapIn" />
+      <wsdl:output message="tns:GetDriversSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds an order to a driver, order status is automatically updated</wsdl:documentation>
+      <wsdl:input message="tns:AddOrderToDriverSoapIn" />
+      <wsdl:output message="tns:AddOrderToDriverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes an order from a driver</wsdl:documentation>
+      <wsdl:input message="tns:RemoveOrderFromDriverSoapIn" />
+      <wsdl:output message="tns:RemoveOrderFromDriverSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds an order to be tracked in the OrderTracking system</wsdl:documentation>
+      <wsdl:input message="tns:AddOrderSoapIn" />
+      <wsdl:output message="tns:AddOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStatuses">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets all available order statuses, use these status Ids to update the order status</wsdl:documentation>
+      <wsdl:input message="tns:GetAllStatusesSoapIn" />
+      <wsdl:output message="tns:GetAllStatusesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update an orders status</wsdl:documentation>
+      <wsdl:input message="tns:UpdateOrderStatusSoapIn" />
+      <wsdl:output message="tns:UpdateOrderStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUndeliveredOrders">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a list orders that are not proximity delivered, cashed off, cancelled or currently assigned to a driver</wsdl:documentation>
+      <wsdl:input message="tns:GetUndeliveredOrdersSoapIn" />
+      <wsdl:output message="tns:GetUndeliveredOrdersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrder">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns an order and its current status</wsdl:documentation>
+      <wsdl:input message="tns:GetOrderSoapIn" />
+      <wsdl:output message="tns:GetOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrders">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets all orders for a store and their current status</wsdl:documentation>
+      <wsdl:input message="tns:GetOrdersSoapIn" />
+      <wsdl:output message="tns:GetOrdersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resets the OrderTracking system, removes all drivers, trackers, customers and orders from the system, usually called at the end, or the beginning of each day</wsdl:documentation>
+      <wsdl:input message="tns:ClearStoreSoapIn" />
+      <wsdl:output message="tns:ClearStoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Last20Logs">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets a list of logs from the last 20 errors, warnings or debug information, not to be used for error handling, calls to this method are monitored for abuse</wsdl:documentation>
+      <wsdl:input message="tns:Last20LogsSoapIn" />
+      <wsdl:output message="tns:Last20LogsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TrackHttpGet">
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestHttpGetIn" />
+      <wsdl:output message="tns:ZTestHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a driver with a tracker, or updates a currently available driver.  Pass an empty string as trackerName to remove a tracker from a driver, or for delivery drivers without trackers</wsdl:documentation>
+      <wsdl:input message="tns:AddUpdateDriverHttpGetIn" />
+      <wsdl:output message="tns:AddUpdateDriverHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds an order to a driver, order status is automatically updated</wsdl:documentation>
+      <wsdl:input message="tns:AddOrderToDriverHttpGetIn" />
+      <wsdl:output message="tns:AddOrderToDriverHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes an order from a driver</wsdl:documentation>
+      <wsdl:input message="tns:RemoveOrderFromDriverHttpGetIn" />
+      <wsdl:output message="tns:RemoveOrderFromDriverHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update an orders status</wsdl:documentation>
+      <wsdl:input message="tns:UpdateOrderStatusHttpGetIn" />
+      <wsdl:output message="tns:UpdateOrderStatusHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resets the OrderTracking system, removes all drivers, trackers, customers and orders from the system, usually called at the end, or the beginning of each day</wsdl:documentation>
+      <wsdl:input message="tns:ClearStoreHttpGetIn" />
+      <wsdl:output message="tns:ClearStoreHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TrackHttpPost">
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestHttpPostIn" />
+      <wsdl:output message="tns:ZTestHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a driver with a tracker, or updates a currently available driver.  Pass an empty string as trackerName to remove a tracker from a driver, or for delivery drivers without trackers</wsdl:documentation>
+      <wsdl:input message="tns:AddUpdateDriverHttpPostIn" />
+      <wsdl:output message="tns:AddUpdateDriverHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds an order to a driver, order status is automatically updated</wsdl:documentation>
+      <wsdl:input message="tns:AddOrderToDriverHttpPostIn" />
+      <wsdl:output message="tns:AddOrderToDriverHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Removes an order from a driver</wsdl:documentation>
+      <wsdl:input message="tns:RemoveOrderFromDriverHttpPostIn" />
+      <wsdl:output message="tns:RemoveOrderFromDriverHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update an orders status</wsdl:documentation>
+      <wsdl:input message="tns:UpdateOrderStatusHttpPostIn" />
+      <wsdl:output message="tns:UpdateOrderStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resets the OrderTracking system, removes all drivers, trackers, customers and orders from the system, usually called at the end, or the beginning of each day</wsdl:documentation>
+      <wsdl:input message="tns:ClearStoreHttpPostIn" />
+      <wsdl:output message="tns:ClearStoreHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TrackSoap" type="tns:TrackSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ZTest">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/ZTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackerNames">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetTrackerNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackers">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetTrackers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddUpdateDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDriver">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDrivers">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetDrivers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddOrderToDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/RemoveOrderFromDriver" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStatuses">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetAllStatuses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/UpdateOrderStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUndeliveredOrders">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetUndeliveredOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrder">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrders">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/ClearStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Last20Logs">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/Last20Logs" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackSoap12" type="tns:TrackSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ZTest">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/ZTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackerNames">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetTrackerNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackers">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetTrackers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddUpdateDriver" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDriver">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetDriver" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDrivers">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetDrivers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddOrderToDriver" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/RemoveOrderFromDriver" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/AddOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllStatuses">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetAllStatuses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/UpdateOrderStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUndeliveredOrders">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetUndeliveredOrders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrder">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrders">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/GetOrders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/ClearStore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Last20Logs">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTracking/Last20Logs" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackHttpGet" type="tns:TrackHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ZTest">
+      <http:operation location="/ZTest" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <http:operation location="/AddUpdateDriver" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <http:operation location="/AddOrderToDriver" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <http:operation location="/RemoveOrderFromDriver" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <http:operation location="/UpdateOrderStatus" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <http:operation location="/ClearStore" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackHttpPost" type="tns:TrackHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ZTest">
+      <http:operation location="/ZTest" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateDriver">
+      <http:operation location="/AddUpdateDriver" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrderToDriver">
+      <http:operation location="/AddOrderToDriver" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveOrderFromDriver">
+      <http:operation location="/RemoveOrderFromDriver" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <http:operation location="/UpdateOrderStatus" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ClearStore">
+      <http:operation location="/ClearStore" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Track">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+    <wsdl:port name="TrackSoap" binding="tns:TrackSoap">
+      <soap:address location="http://test.androtechnology.co.uk/Ordertracking/track.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackSoap12" binding="tns:TrackSoap12">
+      <soap12:address location="http://test.androtechnology.co.uk/Ordertracking/track.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackHttpGet" binding="tns:TrackHttpGet">
+      <http:address location="http://test.androtechnology.co.uk/Ordertracking/track.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackHttpPost" binding="tns:TrackHttpPost">
+      <http:address location="http://test.androtechnology.co.uk/Ordertracking/track.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

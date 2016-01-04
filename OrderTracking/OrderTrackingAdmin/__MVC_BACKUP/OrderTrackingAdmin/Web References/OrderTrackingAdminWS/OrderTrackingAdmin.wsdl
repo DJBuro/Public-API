@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.Androtechnology.co.uk/OrderTrackingAdmin" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.Androtechnology.co.uk/OrderTrackingAdmin" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.Androtechnology.co.uk/OrderTrackingAdmin">
+      <s:element name="AddTrackersToStore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddTrackersToStoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddTrackersToStoreResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Results">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorMessages" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="WarningMessages" type="tns:ArrayOfString" />
+          <s:element minOccurs="1" maxOccurs="1" name="Success" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddUpdateStore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="storeDetails" type="tns:StoreDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="StoreDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalStoreId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StoreName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountUserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AccountPassword" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GpsEnabled" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeliveryRadius" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="HouseNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoadName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TownCity" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddUpdateStoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddUpdateStoreResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUpdateAccount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="storeDetails" type="tns:StoreDetails" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddUpdateAccountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddUpdateAccountResult" type="tns:Results" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ZTest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="externalStoreId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ZTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ZTestResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Results" nillable="true" type="tns:Results" />
+      <s:element name="boolean" type="s:boolean" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AddTrackersToStoreSoapIn">
+    <wsdl:part name="parameters" element="tns:AddTrackersToStore" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackersToStoreSoapOut">
+    <wsdl:part name="parameters" element="tns:AddTrackersToStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateStoreSoapIn">
+    <wsdl:part name="parameters" element="tns:AddUpdateStore" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateStoreSoapOut">
+    <wsdl:part name="parameters" element="tns:AddUpdateStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateAccountSoapIn">
+    <wsdl:part name="parameters" element="tns:AddUpdateAccount" />
+  </wsdl:message>
+  <wsdl:message name="AddUpdateAccountSoapOut">
+    <wsdl:part name="parameters" element="tns:AddUpdateAccountResponse" />
+  </wsdl:message>
+  <wsdl:message name="ZTestSoapIn">
+    <wsdl:part name="parameters" element="tns:ZTest" />
+  </wsdl:message>
+  <wsdl:message name="ZTestSoapOut">
+    <wsdl:part name="parameters" element="tns:ZTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackersToStoreHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackersToStoreHttpGetOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpGetIn">
+    <wsdl:part name="externalStoreId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackersToStoreHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackersToStoreHttpPostOut">
+    <wsdl:part name="Body" element="tns:Results" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpPostIn">
+    <wsdl:part name="externalStoreId" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ZTestHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:portType name="OrderTrackingAdminSoap">
+    <wsdl:operation name="AddTrackersToStore">
+      <wsdl:input message="tns:AddTrackersToStoreSoapIn" />
+      <wsdl:output message="tns:AddTrackersToStoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds or updates a store details</wsdl:documentation>
+      <wsdl:input message="tns:AddUpdateStoreSoapIn" />
+      <wsdl:output message="tns:AddUpdateStoreSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateAccount">
+      <wsdl:input message="tns:AddUpdateAccountSoapIn" />
+      <wsdl:output message="tns:AddUpdateAccountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestSoapIn" />
+      <wsdl:output message="tns:ZTestSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="OrderTrackingAdminHttpGet">
+    <wsdl:operation name="AddTrackersToStore">
+      <wsdl:input message="tns:AddTrackersToStoreHttpGetIn" />
+      <wsdl:output message="tns:AddTrackersToStoreHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestHttpGetIn" />
+      <wsdl:output message="tns:ZTestHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="OrderTrackingAdminHttpPost">
+    <wsdl:operation name="AddTrackersToStore">
+      <wsdl:input message="tns:AddTrackersToStoreHttpPostIn" />
+      <wsdl:output message="tns:AddTrackersToStoreHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <wsdl:input message="tns:ZTestHttpPostIn" />
+      <wsdl:output message="tns:ZTestHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OrderTrackingAdminSoap" type="tns:OrderTrackingAdminSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTrackersToStore">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddTrackersToStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateStore">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddUpdateStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateAccount">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddUpdateAccount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <soap:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/ZTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OrderTrackingAdminSoap12" type="tns:OrderTrackingAdminSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddTrackersToStore">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddTrackersToStore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateStore">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddUpdateStore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddUpdateAccount">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/AddUpdateAccount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <soap12:operation soapAction="http://www.Androtechnology.co.uk/OrderTrackingAdmin/ZTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OrderTrackingAdminHttpGet" type="tns:OrderTrackingAdminHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="AddTrackersToStore">
+      <http:operation location="/AddTrackersToStore" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <http:operation location="/ZTest" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="OrderTrackingAdminHttpPost" type="tns:OrderTrackingAdminHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="AddTrackersToStore">
+      <http:operation location="/AddTrackersToStore" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ZTest">
+      <http:operation location="/ZTest" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OrderTrackingAdmin">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+    <wsdl:port name="OrderTrackingAdminSoap" binding="tns:OrderTrackingAdminSoap">
+      <soap:address location="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OrderTrackingAdminSoap12" binding="tns:OrderTrackingAdminSoap12">
+      <soap12:address location="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OrderTrackingAdminHttpGet" binding="tns:OrderTrackingAdminHttpGet">
+      <http:address location="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" />
+    </wsdl:port>
+    <wsdl:port name="OrderTrackingAdminHttpPost" binding="tns:OrderTrackingAdminHttpPost">
+      <http:address location="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

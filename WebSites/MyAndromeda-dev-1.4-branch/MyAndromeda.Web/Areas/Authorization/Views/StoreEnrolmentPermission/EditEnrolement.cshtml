@@ -1,0 +1,58 @@
+﻿@model MyAndromeda.Web.Areas.Authorization.ViewModels.StoreEnrolmentViewModel
+
+<div class="header">
+    <h3>
+        @Model.Site.ClientSiteName</h3>
+</div>
+<div class="clearfix">
+<div class="sb-right content1">
+    <div class="header">
+        <h3>Enrolment Level</h3>
+    </div>
+    
+    @using (Html.BeginForm())
+    { 
+        <div>
+            @(Html.Kendo()
+            .DropDownListFor(e => e.SelectedOptionId)
+            //.Name("SelectedEnrolment")
+            .OptionLabel("Select")
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .HtmlAttributes(new { style = "width: 100%" })
+            .Height(300)
+            
+            .Template("<div><b>#:Name#</b></div>#if(data.Description){#<div>#:data.Description#</div>#}#")
+            .BindTo(Model.Options.Select(e => new { e.Id, e.Name, e.Description }))
+        )
+        </div>
+        <br />
+        <input type="submit" class="k-button" value="Save" />
+    }
+</div>
+    <div class="sb-right content2" id="Permissions">
+        <div class="header">
+            <h3>Current Permissions</h3>
+        </div>
+        <ul>
+        @foreach (var permission in Model.CurrentPermissions) 
+        {
+            <li>@permission.Name</li>
+            
+        }
+        </ul>
+    </div>
+</div>
+
+@using(Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () { 
+            var enrolmentDropDown = $("#SelectedOptionId").data("kendoDropDownList");
+            enrolmentDropDown.bind("change", function (e) {
+                //console.log("change");
+                //var v
+            });
+        });
+    </script>
+}

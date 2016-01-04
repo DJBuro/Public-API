@@ -1,0 +1,44 @@
+﻿@model MyAndromeda.Services.Orders.Emails.FailedMessage
+@using AndroAdminDataAccess.Domain.WebOrderingSetup;
+@using MyAndromeda.Services.Orders.Helpers;
+@{
+    this.Layout = "_CustomerOrderEmailLayout.cshtml";
+    var translator = Html.GetTranslator();
+    //line item includes price of item x quantity
+    //var total = Model.Order.OrderLines.Sum(orderLine => (orderLine.Price.Value + orderLine.modifiers.Sum(modifier => modifier.Price.Value)));
+    var paragraphStyle = "font-size: 14px; line-height:17px";
+    var boldParagraphStyle = "font-size: 14px; line-height:17px;font-weight:bold";
+    WebSiteConfigurations websiteConfigurations = WebSiteConfigurations.DeserializeJson(this.Model.WebsiteStuff.PreviewSettings);
+    var orderEmailHeaderColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.HeaderColour : "#FFFFFF";
+    var orderEmailFooterColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.FooterColour : "#FFFFFF";
+}
+
+
+@section Header 
+{
+To: @Model.Contact.Value
+Bcc: @Html.RefundEmailDistribution()
+From: donotreply@androtech.com
+Reply-To: matthew.green@androtech.com
+Subject: Order update: @Model.Order.RamesesOrderNum - declined - @Model.Store.ClientSiteName
+}
+
+
+@section OrderDetail
+{
+    <br />
+    <p style="@paragraphStyle">Dear @Model.Customer.FirstName,</p>
+    <p style="@paragraphStyle">
+        We are sorry to inform you that we are unable to accept your order.
+        <br />
+        It has been declined for the following reason:
+    </p>
+    <p style="@boldParagraphStyle">@Model.Order.OrderStatu.Description</p>
+    <div style="height: 25px">&nbsp;</div>
+    <p style="@paragraphStyle">If you have any queries, please contact us on <span style="@boldParagraphStyle">@Model.Store.Telephone</span></p>
+}
+
+
+
+
+

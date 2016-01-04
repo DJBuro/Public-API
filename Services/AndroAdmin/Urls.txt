@@ -1,0 +1,23 @@
+﻿
+>>> DEV <<<
+Get AMS upload info for Site
+https://localhost/Services/AndroAdmin/AndroAdminServices.svc/GetAMSFTPInfoForSite?password=429C19EE237245358F8E1189ABDB1388&siteId=999
+
+Get list of sites for AMS
+https://localhost/Services/AndroAdmin/AndroAdminServices.svc/GetSitesForAMS?password=429C19EE237245358F8E1189ABDB1388&amsId=999
+
+Update AMS upload date/time
+https://localhost/Services/AndroAdmin/AndroAdminServices.svc/UpdateLastUploadedDateTimeForSite?password=429C19EE237245358F8E1189ABDB1388&siteId=999&dateTime=2012-11-12
+
+Add/update a store
+https://localhost/Services/AndroAdmin/AndroAdminServices.svc/Site?password=429C19EE237245358F8E1189ABDB1388
+
+>>> LIVE <<<
+Get AMS upload info for Site
+https://androtechnology.co.uk/Services/AndroAdmin/AndroAdminServices.svc/GetAMSFTPInfoForSite?password=429C19EE237245358F8E1189ABDB1388&siteId=99998
+
+Get list of sites for AMS
+https://androtechnology.co.uk/Services/AndroAdmin/AndroAdminServices.svc/GetSitesForAMS?password=429C19EE237245358F8E1189ABDB1388&amsId=999
+
+Update AMS upload date/time
+https://androtechnology.co.uk/Services/AndroAdmin/AndroAdminServices.svc/UpdateLastUploadedDateTimeForSite?password=429C19EE237245358F8E1189ABDB1388&siteId=99998&dateTime=2012-11-12

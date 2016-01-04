@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroWebAdmin", "AndroWebAdmin\AndroWebAdmin.csproj", "{EB5511F6-5909-4CA9-A04E-19315F66F26A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Dao.NHibernate", "..\Loyalty.Dao.NHibernate\Loyalty.Dao.NHibernate.csproj", "{DA546E66-14F9-4AEA-9699-C0FC95A0D42A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Dao", "..\Loyalty.Dao\Loyalty.Dao.csproj", "{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroWebAdmin.Mvc", "AndroWebAdmin.Mvc\AndroWebAdmin.Mvc.csproj", "{B4FB875F-34B8-4E53-9B92-3C656D8E01DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB5511F6-5909-4CA9-A04E-19315F66F26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5511F6-5909-4CA9-A04E-19315F66F26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5511F6-5909-4CA9-A04E-19315F66F26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5511F6-5909-4CA9-A04E-19315F66F26A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA546E66-14F9-4AEA-9699-C0FC95A0D42A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA546E66-14F9-4AEA-9699-C0FC95A0D42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA546E66-14F9-4AEA-9699-C0FC95A0D42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA546E66-14F9-4AEA-9699-C0FC95A0D42A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4FB875F-34B8-4E53-9B92-3C656D8E01DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FB875F-34B8-4E53-9B92-3C656D8E01DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4FB875F-34B8-4E53-9B92-3C656D8E01DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4FB875F-34B8-4E53-9B92-3C656D8E01DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

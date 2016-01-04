@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Loyalty.Dao.Domain.LoyaltyAccountStatus, Loyalty.Dao" table="tbl_LoyaltyAccountStatus">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_LoyaltyAccountStatus"/>
+			<generator class="native" />
+		</id>
+		<property name="Reason" type="String">
+			<column name="Reason" length="250" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="DateTimeCreated" type="DateTime">
+			<column name="DateTimeCreated" length="4" sql-type="smalldatetime" not-null="true"/>
+		</property>
+		<many-to-one name="LoyaltyAccountId" class="Loyalty.Dao.Domain.LoyaltyAccount, Loyalty.Dao">
+			<column name="LoyaltyAccountId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="AccountStatusId" class="Loyalty.Dao.Domain.AccountStatus, Loyalty.Dao">
+			<column name="AccountStatusId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

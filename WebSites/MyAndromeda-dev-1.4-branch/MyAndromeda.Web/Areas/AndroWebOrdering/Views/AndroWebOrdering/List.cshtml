@@ -1,0 +1,62 @@
+﻿@using MyAndromeda.Web.Areas.AndroWebOrdering;
+
+@model IList<MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel>
+@{
+    ViewBag.Title = "Index";
+
+    var titleProcess = Html.CreateHtmlTemplate();
+    var deleteProcess = Html.CreateHtmlTemplate();
+
+    var authorizer = Html.GetAuthorizer();
+}
+
+<div class="header">
+    <h3>AndroWeb Ordering Websites</h3>
+</div>
+
+
+@using (titleProcess.CreateTemplate)
+{
+    <div>
+        #if (Enabled == true) {#
+        <a href="@Url.ActionClientTemplate("Index", "AndroWebOrdering", new { Id = "#=Id#" })">#:Name#</a>
+        #} else {#
+        #: Name # (Website Disabled)
+        #}#
+    </div>
+}
+@using(deleteProcess.CreateTemplate)
+{
+    <div>
+        <a class="k-button" href="@Url.ActionClientTemplate("Delete", "AndroWebOrdering", new { Id = "#=Id#" } )">Delete</a>
+    </div>
+}
+
+@(Html.Kendo().Grid(Model)
+    .Name("AndroWebOrderingGrid")
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.Name).Title("Website")
+            .ClientTemplate(titleProcess.Result);
+
+        if (authorizer.Authorize(UserPermissions.DeleteWebsite))
+        { 
+            cols.Bound(e=> e.Name).Title("Actions")
+                .Filterable(false).Sortable(false)
+                .Width(100)
+                .ClientTemplate(deleteProcess.Result);
+        }
+        //.ClientTemplate("<a href='" + Url.Action("Index", "AndroWebOrdering") + "?id=#= Id #'" + ">#=Name#</a>");        
+    })
+    .Filterable()
+    .Sortable()
+    .Pageable(paging => paging.Refresh(true))
+    .DataSource(dataSource =>
+    {
+        dataSource
+            .Ajax()
+            .ServerOperation(false)
+            .PageSize(10)
+            .Model(model => model.Id(e => e.Id));
+    })
+)

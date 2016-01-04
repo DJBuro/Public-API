@@ -1,0 +1,275 @@
+﻿@{
+    List<string> permissions = ViewBag.Permissions;
+    var message = string.Empty;
+    var messageDisplay = "block";
+    var messageClass = string.Empty;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/AndroAdmin.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery.dataTables.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/demo_table.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2015.1.408/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2015.1.408/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2015.1.408/kendo.silver.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2015.1.408/kendo.dataviz.silver.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2015.1.408/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2015.1.408/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2015.1.408/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2015.1.408/kendo.aspnetmvc.min.js")"></script>
+    <script src="@(Html.GetHttpOrHttps())code.jquery.com/jquery-migrate-1.2.1.js"></script>
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")" type="text/javascript"></script>
+    <script src="~/Scripts/kendo/2015.1.408/cultures/kendo.culture.en-GB.min.js"></script>
+
+    @RenderSection("Head", required: false)
+    <script type="text/javascript">
+        kendo.culture("en-GB");
+        var confirmationCallback = undefined;
+        var confirmationMessage = '';
+
+        function showConfirmDialog(callback, confirmationDialogContent) {
+            YBjqrFa = gS
+            confirmationCallback = callback;
+
+            $('#confirmationDialogContent').html(confirmationDialogContent);
+            $('#confirmationDialogBackdrop').css('display', 'block');
+        }
+
+        function confirmationYes() {
+            $('#confirmationDialogBackdrop').css('display', 'none');
+
+            confirmationCallback.call();
+
+            confirmationCallback = undefined;
+        }
+
+        function confirmationNo() {
+            confirmationCallback = undefined;
+
+            $('#confirmationDialogBackdrop').css('display', 'none');
+        }
+        @RenderSection("Script", required: false)
+    </script>
+
+
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+</head>
+<body>
+    <header>
+        <div id="innerHeaderContainer">
+            <div id="innerHeader">
+                <img src="@Url.Content("~/Content/Images/logoSmall.png")" alt="Andromeda Logo" />
+                <div id="rightHeader">
+                    @User.Identity.Name &nbsp;
+                    @Html.ActionLink("Logout", "Logout", "Account")
+                </div>
+            </div>
+        </div>
+        @if (ViewBag.ShowMachineDetails != null && ViewBag.ShowMachineDetails)
+        {
+            <div style="position:absolute; left:50%; top:4px;">
+                <div style="margin-left:-250px; width:700px; color:#00137F;">
+                    <div style="font-size:18pt; font-weight:bold;">Machine: @ViewBag.Machine</div>
+                    <div style="font-size:14pt;">SQL Server: @ViewBag.DBServer</div>
+                    <div style="font-size:14pt;">Database: @ViewBag.DBName</div>
+                    <div style="font-size:14pt;">AndroAdmin Version: @ViewBag.Version</div>
+                </div>
+            </div>
+        }
+    </header>
+    <section id="menuSection">
+        @*<ul class="menu">
+
+                <!-- HOME -->
+                <li>
+                    @Html.ActionLink("Home", "Index", "Home", new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.Home ? "navSelected" : "navLink" })
+                </li>
+
+                <!-- ADMIN -->
+                @if (permissions.Contains("ViewUsers") || permissions.Contains("ViewSecurityGroups"))
+                {
+                    // Show the first sub menu page that we have permission to access
+                    string adminController = permissions.Contains("ViewUsers") ? "Admin" : "SecurityGroup";
+                <li>
+                    @Html.ActionLink("Admin", "Index", adminController, new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.Admin ? "navSelected" : "navLink" })
+                </li>
+                }
+
+                <!-- STORE -->
+                @if (permissions.Contains("ViewStores") || permissions.Contains("ViewPaymentProviders"))
+                {
+                    // Show the first sub menu page that we have permission to access
+                    string storeController = permissions.Contains("ViewStores") ? "Store" : "PaymentProvider";
+                <li>
+                    @Html.ActionLink("Stores", "Index", storeController, new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.Stores ? "navSelected" : "navLink" })
+                </li>
+                }
+
+                <!-- AMS -->
+                @if (permissions.Contains("ViewAMSStores") || permissions.Contains("ViewAMSServers") || permissions.Contains("ViewFTPSites") )
+                {
+                    // Show the first sub menu page that we have permission to access
+                    string amsController = permissions.Contains("ViewAMSStores") ? "AMSStore" : permissions.Contains("ViewAMSServers") ? "AMSServer" : "FTPSite";
+                <li>
+                    @Html.ActionLink("AMS", "Index", amsController, new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.AMS ? "navSelected" : "navLink" })
+                </li>
+                }
+
+                <!-- ACS -->
+                @if (permissions.Contains("ViewACSPartners") || permissions.Contains("ViewCloudServers"))
+                {
+                    // Show the first sub menu page that we have permission to access
+                    string acsController = permissions.Contains("ViewACSPartners") ? "Partner" : "CloudServer";
+                <li>
+                    @Html.ActionLink("ACS", "Index", acsController, new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.OnlineOrdering ? "navSelected" : "navLink" })
+                </li>
+                }
+
+                <!-- Andro Admin -->
+                @if (permissions.Contains("ViewAndroAdminLinks"))
+                {
+                <li>
+                    @Html.ActionLink("Andro Admin", "Index", "AndroAdmin", new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.AndroAdmin ? "navSelected" : "navLink" })
+                </li>
+                }
+
+                <!-- Help -->
+                @if (permissions.Contains("ViewHelp"))
+                {
+                <li>
+                    @Html.ActionLink("Help", "Index", "Help", new { }, new { @class = ViewBag.SelectedMenu == AndroAdmin.Model.MenuItemEnum.Help ? "navSelected" : "navLink" })
+                </li>
+                }
+            </ul>*@
+        @(Html.Kendo().Menu().Name("MainMenu")
+            .Items(items =>
+            {
+
+                items.Add().Text("Home").Action("Index", "Home");
+                if (permissions.Contains("ViewUsers") || permissions.Contains("ViewSecurityGroups"))
+                {
+                    items.Add().Text("Admin")
+                    .Items(adminItems =>
+                    {
+                        adminItems.Add().Text("Users").Action("Index", "Admin");
+                        adminItems.Add().Text("Security Groups").Action("Index", "SecurityGroup");
+                    })
+                    .Action("Index", permissions.Contains("ViewUsers") ? "Admin" : "SecurityGroup");
+                }
+                if (permissions.Contains("ViewChains"))
+                {
+                    items.Add().Text("Chains")
+                    .Items(chainItems =>
+                    {
+                        chainItems.Add().Text("Manage Chains").Action("Index", "Chain");
+                        chainItems.Add().Text("Manage Andro Web Ordering").Action("Index", "AndroWebOrdering");
+                    }).Action("Index", "Chain");
+                }
+                if (permissions.Contains("ViewStores") || permissions.Contains("ViewPaymentProviders"))
+                {
+                    items.Add()
+                        .Text("Stores")
+                        .Items(storeItems =>
+                        {
+                            storeItems.Add().Text("Manage Stores").Action("Index", "Store");
+                            storeItems.Add().Text("Payment Providers").Action("Index", "PaymentProvider");
+                            storeItems.Add().Text("Devices").Action("Index", "Devices");
+                            storeItems.Add().Text("Apis").Action("Index", "ExternalApi");
+                        })
+                        .Action("Index", permissions.Contains("ViewStores") ? "Store" : "PaymentProvider");
+                }
+                string amsController = permissions.Contains("ViewAMSStores") ? "AMSStore" : permissions.Contains("ViewAMSServers") ? "AMSServer" : "FTPSite";
+                if (permissions.Contains("ViewAMSStores") || permissions.Contains("ViewAMSServers") || permissions.Contains("ViewFTPSites"))
+                {
+                    items.Add().Text("AMS")
+                        .Items(amsItems =>
+                        {
+                            amsItems.Add().Text("AMS Stores").Action("Index", "AMSStore");
+                            amsItems.Add().Text("AMS Servers").Action("Index", "AMSServer");
+                            amsItems.Add().Text("FTP Sites").Action("Index", "FTPSite");
+                        }).Action("index", amsController);
+                }
+                string acsController = permissions.Contains("ViewACSPartners") ? "Partner" : "CloudServer";
+                if (permissions.Contains("ViewACSPartners") || permissions.Contains("ViewCloudServers"))
+                {
+                    items.Add().Text("ACS").Items(acsItems =>
+                    {
+                        acsItems.Add().Text("Partners").Action("Index", "Partner");
+                        acsItems.Add().Text("Metrics").Action("Index", "Metrics");
+                        acsItems.Add().Text("Cloud Servers").Action("Index", "CloudServer");
+                        acsItems.Add().Text("Menu Sync").Action("Index", "MenuSync");
+                        acsItems.Add().Text("Hubs").Action("Index", "Hubs");
+                        acsItems.Add().Text("Host Services").Action("Index", "HostV2");
+                        acsItems.Add().Text("ACS Diagnostic Tests").Action("Index", "ACSDiagnosticTests");
+
+                    }).Action("index", acsController);
+                }
+                if (permissions.Contains("ViewAndroAdminLinks"))
+                {
+                    items.Add()
+                    .Text("Andro Admin")
+                    .Action("Index", "AndroAdmin");
+                }
+                if (permissions.Contains("ViewThemes"))
+                {
+                    items.Add().Text("Andro Web Ordering Themes").Items(themes =>
+                    {
+
+                    }).Action("Index", "AndroWebOrderingTheme");
+                }
+                items.Add().Text("Help").Action("Index", "Help");
+
+            }))
+    </section>
+    @RenderSection("SubMenu", required: false)
+
+    <section id="contentSection">
+        @if (TempData["message"] != null)
+        {
+            message = TempData["message"].ToString();
+            messageClass = "Message";
+        }
+        else if (TempData["errorMessage"] != null)
+        {
+            message = TempData["errorMessage"].ToString();
+            messageClass = "ErrorMessage";
+        }
+        else
+        {
+            messageDisplay = "none";
+        }
+        <div class="@messageClass" style="display:@messageDisplay">@message</div>
+        <div id="mainContent">
+            @Html.Partial("_NotificationsTemplate")
+
+            @RenderBody()
+        </div>
+        <div id="confirmationDialogBackdrop">
+            <div id="confirmationDialog" style="text-align:center;">
+                <div style="height:20px; text-align: center; border-bottom: 1px solid #E3E3E3; padding: 4px 0 2px 0">Are you sure?</div>
+                <div id="confirmationDialogContent" style="height:64px; padding: 5px;"></div>
+                <div style="height:25px;">
+                    <div style="float:left; width:50%; text-align:center; background-color: #84C13A; height:17px; padding: 2px 0 2px 0;">
+                        <a href="#" onclick="confirmationYes()">Yes</a>
+                    </div>
+                    <div style="float:left; width:50%; text-align:center; background-color: #F34755; height:17px; padding: 2px 0 2px 0;">
+                        <a href="#" onclick="confirmationNo()">No</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        Copyright 2014 Andromeda Trading Limited.  For internal use only.
+    </footer>
+</body>
+</html>

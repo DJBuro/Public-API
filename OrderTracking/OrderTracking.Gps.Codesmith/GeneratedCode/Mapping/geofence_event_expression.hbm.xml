@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Geofenceeventexpression, OrderTracking.Gps.Dao" table="geofence_event_expression">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="gate_event_expression_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__geofence__E67EE26D57FD0775"/>
+			<generator class="native" />
+		</id>
+		<property name="Geofenceaction" type="Int32">
+			<column name="geofence_action" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<many-to-one name="Gateeventexpression" class="OrderTracking.Gps.Dao.Domain.Gateeventexpression, OrderTracking.Gps.Dao">
+			<column name="gate_event_expression_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__geofence__E67EE26D57FD0775"/>
+		</many-to-one>
+		<many-to-one name="Tag" class="OrderTracking.Gps.Dao.Domain.Tag, OrderTracking.Gps.Dao">
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="Index_tag_id"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

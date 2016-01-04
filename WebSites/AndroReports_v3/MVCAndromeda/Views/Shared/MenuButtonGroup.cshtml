@@ -1,0 +1,79 @@
+﻿@using MVCAndromeda.Controllers;
+@using MVCAndromeda.Models;
+@{
+    var selectedIndex = -1;
+    var selectedIndex2 = -1;
+}
+@(Html.Kendo().MobileButtonGroup()
+    .Name("select-period2")
+    .Items(items =>
+    {
+
+        for (int i = 0; i < DateUtilities.averagingPeriod.Length / 2; i++)//loop over averaging span: day, weeks etc
+        {
+            for (int j = 0; j < StoreDataController.timeGrid.GetLength(1); j++) //loop over present  and past times
+            {
+                string time = StoreDataController.timeGrid[i, j];
+                if (ViewBag.Time == time)  // then this option is chosen, so do not make a link
+                {
+                    //chosen link
+                    selectedIndex = i * StoreDataController.timeGrid.GetLength(1) + j;
+                }
+                var route = Url.Action("Index", "StoreData", new
+                {
+                    chosenCountry = ViewBag.country,
+                    term = DateUtilities.averagingPeriod[i],
+                    unitsAgo = j,
+                    Time = time,
+                    orderHow = ViewBag.orderHow,
+                    orderWhat = ViewBag.orderWhat
+                });
+                items.Add().Text(StoreDataController.shortTimeGrid[i, j])
+                    .HtmlAttributes(new Dictionary<string,object>(){
+                    { "onclick",string.Format("location.href='{0}'", route)},
+                    {"data-show-spinner",true} });
+            }
+        }
+    })
+    .Index(selectedIndex)
+    .Events(events => events.Select("onSelect"))
+)
+
+@(Html.Kendo().MobileButtonGroup()
+    .Name("select-period")
+    .Items(items =>
+    {
+        for (int i = DateUtilities.averagingPeriod.Length / 2; i < DateUtilities.averagingPeriod.Length; i++)//loop over averaging span: day, weeks etc
+        {
+            for (int j = 0; j < StoreDataController.timeGrid.GetLength(1); j++) //loop over present  and past times
+            {
+                string time = StoreDataController.timeGrid[i, j];
+                if (ViewBag.Time == time)  // then this option is chosen, so do not make a link
+                {
+                    //just text, no link
+
+                    selectedIndex2 = (i - DateUtilities.averagingPeriod.Length / 2) * StoreDataController.timeGrid.GetLength(1) + j;
+
+                }
+                var route = Url.Action("Index", "StoreData", new
+                            {
+                                chosenCountry = ViewBag.country,
+                                term = DateUtilities.averagingPeriod[i],
+                                unitsAgo = j,
+                                Time = time,
+                                orderHow = ViewBag.orderHow,
+                                orderWhat = ViewBag.orderWhat
+                            });
+                items.Add().Text(StoreDataController.shortTimeGrid[i, j])
+                    .HtmlAttributes(new Dictionary<string,object>(){
+                        { "onClick", string.Format("location.href='{0}'", route) },
+                        { "data-show-spinner", true }
+                    } 
+                                        
+                );
+            }
+        }
+    })
+    .Index(selectedIndex2)
+    .Events(events => events.Select("onSelect"))
+)

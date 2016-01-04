@@ -1,0 +1,500 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Portman</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Portman.GT3000DeviceDefinition">
+            <summary>
+            Defines the capabilities of Portman GT3000 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanDeviceDefinition">
+            <summary>
+            All Portman device definitions inherit from this class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Common Portman message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="retListEntries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Default mapping.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Regiter default commands.
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Unit ID"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanDeviceDefinition.NamespaceName">
+            <summary>
+            Returns "Portman"
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.GT3000DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Portman GT3000 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="retListEntries"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Portman.GT3000DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.GT3000DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.LommyDeviceDefinition">
+            <summary>
+            Defines the capabilities of a Portman device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.LommyDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.LommyDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:GpsGate.Portman.PortmanHeader" -->
+        <member name="F:GpsGate.Portman.PortmanHeader.UnknownHeader">
+            <summary>
+            No set.
+            </summary>
+        </member>
+        <member name="F:GpsGate.Portman.PortmanHeader.UnitHeader">
+            <summary>
+            This is a message sent from unit (client). Prefix is "%%"
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:GpsGate.Portman.PortmanHeader.ServerHeader" -->
+        <member name="T:GpsGate.Portman.PortmanBase">
+            <summary>
+            Base class for all Portman sentences.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanBase.#ctor(GpsGate.Portman.PortmanHeader,System.String)">
+            <summary>
+            Create Portman sentence from parameters.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanBase.#ctor(GpsGate.Portman.PortmanSentence)">
+            <summary>
+            Create from <see cref="T:GpsGate.Portman.PortmanSentence"/>.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanBase.Header">
+            <summary>
+            Type of header on this sentence.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanBase.UnitID">
+            <summary>
+            UNIT ID if sentence is from client. Otherwise null.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanBuilder">
+            <summary>
+            Portman sentence builder.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="F:GpsGate.Portman.PortmanBuilder.m_header">
+            <summary>
+            By default a server sentence
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanBuilder.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a portman sentence.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanBuilder.HasChecksum">
+            <summary>
+            Returns false. Portman has no checksum.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanBuilder.GetPrefix">
+            <summary>
+            Returns prefix for sentence.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanBuilder.Header">
+            <summary>
+            Portman has different headers depending on if message is sent from client (unit) or server.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanFormatException">
+            <summary>
+            Invalid Portman syntax
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.Command.PortmanGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for Portman
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Portman.Command.PortmanGprsSettingsCmdExe.Execute">
+            <summary>
+            Throws exception
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.Portman.Command.PortmanGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            Returns false
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.Command.PortmanGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "Portman"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanKeepAlive">
+            <summary>
+            Portman keep alive sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.#ctor(GpsGate.Portman.PortmanSentence)">
+            <summary>
+            Create from sentence object.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:GpsGate.Portman.PortmanFormatException"></exception>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.#ctor(System.String,System.Int32)">
+            <summary>
+            Create a unit (client) ack.
+            </summary>
+            <param name="strUnitID">UNIT ID</param>
+            <param name="iCounter">Ack counter</param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.#ctor(System.Int32)">
+            <summary>
+            Create server ack.
+            </summary>
+            <param name="iCounter">Ack counter</param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.IsKeepAlive(GpsGate.Portman.PortmanSentence)">
+            <summary>
+            Returns true if argument is a KeepAlive sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.BuildSentence">
+            <summary>
+            Build sentence from parameters in constructor
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanKeepAlive.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse PortmanSentence specified in constructor.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:GpsGate.Portman.PortmanFormatException"></exception>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanKeepAlive.Counter">
+            <summary>
+            Ack counter.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanParser">
+            <summary>
+            Parses Portman data.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanParser.ParsePortmanDateTime(System.String,System.String)">
+            <summary>
+            Convert Portman Date + Time field to a UTC <see cref="T:System.DateTime"/> value.
+            </summary>
+            <param name="strDate">string in the format YYMMDD</param>
+            <param name="strTime">string in the format HHMMSS</param>
+            <returns>UTC DateTime</returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanParser.#ctor">
+            <summary>
+            Create Portman parser.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanParser.ValidateSentence(System.Byte[])">
+            <summary>
+            Returns true. No checksum used.
+            </summary>
+            <param name="arrData">Check if this array of bytes is a valid Portman sentence.</param>
+            <returns>Always true</returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanParser.CreateSentence(System.Byte[])">
+            <summary>
+            Creates a Portman sentence from parsed byte array.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanProtocol">
+            <summary>
+            Handles Portman protocol.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create Portman protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Translate from Portman protocol to GpsGate.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GpsGate.Portman.PortmanProtocol.PadCrLf(System.Byte[])" -->
+        <member name="P:GpsGate.Portman.PortmanProtocol.StringID">
+            <summary>
+            Returns the string "Portman"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanReport">
+            <summary>
+            Portman report sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanReport.#ctor(GpsGate.Portman.PortmanSentence)">
+            <summary>
+            Create from sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanReport.BuildSentence">
+            <summary>
+            Not implemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException">Always thrown.</exception>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanReport.TrackPoint">
+            <summary>
+            TrackPoint. Position + Velocity + UTC
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanReport.Status">
+            <summary>
+            Status variables.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanSentence">
+            <summary>
+            Flex sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSentence.#ctor(System.Byte[])">
+            <summary>
+            Create sentence from byte array. Called by <see cref="T:GpsGate.Portman.PortmanParser"/>
+            </summary>
+            <param name="arrSentence"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSentence.GetField(System.Int32)">
+            <summary>
+            Returns value of indexed field.
+            </summary>
+            <param name="iIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanSentence.Header">
+            <summary>
+            Indicates if this is a unit or server sentence.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanSentence.UnitID">
+            <summary>
+            Returns the ID from the unit that sent this sentence. Returns null if this is server sentence
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanSmsConnection">
+            <summary>
+            Handles incoming and outgoing SMS to Portman trackers.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS connection for Portman.
+            </summary>
+            <param name="numPhone"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.Portman.PortmanProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r\n" to outgoing data if it does not exist.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanSmsListener">
+            <summary>
+            Portman SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Portman.PortmanSmsConnection"/> object for incoming data.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsListener.OnStart">
+            <summary>
+            Installs Portman protocol and start s up listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Adds default settings for Portman. Do not enable by default.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanSmsListener.ProtocolID">
+            <summary>
+            Returns "Portman"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanTcpConnection">
+            <summary>
+            Handles connection to Portman 
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a Portman device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanTcpConnection.CreateProtocol">
+            <summary>
+            Create Protocol object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanTcpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r\n" to outgoing data if it does not exist.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Portman.PortmanTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 7010
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanTcpListener.ProtocolID">
+            <summary>
+            Returns "Portman"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanUdpConnection">
+            <summary>
+            Handles connection to Portman 
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpConnection.#ctor(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Creates a Portman device connection from a client over UDP.
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpConnection.CreateProtocol">
+            <summary>
+            Create Protcol object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r\n" to outgoing data if it does not exist.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.Portman.PortmanUdpListener">
+            <summary>
+            Listens to connection from Portman device over UDP
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpListener.OnStart">
+            <summary>
+            Called when listener is started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpListener.CreateUdpConnection(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create new connection object for a Portman device.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Portman.PortmanUdpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 7010
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Portman.PortmanUdpListener.ProtocolID">
+            <summary>
+            Returns "Portman"
+            </summary>
+        </member>
+    </members>
+</doc>

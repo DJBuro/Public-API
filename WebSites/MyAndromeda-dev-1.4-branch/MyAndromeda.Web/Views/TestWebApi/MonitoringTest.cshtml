@@ -1,0 +1,74 @@
+﻿@model MyAndromeda.Services.Orders.OrderMonitoring.Models.OrderList
+
+@if (Model.OrderIds.Count > 0)
+{ 
+    <div class="row">
+        <div class="col-md-6">
+            <p>*has not been tested :)</p>
+            @using (Html.BeginRouteForm("DefaultApi", new { httproute = "httproute", controller = "OrderMonitoring" }, FormMethod.Post))
+            { 
+                <ul>
+                    @foreach (var orderid in Model.OrderIds)
+                    {
+                        <li>
+                            <input name="@Html.NameFor(e => e.OrderIds)" type="hidden" value="@orderid"/>
+                            @orderid
+                        </li>    
+                    }
+                </ul>
+                <button type="submit">Send these</button>
+            }
+        </div>
+    </div>
+}
+
+@using (Html.BeginRouteForm("DefaultApi", new { httproute = "httproute", controller = "OrderMonitoring" }, FormMethod.Post))
+{ 
+    <div>
+        @(Html.Kendo()
+            .DropDownList()
+            .Name("andromedaSiteId")
+            .OptionLabel("Select Site")
+            .DataTextField("ClientSiteName")
+            .DataValueField("AndromedaSiteId")
+            .AutoBind(false)
+            .DataSource(data =>
+            {
+                data.Read(r => r.Route("DefaultApi", new { httproute = "httproute", controller = "Store" }));
+            })
+        )
+    </div>
+    
+    <div>
+        <label for="AndromedaSiteId">Order</label>
+        @(Html.Kendo()
+            .MultiSelect()
+            .Name(Html.NameFor(e => e.OrderIds).ToString())
+            .DataTextField("RamesesOrderNum")
+            .DataValueField("ID")
+            .AutoBind(false)
+            .DataSource(data =>
+            {
+                data.Read(r => r.Route("DefaultApi", new { httproute = "httproute", controller = "GprsOrders" })
+                    .Data("filterOrders"))
+                    .ServerFiltering(true);
+            })
+        )
+    </div>
+    <div>
+        <button type="submit" class="k-button">Submit</button>
+    </div>
+}
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        function filterOrders() {
+            var v = $("#andromedaSiteId").val();
+
+            return {
+                andromedaSiteId: v
+            }
+        }
+    </script>
+}

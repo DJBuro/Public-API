@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="LoyaltyCardValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="CardNumberValidator" test="CardNumber"><v:message id="error.CardNumber.required" providers="CardNumberErrors, ValidationSummary"/></v:required>
+	<v:required id="DateTimeCreatedValidator" test="DateTimeCreated"><v:message id="error.DateTimeCreated.required" providers="DateTimeCreatedErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

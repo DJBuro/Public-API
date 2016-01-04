@@ -1,0 +1,233 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Reports.EventReport</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Reports.Event.EventReportSource">
+            <summary>
+            Provide XML markup with event data.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Event.EventReportSource.#ctor(System.Int32,System.Globalization.CultureInfo,Franson.Localization.Locale,System.Collections.Generic.Dictionary{System.String,GpsGate.Online.Reporting.ReportParameter})">
+            <summary>
+            Create a new EventReportSource.
+            </summary>
+            <param name="culture">.NET culture object used to format dates etc.</param>
+            <param name="iAppId">ID of the application for which this source should fund events.</param>
+            <param name="locale">Localization object containing localiztion information such as languag dictionary and measurements</param>
+            <param name="parameters">Parameters needed for the reoprt.</param>
+            <exception cref="T:GpsGate.Online.Reporting.ReportException">Thrown if ReportParameter named EventRuleID is not pressent</exception>
+            <exception cref="T:GpsGate.Online.Reporting.ReportException">Thrown if ReportParameter named Period is not pressent</exception>
+        </member>
+        <member name="M:GpsGate.Reports.Event.EventReportSource.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Writes the EventReport Source XML.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:GpsGate.Reports.Event.EventReportViewerBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GpsGate.Reports.Event.EventReportViewer.#ctor" -->
+        <member name="P:GpsGate.Reports.Event.EventReportViewer.ReportFilePath">
+            <summary>
+            Path to report web page.
+            Returns "EventReport/EventReport.aspx"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Event.EventReportViewer.InstallName">
+            <summary>
+            Name this report is initialed as.
+            Return language key: "REPORT_EVENT_RULE_NAME"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Event.EventReportViewer.InstallDescription">
+            <summary>
+            Description this report is installed as.
+            Return ""
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.EventReport.EventReport">
+            <summary>
+            EventReport class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.form1">
+            <summary>
+            form1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.ReportCreateorControl">
+            <summary>
+            ReportCreateorControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.DropDownListEventRules">
+            <summary>
+            DropDownListEventRules control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.CheckBoxUserReport">
+            <summary>
+            CheckBoxUserReport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.PlaceHolderUsers">
+            <summary>
+            PlaceHolderUsers control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.CheckBoxListUsers">
+            <summary>
+            CheckBoxListUsers control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.RadioButtonDaily">
+            <summary>
+            RadioButtonDaily control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.RadioButtonWeekly">
+            <summary>
+            RadioButtonWeekly control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.RadioButtonMonthly">
+            <summary>
+            RadioButtonMonthly control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.RadioButtonCustom">
+            <summary>
+            RadioButtonCustom control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.ChekcBoxListDaysInWeek">
+            <summary>
+            ChekcBoxListDaysInWeek control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.CalendarFrom">
+            <summary>
+            CalendarFrom control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.CalendarTo">
+            <summary>
+            CalendarTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.DropDownListTimeFilterFrom">
+            <summary>
+            DropDownListTimeFilterFrom control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.DropDownListTimeFilterTo">
+            <summary>
+            DropDownListTimeFilterTo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.CheckBoxFullDay">
+            <summary>
+            CheckBoxFullDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.TextBoxReportName">
+            <summary>
+            TextBoxReportName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.EventReport.EventReport.ReportXml">
+            <summary>
+            ReportXml control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

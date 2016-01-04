@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="../Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="CssCompressorTask" AssemblyFile="../Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+  <!-- Define the output locations. These can be set via the msbuild command line using
+         /p:OutputFile=$(TargetDir)../whatever...
+         If they are not supplied or are empty, then we the value whatever is supplied, below.
+    -->
+  
+  <!--<Target Name="Minify" DependsOnTargets="MergeViewHTML">-->
+    <Target Name="Minify">
+    <!--           
+            For both tasks, all Properties except SourceFiles and OutputFile are optional
+        
+
+            JavaScriptCompressorTask:
+                SourceFiles: An ITaskItem[] list of files to compress.
+                             Add <CompressionType> meta data to individual items to override the default compression type set for the task
+                DeleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                CompressionType: Standard (default) | None.  None => Concatenate files only.
+                EncodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                LineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                LoggingType: Info (default) | Debug | None.  Debug also lists javascript verbose warnings, if there are any (and there usually is :P ).
+                ObfuscateJavaScript: True (default) | False.  True => Obfuscate function and variable names
+                PreserveAllSemicolons: True | False (default).  True => preserve redundant semicolons (e.g. after a '}'
+                DisableOptimizations: True | False (default).
+                ThreadCulture: The culture you want the thread to run under. This affects the treatment of numbers etc - e.g. 9.00 could be output as 9,00.
+                               Default value is the Invariant Culture
+                IsEvalIgnored: True | False (default).  True => compress any functions that contain 'eval'. Default is False, which means a function that contains
+                               'eval' will NOT be compressed. It's deemed risky to compress a function containing 'eval'. That said,
+                               if the usages are deemed safe this check can be disabled by setting this value to True.
+        -->
+    <ItemGroup>
+      <CssFiles Include="StyleSheets\WebOrdering.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingMobile.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingPCandTablet.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingPC.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingTablet.css"/>
+
+      <JavaScriptFiles Include="ResourceStrings\en-GB.js"/>
+      <JavaScriptFiles Include="ResourceStrings\fr-FR.js"/>
+      
+      <!-- Don't change the order - jquery must be first -->
+      <JavaScriptFiles Include="Scripts\jquery-1.7.1.min.js"/>
+      <JavaScriptFiles Include="Scripts\jreject.js"/>
+      <JavaScriptFiles Include="Scripts\amplify.min.js"/>
+      <JavaScriptFiles Include="Scripts\knockout-3.0.0.js"/>
+      <JavaScriptFiles Include="Scripts\knockout.validation.min.js"/>
+      <JavaScriptFiles Include="Scripts\modernizr.min.js"/>
+      <JavaScriptFiles Include="Scripts\OpenLayers.js"/>
+      <JavaScriptFiles Include="Scripts\jssor.slider.mini.js"/>
+      
+      <JavaScriptFiles Include="Scripts\react.js"/>
+      <JavaScriptFiles Include="Helpers\reactTypescriptWorkaround.js"/>
+
+      <JavaScriptFiles Include="Helpers\settings.js"/>
+      <JavaScriptFiles Include="Helpers\ACSAPI.js"/>
+      
+      <!-- MODELS GO HERE -->
+      <JavaScriptFiles Include="Models\Address.js"/>
+      <JavaScriptFiles Include="Models\Cart.js"/>
+      <JavaScriptFiles Include="Models\CartDeal.js"/>
+      <JavaScriptFiles Include="Models\CartDealLine.js"/>
+      <JavaScriptFiles Include="Models\CartItem.js"/>
+      <JavaScriptFiles Include="Models\CartItemTopping.js"/>
+      <JavaScriptFiles Include="Models\Customer.js"/>
+      <JavaScriptFiles Include="Models\MenuItemWrapper.js"/>
+      <JavaScriptFiles Include="Models\DealWrapper.js"/>
+      <JavaScriptFiles Include="Models\Deal.js"/>      
+      
+      <!-- NEEDS TO BE LOADED BEFORE HELPERS -->
+      <JavaScriptFiles Include="Helpers\guiHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\ViewModel.js"/>
+      
+      <!-- HELPERS GO HERE -->
+      <JavaScriptFiles Include="Helpers\Logger.js"/>      
+      <JavaScriptFiles Include="Helpers\LoyaltyHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\accountHelper.js"/>
+      <JavaScriptFiles Include="Helpers\addressHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\cacheHelper.js"/>
+      <JavaScriptFiles Include="Helpers\cartHelper.js"/>
+      <JavaScriptFiles Include="Helpers\checkoutHelper.js"/>
+      <JavaScriptFiles Include="Helpers\checkoutMenuHelper.js"/>
+      <JavaScriptFiles Include="Helpers\customerHelper.js"/>
+      <JavaScriptFiles Include="Helpers\cookieHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\dealHelper.js"/>
+      <JavaScriptFiles Include="Helpers\dealPopupHelper.js"/>
+      <JavaScriptFiles Include="Helpers\deliveryZoneHelper.js"/>      
+      
+      <JavaScriptFiles Include="Helpers\helper.js"/>
+      <JavaScriptFiles Include="Helpers\homePageHelper.js"/>
+      <JavaScriptFiles Include="Helpers\imageHelper.js"/>
+      <JavaScriptFiles Include="Helpers\informationHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\mapHelper.js"/>
+      <JavaScriptFiles Include="Helpers\menuHelper.js"/>
+      <JavaScriptFiles Include="Helpers\myOrdersHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\openingTimesHelper.js"/>
+      <JavaScriptFiles Include="Helpers\pageManager.js"/>
+      <JavaScriptFiles Include="Helpers\popupHelper.js"/>
+      <JavaScriptFiles Include="Helpers\toppingsPopupHelper.js"/>
+      <JavaScriptFiles Include="Helpers\queryStringHelper.js"/>
+      <JavaScriptFiles Include="Helpers\telemetryHelper.js"/>
+      
+      <JavaScriptFiles Include="Helpers\viewHelper.js"/>
+
+      <!-- NEEDS TO BE LOADED BEFORE VIEWMODELS -->
+      <JavaScriptFiles Include="ViewModels\BaseViewModel.js"/>
+      
+      <!-- CHECKOUT VIEW MODELS GO HERE -->
+      <JavaScriptFiles Include="ViewModels\Checkout\CheckoutViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\DataCashPaymentViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\MercanetPaymentViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\MercuryPaymentViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\OrderAcceptedViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\PaymentViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\Checkout\PaypalPaymentViewModel.js"/>
+
+      <!-- VIEW MODELS GO HERE-->
+      <JavaScriptFiles Include="ViewModels\AddressViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\CartViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\DealViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\DefaultViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\ErrorViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\FeedbackViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\HeaderViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\HomeViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\InformationViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\LoginViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\MenuViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\MobileMenuViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\MyProfileViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\MyOrdersViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\PleaseWaitViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\PasswordResetRequestViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\PasswordResetViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\PopupViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\RepeatOrderViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\StoreDetailsViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\ToppingsWrapperViewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\ToppingsViewModel.js"/>
+      
+      <!-- COMPONENTS GO HERE-->     
+      <JavaScriptFiles Include="Components\CartComponent.js"/>
+      <JavaScriptFiles Include="Components\CartDealComponent.js"/>
+      <JavaScriptFiles Include="Components\CartDealLineComponent.js"/>
+      <JavaScriptFiles Include="Components\CartDealLineToppingComponent.js"/>
+      <JavaScriptFiles Include="Components\CartItemComponent.js"/>
+      <JavaScriptFiles Include="Components\CartItemDisabledComponent.js"/>
+      <JavaScriptFiles Include="Components\CartItemToppingComponent.js"/>
+      
+    </ItemGroup>
+
+    <JavaScriptCompressorTask
+        SourceFiles="@(JavaScriptFiles)"
+        DeleteSourceFiles="false"
+        OutputFile="..\Content\Scripts.js"
+        CompressionType="Standard"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="False"
+        DisableOptimizations="No"
+        EncodingType="UTF8"
+        LineBreakPosition="-1"
+        LoggingType="Info"
+        ThreadCulture="en-gb"
+        IsEvalIgnored="false"
+    />
+
+    <CssCompressorTask
+        SourceFiles="@(CssFiles)"
+        DeleteSourceFiles="false"
+        OutputFile="..\Content\Styles.css"
+        CompressionType="Standard"
+        LoggingType="Info"
+        PreserveComments="false"
+        LineBreakPosition="-1"
+     />
+    
+  </Target>
+  
+</Project>

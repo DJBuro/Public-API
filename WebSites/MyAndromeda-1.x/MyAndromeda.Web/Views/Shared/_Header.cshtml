@@ -1,0 +1,18 @@
+﻿@{
+    var workContext = Html.GetWorkContext();    
+}
+
+<div id="logo" class="col-xs-12 col-sm-8">
+    <div>
+        <h1>
+            <img src="@Url.Content("~/Content/Images/logo.png")" alt="My Andromeda" class="hidden-xs"/>
+            My Andromeda
+            @if (workContext.CurrentSite.Available)
+            {
+                <br class="visible-xs visible-sm" />
+                <small class="text-info">- @workContext.CurrentSite.Store.ClientSiteName</small>
+            }
+        </h1>
+        <p class="hidden-xs" />A World of epossibilities</p>
+    </div>
+</div>

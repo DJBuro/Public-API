@@ -1,0 +1,37 @@
+﻿@model IList<AndroAdminDataAccess.Domain.Host>
+
+
+@{
+    ViewBag.Title = "Cloud Servers";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+}
+
+<h2>Cloud Servers (hosts)</h2>
+
+<div class="topLink">
+    @Html.ActionLink("Sync server data", "Sync")
+</div>
+
+<table class="listTable" id="hosts">
+    <thead>
+        <tr>
+            <th>Host name</th>
+            <th>Priority</th>
+            <th>Private host name</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (AndroAdminDataAccess.Domain.Host host in Model)
+{ 
+    <tr>
+        <td>@host.HostName</td>
+        <td>@host.Order</td>
+        <td>@host.PrivateHostName</td>
+    </tr>
+}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#hosts').dataTable();
+</script>

@@ -1,0 +1,151 @@
+<%-- 
+Name: WRTableBLLBindingSub.cst
+Description: CodeSmith sub template for generating binding table public instance methods
+Master template: WRTableBLL.cst
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="WRCommon.cst.cs" Inherits="WRCommon" Debug="False" Description="Add binding table public instance methods to a class" %>
+<%-- Properties for sub template --%>
+<%@ Property Name="BindingTableSub" Type="TableSchema" Default="" Optional="True" Category="Tables (optional binding tables)"
+	Description="'Add' and 'Remove' public instance methods will be generated for this associated binding table" %>
+<%@ Property Name="BindingTableSubExcludeKeyField" Type="ColumnSchema" Default="" Optional="True" Category="Tables (optional binding tables)"
+	Description="This field will not be exposed as a parameter in public binding table instance methods in this class as the value is already available from the classes primary key eg. set this property to 'PropertyID' for this binding table if the SourceTable is 'Property' and the property ID is already available in the primary key for this class." %>
+<%-- Properties required to be copied through from Master template --%>
+<%@ Property Name="DatabaseName" Type="WRDatabase" Category="Options" Description="Choose the William Reed database" %>
+<%@ Property Name="NameSpace" Visible="False" Type="System.String" Default="changeMeNameSpace" Category="Options"
+	Description="This is the project namespace which contains this data access class. It will be substituted in for XXX in following namespace: WilliamReed.XXX.Data.Base" %>
+<%@ Property Name="ProcedurePrefix" Visible="False" Type="System.String" Default="csp_" Category="Options"
+	Description="Prefix used in all stored procedure names. This is needed as this class will be using stored procedures" %>
+<%@ Property Name="TablePrefix" Type="System.String" Default="d_" Category="Options"
+	Description="If this prefix is found at the start of a table name, it will be stripped off to give meaningful procedure and class names." %>
+<%-- Assemblies and Imports --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+<%-- Assembly References --%>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+		<% Response.WriteLine(" "); %>
+		#region Binding Table Access (<%=BindingTableSub.Name%>)
+		/// <summary>
+		/// Add to binding table <%=DatabaseName%>.<%=BindingTableSub.Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptors(BindingTableSub.Columns, 2, BindingTableSubExcludeKeyField);%>
+		/// <returns>true if successful</returns>
+ 		public virtual bool Add<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpParameters(BindingTableSub.Columns, false, BindingTableSubExcludeKeyField);  %>)
+		{
+			return GetInstance().Add<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpVariables(BindingTableSub.Columns, false, BindingTableSubExcludeKeyField);  %>);
+		}
+		<% if (BindingTableSub.NonPrimaryKeyColumns.Count > 0) {%>
+
+		/// <summary>
+		/// AddUpdate to binding table <%=DatabaseName%>.<%=BindingTableSub.Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptors(BindingTableSub.Columns, 2, BindingTableSubExcludeKeyField);%>
+		/// <returns>true if successful</returns>
+ 		public virtual bool AddUpdate<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpParameters(BindingTableSub.Columns, false, BindingTableSubExcludeKeyField);  %>)
+		{
+			return GetInstance().AddUpdate<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpVariables(BindingTableSub.Columns, false, BindingTableSubExcludeKeyField);  %>);
+		}
+		<% } %>
+		
+		/// <summary>
+		/// Remove from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptorsPrimaryKeys(BindingTableSub.PrimaryKey, 2, BindingTableSubExcludeKeyField);%>
+		/// <returns>true if successful</returns>
+ 		public virtual bool Remove<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpParametersPrimaryKeys(BindingTableSub.PrimaryKey, false, BindingTableSubExcludeKeyField);  %>)
+		{
+			return GetInstance().Remove<%=GetBindingTableEntityName(BindingTableSub)%>(<%GenerateCSharpVariablesPrimaryKeys(BindingTableSub.PrimaryKey, false, BindingTableSubExcludeKeyField);  %>);
+		}
+		
+		<%-- =========================================================================== --%>
+		<%-- Get Binding Table Routines (key field exclusion logic is implemented) --%>
+		<% if ((BindingTableSubExcludeKeyField != null ) && (BindingTableSub.PrimaryKey.MemberColumns[0].Name == BindingTableSubExcludeKeyField.Name)) { %>
+		/// <summary>
+		/// Get from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>
+		/// </summary>
+		/// <returns>SqlDataReader (WARNING: the SqlDataReader must be closed to release the valuable SqlConnection object. Use Try{} Finally{} exception handling</returns>
+		public virtual SqlDataReader Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>()
+		{
+			return GetInstance().Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>();
+		}
+		<% } else { %>
+		/// <summary>
+		/// Get from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptor(BindingTableSub.PrimaryKey.MemberColumns[0], 2);%>
+		/// <returns>SqlDataReader (WARNING: the SqlDataReader must be closed to release the valuable SqlConnection object. Use Try{} Finally{} exception handling</returns>
+		public virtual SqlDataReader Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>(<%GenerateCSharpParameter(BindingTableSub.PrimaryKey.MemberColumns[0], true, true);  %>)
+		{
+			return GetInstance().Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>(<%GenerateCSharpVariable(BindingTableSub.PrimaryKey.MemberColumns[0], true, true);  %>);
+		}
+		<% }  %>
+
+		<% if ((BindingTableSubExcludeKeyField != null ) && (BindingTableSub.PrimaryKey.MemberColumns[1].Name == BindingTableSubExcludeKeyField.Name)) { %>
+		/// <summary>
+		/// Get from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>
+		/// </summary>
+		/// <returns>SqlDataReader (WARNING: the SqlDataReader must be closed to release the valuable SqlConnection object. Use Try{} Finally{} exception handling</returns>
+		public virtual SqlDataReader Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>()
+		{
+			return GetInstance().Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>();
+		}
+		<% } else { %>
+		/// <summary>
+		/// Get from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptor(BindingTableSub.PrimaryKey.MemberColumns[1], 2);%>
+		/// <returns>SqlDataReader (WARNING: the SqlDataReader must be closed to release the valuable SqlConnection object. Use Try{} Finally{} exception handling</returns>
+		public virtual SqlDataReader Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>(<%GenerateCSharpParameter(BindingTableSub.PrimaryKey.MemberColumns[1], true, true);  %>)
+		{
+			return GetInstance().Get<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>(<%GenerateCSharpVariable(BindingTableSub.PrimaryKey.MemberColumns[1], true, true);  %>);
+		}
+		<% }  %>
+		
+		<%-- =========================================================================== --%>
+		<%-- Remove All Binding Table Routines (key field exclusion logic is implemented) --%>
+		<% if ((BindingTableSubExcludeKeyField != null ) && (BindingTableSub.PrimaryKey.MemberColumns[0].Name == BindingTableSubExcludeKeyField.Name)) { %>
+		/// <summary>
+		/// Remove all from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>
+		/// </summary>
+		/// <returns>number of records removed</returns>
+		public virtual int RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>()
+		{
+			return GetInstance().RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>();
+		}
+		<% } else { %>
+		/// <summary>
+		/// Remove all from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptor(BindingTableSub.PrimaryKey.MemberColumns[0], 2);%>
+		/// <returns>number of records removed</returns>
+		public virtual int RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>(<%GenerateCSharpParameter(BindingTableSub.PrimaryKey.MemberColumns[0], true, true);  %>)
+		{
+			return GetInstance().RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[0].Name%>(<%GenerateCSharpVariable(BindingTableSub.PrimaryKey.MemberColumns[0], true, true);  %>);
+		}
+		<% }  %>
+
+		<% if ((BindingTableSubExcludeKeyField != null ) && (BindingTableSub.PrimaryKey.MemberColumns[1].Name == BindingTableSubExcludeKeyField.Name)) { %>
+		/// <summary>
+		/// Remove all from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>
+		/// </summary>
+		/// <returns>number of records removed</returns>
+		public virtual int RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>()
+		{
+			return GetInstance().RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>();
+		}
+		<% } else { %>
+		/// <summary>
+		/// Remove all from binding table <%=DatabaseName%>.<%=BindingTableSub.Name%> on <%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>
+		/// </summary>
+		<% GenerateCSharpXMLDescriptor(BindingTableSub.PrimaryKey.MemberColumns[1], 2);%>
+		/// <returns>number of records removed</returns>
+		public virtual int RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>(<%GenerateCSharpParameter(BindingTableSub.PrimaryKey.MemberColumns[1], true, true);  %>)
+		{
+			return GetInstance().RemoveAll<%=GetBindingTableEntityName(BindingTableSub)%>On<%=BindingTableSub.PrimaryKey.MemberColumns[1].Name%>(<%GenerateCSharpVariable(BindingTableSub.PrimaryKey.MemberColumns[1], true, true);  %>);
+		}
+		<% }  %>
+		#endregion

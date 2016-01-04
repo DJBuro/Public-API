@@ -1,0 +1,28 @@
+﻿@using UsersPermissions = MyAndromeda.Web.Areas.Users.UserManagementUserPermissions;
+@{
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+}
+
+@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Users.ViewModels.UserStoreViewModel>()
+            .Name("storeAddedTo_#=Id#")
+            .Columns(columns =>
+            {
+                columns.Bound(col => col.Name).Title(translator.T("Site Name"));
+                columns.Bound(col => col.AndromedaSiteId).Title(translator.T("Site ID"));
+
+                if (authorizer.Authorize(UsersPermissions.RemoveUserFromStore)) { 
+                    columns.Command(e => e.Destroy().Text("Remove"));
+                }
+            })
+            .DataSource(dataSource =>
+                dataSource.Ajax()
+                    .Sort(sort => sort.Add(field => field.Name))
+                    .PageSize(10)
+                    .Model(m => m.Id(e => e.Id))
+                    .Read(read => read.Action("StoreConnections", "UserManagement", new { UserId = "#=Id#" }))
+                    .Destroy(destroy => destroy.Action("RemoveUserStoreComposite", "UserManagement"))
+            ).Pageable()
+            .Sortable()
+            .ToClientTemplate()
+)

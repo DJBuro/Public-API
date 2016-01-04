@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+    <object id="SiteBaseController" abstract="true">
+        <property name="AccountDao" ref="AccountDao" />
+        <property name="StoreDao" ref="StoreDao" />
+        <property name="LanguageCode" value="en" />
+    </object>
+
+    <object id="StoreController" parent="SiteBaseController" type="OrderTrackingAdmin.Controllers.StoreController" singleton="false">
+        <property name="TrackerDao" ref="TrackerDao" />
+        <property name="LogDao" ref="LogDao" />
+        <property name="OrderDao" ref="OrderDao" />
+        <property name="DriverDao" ref="DriverDao" />
+        <property name="OrderStatusDao" ref="OrderStatusDao" />
+        <property name="CoordinatesDao" ref="CoordinatesDao" />
+        <property name="CustomerDao" ref="CustomerDao" />
+    </object>
+
+  <object id="ChainController" parent="SiteBaseController" type="OrderTrackingAdmin.Controllers.ChainController" singleton="false">
+    <property name="TrackerDao" ref="TrackerDao" />
+    <property name="LogDao" ref="LogDao" />
+    <property name="ClientDao" ref="ClientDao" />
+    <property name="ClientStoreDao" ref="ClientStoreDao" />
+    <property name="ClientWebsiteCustomContentDao" ref="ClientWebsiteCustomContentDao" />
+    <property name="OrderDao" ref="OrderDao" />
+    <property name="DriverDao" ref="DriverDao" />
+    <property name="OrderStatusDao" ref="OrderStatusDao" />
+    <property name="CoordinatesDao" ref="CoordinatesDao" />
+    <property name="CustomerDao" ref="CustomerDao" />
+  </object>
+  
+  <object id="TrackersController" parent="SiteBaseController" type="OrderTrackingAdmin.Controllers.TrackersController" singleton="false">
+        <property name="TrackerDao" ref="TrackerDao" />
+        <property name="ApnDao" ref="ApnDao" />
+        <property name="TrackerTypeDao" ref="TrackerTypeDao" />
+        <property name="TrackerCommandDao" ref="TrackerCommandDao" />
+        <property name="SmsCredentialDao" ref="SmsCredentialDao" />
+    </object>
+
+    <object id="GlobalController" parent="SiteBaseController" type="OrderTrackingAdmin.Controllers.GlobalController" singleton="false">
+        <property name="ApnDao" ref="ApnDao" />
+        <property name="TrackerTypeDao" ref="TrackerTypeDao" />
+        <property name="LogDao" ref="LogDao" />
+        <property name="SmsCredentialDao" ref="SmsCredentialDao" />
+    </object>
+
+    <!--<object id="AccountController" parent="SiteBaseController" type="OrderTrackingAdmin.Controllers.AccountController" singleton="false">
+    </object>-->
+    
+</objects>

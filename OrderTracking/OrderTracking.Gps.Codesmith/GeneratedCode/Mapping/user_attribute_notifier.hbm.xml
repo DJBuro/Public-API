@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Userattributenotifier, OrderTracking.Gps.Dao" table="user_attribute_notifier">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="user_attribute_notifier_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__user_att__AD4B1F9B642DD430"/>
+			<generator class="native" />
+		</id>
+		<property name="Header" type="String">
+			<column name="header" length="255" sql-type="varchar" not-null="true" index="header"/>
+		</property>
+		<property name="Type" type="String">
+			<column name="type" length="255" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Attributekey" type="String">
+			<column name="attribute_key" length="45" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Attributevaluestart" type="String">
+			<column name="attribute_value_start" length="255" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Attributevalueend" type="String">
+			<column name="attribute_value_end" length="255" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Applicationid" type="Int32">
+			<column name="application_id" length="4" sql-type="int" not-null="true" index="header"/>
+		</property>
+		<many-to-one name="Notifier" class="OrderTracking.Gps.Dao.Domain.Notifier, OrderTracking.Gps.Dao">
+			<column name="notifier_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

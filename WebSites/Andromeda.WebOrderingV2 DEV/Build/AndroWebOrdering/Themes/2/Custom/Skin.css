@@ -1,0 +1,1868 @@
+/*!
+    Copyright © 2013 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+body {
+    background-color: #949599;
+}
+
+header {
+    height: 196px;
+    background-color: transparent;
+    border: 0;
+    background: url('Images/header-bg.gif') left top repeat-x #f0eeef;
+}
+
+.highlightedButton a, .button a {
+    background-color: #a7b321;
+    border: 0;
+}
+
+.selectedSectionHeader {
+    background-color: transparent;
+}
+
+    .selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active {
+        background-color: #838c05;
+        color: #ffffff;
+        border: 0;
+        font-weight: normal;
+        font-size: 12pt;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        width: 120px;
+    }
+
+.sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active {
+    background-color: #a7b321;
+    color: #ffffff;
+    border: 0;
+    font-weight: normal;
+    font-size: 12pt;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    width: 120px;
+}
+
+#sectionHeaders {
+    background-color: transparent;
+    border: 0;
+}
+
+#sectionHeadersTop h1 {
+    border: 0;
+}
+
+#footer {
+    background: url('Images/footer-bg.png') left top repeat-x #949599;
+    padding-top: 12px;
+    height: auto;
+    border: 0;
+}
+
+#footerLinks {
+    color: #ffffff;
+    width: 600px;
+}
+
+#mainMenu {
+    /*position: relative;
+    
+    
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;*/
+    position: absolute;
+    background-color: #949599;
+    float: left;
+    margin-top: 22px;
+    right: 0;
+    left: 275px;
+    width: auto;
+    padding-left: 20px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active {
+    background-color: transparent;
+    color: #cccdd1;
+    font-weight: normal; /*font-size:12pt;*/
+    border: 0;
+    text-transform: uppercase;
+    padding: 10px 5px;
+}
+
+.mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active {
+    background-color: transparent;
+    color: #ffffff;
+    border: 0;
+    text-transform: uppercase;
+    padding: 10px 5px;
+}
+
+#pickStoreOptions h2 {
+    margin-top: 0;
+    font-weight: normal;
+}
+
+#pickStoreOptions * {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#pickStoreOptions .welcome, .postcodeLookup {
+    padding: 0.5em;
+    margin: 0.5em 0;
+}
+
+#pickStoreOptions .postcodeLookup {
+    background-color: #f0eeef;
+    border: 2px solid #cccccc;
+}
+
+#chooseStoreButton {
+    padding-right: 10px;
+}
+
+.postcodeLookup input, .postcodeLookup select {
+    width: 160px;
+    min-width: 160px;
+}
+
+.postcodeLookup input, .postcodeLookup select, .postcodeLookup button, .message {
+    font-size: 14px;
+    line-height: 16px;
+    padding: 0.35em;
+}
+
+.postcodeLookup button {
+    float: none;
+}
+
+.message {
+    margin: 0.5em 0;
+    border: 2px solid;
+}
+
+.good-message {
+    border-color: #44c110;
+}
+
+.bad-message {
+    border-color: #bf0202;
+}
+
+
+#headerRight {
+    width: auto;
+    float: none;
+    margin-left: 150px;
+}
+
+.button, .highlightedButton {
+    float: left;
+}
+
+#headerRegisterButton {
+    margin-right: 10px;
+    float: right;
+}
+
+#headerForgotPasswordButton {
+    float: right;
+}
+
+    #headerRegisterButton a, #headerForgotPasswordButton a {
+        text-decoration: none;
+        color: #000000;
+    }
+
+.dealName, .itemName {
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 25px;
+}
+
+.dealItem, .itemRow {
+    background-color: #f0eeef;
+    border: 1px solid #dedede;
+    margin: 10px;
+    clear: none;
+}
+
+#headerHello {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#pageHeader {
+    height: 196px;
+}
+
+.homeProduct img {
+    width: 200px;
+    height: 131px;
+}
+
+#homeProductSliderContainer, #homeProductSliderContainer > div {
+    height: 190px !important;
+}
+
+    #homeProductSliderContainer .jssora01r, #homeProductSliderContainer .jssora01l {
+        top: 73px !important;
+        right: 0;
+    }
+
+.homeBoxInner #homeFullOrderDeal {
+    display: none;
+}
+
+#homeContent, #sectionsWrapper {
+    padding-bottom: 15px;
+}
+
+#storeDetailsDeliveryTimes {
+    background-color: #a7b321;
+    color: #ffffff;
+    float: right;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.category2, .category1 {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.priceAddContainer .highlightedButton.addItemButton {
+    float: right;
+    margin-left: 10px;
+    text-align: right;
+}
+
+.priceAddContainer {
+    margin-top: 10px;
+    float: right;
+    width: 160px;
+}
+
+.itemPrice {
+    float: none;
+    display: inline;
+    text-align: right;
+}
+
+.itemName {
+    background-color: #a7b321;
+    color: #ffffff;
+    padding: 5px 10px;
+    min-width: 230px;
+    left: 0;
+    position: relative;
+    margin-top: -22px;
+    margin-left: -13px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.dealName {
+    background-color: #a7b321;
+    color: #ffffff;
+    padding: 5px 10px;
+    min-width: 230px;
+    left: 0;
+    margin-top: -10px !important;
+    margin-left: -10px !important;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+
+.popupItemDetails img {
+    float: left;
+    padding-right: 13px;
+}
+
+.popupItemDetails > h2 {
+    float: none;
+    font-weight: normal !important;
+    padding: 15px 15px 5px 0;
+    width: auto;
+    overflow: hidden;
+    padding-left: 0;
+}
+
+#popupDescription {
+    float: none;
+    width: auto;
+    padding: 0 10px 0 0;
+    clear: none;
+    padding-left: 10px;
+    margin-top: 0;
+}
+
+#popupOptions {
+    margin-top: 30px;
+}
+
+#popupToppingsContainer {
+    margin-right: 18px;
+}
+
+    #popupToppingsContainer h1 {
+        font-size: 18px;
+        font-weight: normal;
+        background-color: #949599;
+        color: #ffffff;
+        padding: 5px;
+    }
+
+#popupFreeToppings {
+    padding: 5px;
+}
+
+.popupToppingsHeaders {
+    background-color: #e2e2e2;
+    padding: 3px 0;
+}
+
+.popupTopping {
+    border-bottom: 1px solid #d7d7d7;
+    padding: 3px 0;
+}
+
+#popupAddToCartButton {
+    margin-right: 20px;
+}
+
+.popupBoxHeaderContainer a {
+    font-weight: normal;
+}
+
+#popupCatHeader {
+    color: #000000;
+    float: left;
+    margin-right: 5px;
+}
+
+#popupCatContainer, #popupCategory1, #popupCategory2 {
+    float: left;
+    clear: none;
+}
+
+    #popupCatContainer select {
+        font-size: 14px;
+        margin-left: 5px;
+    }
+
+#popupCatContainer, #popupCategory1 {
+    margin-right: 5px;
+}
+
+.popupBoxHidden, .popupBoxVisible {
+    background-color: #ffffff;
+}
+
+#popupDealBoxBodyContainer > h1 {
+    background-color: #949599;
+    padding: 5px 5px;
+    font-weight: normal;
+    font-size: 18px;
+    color: #ffffff;
+}
+
+#popupDealBoxBodyContainer {
+    padding: 20px;
+}
+
+.dealPopupItemNo {
+    font-weight: normal;
+}
+
+#popupDealOptions {
+    padding-right: 12px;
+}
+
+.itemName, #homeStoreDetailsTitle, #homeProductSlider h2, .dealName, .itemName, .popupDealItemPicker, .dealPopupItemNo, #storeDetailsAddress h1,
+#storeDetailsDeliveryTimes h1, #homeMenuTitle, .popupItemDetails > h2, #popupToppingsContainer h1, #popupDealBoxBodyContainer > h1, #lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2, .sectionTitle h1, #sectionHeadersTop h1, #moContent h1, #orderAccepted h3, #orderAccepted h4, #forgotPasswordBox h1, #homeCarousel2 .homeCarouselMenuItemCard h2, #informationInner h1 {
+    font-weight: normal !important;
+}
+
+.popupDealItemPicker, .dealPopupItemNo {
+    font-size: 18px;
+}
+
+#homeCarousel2 .homeCarouselMenuItemCard h2 {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+#homeCarousel2 .homeCarouselMenuItemCard p {
+    font-size: 12px;
+}
+
+#poweredByAndro {
+    display: inline;
+    float: none;
+}
+
+#homeMenu, #homeStoreDetails {
+    margin-top: 0;
+}
+
+#footerLinks a {
+    color: #ffffff;
+}
+
+#dealPopupBox .popupItemDetails > h2 {
+    font-size: 26px;
+    margin-left: 10px;
+}
+
+.homeProductImageWrapper {
+    width: 202px;
+}
+
+#homeCarousel2 .homeCarouselMenuItemCardImagePrice {
+    background: url('Images/price-bg.png') left top repeat;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.content, #lrCreateAnAccount, .lrLoginFormPrompt, .lrLoginFormInput, #lrEmailRegisterMarketing, #lrSMSRegisterMarketing, #lrEmailRegisterMarketing, .requiredLine, #lrCreateAnAccountAddress, #lrAddressDetails, #mpRegisterAddressContainer,
+#mpRegisterContainer h2, #mpRegisterContainer, #myProfileContent, #myOrdersContent {
+    background-color: #ffffff;
+}
+
+    .checkoutAddressLine input, .lrLoginFormInput input, .checkoutAddressLine textarea {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 5px 4px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+#lrEmailRegisterMarketing, #lrSMSRegisterMarketing {
+    margin-bottom: 10px;
+}
+
+#lrBox {
+    background-color: #ffffff;
+}
+
+    #lrBox label {
+        font-size: 11pt;
+    }
+
+.checkoutAddressLine textarea {
+    width: 270px;
+    margin-left: 0;
+}
+
+.checkoutAddressColumn2 {
+    float: none;
+}
+
+#lrRegisterButton {
+    margin-left: 25px;
+}
+
+#moContent h1 {
+    padding: 10px 20px;
+}
+
+.checkoutSectionHeader {
+    background-color: #f2f2f2;
+}
+
+.selectedCheckoutSectionHeader {
+    background-color: #e1e1e1;
+}
+
+.checkoutSectionHeader, .selectedCheckoutSectionHeader {
+    padding: 10px 18px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-right: 1px;
+}
+
+.upsellText {
+    clear: both;
+    display: inline-block;
+    float: left;
+    line-height: 25px;
+    margin-top: 10px;
+    width: 190px;
+}
+
+.button.upsellButton {
+    margin-top: 11px;
+}
+
+.checkoutPage h3 {
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+#checkoutUpsellingContainer {
+    margin: 10px 10px;
+}
+
+.checkoutButtons .nextButton {
+    float: right;
+    margin-right: 0;
+    margin-top: 20px;
+    width: auto;
+}
+
+.checkoutButtons .backButton {
+    margin-top: 20px;
+}
+
+.orderNotesColumn1 {
+    margin-top: 5px;
+    width: 160px;
+    float: left;
+}
+
+#checkoutSColumn1 > div, #checkoutSColumn2 > div {
+    clear: both;
+    padding: 8px 0;
+}
+
+#checkoutSOrderItems div {
+    width: 150px;
+}
+
+#checkoutSOrderItems .checkoutSOrderItem {
+    width: auto !important;
+    clear: both;
+}
+
+    #checkoutSOrderItems .checkoutSOrderItem .checkoutSOrderItemName {
+        padding-right: 10px;
+    }
+
+#checkoutSTotalPrompt, #checkoutSAddVoucherTitle {
+    float: left;
+    width: 146px;
+}
+
+#checkoutSTotalValue {
+    display: inline-block;
+}
+
+#checkoutSAddVoucherContainer > input, #checkoutSAddVoucherContainer > label {
+    clear: both;
+    float: left;
+    margin-right: 10px;
+}
+
+#checkoutSVoucherCode {
+    border: 1px solid #ccc;
+    padding: 5px 4px;
+    margin-bottom: 11px;
+}
+
+#checkoutSAddress {
+    width: auto;
+}
+
+#orderAccepted h3, #orderAccepted h4 {
+    font-size: 22px;
+    line-height: 25px;
+}
+
+#orderAccepted {
+    padding: 10px 0;
+}
+
+.checkoutSOrderItemName {
+    width: 300px;
+    float: left;
+}
+
+#forgotPasswordMessage {
+    text-align: center;
+    color: #ff0000;
+}
+
+#forgotPasswordBox h1 {
+    font-size: 29px;
+}
+
+#headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active {
+    padding: 15px 8px;
+    background-color: transparent;
+    border: 0;
+    color: #ffffff;
+}
+
+#headerMyProfileButton, #headerMyOrdersButton, #headerLogoutButton {
+    float: left;
+}
+
+#headerLogoutButton, #headerMyOrdersButton {
+    display: block;
+}
+
+.popupToppingsSingle2 {
+    margin-left: 180px;
+}
+
+.popupToppingsDouble, .popupToppingsDouble2 {
+    margin-right: 0;
+}
+
+#informationInner {
+    background-color: #ffffff;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#footerFacebook, #footerTwitter, #footerInstagram, #footerPInterest {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    padding-right: 10px;
+}
+
+#footerSocialButtons {
+    padding-top: 10px;
+}
+
+#footerTop {
+    height: auto;
+}
+
+#footerFacebook {
+    background: url('Images/icon-facebook-32.png') left top no-repeat;
+}
+
+#footerTwitter {
+    background: url('Images/icon-twitter-32.png') left top no-repeat;
+}
+
+#footerInstagram {
+    background: url('Images/icon-instagram-32.png') left top no-repeat;
+}
+
+#footerPInterest {
+    background: url('Images/icon-pinterest-32.png') left top no-repeat;
+}
+
+#footerWrapper {
+    background: url('Images/footer-bg.png') left top repeat-x #949599;
+}
+
+#homeCarousel2 H2 {
+    margin: 5px 0;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+#homeCarousel2 p {
+    margin: 0;
+    font-size: 9pt;
+}
+
+.quantity {
+    width: 100%;
+}
+
+.itemImage {
+    margin-right: 13px;
+    float: none;
+    margin-top: 0;
+}
+
+#moContent > h1 {
+    font-size: 25px;
+}
+
+.errorOptions a {
+    width: initial !IMPORTANT;
+}
+
+.moName {
+    clear: both;
+}
+
+.moPriceTitle {
+    float: right;
+}
+
+.olControlPanZoom {
+    display: none;
+}
+
+#checkoutPaymentContainer {
+    height: initial;
+    padding: 0;
+    overflow: initial;
+}
+
+#dataCashPaymentIFrame {
+    width: 100%;
+    height: 700px;
+}
+
+#dataCashPaymentContainer {
+    height: initial;
+}
+
+.checkoutDataError {
+    background-color: red;
+    -moz-box-shadow: 0 0 6px red;
+    -webkit-box-shadow: 0 0 6px red;
+    box-shadow: 0 0 6px red;
+}
+
+.lrLoginFormInput input[type="checkbox"] {
+    width: auto;
+    margin-left: 1em;
+}
+
+#headerLoginBox {
+    margin-top: 24px;
+}
+
+#homeMenuTitle, #homeStoreDetailsTitle {
+    font-size: 25px;
+    line-height: 26px;
+}
+
+#sectionsWrapper {
+    position: relative;
+    top: 5px;
+    left: 0;
+}
+
+#storeDetailsDeliveryTimes h1, #storeDetailsAddress h1 {
+    font-size: 22px;
+}
+
+#storeDetailsAddressWrapperInner2 {
+    padding-top: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#storeDetailsAddress {
+    padding-right: 2%;
+}
+
+#storeDetailsAddressMap {
+}
+
+.popupItemDetails {
+    color: #000000;
+    width: 50%;
+}
+
+.checkoutPage #checkoutPageInner {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+}
+
+#menuSectionWrapper {
+    background-color: #f0eeef;
+}
+
+#menuSection, #viewContainer {
+    min-height: 676px;
+    height: auto;
+    background-color: #f0eeef;
+}
+
+#viewContainerOuter {
+    background-color: #f0eeef;
+    width: 100%;
+}
+
+#loginRegisterInner h1 {
+    border: none;
+    height: auto;
+    font-size: 23px;
+    margin: 0;
+}
+
+.loginFormInput {
+    padding: 4px;
+}
+
+#lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2 {
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+.itemDescription {
+    margin-top: 0;
+}
+
+#viewContainer {
+    min-height: 600px;
+}
+
+.checkoutError {
+    clear: both;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
+/*.rightColumn
+{
+    position: absolute;
+    right: 0;
+    max-height: 600px;
+    overflow-y: auto;
+}*/
+
+.itemDetails, .itemDetailsWithImage {
+    float: right;
+    margin-top: 0;
+    width: 160px;
+}
+
+.checkoutPage h1 {
+    font-size: 21pt;
+}
+
+#headerLoggedIn {
+    height: 96px;
+}
+
+.mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted {
+    float: left;
+}
+
+#headerLogoutButton {
+    right: 0;
+}
+
+#headerMyOrdersButton {
+    right: 64px;
+    text-transform: uppercase;
+}
+
+#headerMyProfileButton {
+    right: 174px;
+    text-transform: uppercase;
+}
+
+#headerLoggedIn a {
+    color: #ffffff;
+}
+
+#mpMenu {
+    display: none;
+}
+
+.mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active, .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active, #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active {
+    font-size: 12pt;
+}
+
+#checkoutSAddressContainer > div, #checkoutSTime > div {
+    float: left;
+    width: 146px;
+}
+
+#homeContent {
+    padding-bottom: 10px;
+}
+
+.validationMessage {
+    font-size: 0.9em;
+    color: #333;
+    padding: 0 0.5em;
+}
+
+    .validationMessage::before {
+        content: "* ";
+        color: red;
+    }
+@media only screen and (max-width: 601px)
+{
+    #loginRegisterInner h1
+    {
+        font-weight: normal !important;
+        border: none;
+        height: auto;
+        font-size: 17pt;
+        margin:0;
+    }
+
+    #loginRegisterInner h1, #signIn, #loginRegisterInner, #forgotPasswordBox
+    {
+        background-color: #ffffff;
+    }
+
+    header
+    {
+        height: auto;
+        background: none;
+    }
+
+    #mobileHeader
+    {
+        height: 43px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    #mobileSubHeader
+    {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    #headerLoginBox
+    {
+        display: inline-block;
+        margin-top: 0;
+    }
+
+    #homeOptionsWrapper > div
+    {
+        clear: both;
+        padding-top: 10px;
+    }
+
+    #viewContainer
+    {
+        background-color: #f0eeef;
+        padding:0 10px;
+        min-height: 0;
+    }
+
+    #forgotPasswordCancelButton, #forgotPasswordButton
+    {
+        display: inline-block;
+        clear: none;
+        float: none;
+        margin-top: 12px;
+    }
+
+    #forgotPasswordBox h1
+    {
+        height: auto;
+    }
+
+    #forgotPasswordBox
+    {
+        text-align: center;
+    }
+
+    #forgotPasswordEmailPrompt, #forgotPasswordEmail
+    {
+        display: inline;
+    }
+
+    #forgotPasswordEmailPrompt
+    {
+        float: none;
+    }
+
+    #homeMenuTitle, #homeStoreDetailsTitle
+    {
+        font-size: 20px;
+        line-height: 23px;
+    }
+
+    #homeMenu, #homeStoreDetails
+    {
+        font-size: 10pt;
+    }
+
+    #homeContent
+    {
+        margin: 10px 0 20px;
+    }
+
+    #homeOptionsWrapper .button, #homeOptionsWrapper .highlightedButton
+    {
+        float: none;
+        display: inline-block;
+    }
+
+    #homeLeftOptions, #homeRightOptions
+    {
+        width: auto;
+    }
+
+    #sectionsWrapper, #mobileMenuSections
+    {
+        background-color: #ffffff;
+        top: 0;
+    }
+
+    #mobileMenuSections
+    {
+        text-align: left;
+    }
+
+    #mobileMenuSectionsPrompt
+    {
+        font-weight: normal !important;
+        font-size: 26px;
+        line-height: 50px;
+        padding-left: 10px;
+    }
+
+    #mobileMenuSections select
+    {
+        text-align: center;
+    }
+
+    p.dealName
+    {
+        font-size: 18px;
+        line-height: 26px;
+    }
+
+    #sections
+    {
+        margin-bottom: 20px;
+    }
+
+    .popupItemDetails
+    {
+        color: #000000;
+        width: 100%;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        float: none;
+    }
+
+    #storeDetailsAddressMap
+    {
+        width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 10px;
+        background-color: #ffffff;
+    }
+
+    .welcomeHeader h1
+    {
+        background-color: #ffffff;
+    }
+
+    .storeDetailsBox h1
+    {
+        background-color: transparent;
+    }
+
+    #pickStoreOptions .welcome {
+        float: none;
+        width: 100%;
+        display: none;
+    }
+    #pickStoreOptions .postcodeLookup {
+        float: none;
+        width: 100%;
+    }
+
+    #storeDetailsDeliveryTimes, #storeDetailsDeliveryTimes h1
+    {
+        color: #ffffff;
+        float: none;
+    }
+
+    #storeDetailsDeliveryTimes h1, #storeDetailsAddress h1
+    {
+        font-size: 23px;
+        height: auto;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        float: none;
+        margin-right: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .storeDetailsDeliveryTimesDay
+    {
+        font-size: 12pt;
+        display: inline-block;
+        text-align: left;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn1
+    {
+        width: 150px;
+    }
+
+    #storeDetailsAddress
+    {
+        color: #000000;
+        background-color: #ffffff;
+        padding: 5px 10px 10px;
+    }
+
+    .dealName, .itemName
+    {
+        font-size: 19px;
+        line-height: 21px;
+    }
+
+    #forgotPasswordEmail input
+    {
+        width: 59%;
+    }
+
+    #cartTitle > h1
+    {
+        height: auto;
+        font-size: 18pt;
+    }
+
+    #cartTitle h1, #deliveryOrCollection, #cartWrapper
+    {
+        background-color: #ffffff;
+    }
+
+    #checkoutPageInner h1
+    {
+        font-size: 25px;
+    }
+
+    .priceAddContainer
+    {
+        width: auto;
+        margin: 0;
+        float: none;
+    }
+
+    #popupDescription
+    {
+        margin-top: 10px;
+    }
+
+    #popupOptionsRight, #popupOptionsLeft
+    {
+        background-color: #ffffff;
+    }
+
+    #popupOptions
+    {
+        height: 180px;
+    }
+
+    #popupCatContainer, #popupCategory1, #popupCatHeader
+    {
+        display: inline-block;
+    }
+
+    #popupOptionsRight
+    {
+        top: 90px;
+    }
+
+    .popupBoxHeaderContainer h1
+    {
+        background-color: #ffffff;
+        font-size: 21px !important;
+        font-weight: normal;
+    }
+
+    .checkoutPage h1
+    {
+        font-size: 25px;
+    }
+
+    #popupName
+    {
+        font-size: 19px;
+    }
+
+    .backButton, .checkoutButtons .nextButton
+    {
+        width: 60px;
+    }
+
+    #checkoutContactDetailsContainer h3, #checkoutDeliveryTimePrompt h3, #checkoutDeliveryAddressContainer h3, #checkoutOrderNotesContainer h3
+    {
+        font-size: 17px;
+    }
+
+    .button.nextButton.checkoutSendOrderToStoreButton
+    {
+        width: 106px;
+    }
+
+    .checkoutError
+    {
+        clear: both;
+        margin-top: 20px;
+    }
+
+    .checkoutPage #checkoutPageInner
+    {
+        border: none;
+        background-color: #ffffff;
+    }
+
+    #checkoutSAddressContainer > div, #checkoutSTime > div, #checkoutSPaymentSelection > div, #checkoutSAddVoucherTitle
+    {
+        display: block;
+        padding: 5px;
+        width: auto;
+        float: none;
+    }
+
+    #menuSection, #viewContainer
+    {
+        height: auto;
+        overflow: hidden;
+        min-height: 0;
+    }
+
+    .popupTopping
+    {
+        width: 100%;
+    }
+
+    #checkoutSectionsContainer
+    {
+        overflow: hidden;
+    }
+
+    #checkoutSPayNowSection
+    {
+        margin-left: 156px;
+    }
+
+    .homeBoxInner > div
+    {
+        padding:0 10px;
+    }
+
+    .loginFormPrompt > label
+    {
+        font-size: 11pt;
+    }
+
+    #lrEmailRegisterMarketing label, #lrSMSRegisterMarketing label
+    {
+        font-size: 9pt;
+    }
+
+    .lrLoginFormPrompt > label, .checkoutAddressColumn1 > label
+    {
+        display: inline-block;
+        font-size: 11pt;
+        padding: 3px 0;
+    }
+
+    #lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2
+    {
+        font-size: 25px;
+        margin: 10px;
+    }
+
+    .orderNotesColumn1
+    {
+        width: auto;
+    }
+
+    .checkoutAddressLine input, .lrLoginFormInput input, .checkoutAddressLine textarea,
+    #checkoutSAddressContainer > div, #checkoutSTime > div, #checkoutSPaymentSelection > div,
+    #checkoutSTotalPrompt, #checkoutSAddVoucherTitle, .checkoutError
+    {
+        font-size: 10pt;
+    }
+
+    .checkoutContactColumn1, #marketingLine, .checkoutAddressColumn1, #checkoutDeliveryTime p
+    {
+        font-size: 11pt;
+        margin: 10px 5px 0;
+    }
+
+    #popupOptionsLeft > div
+    {
+        margin-top: 5px;
+    }
+
+    .itemDescription
+    {
+        clear: initial;
+        float: initial;
+        margin-top: 40px;
+    }
+
+    #informationInner
+    {
+        font-size: 10pt;
+    }
+
+    #hmMenuButton.active
+    {
+        background: url(Images/MenuSmallAct.png) no-repeat;
+        background-position: 50% center;
+    }
+
+    #hmMyOrderButton.active
+    {
+        background: url(Images/BasketSmallAct.png) no-repeat;
+        background-position: 50% center;
+    }
+
+    #hmHomeButton.active
+    {
+        background: url(Images/HomeSmallAct.png) no-repeat;
+    }
+
+    #hmMyProfileButton.active
+    {
+        background: url(Images/ProfilesmallAct.png) no-repeat;
+        background-position: 50% center;
+    }
+
+    #hmStoreDetailsButton.active
+    {
+        background: url(Images/StoreDetailsSmallAct.png) no-repeat;
+        background-position: 50% center;
+    }
+
+    #footer
+    {
+        display: block;
+    }
+
+    #footerLinks
+    {
+        width: 100%;
+    }
+
+    #poweredByAndro
+    {
+        display: inline-block;
+        float: none;
+        width: 100%;
+        margin-left:0;
+    }
+
+    #footerLinks #poweredByAndro
+    {
+        display: inline-block !important;
+    }
+
+    #termsOfUse
+    {
+        margin-left:0;
+    }
+
+    #hmHomeSelectedButton, #hmMenuSelectedButton, #hmStoreDetailsSelectedButton, #hmMyProfileSelectedButton, #hmMyOrderSelectedButton
+    {
+        display: inline-block;
+    }
+
+    .checkoutButtons
+    {
+        clear: both;
+    }
+
+    .checkoutPage
+    {
+        width: 100%;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        float: none;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .checkoutPage h3
+    {
+        font-size: 21px;
+    }
+
+    .itemName
+    {
+        min-width: initial;
+        padding: 5px;
+        background-color: #a7b321;
+        color: #ffffff;
+        left: 5px;
+        position: absolute;
+        display: inline-block;
+        right: 120px;
+        margin: 0;
+
+    }
+
+    .itemImage
+    {
+        float: left;
+        position: initial;
+        margin: 0;
+    }
+
+    .itemImage img
+    {
+        margin: 35px 10px 0 0;
+    }
+
+    .itemRow
+    {
+        padding: 5px 35px 5px 5px;
+    }
+
+    #dataCashPaymentContainer
+    {
+        height: initial;
+    }
+ 
+    .siteListMap
+    {
+        height: 130px;
+    }
+
+    .siteListSite
+    {
+        clear: both;
+        margin:0 0 10px 0;
+        border-top: 1px dashed #d6d6d6;
+        padding-top: 20px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 14pt;
+        background-color: #a7b321;
+        display: block;
+        text-align: center;
+        padding: 5px 0 5px 0;
+        text-decoration: none;
+        color: white;
+    }
+
+    .siteListSiteCityPostcode
+    {
+        padding-bottom: 5px;
+    }
+
+    .siteListClickForLocation a
+    {
+        background-color: gray;
+    }
+
+    .mmButton
+    {
+        float: none;
+    }
+}
+
+@media only screen and (max-width: 590px)
+{
+    #viewContainer
+    {
+        background-color: #ffffff;
+    }
+
+    header
+    {
+        height: auto;
+    }
+
+    .checkoutAddressLine input, .checkoutAddressLine textarea
+    {
+        width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 359px)
+{
+    .checkoutSVoucherCode
+    {
+        margin-left: 160px;
+    }
+
+    #checkoutSAddressContainer > div, #checkoutSTime > div
+    {
+        width: 140px;
+    }
+
+    #checkoutSPayNowSection
+    {
+        margin-left: 150px;
+    }
+}
+
+@media only screen and (max-width: 689px)
+{
+    .popupToppingsDouble2, .popupToppingsSingle2
+    {
+        display: none;
+    }
+
+    .checkoutButtons
+    {
+        clear: both;
+    }
+
+    #headerMyProfileButton
+    {
+        right: 145px;
+        text-transform: uppercase;
+    }
+}@media only screen and (min-width: 601px)
+{
+    #headerLoginBox
+    {
+        margin-top: 24px;
+    }
+
+    header
+    {
+        height: 196px;
+    }
+
+    #homeMenuTitle, #homeStoreDetailsTitle
+    {
+        font-size: 25px;
+        line-height: 26px;
+    }
+
+    #sectionsWrapper
+    {
+        position: relative;
+        top: 5px;
+        left: 0;
+        margin-left: 140px;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        clear: left;
+        float: none;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding-right: 300px;
+        width: 100%;
+        overflow: visible;
+    }
+
+    #storeDetailsDeliveryTimes h1, #storeDetailsAddress h1
+    {
+        font-size: 22px;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        float: right;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+    #storeDetailsAddressMap
+    {
+        width: 54%;
+    }
+
+    .dealName, .itemName
+    {
+        font-size: 20px;
+        line-height: 25px;
+    }
+    .dealName
+    {
+        padding: 15px 10px 5px 10px;
+    }
+    #storeDetailsAddressWrapperInner2
+    {
+        padding-top: 0;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    #storeDetailsAddress
+    {
+        width: 40%;
+        padding-right: 2%;
+    }
+
+    #popupDescription
+    {
+        margin-top: 0;
+    }
+
+    .popupItemDetails
+    {
+        color: #000000;
+        width: 50%;
+    }
+
+    .priceAddContainer
+    {
+        width: 160px;
+    }
+
+    .checkoutButtons .nextButton
+    {
+        width: auto;
+    }
+
+    .checkoutPage #checkoutPageInner
+    {
+        background-color: #ffffff;
+        border: 1px solid #e3e3e3;
+    }
+
+    #menuSectionWrapper
+    {
+        background-color: #f0eeef;
+        padding: 0;
+    }
+
+    #menuSection, #viewContainer
+    {
+        min-height: 676px;
+        height: auto;
+        background-color: #f0eeef;
+    }
+
+    #viewContainerOuter
+    {
+        background-color: #f0eeef;
+        width: 100%;
+    }
+
+    #loginRegisterInner h1
+    {
+        font-weight: normal !important;
+        border: none;
+        height: auto;
+        font-size: 23px;
+        margin: 0;
+    }
+
+    .loginFormInput
+    {
+        padding: 4px;
+    }
+
+    #lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2
+    {
+        font-size: 22px;
+        margin: 10px 0;
+    }
+
+    .orderNotesColumn1
+    {
+        width: 160px;
+        float: left;
+    }
+
+    .itemDescription
+    {
+        margin-top: 00px;
+    }
+
+    #footerLinks
+    {
+        color: #ffffff;
+        width: 600px;
+    }
+
+    #viewContainer
+    {
+        min-height: 600px;
+        background-color: #f0eeef;
+    }
+
+    .checkoutError
+    {
+        clear: both;
+        margin-top: 20px;
+        padding-top: 10px;
+    }
+
+    .checkoutSectionHeader, .selectedCheckoutSectionHeader
+    {
+        padding: 10px 18px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-right: 1px;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        float: right;
+        margin-top: 0px;
+        width: 160px;
+    }
+
+    .checkoutPage h1
+    {
+        font-size: 21pt;
+    }
+
+    .mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted
+    {
+        float: left;
+    }
+
+    #headerLogoutButton
+    {
+        right: 0;
+    }
+
+    #headerMyOrdersButton
+    {
+        right: 64px;
+        text-transform: uppercase;
+    }
+
+    #headerMyProfileButton
+    {
+        right: 174px;
+        text-transform: uppercase;
+    }
+
+    #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active
+    {
+        color: #ffffff;
+        padding: 10px 8px;
+    }
+
+    #mpMenu
+    {
+        display: none;
+    }
+
+    .mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active, .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active, #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active
+    {
+        font-size: 12pt;
+    }
+
+    #mainMenu
+    {
+        padding-left: 20px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .siteListMap
+    {
+        height: 130px;
+    }
+
+    .siteListSite
+    {
+        float: left;
+        margin: 0 10px;
+        width: 180px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 14pt;
+        background-color: #a7b321;
+        display: block;
+        text-align: center;
+        padding: 5px 0 5px 0;
+        text-decoration: none;
+        color: white;
+    }
+
+    .siteListSiteCityPostcode
+    {
+        padding-bottom: 5px;
+    }
+
+    .sitesBox, #siteSelectorBox
+    {
+        padding: 0 50px 25px 50px;
+    }
+
+    .siteListClickForLocation a
+    {
+        background-color: gray;
+    }
+
+    #headerLoggedIn
+    {
+        position: absolute;
+        right: 0;
+        left: 275px;
+        height: 40px;
+        top: 112px;
+        background-color: #dddddd;
+    }
+
+    #headerLoggedIn a
+    {
+        color: #ffffff;
+    }
+
+    #headerLoggedIn div
+    {
+        top: initial;
+        position: initial;
+        float: right;
+    }
+
+    #pageHeader
+    {
+        background: url('Images/header-bg.gif') left top repeat-x #f0eeef;
+    }
+
+    #pickStoreOptions .welcome {
+        float: left;
+        width: 49%;
+    }
+    #pickStoreOptions .postcodeLookup {
+        float: right;
+        width: 49%;
+        max-width: 430px;
+        margin-right: 10px;
+    }
+}@media only screen and (min-width: 601px) and (max-width: 1023px)
+{
+    .sitesBox, #siteSelectorBox 
+    {
+        padding: 0;
+    }
+
+    .dealName
+    {
+        display: block;
+        margin-top: 0 !important;
+        margin-right: 100px;
+        min-width: 0;
+    }
+}

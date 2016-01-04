@@ -1,0 +1,86 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "Add Store";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+<div id="addStorePage">
+    <div>
+        <!-- Breadcrumb -->
+        <h2 style="float:left;">@Html.ActionLink("Manage Stores", "Index", "Store", new { }) / Add Store</h2>
+        <span style="float:right;">@Html.ActionLink("Help", "AddStore", "Help", null, new { target="_blank" })</span>
+    </div>
+
+    <div style="clear:both;"></div>
+
+    @using (Html.BeginForm())
+    { 
+        <p class="warning">Please be very careful to enter the correct store details.  If any of the store details entered below are wrong it could cause our systems to fail or work incorrectly.   If you are not 100% sure STOP and ask.</p>
+        
+        <!-- Andromeda store name -->
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Store.Name):
+        </div> 
+        <div class="editor-field"> 
+            @Html.TextBoxFor(model => model.Store.Name) 
+            <br />@Html.ValidationMessageFor(model => model.Store.Name) 
+        </div> 
+        <div class="formFieldHelp">Our name for the store - only used within Andromeda</div>
+    
+        <!-- AndromedaSiteId -->
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Store.AndromedaSiteId):
+        </div> 
+        <div class="editor-field"> 
+            @Html.TextBoxFor(model => model.Store.AndromedaSiteId) 
+            <br />@Html.ValidationMessageFor(model => model.Store.AndromedaSiteId) 
+        </div> 
+        <div class="formFieldHelp">Our (AndroDb) site id - only used within Andromeda</div>
+    
+        <!-- CustomerSiteId -->
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Store.CustomerSiteId):
+        </div> 
+        <div class="editor-field"> 
+            @Html.TextBoxFor(model => model.Store.CustomerSiteId) 
+            <br />@Html.ValidationMessageFor(model => model.Store.CustomerSiteId) 
+        </div> 
+        <div class="formFieldHelp">An id that the customer (PJ, Herbies etc...) use to identify their store</div>
+    
+        <!-- StoreStatus -->
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Store.StoreStatus):
+        </div> 
+        <div class="editor-field"> 
+            @Html.DropDownListFor(model => model.StoreStatusId, new SelectList(Model.StoreStatuses, "Id", "Status", Model.StoreStatusId))
+            <br />@Html.ValidationMessageFor(model => model.Store.StoreStatus) 
+        </div>
+        <div class="formFieldHelp">Live = trading now, Future = going to be trading, Disabled = not trading </div>
+        
+        <!-- Country -->
+        <div class="editor-label"> 
+            @Html.LabelFor(model => model.Store.Address.Country):
+        </div> 
+        <div class="editor-field">
+            @Html.DropDownListFor(model => Model.CountryId, new SelectList(Model.Countries, "Id", "CountryName", null))
+            <br />@Html.ValidationMessageFor(model => Model.Store.Address.Country) 
+        </div>
+        <div class="formFieldHelp">The country that the store is in</div>
+    
+        <!-- Chain --> 
+        <div class="editor-label">
+            Chain:
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => Model.ChainId, new SelectList(Model.Chains, "Id", "Name"))
+            <br />@Html.ValidationMessageFor(model => Model.Store.Chain) 
+        </div>
+        <div class="formFieldHelp">The chain that the store is part of</div>
+        
+        <p class="editor-submitButton"> 
+            <input type="submit" value="Add Store" />
+            @Html.ActionLink("Cancel", "Index", "Store")
+        </p>
+    }
+</div>

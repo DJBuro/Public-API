@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MyAndromeda.Core.Authorization.IPermission>
+@{
+    var categories = Model.GroupBy(e => e.Category); 
+}
+
+<div class="header">
+    <h3>Internal Permissions</h3>
+    <a href="@Url.Action("Update")" class="k-button">Add / Update</a>
+</div>
+<p>Below are all permissions and the categories they belong to</p>
+@foreach (var item in categories) 
+{
+    <div class="header">
+        <h3>@item.Key</h3>
+
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var permission in item){
+            <tr>
+                <td>@permission.Name</td>
+                <td>@permission.Description</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

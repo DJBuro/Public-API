@@ -1,0 +1,68 @@
+﻿@model AndroAdmin.ViewModels.HostV2.HostApplicationSelectionViewModel
+
+@{    
+    var groups = Model.PossibleHosts;
+}
+@using (Html.BeginForm())
+{ 
+    @Html.HiddenFor(e => e.ApplicationId);
+    @Html.ValidationSummary()
+    
+    <div class="header">
+        <h3>Host config for: <a href="@Url.Action("Application", "Partner", new { id = Model.ApplicationId })">@Model.Application.Name</a></h3>
+        <p>Note that all sites under this application will start using this set of servers.</p>
+        <input class="k-button" type="submit" name="Save" value="Save" />
+    </div>
+
+    foreach (var group in groups)
+    {
+        <div class="header">
+            <h4>@group.Key</h4>
+        </div>
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <label><input class="selectAll" type="checkbox" /> Select All</label>
+                        </th>
+                        <th>Enabled</th>
+                        <th>URL</th>
+                        <th>Version</th>
+                        <th>Public</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in group.Value.OrderBy(e => e.Url).ThenBy(e => e.Version))
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" value="@item.Id" name="@Html.NameFor(e => e.UserSelectedAppplicationHosts)" @if (Model.UserSelectedAppplicationHosts.Any(id => id == item.Id))
+                                                                                                                                  { <text>checked="checked"</text> } />
+                            </td>
+                            <td>@item.Enabled</td>
+                            <td>@item.Url</td>
+                            <td>@item.Version</td>
+                            <td>@item.Public</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+                                         }
+    <br />
+    <input class="k-primary k-button" type="submit" name="Save" value="Save" />
+}
+
+<script type="text/javascript">
+    $(function () {
+        $(".table-wrapper").on("change", ".selectAll", function (e) {
+            var checkbox = $(this);
+            var gridWrapper = checkbox.closest(".table-wrapper");
+            var checkBoxes = gridWrapper.find("table.table tbody input");
+            checkBoxes.prop('checked', checkbox.prop('checked'));
+        });
+
+        $(".table").kendoGrid();
+    });
+</script>

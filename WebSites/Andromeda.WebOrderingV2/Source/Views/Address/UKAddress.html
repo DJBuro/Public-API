@@ -1,0 +1,206 @@
+﻿    <!-- UK address template-->
+    <script type="text/html" id="ukAddress-template">
+
+        <!-- Org1 -->
+        <!--<div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg1FR" data-bind="text: textStrings.org1_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutOrg1FR" type="text" data-bind="value: addressHelper.bindableAddress().org1, disable: settings.lockCustomerAddressPage, attr: { 'placeholder': textStrings.org1_egP_UK }" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.org1_eg_UK"></div>
+        </div>-->
+
+        <!-- Org2 -->
+        <!--<div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg2FR" data-bind="text: textStrings.org2_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutOrg2FR" type="text" data-bind="value: addressHelper.bindableAddress().org2, disable: settings.lockCustomerAddressPage, attr: { 'placeholder': textStrings.org2_egP_UK }" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.org2_eg_UK"></div>
+        </div>-->
+
+        <!-- Prem1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem1FR" data-bind="text: textStrings.prem1_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPrem1FR" type="text" data-bind="value: addressHelper.bindableAddress().prem1, disable: settings.lockCustomerAddressPage, attr: { 'placeholder': textStrings.prem1_egP_UK }" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.prem1_eg_UK"></div>
+        </div>
+        
+        <!-- Prem2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem2FR" data-bind="text: textStrings.prem2_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPrem2FR" type="text" data-bind="value: addressHelper.bindableAddress().prem2, disable: settings.lockCustomerAddressPage, attr: { 'placeholder': textStrings.prem2_egP_UK }" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.prem2_eg_UK"></div>
+        </div>
+
+        <!-- RoadNumber -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutRoadNumberFR" data-bind="text: textStrings.roadNumber_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutRoadNumberFR" maxlength="16" type="text" data-bind="value: addressHelper.bindableAddress().roadNum, disable: settings.lockCustomerAddressPage, attr: { 'placeholder': textStrings.roadNumber_egP_UK }" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.roadNumber_eg_UK"></div>
+        </div>
+
+        <!-- RoadName -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutRoadNameFR" data-bind="text: textStrings.roadName_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutRoadNameFR" maxlength="64" type="text" data-bind="value: addressHelper.bindableAddress().roadName, 'attr': { 'placeholder': textStrings.roadName_egP_UK, 'class': addressHelper.bindableAddress().roadNameHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.roadName_eg_UK"></div>
+        </div>
+
+        <!-- Town -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutTownFR" data-bind="text: textStrings.town_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutTownFR" maxlength="64" type="text" data-bind="value: addressHelper.bindableAddress().town, 'attr': { 'placeholder': textStrings.town_egP_UK, 'class': addressHelper.bindableAddress().townHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.town_eg_UK"></div>
+        </div>
+        	
+        <!-- User Locality -->
+        <!--<div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutUserLocality1FR" data-bind="text: textStrings.userLocality1_UK"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text1" maxlength="64" type="text" data-bind="'attr': { 'placeholder': textStrings.userLocality1_egP_UK }, value: addressHelper.bindableAddress().locality, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.userLocality1_eg_UK"></div>
+        </div>-->
+
+        <!-- Postcode -->
+        <div class="checkoutAddressLine" id="checkoutPostcodeContainer">
+            <div class="checkoutAddressColumn1">
+                <!-- ko if: settings.postcodeRequired -->
+                <div class="required">*</div>
+                <!-- /ko -->
+                <!-- ko if: !settings.postcodeRequired -->
+                <div class="required">&nbsp;</div>
+                <!-- /ko -->
+                <label for="checkoutPostcodeFR" data-bind="text: textStrings.postcode_UK"></label>
+            </div>
+            <!-- xxxko if: addressHelper.bindableAddress().isPostcodeLocked -->
+            <!--<div class="checkoutAddressColumn2Locked" data-bind="text: addressHelper.bindableAddress().postcode"></div>-->
+            <!-- xxx/ko -->
+            <!-- xxxko ifnot: addressHelper.bindableAddress().isPostcodeLocked -->
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPostcodeFR" maxlength="16" type="text" data-bind="value: addressHelper.bindableAddress().postcode, 'attr': { 'placeholder': textStrings.postcode_egP_UK, 'class': addressHelper.bindableAddress().postcodeHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <!-- xxx/ko -->
+            <!--<div class="checkoutAddressColumn3"  data-bind="text: textStrings.postcodeHelp"></div>-->
+        </div>
+
+        <!-- Directions -->
+        <div class="checkoutAddressLine">
+            <div class="orderNotesColumn1">
+                <label for="checkoutDirections" data-bind="text: textStrings.checkDirections"></label>
+                <br />
+                <span data-bind="text: textStrings.checkDirectionsEx"></span>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <textarea id="checkoutDirections" data-bind="'attr': { 'placeholder': textStrings.checkDirectionsExP }, value: addressHelper.bindableAddress().directions" maxlength="255"></textarea>
+            </div>
+        </div>
+
+        <!-- ko if: checkoutHelper.errors.addressMissingDetails() -->
+        <div class="checkoutError" data-bind="text: textStrings.checkMissingInfoError"></div>
+        <!-- /ko -->
+
+        <!-- ko if: addressHelper.bindableAddress().postcode().length > 0 && checkoutHelper.errors.outOfDeliveryArea() -->
+        <div class="checkoutError" data-bind="text: textStrings.checkBadPostcode"></div>
+        <!-- /ko -->
+
+    </script>
+
+    <script type="text/html" id="ukAddressView-template">
+
+        <!-- Org1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.org1_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().org1"></div>
+        </div>
+
+        <!-- Org2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.org2_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().org2"></div>
+        </div>
+
+        <!-- Prem1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.prem1_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().prem1"></div>
+        </div>
+        
+        <!-- Prem2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.prem2_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().prem2"></div>
+        </div>
+
+        <!-- RoadNumber -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.roadNumber_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().roadNum"></div>
+        </div>
+
+        <!-- RoadName -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.roadName_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().roadName"></div>
+        </div>
+
+        <!-- Town -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.town_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().town"></div>
+        </div>
+
+        <!-- User Locality 1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.userLocality1_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().userLocality1"></div>
+        </div>
+        	
+        <!-- Postcode -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1" data-bind="text: textStrings.postcode_UK"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().postcode"></div>
+        </div>
+
+        <!-- Directions -->
+        <div class="checkoutAddressLine">
+            <div class="orderNotesColumn1" data-bind="text: textStrings.checkDirections"></div>
+            <div class="checkoutAddressColumn2" data-bind="text: addressHelper.bindableAddress().directions"></div>
+        </div>
+
+    </script>

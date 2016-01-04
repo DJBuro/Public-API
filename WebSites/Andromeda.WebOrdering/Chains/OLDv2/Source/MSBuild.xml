@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/MsBuild/2003">
+
+  <UsingTask TaskName="JavaScriptCompressorTask" AssemblyFile="../../../Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+  <UsingTask TaskName="CssCompressorTask" AssemblyFile="../../../Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+
+  <!-- Define the output locations. These can be set via the msbuild command line using
+         /p:OutputFile=$(TargetDir)../whatever...
+         If they are not supplied or are empty, then we the value whatever is supplied, below.
+    -->
+  
+  <Target Name="Minify" DependsOnTargets="MergeViewHTML">
+    <!--           
+            For both tasks, all Properties except SourceFiles and OutputFile are optional
+        
+
+            JavaScriptCompressorTask:
+                SourceFiles: An ITaskItem[] list of files to compress.
+                             Add <CompressionType> meta data to individual items to override the default compression type set for the task
+                DeleteSourceFiles: True | False (default).  Set True if you want to delete the source files after compressing
+                CompressionType: Standard (default) | None.  None => Concatenate files only.
+                EncodingType: ASCII, BigEndianUnicode, Unicode, UTF32, UTF7, UTF8, Default (default).
+                LineBreakPosition: The position where a line feed is appened when the next semicolon is reached. 
+                                   Default is -1 (never add a line break).
+                                   0 (zero) means add a line break after every semicolon. (This might help with debugging troublesome files).          
+                LoggingType: Info (default) | Debug | None.  Debug also lists javascript verbose warnings, if there are any (and there usually is :P ).
+                ObfuscateJavaScript: True (default) | False.  True => Obfuscate function and variable names
+                PreserveAllSemicolons: True | False (default).  True => preserve redundant semicolons (e.g. after a '}'
+                DisableOptimizations: True | False (default).
+                ThreadCulture: The culture you want the thread to run under. This affects the treatment of numbers etc - e.g. 9.00 could be output as 9,00.
+                               Default value is the Invariant Culture
+                IsEvalIgnored: True | False (default).  True => compress any functions that contain 'eval'. Default is False, which means a function that contains
+                               'eval' will NOT be compressed. It's deemed risky to compress a function containing 'eval'. That said,
+                               if the usages are deemed safe this check can be disabled by setting this value to True.
+        -->
+    <ItemGroup>
+      <CssFiles Include="StyleSheets\WebOrdering.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingMobile.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingPC.css"/>
+      <CssFiles Include="StyleSheets\WebOrderingPCandTablet.css"/>
+
+      <!-- Don't change the order - jquery must be first -->
+      <JavaScriptFiles Include="Scripts\jquery-1.7.1.min.js"/>
+      <JavaScriptFiles Include="Scripts\amplify.min.js"/>
+      <JavaScriptFiles Include="Scripts\jquery.history.js"/>
+      <JavaScriptFiles Include="Scripts\knockout-2.2.1.js"/>
+      <JavaScriptFiles Include="Scripts\modernizr.min.js"/>
+      <JavaScriptFiles Include="Scripts\OpenLayers.js"/>
+
+      <JavaScriptFiles Include="ResourceStrings\en-GB.js"/>
+      <JavaScriptFiles Include="ResourceStrings\fr-FR.js"/>
+
+      <JavaScriptFiles Include="Scripts\settings.js"/>
+
+      <JavaScriptFiles Include="Scripts\ACSAPI.js"/>
+
+      <JavaScriptFiles Include="ViewModels\viewModel.js"/>
+      <JavaScriptFiles Include="ViewModels\accountHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\cacheHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\cartHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\checkoutHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\checkoutMenuHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\cookieHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\dealHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\dealPopupHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\deliveryZoneHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\guiHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\helper.js"/>
+      <JavaScriptFiles Include="ViewModels\imageHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\mapHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\menuHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\mobileMenuHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\openingTimesHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\popupHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\postcodeCheckHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\queryStringHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\siteSelectorHelper.js"/>
+      <JavaScriptFiles Include="ViewModels\tandcHelper.js"/>
+      
+    </ItemGroup>
+
+    <JavaScriptCompressorTask
+        SourceFiles="@(JavaScriptFiles)"
+        DeleteSourceFiles="false"
+        OutputFile="..\Content\Scripts.js"
+        CompressionType="Standard"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="False"
+        DisableOptimizations="No"
+        EncodingType="Default"
+        LineBreakPosition="-1"
+        LoggingType="Info"
+        ThreadCulture="en-gb"
+        IsEvalIgnored="false"
+    />
+
+    <CssCompressorTask
+        SourceFiles="@(CssFiles)"
+        DeleteSourceFiles="false"
+        OutputFile="..\Content\Styles.css"
+        CompressionType="Standard"
+        LoggingType="Info"
+        PreserveComments="false"
+        LineBreakPosition="-1"
+     />
+    
+  </Target>
+
+  <Target Name="MergeViewHTML">
+    <!-- Merge the view HTML files into the template index.html file -->
+    <Exec Command="&quot;C:\Andromeda Development Source\Rameses Web Components\WebSites\Andromeda.WebOrderingBuilder\bin\Debug\Andromeda.WebOrderingBuilder.exe&quot;" />
+  </Target>
+  
+</Project>

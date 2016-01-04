@@ -1,0 +1,71 @@
+﻿@model MyAndromeda.Web.Areas.Store.Models.LocalizationViewModel
+@{
+    var translator = Html.GetTranslator();    
+}
+<div id="ChainForm">
+    <div class="header">
+        <h3>@translator.T("Localization")</h3>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        
+        <div>
+            <label for="@Html.IdFor(e => e.SelectedCultureType)">UI Cultures</label>
+            <input id="@Html.IdFor(e => e.SelectedCultureType)" name="@Html.NameFor(e => e.SelectedCultureType)" 
+                style="width:300px" data-role="combobox" 
+                data-template="cultureValueTemplate"
+                data-text-field="EnglishName"
+                data-value-field="Name"
+                data-filter="contains"
+                data-bind="source: cultureData, value: culture" />
+        </div>
+        
+        <div>
+            <label for="@Html.IdFor(e=> e.SelectedTimeZoneId)">Time Zone</label>
+            <input 
+                id="@Html.IdFor(e => e.SelectedTimeZoneId)" 
+                name="@Html.NameFor(e => e.SelectedTimeZoneId)" 
+                style="width:300px" 
+                data-role="combobox" 
+                data-template="timezoneValueTemplate"
+                data-text-field="DisplayName"
+                data-value-field="Id"
+                data-filter="contains"
+                data-bind="source: timezoneData, value: timezone" />
+        </div>
+        
+        <div>
+            <input class="k-button" type="submit" value="Save" />
+        </div>
+    }
+</div>
+
+@using (Html.BeginScripts()) 
+{
+    <script type="text/x-kendo-template" id="cultureValueTemplate">
+        (#: Name #) #: EnglishName #
+    </script>
+    <script type="text/x-kendo-template" id="timezoneValueTemplate">
+        #= DisplayName # 
+    </script>
+}
+
+@using (Html.BeginScripts())
+{
+    <script>
+        $(function () {
+            var cultureData = @Model.CultureChoices.JsonNetToString(false, false);
+            var timezonData = @Model.TimezoneChoices.JsonNetToString(false, false);
+
+            var vm = kendo.observable({
+                culture: '@Model.SelectedCultureType',
+                timezone: '@Model.SelectedTimeZoneId',
+                cultureData: cultureData,
+                timezoneData: timezonData
+            });
+            kendo.bind($("#ChainForm"), vm);
+        });
+    </script>
+}

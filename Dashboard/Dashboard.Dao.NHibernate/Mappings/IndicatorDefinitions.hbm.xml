@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.IndicatorDefinition, Dashboard.Dao" table="IndicatorDefinitions">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="IndicatorDefinitionsID" length="4" sql-type="int" not-null="true" unique="true" index="PK_IndicatorDefinitions"/>
+			<generator class="native" />
+		</id>
+		<property name="IndicatorName" type="String">
+			<column name="IndicatorName" length="100" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="IndicatorValueType" type="String">
+			<column name="IndicatorValueType" length="50" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="ColumnNumber" type="Int32">
+			<column name="ColumnNumber" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="InterfaceColumnNumber" type="Int32">
+			<column name="InterfaceColumnNumber" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="IndicatorFormat" type="String">
+			<column name="IndicatorFormat" length="50" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Divisor" type="Int32">
+			<column name="Divisor" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="UseFormula" type="Boolean">
+			<column name="UseFormula" length="1" sql-type="bit" not-null="false"/>
+		</property>
+		<property name="FormulaColumnNumber" type="Int32">
+			<column name="FormulaColumnNumber" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="FormulaExpression" type="String">
+			<column name="FormulaExpression" length="20" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="ReverseSortingOrder" type="Boolean">
+			<column name="ReverseSortingOrder" length="1" sql-type="bit" not-null="false"/>
+		</property>
+		<property name="BenchMark" type="String">
+			<column name="BenchMark" length="8" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="SummaryType" type="String">
+			<column name="SummaryType" length="20" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="HeadOffice" class="Dashboard.Dao.Domain.HeadOffice, Dashboard.Dao">
+			<column name="HeadOfficeID" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<bag name="IndicatorTranslations" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="IndicatorDefinitionsID"/>
+			<one-to-many class="Dashboard.Dao.Domain.IndicatorTranslation, Dashboard.Dao"/>
+		</bag>
+		<property name="UseColumn" type="Boolean">
+			<column name="UseColumn" length="1" sql-type="bit" not-null="false"/>
+		</property>
+		<property name="ShowGauge" type="Boolean">
+			<column name="ShowGauge" length="1" sql-type="bit" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="AndroAdmin.Dao.Domain.Language, AndroAdmin.Dao" table="tbl_Language">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_Language"/>
+			<generator class="native" />
+		</id>
+		<property name="Name" type="String">
+			<column name="Name" length="20" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="Code" type="String">
+			<column name="Code" length="2" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<!--<bag name="LanguageIdAndroUsers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="LanguageId"/>
+			<one-to-many class="AndroUser.Dao.Domain.AndroUser, AndroUser.Dao"/>
+		</bag>-->
+	</class>
+</hibernate-mapping>
+
+
+

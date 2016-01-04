@@ -1,0 +1,18 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="SessionValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="UseridValidator" test="Userid"><v:message id="error.Userid.required" providers="UseridErrors, ValidationSummary"/></v:required>
+	<v:required id="TimestampValidator" test="Timestamp"><v:message id="error.Timestamp.required" providers="TimestampErrors, ValidationSummary"/></v:required>
+	<v:required id="ExpireValidator" test="Expire"><v:message id="error.Expire.required" providers="ExpireErrors, ValidationSummary"/></v:required>
+	<v:required id="CreatedValidator" test="Created"><v:message id="error.Created.required" providers="CreatedErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

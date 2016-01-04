@@ -1,0 +1,119 @@
+﻿    <!-- Deals section -->
+    <script type="text/html" id="dealsSection-template">
+        <div class="section" data-bind="'attr': { 'id': 'section' + Index }">
+            <div class="sectionItems">
+                <!-- ko foreach: deals -->
+                    <!-- ko template: { name: 'deal-template' } -->
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </script>
+
+    <!-- Deal -->
+    <script type="text/html" id="deal-template">
+        <div class="dealItem" data-bind="click: dealHelper.mobileAddToCart">
+            <!-- Add to cart button -->
+            <!-- ko if: isEnabled() && $root.isTakingOrders && isAvailableToday() && (($root.orderType() == 'delivery' && deal.ForDelivery) || ($root.orderType() == 'collection' && deal.ForCollection) || ($root.orderType() == 'dinein' && deal.ForDineIn)) -->
+            <div class="dealOptions">
+                <!-- ko if: $root.isTakingOrders() -->
+                <!-- ko ifnot: isNotAvailableForRestOfDay -->
+                <div class="highlightedButton addItemButton">
+                    <a href="#" data-bind="click: dealHelper.addToCart, text: textStrings.dAdd"></a>
+                </div>
+                <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- Deal name -->
+            <div class="dealName" data-bind="html: deal.DealName"></div>
+
+            <!-- Deal description -->
+            <p data-bind="html: deal.Description"></p>
+
+            <!-- Not available messages -->
+
+            <!-- ko if: availabilityText.length > 0 -->
+            <div class="itemAvailabilityText" data-bind="html: availabilityText"></div>
+            <!-- /ko -->
+
+            <!-- ko if: minimumOrderValue.length > 0 -->
+            <p class="notAvailable">
+                <span data-bind="text: textStrings.dMinSpend"></span>
+                <span data-bind="html: minimumOrderValue"></span>
+            </p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'delivery' && !deal.ForDelivery -->
+            <p class="notAvailable" data-bind="text: textStrings.dCollectOnly"></p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'collection' && !deal.ForCollection -->
+            <p class="notAvailable" data-bind="text: textStrings.dDeliverOnly"></p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'dinein' && !deal.ForDineIn -->
+            <p class="notAvailable" data-bind="text: textStrings.dNotDineIn"></p>
+            <!-- /ko -->
+            <!-- ko ifnot: isAvailableToday -->
+            <p class="notAvailable" data-bind="text: textStrings.dNotToday"></p>
+            <!-- /ko -->
+        </div>
+    </script>
+
+    <!-- Deals section -->
+    <script type="text/html" id="dealsSection2-template">
+        <div class="section" data-bind="'attr': { 'id': 'section' + Index }">
+            <div class="sectionItems">
+                <!-- ko foreach: deals -->
+                    <!-- ko template: { name: 'deal-template' } -->
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </script>
+
+    <!-- Deal -->
+    <script type="text/html" id="deal2-template">
+        <div class="dealItem">
+            <!-- Add to cart button -->
+            <!-- ko if: isEnabled() && $root.isTakingOrders && isAvailableToday() && (($root.orderType() == 'delivery' && deal.ForDelivery) || ($root.orderType() == 'collection' && deal.ForCollection) || ($root.orderType() == 'dinein' && deal.ForDineIn))) -->
+            <div class="dealOptions">
+                <!-- ko if: $root.isTakingOrders() -->
+                <div class="highlightedButton addItemButton">
+                    <a href="#" data-bind="click: dealHelper.addToCart, text: textStrings.dAdd"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- Deal name -->
+            <p class="dealName" data-bind="html: deal.DealName"></p>
+
+            <!-- Deal description -->
+            <p data-bind="html: deal.Description"></p>
+
+            <!-- Not available messages -->
+
+            <!-- ko if: availabilityText.length > 0 -->
+            <div class="itemAvailabilityText" data-bind="html: availabilityText"></div>
+            <!-- /ko -->
+
+            <!-- ko if: minimumOrderValue.length > 0 -->
+            <p class="notAvailable">
+                <span data-bind="text: textStrings.dMinSpend"></span>
+                <span data-bind="html: minimumOrderValue"></span>
+            </p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'delivery' && !deal.ForDelivery -->
+            <p class="notAvailable" data-bind="text: textStrings.dCollectOnly"></p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'collection' && !deal.ForCollection -->
+            <p class="notAvailable" data-bind="text: textStrings.dDeliverOnly"></p>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'dinein' && !deal.ForDineIn -->
+            <p class="notAvailable" data-bind="text: textStrings.dNotDineIn"></p>
+            <!-- /ko -->
+            <!-- ko ifnot: isAvailableToday -->
+            <p class="notAvailable" data-bind="text: textStrings.dNotToday"></p>
+            <!-- /ko -->
+        </div>
+    </script>

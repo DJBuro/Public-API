@@ -1,0 +1,337 @@
+﻿@using MyAndromedaDataAccess.Domain.Reporting.Query;
+
+@model FilterQuery
+@{
+    var workContext = Html.GetWorkContext();
+    var modelId = string.Format("Range-{0}", this.Model.TotalDays);
+    var salesSparklineId = string.Format("TotalSales{0}SparkLine", this.Model.TotalDays);
+    var totalOrdersSparklineId = string.Format("TotalOrders{0}SparkLine", this.Model.TotalDays);
+    var orderWarSparklineId = string.Format("orderWar{0}SparkLine", this.Model.TotalDays);
+
+    var route = Url.HttpRouteUrl("RamesesSaleRangeOverview", new { area = "", chainId = workContext.CurrentSite.ChainId, externalSiteId = workContext.CurrentSite.ExternalSiteId });
+}
+
+<div id="@modelId">
+    <table class="sparkline">
+        <colgroup>
+            <col style="width: 100px" />
+            <col style="width: 100px" />
+            <col style="width: 100px" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>Sales</td>
+                <td data-bind="text: sumSales"></td>
+                <td>
+                    <div data-role="sparkline"
+                         data-series="[{ 'name': 'Total Sales', 'type': 'area', 'field': 'Combined.Sales' }]"
+                         data-tooltip="{ template: $('#sumSalesTooltip').html() }"
+                         data-bind="source: dataSource">
+                    </div>
+                    @using (Html.BeginScripts("Daily.Range.Sales"))
+                    {
+                        <script type="text/html" id="sumSalesTooltip">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>#: kendo.toString(value/100, 'c') #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Daily Avg
+                </td>
+                <td data-bind="text: avgSales"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    Avg Spend
+                </td>
+                <td data-bind="text: avgSpend"></td>
+                <td>
+                    <div data-role="sparkline"
+                         data-series="[{ 'name': 'Avg Spend', 'type': 'area', 'field': 'Combined.AvgSale' }]"
+                         data-tooltip="{ template: $('#avgSaleTooltip').html() }"
+                         data-bind="source: dataSource">
+                    </div>
+                    @using (Html.BeginScripts("Daily.Range.AvgSales"))
+                    {
+                        <script type="text/html" id="avgSaleTooltip">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>#: kendo.toString(value/100, 'c') #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td>Orders</td>
+                <td data-bind="text: sumOrders"></td>
+                <td>
+                    <span id="@totalOrdersSparklineId"></span>
+                    <div data-role="sparkline"
+                         data-series="[{ 'name': 'Orders', 'type': 'column', 'field': 'Combined.OrderCount' }]"
+                         data-tooltip="{ template: $('#rangeTooltipTemplate').html() }"
+                         data-bind="source: dataSource">
+                    </div>
+                    @using (Html.BeginScripts("Daily.Range.Order.Count"))
+                    {
+                        <script type="text/html" id="rangeTooltipTemplate">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Count: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Delivery</div>
+                    <div>Collection</div>
+                </td>
+                <td>
+                    <div data-bind="text: sumDelivery"></div>
+                    <div data-bind="text: sumCollection"></div>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                         data-series="[
+                            { 'name': 'Delivery', 'type': 'line', 'field': 'Delivery.OrderCount' },
+                            { 'name': 'Collection', 'type': 'line', 'field': 'Collection.OrderCount' }
+                        ]"
+                         data-tooltip="{ template: $('#twoSeriesOrderCollection').html() }"
+                         data-bind="source: dataSource">
+                    </div>
+                    @using (Html.BeginScripts("Daily.Range.Order.And.Collection"))
+                    {
+                        <script type="text/html" id="twoSeriesOrderCollection">
+                            #: kendo.toString(dataItem.Date, 'd')#(#: kendo.toString(dataItem.Date, 'ddd') #) | Total:#: value #
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <button class="k-button" data-bind="click: onClickOpenChart">Open Chart</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+</div>
+
+<div id="window-@modelId">
+    <div id="kendo-window-@modelId"
+         data-role="window"
+         data-title="Range"
+         data-width="800"
+         data-height="500"
+         data-center="true"
+         data-actions="['Minimize', 'Maximize', 'Close']"
+         data-bind="visible: visible, events: { open: onOpen, close: onClose }">
+
+        <div class="content" style="padding:50px">
+            <div class="chart-wrapper"
+                 data-bind="source: dataSource"
+                 data-title="Order Details"
+                 data-role="chart"
+                 data-theme="bootstrap"
+                 data-legend="{ position: 'top' }"
+                 data-series-defaults="{ type: 'line' }"
+                 data-category-axis="{
+                 field: 'Date' ,
+                 type: 'date' ,
+                 labels: { rotation: -90 },
+                 majorgridlines: { visible: true }
+                 }"
+                 data-value-axis="[
+                    { name: 'orderCount', title: { text: 'Orders' } },
+                    {
+                        name: 'sales',
+                        title: { text:'Sales' },
+                        labels:{ template: $('#SalesTemplate').html() }
+                    }
+                ]"
+                 data-series="[
+                    { 'name': 'Delivery', 'field': 'Delivery.OrderCount', 'axis':'orderCount', 'type': 'column', 'stack': 'true' },
+                    { 'name': 'Collection', 'field': 'Collection.OrderCount', 'axis': 'orderCount', 'type': 'column', 'stack': 'true' },
+                    { 'name': 'Total Orders', 'field': 'Combined.OrderCount', 'axis': 'orderCount', type: 'column', 'stack': 'false' },
+                    { 'name': 'Cancelled', 'field': 'Combined.Cancelled', 'axis': 'orderCount', type: 'column', 'stack': 'true' },
+                    { 'name': 'Sales', 'field': 'Combined.Sales', 'axis': 'sales', 'type': 'area' }
+                ]"
+                 data-group="{ field:'Date' }"
+                 data-tooltip="{ visible: true, template: $('#BigGridToolTipTemplate').html() }">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginScripts())
+{
+
+
+
+    <script id="SalesTemplate" type="text/template">
+        #:kendo.toString(value/100, 'c' )#
+    </script>
+    <script id="salesTooltipTemplate" type="text/html">
+        <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+        <div>#: kendo.toString(value/100, 'c') #</div>
+    </script>
+    <script id="BigGridToolTipTemplate" type="text/html">
+        #: kendo.toString(dataItem.Date, 'd') # (#: kendo.toString(dataItem.Date, 'ddd') #)
+        # if(series.axis === 'sales'){ #
+        <div>#: kendo.toString(value/100, 'c') # </div>
+        # } #
+        # if(series.axis === 'orderCount') { #
+        <div>#: value # #: series.name #</div>
+        # } #
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var filter = {
+                from: kendo.parseDate(""),
+                to: kendo.parseDate("")
+            };
+
+            var query = $.ajax({
+                url: "@route",
+                data: {
+                    filterFrom: "@this.Model.FilterFrom.Value.AddDays(-1).ToString("u")",
+                    filterTo: "@this.Model.FilterTo.Value.ToString("u")"
+                },
+                type: "POST",
+                dataType: "json",
+                cache: false
+            });
+
+            var viewModel = kendo.observable({
+                dataSource: new kendo.data.DataSource({
+                    transport: {
+                        read: function (options) {
+                            query.done(function (data) {
+                                options.success(data.Data);
+                            });
+                        }
+                    },
+                    parse: function (data) {
+                        console.log("parse");
+                        return data;
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                "Date": { "type": "date" },
+                                "Combined": {
+                                    fields: {
+                                        "OrderCount": { "type": "number", defaultValue: 0 }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    aggregate: [
+                        { field: "Delivery.OrderCount", aggregate: "sum" },
+                        { field: "Delivery.OrderCount", aggregate: "average" },
+                        { field: "Collection.OrderCount", aggregate: "sum" },
+                        { field: "Collection.OrderCount", aggregate: "average" },
+                        { field: "Combined.OrderCount", aggregate: "sum" },
+                        { field: "Combined.OrderCount", aggregate: "average" },
+                        { field: "Combined.OrderCount", aggregate: "max" },
+                        { field: "Combined.OrderCount", aggregate: "min" },
+                        { field: "Combined.AvgSale", aggregate: "sum" },
+                        { field: "Combined.AvgSale", aggregate: "average" },
+                        { field: "Combined.Sales", aggregate: "sum" },
+                        { field: "Combined.Sales", aggregate: "average" },
+                        { field: "Combined.Cancelled", aggregate: "sum" },
+                        { field: "Combined.Cancelled", aggregate: "average" },
+                        { field: "Performance.AvgDoorTime", aggregate: "average" },
+                        { field: "Performance.AvgDoorTime", aggregate: "max" },
+                        { field: "Performance.AvgDoorTime", aggregate: "min" },
+                        { field: "Performance.AvgOutTheDoor", aggregate: "average" },
+                        { field: "Performance.AvgOutTheDoor", aggregate: "max" },
+                        { field: "Performance.AvgOutTheDoor", aggregate: "min" },
+                        { field: "Performance.AvgMakeTime", aggregate: "average" },
+                        { field: "Performance.AvgMakeTime", aggregate: "max" },
+                        { field: "Performance.AvgMakeTime", aggregate: "min" },
+                        { field: "Performance.AvgRackTime", aggregate: "average" },
+                        { field: "Performance.AvgRackTime", aggregate: "max" },
+                        { field: "Performance.AvgRackTime", aggregate: "min" },
+                        { field: "Performance.NumOrdersLT30Mins", aggregate: "sum" },
+                        { field: "Performance.NumOrdersLT30Mins", aggregate: "average" }
+                    ]
+                }),
+                onOpen: function (e) {
+                    //console.log("open");
+                },
+                onClose: function (e) {
+                    //console.log("close");
+                },
+                refresh: function () {
+                    //console.log("refresh");
+                    //chart has become responsive
+                    //var window = $("#window-@modelId");
+                    //var chart = window.find(".chart-wrapper")
+                    //    .data("kendoChart")
+                    //    .redraw();
+                },
+                onClickOpenChart: function (e) {
+                    e.preventDefault();
+
+                    viewModel.set("visible", true);
+                    $("#kendo-window-@modelId").data("kendoWindow").center().open();
+                }
+            });
+
+
+            kendo.bind("#@modelId", viewModel);
+
+            query.done(function (data) {
+                
+                var dataSource = viewModel.get("dataSource"),
+                    values = dataSource.aggregates();
+
+                if (!$.isEmptyObject(values)) {
+
+                    viewModel.set("sumSales", kendo.toString(values["Combined.Sales"].sum / 100, "c"));
+                    viewModel.set("avgSales", kendo.toString(values["Combined.Sales"].average / 100, "c"));
+                    viewModel.set("avgSpend", function () {
+                        var a = values;
+                        if (a && a["Combined.AvgSale"]) {
+                            //var value = a["Combined.AvgSale"].average;
+                            //return kendo.toString(value / 100, "c");
+                            var salesTotal = values["Combined.Sales"].sum;
+                            var orderCount = values["Combined.OrderCount"].sum;
+                            var avg = salesTotal / orderCount;
+                            return kendo.toString(avg / 100, "c")
+                        }
+                        return "";
+                    });
+                    viewModel.set("sumOrders", values["Combined.OrderCount"].sum);
+                    viewModel.set("avgOrders", values["Combined.OrderCount"].average);
+
+                    viewModel.set("sumCancelled", values["Combined.Cancelled"].sum);
+                    viewModel.set("avgCancelled", values["Combined.Cancelled"].average);
+                    viewModel.set("sumDelivery", values["Delivery.OrderCount"].sum);
+                    viewModel.set("sumCollection", values["Collection.OrderCount"].sum);
+                }
+
+                kendo.bind("#window-@modelId", viewModel);
+
+            });
+
+        })
+    </script>
+}

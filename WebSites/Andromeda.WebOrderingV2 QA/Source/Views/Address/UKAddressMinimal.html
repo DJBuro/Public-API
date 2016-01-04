@@ -1,0 +1,70 @@
+﻿<!-- UK address template-->
+<script type="text/html" id="ukAddress-min-template">
+    <!-- Address line 1 -->
+    <div class="lrLoginFormInput">
+        <input id="checkoutRoadNumberFR" maxlength="64" type="text"
+               data-bind="
+                    value: addressHelper.bindableAddress().roadName,
+                    disable: settings.lockCustomerAddressPage,
+                    attr: {
+                        title: textStrings.addressLine1,
+                        placeholder: textStrings.addressLine1,
+                        'class': addressHelper.bindableAddress().roadName.isValid() ? '' : 'checkoutDataError'
+                    }" />
+    </div>
+
+    <!-- Address line 2 -->
+    <div class="lrLoginFormInput">
+        <input id="checkoutRoadNameFR" maxlength="64" type="text"
+           data-bind="
+                value: addressHelper.bindableAddress().prem1,
+                attr: {
+                    title: textStrings.addressLine2,
+                    placeholder: textStrings.addressLine2
+                },
+                disable: settings.lockCustomerAddressPage" />
+    </div>
+
+    <!-- Town -->
+    <div class="lrLoginFormInput">
+        <input id="checkoutTownFR" maxlength="64" type="text" 
+            data-bind="value: addressHelper.bindableAddress().town,
+                attr: {
+                    title: textStrings.town_UK,
+                    placeholder: textStrings.town_UK,
+                    'class': addressHelper.bindableAddress().town.isValid() ? '' : 'checkoutDataError'
+                },
+                disable: settings.lockCustomerAddressPage" />
+    </div>
+
+    <!-- Postcode -->
+    <div class="lrLoginFormInput" id="checkoutPostcodeContainer">
+        <input id="checkoutPostcodeFR" maxlength="16" type="text"
+            data-bind="value: addressHelper.bindableAddress().postcode,
+                attr: {
+                    placeholder: textStrings.postcode_UK,
+                    'class': addressHelper.bindableAddress().postcode.isValid() ? '' : 'checkoutDataError'
+                },
+                disable: settings.lockCustomerAddressPage" />
+    </div>
+
+    <!-- Directions -->
+    <div class="lrLoginFormInput">
+        <textarea id="checkoutDirections" rows="4" maxlength="255" 
+            data-bind="value: addressHelper.bindableAddress().directions,
+                attr: {
+                    title: textStrings.checkDirections,
+                    'placeholder': textStrings.checkDirections
+                }">
+        </textarea>
+    </div>
+
+    <!-- ko if: checkoutHelper.errors.addressMissingDetails() -->
+    <div class="checkoutError" data-bind="text: textStrings.checkMissingInfoError"></div>
+    <!-- /ko -->
+
+    <!-- ko if: addressHelper.bindableAddress().postcode() !== undefined && addressHelper.bindableAddress().postcode().length > 0 && checkoutHelper.errors.outOfDeliveryArea() -->
+    <div class="checkoutError" data-bind="text: textStrings.checkBadPostcode"></div>
+    <!-- /ko -->
+
+</script>

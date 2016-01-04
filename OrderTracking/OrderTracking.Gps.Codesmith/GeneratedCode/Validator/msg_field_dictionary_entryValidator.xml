@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="MsgfielddictionaryentryValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="EnabledValidator" test="Enabled"><v:message id="error.Enabled.required" providers="EnabledErrors, ValidationSummary"/></v:required>
+	<v:required id="SavechangesonlyValidator" test="Savechangesonly"><v:message id="error.Savechangesonly.required" providers="SavechangesonlyErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

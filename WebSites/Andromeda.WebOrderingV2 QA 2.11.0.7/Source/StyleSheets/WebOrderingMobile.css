@@ -1,0 +1,3524 @@
+﻿@media only screen and (max-width: 600px)
+{
+    body
+    {
+        height: auto;
+        min-height: 0;
+    }
+
+    .button, .highlightedButton
+    {
+        float: none;
+    }
+
+    .button a, .highlightedButton a
+    {
+        font-size: 10pt;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        color: #383838;
+        line-height: 20px;
+    }
+
+    .mmButton
+    {
+        clear: both;
+        float: none;
+        margin-bottom: 10px;
+    }
+    .mmButton a
+    {
+        border-radius: 0;
+    }
+
+    #pageHeader
+    {
+        overflow: hidden;
+        background-size: auto 50px;
+        height: 50px;
+        padding: 5px;
+    }
+
+    #headerLeft
+    {
+        text-align: center;
+    }
+
+    #headerLeft img
+    {
+        height: 55px;
+        width: auto;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    #headerRight
+    {
+        display: none;
+    }
+
+    #popupMobileMenuHeader
+    {
+        float: right;
+    }
+
+    #headerMobileCompanyLogo
+    {
+        position: absolute;
+        height: 40px;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        cursor: pointer;
+    }
+
+    #phone
+    {
+        color: white;
+        margin: 5px 0 0 0;
+        font-size: 11pt;
+    }
+
+    /* SOCIAL MEDIA */
+    #socialMedia
+    {
+        font-size: 10pt;
+        margin: 0;
+        padding: 0;
+    }
+
+    #socialMedia p
+    {
+        display: none;
+    }
+
+    #mobileFacebook
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/facebook.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #mobileFacebook a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #mobileTwitter
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/twitter.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #mobileTwitter a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #mobileInstagram
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/instagram.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #mobileInstagram a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #mobilePinterest
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/pinterest.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #mobilePinterest a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    /* MAIN MENU */
+    .mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted
+    {
+        float: right;
+        margin-right: 8px;
+        overflow: hidden;
+    }
+
+    .mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active,
+    .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active
+    {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 2px 4px 2px 4px;
+        text-decoration: none;
+        font-size: 12pt;
+        color: #383838;
+    }
+
+    .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active
+    {
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 2px 4px 2px 4px;
+        text-decoration: none;
+        font-size: 12pt;
+        color: #383838;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        clear: both;
+        background-color: #F2F2F2;
+        margin-top: 10px;
+        padding: 0 0 10px 0;
+    }
+
+    #storeDetailsAddress
+    {
+        font-size: 8pt;
+        padding: 5px 0 5px 0;
+        margin: 0;
+        color: white;
+    }
+
+    #chooseStoreSelectContainer
+    {
+        overflow: auto;
+        width: 100%;
+    }
+
+    #chooseStoreSelectOuter
+    {
+    }
+
+    #chooseStoreSelectInner
+    {
+    }
+
+    #chooseStoreSelectInner select
+    {
+        border: 1px solid #466011;
+    }
+
+    #mainMenu
+    {
+        display: none;
+    }
+
+    #mainMenu a:link, #mainMenu a:visited, #mainMenu a:active
+    {
+        text-decoration: none;
+        font-size: 16pt;
+    }
+
+    #viewContainer
+    {
+        padding-top: 3px;
+    }
+
+    /* FORGOT PASSWORD */
+    #loginContent
+    {
+        margin: 0;
+    }
+
+    #forgotPasswordBox
+    {
+        background-color: #F2F2F2;
+        padding-bottom: 5px;
+    }
+
+    #forgotPasswordBox h1
+    {
+        font-size: 11pt;
+        font-weight: bold;
+        margin: 5px 0 5px 0;
+        text-align: center;
+        color: #493700;
+        border-bottom: solid 5px white;
+        padding: 5px;
+        display: block;
+        height: 19px;
+    }
+
+    #forgotPasswordEmailPrompt
+    {
+        float: left;
+        margin: 5px 15px 0 20px;
+    }
+
+    #forgotPasswordEmail
+    {
+        margin: 16px 0 15px 0;
+        overflow: hidden;
+    }
+
+    #forgotPasswordEmail input
+    {
+        height: 20px;
+        width: 200px;
+    }
+
+    #forgotPasswordButton
+    {
+        margin: 5px;
+        clear: both;
+    }
+
+    #forgotPasswordCancelButton
+    {
+        margin: 5px;
+    }
+
+    /* Main menu buttons */
+    #hmHomeButton,
+    #hmMenuButton,
+    #hmStoreDetailsButton,
+    #hmMyProfileButton,
+    #hmCancelButton, 
+    #hmMyOrdersButton, 
+    #hmLogoutButton,
+    #hmFeedbackButton,
+    #hmChooseStoreButton,
+    #mobileMenuInner #hmMyOrderButton
+    {
+        margin: 0 0 0 10px;
+        height: 45px;
+        position: static;
+        width: auto;
+    }
+
+    #hmMenuButton a, 
+    #hmHomeButton a, 
+    #hmMyProfileButton a, 
+    #hmMyOrdersButton a, 
+    #hmStoreDetailsButton a,
+    #hmCancelButton a, 
+    #hmLogoutButton a, 
+    #hmFeedbackButton a,
+    #hmChooseStoreButton a
+    {
+        background-color: transparent;
+        color: #493700;
+        text-align: left;
+        padding: 0 0 0 55px;
+        line-height: 35px;
+    }
+    #hmMyOrderButton a
+    {
+        background-color: transparent;
+        display: block;
+        position: relative;
+    }
+    #hmMyOrderCount
+    {
+        display: block;
+        position: absolute;
+        top: 0;
+        width: 41px;
+        left: 0;
+        top: 5px;
+    }
+    #hmMyOrderText
+    {
+        display: block;
+        position: absolute;
+        left: 54px;
+        color: #493700;
+        line-height: 35px;
+        top: 0;
+        font-size: 11pt;
+        font-weight: normal;
+    }
+    #hmHomeButton
+    {
+        background: url(Images/HomeSmall.png) no-repeat;
+    }
+    #hmMenuButton
+    {
+        background: url(Images/MenuSmall.png) no-repeat 10px 0;
+    }
+    #hmFeedbackButton
+    {
+        background: url(Images/Feedback.png) no-repeat;
+    }
+    #hmChooseStoreButton
+    {
+        background: url(Images/HomeSelectedSmall.png) no-repeat;
+    }
+    #hmMyOrderButton
+    {
+        height: 35px;
+        width: 41px;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        background: url(Images/BasketSmall.png) no-repeat;
+    }
+
+    #hmMyOrderButton a
+    {
+        border: 0;
+        font-size: 18pt;
+        font-weight: bold;
+        color: red;
+        text-shadow: 2px 2px 0 #fff, -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff;
+        background: none;
+    }
+    #hmMyProfileButton
+    {
+        background: url(Images/Profilesmall.png) no-repeat 4px 0;
+    }
+    #hmMyOrdersButton
+    {
+        background: url(Images/orderhistorysmall.png) no-repeat;
+    }
+
+    #hmStoreDetailsButton
+    {
+        background: url(Images/StoreDetailsSmall.png) no-repeat 10px 0;
+    }
+    #hmLogoutButton
+    {
+        float: none;
+        background: url(Images/logouticon.png) no-repeat 6px 3px;
+    }
+    #hmCancelButton
+    {
+        float: none;
+        background: url(Images/Back.png) no-repeat 6px 3px;
+    }
+
+    /* MAIN VIEW */
+
+    .sitesBox, #siteSelectorBox
+    {
+        color: #493700;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .welcomeHeader
+    {
+        padding: 5px !IMPORTANT;
+    }
+
+    .chooseStorePrompt
+    {
+        margin: 20px 0 20px 0;
+    }
+
+    .siteButtonsContainer
+    {
+        clear: both;
+        float: right;
+        right: 50%;
+        position: relative;
+    }
+
+    .siteButtonsInner
+    {
+        float: right;
+        right: -50%;
+        position: relative;
+    }
+
+    .sitesBox h2
+    {
+        color: #493700;
+    }
+
+    .sitesBox select
+    {
+        clear: both;
+        float: left;
+        display: block;
+        font-size: 16pt;
+        padding: 5px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 12pt;
+    }
+
+    .siteButton
+    {
+        width: 100%;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+
+    .siteButton a
+    {
+        padding-top: 15px;
+        font-size: 10pt;
+    }
+
+    .waitPrompt
+    {
+        margin: 15px 0 20px 0;
+    }
+
+    .content
+    {
+        padding: 0;
+        margin: 0;
+    }
+
+    /* HOME VIEW */
+    #homeContent
+    {
+        margin: 0 0 60px 0;
+        padding: 0 0 20px 0;
+    }
+
+    #homeFullOrderDeal
+    {
+        text-align: center;
+        font-size: 12pt;
+        color: red;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Top Carousel */
+    #homeCarousel1Container
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 1022px;
+        height: 300px;
+        border-top: 1px solid #e3e3e3;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    #homeCarousel1
+    {
+        cursor: move;
+        position: absolute;
+        overflow: hidden;
+        left: 0;
+        top: 0;
+        width: 1022px;
+        height: 300px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard h2
+    {
+        font-size: 20pt;
+        display: block;
+        background-color: #6FC3A1;
+        padding: 10px;
+        margin: 0;
+        color: white;
+        text-align: center;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard p
+    {
+        font-size: 20pt;
+        display: block;
+        padding: 10px;
+        margin: 0;
+        text-align: center;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard
+    {
+        position: relative;
+        height: 300px;
+        width: initial;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardDetailsWrapper
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #D3DED6;
+        bottom: 0;
+        width: 250px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardInner
+    {
+        height: 300px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardPrice
+    {
+        font-size: 22pt;
+        color: #85171A;
+        text-align: center;
+    }
+
+    /* Bottom Carousel */
+    #homeCarousel2Container
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 1022px;
+        height: 190px;
+        margin-top: 10px;
+        border-top: 1px solid #e3e3e3;
+        border-bottom: 1px solid #e3e3e3;
+        background-color: white;
+    }
+
+    #homeCarousel2
+    {
+        cursor: move;
+        position: absolute;
+        overflow: hidden;
+        left: 60px;
+        top: 0;
+        width: 895px;
+        height: 190px;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCard h2
+    {
+        padding: 0;
+        margin: 5px;
+        color: #493700;
+        font-size: 14pt;
+        text-align: left;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCard p
+    {
+        margin: 5px;
+        padding: 0;
+        text-align: left;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCardImageWrapper
+    {
+        position: relative;
+        width: 130px;
+        height: 130px;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCardImagePrice
+    {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(100, 100, 100, 0.5);
+        padding: 5px;
+        color: white;
+    }
+
+    /* STORE DETAILS VIEW */
+    #storeDetailsContent
+    {
+        margin: 0;
+    }
+
+    .storeDetailsBox h1
+    {
+        font-size: 12pt;
+        font-weight: bold;
+        padding: 0;
+        margin: 0 0 5px 0;
+        text-align: center;
+        color: #493700;
+        background-color: #F2F2F2;
+        height: 19px;
+    }
+
+    #storeDetailsAddressLinesMultiLine
+    {
+        display: none;
+    }
+
+    #storeDetailsAddressLinesSingleLine
+    {
+        font-size: 10pt;
+        margin: 5px 0 0 5px;
+    }
+
+    #storeDetailsAddressLinesTel
+    {
+        font-size: 10pt;
+        margin: 5px 0 0 5px;
+    }
+
+    #storeDetailsSupportEmail
+    {
+        font-size: 10pt;
+        margin: 5px 0 0 5px;
+    }
+
+    #homeCheckPostcode
+    {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    #homeCheckPostcodeButton
+    {
+        margin: 0 auto;
+        width: 220px;
+    }
+
+    #homeCheckPostcodeButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #mapContainer
+    {
+        margin: 0 5px 0 5px;
+        height: 250px;
+        overflow: hidden;
+        border: solid 1px gray;
+    }
+
+    #map
+    {
+        width: 100%;
+        height: 100%;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        overflow: hidden;
+        color: #493700;
+        background-color: #F2F2F2;
+        padding: 0 0 5px 0;
+    }
+
+    #storeDetailsDeliveryTimes h1
+    {
+        padding: 5px 0 5px 0;
+        margin: 0;
+    }
+
+    #storeDetailsDeliveryTimes h2
+    {
+        font-size: 10pt;
+        font-weight: bold;
+        padding: 0;
+        margin: 15px 0 0 0;
+        text-align: center;
+    }
+
+    .storeDetailsDeliveryTimesDay
+    {
+        clear: both;
+        overflow: hidden;
+        font-size: 8pt;
+        margin-left: 10px;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn1
+    {
+        float: left;
+        width: 100px;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn2
+    {
+        float: left;
+    }
+
+    #homeMenuSections
+    {
+        display: none;
+        clear: both;
+        overflow: hidden;
+        background-color: #F2F2F2;
+        margin: 10px 0 0 0;
+    }
+
+    #homeMenuSections p
+    {
+        font-size: 10pt;
+        font-weight: normal;
+        padding: 0;
+        margin: 5px 0 5px 5px;
+    }
+
+    .homeMenuSectionButton
+    {
+        float: left;
+        width: 75px;
+        height: 55px;
+        margin: 0 15px 15px 0;
+        padding: 0 2px 0 2px;
+        position: relative;
+        border: 1px solid gray;
+    }
+
+    .homeMenuSectionButton a:link, .homeMenuSectionButton a:visited, .homeMenuSectionButton a:active
+    {
+        font-size: 10pt;
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        width: 75px;
+        height: 55px;
+    }
+
+    #homeOptionsWrapper
+    {
+        text-align: center;
+    }
+
+    #homeMenuButton
+    {
+        width: 200px;
+        height: 50px;
+        margin: 0 auto;
+        display: block;
+        padding-top: 0;
+    }
+
+    #homeMenuButton a
+    {
+        font-size: 14pt;
+        height: 28px;
+        line-height: 28px;
+        font-weight: bold;
+    }
+
+    #homeDineInButton1, #homeDineInButton2
+    {
+        width: 100%;
+        clear: both;
+    }
+
+    #homeDineInButton1 a, #homeDineInButton2 a
+    {
+        height: 38px;
+        font-size: 18pt;
+        line-height: 28pt;
+        font-weight: bold;
+    }
+
+    #homeMenuButtonsWrapper
+    {
+        clear: both;
+        float: right;
+        right: 50%;
+        position: relative;
+        margin-top: 5px;
+    }
+
+    #homeMenuButtons
+    {
+        overflow: hidden;
+        float: right;
+        right: -50%;
+        position: relative;
+        padding-left: 5px;
+    }
+
+    #homeDeliveryMinimumOrder
+    {
+        margin: 5px 0 0 0;
+        text-align: center;
+        font-weight: bold;
+        font-size: 10pt;
+    }
+
+    #homeLeftOptions
+    {
+        clear: both;
+    }
+
+    /* Terms and conditions */
+
+    #tandcPopupBox
+    {
+        background-color: #ffc000;
+        overflow: hidden;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #tandcInner
+    {
+        padding: 10px;
+    }
+
+    #tandcInner h1
+    {
+        color: black;
+        padding: 0;
+        margin: 0 0 5px 0;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    #tandcText
+    {
+        width: 100%;
+        height: 200px;
+        overflow-y: auto;
+        background-color: white;
+        border: solid 1px gray;
+    }
+
+    #tandcButtons
+    {
+        display: none;
+    }
+
+    .menuPage
+    {
+        margin: 0;
+        position: relative;
+        height: 100%;
+    }
+
+    #rightColumnWrapper
+    {
+        display: none;
+    }
+
+    #yourOrderContainer
+    {
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        font-size: 10pt;
+        overflow: hidden;
+    }
+
+    .ticked
+    {
+        background: url(Images/TickedSmall.png) no-repeat;
+        padding-left: 25px;
+        line-height: 20pt;
+    }
+
+    .unticked
+    {
+        background: url(Images/UntickedSmall.png) no-repeat;
+        padding-left: 25px;
+        line-height: 20pt;
+    }
+
+    #orderItemsHeader
+    {
+        margin-top: 5px;
+        display: none;
+    }
+
+    #orderItemsHeader h2
+    {
+        font-size: 10pt;
+        margin: 0;
+        padding: 0;
+    }
+
+    .cartRow
+    {
+        clear: both;
+        overflow: hidden;
+        padding: 0 5px 0 5px;
+    }
+
+    .cartName
+    {
+        width: initial;
+    }
+
+    #cartWrapper
+    {
+        background-color: #F2F2F2;
+        padding: 5px 0 0 0;
+    }
+
+    #cartItems, #offlineCart
+    {
+        padding: 0 0 15px 0;
+        overflow: hidden;
+    }
+
+    .cartItem
+    {
+        padding-bottom: 5px;
+    }
+
+    .cartRemove
+    {
+        float: right;
+        background-image: url('../Custom/images/trashcan.png');
+        width: 18px;
+        height: 20px;
+    }
+
+    #cartTotalWrapper
+    {
+        margin: 0;
+        overflow: hidden;
+        border-bottom: solid 2px black;
+        padding-bottom: 5px;
+    }
+
+    .cartTotal
+    {
+        font-size: 12pt;
+        margin: 10px 0 0 5px;
+        position: absolute;
+        right: 100px;
+    }
+
+    .cartTotalPrice
+    {
+        font-size: 12pt;
+        font-weight: bold;
+    }
+
+    #cartHelp
+    {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #cartLineItems
+    {
+        overflow: hidden;
+        padding: 10px 5px 0 5px;
+    }
+
+    .cartItem a:link, .cartItem a:visited, .cartItem a:active
+    {
+        color: #383838;
+    }
+
+    #cartLineItemsHeader
+    {
+        border-bottom: black 2px solid;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+
+    #yourOrderContainer h2
+    {
+        margin: 0 20px 5px 0;
+    }
+
+    .cartQuantity
+    {
+        position: absolute;
+        right: 80px;
+    }
+
+    #deliveryOrCollection
+    {
+        text-align: left;
+        font-size: 12pt;
+        line-height: 20pt;
+        margin: 5px 0 5px 0;
+        padding: 5px 0 5px 10px;
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #deliveryOrCollection input
+    {
+        margin-right: 0;
+    }
+
+    #deliveryOrCollection label
+    {
+        margin-right: 5px;
+    }
+
+    #cartTitle
+    {
+        color: #36490D;
+        font-size: 14pt;
+        font-weight: bold;
+        margin: 5px 0 0 0;
+    }
+
+    #cartTitle h1
+    {
+        font-size: 12pt;
+        font-weight: bold;
+        padding: 5px;
+        margin: 0;
+        text-align: left;
+        color: #493700;
+        background-color: #F2F2F2;
+        height: 19px;
+    }
+
+    #cartSidebarActions
+    {
+        border-top: 5px solid white;
+    }
+
+    #cartLineItemsItemHeader
+    {
+        float: left;
+        font-size: 10pt;
+        color: black;
+    }
+
+    #cartLineItemsQuantityHeader
+    {
+        float: right;
+        padding-right: 20px;
+        font-size: 10pt;
+        color: black;
+    }
+
+    #cartLineItemsPriceHeader
+    {
+        float: right;
+        font-size: 10pt;
+        margin-right: 20px;
+        color: black;
+    }
+
+    #emptyBasket
+    {
+        padding: 10px 0 0 0;
+    }
+
+    #emptyBasket h2
+    {
+        font-size: 10pt;
+    }
+
+    #emptyBasket p
+    {
+        display: none;
+    }
+
+    #cartSubTotalWrapper
+    {
+        clear: both;
+        border-top: solid 2px black;
+    }
+
+    #cartSubTotalWrapper span
+    {
+        font-size: 9pt;
+    }
+
+    #cartDiscountWrapper
+    {
+        clear: both;
+    }
+
+    #cartDiscountWrapper span
+    {
+        font-size: 9pt;
+    }
+
+    #optionsContainer
+    {
+        margin: 12px 0 0 0;
+        min-height: 50px;
+        border: solid 1px #E4E4E4;
+        background-color: #F4F2F2;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #optionsTitle
+    {
+        background-color: #1E2F60;
+        -webkit-border-top-left-radius: 10px;
+        border-top-left-radius: 10px;
+        -webkit-border-top-right-radius: 10px;
+        border-top-right-radius: 10px;
+        /* Safari 4-5, Chrome 1-9 */
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(#C6955B), to(#815126));
+        /* Safari 5.1, Chrome 10+ */
+        background: -webkit-linear-gradient(left, #C6955B, #815126);
+        /* Firefox 3.6+ */
+        background: -moz-linear-gradient(left, #C6955B, #815126);
+        /* IE 10 */
+        background: -ms-linear-gradient(left, #C6955B, #815126);
+        /* Opera 11.10+ */
+        background: -o-linear-gradient(left, #C6955B, #815126);
+        color: white;
+        font-size: 16pt;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #options
+    {
+        font-size: 10pt;
+    }
+
+    #clearOrderButton
+    {
+        float: left;
+        width: 45%;
+        margin: 5px 0 0 3%;
+    }
+
+    #clearOrderButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    #backToMenuButton
+    {
+        float: left;
+        width: 100px;
+        margin: 5px 0 0 5px;
+    }
+
+    #backToMenuButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    #checkoutButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    .backButton
+    {
+        float: left;
+        width: 45%;
+        margin: 5px 0 0 3%;
+    }
+
+    .backButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    .nextButton
+    {
+        float: left;
+        width: 45%;
+        margin: 5px 0 0 3%;
+    }
+
+    .nextButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    .checkoutPage
+    {
+        margin: 5px 0 0 0;
+        padding: 0 0 60px 0;
+        width: 100%;
+    }
+
+    .checkoutPage h1
+    {
+        margin: 0;
+        padding: 0;
+        font-size: 12pt;
+    }
+
+    .checkoutSection
+    {
+        width: 100%;
+        padding: 0 0 5px 0;
+    }
+
+    #checkoutContactDetailsContainer
+    {
+        width: 100%;
+    }
+
+    #checkoutContactDetailsContainer h3, #checkoutDeliveryTimePrompt h3, #checkoutDeliveryAddressContainer h3, #checkoutOrderNotesContainer h3
+    {
+        font-size: 10pt;
+        font-weight: bold;
+        padding: 0;
+        margin: 5px 0 5px 0;
+        text-align: center;
+    }
+
+    .orderNotesColumn1
+    {
+        margin: 5px 0 5px 5px;
+    }
+
+    .checkoutContactLine
+    {
+        margin: 0 0 10px 0;
+    }
+
+        .checkoutContactLine label
+        {
+            font-size: 10pt;
+        }
+
+    .checkoutContactColumn1, #marketingLine, .checkoutAddressColumn1, #checkoutDeliveryTime p
+    {
+        float: none;
+        margin: 5px 5px 0 5px;
+    }
+
+    .checkoutContactColumn2, .checkoutAddressColumn2
+    {
+        width: auto;
+        float: none;
+        padding: 0 10px 0 5px;
+        margin: 0;
+    }
+
+    .checkoutAddressColumn2 input, .checkoutContactColumn2 input
+    {
+        padding: 3px 5px 3px 5px;
+        margin: 0;
+        position: relative;
+        border: solid 1px black;
+        font-size: 10pt;
+        width: 98%;
+    }
+
+    .checkoutAddressColumn2 textarea
+    {
+        width: 98%;
+        border: 1px solid black;
+    }
+
+    .checkoutAddressColumn3
+    {
+        display: none;
+    }
+
+    .requiredLine, #deliveryTimeRequired p
+    {
+        font-size: 8pt;
+    }
+
+    #checkoutSectionsContainer
+    {
+        width: 100%;
+    }
+
+    .checkoutSectionHeaders
+    {
+        display: none;
+        margin: 0;
+    }
+
+    #checkoutPaymentContainer h2
+    {
+        font-size: 12pt;
+    }
+
+    #checkoutPaymentContainer
+    {
+        padding: 0 10px 10px 10px;
+        overflow: hidden;
+    }
+
+    #checkoutOrderDetails h2:first-of-type
+    {
+        padding: 0 0 10px 0;
+        margin: 0;
+    }
+
+    #checkoutSAddVoucherContainer
+    {
+        border-top: solid 2px black;
+    }
+
+    #checkoutSTotalPrompt, #checkoutSAddVoucherTitle
+    {
+        float: none;
+        width: auto;
+        width: inherit;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+
+    #checkoutSVoucherCode
+    {
+        clear: both;
+    }
+
+    #orderAcceptedOptions
+    {
+        width: 230px;
+        margin: 0 auto;
+    }
+
+    #orderAcceptedOptions .button a
+    {
+        padding: 5px 0 5px 0;
+        width: 225px;
+    }
+
+    #marketingSection
+    {
+    }
+
+    #marketingSection input
+    {
+        clear: left;
+        float: left;
+        width: 20px;
+        text-align: right;
+    }
+
+    #marketingSection label
+    {
+        float: left;
+    }
+
+    #rememberSection input
+    {
+        clear: left;
+        float: left;
+        width: 20px;
+        text-align: right;
+    }
+
+    #rememberAddressWrapper label
+    {
+        font-size: 10pt;
+    }
+
+    #payAtDoorButton
+    {
+        float: left;
+        width: 45%;
+        margin: 5px 0 0 3%;
+    }
+
+    #payAtDoorButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    #payNowButton
+    {
+        float: left;
+        width: 45%;
+        margin: 5px 0 0 3%;
+    }
+
+    #payNowButton a
+    {
+        font-size: 10pt;
+        padding: 5px 0 5px 0;
+    }
+
+    #mercuryPaymentContainer
+    {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    #mercuryPaymentIFrame
+    {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        border: 0;
+    }
+
+    #dataCashPaymentContainer
+    {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    #dataCashPaymentIFrame
+    {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        border: 0;
+    }
+
+    #storeDetailsContainer
+    {
+        margin: 12px 0 0 0;
+        min-height: 50px;
+        border: solid 1px #E4E4E4;
+        background-color: #F4F2F2;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #storeDetailsTitle
+    {
+        background-color: #1E2F60;
+        -webkit-border-top-left-radius: 10px;
+        border-top-left-radius: 10px;
+        -webkit-border-top-right-radius: 10px;
+        border-top-right-radius: 10px;
+        /* Safari 4-5, Chrome 1-9 */
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(#C6955B), to(#815126));
+        /* Safari 5.1, Chrome 10+ */
+        background: -webkit-linear-gradient(left, #C6955B, #815126);
+        /* Firefox 3.6+ */
+        background: -moz-linear-gradient(left, #C6955B, #815126);
+        /* IE 10 */
+        background: -ms-linear-gradient(left, #C6955B, #815126);
+        /* Opera 11.10+ */
+        background: -o-linear-gradient(left, #C6955B, #815126);
+        color: white;
+        font-size: 18pt;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #storeDetails
+    {
+        font-size: 13pt;
+    }
+
+    .storeDetailsDayColumn1
+    {
+        font-style: italic;
+    }
+
+    .menu
+    {
+        margin: 12px 0 0 0;
+        border: solid 1px #E4E4E4;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #sectionHeaders
+    {
+        display: none;
+    }
+
+    #sectionHeadersTop h1
+    {
+        color: #36490D;
+        font-size: 13pt;
+        margin: 0;
+        padding: 10px 0 10px 10px;
+        font-weight: bold;
+    }
+
+    #sectionHeadersContent
+    {
+        padding: 0 5px 10px 5px;
+    }
+
+    .sectionHeader
+    {
+        padding: 5px 0 5px 5px;
+        clear: both;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .selectedSectionHeader
+    {
+        padding: 5px 0 5px 5px;
+        clear: both;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active
+    {
+        display: block;
+        width: 100px;
+        color: #383838;
+        font-size: 15pt;
+        text-decoration: none;
+        border: solid 1px gray;
+        padding: 2px 7px 2px 7px;
+        background-color: #ffc000;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    .selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+    {
+        display: block;
+        width: 100px;
+        color: #E6001D;
+        font-size: 15pt;
+        text-decoration: none;
+        border: solid 1px gray;
+        padding: 2px 7px 2px 7px;
+        background-color: #ffc000;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #sectionsWrapper
+    {
+        overflow: hidden;
+    }
+
+    #sections
+    {
+        overflow-x: hidden;
+        margin-bottom: 55px;
+    }
+
+    .sectionTitle h1
+    {
+        display: none;
+    }
+
+    .itemRow
+    {
+        clear: both;
+        padding: 5px 30px 5px 5px;
+        overflow: hidden;
+        background-color: #F2F2F2;
+        border: solid 1px #F2F2F2;
+        cursor: pointer;
+        margin: 5px;
+        position: relative;
+        background: url(Images/addtocartmobile.png) no-repeat center right;
+    }
+
+    .itemRow select
+    {
+        height: 25px;
+        font-size: 12pt;
+        margin: 0;
+    }
+
+    .nameDescriptionContainer
+    {
+        float: left;
+        color: black;
+        overflow: hidden;
+    }
+
+    .descriptionContainer
+    {
+        clear: both;
+        overflow: hidden;
+    }
+
+    .itemImage
+    {
+        float: left;
+        position: relative;
+    }
+
+    .itemImage img
+    {
+        margin: 0 5px 0 0;
+        cursor: pointer;
+    }
+
+    .itemImageOverlay
+    {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        cursor: url('Images/zoom.png') 0 0, move;
+        cursor: url('Images/zoom.cur'), -moz-zoom-in;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        overflow: hidden;
+    }
+
+    .itemDetailsWithImage .priceCategoryContainer .categoryQuantityContainer .quantity,
+    .itemDetailsWithImage .priceCategoryContainer .categoryQuantityContainer .category1,
+    .itemDetailsWithImage .priceCategoryContainer .categoryQuantityContainer .category2
+    {
+        clear: both;
+    }
+
+    .itemName
+    {
+        font-size: 12pt;
+        color: #383838;
+        padding: 0;
+        margin: 0;
+        font-weight: bold;
+        position: absolute;
+        left: 10px;
+        top: 5px;
+    }
+
+    .itemDescription
+    {
+        clear: both;
+        font-size: 9pt;
+        margin-top: 20px;
+    }
+
+    .notAvailable
+    {
+        font-size: 9pt;
+    }
+
+    .priceCategoryContainer
+    {
+        clear: both;
+        float: right;
+        padding: 5px 0 0 0;
+        overflow: hidden;
+    }
+
+    .itemPrice
+    {
+        float: right;
+        margin: 0 5px 0;
+        padding: 0;
+        font-weight: normal;
+        color: #0F2D69;
+        font-size: 18pt;
+        min-width: 85px;
+        text-align: right;
+        margin-right: 25px;
+    }
+
+    .categoryQuantityContainer
+    {
+        display: none;
+    }
+
+    .menuOptions
+    {
+        float: right;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+
+    .categoryContainer
+    {
+        clear: both;
+        float: right;
+    }
+
+    .category1
+    {
+        display: none;
+    }
+
+    .category2
+    {
+        display: none;
+    }
+
+    .priceAddContainer
+    {
+        clear: both;
+    }
+
+    .addItemButton
+    {
+        display: none;
+    }
+
+    .addItemButton a
+    {
+        padding: 7px 0 7px 0;
+    }
+
+    .dealItem
+    {
+        clear: both;
+        padding: 5px 30px 5px 5px;
+        overflow: hidden;
+        background-color: #F2F2F2;
+        border: solid 1px #F2F2F2;
+        cursor: pointer;
+        margin: 5px;
+        position: relative;
+        background: url(Images/addtocartmobile.png) no-repeat center right;
+    }
+
+    .dealName
+    {
+        font-size: 10pt;
+    }
+
+    .dealItem p
+    {
+        font-size: 10pt;
+    }
+
+    .dealOptions
+    {
+    }
+
+    .dealOptions .highlightedButton
+    {
+        float: right;
+        width: 100px;
+    }
+
+    .popupBoxBackgroundVisible, .popupBoxBackgroundHidden
+    {
+        display: none;
+    }
+
+    .popupBoxHidden, .popupBoxVisible
+    {
+        background-color: white;
+        width: 100%;
+    }
+
+    .dealPopupBoxBackgroundVisible, .dealPopupBoxBackgroundHidden
+    {
+        display: none;
+    }
+
+    .popupItemDetails
+    {
+        padding: 0 0 10px 5px;
+        background-color: #F2F2F2;
+        margin: 5px 0 0 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .popupItemDetails img
+    {
+        margin: 30px 0 0 0;
+        float: left;
+        padding: 0 10px 0 0;
+    }
+
+    .popupItemDetails h2
+    {
+        padding: 0;
+        color: #383838;
+        font-weight: bold;
+        font-size: 12pt;
+        float: left;
+        margin: 0;
+    }
+
+    #popupDescription
+    {
+        color: #383838;
+        font-weight: bold;
+        font-size: 10pt;
+        margin: 25px 0 0 0;
+        padding: 5px 5px 0 5px;
+        width: 100%;
+        clear: none;
+    }
+
+    .popupToppingsSingle
+    {
+        margin: 0 0 0 110px;
+    }
+
+    .popupToppingsSingle2
+    {
+        display: none;
+    }
+
+    .popupToppingsDouble
+    {
+        margin: 0 10px 0 20px;
+    }
+
+    .popupToppingsDouble2
+    {
+        display: none;
+    }
+
+    .popupBoxHeaderContainer
+    {
+        overflow: hidden;
+    }
+
+    .popupBoxHeaderContainer h1
+    {
+        font-weight: bold;
+        padding: 5px;
+        margin: 0;
+        font-size: 12pt;
+        color: #383838;
+        background-color: #F2F2F2;
+        text-align: center;
+    }
+
+    .popupBoxHeaderContainer h2
+    {
+        font-weight: bold;
+        padding: 5px 5px 0 5px;
+        left: 0;
+        top: 0;
+    }
+
+    .popupTopping
+    {
+        width: 228px;
+    }
+
+    #popupToppingsHelp
+    {
+        font-size: 8pt;
+    }
+
+    .popupToppingName
+    {
+        width: 100px;
+    }
+
+    .popupAdditionalTopping
+    {
+        width: 160px;
+    }
+
+    .popupRemovableTopping
+    {
+        width: 160px;
+    }
+
+    #popupOptions
+    {
+        height: 120px;
+        position: relative;
+    }
+
+    #popupOptionsLeft
+    {
+        clear: both;
+        overflow: hidden;
+        margin: 5px 0 5px 0;
+        background-color: #F2F2F2;
+        padding: 5px 0 5px 5px;
+    }
+
+    #popupOptionsTopQuantity
+    {
+        float: left;
+        margin: 0 5px 0 5px;
+    }
+
+    #popupQuantity
+    {
+        font-weight: normal;
+        margin: 0 10px 0 0;
+    }
+
+    #popupQuantityHeader
+    {
+        font-size: 10pt;
+    }
+
+    #popupQuantity select
+    {
+        font-size: 12pt;
+        padding: 0;
+        margin: 0;
+    }
+
+    #popupQuantityDetails
+    {
+        line-height: 20pt;
+    }
+
+    #popupQuantityDetails span
+    {
+        font-size: 20pt;
+        font-weight: bold;
+        float: left;
+        padding: 10px 0 0 0;
+    }
+
+    #popupIncreaseQty
+    {
+        text-decoration: none;
+        margin: 6px 5px 0 0;
+        font-size: 10pt;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        color: #383838;
+        width: 20px;
+        height: 20px;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    #popupDecreaseQty
+    {
+        text-decoration: none;
+        margin: 6px 5px 0 10px;
+        font-size: 10pt;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        color: #383838;
+        width: 20px;
+        height: 20px;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 20px;
+    }
+
+    #popupOptionsTopPrice
+    {
+        clear: both;
+        float: left;
+        margin: 0 15px 0 5px;
+    }
+
+    #popupPriceHeader
+    {
+        font-size: 10pt;
+    }
+
+    #popupPrice
+    {
+        clear: both;
+        font-weight: bold;
+        font-size: 20pt;
+        margin: 10px 0 0 0;
+        padding: 0;
+        line-height: 20pt;
+    }
+
+    #popupCatContainer
+    {
+        float: left;
+        margin: 0 0 0 0;
+    }
+
+    #popupCatContainer select
+    {
+        font-size: 12pt;
+    }
+
+    #popupCatHeader
+    {
+        padding: 0;
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 10pt;
+    }
+
+    #popupCategory1
+    {
+        clear: both;
+        float: right;
+        font-size: 12pt;
+        font-weight: normal;
+    }
+
+    #popupCategory1 select
+    {
+        margin: 0;
+        padding: 0;
+    }
+
+    #popupCategory2
+    {
+        clear: both;
+        float: right;
+        font-size: 12pt;
+        font-weight: normal;
+    }
+
+    #popupCategory2 select
+    {
+        margin: 0;
+        padding: 0;
+    }
+
+    #popupCategory2 span
+    {
+        color: black;
+    }
+
+    #popupOptionsRight
+    {
+        margin: 15px 0 0 0;
+        overflow: hidden;
+        background-color: #F2F2F2;
+        padding: 8px 0 5px 10px;
+        position: absolute;
+        top: 60px;
+        width: 100%;
+    }
+
+    #popupCancelButton
+    {
+        float: left;
+        width: 90px;
+        margin: 0 5px 0 0;
+    }
+
+    #popupCancelButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #popupDealOptions
+    {
+        padding: 5px 0 5px 5px;
+        background-color: #F2F2F2;
+        overflow: hidden;
+    }
+
+    #popupDealBoxBodyContainer h1
+    {
+        background-color: #F2F2F2;
+        font-size: 12pt;
+        text-align: center;
+        padding: 5px;
+        margin: 5px 0 0 0;
+    }
+
+    #popupAddToCartButton
+    {
+        clear: both;
+        float: left;
+        width: 110px;
+        margin: 0 5px 5px 0;
+    }
+
+    #popupAddToCartButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #popupRemoveFromCartButton
+    {
+        float: left;
+        width: 150px;
+        margin: 0 5px 0 0;
+    }
+
+    #popupRemoveFromCartButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #popupUpdateItemButton
+    {
+        clear: both;
+        float: left;
+        margin: 0 5px 5px 0;
+    }
+
+    #popupUpdateItemButton a
+    {
+        padding: 5px 10px 5px 10px;
+    }
+
+    #popupAddToDealButton
+    {
+        clear: both;
+        float: left;
+        width: 60px;
+        margin: 0 5px 5px 0;
+        padding: 0;
+    }
+
+    #popupAddToDealButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #popupCancelDealButton
+    {
+        float: left;
+        width: 60px;
+        margin: 0 5px 0 0;
+    }
+
+    #popupCancelDealButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #dealPopupAddToCartButton
+    {
+        clear: both;
+        float: left;
+        width: 110px;
+        margin: 0 5px 0 0;
+        font-weight: normal;
+    }
+
+    #dealPopupAddToCartButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #dealPopupUpdateCartButton
+    {
+        float: left;
+        width: 50px;
+        margin: 5px 10px 0 0;
+        font-weight: normal;
+    }
+
+    #dealPopupUpdateCartButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #dealPopupRemoveFromCartButton
+    {
+        float: left;
+        width: 160px;
+        margin: 5px 10px 0 0;
+        font-weight: normal;
+    }
+
+    #dealPopupRemoveFromCartButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #dealPopupCancelButton
+    {
+        float: left;
+        width: 75px;
+        font-weight: normal;
+    }
+
+    #dealPopupCancelButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    .popupDealLineDetails
+    {
+        padding: 0 0 0 5px;
+        overflow: hidden;
+        color: black;
+    }
+
+    .popupDealCustomize
+    {
+        clear: both;
+        overflow: hidden;
+        margin: 3px;
+    }
+
+    .popupDealCustomizeItemButton
+    {
+        width: 95px;
+    }
+
+    .popupDealCustomizeItemButton a
+    {
+        padding: 2px 0 2px 0;
+        background: -webkit-gradient(linear, left top, left bottom, from(#CCCCCC), to(#A0A0A0));
+        background: -webkit-linear-gradient(top, #CCCCCC, #A0A0A0);
+        background: -moz-linear-gradient(top, #CCCCCC, #A0A0A0);
+        background: -ms-linear-gradient(top, #CCCCCC, #A0A0A0);
+        background: -o-linear-gradient(top, #CCCCCC, #A0A0A0);
+    }
+
+    .dealPopupItemNo
+    {
+        float: left;
+        font-weight: bold;
+        padding: 3px 10px 0 0;
+    }
+
+    .popupOptions select
+    {
+        height: 35px;
+        font-size: 12pt;
+        padding: 0 0 0 5px;
+        margin: 0;
+    }
+
+    .popupDealItemSelected
+    {
+        float: left;
+        margin-left: 5px;
+        padding: 5px 0 0 0;
+    }
+
+    #popupBody
+    {
+    }
+
+    #popupBody h1
+    {
+        font-size: 11pt;
+        font-weight: bold;
+        padding: 5px;
+        margin: 5px 0 5px 0;
+        text-align: center;
+        color: #493700;
+        background-color: #F2F2F2;
+    }
+
+    #popupChefCommentsInner
+    {
+        padding: 0 10px 0 5px;
+        position: relative;
+    }
+
+    #popupChefCommentsInner textarea
+    {
+        width: 100%;
+        height: 75px;
+    }
+
+    #popupChefCommentsInner p
+    {
+        padding: 0;
+        margin: 5px 0 5px 0;
+        font-size: 10pt;
+    }
+
+    #popupPersonInner
+    {
+        padding: 0 10px 0 5px;
+        position: relative;
+    }
+
+    #popupPersonInner p
+    {
+        padding: 0;
+        margin: 5px 0 5px 0;
+        font-size: 10pt;
+    }
+
+    #popupPersonInner input
+    {
+        width: 100%;
+        border: 1px solid black;
+    }
+
+    .popupDealLine
+    {
+        font-size: 10pt;
+        overflow: hidden;
+        padding: 5px;
+        background-color: #F2F2F2;
+        border-top: solid 4px white;
+    }
+
+    .popupDealLineItem
+    {
+        padding-right: 5px;
+    }
+
+    .popupDealLine select
+    {
+        font-size: 12pt;
+        padding: 0;
+        margin: 0 0 5px 0;
+    }
+
+    #popupFreeToppings
+    {
+        text-align: center;
+        color: red;
+    }
+
+    .errorBox
+    {
+        background-color: #815126;
+        overflow: hidden;
+        padding: 10px 50px 30px 50px;
+        margin: 20px 0 0 0;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        /* Safari 4-5, Chrome 1-9 */
+        background: -webkit-gradient(linear, 0 0, 0 100%, from(#C6955B), to(#815126));
+        /* Safari 5.1, Chrome 10+ */
+        background: -webkit-linear-gradient(left, #C6955B, #815126);
+        /* Firefox 3.6+ */
+        background: -moz-linear-gradient(left, #C6955B, #815126);
+        /* IE 10 */
+        background: -ms-linear-gradient(left, #C6955B, #815126);
+        /* Opera 11.10+ */
+        background: -o-linear-gradient(left, #C6955B, #815126);
+    }
+
+    .errorBox a
+    {
+        font-size: 20pt;
+    }
+
+    .errorMessage
+    {
+        text-align: center;
+        margin: 20px 0 20px 0;
+        font-weight: normal;
+        font-size: 12pt;
+    }
+
+    .errorOptions
+    {
+        width: 160px;
+        margin: 0 auto 5px auto;
+    }
+
+    .errorBox h2
+    {
+        color: white;
+    }
+
+    #mobileMenuButton
+    {
+        position: absolute; left: 5px; top: 0; font-size: 23pt; padding: 0; border: 0; cursor: pointer;
+    }
+
+    #mobileMenuExitButton
+    {
+        background: url(Images/Back.png) no-repeat 6px 3px;
+        height: 45px;
+        width: 45px;
+        cursor: pointer;
+    }
+
+    #basketButton
+    {
+        position: absolute; right: 0; top: 5px; width: 50px; height: 50px; cursor: pointer; background: url('Images/BasketSmall.png') no-repeat;
+    }
+
+    /* Mobile menu */
+
+    #bindToElements
+    {
+        z-index: 10000;
+    }
+
+    #mobileMenu
+    {
+        position: fixed !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 99999;
+        display: none;
+    }
+
+    #mobileMenuBackground
+    {
+        background-color: gray;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999998;
+    }
+    .mobileMenuBackgroundHidden
+    {
+      opacity: 0;
+    }
+    .mobileMenuBackgroundVisible
+    {
+      opacity: 0.3;
+    }
+    .mobileMenuBackgroundFadeIn
+    {
+      -webkit-animation: mobileMenuBackgroundFadeIn 0.3s forwards ease-in;
+      -moz-animation:    mobileMenuBackgroundFadeIn 0.3s forwards ease-in;
+      -o-animation:      mobileMenuBackgroundFadeIn 0.3s forwards ease-in;
+      animation:         mobileMenuBackgroundFadeIn 0.3s forwards ease-in;
+    }
+    .mobileMenuBackgroundFadeOut
+    {
+      -webkit-animation: mobileMenuBackgroundFadeOut 0.3s forwards ease-out;
+      -moz-animation:    mobileMenuBackgroundFadeOut 0.3s forwards ease-out;
+      -o-animation:      mobileMenuBackgroundFadeOut 0.3s forwards ease-out;
+      animation:         mobileMenuBackgroundFadeOut 0.3s forwards ease-out;
+    }
+    @keyframes mobileMenuBackgroundFadeOut
+    {
+      0% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+    @-webkit-keyframes mobileMenuBackgroundFadeOut
+    {
+      0% { opacity: 0.3; }
+      100% { opacity: 0; }
+    }
+    @keyframes mobileMenuBackgroundFadeIn
+    {
+      0% { opacity: 0; }
+      100% { opacity: 0.3; }
+    }
+    @-webkit-keyframes mobileMenuBackgroundFadeIn
+    {
+      0% { opacity: 0; }
+      100% { opacity: 0.3; }
+    }
+
+    #mobileMenuInner
+    {
+        width: 250px;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding-top: 10px;
+        -webkit-box-shadow: 5px 0 5px 0 rgba(0,0,0,0.33);
+        -moz-box-shadow: 5px 0 5px 0 rgba(0,0,0,0.33);
+        box-shadow: 5px 0 5px 0 rgba(0,0,0,0.33);
+        z-index: 999999;
+    }
+
+    #mobileCheckoutMenu
+    {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        text-align: center;
+        color: #606060;
+        height: 50px;
+        background: black;
+    }
+
+    .mobileMenuIn
+    {
+      transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+    }
+
+    .mobileMenuOut
+    {
+      transform: translateX(100%);
+      -webkit-transform: translateX(-100%);
+    }
+
+    .mobileMenuSlideOut
+    {
+      animation: mobileMenuSlideOut 0.3s forwards ease-in;
+      -webkit-animation: mobileMenuSlideOut 0.3s forwards ease-in;
+    }
+
+    .mobileMenuSlideIn
+    {
+      animation: mobileMenuSlideIn 0.3s forwards ease-out;
+      -webkit-animation: mobileMenuSlideIn 0.3s forwards ease-out;
+    }
+
+    @keyframes mobileMenuSlideOut
+    {
+      100% { transform: translateX(0%); }
+    }
+    @-webkit-keyframes mobileMenuSlideOut
+    {
+      100% { -webkit-transform: translateX(0%); }
+    }
+    @keyframes mobileMenuSlideIn
+    {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+    @-webkit-keyframes mobileMenuSlideIn
+    {
+      0% { -webkit-transform: translateX(0%); }
+      100% { -webkit-transform: translateX(-100%); }
+    }
+
+    .mobileCheckoutMenuButton
+    {
+        width: 50%;
+        float: left;
+    }
+
+    .mobileMenuButton
+    {
+        float: right;
+        padding: 0;
+        text-align: center;
+        font-size: 7pt;
+        line-height: 36px;
+        margin: 2px 2px 2px 2px;
+        border: 1px solid gray;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        height: 34px;
+        overflow: hidden;
+        background: -webkit-gradient(linear, left top, left bottom, from(#B6B6B6), to(#898989));
+        background: -webkit-linear-gradient(top, #B6B6B6, #898989);
+        background: -moz-linear-gradient(top, #B6B6B6, #898989);
+        background: -ms-linear-gradient(top, #B6B6B6, #898989);
+        background: -o-linear-gradient(top, #B6B6B6, #898989);
+        cursor: pointer;
+    }
+
+    .mobileMenuButton a
+    {
+        color: white;
+        text-decoration: none;
+        padding: 0 2px 0 2px;
+    }
+
+    .mobileSectionHome, .mobileSectionOrderNow, .mobileSectionCart, .mobileSectionSelectStore
+    {
+        float: left;
+        padding: 0 0 0 40px;
+        line-height: 40px;
+        background-position-x: 10px;
+    }
+
+    .mobileSectionHome
+    {
+        background: transparent url('Images/Home.png') center left no-repeat;
+    }
+
+    .mobileSectionOrderNow
+    {
+        background: transparent url('Images/Menu.png') center left no-repeat;
+    }
+
+    .mobileSectionCart
+    {
+        background: transparent url('Images/Basket.png') center left no-repeat;
+    }
+
+    .mobileSectionSelectStore
+    {
+        background: transparent url('Images/Home.png') center left no-repeat;
+    }
+
+    .popupMobileMenuSelectStoreButton
+    {
+        /*background: transparent url('Images/Home.png') center left no-repeat;*/
+    }
+
+    #facebookButton
+    {
+        float: left;
+        padding: 0;
+        text-align: center;
+        font-size: 7pt;
+        line-height: 36px;
+        margin: 2px 2px 2px 2px;
+        border: 1px solid gray;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        height: 34px;
+        width: 34px;
+        overflow: hidden;
+        background: -webkit-gradient(linear, left top, left bottom, from(#898989), to(# B6B6B6));
+        background: -webkit-linear-gradient(top, #898989, #B6B6B6);
+        background: -moz-linear-gradient(top, #898989, #B6B6B6);
+        background: -ms-linear-gradient(top, #898989, #B6B6B6);
+        background: -o-linear-gradient(top, #898989, #B6B6B6);
+    }
+
+    #facebookLikeButton
+    {
+        bottom: 10px;
+    }
+
+    .mobileMenuButtonInner, .mobileMenuButtonSelectedInner
+    {
+        position: relative;
+        padding: 0;
+        font-size: 9pt;
+        line-height: 50px;
+        margin: 0;
+        border-top: 1px solid gray;
+        border-left: 1px solid gray;
+        border-right: 1px solid gray;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .mobileMenuButtonSelectedInner
+    {
+        background-color: #444444;
+    }
+
+    .mobileMenuButtonInner a:link, .mobileMenuButtonInner a:visited, .mobileMenuButtonInner a:active,
+    .mobileMenuButtonSelectedInner a:link, .mobileMenuButtonSelectedInner a:visited, .mobileMenuButtonSelectedInner a:active
+    {
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+    #mobileMenuSections
+    {
+        clear: both;
+        background: #F2F2F2;
+        Padding-top: 7px;
+    }
+
+    #mobileMenuSections select
+    {
+        text-align: center;
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        width: 70%;
+        height: 45px;
+        font-size: 18pt;
+    }
+
+    #mobileMenuSectionsPrompt
+    {
+        font-size: 14pt;
+        margin: 0 5px 0 5px;
+    }
+
+    /* PASSWORD */
+
+    #forgotPasswordBox p
+    {
+        padding: 5px;
+        text-align: justify;
+    }
+
+    #forgotPasswordMessage
+    {
+        clear: both;
+        color: red;
+        text-align: center;
+    }
+
+    /* FOOTER */
+
+    #footer
+    {
+        display: none;
+    }
+
+    #termsOfUse
+    {
+        width: 30%;
+        margin: 0;
+    }
+    #footerSplitter1
+    {
+        width: 5%;
+        margin: 0;
+    }
+    #privacyPolicy
+    {
+        width: 30%;
+        margin: 0;
+    }
+    #footerSplitter2
+    {
+        width: 5%;
+        margin: 0;
+    }
+    #cookiePolicy
+    {
+        width: 30%;
+        margin: 0;
+    }
+
+    .menuSectionHasFocus
+    {
+        display: block;
+    }
+
+    .menuSectionDoesntHaveFocus
+    {
+        display: none;
+    }
+
+    .headFootNoPopup
+    {
+        display: block;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        border-bottom: 1px solid lightgray;
+        background-color: white;
+    }
+
+    .headFootPopup
+    {
+        display: none;
+    }
+
+    /* Login/register popup */
+    #loginRegister
+    {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -200px 0 0 -400px;
+        background-color: white;
+        border: solid 1px gray;
+        height: 260px;
+        width: 800px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px; /* future proofing */
+        -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+        -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+        box-shadow: 0 0 10px rgba(68,68,68,0.6);
+        overflow: hidden;
+        z-index: 1004;
+    }
+
+    #loginRegisterInner
+    {
+        background-color: #F2F2F2;
+        padding-bottom: 5px;
+    }
+
+    #loginRegisterInner h1
+    {
+        font-size: 11pt;
+        font-weight: bold;
+        padding: 5px;
+        margin: 0 0 5px 0;
+        text-align: center;
+        color: #493700;
+        background-color: #F2F2F2;
+        height: 19px;
+        border-bottom: 5px solid white;
+    }
+
+    #signIn
+    {
+        padding: 5px 5px 0 5px;
+        background-color: #F2F2F2;
+    }
+
+    #signIn h1
+    {
+        text-align: center;
+    }
+
+    #loginUsingFacebook
+    {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #loginUsingFacebook p
+    {
+        color: gray;
+        text-align: center;
+        padding: 0 10px 0 10px;
+        margin: 0;
+    }
+
+    #facebookLoginDivider
+    {
+        clear: both;
+        text-align: center;
+        margin: 5px 0 5px 0;
+    }
+
+    #facebookLoginDividerTop
+    {
+        display: none;
+    }
+
+    #facebookLoginDividerBottom
+    {
+        display: none;
+    }
+
+    #loginSection
+    {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #loginSectionInner
+    {
+        overflow: hidden;
+    }
+
+    #loginSectionInner p
+    {
+        margin: 0;
+        color: gray;
+        padding: 0 10px 0 10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .loginFormPrompt
+    {
+        padding-left: 5px;
+        margin: 5px auto;
+        width: 250px;
+    }
+
+    .loginFormInput
+    {
+        padding: 0 5px 0 5px;
+        margin: 0 auto;
+    }
+
+    .loginFormInput input
+    {
+        width: 95%;
+        padding: 5px;
+    }
+
+    #loginButtonContainer
+    {
+        width: 100%;
+        margin-top: 10px;
+        clear: left;
+        text-align: center;
+        position: relative;
+    }
+
+    #loginButton
+    {
+        float: none;
+        width: 98%;
+    }
+
+    #loginButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #loginError
+    {
+        color: red;
+        font-size: 10pt;
+    }
+
+    .toggleRegisterButton
+    {
+        display: block;
+        width: 98%;
+        margin-top: 10px;
+    }
+
+    .lrpRegisterSectionHidden
+    {
+        display: none;
+    }
+
+    #registerContainer
+    {
+        overflow: hidden;
+    }
+
+    #registerContainer h2
+    {
+        margin: 0 0 10px 0;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .registerSection
+    {
+        overflow: hidden;
+    }
+
+    #registerContainerInner
+    {
+        margin: 5px;
+    }
+
+    #registerMarketing
+    {
+        clear: left;
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    #registerMarketing label
+    {
+        font-size: 9pt;
+    }
+
+    #registerErrorMessage
+    {
+        clear: left;
+        text-align: center;
+        color: red;
+    }
+
+    #loginRegisterButtons
+    {
+        overflow: hidden;
+        width: 300px;
+        margin: 5px auto 10px auto;
+    }
+
+    #signUpButton
+    {
+        float: left;
+        width: 80px;
+        margin-right: 5px;
+    }
+
+    #signUpButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #hmForgotPasswordButton
+    {
+        float: left;
+        width: 120px;
+    }
+
+    #closeLoginRegisterPopupButton
+    {
+        float: left;
+        width: 80px;
+        margin-left: 5px;
+    }
+
+    #closeLoginRegisterPopupButton a
+    {
+        padding: 5px 0 5px 0;
+    }
+
+    #popupMobileMenu
+    {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background: rgb(54, 25, 25);
+        background: rgba(254, 254, 254, .5);
+        z-index: 999999;
+    }
+
+    #popupMobileMenuOuter
+    {
+        height: 100%;
+        padding: 10px;
+    }
+
+    #popupMobileMenuInner
+    {
+        border: solid 1px gray;
+        background-color: #EAEAEA;
+        padding: 5px;
+    }
+
+    #popupMobileMenuInner h1
+    {
+        text-align: center;
+        padding: 5px;
+        margin: 0;
+        font-size: 12pt;
+    }
+
+    .popupMobileMenuButton
+    {
+        margin: 0 auto 10px auto;
+        padding: 10px 0 10px 40px;
+        border: 1px solid gray;
+    }
+
+    .popupMobileMenuButton a
+    {
+        padding: 10px 0 10px 0;
+    }
+
+    .popupMobileMenuHomeButton, .popupMobileMenuOrderNowButton, .popupMobileMenuCartButton, .popupMobileMenuReturnToHostButton, .popupMobileMenuSelectStoreButton
+    {
+        cursor: pointer;
+        background-position-x: 10px;
+    }
+
+    .popupMobileMenuHomeButton
+    {
+        background: transparent url('Images/Home.png') center left no-repeat;
+    }
+
+    .popupMobileMenuOrderNowButton
+    {
+        background: transparent url('Images/Menu.png') center left no-repeat;
+    }
+
+    .popupMobileMenuCartButton
+    {
+        background: transparent url('Images/Basket.png') center left no-repeat;
+    }
+
+    .popupMobileMenuReturnToHostButton
+    {
+        background: transparent url('Images/Home.png') center left no-repeat;
+    }
+
+    #popupMobileMenuButtons
+    {
+        clear: both;
+    }
+
+    /* My Orders */
+    #mpMenu
+    {
+        height: 35px;
+    }
+
+    #myOrdersContent
+    {
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #moMyProfile
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #moMyOrders
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #F2F2F2;
+        cursor: pointer;
+    }
+
+    #moLogout
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #moBack
+    {
+        display: none;
+    }
+
+    #moContent
+    {
+        padding: 0 0 5px 0;
+        margin: 0;
+        text-align: center;
+        font-size: 12pt;
+    }
+
+    .moOrder
+    {
+        margin-bottom: 5px;
+        overflow: hidden;
+        background-color: white;
+    }
+
+    .moOrderHeader
+    {
+        background-color: #F2F2F2;
+        overflow: hidden;
+        padding: 5px 0 5px 5px;
+        cursor: pointer;
+    }
+
+    .moPlacedDate
+    {
+        float: left;
+        width: 80px;
+    }
+
+    .moPlacedTime
+    {
+        float: left;
+        width: 80px;
+    }
+
+    .moRefresh
+    {
+        float: left;
+    }
+
+    .moStatus
+    {
+        float: left;
+    }
+
+    .moQuantityTitle
+    {
+        display: none;
+    }
+
+    .moPriceTitle
+    {
+        display: none;
+    }
+
+    .moName
+    {
+        float: left;
+        clear: both;
+        text-align: left;
+    }
+
+    .moQuantity
+    {
+        float: left;
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .moPrice
+    {
+        float: left;
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .moModName
+    {
+        clear: both;
+        float: left;
+    }
+    .moModPrice
+    {
+        float: left;
+        margin-left: 10px;
+    }
+    .moOrderTotal
+    {
+        clear: both;
+        padding-top: 5px;
+        overflow: hidden;
+    }
+
+    .moOrderLines
+    {
+        overflow: hidden;
+        padding: 5px;
+    }
+
+    .moTotal
+    {
+        float: right;
+        width: 70px;
+        text-align: right;
+    }
+
+    .moTotalTitle
+    {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .moRepeatOrder
+    {
+        margin: 5px 10px 5px 10px;
+    }
+
+    #moPleaseWaitOrders h1
+    {
+        text-align: center;
+        padding: 0;
+        color: #493700;
+        font-weight: normal;
+        font-size: 16pt;
+    }
+
+    /* My profile */
+    #myProfileContent
+    {
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #mpContent h1
+    {
+        display: none;
+        padding: 5px 0 5px 0;
+        margin: 0;
+        text-align: center;
+        font-size: 12pt;
+        background-color: #F2F2F2;
+    }
+
+    #mpRegisterContainer h2
+    {
+        padding: 5px;
+        margin: 5px 0 0 0;
+        background-color: #F2F2F2;
+        font-size: 12pt;
+        text-align: center;
+    }
+
+    #mpMyProfile
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #F2F2F2;
+        cursor: pointer;
+    }
+
+    #mpMyOrders
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #mpLogout
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #mpBack
+    {
+        display: none;
+    }
+
+    /* Login register */
+    .lrLoginFormPrompt
+    {
+        background-color: #F2F2F2;
+        padding: 5px 0 0 5px;
+    }
+
+    #lrEmailRegisterMarketing
+    {
+        background-color: #F2F2F2;
+        padding: 0 0 5px 10px;
+    }
+
+    #lrEmailRegisterMarketing label
+    {
+        font-size: 10pt;
+    }
+
+    #lrSMSRegisterMarketing
+    {
+        background-color: #F2F2F2;
+        padding: 0 0 5px 10px;
+    }
+
+    #lrSMSRegisterMarketing label
+    {
+        font-size: 10pt;
+    }
+
+    #mpRegisterAddressContainer
+    {
+        background-color: #F2F2F2;
+        margin-top: 5px;
+    }
+
+    .requiredLine
+    {
+        background-color: #F2F2F2;
+        padding: 5px;
+        margin: 0;
+    }
+
+    #lrCreateAnAccount
+    {
+        padding: 5px 0 5px 0;
+        margin: 0 0 5px 0;
+        text-align: center;
+        font-size: 12pt;
+        background-color: #F2F2F2;
+    }
+
+    #lrCreateAnAccountAddress
+    {
+        padding: 5px 0 5px 0;
+        margin: 0;
+        text-align: center;
+        font-size: 12pt;
+        background-color: #F2F2F2;
+    }
+
+    #lrRegisterAddressContainer
+    {
+        margin-top: 5px;
+    }
+
+    #mpRegisterButton
+    {
+        margin: 5px 10px 5px 5px;
+    }
+
+    #lrAddressDetails
+    {
+        background-color: #F2F2F2;
+        margin-top: 5px;
+    }
+
+    #lrRegisterButton, #lrCancelButton
+    {
+        margin: 5px;
+    }
+
+    /*#staticContentOuter
+    {
+        background-color: white;
+        width: 100%;
+        padding: 0 0 10px 0;
+    }
+
+    #staticContent
+    {
+        padding: 10px 20px 0 20px;
+    }*/
+
+    #tripAdvisor
+    {
+        margin: 0 auto;
+        width: 290px;
+    }
+
+    #signInWrapper
+    {
+        width: 100%;
+    }
+
+    #registerButton
+    {
+        width: 98%;
+        margin: 0;
+    }
+
+    .lrLoginFormInput
+    {
+        background-color: #F2F2F2;
+        width: 98%;
+        float: none;
+        padding: 5px 10px 0 5px;
+        margin: 0;
+        margin-bottom: 5px;
+    }
+
+    .lrLoginFormInput input, .lrLoginFormInput textarea
+    {
+        padding: 5px;
+        margin: 0;
+        position: relative;
+        font-size: 10pt;
+        width: 98%;
+        height: 30px;
+    }
+
+    .lrLoginFormInput textarea
+    {
+        width: 95%;
+    }
+
+    #loginSectionInner a
+    {
+        margin: 8px 0 8px 0;
+        width: auto;
+    }
+
+    #mobileWelcome
+    {
+        background-color: white;
+        border-bottom: solid 1px lightgray;
+        padding: 3px 0 0 0;
+        font-size: 9pt;
+        color: gray;
+    }
+
+    #bindToElements
+    {
+        margin-top: 45px;
+    }
+
+    .feedbackFormRow
+    {
+        margin: 0;
+        width: auto;
+    }
+
+    .feedbackFormInput
+    {
+        width: auto;
+        margin-right: 5px;
+    }
+}

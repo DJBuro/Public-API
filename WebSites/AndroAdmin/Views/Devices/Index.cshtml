@@ -1,0 +1,195 @@
+﻿@model AndroAdmin.ViewModels.StoreType.StoreDevicesIndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .k-grid table {
+        table-layout: fixed;
+    }
+
+    .k-grid td {
+        word-wrap: break-word;
+    }
+</style>
+
+<h2>Devices</h2>
+<a class="k-button" href="@Url.Action("index", "ExternalApi" )">Apis</a>
+
+
+<div id="StoreTypes"></div>
+
+@(Html.Kendo().Grid<AndroAdmin.ViewModels.StoreType.DeviceViewModel>()
+        .Name("Devices")
+    .ToolBar(tools =>
+    {
+        tools.Create();
+    })
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.Name).Width(450);
+        cols.Bound(e => e.ExternalApi).Width(250)
+            .ClientTemplate("#=ExternalApi.Name#")
+            .EditorTemplateName("ExternalApiTemplate");
+        //cols.ForeignKey(e => e.ExternalApi, new SelectList(Model.Apis, "Id", "Name")); // Model.Apis, "Id", "Name");
+        cols.Command(commands => commands.Edit()).Width(100);
+        cols.Command(commands => commands.Destroy()).Width(100);
+    })
+    .Editable()
+    .Pageable(paging => paging.Refresh(true))
+    .ClientDetailTemplateId("StoreTypeConnections")
+    .DataSource(data =>
+    {
+        data.Ajax()
+            .Model(m =>
+            {
+                m.Id(e => e.Id);
+                m.Field(e => e.ExternalApi).DefaultValue(new AndroAdmin.ViewModels.ApiCredentials.ExternalApiSelectViewModel() { Name = "None" });
+            })
+            .Read(r => r.Action("Read", "Devices"))
+            .Update(u => u.Action("Update", "Devices"))
+            .Destroy(d => d.Action("Destroy", "Devices"))
+            .Create(c => c.Action("Create", "Devices")).Sort(sort => sort.Add(e => e.Name))
+            .Events(e => e.RequestEnd("onRequestEnd"));
+
+    })
+
+)
+
+
+<script type="text/javascript">
+
+    //$(document).ready(function () {
+    //    $("#grid").kendoGrid({
+    //        dataSource: {
+
+    //        },
+    //        pageable: true,
+    //        height: 550,
+    //        toolbar: ["create"],
+    //        columns: [
+    //            //{ field: "ProductName", title: "Product Name" },
+    //            { field: "Name", title: "Name" },
+    //            { field: "ExternalApi", title: "Api", width: "180px", editor: externalApiDropDownEditor, template: "#=ExternalApi.Name#" },
+    //            { command: "edit", title: " ", width: "120px" },
+    //            { command: "destroy", title: " ", width: "120px" }
+    //        ],
+    //        editable: true
+    //    });
+    //});
+
+    function onRequestEnd(e){
+        if (e.type == "update" && !e.response.Errors && e.response.Data[0]!=null) {
+            $(".Message").text("Device "+e.response.Data[0].Name+" updated successfully")
+            $(".Message").css("display","block");
+
+        }
+        if (e.type == "destroy" && !e.response.Errors && e.response.Data[0]!=null) {
+            $(".Message").text("Device "+e.response.Data[0].Name+" deleted successfully")
+            $(".Message").css("display","block");
+        }
+        if (e.type == "create" && !e.response.Errors && e.response.Data[0]!=null) {
+            $(".Message").text("Device "+e.response.Data[0].Name+" created successfully")
+            $(".Message").css("display","block");
+        }
+        else if($(".Message").text()==""){
+            $(".Message").css("display","none");
+        }
+    }
+
+    function externalApiDropDownEditor(container, options) {
+        var apis = @Html.ToJson(Model.Apis, false, false);
+
+        $('<input required data-text-field="Name" data-value-field="Id" data-bind="value:' + options.field + ' "/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    transport: {
+                        read: "@Url.Action("ReadOnly", "ExternalApi")"
+                    }
+                }
+            });
+    }
+
+</script>
+
+<script id="StoreTypeConnections" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip().Name("GridTabs#=Id#").Items(items =>
+{
+    items.Add()
+        .Text("Stores").Selected(true).Content(
+        @<text>
+            @(Html.Kendo().Grid<AndroAdmin.ViewModels.StoreType.StoreDeviceViewModel>()
+            .Name("grid_#=Id#")
+            .Columns(columns =>
+            {
+                columns.Bound(e => e.StoreId);
+                columns.Bound(e => e.ClientSiteName).Title("ClientName");
+            })
+            .Filterable()
+            .Sortable()
+            .Pageable()
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(5)
+                .Model(model =>
+                {
+                    model.Id(e => e.Id);
+                })
+                .Read(read => read.Action("ReadStoreConnections", "StoreDevices", new { Id = "#=Id#" }))
+            )
+            .Pageable()
+            .Sortable()
+            .ToClientTemplate()
+
+            )</text>);
+
+}).ToClientTemplate()
+    )
+
+
+</script>
+
+<script type="text/javascript">
+
+    //register custom validation rules
+    (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: { // custom rules
+                namevalidation: function (input, params) {
+
+                    //check for the rule attribute
+                    if (input.attr("id") == "Name") {
+                        regex = RegExp("^[a-zA-Z0-9]+$")
+                        if (input.val() != null && input.val().trim() != "") {
+                            if (!regex.test(input.val().trim())) {
+                                input.attr("data-val-namevalidation", "Special characters are not allowed");
+                                return false;
+                            }
+                        }
+
+                        if (input.val() == null || input.val().trim() == "") {
+                            input.attr("data-val-namevalidation", "Device name should not be empty");
+                            return false;
+                        }
+                        if(input.val().trim().length > 255){
+                            input.attr("data-val-namevalidation", "Device name should be less than or equal to 255 characters");
+                            return false;
+                        }
+                        return true;
+                    }
+                    return true;
+                }
+            },
+            messages: { //custom rules messages
+                namevalidation: function (input) {
+                    // return the message text
+                    return input.attr("data-val-namevalidation");
+                }
+            }
+        });
+    })(jQuery, kendo);
+
+</script>
+

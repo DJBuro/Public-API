@@ -1,0 +1,46 @@
+﻿@model IList<AndroAdminDataAccess.Domain.ThemeAndroWebOrdering>
+
+@{
+    ViewBag.Title = "List";
+}
+<h2>Manage Themes</h2>
+
+<div style="padding-top:13px;margin-bottom:3px;height:15px;">
+    <div id="filters">
+        @*<b style="text-align:left">Search: </b><input class="k-textbox" style="width: 200px; " type="text" data-bind="value: searchText" data-value-update="keyup" />*@
+        @Html.ActionLink("Add New Theme", "Edit", "AndroWebOrderingTheme", new AjaxOptions { HttpMethod = "GET" }, new { @class = "actionLink" })
+    </div>
+</div>
+
+@(
+ Html.Kendo().Grid(Model)
+    .Name("ThemesGrid")
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.FileName).Title("<b>Name</b>")
+            .ClientTemplate("<a href='" + Url.Action("Edit", "AndroWebOrderingTheme") + "?id=#= Id #'" + ">#=FileName#</a>"); ;
+        cols.Bound(e => e.Description).Title("<b>Description</b>");
+        //cols.Bound(e => e.Source).Title("<b>Theme</b>").ClientTemplate("<div style='height:150px;width:150px;'><img style='height:150px;width:150px;' src='#=Source#' alt='#=FileName #'/></div>");
+        cols.Bound(e => e.Source).Title("<b>Theme</b>").ClientTemplate("<div style='height:150px;width:150px;'><img style='height:150px;width:150px;' src='#=getSource(Source)#' alt='#=FileName #'/></div>");
+
+    })
+    //.Filterable()
+    .Sortable()
+    .Pageable(paging => paging.Refresh(true))
+    .DataSource(dataSource =>
+    {
+        dataSource
+            .Ajax()
+            .ServerOperation(false)
+            .PageSize(10)
+            .Model(model => model.Id(e => e.Id));
+    })
+
+)
+
+
+<script type="text/javascript">
+    function getSource(source) {
+        return source + '?' + Math.random();
+    }
+</script>

@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TrackerCommandValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="PriorityValidator" test="Priority"><v:message id="error.Priority.required" providers="PriorityErrors, ValidationSummary"/></v:required>
+	<v:required id="NameValidator" test="Name"><v:message id="error.Name.required" providers="NameErrors, ValidationSummary"/></v:required>
+	<v:required id="CommandValidator" test="Command"><v:message id="error.Command.required" providers="CommandErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

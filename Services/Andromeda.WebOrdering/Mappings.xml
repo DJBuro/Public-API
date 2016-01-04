@@ -1,0 +1,1275 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Mappings>
+
+  
+  
+  <Mapping>
+    <Domain>speedrabbit</Domain>
+    <ApplicationId>DB02C02D-F7B0-4867-B1E4-7A37098D756E</ApplicationId>
+    <!--<SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>-->
+    <SignpostServerUrl>https://localhost/services/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    
+    <EmailTemplates>
+
+        <EmailTemplate>
+          <Name>OrderAlertEmail</Name>
+          <Username>Onlineordering@androtech.com</Username>
+          <Password>oo181113</Password>
+          <ServerType>EXCHANGE</ServerType>
+          <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+          <To>robert.dunn@androtech.com,fabian.soto@androtech.com,barry.jones@androtech.com</To>
+          <From>Onlineordering@androtech.com</From>
+          <Subject>ORDER ALERT: {WEBSITE}</Subject>
+          <Body>
+            An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+            &lt;br /&gt;
+            Error code: {ERRORCODE}&lt;br /&gt;
+            Website: {WEBSITE}&lt;br /&gt;
+            External site id: {SITEID}&lt;br /&gt;
+            Order id: {ORDERID}&lt;br /&gt;
+            Amount: {AMOUNT}&lt;br /&gt;
+            Date: {DATE}&lt;br /&gt;
+            Time: {TIME}&lt;br /&gt;
+          </Body>
+        </EmailTemplate>
+        <EmailTemplate>
+          <Name>MercanetPaymentAlertEmail</Name>
+          <Username>Onlineordering@androtech.com</Username>
+          <Password>oo181113</Password>
+          <ServerType>EXCHANGE</ServerType>
+          <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+          <To>robert.dunn@androtech.com,fabian.soto@androtech.com,barry.jones@androtech.com</To>
+          <From>Onlineordering@androtech.com</From>
+          <Subject>Problème qvec paiement. Action requise.</Subject>
+          <Body>
+            Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+            &lt;br /&gt;
+            ID commande: {ORDERID}&lt;br /&gt;
+            Montant: {AMOUNT}&lt;br /&gt;
+            Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+            Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+          </Body>
+        </EmailTemplate>
+
+    </EmailTemplates>
+
+  </Mapping>
+
+  <!-- Demo websites -->
+  <Mapping>
+    <Domain>localhost</Domain>
+    <!--<ApplicationId>646c84d0-92e1-4c12-a66d-29a47fa9112a</ApplicationId>-->
+    
+    <ApplicationId>47a40765-1e3f-42de-9ed1-b06eec55f4ee</ApplicationId>
+    
+    <SignpostServerUrl>http://localhost/services/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+  <Mapping>
+    <Domain>dev1.androtest.co.uk</Domain>
+    <ApplicationId>646c84d0-92e1-4c12-a66d-29a47fa9112a</ApplicationId>
+    <SignpostServerUrl>https://localhost/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+    
+    
+  <Mapping>
+    <Domain>demo1.androtest.co.uk</Domain>
+    <ApplicationId>80DEDBBC-90A4-4E77-BA18-CF64FD4C034C</ApplicationId>
+    <SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+  <Mapping>
+    <Domain>demo2.androtest.co.uk</Domain>
+    <ApplicationId>9B086064-1E8B-4D4D-B9A1-48CF86B0892A</ApplicationId>
+    <SignpostServerUrl>https://localhost/services/androcloudapi/weborderapiv2/host</SignpostServerUrl>
+    <!--<SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host,https://localhost/services/androcloudapi/weborderapiv2/host</SignpostServerUrl>-->
+    <DataCashPageSetId>1786</DataCashPageSetId>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>DeliveryOrderReceiptEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>online order confirmation</Subject>
+        <Body>
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+&lt;title&gt;Email Confirmation&lt;/title&gt;
+&lt;style&gt;
+          #emailWrapper
+          {
+          width: 800px;
+          border: 1px solid black;
+          display: block;
+          margin: 0 auto;
+          font-family: Verdana, Sans-serif;
+          font-size: 20px;
+          }
+
+          #pageHeader
+          {
+          height: 90px;
+          border-bottom: 34px solid #ED6DB0;
+          }
+
+          #logo
+          {
+          padding: 0 315px;
+          }
+
+          #successMessage
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin:7px;
+          }
+
+          #addressDetails
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin: 7px;
+          }
+
+          #order
+          {
+          padding: 7px 10px;
+          font-weight: bold;
+          margin: 7px;
+          }
+
+          #orderDetails
+          {
+          padding: 0 15px;
+          }
+
+          table
+          {
+          width: 800px;
+          text-align: center;
+          }
+
+          th, td
+          {
+          padding: 5px 20px;
+          }
+
+          #footer
+          {
+          height: 34px;
+          background-color: #FFEC58;
+          line-height: 34px;
+          color: #505050;
+          padding-left: 27px;
+          padding-right: 27px;
+          }
+
+          #social-buttons
+          {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          float: right;
+          }
+
+          #instagram {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -106px -66px;
+          text-decoration: none;
+          }
+
+          #twitter {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -12px -65px;
+          text-decoration: none;
+          }
+
+          #facebook
+          {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -34px -65px;
+          text-decoration: none;
+          }
+          &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;emailWrapper&quot;&gt;
+&lt;div id=&quot;pageHeader&quot;&gt;
+&lt;div id=&quot;logo&quot;&gt;
+&lt;a href=&quot;http://itsu.co.uk/&quot;&gt;
+&lt;img id=&quot;itsuLogo&quot; src=&quot;http://demo2.androtest.co.uk/Custom/Images/logo_bg.png&quot; width=&quot;160&quot; height=&quot;120&quot;&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;successMessage&quot;&gt;
+hello {customerFirstName}&lt;br /&gt;&lt;br /&gt;
+thank you for your order&lt;br /&gt;&lt;br /&gt;
+your order has been successfully received by the store&lt;br /&gt;
+&lt;/div&gt;
+&lt;div id=&quot;addressDetails&quot;&gt;
+your estimated delivery time is: {deliveryTime}&lt;br /&gt;
+&lt;br/&gt;your order will be delivered to:&lt;br /&gt;
+&lt;br/&gt;{customerFirstName} {customerSurname}&lt;br /&gt;
+{org1}{org2}{prem1}{prem2}{roadNumberRoadName}{town}{userLocality1}{zipCode}
+{directions}{oneOffDirections}
+&lt;br /&gt;
+&lt;/div&gt;
+&lt;div id=&quot;order&quot;&gt;
+order details&lt;br /&gt;
+&lt;br /&gt;
+&lt;div id = orderDetails&gt;
+&lt;table&gt;
+&lt;th&gt;quantity&lt;/th&gt;
+&lt;th&gt;item&lt;/th&gt;
+&lt;th&gt;amount&lt;/th&gt;
+&lt;th&gt;person&lt;/th&gt;
+&lt;th&gt;notes&lt;/th&gt;
+{orderLines}
+&lt;/table&gt;
+&lt;/div&gt;
+chef notes &lt;br/&gt;
+&lt;br/&gt;{chefNotes}&lt;br /&gt;
+&lt;br /&gt;total order price £{orderTotal}&lt;br /&gt;
+&lt;br /&gt;{payment}&lt;br /&gt;&lt;br/&gt;
+&lt;/div&gt;
+&lt;div id=&quot;footer&quot;&gt;
+&lt;div id=&quot;socialButtons&quot;&gt;
+&lt;a id=&quot;instagram&quot; href=&quot;http://instagram.com/itsuofficial#&quot; title=&quot;Instagram&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;a id=&quot;twitter&quot; href=&quot;http://twitter.com/ItsuOfficial&quot; title=&quot;Twitter&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;a id=&quot;facebook&quot; href=&quot;https://www.facebook.com/itsulondon?ref=ts&amp;amp;fref=ts&quot; title=&quot;Facebook&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;/div&gt;
+&lt;div id=&quot;terms&quot;&gt;
+&lt;a href=&quot;http://www.itsu.com/legal/ts_and_cs/&quot;&gt;
+&lt;img src=&quot;http://www.itsu.com/graphics/footer_link/terms+of+use.gif&quot; alt=&quot;terms of use&quot; border=&quot;0&quot;&gt;
+&lt;/a&gt;
+&lt;a href=&quot;http://www.itsu.com/legal/privacy_policy/&quot; &gt;
+&lt;img src=&quot;http://www.itsu.com/graphics/footer_link/privacy+policy.gif&quot; alt=&quot;privacy policy&quot; border=&quot;0&quot;&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+{orderLine}&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;{itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;{person}&lt;/td&gt;&lt;td&gt;{instructions}&lt;/td&gt;&lt;/tr&gt;
+{/orderLine}
+{addOption}
+&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;add {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+{/addOption}
+{removeOption}
+&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;remove {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+{/removeOption}
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>CollectionOrderReceiptEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>online order confirmation</Subject>
+        <Body>
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+&lt;title&gt;Email Confirmation&lt;/title&gt;
+&lt;style&gt;
+          #emailWrapper
+          {
+          width: 800px;
+          border: 1px solid black;
+          display: block;
+          margin: 0 auto;
+          font-family: Verdana, Sans-serif;
+          font-size: 20px;
+          }
+
+          #pageHeader
+          {
+          height: 90px;
+          border-bottom: 34px solid #ED6DB0;
+          }
+
+          #logo
+          {
+          padding: 0 315px;
+          }
+
+          #successMessage
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin:7px;
+          }
+
+          #addressDetails
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin: 7px;
+          }
+
+          #order
+          {
+          padding: 7px 10px;
+          font-weight: bold;
+          margin: 7px;
+          }
+
+          #orderDetails
+          {
+          padding: 0 15px;
+          }
+
+          table
+          {
+          width: 800px;
+          text-align: center;
+          }
+
+          th, td
+          {
+          padding: 5px 20px;
+          }
+
+          #footer
+          {
+          height: 34px;
+          background-color: #FFEC58;
+          line-height: 34px;
+          color: #505050;
+          padding-left: 27px;
+          padding-right: 27px;
+          }
+
+          #social-buttons
+          {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          float: right;
+          }
+
+          #instagram {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -106px -66px;
+          text-decoration: none;
+          }
+
+          #twitter {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -12px -65px;
+          text-decoration: none;
+          }
+
+          #facebook
+          {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -34px -65px;
+          text-decoration: none;
+          }
+          &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;emailWrapper&quot;&gt;
+&lt;div id=&quot;pageHeader&quot;&gt;
+&lt;div id=&quot;logo&quot;&gt;
+&lt;a href=&quot;http://itsu.co.uk/&quot;&gt;
+&lt;img id=&quot;itsuLogo&quot; src=&quot;http://demo2.androtest.co.uk/Custom/Images/logo_bg.png&quot; width=&quot;160&quot; height=&quot;120&quot;&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;successMessage&quot;&gt;
+hello {customerFirstName}&lt;br /&gt;&lt;br /&gt;
+thank you for your order&lt;br /&gt;&lt;br /&gt;
+your order has been successfully received by the store&lt;br /&gt;
+&lt;/div&gt;
+&lt;div id=&quot;addressDetails&quot;&gt;
+your order will be ready to collect at {collectionTime}&lt;br /&gt;
+&lt;br /&gt;
+&lt;/div&gt;
+&lt;div id=&quot;order&quot;&gt;
+order details&lt;br /&gt;
+&lt;br /&gt;
+&lt;div id = orderDetails&gt;
+&lt;table&gt;
+&lt;th&gt;quantity&lt;/th&gt;
+&lt;th&gt;item&lt;/th&gt;
+&lt;th&gt;amount&lt;/th&gt;
+&lt;th&gt;person&lt;/th&gt;
+&lt;th&gt;notes&lt;/th&gt;
+{orderLines}
+&lt;/table&gt;
+&lt;/div&gt;
+chef notes &lt;br/&gt;
+&lt;br/&gt;{chefNotes}&lt;br /&gt;
+&lt;br /&gt;total order price £{orderTotal}&lt;br /&gt;
+&lt;br /&gt;{payment}&lt;br /&gt;&lt;br/&gt;
+&lt;/div&gt;
+&lt;div id=&quot;footer&quot;&gt;
+&lt;div id=&quot;socialButtons&quot;&gt;
+&lt;a id=&quot;instagram&quot; href=&quot;http://instagram.com/itsuofficial#&quot; title=&quot;Instagram&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;a id=&quot;twitter&quot; href=&quot;http://twitter.com/ItsuOfficial&quot; title=&quot;Twitter&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;a id=&quot;facebook&quot; href=&quot;https://www.facebook.com/itsulondon?ref=ts&amp;amp;fref=ts&quot; title=&quot;Facebook&quot;&gt;&amp;nbsp;&lt;/a&gt;
+&lt;/div&gt;
+&lt;div id=&quot;terms&quot;&gt;
+&lt;a href=&quot;http://www.itsu.com/legal/ts_and_cs/&quot;&gt;
+&lt;img src=&quot;http://www.itsu.com/graphics/footer_link/terms+of+use.gif&quot; alt=&quot;terms of use&quot; border=&quot;0&quot;&gt;
+&lt;/a&gt;
+&lt;a href=&quot;http://www.itsu.com/legal/privacy_policy/&quot; &gt;
+&lt;img src=&quot;http://www.itsu.com/graphics/footer_link/privacy+policy.gif&quot; alt=&quot;privacy policy&quot; border=&quot;0&quot;&gt;
+&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+{orderLine}&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;{itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;{person}&lt;/td&gt;&lt;td&gt;{instructions}&lt;/td&gt;&lt;/tr&gt;
+{/orderLine}
+{addOption}
+&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;add {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+{/addOption}
+{removeOption}
+&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;remove {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+{/removeOption}
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+  <Mapping>
+    <Domain>demo3.androtest.co.uk</Domain>
+    <ApplicationId>5CA145C2-6939-4F42-B97B-C952D28154DE</ApplicationId>
+    <SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+  </Mapping>
+  <Mapping>
+    <Domain>demo4.androtest.co.uk</Domain>
+    <ApplicationId>84CBE32F-1431-4251-805B-847F190DD23E</ApplicationId>
+    <SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+  </Mapping>
+
+  <Mapping>
+    <Domain>andromedapizza.com</Domain>
+    <ApplicationId>86A65D08-8A7E-49FC-B172-F3E87EC5636F</ApplicationId>
+    <SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          note that this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+
+
+  <Mapping>
+    <Domain>ezeepizza.com</Domain>
+    <ApplicationId>36D84082-0798-43AC-8325-1E04494950A5</ApplicationId>
+    <SignpostServerUrl>https://cloud1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+  </Mapping>
+
+
+  <Mapping>
+    <Domain>value1.androtest.co.uk</Domain>
+    <ApplicationId>D17F95D0-458C-4ECA-A30F-B4058ADFF0E1</ApplicationId>
+    <!--<SignpostServerUrl>https://dev1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>-->
+    <SignpostServerUrl>https://localhost/services/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          note that this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>DeliveryOrderReceiptEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>online order confirmation</Subject>
+        <Body>
+          &lt;head&gt;
+          &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+          &lt;title&gt;Email Confirmation&lt;/title&gt;
+          &lt;style&gt;
+          #emailWrapper
+          {
+          width: 800px;
+          border: 1px solid black;
+          display: block;
+          margin: 0 auto;
+          font-family: Verdana, Sans-serif;
+          font-size: 20px;
+          }
+
+          #pageHeader
+          {
+          height: 90px;
+          border-bottom: 34px solid #ED6DB0;
+          }
+
+          #logo
+          {
+          padding: 0 315px;
+          }
+
+          #successMessage
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin:7px;
+          }
+
+          #addressDetails
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin: 7px;
+          }
+
+          #order
+          {
+          padding: 7px 10px;
+          font-weight: bold;
+          margin: 7px;
+          }
+
+          #orderDetails
+          {
+          padding: 0 15px;
+          }
+
+          table
+          {
+          width: 800px;
+          text-align: center;
+          }
+
+          th, td
+          {
+          padding: 5px 20px;
+          }
+
+          #footer
+          {
+          height: 34px;
+          background-color: #FFEC58;
+          line-height: 34px;
+          color: #505050;
+          padding-left: 27px;
+          padding-right: 27px;
+          }
+
+          #social-buttons
+          {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          float: right;
+          }
+
+          #instagram {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -106px -66px;
+          text-decoration: none;
+          }
+
+          #twitter {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -12px -65px;
+          text-decoration: none;
+          }
+
+          #facebook
+          {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -34px -65px;
+          text-decoration: none;
+          }
+          &lt;/style&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+          &lt;div id=&quot;emailWrapper&quot;&gt;
+          &lt;div id=&quot;pageHeader&quot;&gt;
+          &lt;div id=&quot;logo&quot;&gt;
+          &lt;a href=&quot;http://itsu.co.uk/&quot;&gt;
+          &lt;img id=&quot;itsuLogo&quot; src=&quot;http://demo2.androtest.co.uk/Custom/Images/logo_bg.png&quot; width=&quot;160&quot; height=&quot;120&quot;&gt;
+          &lt;/a&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;successMessage&quot;&gt;
+          hello {customerFirstName}&lt;br /&gt;&lt;br /&gt;
+          thank you for your order&lt;br /&gt;&lt;br /&gt;
+          your order has been successfully received by the store&lt;br /&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;addressDetails&quot;&gt;
+          your estimated delivery time is: {deliveryTime}&lt;br /&gt;
+          &lt;br/&gt;your order will be delivered to:&lt;br /&gt;
+          &lt;br/&gt;{customerFirstName} {customerSurname}&lt;br /&gt;
+          {org1}{org2}{prem1}{prem2}{roadNumberRoadName}{town}{userLocality1}{zipCode}
+          {directions}{oneOffDirections}
+          &lt;br /&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;order&quot;&gt;
+          order details&lt;br /&gt;
+          &lt;br /&gt;
+          &lt;div id = orderDetails&gt;
+          &lt;table&gt;
+          &lt;th&gt;quantity&lt;/th&gt;
+          &lt;th&gt;item&lt;/th&gt;
+          &lt;th&gt;amount&lt;/th&gt;
+          &lt;th&gt;person&lt;/th&gt;
+          &lt;th&gt;notes&lt;/th&gt;
+          {orderLines}
+          &lt;/table&gt;
+          &lt;/div&gt;
+          chef notes &lt;br/&gt;
+          &lt;br/&gt;{chefNotes}&lt;br /&gt;
+          &lt;br /&gt;total order price £{orderTotal}&lt;br /&gt;
+          &lt;br /&gt;{payment}&lt;br /&gt;&lt;br/&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;footer&quot;&gt;
+          &lt;div id=&quot;socialButtons&quot;&gt;
+          &lt;a id=&quot;instagram&quot; href=&quot;http://instagram.com/itsuofficial#&quot; title=&quot;Instagram&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;a id=&quot;twitter&quot; href=&quot;http://twitter.com/ItsuOfficial&quot; title=&quot;Twitter&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;a id=&quot;facebook&quot; href=&quot;https://www.facebook.com/itsulondon?ref=ts&amp;amp;fref=ts&quot; title=&quot;Facebook&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;terms&quot;&gt;
+          &lt;a href=&quot;http://www.itsu.com/legal/ts_and_cs/&quot;&gt;
+          &lt;img src=&quot;http://www.itsu.com/graphics/footer_link/terms+of+use.gif&quot; alt=&quot;terms of use&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;http://www.itsu.com/legal/privacy_policy/&quot; &gt;
+          &lt;img src=&quot;http://www.itsu.com/graphics/footer_link/privacy+policy.gif&quot; alt=&quot;privacy policy&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/body&gt;
+          {orderLine}&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;{itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;{person}&lt;/td&gt;&lt;td&gt;{instructions}&lt;/td&gt;&lt;/tr&gt;
+          {/orderLine}
+          {addOption}
+          &lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;add {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+          {/addOption}
+          {removeOption}
+          &lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;remove {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+          {/removeOption}
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>CollectionOrderReceiptEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>online order confirmation</Subject>
+        <Body>
+          &lt;head&gt;
+          &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+          &lt;title&gt;Email Confirmation&lt;/title&gt;
+          &lt;style&gt;
+          #emailWrapper
+          {
+          width: 800px;
+          border: 1px solid black;
+          display: block;
+          margin: 0 auto;
+          font-family: Verdana, Sans-serif;
+          font-size: 20px;
+          }
+
+          #pageHeader
+          {
+          height: 90px;
+          border-bottom: 34px solid #ED6DB0;
+          }
+
+          #logo
+          {
+          padding: 0 315px;
+          }
+
+          #successMessage
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin:7px;
+          }
+
+          #addressDetails
+          {
+          border-bottom: 1px solid black;
+          padding: 7px 10px;
+          margin: 7px;
+          }
+
+          #order
+          {
+          padding: 7px 10px;
+          font-weight: bold;
+          margin: 7px;
+          }
+
+          #orderDetails
+          {
+          padding: 0 15px;
+          }
+
+          table
+          {
+          width: 800px;
+          text-align: center;
+          }
+
+          th, td
+          {
+          padding: 5px 20px;
+          }
+
+          #footer
+          {
+          height: 34px;
+          background-color: #FFEC58;
+          line-height: 34px;
+          color: #505050;
+          padding-left: 27px;
+          padding-right: 27px;
+          }
+
+          #social-buttons
+          {
+          padding-top: 8px;
+          padding-bottom: 8px;
+          float: right;
+          }
+
+          #instagram {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -106px -66px;
+          text-decoration: none;
+          }
+
+          #twitter {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -12px -65px;
+          text-decoration: none;
+          }
+
+          #facebook
+          {
+          width: 18px;
+          height: 28px;
+          background-image: url('Images/socialMedia.png');
+          background-position: ;
+          background-repeat: no-repeat;
+          margin-left: 4px;
+          float: right;
+          background-position: -34px -65px;
+          text-decoration: none;
+          }
+          &lt;/style&gt;
+          &lt;/head&gt;
+          &lt;body&gt;
+          &lt;div id=&quot;emailWrapper&quot;&gt;
+          &lt;div id=&quot;pageHeader&quot;&gt;
+          &lt;div id=&quot;logo&quot;&gt;
+          &lt;a href=&quot;http://itsu.co.uk/&quot;&gt;
+          &lt;img id=&quot;itsuLogo&quot; src=&quot;http://demo2.androtest.co.uk/Custom/Images/logo_bg.png&quot; width=&quot;160&quot; height=&quot;120&quot;&gt;
+          &lt;/a&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;successMessage&quot;&gt;
+          hello {customerFirstName}&lt;br /&gt;&lt;br /&gt;
+          thank you for your order&lt;br /&gt;&lt;br /&gt;
+          your order has been successfully received by the store&lt;br /&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;addressDetails&quot;&gt;
+          your order will be ready to collect at {collectionTime}&lt;br /&gt;
+          &lt;br /&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;order&quot;&gt;
+          order details&lt;br /&gt;
+          &lt;br /&gt;
+          &lt;div id = orderDetails&gt;
+          &lt;table&gt;
+          &lt;th&gt;quantity&lt;/th&gt;
+          &lt;th&gt;item&lt;/th&gt;
+          &lt;th&gt;amount&lt;/th&gt;
+          &lt;th&gt;person&lt;/th&gt;
+          &lt;th&gt;notes&lt;/th&gt;
+          {orderLines}
+          &lt;/table&gt;
+          &lt;/div&gt;
+          chef notes &lt;br/&gt;
+          &lt;br/&gt;{chefNotes}&lt;br /&gt;
+          &lt;br /&gt;total order price £{orderTotal}&lt;br /&gt;
+          &lt;br /&gt;{payment}&lt;br /&gt;&lt;br/&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;footer&quot;&gt;
+          &lt;div id=&quot;socialButtons&quot;&gt;
+          &lt;a id=&quot;instagram&quot; href=&quot;http://instagram.com/itsuofficial#&quot; title=&quot;Instagram&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;a id=&quot;twitter&quot; href=&quot;http://twitter.com/ItsuOfficial&quot; title=&quot;Twitter&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;a id=&quot;facebook&quot; href=&quot;https://www.facebook.com/itsulondon?ref=ts&amp;amp;fref=ts&quot; title=&quot;Facebook&quot;&gt;&amp;nbsp;&lt;/a&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;terms&quot;&gt;
+          &lt;a href=&quot;http://www.itsu.com/legal/ts_and_cs/&quot;&gt;
+          &lt;img src=&quot;http://www.itsu.com/graphics/footer_link/terms+of+use.gif&quot; alt=&quot;terms of use&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;http://www.itsu.com/legal/privacy_policy/&quot; &gt;
+          &lt;img src=&quot;http://www.itsu.com/graphics/footer_link/privacy+policy.gif&quot; alt=&quot;privacy policy&quot; border=&quot;0&quot;&gt;
+          &lt;/a&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/body&gt;
+          {orderLine}&lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;{itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;{person}&lt;/td&gt;&lt;td&gt;{instructions}&lt;/td&gt;&lt;/tr&gt;
+          {/orderLine}
+          {addOption}
+          &lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;add {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+          {/addOption}
+          {removeOption}
+          &lt;tr&gt;&lt;td&gt;{itemQuantityTimes}&lt;/td&gt;&lt;td&gt;remove {itemName}&lt;/td&gt;&lt;td&gt;£{itemPrice}&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+          {/removeOption}
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+  <Mapping>
+    <Domain>design1.androtest.co.uk</Domain>
+    <ApplicationId>2A31AC47-6FED-4F0D-8CA0-DB92CBC35F81</ApplicationId>
+    <SignpostServerUrl>https://localhost/services/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <!--<SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>-->
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>MercanetPaymentAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To>robert.dunn@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>Problème qvec paiement. Action requise.</Subject>
+        <Body>
+          Le paiement a été effectué pour une commande mais elle n'a pas pu être envoyée au restaurant. Le paiement doit être annulé.&lt;br /&gt;
+          &lt;br /&gt;
+          ID commande: {ORDERID}&lt;br /&gt;
+          Montant: {AMOUNT}&lt;br /&gt;
+          Date du paiement: {PAYMENTDATE}&lt;br /&gt;
+          Heure du paiement: {PAYMENTTIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hostedservice2.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          note that this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+
+  </Mapping>
+
+  <Mapping>
+    <Domain>olivepizza-online.co.uk</Domain>
+    <ApplicationId>57617112-7D04-481E-BC21-2830B4F59AD3</ApplicationId>
+    <SignpostServerUrl>https://cloud3.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To>weborderalerts@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          note that this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+</Mappings>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AndroAdminDataAccess.Domain.StorePaymentProvider>
+
+@{
+    ViewBag.Title = "Payment providers";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+<h2>Manage payment providers</h2>
+
+@if (ViewBag.Permissions.Contains("AddPaymentProvider"))
+{
+<div class="topLink">
+    @Html.ActionLink("Add a new payment provider", "Add")
+</div>
+}
+
+<table class="listTable" id="ftpSites">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Provider name</th>
+            <th>Client id</th>
+            <th>Client password</th>
+        </tr>
+    </thead>
+    <tbody>
+
+@foreach (AndroAdminDataAccess.Domain.StorePaymentProvider paymentProvider in Model)
+{
+        <tr>
+            <td>@paymentProvider.DisplayText</td>
+            <td>@paymentProvider.ProviderName</td>
+            <td>@paymentProvider.ClientId</td>
+            <td>@paymentProvider.ClientPassword</td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#ftpSites').dataTable();
+
+    var confirmationMessage = 'Are you sure you want to delete the ftp site?<br />The ftp site will be permanently deleted.';
+</script>

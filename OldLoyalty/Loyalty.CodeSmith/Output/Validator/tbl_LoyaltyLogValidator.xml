@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TblLoyaltyLogValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="DateTimeCreatedValidator" test="DateTimeCreated"><v:message id="error.DateTimeCreated.required" providers="DateTimeCreatedErrors, ValidationSummary"/></v:required>
+	<v:required id="SiteIdValidator" test="SiteId"><v:message id="error.SiteId.required" providers="SiteIdErrors, ValidationSummary"/></v:required>
+	<v:required id="SeverityValidator" test="Severity"><v:message id="error.Severity.required" providers="SeverityErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

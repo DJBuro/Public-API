@@ -1,0 +1,19 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TblLoyaltyUserValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="FirstNameValidator" test="FirstName"><v:message id="error.FirstName.required" providers="FirstNameErrors, ValidationSummary"/></v:required>
+	<v:required id="SurNameValidator" test="SurName"><v:message id="error.SurName.required" providers="SurNameErrors, ValidationSummary"/></v:required>
+	<v:required id="DateTimeCreatedValidator" test="DateTimeCreated"><v:message id="error.DateTimeCreated.required" providers="DateTimeCreatedErrors, ValidationSummary"/></v:required>
+	<v:required id="EmailAddressValidator" test="EmailAddress"><v:message id="error.EmailAddress.required" providers="EmailAddressErrors, ValidationSummary"/></v:required>
+	<v:required id="PasswordValidator" test="Password"><v:message id="error.Password.required" providers="PasswordErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

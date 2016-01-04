@@ -1,0 +1,854 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.FlexTrack</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.FlexTrack.FlexAck">
+            <summary>
+            Represents a FlexTrack "ACK" sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexBase">
+            <summary>
+            Base class for all Flex sentences.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBase.#ctor(System.Int32)">
+            <summary>
+            Create Flex sentence from parameters.
+            </summary>
+            <param name="iTransactionNumber"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBase.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create from generic sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBase.SetTrackPoint(Franson.Geo.TrackPoint)">
+            <summary>
+            Used by derived class to set track point
+            </summary>
+            <param name="tp"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBase.AddStatus(System.String,System.Object)">
+            <summary>
+            Used by parser to add new status values.
+            </summary>
+            <param name="strName"></param>
+            <param name="oValue"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexBase.TransactionNumber">
+            <summary>
+            The transaction ID.
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexBase.TrackPoint">
+            <summary>
+            Track point
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexBase.Status">
+            <summary>
+            Status messages
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexAck.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create from sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexAck.#ctor(System.Int32)">
+            <summary>
+            Create from parameters.
+            </summary>
+            <param name="iTransactionNumber"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexAck.IsAck(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if argument is a Flex ACK sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexAck.BuildSentence">
+            <summary>
+            Build sentence from parameters.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexAck.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexBuilder">
+            <summary>
+            FlexTrack sentence builder.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBuilder.#ctor">
+            <summary>
+            Create FlexTrack sentence builder.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBuilder.SetCommand(System.String)">
+            <summary>
+            Set fles command. E.g. "LOGON"
+            </summary>
+            <param name="strCommand"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBuilder.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a <see cref="T:GpsGate.FlexTrack.FlexSentence"/>
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBuilder.HasChecksum">
+            <summary>
+            Returns false. Flex sentences have no checksum.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexBuilder.GetPostfix">
+            <summary>
+            Returns '\r';
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexBuilder.TransactionNumber">
+            <summary>
+            TNO.
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexFormatException">
+            <summary>
+            Invalid Flex syntax
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexFormatException.#ctor(System.String)">
+            <summary>
+            Create exception
+            </summary>
+            <param name="strMessage"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexFormatException.#ctor(System.String,System.Exception)">
+            <summary>
+            Create with message and innner exception.
+            </summary>
+            <param name="strMessage"></param>
+            <param name="exInner"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexTrackGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for FlexTrack
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTrackGprsSettingsCmdExe.Execute">
+            <summary>
+            Throws exception
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexTrackGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            Returns false
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexTrackGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexHttpConnection">
+            <summary>
+            Handles a incoming http connection to a FlexTrack device
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpConnection.#ctor(System.Net.HttpListenerContext)">
+            <summary>
+            Create incoming http connection object to FlexTrack.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpConnection.Start">
+            <summary>
+            Sends content of DATA= entry in query string to protocol object.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpConnection.CreateProtocol">
+            <summary>
+            Returns a <see cref="!:FlexTrackProtocol"/> object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Not implemented.
+            </summary>
+            <param name="arrData"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexHttpListener">
+            <summary>
+            Receives FlexTrack device connections over HTTP
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpListener.CreateHttpConnection(System.Net.HttpListenerContext)">
+            <summary>
+            Returns a <see cref="!:FlexTrackHttpConnection"/> object
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8008
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpListener.HttpPath">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpListener.ProtocolID">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexHttpMessage">
+            <summary>
+            Parses a FlexTrack HTTP URI
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpMessage.#ctor(System.Byte[])">
+            <summary>
+            Create HTTP message.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpMessage.NodeID">
+            <summary>
+            Node ID
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpMessage.TrackPoint">
+            <summary>
+            Track Point
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpMessage.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexHttpProtocol">
+            <summary>
+            FlexTrack protocol over HTTP
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create FlexTrack protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexHttpProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            URI from device.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexHttpProtocol.StringID">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexLogon">
+            <summary>
+            Flex LOGON sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexLogon.#ctor(System.Int32,System.String)">
+            <summary>
+            Create from parameters.
+            </summary>
+            <param name="iTON">Transaction number</param>
+            <param name="strNodeID">Node ID from device logging in. Typically a device's serial number.</param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexLogon.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create from sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexLogon.IsLogon(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if argument is a Flex LOGON sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexLogon.BuildSentence">
+            <summary>
+            Build sentence from parameters.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexLogon.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexLogon.NodeID">
+            <summary>
+            NodeID from device logging in. Typically a device's serial number.
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexOptStatus">
+            <summary>
+            OWTEMP-DISCOVER 
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOptStatus.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create typed sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOptStatus.IsOptStatus(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a OPT-STATUS sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOptStatus.BuildSentence">
+            <summary>
+            Not imlpemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOptStatus.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexOwdidDiscover">
+            <summary>
+            OWDID-DISCOVER 
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwdidDiscover.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create typed sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwdidDiscover.IsOwdidDiscover(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a OWDID-DISCOVER sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwdidDiscover.BuildSentence">
+            <summary>
+            Not imlpemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwdidDiscover.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexOwtempReport">
+            <summary>
+            OWTEMP-DISCOVER 
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwtempReport.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create typed sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwtempReport.IsOwtempReport(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a OWTEMP-REPORT sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwtempReport.BuildSentence">
+            <summary>
+            Not imlpemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexOwtempReport.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexParser">
+            <summary>
+            Parses FlexTrack data.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexParser.ParseFlexDateTime(System.String,System.String)">
+            <summary>
+            Convert Flex Date + Time field to a UTC <see cref="T:System.DateTime"/> value.
+            </summary>
+            <param name="strDate">string in the format YYYYMMDD</param>
+            <param name="strTime">string in the format HHMMSS</param>
+            <returns>UTC DateTime</returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexParser.#ctor">
+            <summary>
+            Create Flex parser.
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexProtocol">
+            <summary>
+            Handles FlexTrack protocol.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create FlexTrack protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexProtocol.TranslateFromDevice(Franson.Message.ProviderMessage)">
+            <summary>
+            Translate FlexTrack SMS to GpsGate.
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Translate from FlexTrack protocol to GpsGate.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexProtocol.CheckCr(System.Byte[])">
+            <summary>
+            Appends "\r" to arrData if it is missing. 
+            </summary>
+            <param name="arrData"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexProtocol.StringID">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexSentence">
+            <summary>
+            Flex sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexSentence.#ctor(System.Byte[])">
+            <summary>
+            Create sentence from array. Called by <see cref="T:GpsGate.FlexTrack.FlexParser"/>
+            </summary>
+            <param name="arrSentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexSentence.GetCommand">
+            <summary>
+            Returns command field, which is the second field in a flex sentence.
+            </summary>
+            <returns>Command field as a string</returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexSentence.TransactionNumber">
+            <summary>
+            Transaction number. Keeps commands and answers in sync. Also called "TNO"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexSmsConnection">
+            <summary>
+            Handles incoming and outgoing SMS to FlexTrack trackers.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS connection for FlexTrack.
+            </summary>
+            <param name="numPhone"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexSmsConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.FlexTrack.FlexProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexTrackSmsListener">
+            <summary>
+            FlexTrack SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTrackSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a <see cref="!:FlexTrackSmsConnection"/> object for incoming data.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTrackSmsListener.OnStart">
+            <summary>
+            Installs FlexTrack protocol and starts up listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTrackSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called first time listener is installed.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexTrackSmsListener.ProtocolID">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexSmsMessage">
+            <summary>
+            Parses a FlexTrack SMS message
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexSmsMessage.TrackPoint">
+            <summary>
+            Track Point
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexSmsMessage.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexTcpConnection">
+            <summary>
+            Handles connection to FlexTrack Lommy
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a FlexTrack device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpConnection.Start">
+            <summary>
+            Start processing incoming data.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpConnection.CreateProtocol">
+            <summary>
+            Returns a <see cref="T:GpsGate.FlexTrack.FlexProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Adds "\r" to end of outgoing commands.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpListener.OnStart">
+            <summary>
+            Called when listener is started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.FlexTrack.FlexTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 7001
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexTcpListener.ProtocolID">
+            <summary>
+            Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexUnitStat">
+            <summary>
+            Flex UNITSTAT sentence
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexUnitStat.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create from UNITSTAT sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexUnitStat.IsUnitStat(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a UNITSTAT sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexUnitStat.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexUnitStat.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse UNITSTAT sentence.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:GpsGate.FlexTrack.FlexFormatException"></exception>
+        </member>
+        <member name="P:GpsGate.FlexTrack.FlexUnitStat.NodeID">
+            <summary>
+            ID of sending device.
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexWolfHeard">
+            <summary>
+            WOLF-HEARD 
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfHeard.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create typed sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfHeard.IsWolfHeard(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a WOLF-HEARD sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfHeard.BuildSentence">
+            <summary>
+            Not imlpemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfHeard.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.FlexWolfRemoved">
+            <summary>
+            WOLF-REMOVED 
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfRemoved.#ctor(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Create typed sentence from generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfRemoved.IsWolfRemoved(GpsGate.FlexTrack.FlexSentence)">
+            <summary>
+            Returns true if generic sentence is a WOLF-REMOVED sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfRemoved.BuildSentence">
+            <summary>
+            Not imlpemented.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.FlexTrack.FlexWolfRemoved.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.FlexTrack.LommyDeviceDefinition">
+            <summary>
+            Defines the capabilities of a FlexTrack Lommy device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Default fields for all Lommy tarckers
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Commands.
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Node ID"
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyDeviceDefinition.NamespaceName">
+            <summary>
+            Message namespace. Returns "FlexTrack"
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.LommyPersonalDeviceDefinition">
+            <summary>
+            Defines the capabilities of a FlexTrack Lommy device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyPersonalDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns extra fields for Lommy Personal.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyPersonalDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyPersonalDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyPersonalDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.LommyProDeviceDefinition">
+            <summary>
+            Defines the capabilities of a FlexTrack Lommy device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyProDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns extra fields for Lommy Pro.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyProDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyProDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.LommyProIIDeviceDefinition">
+            <summary>
+            Defines the capabilities of a FlexTrack Lommy device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommyProIIDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns extra fields for Lommy Pro II.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyProIIDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommyProIIDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.FlexTrack.LommySafeDeviceDefinition">
+            <summary>
+            Defines the capabilities of a FlexTrack Lommy device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.FlexTrack.LommySafeDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Returns extra fields for Lommy Safe.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommySafeDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.FlexTrack.LommySafeDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+    </members>
+</doc>

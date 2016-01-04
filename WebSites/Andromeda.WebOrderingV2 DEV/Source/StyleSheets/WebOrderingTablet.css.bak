@@ -1,0 +1,181 @@
+﻿@media only screen and (min-width: 601px) and (max-width: 1023px)
+{
+    /* HEADER */
+    #pageHeader
+    {
+        width: 100%;
+        margin: 0;
+        position: relative;
+        left: 0;
+    }
+
+    .page, .pageWithPopup
+    {
+        width: 100%;
+        margin: 0;
+    }
+
+    #headerLoginBox
+    {
+        margin: 10px 5px 0 0;
+    }
+
+    #headerHello
+    {
+        margin: 5px 5px 0 0;
+    }
+
+    /* MAIN VIEW */
+    #viewContainer
+    {
+        width: 100%;
+    }
+
+    .content
+    {
+        width: 100%;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .sitesBox, #siteSelectorBox
+    {
+        width: 100%;
+    }
+
+    /* SITE SELECTOR */
+    #siteSelectorBox
+    {
+        width: 100%;
+    }
+
+    /* STORE DETAILS */
+    .storeDetailsBox
+    {
+        width: 100%;
+        padding: 0;
+    }
+
+    #homeMenuSections h1
+    {
+        margin: 10px 0 0 0;
+        padding: 10px 0 0 10px;
+    }
+
+    #homeMenuSections p
+    {
+        padding: 0 0 10px 10px;
+        margin: 0 0 10px 0;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        width: initial
+    }
+
+    #storeDetailsAddressMap 
+    {
+        margin-top: 20px;
+        width: 95%;
+        height: 100%;
+        min-width: 150px;
+    }
+
+    #mapContainer
+    {
+        margin: 0 0 10px 0;
+        border: solid 1px gray;
+    }
+
+    /* MENU */
+    #menuSection
+    {
+        width: 100%;
+    }
+
+    .fixedCartSidebar 
+    {
+        position: fixed !important; 
+        top: 0;
+        right:0;
+    }
+
+    #sectionsWrapper 
+    {
+        width: initial;
+        margin: 5px 255px 50px 5px;
+    }
+
+    .rightColumn
+    {
+        float: initial;
+        position: absolute;
+        right: 0;
+        border-right: none;
+    }
+
+    #sectionHeaders
+    {
+        z-index: 10;
+        width: 135px;
+        border-left: none;
+    }
+
+    #sections 
+    {
+        width: 100%;
+    }
+
+    .popupBoxHidden, .popupBoxVisible
+    {
+        position: absolute;
+        top: 0;
+        left: 5%;
+        width: 90%;
+        overflow: hidden;
+        margin: 20px 0 0 0;
+    }
+
+    .checkoutPage
+    {
+        right: 260px;
+    }
+
+    #footerTop
+    {
+        width: 100%;
+    }
+
+    /* Address */
+    .checkoutAddressColumn2
+    {
+        clear: both;
+        margin-left: 20px;
+    }
+
+    .checkoutAddressLine textarea
+    {
+        margin: 0;
+        width: 272px;
+    }
+
+    /* Login/register */
+    .lrLoginFormInput
+    {
+        clear: both;
+        margin-left: 20px;
+    }
+
+    /* Store address */
+    #storeDetailsAddressWrapper 
+    {
+        float: left;
+    }
+
+    #tripAdvisor
+    {
+        position: absolute;
+        top: 55px;
+        right: 0;
+    }
+}

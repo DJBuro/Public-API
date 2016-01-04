@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.InterfaceText, Dashboard.Dao" table="InterfaceText">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="InterfaceTextID" length="4" sql-type="int" not-null="true" unique="true" index="PK_InterfaceText"/>
+			<generator class="native" />
+		</id>
+		<property name="Definition" type="String">
+			<column name="Definition" length="100" sql-type="varchar" not-null="true"/>
+		</property>
+		<bag name="InterfaceTextLangauges" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="InterfaceTextID"/>
+			<one-to-many class="Dashboard.Dao.Domain.InterfaceTextLangauge, Dashboard.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,160 @@
+﻿@using UsersPermissions = MyAndromeda.Web.Areas.Users.UserManagementUserPermissions;
+@using MyAndromeda.Authorization;
+
+@model MyAndromeda.Web.Areas.Users.ViewModels.UserListViewModel
+@{
+    var authorizer = Html.GetAuthorizer();
+    var translator = Html.GetTranslator();
+    var context = Html.GetWorkContext();
+
+    var removeUserUrl = Url.Action("RemoveUser", new { UserId = "\\#=UserId\\#", ChainId = "\\#=ChainId\\#" });
+
+    var editUserTemplate = Html.CreateHtmlTemplate();
+    var editRolesTemplate = Html.CreateHtmlTemplate();
+    var disableEnableUser = Html.CreateHtmlTemplate();
+    
+    
+}
+<div class="header">
+    <h3>
+        <i class="fa fa-users"></i>
+        @if (context.CurrentChain.Available)
+        {
+            <span>for '@Model.CurrentChain.Chain.Name' Chain</span>
+        }
+        else
+        {
+            <span>Everyone everywhere</span>
+        }
+    </h3>
+    @if (this.Html.IsAuthorizedFor(UsersPermissions.CreateUsers))
+    {
+        <a class="k-button" href="@Url.Action("Create")">
+            <i class="fa fa-user-plus"></i> @translator.T("Add User")
+        </a>
+    }
+</div>
+
+@using (disableEnableUser.CreateTemplate)
+{
+    
+    <div>
+        #if(Enabled) { #
+        <a class="k-button" href="@Url.ActionClientTemplate("Disable", "UserManagement", new { UserId = "#= Id #" })">
+            Disable
+        </a>
+        # }else{  #
+        <a class="k-button" href="@Url.ActionClientTemplate("Enable", "UserManagement", new { UserId = "#= Id #" })">
+            Enable
+        </a>
+        # } #
+    </div>
+}
+
+@using (editUserTemplate.CreateTemplate)
+{
+    <a class='k-button' href="@Url.ActionClientTemplate("EditUser", "UserManagement", new { UserId = "#=Id#" })">Edit User</a>
+}
+
+@using (editRolesTemplate.CreateTemplate) 
+{
+    <a class='k-button' href="@Url.ActionClientTemplate("EditRoles","UserManagement", new { UserId = "#=Id#" })"> Edit Roles</a>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        @(Html.Kendo().Grid(Model.Users).Name("UserList")
+    .Filterable(f => f.Enabled(true).Mode(GridFilterMode.Row))
+    
+    
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.Firstname).Filterable(true);
+        cols.Bound(e => e.Surname);
+        cols.Bound(e => e.Username);
+
+
+        if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
+        {
+            cols.Template(@<text></text>)
+                .ClientTemplate(editRolesTemplate.Result);
+        }
+
+
+        if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers))
+        {
+            cols.Template(@<text></text>)
+                .ClientTemplate(editUserTemplate.Result);
+        }
+
+        if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
+        {
+            cols.Bound(e=> e.Enabled)
+                .ClientTemplate(disableEnableUser.Result);
+        }
+
+    }).DataSource(d =>
+        d.Ajax().ServerOperation(false).Sort(e=> e.Add(field => field.Surname))
+
+    )
+    .Pageable()
+    .Sortable()
+    .ClientDetailTemplateId("UserThing")
+        )
+    </div>
+</div>
+
+
+
+@using (Html.BeginScripts(Area.Foot))
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#UserList").on("click", ".k-button-remove-user", function (e) {
+                var confirmMsg = confirm("@translator.T("Are you sure you want to remove this user from the chain?")");
+
+                if (!confirmMsg)
+                { e.preventDefault(); }
+            });
+        });
+    </script>
+}
+
+<script id="UserThing" type="text/kendo-tmpl">
+    @(Html.Kendo().TabStrip()
+            .Name("tabStrip_#=Id#")
+            .SelectedIndex(0)
+            .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+            .Items(items =>
+            {
+                items.Add().Text(translator.T("Linked Chains")).Content(@<text>
+                    <p>@translator.T("This is a list of the chains the user has been connected to. They then access any chain below their node.")</p>
+                    @Html.Partial("_LinkedChains")
+                </text>);
+
+                items.Add().Text(translator.T("Access to")).Content(@<text>
+            <p>@translator.T("This is a list of every chain that the user can visit.")</p>
+            @Html.Partial("_AllChains")
+                </text>);
+
+                items.Add().Text(translator.T("User Roles")).Content(@<text>
+            @Html.Partial("_UserRoles")
+                </text>);
+
+                items.Add().Text(translator.T("User IP locks")).Content(@<text>
+            <p>@translator.T("This section defines where the user can access from.")</p>
+            @Html.Partial("_UserIPLocks")
+                </text>);
+
+                items.Add().Text(translator.T("Linked Stores")).Content(@<text>
+            <p>@translator.T("This is a list of the stores the user has been connected to.")</p>
+            @Html.Partial("_LinkedStores")
+                </text>);
+
+            }).ToClientTemplate())
+</script>
+
+@Html.Partial("_GettingStarted")
+
+
+

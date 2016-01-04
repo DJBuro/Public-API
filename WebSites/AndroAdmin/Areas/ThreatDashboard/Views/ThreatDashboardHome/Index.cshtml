@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div id="app">
+    <!-- Content --> 
+    <div class="container">
+        <div id="StoreList"
+            data-role="listview"
+            data-template="StoreTemplate"
+            data-bind="source: DataSource">
+        </div>
+    </div>
+
+    <!-- Pager --> 
+    <div class="container">
+        <div id="StoreListPager" data-role="pager" data-bind="source: DataSource">
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="HubList" data-role="listview" data-template="HubTemplate" data-bind="source: HubAcsServersDataSource">
+
+        </div>
+    </div>
+</div>
+@section footerScripts {
+    @Html.Partial("_StoresTemplates")
+    @Html.Partial("_HubTemplates")
+    <script src="~/Scripts/Threatboard/Andromeda.Hubs.js"></script>
+    <script src="~/Scripts/Threatboard/Andromeda.Hubs.Threatboard.js"></script>
+    <script src="~/Scripts/Threatboard/Andromeda.Services.Threatboard.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var app = new Andromeda.Services.TheatDashboard({
+                DiagnosticsHubAddreess: "",
+                LiveDataSourceOptions: {
+                    List: "@Url.Content("~/signalr")"
+                }
+                @*TestDataSourceOptions: {
+                    List: "@Url.Action("List", "ThreatDashboardHome", new { Area = "ThreatDashboard" })"
+                }*@
+            });
+
+            var normalState = function (e) {
+                var div = $(e.currentTarget);
+                kendo.fx(div.find(".description-alt")).tile("left", div.find(".description")).reverse();
+            };
+
+            var hoverState = function (e) {
+                var div = $(e.currentTarget);
+                kendo.fx(div.find(".description-alt").css("display", "block")).tile("left", div.find(".description")).play();
+            };
+            
+            $("#app").on("mouseover", ".store", hoverState);
+            $("#app").on("mouseout", ".store", normalState);
+
+            $("#app .store").hover(hoverState, normalState);
+        });
+    </script>
+
+}

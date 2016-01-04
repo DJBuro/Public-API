@@ -1,0 +1,53 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="This Template Generates C# domain objects for NHibernate" Debug="true" %>
+<%@ Property Name="SourceDatabase" Type="SchemaExplorer.DatabaseSchema" Category="Context" Description="Database that the mapping file is based on" %>
+<%@ Property Name="SourceDatabaseAlias" Type="System.String" Category="Context" Description="Database alias that the mapping file is based on" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="ForceId" Type="System.Boolean" Default="true" Category="Object" Description="Force Id for identity column" %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<script runat="template">
+TableSchema SourceTable;
+string Assembly;
+string Namespace;
+</script>
+
+using Cacd.DAO.NHibernate.<%= SourceDatabaseAlias %>;
+
+namespace Cacd.DAO.Factory
+{
+	public class <%= SourceDatabaseAlias %>HibernateDAOFactory : AbstractHibernateDAOFactory{ 
+
+<%
+		foreach(TableSchema source in SourceDatabase.Tables)
+		{
+%>
+			private <%= ClassName(source) %>DAO _<%= ClassName(source) %>DAO;
+<%
+		}
+%>
+		
+
+<%
+		foreach(TableSchema source in SourceDatabase.Tables)
+		{
+%>
+			public <%= ClassName(source) %>DAO <%= ClassName(source) %>DAO
+			{
+				get
+				{
+					if (_<%= ClassName(source) %>DAO == null) _<%= ClassName(source) %>DAO = new <%= ClassName(source) %>DAO(this.ConnectionDetails,this.SessionManager);
+					return _<%= ClassName(source) %>DAO;
+				}
+			}
+<%
+		}
+%>
+	}
+}
+		
+
+<!-- #include file="NHibernate.inc" -->

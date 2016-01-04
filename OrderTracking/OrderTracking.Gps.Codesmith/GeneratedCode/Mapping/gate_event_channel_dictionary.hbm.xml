@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateeventchanneldictionary, OrderTracking.Gps.Dao" table="gate_event_channel_dictionary">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="gate_event_channel_dictionary_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__gate_eve__945DD09075F77EB0"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+			<column name="application_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<bag name="gate_event_channel_dictionary_entries" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="gate_event_channel_dictionary_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Gateeventchanneldictionaryentry, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

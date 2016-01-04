@@ -1,0 +1,56 @@
+﻿@model dynamic
+
+
+@*@if (Request.IsAuthenticated)
+{
+    <div class="col-xs-12 col-sm-12 text-right text-info">
+        <i class="fa fa-user"></i><strong>&nbsp;@User.Identity.Name</strong>
+    </div>
+    <div class="text-right">
+        <a href="@Url.Action("ChangePassword", "Account", new { Area = "" })"><i class="fa fa-edit"></i>&nbsp;Change Password</a>
+    </div>
+    <div class="text-right">
+        <a href="@Url.Action("LogOff", "Account", new { Area = "" })"><i class="fa fa-power-off"></i>&nbsp;Log off</a>
+    </div>
+}   *@
+    
+
+@if (Request.IsAuthenticated){
+<div class="col-xs-12 col-sm-4" >
+    <div ng-app="UserNavbar">
+        <div ng-controller="LoginNavController">
+            <div kendo-toolbar k-options="toolbarOptions"></div>
+        </div>
+    </div>
+</div>
+}
+
+@using (Html.BeginScripts())
+{ 
+    <script type="text/javascript">
+        angular.module("UserNavbar", ["kendo.directives"])
+          .controller("LoginNavController", function ($scope) {
+              $scope.toolbarOptions = {
+                  items: [
+                      {
+                          template: "<label><i class='fa fa-user'></i> <span>@User.Identity.Name</span></label>",
+                      },
+                      {
+                          type: "button",
+                          text: "Change Password",
+                          url: "@Url.Action("ChangePassword", "Account", new { Area = "" })",
+                          spriteCssClass: "k-icon k-i-pencil",
+                          overflow: "always"
+                      },
+                      {
+                          type: "button",
+                          text: "Log off",
+                          url: "@Url.Action("LogOff", "Account", new { Area = "" })",
+                          spriteCssClass: "fa fa-power-off",
+                          overflow: "always"
+                      }
+                  ]
+              };
+          });
+    </script>   
+}

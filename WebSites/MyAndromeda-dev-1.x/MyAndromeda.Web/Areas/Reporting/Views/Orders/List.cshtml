@@ -1,0 +1,222 @@
+﻿@using MyAndromeda.Data.DataWarehouse.Domain.Reporting.Query;
+
+@model FilterQuery
+@{
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+    var workContext = Html.GetWorkContext();
+    //var test = Url.HttpRouteUrl(routeName: "OrderHistoryList", routeValues: new
+    //{
+    //    chainId = workContext.CurrentSite.ChainId,
+    //    externalSiteId = workContext.CurrentSite.ExternalSiteId,
+    //    fromYear = Model.FilterFrom.Value.Year,
+    //    fromMonth = Model.FilterFrom.Value.Month,
+    //    fromDay = Model.FilterFrom.Value.Day,
+    //    toYear = Model.FilterTo.Value.Year,
+    //    toMonth = Model.FilterTo.Value.Month,
+    //    toDay = Model.FilterTo.Value.Day
+    //});
+}
+
+<div class="header">
+    <a class="k-button" href="@Url.Action("Index", "Store")">@translator.T("Back")</a>
+    <h3>Web Order List</h3>
+    @if (Model.FilterFrom.HasValue || Model.FilterTo.HasValue)
+    {
+        <p>@Model.FilterFrom.Value.ToShortDateString() - @Model.FilterTo.Value.ToShortDateString()</p>
+    }
+    @if (!Model.FilterFrom.HasValue || !Model.FilterTo.HasValue)
+    {
+
+        <ul>
+            @if (Model.FilterFrom.HasValue)
+            {
+                <li>Orders from @Model.FilterFrom.Value.ToShortDateString()</li>
+            }
+            @if (Model.FilterTo.HasValue)
+            {
+                <li>Orders to @Model.FilterTo.Value.ToShortDateString()</li>
+            }
+        </ul>
+    }
+</div>
+
+@(Html.Kendo()
+    .Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.OrderHeaderViewModel>()
+    .Name("OrderList")
+    .ToolBar(tools =>
+    {
+        tools.Excel();
+        if (User.Identity.Name == "Matt")
+        {
+            tools.Pdf();
+        }
+    })
+    .Excel(e => e.FileName("OrderReport.xlsx").AllPages(true).Filterable(true))
+    .Pdf(e => e.FileName("OrderReport.pdf").AllPages())
+    .Pageable(e => e.Refresh(true))
+    .Resizable(r => r.Columns(true))
+    .Scrollable(s => s.Height(500))
+    .Sortable()
+    .Groupable()
+    .ColumnMenu(e => e.Filterable(true).Sortable(true))
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.OrderPlacedTime)
+            .Title("Order Placed Time")
+            //.ClientTemplate("#: kendo.toString(kendo.parseDate(OrderPlacedTime),'g') #")
+
+            .ClientTemplate("#: OrderPlacedTimeLocalString #")
+            .Width(130)
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
+        cols.Bound(e => e.OrderWantedTime)
+            .Title("Order Wanted Time")
+            .ClientTemplate("#: kendo.toString(OrderWantedTime,'g') #")
+            .Width(130)
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu))
+            .Hidden(true);
+
+        /* doesn't seem to work ... shame */
+        cols.Group(g => g.Title("Contact info").Columns(contact =>
+            {
+                cols.Bound(e => e.FirstName)
+                    .Title(translator.T("Name"))
+                    .Width(130)
+                    .ClientGroupHeaderTemplate("Ordered by: #: value #")
+                    .Filterable((filter) => filter.Mode(GridFilterMode.Row));
+                cols.Bound(e => e.Email)
+                    .Title(translator.T("Email"))
+                    .Width(150)
+                    .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
+                cols.Bound(e => e.Phone)
+                    .Title("Phone")
+                    .Width(150)
+                    .Filterable((filter) => filter.Mode(GridFilterMode.Menu)); ;
+            })
+        );
+
+        cols.Bound(e => e.PayType)
+            .Title(translator.T("Pay Type"))
+            .Width(100)
+            .ClientGroupHeaderTemplate(translator.T("Payments made by: #: value #"))
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
+        cols.Bound(e => e.FinalPrice)
+            .Title(translator.T("Total"))
+            .Width(100)
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu))
+            .ClientTemplate("#:kendo.toString(FinalPrice, 'c')#")
+            .ClientFooterTemplate("#: kendo.toString(sum, 'c') #")
+            .ClientGroupFooterTemplate("Group Total: #: kendo.toString(sum, 'c') # Average: #: kendo.toString(average, 'c')#");
+
+        cols.Bound(e => e.OrderType).Title(translator.T("Order Type"))
+            .Width(110)
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
+        cols.Bound(e => e.OrderStatus.Description).EditorTemplateName("StatusTemplate")
+            .Width(150)
+            .Filterable((filter) => filter.Mode(GridFilterMode.Menu))
+            .ClientTemplate("#: OrderStatus.Description #").Title("Status");
+    })
+    .ClientDetailTemplateId("OrderHeaderTabstripTemplate")
+    .Events(e => e.DetailInit("manageDetailInit").Change("gridChanged"))
+    .Mobile()
+
+    .DataSource(data =>
+        data.Ajax()
+        .Events(e => e.Change("gridChanged"))
+        .Read(read => read.Url(Url.HttpRouteUrl("OrderHistoryList", new
+        {
+            showInStore = Model.ShowInStoreOrders,
+            showOnline = Model.ShowOnlineOrders,
+            chainId = workContext.CurrentSite.ChainId,
+            externalSiteId = workContext.CurrentSite.ExternalSiteId,
+            fromYear = Model.FilterFrom.Value.Year,
+            fromMonth = Model.FilterFrom.Value.Month,
+            fromDay = Model.FilterFrom.Value.Day,
+            toYear = Model.FilterTo.Value.Year,
+            toMonth = Model.FilterTo.Value.Month,
+            toDay = Model.FilterTo.Value.Day
+        })))
+            //.Read("read", "Orders", new
+            //{
+            //    fromYear = Model.FilterFrom.Value.Year,
+            //    fromMonth = Model.FilterFrom.Value.Month,
+            //    fromDay = Model.FilterFrom.Value.Day,
+            //    toYear = Model.FilterTo.Value.Year,
+            //    toMonth = Model.FilterTo.Value.Month,
+            //    toDay = Model.FilterTo.Value.Day
+            //})
+        .ServerOperation(false)
+        .Aggregates(aggs =>
+        {
+            aggs.Add(e => e.FinalPrice).Min().Max().Sum().Average();
+            aggs.Add(e => e.PayType).Count();
+        })
+        .Sort(sort => sort.Add(meber => meber.OrderPlacedTime).Descending())
+
+    )
+)
+
+
+
+@using (Html.BeginScripts("List_grid_child_templates"))
+{
+    <script type="text/html" id="OrderHeaderTabstripTemplate">
+        @(Html.Kendo().TabStrip().Name("orderheadertabs_#=ACSOrderId#").Items(items =>
+        {
+            items.Add()
+                .Text("Order")
+                .Selected(true)
+                .Content(@<text> @Html.Partial("_List_TicketTemplates") </text>);
+
+            items.Add()
+                .Text("Previous Orders")
+                .Content(@<text> @Html.Partial("_List_PreviousOrdersTemplate") </text>);
+
+            items.Add()
+                .Text("Emails")
+                .Content(@<text>
+                    
+                    @Html.Partial("_List_EmailHistory")
+        
+                </text>);
+
+
+        }).ToClientTemplate())
+    </script>
+}
+
+@Html.Partial("_List_Charts")
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            var k = $("#OrderList").data("kendoGrid");
+
+
+            k.bind("detailInit", function (e) {
+                initilizeEmailTempalte(e);
+            });
+
+            var exportService = new MyAndromeda.GridExport.Services.KendoGridExcelExporter({
+                title: "Orders",
+                gridSelector: "#OrderList",
+                downloadSelector: "input.k-button-for-excel",
+                titleSelector: "#Title",
+                modelSelector: "#Model",
+                dataSelector: "#Data"
+            });
+
+            exportService.init();
+        });
+    </script>
+
+
+}
+
+@Html.Partial("_List_Help")

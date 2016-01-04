@@ -1,0 +1,210 @@
+﻿@model MyAndromeda.Web.Areas.Reporting.ViewModels.DayRange
+
+@{
+    string gridName = Model.Name;
+    string radarName = "radar" + gridName;
+    int days = Model.Days;
+
+    DateTime displayFrom = Model.Start.GetValueOrDefault(DateTime.Today);
+    DateTime from = displayFrom.AddDays(-1);
+    if (days > 0)
+    {
+        displayFrom = displayFrom.AddDays(-days);
+        from = from.AddDays(-days);
+    }
+    DateTime today = DateTime.Today;
+    DateTime displayToday = today.AddDays(-1);
+}
+
+@{
+    var url = Url.Action("Index", "Site", new { ExternalSiteId = "EXTERNALSITEID", Area = "Store", ChainId = this.ViewContext.RouteData.GetRequiredString("chainId") });
+    var dailyUrl = Url.Action("Hourly", "DailyReporting", new { Area = "Reporting", ExternalSiteId = "EXTERNALSITEID" }); 
+}
+
+<div class="clearfix">
+    <div class="header">
+        <h3>Start: @displayFrom.ToString("dddd") @displayFrom.ToLongDateString() - End: @displayToday.ToString("dddd") @displayToday.ToLongDateString()
+        </h3>
+    </div>
+
+    @(Html.Kendo().Grid<MyAndromeda.Web.Areas.ChainReporting.ViewModels.StoreReportSet>()
+    .Name(gridName)
+    .Sortable()
+    .Pageable()
+    .Filterable()
+    .ColumnMenu(e=> e.Sortable(true).Filterable(true))
+    //.Mobile(MobileMode.Auto)
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.ClientSiteName)
+            .Width(150)
+            .ClientTemplate(string.Format("<a href='#: \'{0}\'.replace('EXTERNALSITEID', ExternalSiteId) #'> #: ClientSiteName #</a>", url));
+        cols.Bound(e => e.TotalSales)
+            .Title("Sales")
+            .ClientTemplate("<span style='line-height:40px;height:40px' data-rep='sales' class='chain-sparkline'></span><br/>#: kendo.toString(TotalSales/100, 'c') #")
+            .ClientFooterTemplate(
+                "<div>Total: #: kendo.toString(sum/100, 'c') #</div>" +
+                "<div>Avg: #: kendo.toString(average/100, 'c') #</div>" +
+                "<div>Max: #: kendo.toString(max/100, 'c') # </div>" +
+                "<div>Min: #: kendo.toString(min/100, 'c') # </div>"
+            );
+        cols.Bound(e => e.AvgSpend)
+            .Title("Avg. Spend")
+            .ClientTemplate("<span style='line-height:40px;height:40px' data-rep='avgSpend' class='chain-sparkline'></span><br/>#: kendo.toString(AvgSpend/100, 'c') #");
+        cols.Bound(e => e.TotalOrders)
+            .Title("Total Orders")
+            .ClientTemplate("<span style='line-height:40px;height:40px' data-rep='orders' class='chain-sparkline'></span><br/>#: TotalOrders #")
+            .ClientFooterTemplate("<div>Total: #: sum #</div><div>Avg: #: kendo.toString(average, '0.00') #</div>");
+        cols.Bound(e => e.AvgOutTheDoor)
+            .Title("Avg OTD (Mins)")
+            .ClientTemplate("<span style='line-height:40px;height:40px' data-rep='otd' class='chain-sparkline'></span><br/>#: kendo.toString(AvgOutTheDoor, '0.00') #");
+        cols.Bound(e => e.AvgToTheDoor)
+            .Title("Avg TTD (Mins)")
+            .ClientTemplate("<span style='line-height:40px;height:40px' data-rep='ttd' class='chain-sparkline'></span><br/>#: kendo.toString(AvgToTheDoor, '0.00') #");
+    })
+    .ClientDetailTemplateId("GridDetail")
+    .DataSource(data => data
+        .Ajax()
+        .Aggregates(aggs =>
+        {
+            aggs.Add(e => e.TotalSales).Sum().Average().Max().Min();
+            aggs.Add(e => e.TotalOrders).Sum().Average();
+            aggs.Add(e => e.AvgSpend).Average().Max().Min();
+            aggs.Add(e => e.AvgOutTheDoor).Average();
+            aggs.Add(e => e.AvgToTheDoor).Average();
+        })
+        .Sort(e => e.Add(column => column.TotalSales).Descending())
+        .ServerOperation(true)
+        .Read(read =>
+        {
+            read.Action("RangeData", "Reports", new { });
+            read.Type(HttpVerbs.Post);
+            read.Data("SelectDay" + gridName);
+        })
+    )
+)
+</div>
+
+@using (Html.BeginScripts(Area.Foot))
+{
+    Html.RequireScript("~/Scripts/app/Reporting/ChainOverview.js", Area.Head);
+    if (false) { 
+    <script src="~/Scripts/app/Reporting/ChainOverview.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var gridElement = $("#@Model.Name"),
+                grid = gridElement.data("kendoGrid"),
+                dataSource = grid.dataSource;
+
+            var service = new MyAndromeda.Services.Reporting.chainDailySummaryService({
+                gridElement: gridElement,
+                tabStripItemName: "@Model.Name",
+                tabStripElement: "#ChainReportDashboard",
+                grid: grid,
+                dataSource: dataSource,
+                hourlyUrl: '@dailyUrl'
+            });
+
+            service.init();
+        });
+    </script>
+    
+    <script type="text/javascript">
+        @* // Grid above function ... leave alone *@
+        function SelectDay@(gridName)() {
+            return {
+                FilterFrom: kendo.parseDate("@from.ToString("u")").toJSON(),
+                FilterTo: kendo.parseDate("@today.ToString("u")").toJSON()
+            };
+        }
+    </script>
+}
+
+@using (Html.BeginScripts("Reporting.Chain.Grid.Detail", Area.Foot))
+{ 
+    <script id="GridDetail" type="text/html">
+        <div class="k-widget">
+            <div class="k-header actions">
+                <ul class="k-reset list-inline">
+                    <li><span class="k-icon k-i-funnel"></span></li>
+                    <li><span class="k-link">Series filters:</span></li>
+                    <li><label><input type="checkbox" data-bind="checked: visibleSales" /><span class="k-link">Sales</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: visibleOrderCount" /><span class="k-link">Orders</span> </label></li>
+                    <li><label><input type="checkbox" data-bind="checked: visiblePerformance" /><span class="k-link">OTD TTD</span></label></li>
+                </ul>
+            </div>
+            <div class="content">
+                @*<div data-bind="text: AndromediaSiteId"></div>*@
+                <div data-bind="text: thing"></div>
+                <div class="k-chart-detail"
+                    data-bind="source: Data"
+                    data-title="Detail"
+                    data-role="chart"
+                    data-theme="bootstrap"
+                    data-legend="{ position: 'top' }"
+                    data-series-defaults="{ type: 'line' }"
+                    data-category-axis="{ 
+                        field: 'Date', 
+                        @*baseUnit: 'fit',*@
+                        @* baseUnitStep: 'auto', *@
+                        type: 'date', 
+                        labels: { rotation: -90 }, 
+                        majorGridLines: { visible: true },
+                        axisCrossingValues: [0, 0, 30, 30],
+                            crosshair: {
+                            visible: true,
+                            tooltip: {
+                                visible: true,
+                                template: $('\\#DayToolTip').html()
+                            }
+                        }
+                    }"
+                    data-value-axis="[
+                        { name: 'orderCount', title: { text: 'Orders' }, visible: true },
+                        { name: 'sales', title: { text:'Sales' }, visible: true, labels:{ template: $('\\#SalesTemplate').html() } },
+                        { name: 'otd', title: { text: 'OTD' }, visible: true },
+                        { name: 'ttd', title: { text: 'TTD' }, visible: true }
+                    ]"
+                    data-series="[
+                        { name: 'Total Orders', field: 'Combined.OrderCount', axis: 'orderCount', type: 'column', stack: 'false', visible: true },
+                        { name: 'Delivery', field: 'Delivery.OrderCount', axis:'orderCount', type: 'column', stack: 'true', visible: true },
+                        { name: 'Collection', field: 'Collection.OrderCount', axis: 'orderCount', type: 'column', stack: 'true', visible: true },
+                        { name: 'Dine in', field: 'InStore.OrderCount', axis: 'orderCount', type: 'column', stack: 'true', visible: true },
+                        { name: 'Sales', field: 'Combined.Sales', axis: 'sales', type: 'area', visible: true },
+                        { name: 'OTD', field: 'Performance.AvgOutTheDoor', axis:'otd', type: 'line', style: 'smooth' },
+                        { name: 'TTD', field: 'Performance.AvgDoorTime', axis:'ttd', type: 'line', style: 'smooth' }
+                    ]"
+                    data-group="{ field:'Date' }"
+                    data-tooltip="{ visible: true, template: $('\\#ChainToolTipTemplate').html() }">
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="SalesTemplate">
+        #:kendo.toString(value/100, 'c' )#
+    </script>
+    <script type="text/template" id="DayToolTip">
+        #: kendo.toString(value, 'ddd') #
+    </script>
+    <script type="text/html" id="ChainToolTipTemplate">
+        #: kendo.toString(dataItem.Date, 'd') # (#: kendo.toString(dataItem.Date, 'ddd') #)
+        # if(series.axis === 'sales'){ #
+            <div>#: kendo.toString(value/100, 'c') # </div>
+        # } #
+        # if(series.axis === 'orderCount') { #
+            <div>#: value # #: series.name #</div>
+        # } # 
+        # if(series.axis === 'otd') { #
+            <div>Out the door: #: value # mins</div>
+        # } #
+        # if(series.axis === 'ttd') { #
+            <div>To the door: #: value # mins</div>
+        # } # 
+    </script>
+    <script id="salesTooltipTemplate" type="text/html">
+        <div>#: kendo.toString(dataItem.Date, 'dd') # #: kendo.toString(dataItem.Date, 'd')#</div>
+        <div>#: kendo.toString(value/100, 'c') #</div>
+    </script>
+    
+}

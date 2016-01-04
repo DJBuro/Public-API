@@ -1,0 +1,100 @@
+﻿@model IList<AndroAdmin.ViewModels.Chains.ChainViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Manage Chains</h2>
+
+<style>
+    .actionLink {
+        font-size: larger;
+        margin-left: 600px;
+    }
+</style>
+
+<div style="padding-top:13px;margin-bottom:3px;">
+    <div id="filters" class="k-toolbar k-widget k-toolbar-resizable" >
+        <b style="text-align:left">Search: </b><input class="k-textbox" style="width: 200px; " type="text" data-bind="value: searchText" data-value-update="keyup" />
+        @Html.ActionLink("Add New Chain", "Edit", "Chain", new AjaxOptions { HttpMethod = "GET" }, new { @class = "actionLink" })
+    </div>
+</div>
+
+
+@*@(Html.Kendo().Grid(Model)
+    .Name("ChainsGrid")
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.Name)
+            .ClientTemplate("<a href='" + Url.Action("Edit", "Chain") + "?id=#= Id #'" + ">#=Name#</a>");
+        cols.Bound(e => e.StoresCount);
+        cols.Bound(e => e.MasterMenuId).Template(x => x.MasterMenuId != null ? x.MasterMenuId.ToString() : string.Empty);
+    })
+    .Filterable()
+    .Sortable()
+    .Pageable(paging => paging.Refresh(true))
+    .DataSource(dataSource =>
+    {
+        dataSource
+            .Ajax()
+            .ServerOperation(false)
+            .PageSize(30)
+            .Model(model => model.Id(e => e.Id));
+    })
+)*@
+
+
+@(Html.Kendo().TreeList<AndroAdmin.ViewModels.Chains.ChainViewModel>()
+        .Name("treelist")
+        .Columns
+        (
+            columns =>
+            {
+                columns.Add().Field(e => e.Name).Width(300);
+                columns.Add().Field(e => e.Description).Width(300);
+                columns.Add().Field(e => e.StoresCount).Width(100).Title("Stores");
+                columns.Add().Field(e => e.MasterMenuId).Width(100).Title("Master Menu Id");
+                //columns.Add().Command(command => command.Custom().Name("ViewDetails").Text("View Details").Click("onShowDetails")).Width(150);
+                columns.Add().TemplateId("ButtonTemplate").Width(150).Filterable(false).Sortable(false);
+            }
+        )
+        .Filterable()
+        .Sortable()
+        .DataSource
+        (
+            builder => builder
+                .ServerOperation(true)
+                .Read(read => read.Action("All", "Chain"))
+                .Model
+                (
+                    m =>
+                    {
+                        m.Id(f => f.Id);
+                        m.ParentId(f => f.ParentChainId);
+                        m.Expanded(false);
+                        m.Field(f => f.Name);
+                        m.Field(f => f.Description);
+                        m.Field(f => f.StoresCount);
+                        m.Field(f => f.MasterMenuId);
+                    }
+                )
+        )
+        .Height(540)
+)
+
+<script>
+
+    function onShowDetails(e)
+    {
+        var tr = $(e.target).closest("tr"); // get the current table row (tr)
+        // get the data bound to the current table row
+        var data = this.dataItem(tr);
+
+        window.location.href = "@(this.Url.Content("~/Chain/Edit?id="))" + data.Id;
+    }
+
+</script>
+
+<script type="text/html" id="ButtonTemplate">
+    <a class="k-button" href="@Url.Content("~/Chain/Edit?id=#=Id#")">View Details</a>
+</script>

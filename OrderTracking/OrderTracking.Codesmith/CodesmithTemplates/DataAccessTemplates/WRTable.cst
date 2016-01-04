@@ -1,0 +1,316 @@
+<%-- 
+Name: WRTable.cst
+Description: CodeSmith template for generating stored procedure script, DAL and BLL classes
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="WRCommon.cst.cs" Inherits="WRCommon" Debug="True" Description="Generate stored procedure script, DAL and BLL classes" %>
+<%-- Register Sub Templates --%>
+<%@ Register Name="StoredProceduresTableTemplate" Template="WRTableStoredProcedures.cst" MergeProperties="True" ExcludeProperties="" %>
+<%@ Register Name="DALTableTemplate" Template="WRTableDAL.cst" MergeProperties="True" ExcludeProperties="" %>
+<%@ Register Name="BLLTableTemplate" Template="WRTableBLL.cst" MergeProperties="True" ExcludeProperties="" %>
+<%@ Register Name="DALTableDerivativeTemplate" Template="WRTableDALDerivative.cst" MergeProperties="True" ExcludeProperties="" %>
+<%@ Register Name="BLLTableDerivativeTemplate" Template="WRTableBLLDerivative.cst" MergeProperties="True" ExcludeProperties="" %>
+<%-- Assemblies and Imports --%>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+<%-- Assembly References --%>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%-- Validation--%>
+<%
+	if (DatabaseName == WRDatabase.Ignore)
+	{
+		ShowValidationError("Please choose a William Reed database other than 'Ignore' for property 'DatabaseName'.");
+		return;
+	}	
+   
+	// Source table must have has exactly one field in the primary key
+	if ((SourceTable != null) && (!IsValidDataTable(SourceTable)))
+	{
+		return;
+	}
+
+	// Stored Procedure 1
+	if (StoredProc1 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc1, StoredProc1ReferenceName, StoredProc1Return, StoredProc1Database))
+			return;
+	}
+
+	// Stored Procedure 2
+	if (StoredProc2 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc2, StoredProc2ReferenceName, StoredProc2Return, StoredProc2Database))
+			return;
+	}
+
+	// Stored Procedure 3
+	if (StoredProc3 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc3, StoredProc3ReferenceName, StoredProc3Return, StoredProc3Database))
+			return;
+	}
+
+	// Stored Procedure 4
+	if (StoredProc4 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc4, StoredProc4ReferenceName, StoredProc4Return, StoredProc4Database))
+			return;
+	}
+	
+	// Stored Procedure 5
+	if (StoredProc5 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc5, StoredProc5ReferenceName, StoredProc5Return, StoredProc5Database))
+			return;
+	}
+	
+	// Stored Procedure 6
+	if (StoredProc6 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc6, StoredProc6ReferenceName, StoredProc6Return, StoredProc6Database))
+			return;
+	}
+	
+	// Stored Procedure 7
+	if (StoredProc7 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc7, StoredProc7ReferenceName, StoredProc7Return, StoredProc7Database))
+			return;
+	}
+	
+	// Stored Procedure 8
+	if (StoredProc8 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc8, StoredProc8ReferenceName, StoredProc8Return, StoredProc8Database))
+			return;
+	}
+	
+	// Stored Procedure 9
+	if (StoredProc9 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc9, StoredProc9ReferenceName, StoredProc9Return, StoredProc9Database))
+			return;
+	}
+	
+	// Stored Procedure 10
+	if (StoredProc10 != null)
+	{
+		if (!IsValidStoredProcProperties(StoredProc10, StoredProc10ReferenceName, StoredProc10Return, StoredProc10Database))
+			return;
+	}
+
+	// Binding Table 1
+	if ((BindingTable1 != null) && (!IsValidBindingTable(BindingTable1)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable1, BindingTable1ExcludeKeyField))
+		return;
+
+	// Binding Table 2
+	if ((BindingTable2 != null) && (!IsValidBindingTable(BindingTable2)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable2, BindingTable2ExcludeKeyField))
+		return;
+
+	// Binding Table 3
+	if ((BindingTable3 != null) && (!IsValidBindingTable(BindingTable3)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable3, BindingTable3ExcludeKeyField))
+		return;
+
+	// Binding Table 4
+	if ((BindingTable4 != null) && (!IsValidBindingTable(BindingTable4)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable4, BindingTable4ExcludeKeyField))
+		return;
+
+	// Binding Table 5
+	if ((BindingTable5 != null) && (!IsValidBindingTable(BindingTable5)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable5, BindingTable5ExcludeKeyField))
+		return;
+
+	// Binding Table 6
+	if ((BindingTable6 != null) && (!IsValidBindingTable(BindingTable6)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable6, BindingTable6ExcludeKeyField))
+		return;
+
+	// Binding Table 7
+	if ((BindingTable7 != null) && (!IsValidBindingTable(BindingTable7)))
+		return;
+
+	if (!IsValidExcludedKey(BindingTable7, BindingTable7ExcludeKeyField))
+		return;
+
+	// instantiate the sub-templates
+	StoredProceduresTableTemplate storedProcedures = this.Create<StoredProceduresTableTemplate>();
+	DALTableTemplate dalTable = this.Create<DALTableTemplate>();
+	BLLTableTemplate bllTable = this.Create<BLLTableTemplate>();
+	DALTableDerivativeTemplate dalTableDerivative = this.Create<DALTableDerivativeTemplate>();
+	BLLTableDerivativeTemplate bllTableDerivative = this.Create<BLLTableDerivativeTemplate>();
+
+	// stored procedures
+	this.CopyPropertiesTo(storedProcedures);
+	// identify whether paging is being used in the property definitions
+	bool includepager = false;
+	if(StoredProc1IsPaged || StoredProc2IsPaged || StoredProc3IsPaged || StoredProc4IsPaged || StoredProc5IsPaged || StoredProc6IsPaged || StoredProc7IsPaged ||StoredProc8IsPaged || StoredProc9IsPaged || StoredProc10IsPaged )
+	{
+		includePager = true;
+	}
+	// adjust the public property of the storedProcedures template.
+	storedProcedures.includePager = includePager;
+	storedProcedures.RenderToFile(ScriptsFolder + "\\" + ScriptFileName(), true);
+
+	// DAL class
+	this.CopyPropertiesTo(dalTable);
+	dalTable.RenderToFile(ClassesFolder + "\\" + DALFileName(), true);
+
+	// BLL class
+	this.CopyPropertiesTo(bllTable);
+	bllTable.RenderToFile(ClassesFolder + "\\" + BLLFileName(), true);
+
+	// DAL Derviative class (may be changed by the developer therefore DO NOT overwrite)
+	string dalDerivativePath = MainCodeFolder + "\\" + DALDerivativeFileName();
+	if (!File.Exists(dalDerivativePath))
+	{
+		this.CopyPropertiesTo(dalTableDerivative);
+		dalTableDerivative.RenderToFile(dalDerivativePath, false);
+	}
+
+	// BLL Derviative class (may be changed by the developer therefore DO NOT overwrite)
+	string bllDerivativePath = MainCodeFolder + "\\" + BLLDerivativeFileName();
+	if (!File.Exists(bllDerivativePath))
+	{
+		this.CopyPropertiesTo(bllTableDerivative);
+		bllTableDerivative.RenderToFile(bllDerivativePath, false);
+	}
+%>
+<script runat="template">
+	#region Folders
+	private string _mainCodeFolder;
+	[Category("Output")]
+	[Description("Select the folder where the main source code resides")]
+ 	[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
+	public string MainCodeFolder
+	{
+ 		get 
+		{
+			return _mainCodeFolder;
+		}
+ 		set 
+		{
+			_mainCodeFolder = value;
+		}
+	}
+	
+	private string _classesFolder;
+	[Category("Output")]
+	[Description("Select the folder for the automatically generated class files, usually in folder called '\\base' off the main source code folder")]
+ 	[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
+	public string ClassesFolder
+	{
+ 		get 
+		{
+			return _classesFolder;
+		}
+ 		set 
+		{
+			_classesFolder = value;
+		}
+	}
+	
+	private string _scriptsFolder;
+	[Category("Output")]
+	[Description("Select the folder for the automatically generated stored procedure script, usually in folder called '\\SqlScripts' off the main source code folder")]
+ 	[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
+	public string ScriptsFolder
+	{
+ 		get 
+		{
+			return _scriptsFolder;
+		}
+ 		set 
+		{
+			_scriptsFolder = value;
+		}
+	}
+	#endregion
+
+	#region File Names
+	public string DALFileName()
+	{
+		if (SourceTable != null)
+		{
+			return GetDALFileName(TablePrefix);
+		}
+		else
+		{
+			ShowValidationError("Please set the 'SourceTable' property.");
+			return String.Empty;
+		}
+	}
+
+	public string DALDerivativeFileName()
+	{
+		if (SourceTable != null)
+		{
+			return GetDALDerivativeFileName(TablePrefix);
+		}
+		else
+		{
+			ShowValidationError("Please set the 'SourceTable' property.");
+			return String.Empty;
+		}
+	}
+
+	public string BLLFileName()
+	{
+		if (SourceTable != null)
+		{
+			return GetBLLFileName(TablePrefix);
+		}
+		else
+		{
+			ShowValidationError("Please set the 'SourceTable' property.");
+			return String.Empty;
+		}
+	}
+	
+	public string BLLDerivativeFileName()
+	{
+		if (SourceTable != null)
+		{
+			return GetBLLDerivativeFileName(TablePrefix);
+		}
+		else
+		{
+			ShowValidationError("Please set the 'SourceTable' property.");
+			return String.Empty;
+		}
+	}
+
+	public string ScriptFileName()
+	{
+		if (SourceTable != null)
+		{
+			return GetScriptFileName(TablePrefix);
+		}
+		else
+		{
+			ShowValidationError("Please set the 'SourceTable' property.");
+			return String.Empty;
+		}
+	}
+	#endregion
+
+</script>

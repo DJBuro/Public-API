@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Serverversion, OrderTracking.Gps.Dao" table="server_version">
+		<id name="Id" type="String" unsaved-value="null">
+			<column name="version" length="64" sql-type="varchar" not-null="true" unique="true" index="PK__server_v__79B5C94C3F9B6DFF"/>
+			<generator class="native" />
+		</id>
+		<property name="Installed" type="DateTime">
+			<column name="installed" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

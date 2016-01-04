@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Index";
+
+    var customerDetailActionUrl = Url.ActionClientTemplate("CustomerDetail", "Customer", new { Id = "#=Id #" });
+    var translator = Html.GetTranslator();
+}
+
+<div class="header">
+    <h3>Customers</h3>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("ReadExcel", "Customer"))
+        {
+
+            @(Html.Kendo()
+        .Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.CustomerValueViewModel>()
+        .Name("CustomerList")
+        .ColumnMenu(c =>
+        {
+            c.Filterable(true);
+            c.Columns(true);
+            c.Filterable(true);
+        })
+        .ToolBar(tools =>
+        {
+            tools.Excel();
+
+            if (User.Identity.Name == "Matt") { 
+                tools.Pdf();
+            }
+        })
+        .Excel(e => e.FileName("OrderReport").AllPages(true).Filterable(true))
+        .Pdf(e => e.FileName("OrderReport").AllPages())
+        .Filterable().Sortable()
+        .Scrollable(s => s.Height(500))
+        .Resizable(e=> e.Columns(true))
+        .Columns(cols =>
+        {
+
+            //cols.Bound(e => e.Id);
+            cols.Bound(e => e.FirstName).Title(translator.T("First Name"));
+            cols.Bound(e => e.LastName).Title(translator.T("Last Name"));
+            cols.Bound(e => e.Email).Title(translator.T("Email"));
+            cols.Bound(e => e.Phone).Title(translator.T("Phone"));
+            cols.Bound(e => e.TotalOrders).Title(translator.T("Total Orders"));
+            cols.Bound(e => e.TotalValue).ClientTemplate("#=kendo.toString(TotalValue, 'c')#").Title(translator.T("Total Value"));
+            cols.Bound(e => e.AvgOrderValue).ClientTemplate("#=kendo.toString(AvgOrderValue, 'c')#").Title(translator.T("Avg Order Value"));
+            cols.Bound(e => e.LastOrderTime).ClientTemplate("#= kendo.toString(LastOrderTime, 'G') #").Title(translator.T("Last Order Date"));
+            cols.Bound(e => e.RegisteredDateTime).ClientTemplate("#= kendo.toString(RegisteredDateTime, 'G') #").Title(translator.T("Registered On"));
+
+            cols.Template(e => e.Id).ClientTemplate(string.Format("<a class='k-button' href='{0}'>{1}</a>", customerDetailActionUrl, translator.T("Open")));
+
+        })
+        .ClientDetailTemplateId("CustomerTemplateList")
+        .Pageable(paging => paging.Refresh(true))
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .Read("ListValue", "Customer")
+                .Model(e =>
+                {
+                    e.Id(m => m.Id);
+                })
+                .ServerOperation(false)
+                .Sort(sort =>
+                {
+                    sort.Add(m => m.TotalValue).Descending();
+                })
+                ;
+        })
+            )
+        }
+    </div>
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    <script type="text/template" id="CustomerTemplateList">
+        @(Html.Kendo()
+            .TabStrip()
+            .Name("CustomerTabe_#=Id#")
+            .Items(items =>
+            {
+                items.Add()
+                    .Text("Orders")
+                    .Selected(true)
+                .Content(@<text>
+                        @Html.Partial("_List_PreviousOrdersTemplate")
+                </text>);
+
+            }).ToClientTemplate())
+    </script>
+}
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            var exportService = new MyAndromeda.GridExport.Services.KendoGridExcelExporter({
+                title: "Customers",
+                gridSelector: "#CustomerList",
+                downloadSelector: "input.k-button-for-excel",
+                titleSelector: "#Title",
+                modelSelector: "#Model",
+                dataSelector: "#Data"
+            });
+            exportService.init();
+        });
+    </script>
+}
+
+

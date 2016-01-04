@@ -1,0 +1,13 @@
+﻿Right mouse click on the "Custom" folder here and click "Open command prompt".
+In the command propmt run "build" and then "devbuild".
+
+Assuming you're using the standard source code locations the theme css files will be merged into a single "skin.css" file in your website "Custom" folder here:
+
+C:\Andromeda Development Source\Rameses Web Components\WebSites\Andromeda.WebOrderingV2 DEV\Custom
+
+This is essentially your local dev version of the custom folder on a real AndroWeb website (after it's been published).
+
+Note that the files in this folder are NOT in TFS. They are your local copy that you can customise during development.
+
+When doing a release you'll need to copy the "skin.css" file to the server into the appropriate c:\androwebordering\themes\<themeid> folder.
+When you do a publish from MyAndromeda, your skin.css file will be deplyed to the websites folder.

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Country, OrderTracking.Gps.Dao" table="country">
+		<id name="Id" type="String" unsaved-value="null">
+			<column name="country" length="64" sql-type="varchar" not-null="true" unique="true" index="PK__country__2834D2A7573DED66"/>
+			<generator class="native" />
+		</id>
+		<bag name="mobile_networks" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="country"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Mobilenetwork, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.SitesRegion, Dashboard.Dao" table="SitesRegions">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="SitesRegionsID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SitesRegions"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Site" class="Dashboard.Dao.Domain.Site, Dashboard.Dao">
+			<column name="SiteID" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="Region" class="Dashboard.Dao.Domain.Region, Dashboard.Dao">
+			<column name="RegionID" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

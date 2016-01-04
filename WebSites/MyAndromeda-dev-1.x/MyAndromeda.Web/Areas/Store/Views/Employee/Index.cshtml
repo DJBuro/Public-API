@@ -1,0 +1,34 @@
+﻿@model dynamic
+<style>
+    #EmployeeList table {
+        table-layout: fixed;
+    }
+</style>
+@(Html.Kendo()
+      .Grid<MyAndromeda.Data.Domain.Employee>()
+      .Name("EmployeeList")
+      .Sortable()
+      .Filterable()
+      .Resizable(resize => resize.Columns(true))
+      .ColumnMenu(e => e.Filterable(true).Sortable(true))
+      .Columns(cols => {
+//cols.Bound(e => e.Firstname);
+//cols.Bound(e => e.Surname);
+cols.Bound(e => e.FullName);
+cols.Bound(e => e.Phone);
+cols.Bound(e => e.Role);
+cols.Bound(e => e.NationalInsuranceNumber).Title("NI Number");
+cols.Bound(e => e.DrivingLicenceNumber);
+cols.Bound(e => e.PayrollNumber);
+//cols.Command(e=> e.Edit());
+//cols.Command(e=> e.Destroy().Text(""));
+})
+      .DataSource(
+data => data
+.Ajax()
+.Model(e => e.Id(id => id.Key))
+.Read(read => read.Action("list", "Employee"))
+.Update(update => update.Action("Post", "Employee").Type(HttpVerbs.Post))
+.Destroy(destory => destory.Action("Destroy", "Employee").Type(HttpVerbs.Post))
+)
+)

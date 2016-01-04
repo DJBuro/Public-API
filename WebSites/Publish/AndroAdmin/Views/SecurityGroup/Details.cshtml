@@ -1,0 +1,117 @@
+﻿@model AndroAdmin.Model.SecurityGroupModel
+
+@{
+    ViewBag.Title = "Security group";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="SecurityGroupView">
+
+    <h2 style="margin-bottom:10px;">@Html.ActionLink("Security Groups", "Index") / @Model.SecurityGroup.Name</h2>
+
+    @if (ViewBag.Edit == null || !ViewBag.Edit)
+    {
+        <h3 class="h3WithEditButton">Group details</h3>
+        if (ViewBag.Permissions.Contains("EditSecurityGroup"))
+        {
+            <div class="editButton">@Html.ActionLink("change", "Details", new { id = Model.SecurityGroup.Id, edit = true })</div>
+        }
+        <div>
+            <!-- Name -->
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SecurityGroup.Name):
+            </div>
+            <div class="editor-field">
+                @Model.SecurityGroup.Name
+            </div>
+            <div class="formFieldHelp"></div>
+                
+            <!-- Description -->
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SecurityGroup.Description):
+            </div>
+            <div class="editor-field">
+                @Model.SecurityGroup.Description
+            </div>
+            <div class="formFieldHelp"></div>
+
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm())
+        { 
+            <h3 class="h3WithEditButton">Group details</h3>
+            <div class="editButton">
+                <input type="submit" value="Update" class="button" />
+                @Html.ActionLink("Cancel", "Details", new { id = Model.SecurityGroup.Id })
+            </div>
+            <div>
+                @Html.ValidationSummary(true) 
+ 
+                @Html.HiddenFor(model => model.SecurityGroup.Id)
+
+                <!-- Name -->
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SecurityGroup.Name):
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.SecurityGroup.Name) 
+                    @Html.ValidationMessageFor(model => model.SecurityGroup.Name) 
+                </div>
+
+                <!-- Description -->
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.SecurityGroup.Description):
+                </div>
+                <div class="editor-field">
+                    @Html.TextBoxFor(model => model.SecurityGroup.Description) 
+                    @Html.ValidationMessageFor(model => model.SecurityGroup.Description) 
+                </div>
+            </div>
+        }
+    }
+
+    <div style="clear:both; padding-top: 10px;">
+        <h3 class="h3WithEditButton">Permissions</h3>
+        @if (ViewBag.Permissions.Contains("EditSecurityGroup"))
+        {
+            <div class="editButton">@Html.ActionLink("change", "Permissions", new { id = Model.SecurityGroup.Id })</div>
+        }
+
+        @if (Model.SecurityGroup.Permissions == null || Model.SecurityGroup.Permissions.Count == 0)
+        {
+            <p style="clear:both;">There are no permissions in this group</p>
+        }
+        else
+        {
+            <table class="listTable" id="permissions">
+                <thead>
+                    <tr>
+                        <th>Permission</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (AndroUsersDataAccess.Domain.Permission permission in Model.SecurityGroup.Permissions)
+                    {
+                        <tr>
+                            <td>@permission.Description</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $('#permissions').dataTable(
+        {
+            "sScrollY": "500px",
+            "bScrollCollapse": true,
+            "bPaginate": false,
+            "sPaginationType": "scrolling"
+        }
+     );
+</script>

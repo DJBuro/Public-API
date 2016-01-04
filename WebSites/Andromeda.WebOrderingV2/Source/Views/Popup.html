@@ -1,0 +1,12 @@
+﻿<script type="text/html" id=popupView">
+
+    <!-- ko if: popupHelper.viewModelObject() != undefined && popupHelper.viewName() != undefined -->
+    <!-- ko with: popupHelper.viewModelObject -->
+    <div class="popupBoxHeaderContainer">
+        <!-- ko template popupHelper.viewName -->
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+    <!-- /ko -->
+
+</script>

@@ -1,0 +1,562 @@
+﻿@model MyAndromeda.Web.Models.AddressModel
+
+@{
+    ViewBag.Title = "Address";
+}
+
+<style>
+    .linespace {
+        margin-bottom:5px;
+    }
+</style>
+
+@*@section Breadcrumb
+    {
+        <ul>
+            <li>
+                @Html.ActionLink("My Sites", "Index", "Sites")
+            </li>
+            <li>
+                @Html.ActionLink(@Model.ClientSiteName, "Index", "Site", new { id = @Model.ExternalSiteId }, null)
+            </li>
+            <li>
+                Change Address
+            </li>
+        </ul>
+    }*@
+
+<div class="header">
+    <h3>@Model.ClientSiteName Address</h3>
+    <a class="k-button" href="@Url.Action("Index")" title="Any changes you make will not be saved">Back</a>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.ExternalSiteId)
+
+    @Html.ValidationSummary(false)
+
+    if (Model.Address.Country.ISO3166_1_alpha_2 == "GB")
+    {
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label"> Road number:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.RoadNum, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The house number. E.g. "4"</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.RoadNum)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Road name:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.RoadName, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The road name. E.g. "Park Road"</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.RoadName)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Town:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Town, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The town name. E.g. "Ely"</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Town)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Postcode:</label>
+            </div>
+            <div class="col-md-10 col-xs-12 ">
+                <div class="col-md-4 col-xs-12 ">
+                    @Html.TextBoxFor(model => model.Address.Postcode, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The post code. E.g. "SM6 0DZ"</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Postcode)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">County:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.County, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The county or region name. E.g. "Norfolk"</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.County)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Prem1:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Prem1, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important"></label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem1)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Prem2:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Prem2, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important"></label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem2)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Org1:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Org1, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important"></label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Org1)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Org2:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Org2, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important"></label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Org2)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label"> Locality:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Locality, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">More specific town, hamlet, village or road E.g. Town = “London” Locality = “Westminster”</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Locality)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label"> Dps:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.Dps, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">Delivery Postal Suffix</label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Dps)</div></div>
+    </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label">Country:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.DropDownListFor(model => Model.CountryId, new SelectList(Model.Countries, "Id", "CountryName"), new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important"></label>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Country)</div></div>
+    </div>
+    }
+    else
+    {
+      
+        <div class="col-xs-12 col-md-12">
+            <div class="col-md-2 col-xs-12 row">
+                <label class="control-label"> Road number:</label>
+            </div>
+            <div class="col-md-10 col-xs-12">
+                <div class="col-md-4 col-xs-12">
+                    @Html.TextBoxFor(model => model.Address.RoadNum, new { @class = "form-control" })
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label class="control-label example" style="font-weight:normal !important">The house number. E.g. "4"</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12 linespace">
+            <div class="col-md-2 col-xs-12 row"></div>
+            <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.RoadNum)</div></div>
+        </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Road name:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.RoadName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">The road name. E.g. "Park Road"</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.RoadName)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Town:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Town, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">The town name. E.g. "Ely"</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Town)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Postcode:</label>
+        </div>
+        <div class="col-md-10 col-xs-12 ">
+            <div class="col-md-4 col-xs-12 ">
+                @Html.TextBoxFor(model => model.Address.Postcode, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">The post code. E.g. "SM6 0DZ"</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Postcode)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">County:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.County, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">The county or region name. E.g. "Norfolk"</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.County)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem1:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem1, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem1)</div></div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem2:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem2, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem2)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem3:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem3, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem3)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem4:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem4, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem4)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem5:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem5, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem5)</div></div>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Prem6:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Prem6, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Prem6)</div></div>
+    </div>
+
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Org1:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Org1, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Org1)</div></div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Org2:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Org2, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Org2)</div></div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Org3:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Org3, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Org3)</div></div>
+    </div>
+
+
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label"> Locality:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Locality, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">More specific town, hamlet, village or road E.g. Town = “London” Locality = “Westminster”</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Locality)</div></div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label"> Dps:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.TextBoxFor(model => model.Address.Dps, new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important">Delivery Postal Suffix</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Dps)</div></div>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <div class="col-md-2 col-xs-12 row">
+            <label class="control-label">Country:</label>
+        </div>
+        <div class="col-md-10 col-xs-12">
+            <div class="col-md-4 col-xs-12">
+                @Html.DropDownListFor(model => Model.CountryId, new SelectList(Model.Countries, "Id", "CountryName"), new { @class = "form-control" })
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <label class="control-label example" style="font-weight:normal !important"></label>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-12 linespace">
+        <div class="col-md-2 col-xs-12 row"></div>
+        <div class="col-md-10 col-xs-12"><div class="col-md-10 col-xs-12 ">@Html.ValidationMessageFor(model => model.Address.Country)</div></div>
+    </div>
+    }
+
+    <p class="editor-submitButton">
+        <input type="submit" value="Save" class="k-button k-primary" />
+        <input type="reset" class="k-button  k-primary" title="Cancel Changes" value="Cancel">
+    </p>
+}
+<script type="text/javascript">
+    function cancelChanges() {
+
+    }
+</script>

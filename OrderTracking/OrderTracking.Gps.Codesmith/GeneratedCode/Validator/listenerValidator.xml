@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="ListenerValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="EnabledValidator" test="Enabled"><v:message id="error.Enabled.required" providers="EnabledErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

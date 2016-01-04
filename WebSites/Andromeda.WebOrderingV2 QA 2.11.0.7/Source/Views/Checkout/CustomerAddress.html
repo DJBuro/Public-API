@@ -1,0 +1,23 @@
+﻿    <script type="text/html" id="customerAddressView">
+
+        <h1>Delivery address</h1>
+
+        <!-- ko template: addressHelper.addressType() --><!-- /ko -->
+
+        <!-- ko if: checkoutHelper.showUpdateCustomerAccount -->
+        <div id="rememberAddressWrapper">
+            <input type="checkbox" data-bind="checked: checkoutHelper.checkoutDetails.rememberAddress" id="rememberAddress" />
+            <label for="rememberAddress" data-bind="text: textStrings.checkRememberAddress"></label>
+        </div>
+        <!-- /ko -->
+
+        <div id="checkoutAddressButtons">
+            <div class="checkoutSidebarActions button" id="checkUseAddressNoSave">
+                <a data-bind="click: checkoutHelper.useAddress, html: textStrings.checkUseAddressNoSave" href="#"></a>
+            </div>
+
+            <div class="checkoutSidebarActions button" id="checkCancelAddress">
+                <a data-bind="click: checkoutHelper.cancelChangeAddress, html: textStrings.checkCancelAddress" href="#"></a>
+            </div>
+        </div>
+    </script>

@@ -1,0 +1,118 @@
+﻿@model dynamic
+@using MyAndromeda.Web.Areas.Reporting.ViewModels;
+@{
+    var translator = Html.GetTranslator();    
+}
+<div class="header">
+    <h3>
+        <i class="fa fa-bar-chart-o"></i> @translator.T("Chain dashboard: {0}", @Model.Name)
+    </h3> 
+</div>
+
+<div id="ChainReportDashboard" class="k-widget k-header k-tabstrip">
+    <ul class="k-tabstrip-items k-reset">
+        <li data-tab-name="StoreListRange1" 
+            class="k-item k-state-default tab-tooltip" 
+            title="@translator.T("Yesterday's results")">
+            @translator.T("Most Recent")
+        </li>
+        <li data-tab-name="StoreListRange7" class="k-item k-state-default k-state-active" title="@translator.T("The last 7 days of available data")">
+            @translator.T("Last 7 Days")
+        </li>
+        <li data-tab-name="StoreListRange30" class="k-item k-state-default" title="@translator.T("The last 30 days of available data")">
+            @translator.T("Last 30 Days")
+        </li>
+        <li data-tab-name="StoreListThisMonth" class="k-item k-state-default" title="@translator.T("Results from the 1st of the month to end.")">
+            @translator.T("Month View")
+        </li>
+    </ul>
+    <div class="sparkline">
+        @Html.Partial("GridRange", new DayRange() { Name = "StoreListRange1", Days = 1 })
+    </div>
+    <div class="sparkline">
+        @Html.Partial("GridRange", new DayRange() { Name = "StoreListRange7", Days = 7 })
+    </div>
+    <div class="sparkline">
+        @Html.Partial("GridRange", new DayRange() { Name = "StoreListRange30", Days = 30 })
+    </div>
+    <div class="sparkline">
+        @{ var today = DateTime.Today;
+           var thisMonthDate = new DateTime(today.Year, today.Month, 1);
+        }
+        @Html.Partial("GridRange", new DayRange() { Name = "StoreListThisMonth", Start = thisMonthDate })
+    </div>
+</div>
+
+@using (Html.BeginScripts(Area.Foot))
+{ 
+    <style>
+        .k-sparkline span {
+            height: 40px;
+        }
+    </style>
+}
+
+@using (Html.BeginScripts(Area.Head))
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#ChainReportDashboard").kendoTabStrip({
+                animation: {
+                    open: {
+                        effects: "fadeIn"
+                    }
+                }
+            });
+
+            $("#ChainReportDashboard").kendoTooltip({
+                filter: "li.tab-tooltip",
+                position: "bottom"
+            }).data("kendoTooltip");
+        });
+    </script>
+}
+
+@using (Html.BeginHelpSection("Getting Started", TabArea.Help, true))
+{
+    <div class="header">
+        <h3>Yesterday's Report</h3>
+    </div>
+    <p>
+        <ul>
+            <li>The summary only shows a single day's worth of information. </li>
+            <li>Detail view shows the hourly breakdown of the day</li>
+        </ul>
+    </p>
+}
+@using (Html.BeginHelpSection("7 Day - 30 Day", TabArea.Help))
+{ 
+    <div class="header">
+        <h3>7 Day or 30 Day report</h3>
+    </div>
+    <p>
+        <ul>
+            <li>The summary shows the aggregates of a week / month etc. Each have a spark-line graph giving a quick overview of trends of values over the days</li>
+            <li>Detail view shows the daily breakdown of week / month etc</li>
+        </ul>
+    </p>
+}
+@using (Html.BeginHelpSection("Month View", TabArea.Help))
+{ 
+    <div class="header">
+        <h3>Month View Report</h3>
+    </div>
+    <p>
+        This section shows data from the start of this month to the current date. If it were 2013/11/03 then there could only be two days of previous data to show. 
+    </p>
+}
+@using (Html.BeginHelpSection("Expand a row (detail view)", TabArea.Help))
+{ 
+    <div class="header">
+        <h3>Row detail</h3>
+    </div>
+    <p>Expand a row to see a enlarged view of the charts with the accompanying series and categories.</p>
+    <div class="header">
+        <h3>Series Filter</h3>
+    </div>
+    <p>The main series groups can be turned off, so if you wanted to compare a couple of series then this is possible by turning on or off the checkboxes.</p>
+}

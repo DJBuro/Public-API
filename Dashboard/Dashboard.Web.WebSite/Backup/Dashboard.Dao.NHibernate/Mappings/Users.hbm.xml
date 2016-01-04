@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.User, Dashboard.Dao" table="Users">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_Users"/>
+			<generator class="native" />
+		</id>
+		<property name="EmailAddress" type="String">
+			<column name="EmailAddress" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="Password" type="String">
+			<column name="Password" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="HeadOfficeUser" type="Boolean">
+			<column name="HeadOfficeUser" length="1" sql-type="bit" not-null="true"/>
+		</property>
+		<property name="Enabled" type="Boolean">
+			<column name="Enabled" length="1" sql-type="bit" not-null="true"/>
+		</property>
+		<many-to-one name="HeadOffice" class="Dashboard.Dao.Domain.HeadOffice, Dashboard.Dao">
+			<column name="HeadOfficeId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<bag name="Permissions" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="UserId"/>
+			<one-to-many class="Dashboard.Dao.Domain.Permission, Dashboard.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

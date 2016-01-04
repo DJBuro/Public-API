@@ -1,0 +1,118 @@
+﻿    <!-- Menu section -->
+    <script type="text/html" id="menuSection-template">
+        <div class="section" data-bind="'attr': { 'id': 'section' + Index }">            
+            <div class="sectionItems">
+                <!-- ko foreach: items -->
+                <div class="itemRow" data-bind="click: $root.mobileAddItemToCart" itemscope itemtype="http://schema.org/Product">
+                    <div data-bind="html: name" itemprop="name" class="itemName"></div>
+                    <div class="itemImage" itemprop="image" data-bind="'attr': { style: 'height: ' + thumbnailHeight + 'px, width: ' + thumbnailWidth + 'px' }">
+                        <!-- ko if: thumbnail != undefined -->
+                        <img src="#" data-bind="click: imageHelper.showPopup, 'attr': { src: menuHelper.menuDataThumbnails().Server.Endpoint + thumbnail.Src, height: thumbnailHeight + 'px', width: thumbnailWidth + 'px' }" />
+                        <!-- /ko -->
+                        <!-- ko if: overlayImage -->
+                        <div class="itemImageOverlay" data-bind="click: imageHelper.showPopup"></div>
+                        <!-- /ko -->
+                    </div>
+
+                    <div data-bind="'attr': { 'class': thumbnail == undefined ? 'itemDetails' : 'itemDetailsWithImage' }">
+                        <div class="priceCategoryContainer">
+                            <div class="categoryQuantityContainer" data-bind="visible: isEnabled && $root.isTakingOrders">
+                                <div class="quantity">
+                                    <select data-bind="value: quantity">
+                                        <!--<select data-bind="value: quantity, event: { change: $root.selectedItemChanged }">-->
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                    </select>
+                                    <label data-bind="text: textStrings.miQuantity"></label>
+                                </div>
+                                <!-- ko if: category2s().length > 1 -->
+                                <div class="category2">
+                                    <select data-bind="enable: isEnabled, options: category2s, optionsText: 'Name', value: selectedCategory2, event: { change: $root.selectedItemChanged }"></select>                                    
+                                </div>
+                                <!-- /ko -->
+                                <!-- ko if: category1s().length > 1 -->
+                                <div class="category1">
+                                    <select data-bind="enable: isEnabled, options: category1s, optionsText: 'Name', value: selectedCategory1, event: { change: $root.category1Changed }"></select>                                    
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                            <div class="priceAddContainer">
+                                <div class="itemPrice"><span data-bind="html: price"></span></div>
+                                <!-- ko if: $root.isTakingOrders() && !guiHelper.isMobileMode() -->
+                                <!-- ko if: menuItem.DefTopIds.length > 0 || menuItem.OptTopIds.length > 0 -->
+                                <div class="highlightedButton addItemButton">
+                                    <a href="#" data-bind="click: $root.addCustomItemToCart, text: textStrings.miCustomize"></a>
+                                </div>
+                                <!-- /ko -->
+                                <div class="highlightedButton addItemButton">
+                                    <a href="#" data-bind="click: $root.addItemToCart, text: textStrings.miAdd"></a>
+                                </div>
+                                <!-- /ko -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-bind="html: description" itemprop="description" class="itemDescription"></div>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="menuSection2-template">
+        <div class="section" id='{sectionId}'>     
+            <div class="sectionItems">{sectionItems}</div>
+        </div>
+    </script>
+
+    <script type="text/html" id="menuSectionItem-template">
+        <div class="itemRow">
+            <div class="itemImage" style="height:{thumbnailHeight}px; width:{thumbnailWidth}px;">
+                {thumbnail}
+            </div>
+            <div class="{itemClass}">
+                <div class="itemName">{itemName}</div>
+                <div class="itemDescription" style="display:{isNotMobileMode}">{itemDescription}</div>
+                <div class="priceCategoryContainer">
+                    {categoryQuantity}
+                    <div class="priceAddContainer">
+                        <div class="itemPrice"><span>{price}</span></div>
+                        <div class="highlightedButton addItemButton" style="display:{isTakingOrders}">
+                            <a href="#" data-bind="click: $root.addItemToCart">{addLabel}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="itemDescription" style="display:{isMobileMode}">{itemDescription}</div>
+        </div>
+    </script>
+
+    <script type="text/html" id="menuSectionItemCategoryQuantity-template">
+        <div class="categoryQuantityContainer">
+
+            <div class="quantity">
+                <select>  <!--data-bind="value: quantity, event: { change: $root.selectedItemChanged }">-->
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                </select>
+                <label>{quantityLabel}</label>
+            </div>
+            <div class="category2">{category2s}</div>
+            <div class="category1">{category1s}</div>
+                                    
+        </div>
+    </script>

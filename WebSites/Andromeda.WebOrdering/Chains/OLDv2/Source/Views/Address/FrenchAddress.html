@@ -1,0 +1,158 @@
+﻿<!-- French address template-->
+    <script type="text/html" id="frenchAddress-template">
+
+        <!-- Org1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg1FR" data-bind="text: textStrings.org1_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutOrg1FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.org1, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.org1_eg_FR"></div>
+        </div>
+
+        <!-- Org2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg2FR" data-bind="text: textStrings.org2_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutOrg2FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.org2, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.org2_eg_FR"></div>
+        </div>
+
+        <!-- Prem1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem1FR" data-bind="text: textStrings.prem1_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPrem1FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.prem1, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.prem1_eg_FR"></div>
+        </div>
+        
+        <!-- Prem2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem2FR" data-bind="text: textStrings.prem2_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPrem2FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.prem2, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.prem2_eg_FR"></div>
+        </div>
+
+        <!-- Prem3 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem3FR" data-bind="text: textStrings.prem3_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPrem3FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.prem3, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.prem3_eg_FR"></div>
+        </div>
+
+        <!-- RoadNumber -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutRoadNumberFR" data-bind="text: textStrings.roadNumber_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutRoadNumberFR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.roadNumber, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.roadNumber_eg_FR"></div>
+        </div>
+
+        <!-- RoadName -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutRoadNameFR" data-bind="text: textStrings.roadName_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutRoadNameFR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.roadName, attr: { class: checkoutHelper.errors.roadNameHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.roadName_eg_FR"></div>
+        </div>
+
+        <!-- User Locality 1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutUserLocality1FR" data-bind="text: textStrings.userLocality1_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutUserLocality1FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.userLocality1, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.userLocality1_eg_FR"></div>
+        </div>
+
+        <!-- User Locality 2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutUserLocality2FR" data-bind="text: textStrings.userLocality2_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutUserLocality2FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.userLocality2, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.userLocality2_eg_FR"></div>
+        </div>
+
+        <!-- User Locality 3 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutUserLocality3FR" data-bind="text: textStrings.userLocality3_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutUserLocality3FR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.userLocality3, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.userLocality3_eg_FR"></div>
+        </div>
+
+        <!-- Town -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutTownFR" data-bind="text: textStrings.town_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutTownFR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.town, attr: { class: checkoutHelper.errors.townHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3" data-bind="text: textStrings.town_eg_FR"></div>
+        </div>
+
+        <!-- Postcode -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPostcodeFR" data-bind="text: textStrings.zipCode_FR"></label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="checkoutPostcodeFR" type="text" data-bind="value: checkoutHelper.checkoutDetails.address.zipCode, attr: { class: checkoutHelper.errors.zipCodeHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3"  data-bind="text: textStrings.zipCode_eg_FR"></div>
+        </div>
+
+        <div class="requiredLine" data-bind="text: textStrings.checkRequired"></div>
+
+        <!-- ko if: checkoutHelper.errors.addressMissingDetails() -->
+        <div class="checkoutError" data-bind="text: textStrings.checkMissingInfoError"></div>
+        <!-- /ko -->
+
+        <!-- ko if: checkoutHelper.checkoutDetails.address.zipCode().length > 0 && checkoutHelper.errors.outOfDeliveryArea() -->
+        <div class="checkoutError" data-bind="text: textStrings.checkBadPostcode"></div>
+        <!-- /ko -->
+
+    </script>

@@ -1,0 +1,157 @@
+﻿@model MyAndromeda.Web.Areas.Users.ViewModels.CreateEditUserViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+<div class="row">
+    <div class=".col-xs-12">
+	    <div class="header">
+	        <h3>@translator.T("Create/Add a user")</h3>
+	        <a class="k-button" href="@Url.Action("Index")">Back</a>
+	
+	    </div>
+    <div id="CreateUserWrapper" class="sb-right content2">
+        <div class="header">
+            <h4>@translator.T("Create user")</h4>
+        </div>
+        @using (Html.BeginForm())
+        {
+            if (!this.ViewData.ModelState.IsValid)
+            {
+            <div class="alert">
+                @Html.ValidationSummary()
+            </div>
+            }
+            <div class="col-sm-8">
+                <div>
+                    @Html.LabelFor(e => e.UserName, "User Name")
+                    <input type="text"
+                           required="required"
+                           id="@Html.IdFor(e => e.UserName)" name="@Html.NameFor(e => e.UserName)" 
+                        class="tooltip-info form-control"
+                           value="@Model.UserName"
+                           title="@translator.T("A email is required. This will also be used for service notifications")"
+                           placeholder="name@organization.org" />
+
+                    @Html.ValidationMessageFor(e => e.UserName)
+                </div>
+                <div>
+                    @Html.LabelFor(e => e.FirstName, translator.T("First Name"))
+                    <input type="text" required="required" class="form-control"
+                           id="@Html.IdFor(e => e.FirstName)" name="@Html.NameFor(e => e.FirstName)"
+                           placeholder="Joe"
+                           value="@Model.FirstName" />
+                    @Html.ValidationMessageFor(e => e.FirstName)
+                </div>
+                <div>
+                    @Html.LabelFor(e => e.LastName, translator.T("Last Name"))
+                    <input type="text" required="required" class="form-control"
+                           id="@Html.IdFor(e => e.LastName)" name="@Html.NameFor(e => e.LastName)"
+                           value="@Model.LastName"
+                           placeholder="Bloggs" />
+                    @Html.ValidationMessageFor(e => e.LastName)
+                </div>
+
+                <div>
+                    @Html.LabelFor(e => e.Password, translator.T("Password"))
+                    <input type="password" required="required" id="@Html.IdFor(e => e.Password)" name="@Html.NameFor(e => e.Password)" value="@Model.Password" placeholder="password" />
+                    @Html.ValidationMessageFor(e => e.Password)
+                </div>
+
+
+                <div>
+                    <label>
+                        <input type="checkbox"
+                               id="@Html.IdFor(e=>e.NotifyUser)" name="@Html.NameFor(e=>e.NotifyUser)" value="true"
+                               checked="checked" /> Notify this user when the account is created? <i class="fa fa-envelope-o"></i>
+                    </label>
+                </div>
+
+                <input class="k-button" type="submit" value="@translator.T("Finish")" />
+            </div>
+            <div class="col-sm-4">
+                <div class="multi-section">
+                    @Html.LabelFor(e => e.SelectedChainIds, "Chains")
+                    @(Html.Kendo().MultiSelectFor(m => m.SelectedChainIds)
+                          .DataTextField("Name")
+                          .DataValueField("Id")
+                          .Placeholder("Select Chains...")
+                          .AutoBind(true)
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("ListReadonly", "Chains", new { area = "" });
+                              })
+                              .ServerFiltering(false);
+                          })
+            )
+        </div>
+        <div class="multi-section">
+            @Html.LabelFor(e => e.SelectedStoreIds, "Stores")
+            @(Html.Kendo().MultiSelectFor(m => m.SelectedStoreIds)
+                          .DataTextField("ClientSiteName")
+                          .DataValueField("Id")
+                          .Placeholder("Select Stores...")
+                          .AutoBind(true)
+                          .DataSource(source =>
+                          {
+                              source.Read(read =>
+                              {
+                                  read.Action("ListReadonly", "Sites", new { area = "" });
+                              })
+                              .ServerFiltering(true);
+                          })
+            )
+        </div>
+        <style scoped>
+            .multi-section {
+                width: 250px;
+            }
+        </style>
+    </div>
+        }
+
+    </div>
+@if(workContext.CurrentChain.Available)
+{
+    <div id="FindUserWrapper" class="sb-right content1">
+        <div class="header">
+            <h4>Already a user?</h4>
+        </div>
+        @*<p>Use this form to grant a current MyAndromeda user access to @(workContext.CurrentChain.Chain.Name). </p>*@
+        @using (Html.BeginForm("AddUserToChain", "UserManagement"))
+        {
+            <div>
+                <label for="FindUser">@translator.T("User Name/Email")</label>
+                <input type="text" 
+                    id="FindUser" name="@Html.NameFor(e => e.UserName)" 
+                    required="required"
+                    placeholder="name@organization.org" />
+                <div>
+                <label><input type="checkbox"
+                    name="@Html.NameFor(e=>e.NotifyUser)" value="true"
+                    checked="checked"/> Notify this user when the account is updated? <i class="fa fa-envelope-o"></i></label>
+                </div>
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+            <div class="col-xs-12">
+                <input class="k-button" type="submit" value="@translator.T("Finish")" />
+            </div>
+        }
+
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var tooltip = $("#CreateUserWrapper").kendoTooltip({
+                filter: "input.tooltip-info",
+                width: 120,
+                position: "right"
+            }).data("kendoTooltip");
+        });
+    </script>
+}

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database">
+
+    <!-- Referenced by main application context configuration file -->
+    <description>
+        The Andro Admin object definitions for the Data Access Objects.
+    </description>
+
+    <object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+        <property name="ConfigSections">
+            <list>
+                <value>databaseSettings</value>
+                <value>SiteConfiguration</value>
+            </list>
+        </property>
+    </object>
+
+    <!-- Database and NHibernate Configuration -->
+    <db:provider id="DbProvider"
+                     provider="System.Data.SqlClient"
+                     connectionString="Server=${db.datasource};Integrated Security=no;User ID=${db.user};PWD=${db.password};initial catalog=${db.database}"/>
+
+    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate21">
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="MappingAssemblies">
+            <list>
+                <value>AndroAdmin.Dao.NHibernate</value>
+            </list>
+        </property>
+
+        <property name="HibernateProperties">
+            <dictionary>
+                <entry key="hibernate.show_sql" value="false"/>
+                <entry key="connection.isolation" value="ReadCommitted" />
+                <entry key="default_schema" value="AndroUsers.dbo" />
+
+                <entry key="connection.provider"
+                     value="NHibernate.Connection.DriverConnectionProvider"/>
+
+                <entry key="dialect"
+                       value="NHibernate.Dialect.MsSql2000Dialect"/>
+
+                <entry key="connection.driver_class"
+                       value="NHibernate.Driver.SqlClientDriver"/>
+
+                <entry key="cache.use_second_level_cache"
+                        value="true"/>
+                <entry key="hibernate.cache.use_query_cache"
+                  value="true"/>
+
+                <entry key="cache.current_session_context_class"
+                       value="Spring.Data.NHibernate.SpringSessionContext"/>
+
+                <!--todo: is this working ???
+                <entry key="cache.provider_class"
+               value="NHibernate.Caches.SysCache.SysCacheProvider, NHibernate.Caches.SysCache"/>
+                <entry key="expiration" value="120" />
+                 -->
+
+            </dictionary>
+        </property>
+
+        <property name="ExposeTransactionAwareSessionFactory" value="true" />
+
+    </object>
+
+
+    <object id="transactionManager"
+          type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate21">
+
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+
+    </object>
+
+    <!-- Data Access Objects-->
+    <object id="GenericHibernateDAOFactory" abstract="true">
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+    </object>
+
+    <object id="AndroAdminHibernateDAOFactory" type="AndroAdmin.Dao.NHibernate.Dao.Factory.AndroAdminHibernateDAOFactory, AndroAdmin.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+    </object>
+
+    <object id="AndroUserDao" type="AndroAdmin.Dao.NHibernate.AndroUserDao, AndroAdmin.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="AndroAdminHibernateDaoFactory" ref="AndroAdminHibernateDaoFactory"/>
+    </object>
+    <object id="AndroUserPermissionDao" type="AndroAdmin.Dao.NHibernate.AndroUserPermissionDao, AndroAdmin.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="AndroAdminHibernateDaoFactory" ref="AndroAdminHibernateDaoFactory"/>
+    </object>
+    <object id="ProjectDao" type="AndroAdmin.Dao.NHibernate.ProjectDao, AndroAdmin.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="AndroAdminHibernateDaoFactory" ref="AndroAdminHibernateDaoFactory"/>
+    </object>      
+
+</objects>

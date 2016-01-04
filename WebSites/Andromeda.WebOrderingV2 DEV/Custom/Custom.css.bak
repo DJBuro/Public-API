@@ -1,0 +1,96 @@
+/*!
+    Copyright © 2014 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+/* BUTTON */
+.highlightedButton a, .button a
+{
+    background-color: #7a9609;
+    color: #74098f;
+}
+.sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active
+{
+    background-color: #7a9609;
+    color: #74098f;
+}
+.itemName, .dealName, .siteListCollectFromHere, #storeDetailsDeliveryTimes
+{
+    background-color: #7a9609 !IMPORTANT;
+    color: #74098f !IMPORTANT;
+}
+
+/* SELECTED BUTTON */
+.selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+{
+    background-color: #0e7ea0;
+    color: #96a309;
+}
+
+/* MAIN MENU BAR */
+#mainMenu
+{
+    background-color: #be1349;
+}
+
+/* MAIN MENU TEXT */
+.mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active
+{
+    color: #39129d;
+}
+
+/* MAIN MENU SELECTED TEXT */
+.mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active
+{
+    color: <<MAINMENUSELECTEDTEXTCOLOUR>>;
+}
+/* STARTBACKGROUNDIMAGEBLOCK */
+@media only screen and (min-width: 601px)
+{
+    body
+    {
+        background-color: transparent;
+        background: url(http://cdn.myandromedaweb.co.uk/test1/websites/3/customthemesettings/desktopbackgroundimage/desktopbackgroundimage.png) repeat;
+    }
+    header
+    {
+        background: transparent;
+    }
+    #viewContainerOuter
+    {
+        background-color: transparent;
+    }
+    #staticContentOuter
+    {
+        background-color: transparent;
+    }
+    #menuSectionWrapper 
+    {
+        background-color: transparent;
+    }
+    #footerWrapper
+    {
+        background: transparent;
+    }
+}
+
+@media only screen and (max-width: 600px)
+{
+    body
+    {
+        background: url(http://cdn.myandromedaweb.co.uk/test1/websites/3/customthemesettings/mobilebackgroundimage/mobilebackgroundimage.png) repeat;
+        background-color: transparent;
+    }
+}
+/* ENDBACKGROUNDIMAGEBLOCK */
+
+#privacyPolicy  { display: none; }
+#cookiePolicy  { display: none; }
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TrackinfoValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="BotypeValidator" test="Botype"><v:message id="error.Botype.required" providers="BotypeErrors, ValidationSummary"/></v:required>
+	<v:required id="NameValidator" test="Name"><v:message id="error.Name.required" providers="NameErrors, ValidationSummary"/></v:required>
+	<v:required id="DeletedValidator" test="Deleted"><v:message id="error.Deleted.required" providers="DeletedErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

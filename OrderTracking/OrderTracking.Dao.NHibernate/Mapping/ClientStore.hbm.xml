@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.ClientStore, OrderTracking.Dao" table="ClientStore" batch-size="100">
+    <cache usage="read-write" />
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_ClientStore"/>
+			<generator class="native" />
+		</id>
+		<property name="ClientId" type="Int64">
+			<column name="ClientId" length="8" sql-type="int" not-null="true"/>
+		</property>
+    <property name="StoreId" type="Int64">
+      <column name="StoreId" length="8" sql-type="int" not-null="true"/>
+    </property>
+	</class>
+</hibernate-mapping>
+
+
+

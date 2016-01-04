@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database">
+
+    <!-- Referenced by main application context configuration file -->
+    <description>
+        The Loyalty object definitions for the Data Access Objects.
+    </description>
+
+    <object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+        <property name="ConfigSections">
+            <list>
+                <value>databaseSettings</value>
+                <value>SiteConfiguration</value>
+                <!--todo: implement?-->
+            </list>
+        </property>
+    </object>
+
+    <!-- Database and NHibernate Configuration -->
+    <db:provider id="DbProvider"
+                     provider="System.Data.SqlClient"
+                     connectionString="Server=${db.datasource};Integrated Security=no;User ID=${db.user};PWD=${db.password};initial catalog=${db.database}"/>
+
+    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate12">
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="MappingAssemblies">
+            <list>
+                <value>Loyalty.Dao.NHibernate</value>
+            </list>
+        </property>
+        <!-- todo: add? hibernate.cache.use_query_cache -->
+        <property name="HibernateProperties">
+            <dictionary>
+
+                <entry key="hibernate.connection.provider"
+                       value="NHibernate.Connection.DriverConnectionProvider"/>
+
+                <entry key="hibernate.dialect"
+                       value="NHibernate.Dialect.MsSql2000Dialect"/>
+
+                <entry key="hibernate.connection.driver_class"
+                       value="NHibernate.Driver.SqlClientDriver"/>
+
+                <entry key="hibernate.cache.use_second_level_cache"
+                value="true"/>
+                
+                <entry key="hibernate.cache.use_query_cachee"
+                                value="true"/>
+            </dictionary>
+        </property>
+        <property name="ExposeTransactionAwareSessionFactory" value="true" />
+
+
+    </object>
+
+
+    <object id="transactionManager"
+          type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate12">
+
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+
+    </object>
+
+    <!-- Data Access Objects-->
+    <object id="GenericHibernateDAOFactory" abstract="true">
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+    </object>
+
+    <object id="LoyaltyHibernateDAOFactory" type="Loyalty.Dao.NHibernate.Dao.Factory.LoyaltyHibernateDAOFactory, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+    </object>
+
+    <object id="AccountAddressDao" type="Loyalty.Dao.NHibernate.AccountAddressDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="AccountStatusDao" type="Loyalty.Dao.NHibernate.AccountStatusDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="CompanyDao" type="Loyalty.Dao.NHibernate.CompanyDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="CompanyUserTitleDao" type="Loyalty.Dao.NHibernate.CompanyUserTitleDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="CountryDao" type="Loyalty.Dao.NHibernate.CountryDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+    
+    <object id="CountryCurrencyDAO" type="Loyalty.Dao.NHibernate.CountryCurrencyDAO, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+    
+    <object id="CurrencyDao" type="Loyalty.Dao.NHibernate.CurrencyDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+    
+    <object id="SiteDao" type="Loyalty.Dao.NHibernate.SiteDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+    
+    <object id="LoyaltyAccountDao" type="Loyalty.Dao.NHibernate.LoyaltyAccountDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="LoyaltyAccountStatusDao" type="Loyalty.Dao.NHibernate.LoyaltyAccountStatusDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="LoyaltyCardDao" type="Loyalty.Dao.NHibernate.LoyaltyCardDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="LoyaltyLogDao" type="Loyalty.Dao.NHibernate.LoyaltyLogDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="LoyaltyUserDao" type="Loyalty.Dao.NHibernate.LoyaltyUserDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="LoyaltyCardStatusDao" type="Loyalty.Dao.NHibernate.LoyaltyCardStatusDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="OrderItemHistoryDao" type="Loyalty.Dao.NHibernate.OrderItemHistoryDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="OrderTypeDao" type="Loyalty.Dao.NHibernate.OrderTypeDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="RamesesAddressDao" type="Loyalty.Dao.NHibernate.RamesesAddressDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="RamesesAddressLoyaltyCardDao" type="Loyalty.Dao.NHibernate.RamesesAddressLoyaltyCardDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="StatusDao" type="Loyalty.Dao.NHibernate.StatusDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="TransactionHistoryDao" type="Loyalty.Dao.NHibernate.TransactionHistoryDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+    <object id="UserTitleDao" type="Loyalty.Dao.NHibernate.UserTitleDao, Loyalty.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="LoyaltyHibernateDAOFactory" ref="LoyaltyHibernateDAOFactory"/>
+    </object>
+
+</objects>

@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudWCFServices", "AndroCloudWCFServices.csproj", "{80381984-537E-4702-9CF8-6BE31FD76901}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F703B9B5-C7FE-4C15-B997-E985646ED11E}"
+	ProjectSection(SolutionItems) = preProject
+		AndroCloudAPI1.vsmdi = AndroCloudAPI1.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudServicesTests", "..\AndroCloudServicesTests\AndroCloudServicesTests.csproj", "{A16DBBD9-6F7C-4AE4-9876-3ED359C8AAE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudServices", "AndroCloudServices\AndroCloudServices.csproj", "{4E767597-373B-4AA6-A47A-8F6201008301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudDataAccess", "..\..\..\DataAccess\AndroCloudDataAccess\AndroCloudDataAccess.csproj", "{408FBA0E-E649-493E-B4D4-8A5328265450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudPrivateWCFServices", "..\AndroCloudPrivateWCFServices\AndroCloudPrivateWCFServices.csproj", "{1DF8E912-A18B-4108-BD71-0101BF4073A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudDataAccessEntityFramework", "..\..\..\DataAccess\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj", "{0520364A-A9B3-4AD6-B125-D935DCCAF731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroCloudHelper", "..\AndroCloudWCFHelper\AndroCloudHelper.csproj", "{D9959D2F-2016-4355-BC22-061EA8A5E267}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.0.0.86:8080/tfs/androtfs
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\..\\DataAccess\\AndroCloudDataAccess\\AndroCloudDataAccess.csproj
+		SccProjectName1 = ../../../DataAccess/AndroCloudDataAccess
+		SccLocalPath1 = ..\\..\\..\\DataAccess\\AndroCloudDataAccess
+		SccProjectUniqueName2 = ..\\AndroCloudServicesTests\\AndroCloudServicesTests.csproj
+		SccProjectName2 = ../AndroCloudServicesTests
+		SccLocalPath2 = ..\\AndroCloudServicesTests
+		SccProjectUniqueName3 = AndroCloudServices\\AndroCloudServices.csproj
+		SccProjectName3 = AndroCloudServices
+		SccLocalPath3 = AndroCloudServices
+		SccProjectUniqueName4 = AndroCloudWCFServices.csproj
+		SccLocalPath4 = .
+		SccProjectUniqueName5 = ..\\AndroCloudPrivateWCFServices\\AndroCloudPrivateWCFServices.csproj
+		SccProjectName5 = ../AndroCloudPrivateWCFServices
+		SccLocalPath5 = ..\\AndroCloudPrivateWCFServices
+		SccProjectUniqueName6 = ..\\..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework\\AndroCloudDataAccessEntityFramework.csproj
+		SccProjectName6 = ../../../DataAccess/AndroCloudDataAccessEntityFramework
+		SccLocalPath6 = ..\\..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework
+		SccProjectUniqueName7 = ..\\AndroCloudWCFHelper\\AndroCloudHelper.csproj
+		SccProjectName7 = ../AndroCloudWCFHelper
+		SccLocalPath7 = ..\\AndroCloudWCFHelper
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = AndroCloudAPI1.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80381984-537E-4702-9CF8-6BE31FD76901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80381984-537E-4702-9CF8-6BE31FD76901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80381984-537E-4702-9CF8-6BE31FD76901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80381984-537E-4702-9CF8-6BE31FD76901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A16DBBD9-6F7C-4AE4-9876-3ED359C8AAE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A16DBBD9-6F7C-4AE4-9876-3ED359C8AAE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A16DBBD9-6F7C-4AE4-9876-3ED359C8AAE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A16DBBD9-6F7C-4AE4-9876-3ED359C8AAE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E767597-373B-4AA6-A47A-8F6201008301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E767597-373B-4AA6-A47A-8F6201008301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E767597-373B-4AA6-A47A-8F6201008301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E767597-373B-4AA6-A47A-8F6201008301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408FBA0E-E649-493E-B4D4-8A5328265450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408FBA0E-E649-493E-B4D4-8A5328265450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408FBA0E-E649-493E-B4D4-8A5328265450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408FBA0E-E649-493E-B4D4-8A5328265450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DF8E912-A18B-4108-BD71-0101BF4073A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DF8E912-A18B-4108-BD71-0101BF4073A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DF8E912-A18B-4108-BD71-0101BF4073A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DF8E912-A18B-4108-BD71-0101BF4073A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0520364A-A9B3-4AD6-B125-D935DCCAF731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0520364A-A9B3-4AD6-B125-D935DCCAF731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0520364A-A9B3-4AD6-B125-D935DCCAF731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0520364A-A9B3-4AD6-B125-D935DCCAF731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9959D2F-2016-4355-BC22-061EA8A5E267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9959D2F-2016-4355-BC22-061EA8A5E267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9959D2F-2016-4355-BC22-061EA8A5E267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9959D2F-2016-4355-BC22-061EA8A5E267}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

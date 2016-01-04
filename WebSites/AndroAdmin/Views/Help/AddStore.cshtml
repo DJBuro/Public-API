@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Andro Admin Home";
+}
+
+<div class="helpPage">
+    <h2>@Html.ActionLink("Help", "Index") / Add Store</h2>
+
+    <p>Click the “Add a new store” link to add a new store.</p>
+
+    <img src="@Url.Content("~/Content/Images/Help/AddStore.png")" />
+
+    <p>Fill out the form as required:</p>
+
+    <h3>Andromeda store name</h3>
+    <p>The “Andromeda store name” is the store name used internally within Andromeda only. This store name would not normally be visible to anyone outside Andromeda.</p>
+
+    <h3>Andromeda store ID</h3>
+    <p>The “Andromeda store ID” should be the same as the store id in AndroDb.  Again, this is our internal id for the store and would not normally be visible to anyone outside Andromeda.</p>
+    <p class="warning">Make sure the Andromeda store ID is correct and exactly matches the one in AndroDb.  If you make a mistake you will have to mark the store as “disabled” and create another store with the correct details.</p>
+
+    <h3>Customer store ID</h3>
+    <p>The “Customer store ID” is an id that the customer uses to identify their store.  Some customers, especially chains, have their own IT systems and their own store ids.  If the customer has their own store ID for new store then you should enter it.</p>
+    <p class="warning">If the customer is using AMS then it is very important that the correct customer store ID is entered as AMS depends on this.  </p>
+    <p>If the customer is using AMS but they do not have their own store ids then you should make up a store id.  Do NOT use the Andromeda store id.  Start with customer store id 1 and if there are multiple stores in the chain  then increment the number, making sure not to use the same number for different stores in the same chain.  </p>
+
+    <h3>Store status</h3>
+    <p>The “Store status” is the current status of the store.  If the store is currently trading then select “Live”.    If the store is not open yet but will open at some point then select the status “Future”.  If the store is closed either temporarily or permenantly select the status of “Disabled”.</p>
+
+    <h3>Country</h3>
+    <p>The “Country” is the country in which the store is located.  This is used by AMS and it is important that it is correct.</p>
+
+    <h3>Chain</h3>
+    <p>The “Chain” is the chain of stores that the store belongs to.  This is used by AMS and it is important that it is correct.</p>
+
+</div>
+

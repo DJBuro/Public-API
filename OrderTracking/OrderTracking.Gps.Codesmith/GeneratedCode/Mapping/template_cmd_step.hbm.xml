@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Templatecmdstep, OrderTracking.Gps.Dao" table="template_cmd_step">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="template_cmd_step_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__template__9336D71115FA39EE"/>
+			<generator class="native" />
+		</id>
+		<property name="Template" type="String">
+			<column name="template" length="16" sql-type="text" not-null="false"/>
+		</property>
+		<property name="Transport" type="String">
+			<column name="transport" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Stepdescription" type="String">
+			<column name="step_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="Gatecommand" class="OrderTracking.Gps.Dao.Domain.Gatecommand, OrderTracking.Gps.Dao">
+			<column name="gate_command_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

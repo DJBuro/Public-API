@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8F436BA-AEDC-421E-B90C-E2C5E191DC73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OrderTracking.Dao</RootNamespace>
+    <AssemblyName>OrderTracking.Dao</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\IClientWebsiteCustomContentDao.cs" />
+    <Compile Include="Dao\IClientStoreDao.cs" />
+    <Compile Include="Dao\IClientDao.cs" />
+    <Compile Include="Dao\IAccountDao.cs" />
+    <Compile Include="Dao\IApnDao.cs" />
+    <Compile Include="Dao\ICoordinatesDao.cs" />
+    <Compile Include="Dao\ICustomerDao.cs" />
+    <Compile Include="Dao\IDriverDao.cs" />
+    <Compile Include="Dao\IDriverOrderDao.cs" />
+    <Compile Include="Dao\IGenericDao.cs" />
+    <Compile Include="Dao\IGeoAddress.cs" />
+    <Compile Include="Dao\IGeoCoordinates.cs" />
+    <Compile Include="Dao\IItemDao.cs" />
+    <Compile Include="Dao\ILogDao.cs" />
+    <Compile Include="Dao\IOrderDao.cs" />
+    <Compile Include="Dao\IOrderStatusDao.cs" />
+    <Compile Include="Dao\ISmsCredentialsDao.cs" />
+    <Compile Include="Dao\IStatusDao.cs" />
+    <Compile Include="Dao\IStoreDao.cs" />
+    <Compile Include="Dao\ITrackerCommandsDao.cs" />
+    <Compile Include="Dao\ITrackerDao.cs" />
+    <Compile Include="Dao\ITrackerStatusDao.cs" />
+    <Compile Include="Dao\ITrackerTypeDao.cs" />
+    <Compile Include="Domain\Account.cs" />
+    <Compile Include="Domain\Apn.cs" />
+    <Compile Include="Domain\CommandType.cs" />
+    <Compile Include="Domain\Coordinates.cs" />
+    <Compile Include="Domain\Client.cs" />
+    <Compile Include="Domain\ClientStore.cs" />
+    <Compile Include="Domain\ClientWebsiteCustomContent.cs" />
+    <Compile Include="Domain\Customer.cs" />
+    <Compile Include="Domain\CustomerDetails.cs" />
+    <Compile Include="Domain\CustomerOrders.cs" />
+    <Compile Include="Domain\Driver.cs" />
+    <Compile Include="Domain\DriverOrders.cs" />
+    <Compile Include="Domain\GeoCoordinates.cs" />
+    <Compile Include="Domain\ClientMapData.cs" />
+    <Compile Include="Domain\Item.cs" />
+    <Compile Include="Domain\Log.cs" />
+    <Compile Include="Domain\Order.cs" />
+    <Compile Include="Domain\OrderStatus.cs" />
+    <Compile Include="Domain\Results.cs" />
+    <Compile Include="Domain\SmsCredentials.cs" />
+    <Compile Include="Domain\Status.cs" />
+    <Compile Include="Domain\Store.cs" />
+    <Compile Include="Domain\StoreDetails.cs" />
+    <Compile Include="Domain\StoreMapData.cs" />
+    <Compile Include="Domain\Tracker.cs" />
+    <Compile Include="Domain\TrackerCommands.cs" />
+    <Compile Include="Domain\TrackerStatus.cs" />
+    <Compile Include="Domain\TrackerType.cs" />
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\DomainAbstract\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

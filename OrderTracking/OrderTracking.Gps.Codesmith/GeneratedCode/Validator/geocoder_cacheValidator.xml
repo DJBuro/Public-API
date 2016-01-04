@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="GeocodercacheValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="LonValidator" test="Lon"><v:message id="error.Lon.required" providers="LonErrors, ValidationSummary"/></v:required>
+	<v:required id="LatValidator" test="Lat"><v:message id="error.Lat.required" providers="LatErrors, ValidationSummary"/></v:required>
+	<v:required id="LonlathashValidator" test="Lonlathash"><v:message id="error.Lonlathash.required" providers="LonlathashErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

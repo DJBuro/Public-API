@@ -1,0 +1,81 @@
+﻿<script type="javascript/worker" id="telemetrySession">
+
+    self.addEventListener
+    (
+        'message',
+        function(e)
+        {
+            var data = e.data;
+       //     debugger;
+            var serviceUrl = data.serverUrl + "/TelemetrySession/" + data.siteId + "?key=x";
+
+            GetData();
+
+            function GetData()
+            {
+         //       debugger;
+
+                try
+                {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('PUT', serviceUrl, false);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.onreadystatechange =
+                        function ()
+                        {
+                            if (xhr.readyState == 4)
+                            {
+                                if (xhr.status == 200)
+                                {
+                                    // Posting Back the Result
+                                    postMessage(xhr.responseText);
+                                }
+                            }
+                        };
+                    xhr.send(JSON.stringify(data.session));
+                }
+                catch (e)
+                {
+                    postMessage(null);
+                }
+            }
+        },
+        false
+    );
+
+</script>
+
+<script type="javascript/worker" id="telemetry">
+
+    self.addEventListener
+    (
+        'message',
+        function(e)
+        {
+            var data = e.data;
+
+            var serviceUrl = data.serverUrl + "/Telemetry/" + data.siteId + "?key=x";
+
+            GetData();
+
+            function GetData()
+            {
+                try
+                {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('PUT', serviceUrl, false);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.onreadystatechange = function () {}; // Fire and forget!
+                    xhr.send(JSON.stringify(data.telemetryData));
+                }
+                catch (e)
+                {
+                    postMessage(null);
+                }
+            }
+        },
+        false
+    );
+
+</script>
+

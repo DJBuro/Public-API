@@ -1,0 +1,218 @@
+﻿<script type="text/html" id="toppingsView">
+
+    <!-- ko if: viewModel.contentViewModel() != undefined && viewModel.contentViewModel().popupViewModel != undefined && viewModel.contentViewModel().popupViewModel() != undefined-->
+    <!-- ko with: viewModel.contentViewModel().popupViewModel() -->
+    <!-- Header -->
+    <div class="popupBoxHeaderContainer">
+
+        <!-- ko if: guiHelper.isMobileMode() -->
+        <!-- ko if: toppingsPopupHelper.mode() == 'addItem' -->
+        <h1 data-bind="html: textStrings.tpmAddItem"></h1>
+        <!-- /ko -->
+        <!-- ko if: toppingsPopupHelper.mode() == 'editItem' -->
+        <h1 data-bind="html: textStrings.tpmEditItem"></h1>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- Item name & description -->
+        <div class="popupItemDetails">
+            <!-- ko if: cartItem().thumbnail != undefined -->
+            <img src="#" data-bind="'attr': { src: menuHelper.menuDataThumbnails().Server.Endpoint + cartItem().thumbnail.Src, height: cartItem().thumbnail.Height + 'px', width: cartItem().thumbnail.Width + 'px' }" />
+            <!-- /ko -->
+            <h2>
+                <span id="popupName" data-bind="html: cartItem().name"></span>
+            </h2>
+            <div id="popupDescription" data-bind="html: cartItem().description"></div>
+        </div>
+
+        <!-- Options -->
+        <div id="popupOptions">
+
+            <div id="popupOptionsRight">
+                <!-- Accept item changes button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'editItem' -->
+                <div id="popupUpdateItemButton" class="highlightedButton">
+                    <a href="#" title="Update item" data-bind="click: acceptChanges, text: textStrings.tpAcceptChanges"></a>
+                </div>
+                <!-- /ko -->
+                <!-- Add item to cart button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'addItem' -->
+                <div id="popupAddToCartButton" class="highlightedButton">
+                    <a href="#" title="Add item to your order" data-bind="click: commitToCart, text: textStrings.tpAdd"></a>
+                </div>
+                <!-- /ko -->
+                <!-- Add/Edit deal item button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'addDealItem' || toppingsPopupHelper.mode() == 'editDealItem' -->
+                <div id="popupAddToDealButton" class="highlightedButton">
+                    <a href="#" title="Add item to your order" data-bind="click: commitToDeal, text: textStrings.tpOk"></a>
+                </div>
+                <!-- /ko -->
+                <!-- Remove item from cart button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'editItem' -->
+                <div id="popupRemoveFromCartButton" class="button">
+                    <a href="#" title="Cancel" data-bind="click: removeFromCart, text: textStrings.tpRemove"></a>
+                </div>
+                <!-- /ko -->
+                <!-- Cancel button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'addItem' -->
+                <div id="popupCancelButton" class="button">
+                    <a href="#" title="Cancel" data-bind="click: cancel, text: textStrings.tpCancel"></a>
+                </div>
+                <!-- /ko -->
+                <!-- Cancel deal button -->
+                <!-- ko if: toppingsPopupHelper.mode() == 'addDealItem' || toppingsPopupHelper.mode() == 'editDealItem' -->
+                <div id="popupCancelDealButton" class="button">
+                    <a href="#" title="Cancel" data-bind="click: cancelDeal, text: textStrings.tpCancelDeal"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+
+            <div id="popupOptionsLeft">
+                <div id="popupOptionsTopPrice">
+
+                    <!-- Price header-->
+                    <div id="popupPriceHeader">
+                        <!-- ko if: toppingsPopupHelper.mode() == 'addDealItem' || toppingsPopupHelper.mode() == 'editDealItem' -->
+                        <span data-bind="text: textStrings.tpAddedCharges"></span>
+                        <!-- /ko -->
+                        <!-- ko if: toppingsPopupHelper.mode() == 'addItem' || toppingsPopupHelper.mode() == 'editItem' -->
+                        <span data-bind="html: textStrings.tpItemPrice"></span>
+                        <!-- /ko -->
+                    </div>
+
+                    <!-- Price -->
+                    <div id="popupPrice" data-bind="html: cartItem().displayPrice()"></div>
+                </div>
+
+                <div id="popupOptionsTopQuantity">
+                    <!-- Quantity -->
+                    <!-- ko if: toppingsPopupHelper.mode() != 'addDealItem' && toppingsPopupHelper.mode() != 'editDealItem' -->
+                    <div id="popupQuantity">
+                        <div id="popupQuantityHeader">
+                            <span data-bind="text: textStrings.tpQuantity"></span>
+                        </div>
+                        <div id="popupQuantityDetails">
+                            <span data-bind="text: cartItem().quantity"></span>
+                            <a id="popupDecreaseQty" data-bind="click: decreaseQuantity" href="#">-</a>
+                            <a id="popupIncreaseQty" data-bind="click: increaseQuantity" href="#">+</a>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+
+                <div id="popupCatContainer">
+
+                    <!-- ko if: cartItem().category1s().length > 0 || cartItem().category2s().length > 0 -->
+                    <div id="popupCatHeader" data-bind="text: textStrings.tpItemType"></div>
+                    <!-- /ko -->
+                    <!-- Cat 1 -->
+                    <!-- ko if: cartItem().category1s().length > 0 -->
+                    <div id="popupCategory1">
+                        <!-- ko if: cartItem().category1s().length > 1 -->
+                        <select data-bind="options: cartItem().category1s, optionsText: 'Name', value: cartItem().selectedCategory1, event: { change: popupCategory1Changed }"></select>
+                        <!-- /ko -->
+                        <!-- ko if: cartItem().category1s().length == 1 -->
+                        <span data-bind="text: cartItem().category1s().length == 1 ? cartItem().category1s()[0].Name : ''"></span>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- Cat 2 -->
+                    <!-- ko if: cartItem().category2s().length > 0 -->
+                    <div id="popupCategory2">
+                        <!-- ko if: cartItem().category2s().length > 1 -->
+                        <select data-bind="options: cartItem().category2s, optionsText: 'Name', value: cartItem().selectedCategory2, event: { change: popupSelectedItemChanged }"></select>
+                        <!-- /ko -->
+                        <!-- ko if: cartItem().category2s().length == 1 -->
+                        <span data-bind="text: cartItem().category2s().length == 1 ? cartItem().category2s()[0].Name : ''"></span>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Popup body -->
+    <div id="popupBody">
+        <div id="popupToppingsContainer" data-bind="visible: cartItem().toppings().length > 0">
+            <h1 data-bind="text: textStrings.tpCustomize"></h1>
+
+            <!-- ko if: cartItem().menuItem != undefined && cartItem().menuItem.DefTopIds.length > 0 -->
+            <span id="popupToppingsHelp" data-bind="text: textStrings.tpTickPrompt"></span>
+            <!-- /ko -->
+            <!-- ko if: cartItem().freeToppingsRemaining() > 0 -->
+            <div id="popupFreeToppings">
+                <span data-bind="text: textStrings.tpFreeItems1"></span>
+                <span data-bind="text: cartItem().freeToppingsRemaining()"></span>
+                <span data-bind="text: cartItem().freeToppingsRemaining() <= 1 ? textStrings.tpFreeItems2Singular : textStrings.tpFreeItems2Multiple"></span>
+            </div>
+            <!-- /ko -->
+
+            <div class="popupToppingsHeaders" data-bind="visible: settings.showDoubleToppings">
+                <div class="popupToppingsSingle" data-bind="visible: cartItem().toppings().length > 0">
+                <span data-bind="text: textStrings.tpSingle"></span>
+            </div>
+                <div class="popupToppingsDouble" data-bind="visible: cartItem().toppings().length > 0">
+                    <span data-bind="text: textStrings.tpDouble"></span>
+                </div>
+
+                <div class="popupToppingsSingle2" data-bind="visible: cartItem().toppings().length > 1">
+                    <span data-bind="text: textStrings.tpSingle"></span>
+                </div>
+                <div class="popupToppingsDouble2" data-bind="visible: cartItem().toppings().length > 1">
+                    <span data-bind="text: textStrings.tpDouble"></span>
+                </div>
+
+                <div class="popupToppingsSingle2" data-bind="visible: cartItem().toppings().length > 2">
+                    <span data-bind="text: textStrings.tpSingle"></span>
+                </div>
+                <div class="popupToppingsDouble2" data-bind="visible: cartItem().toppings().length > 2">
+                    <span data-bind="text: textStrings.tpDouble"></span>
+                </div>
+            </div>
+
+            <div class="popupToppings">
+                <!-- ko foreach: cartItem().toppings -->
+                <div class="popupTopping">
+                    <div data-bind="'attr': { 'class': type == 'removable' ? 'popupRemovableTopping' : 'popupAdditionalTopping' }">
+                        <span class="popupToppingName" data-bind="text: topping.Name == undefined ? topping.ToppingName : topping.Name"></span>
+                        <span class="popupToppingPrice" data-bind="html: singlePrice"></span>
+                        <input type="checkbox" data-bind="checked: selectedSingle, click: $parent.singleChanged" />
+                    </div>
+
+                    <!-- ko if: settings.showDoubleToppings -->
+                    <span class="popupToppingPrice" data-bind="html: doublePrice"></span>
+                    <input type="checkbox" data-bind="checked: selectedDouble, click: $parent.doubleChanged" />
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+
+        <div class="popupExtraBits">
+
+            <!-- ko if: settings.chefCommentsEnabled -->
+            <div class="popupChefComments">
+                <h1 data-bind="text: textStrings.tpCommentsForChef"></h1>
+                <div id="popupChefCommentsInner">
+                    <p data-bind="text: textStrings.tpExtraBits"></p>
+                    <textarea data-bind="value: cartItem().instructions"></textarea>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: settings.personEnabled -->
+            <div class="popupPerson">
+                <h1 data-bind="text: textStrings.tpForPeson"></h1>
+                <div id="popupPersonInner">
+                    <p data-bind="text: textStrings.tpPerson"></p>
+                    <input type="text" data-bind="value: cartItem().person" />
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+
+    <!-- /ko -->
+    <!-- /ko -->
+</script>

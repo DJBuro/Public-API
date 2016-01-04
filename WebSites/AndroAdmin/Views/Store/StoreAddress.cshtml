@@ -1,0 +1,985 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+}
+
+<!-- Breadcrumb -->
+<h2>@Html.ActionLink("Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreAddressPage" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <!-- Tabs -->
+    @Html.Partial("StoreDetailsTabsPartial", Model, new ViewDataDictionary {{ "SelectedTab", "StoreAddress" }})
+    
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+
+    <!-- Store Address -->
+    @if (ViewBag.Edit)
+    {
+        using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.Store.Id)
+            @Html.HiddenFor(model => model.CountryId)
+
+            if (ViewBag.Permissions.Contains("EditStore"))
+            {
+                <div>
+                    <div class="actionLinks" style="float:left;">
+                        <input type="submit" value="save changes" class="button" />
+                    @Html.ActionLink("cancel changes", "StoreAddress", new { id = Model.Store.Id, edit = false }, new { @class = "changeLink" })
+                    </div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreAddress", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>
+            }
+            
+            if (@Model.Address.Country.ISO3166_1_alpha_2 == "GB")
+            {
+                // UK Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>UK address details</span>
+                    </legend>
+
+                    <div>
+                        @Html.ValidationSummary(true) 
+                    </div>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Organisation 1:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                    </div>
+                    <div class="formFieldHelp">E.g. Sales Department</div>
+
+                    <!-- Org2 -->
+                    <div class="editor-label">
+                        Organisation 2:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org2) 
+                    </div>
+                    <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Premises 1:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                    </div>
+                    <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Premises 2:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                    </div>
+                    <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Road number:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                    </div>
+                    <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Road name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                    </div>
+                    <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                    <!-- City -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Town) 
+                    </div>
+                    <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                    <!-- Locality -->
+                    <div class="editor-label">
+                        Locality:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Locality) 
+                    </div>
+                    <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                    <!-- County -->
+                    <div class="editor-label">
+                        County:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.County) 
+                    </div>
+                    <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                    <!-- PostCode -->
+                    <div class="editor-label">
+                        PostCode:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                    </div>
+                    <div class="formFieldHelp">The post code E.g. "SM6 0DZ"</div>
+            
+                    <!-- DPS -->
+                    <div class="editor-label">
+                        DPS:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.DPS) 
+                    </div>
+                    <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+                    <div style="clear:both;">
+                        @Html.ValidationSummary() 
+                    </div>
+
+                </fieldset>
+            }
+            else if (@Model.Address.Country.ISO3166_1_alpha_2 == "US")
+            {
+                // US Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>US address details</span>
+                    </legend>
+
+                    <div>
+                        @Html.ValidationSummary(true) 
+                    </div>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Company name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                    </div>
+                    <div class="formFieldHelp">The company name</div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Unit name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                    </div>
+                    <div class="formFieldHelp">The unit name</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Building/Condo name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                    </div>
+                    <div class="formFieldHelp">Building/Condo name</div>
+
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Street number:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                    </div>
+                    <div class="formFieldHelp">The street number number. E.g. "4"</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Street name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                    </div>
+                    <div class="formFieldHelp">The street name name. E.g. "10th STREET WEST"</div>
+
+                    <!-- City -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Town) 
+                    </div>
+                    <div class="formFieldHelp">The City name. E.g. "BILLINGS"</div>
+
+                    <!-- PostCode -->
+                    <div class="editor-label">
+                        ZipCode:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                    </div>
+                    <div class="formFieldHelp">The zip code. E.g. “86400"</div>
+            
+                    <!-- State -->
+                    <div class="editor-label">
+                        State:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.State) 
+                    </div>
+                    <div class="formFieldHelp">State</div>
+
+                    <div style="clear:both;">
+                        @Html.ValidationSummary() 
+                    </div>
+
+                </fieldset>
+            }
+            else if (@Model.Address.Country.ISO3166_1_alpha_2 == "RU")
+            {
+                // Russian Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>Russian address details</span>
+                    </legend>
+
+                    <div>
+                        @Html.ValidationSummary(true) 
+                    </div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Flat:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                    </div>
+                    <div class="formFieldHelp">Flat - Кварт</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Structure:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                    </div>
+                    <div class="formFieldHelp">Structure - корпус</div>
+
+                    <!-- Prem3 -->
+                    <div class="editor-label">
+                        Building:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                    </div>
+                    <div class="formFieldHelp">Building - строение</div>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Company name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                    </div>
+                    <div class="formFieldHelp">The company name - Организация</div>
+
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Street number:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                    </div>
+                    <div class="formFieldHelp">The street number number. E.g. "4" - Номер улицы/дом</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Street name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                    </div>
+                    <div class="formFieldHelp">The street name name. E.g. " СМОЛЕНСКАЯ" вание улицы</div>
+
+                    <!-- City -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Town) 
+                    </div>
+                    <div class="formFieldHelp">The City name. E.g. " Москва" Город</div>
+
+                    <!-- PostCode -->
+                    <div class="editor-label">
+                        ZipCode:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                    </div>
+                    <div class="formFieldHelp">The postcode if known. E.g. “606480" Почтовый  индекс</div>
+
+                    <div style="clear:both;">
+                        @Html.ValidationSummary() 
+                    </div>
+
+                </fieldset>
+            }
+            else
+            {
+                // Generic Address Details
+                <fieldset>
+
+                    <legend>
+                        <span>Generic address details</span>
+                    </legend>
+
+                    <!-- Org1 -->
+                    <div class="editor-label">
+                        Organisation 1:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org1) 
+                    </div>
+                    <div class="formFieldHelp">E.g. Sales Department</div>
+
+                    <!-- Org2 -->
+                    <div class="editor-label">
+                        Organisation 2:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org2) 
+                    </div>
+                    <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                    <!-- Org3 -->
+                    <div class="editor-label">
+                        Organisation 3:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Org3) 
+                    </div>
+
+                    <!-- Prem1 -->
+                    <div class="editor-label">
+                        Premises 1:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem1) 
+                    </div>
+                    <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                    <!-- Prem2 -->
+                    <div class="editor-label">
+                        Premises 2:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem2) 
+                    </div>
+                    <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+                        
+                    <!-- Prem3 -->
+                    <div class="editor-label">
+                        Premises 3:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem3) 
+                    </div>
+
+                    <!-- Prem4 -->
+                    <div class="editor-label">
+                        Premises 4:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem4) 
+                    </div>
+
+                    <!-- Prem5 -->
+                    <div class="editor-label">
+                        Premises 5:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem5) 
+                    </div>
+
+                    <!-- Prem6 -->
+                    <div class="editor-label">
+                        Premises 6:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Prem6) 
+                    </div>
+
+                    <!-- RoadNum -->
+                    <div class="editor-label">
+                        Road number:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadNum) 
+                    </div>
+                    <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                    <!-- RoadName -->
+                    <div class="editor-label">
+                        Road name:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.RoadName) 
+                    </div>
+                    <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                    <!-- City/Town -->
+                    <div class="editor-label">
+                        City/Town:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Town) 
+                    </div>
+                    <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                    <!-- Locality -->
+                    <div class="editor-label">
+                        Locality:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Locality) 
+                    </div>
+                    <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                    <!-- County -->
+                    <div class="editor-label">
+                        County:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.County) 
+                    </div>
+                    <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                    <!-- State -->
+                    <div class="editor-label">
+                        State:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.State) 
+                    </div>
+                    <div class="formFieldHelp">The state or region name.  E.g. "Norfolk"</div>
+
+                    <!-- ZipCode -->
+                    <div class="editor-label">
+                        ZipCode/Postcode:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.PostCode) 
+                    </div>
+                    <div class="formFieldHelp">The post code or zip code. E.g. "SM6 0DZ" or “86400"</div>
+            
+                    <!-- DPS -->
+                    <div class="editor-label">
+                        DPS:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.DPS) 
+                    </div>
+                    <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+                    <div style="clear:both;">
+                        @Html.ValidationSummary() 
+                    </div>
+
+                </fieldset>
+            }
+        }
+    }
+    else
+    {
+        if (ViewBag.Permissions.Contains("EditStore"))
+        {      
+            <div>
+                <div class="actionLinks" style="float:left;">
+                    @Html.ActionLink("change the store address", "StoreAddress", new { id = Model.Store.Id, edit = true }, new { @class = "changeLink" })
+                </div>
+                <span style="float:right;">@Html.ActionLink("Help", "StoreAddress", "Help", null, new { target = "_blank" })</span>
+            </div>
+
+            <div style="clear:both;"></div>
+        }
+        else
+        {
+            <div>
+                <span style="float:right;">@Html.ActionLink("Help", "StoreAddress", "Help", null, new { target = "_blank" })</span>
+            </div>
+
+            <div style="clear:both;"></div> 
+        }
+            
+        if (@Model.Address.Country.ISO3166_1_alpha_2 == "GB")
+        {
+            // UK Address Details
+            <fieldset>
+
+                <legend>
+                    <span>UK address details </span>
+                </legend>
+
+                <!-- Org1 -->
+                <div class="editor-label">
+                    Organisation 1:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org1
+                </div>
+                <div class="formFieldHelp">E.g. Sales Department</div>
+
+                <!-- Org2 -->
+                <div class="editor-label">
+                    Organisation 2:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org2
+                </div>
+                <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                <!-- Prem1 -->
+                <div class="editor-label">
+                    Premises 1:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem1
+                </div>
+                <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                <!-- Prem2 -->
+                <div class="editor-label">
+                    Premises 2:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem2
+                </div>
+                <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+
+                <!-- RoadNum -->
+                <div class="editor-label">
+                    Road number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadNum
+                </div>
+                <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                <!-- RoadName -->
+                <div class="editor-label">
+                    Road name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadName
+                </div>
+                <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                <!-- City -->
+                <div class="editor-label">
+                    City/Town:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Town
+                </div>
+                <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                <!-- Locality -->
+                <div class="editor-label">
+                    Locality:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Locality
+                </div>
+                <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                <!-- County -->
+                <div class="editor-label">
+                    County:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.County
+                </div>
+                <div class="formFieldHelp">The county name.  E.g. "Norfolk"</div>
+
+                <!-- PostCode -->
+                <div class="editor-label">
+                    PostCode:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.PostCode
+                </div>
+                <div class="formFieldHelp">The post code E.g. "SM6 0DZ"</div>
+            
+                <!-- DPS -->
+                <div class="editor-label">
+                    DPS:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.DPS
+                </div>
+                <div class="formFieldHelp">Delivery Postal Suffix</div>
+
+            </fieldset>
+        }
+        else if (@Model.Address.Country.ISO3166_1_alpha_2 == "US")
+        {
+            // US Address Details
+            <fieldset>
+
+                <legend>
+                    <span>US address details</span>
+                </legend>
+
+                <div>
+                    @Html.ValidationSummary(true) 
+                </div>
+
+                <!-- Org1 -->
+                <div class="editor-label">
+                    Company name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org1
+                </div>
+                <div class="formFieldHelp">The company name</div>
+
+                <!-- Prem1 -->
+                <div class="editor-label">
+                    Unit name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem1
+                </div>
+                <div class="formFieldHelp">The unit name</div>
+
+                <!-- Prem2 -->
+                <div class="editor-label">
+                    Building/Condo name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem2
+                </div>
+                <div class="formFieldHelp">Building/Condo name</div>
+
+                <!-- RoadNum -->
+                <div class="editor-label">
+                    Street number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadNum
+                </div>
+                <div class="formFieldHelp">The street number number. E.g. "4"</div>
+
+                <!-- RoadName -->
+                <div class="editor-label">
+                    Street name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadName
+                </div>
+                <div class="formFieldHelp">The street name name. E.g. "10th STREET WEST"</div>
+
+                <!-- City -->
+                <div class="editor-label">
+                    City/Town:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Town
+                </div>
+                <div class="formFieldHelp">The City name. E.g. "BILLINGS"</div>
+
+                <!-- PostCode -->
+                <div class="editor-label">
+                    ZipCode:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.PostCode
+                </div>
+                <div class="formFieldHelp">The zip code. E.g. “86400"</div>
+            
+                <!-- State -->
+                <div class="editor-label">
+                    State:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.State 
+                </div>
+                <div class="formFieldHelp">State</div>
+
+                <div style="clear:both;">
+                    @Html.ValidationSummary() 
+                </div>
+
+            </fieldset>
+        }
+        else if (@Model.Address.Country.ISO3166_1_alpha_2 == "RU")
+        {
+            // Russian Address Details
+            <fieldset>
+
+                <legend>
+                    <span>Russian address details</span>
+                </legend>
+
+                <div>
+                    @Html.ValidationSummary(true) 
+                </div>
+
+                <!-- Prem1 -->
+                <div class="editor-label">
+                    Flat:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem1
+                </div>
+                <div class="formFieldHelp">Flat - Кварт</div>
+
+                <!-- Prem2 -->
+                <div class="editor-label">
+                    Structure:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem2
+                </div>
+                <div class="formFieldHelp">Structure - корпус</div>
+
+                <!-- Prem3 -->
+                <div class="editor-label">
+                    Building:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem2
+                </div>
+                <div class="formFieldHelp">Building - строение</div>
+
+                <!-- Org1 -->
+                <div class="editor-label">
+                    Company name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org1
+                </div>
+                <div class="formFieldHelp">The company name - Организация</div>
+
+                <!-- RoadNum -->
+                <div class="editor-label">
+                    Street number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadNum
+                </div>
+                <div class="formFieldHelp">The street number number. E.g. "4" - Номер улицы/дом</div>
+
+                <!-- RoadName -->
+                <div class="editor-label">
+                    Street name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadName
+                </div>
+                <div class="formFieldHelp">The street name name. E.g. " СМОЛЕНСКАЯ" вание улицы</div>
+
+                <!-- City -->
+                <div class="editor-label">
+                    City/Town:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Town
+                </div>
+                <div class="formFieldHelp">The City name. E.g. " Москва" Город</div>
+
+                <!-- PostCode -->
+                <div class="editor-label">
+                    ZipCode:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.PostCode
+                </div>
+                <div class="formFieldHelp">The postcode if known. E.g. “606480" Почтовый  индекс</div>
+
+                <div style="clear:both;">
+                    @Html.ValidationSummary() 
+                </div>
+
+            </fieldset>
+        }
+        else
+        {
+            // Generic Address Details
+            <fieldset>
+
+                <legend>
+                    <span>Generic address details </span>
+                </legend>
+
+                <!-- Org1 -->
+                <div class="editor-label">
+                    Organisation 1:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org1
+                </div>
+                <div class="formFieldHelp">E.g. Sales Department</div>
+
+                <!-- Org2 -->
+                <div class="editor-label">
+                    Organisation 2:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org2
+                </div>
+                <div class="formFieldHelp">E.g. Andromeda Trading Ltd.</div>
+
+                <!-- Org3 -->
+                <div class="editor-label">
+                    Organisation 3:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Org3
+                </div>
+
+                <!-- Prem1 -->
+                <div class="editor-label">
+                    Premises 1:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem1
+                </div>
+                <div class="formFieldHelp">The house name (NOT road name / number) E.g. Flat 1 or 'Sandy Cottage'</div>
+
+                <!-- Prem2 -->
+                <div class="editor-label">
+                    Premises 2:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem2
+                </div>
+                <div class="formFieldHelp">Building name E.g. Nelson Mandela House</div>
+
+                <!-- Prem3 -->
+                <div class="editor-label">
+                    Premises 3:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem3
+                </div>
+
+                <!-- Prem4 -->
+                <div class="editor-label">
+                    Premises 4:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem4
+                </div>
+
+                <!-- Prem5 -->
+                <div class="editor-label">
+                    Premises 5:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem5
+                </div>
+
+                <!-- Prem6 -->
+                <div class="editor-label">
+                    Premises 6:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Prem6
+                </div>
+
+                <!-- RoadNum -->
+                <div class="editor-label">
+                    Road number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadNum
+                </div>
+                <div class="formFieldHelp">The house number. E.g. "4"</div>
+
+                <!-- RoadName -->
+                <div class="editor-label">
+                    Road name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.RoadName
+                </div>
+                <div class="formFieldHelp">The road name. E.g. "Park Road"</div>
+
+                <!-- City/Town -->
+                <div class="editor-label">
+                    City/Town:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Town
+                </div>
+                <div class="formFieldHelp">The town/City name. E.g. "Ely"</div>
+
+                <!-- Locality -->
+                <div class="editor-label">
+                    Locality
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Locality
+                </div>
+                <div class="formFieldHelp">Extra address information for either town, hamlet, village or road<br />E.g. Town = “London” Locality = “Westminster”</div>
+
+                <!-- County -->
+                <div class="editor-label">
+                    County:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.County
+                </div>
+                <div class="formFieldHelp">The county.  E.g. "Norfolk"</div>
+
+                <!-- State -->
+                <div class="editor-label">
+                    State:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.State
+                </div>
+                <div class="formFieldHelp">The state or region name.  E.g. "Norfolk"</div>
+
+                <!-- ZipCode -->
+                <div class="editor-label">
+                    ZipCode/Postcode:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.PostCode
+                </div>
+                <div class="formFieldHelp">The post code or zip code. E.g. "SM6 0DZ" or “86400"</div>
+
+                <!-- DPS -->
+                <div class="editor-label">
+                    DPS
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.DPS
+                </div>
+
+            </fieldset>
+        }
+    }
+
+    </div>
+</div>

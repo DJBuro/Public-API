@@ -1,0 +1,1057 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Meiligao</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Meiligao.CrcCCITT">
+            <summary>
+            CRC CCITT
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.CrcCCITT.#ctor">
+            <summary>
+            Create CRC CCITT calculator.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.CrcCCITT.Calc(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Calculate checksum from byte array.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Meiligao.GT30DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao GT30 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoDeviceDefinition">
+            <summary>
+            All Meiligao device definitions inhertits from this class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Common files for all Meiligao trackers.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Registers outgoing commands for Meiligao
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns ID
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoDeviceDefinition.NamespaceName">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT30DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao GT30 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT30DeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT30DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT30DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.GT30XDeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao GT30X device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT30XDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao GT30X message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT30XDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT30XDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT30XDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.GT60DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao GT60 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT60DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao GT60 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.GT60DeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT60DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.GT60DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for Meiligao
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoGprsSettingsCmdExe.Execute">
+            <summary>
+            Throws exception
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            Returns false
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoProtocol">
+            <summary>
+            Base class for Meiligao protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create Meiligao protocol object
+            </summary>
+            <param name="conn"></param>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoProtocol.StringID">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe">
+            <summary>
+            Handles outgoing _ReadLog command for Meiligao
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe.Execute">
+            <summary>
+            Send request to start uploading track log from Meiligao
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe.PendingCommit(System.Object,System.String)">
+            <summary>
+            Continue pending command
+            </summary>
+            <param name="oDeviceData"></param>
+            <param name="strCustomState"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe.Namespace">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe.RequiresAck">
+            <summary>
+            Returns true. Require ACK for Meiligao.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.Command.MeiligaoReadLogCmdExe.Name">
+            <summary>
+            Returns "_ReadLog"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoSmsConnection">
+            <summary>
+            Handles incoming and outgoing SMS to Meiligao trackers.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS connection for Meiligao.
+            </summary>
+            <param name="numPhone"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.Meiligao.MeiligaoSmsProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoSmsListener">
+            <summary>
+            Meiligao SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Meiligao.MeiligaoSmsConnection"/> object for incoming data.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsListener.OnStart">
+            <summary>
+            Installs Meiligao protocol and start s up listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called first time listener is installed.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoSmsListener.ProtocolID">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoSmsProtocol">
+            <summary>
+            Implements Meiligao protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create Meiligao protocol object
+            </summary>
+            <param name="conn"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoSmsProtocol.TranslateFromDevice(Franson.Message.ProviderMessage)">
+            <summary>
+            Does only login. Does not use message for the moment.
+            </summary>
+            <param name="msg"></param>
+            <exception cref="T:Franson.Directory.AuthenticationException"></exception>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpAlarms">
+            <summary>
+            Alarms – 0x9999
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpBase">
+            <summary>
+            All typed Meiligao sentences inherit from this class
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.#ctor(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Create typed sentence.
+            </summary>
+            <param name="sen"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.#ctor">
+            <summary>
+            Create from parameters
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.SetTrackPoint(Franson.Geo.TrackPoint)">
+            <summary>
+            Called by parser in derived class to set TrackPoint
+            </summary>
+            <param name="tp"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.AddStatus(System.String,System.Object)">
+            <summary>
+            Called by parser in derived class to add status value.
+            </summary>
+            <param name="strName"></param>
+            <param name="oValue"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.ParseRMC(System.String)">
+            <summary>
+            Parses RMC and status data.
+            </summary>
+            <param name="strData"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBase.ToString">
+            <summary>
+            For logging.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpBase.ID">
+            <summary>
+            Device ID
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpBase.TrackPoint">
+            <summary>
+            TrackPoint
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpBase.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpAlarms.#ctor(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Create from generic sentence.
+            </summary>
+            <param name="sen"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpAlarms.IsAlarms(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Returns true if this is a Alarms 0x9999 sentence.
+            </summary>
+            <param name="sen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpAlarms.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpAlarms.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse field in generic sentence.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpBuilder">
+            <summary>
+            Build Meiligao GPRS sentences.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.SetPrefix(System.String)">
+            <summary>
+            Sets prefix. Default "@@". 
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.SetID(System.String)">
+            <summary>
+            Set numerical ID
+            </summary>
+            <param name="strID"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.SetCommand(System.Int32)">
+            <summary>
+            Set command.
+            </summary>
+            <param name="iCommand"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.AddData(System.Byte)">
+            <summary>
+            Add one byte data argument.
+            </summary>
+            <param name="bteData"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.ToSentence">
+            <summary>
+            Build and return Meiligao generic sentence.
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.ToString">
+            <summary>
+            ToSentence().ToString() for log purposes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpBuilder.ToByteArray">
+            <summary>
+            Return sentence as byte array.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpConnection">
+            <summary>
+            Handles connection to a Meiligao device.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a Meiligao device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpConnection.CreateProtocol">
+            <summary>
+            Returns Meiligao protocol object. <see cref="T:GpsGate.Meiligao.MeiligaoTcpProtocol"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpConnection.DoProtocolToDevice(System.Byte[])">
+            <summary>
+            Add header, length, ID, checksum and postfix if missing.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpListener">
+            <summary>
+            Handles a Meiligao device connected over TCP/IP
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpListener.OnStart">
+            <summary>
+            Called when listener is started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Meiligao.MeiligaoTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8500
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpListener.ProtocolID">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpLogin">
+            <summary>
+            Represents a Meiligao Login sentence. 0x5000
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLogin.#ctor(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Create typed Login sentence.
+            </summary>
+            <param name="sen"></param>
+            
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLogin.IsLogin(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Returns true if this is a login sentence.
+            </summary>
+            <param name="sen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLogin.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLogin.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parses generic sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpLoginAck">
+            <summary>
+            Response message to login 0x4000
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLoginAck.#ctor(System.String,System.Boolean)">
+            <summary>
+            Create LoginConfirmation sentence.
+            </summary>
+            <param name="strID">ID</param>
+            <param name="bOK"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLoginAck.BuildSentence">
+            <summary>
+            Build sentence.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpLoginAck.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Not implemented.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoCommand">
+            <summary>
+            Meiligao command codes.
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.LoginConfirmation">
+            <summary>
+            0x4000
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Login">
+            <summary>
+            0x5000
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.TrackOnDemand">
+            <summary>
+            0x4101
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.TrackByInterval">
+            <summary>
+            0x4102
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Authorization">
+            <summary>
+            0x4103
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Reserved">
+            <summary>
+            0x4104
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Overspeed">
+            <summary>
+            0x4105
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.MovementAlarm">
+            <summary>
+            0x4106
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.GeofenceOut">
+            <summary>
+            0x4107
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.GeofenceIn">
+            <summary>
+            0x4207
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.ExtendedSettings">
+            <summary>
+            0x4108
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Initialization">
+            <summary>
+            0x4110
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.SleepMode">
+            <summary>
+            0x4113
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.OutputControl10">
+            <summary>
+            0x4114
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.OutputControl20">
+            <summary>
+            0x5114
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.OutputControlUnlimited">
+            <summary>
+            0x4115
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.TriggeredAlarms">
+            <summary>
+            0x4116
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.PowerDown">
+            <summary>
+            0x4126
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.ListenWiretapping">
+            <summary>
+            0x4130
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.LogByInterval">
+            <summary>
+            0x4131
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.TimeZone">
+            <summary>
+            0x4132
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.VeerReport">
+            <summary>
+            0x4136
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.RebootGPS">
+            <summary>
+            0x4902
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Heartbeat">
+            <summary>
+            0x5199
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Format">
+            <summary>
+            0x5503
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.GetSNandIMEI">
+            <summary>
+            0x9001
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.ReadInterval">
+            <summary>
+            0x9002
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.ReadAuthorization">
+            <summary>
+            0x9003
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.ReadLoggedData">
+            <summary>
+            0x9016
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.PositionReport">
+            <summary>
+            0x9955
+            </summary>
+        </member>
+        <member name="F:GpsGate.Meiligao.MeiligaoCommand.Alarms">
+            <summary>
+            0x9999
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpParser">
+            <summary>
+            Parses Meiligao TCP data.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.ParseMeiligaoUint16(System.Byte[],System.Int32)">
+            <summary>
+            Parses two big endiand bytes to a ushort.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.ParseMeiligaoInt32(System.Byte[],System.Int32)">
+            <summary>
+            Parses four big endiand bytes to a int.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.ParseMeiligaoID(System.Byte[],System.Int32)">
+            <summary>
+            Parses a 7 byte Meiligao ID and returns it as a string. 
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.#ctor">
+            <summary>
+            Create parser. Parse data startring with $$ ort @@ ending with "\r\n"
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a <see cref="T:GpsGate.Meiligao.MeiligaoTcpSentence"/>
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.ValidateSentence(System.Byte[])">
+            <summary>
+            Implements a Meiligao checksum test.
+            </summary>
+            <param name="arrData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpParser.CreateBase(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Creates a typed sentence from generic sentence. Returns null if no typed class exists for this generic sentence.
+            </summary>
+            <param name="sen"></param>
+            <returns></returns>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpProtocol">
+            <summary>
+            Implements Meiligao protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create Meiligao protocol object
+            </summary>
+            <param name="conn"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Data from client. 
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpProtocol.CheckResponse(System.Byte[],System.String)">
+            <summary>
+            If the response starts with @@ nothing is changed.
+            Otherwise it is assumed first to bytes is a command, and rest is data.
+            Header, ID, and checksum is added.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpReadLoggedData">
+            <summary>
+            Represents a Meiligao ReadLoggedData sentence. 0x9016
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.#ctor(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Create typed ReadLoggedData sentence.
+            </summary>
+            <param name="sen"></param>
+            
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.IsReadLoggedData(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Returns true if this is a ReadLoggedData sentence.
+            </summary>
+            <param name="sen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parses generic sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.DeviceRandom">
+            <summary>
+            Key to use in reply to device.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpReadLoggedData.WayPoints">
+            <summary>
+            Number of log emtries (way points) left on device.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpReport">
+            <summary>
+            Position report 0x9955
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReport.#ctor(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Create typed report from generic sentence.
+            </summary>
+            <param name="sen"></param>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReport.IsReport(GpsGate.Meiligao.MeiligaoTcpSentence)">
+            <summary>
+            Returns true if this is a report sentence.
+            </summary>
+            <param name="sen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReport.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpReport.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence.
+            </summary>
+            <param name="sentence"></param>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoTcpSentence">
+            <summary>
+            Meiligao generic  sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpSentence.#ctor(System.Byte[])">
+            <summary>
+            Create Meiligao generic sentence. Only parser can call this method.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoTcpSentence.ToString">
+            <summary>
+            For logging
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpSentence.Prefix">
+            <summary>
+            Returns prefix as string. "@@" or "$$"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpSentence.ID">
+            <summary>
+            Return ID as a numerical string.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpSentence.Command">
+            <summary>
+            Return command.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoTcpSentence.Data">
+            <summary>
+            Return data part of sentence. If there is no data part null is returned.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoUdpConnection">
+            <summary>
+            Meiligao UDP protocol translator
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoUdpConnection.#ctor(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Meiligao UDP connection
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoUdpConnection.CreateProtocol">
+            <summary>
+            Returns a <see cref="T:GpsGate.Meiligao.MeiligaoProtocol"/> object. Which is used to convert beween Meiligao and GpsGate
+            protocol.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Meiligao.MeiligaoUdpListener">
+            <summary>
+            Handles UDP datagrams from Meiligao devices.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoUdpListener.OnStart">
+            <summary>
+            Called when listener started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoUdpListener.CreateUdpConnection(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create new <see cref="T:GpsGate.Meiligao.MeiligaoUdpConnection"/> object for a Meiligao device.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MeiligaoUdpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8500
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Meiligao.MeiligaoUdpListener.ProtocolID">
+            <summary>
+            Returns "Meiligao"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MT80DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao MT80 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MT80DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao MT80 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Meiligao.MT80DeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.MT80DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MT80DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.MVT400DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao MVT400 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.MVT400DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao MVT400 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.MVT400DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.MVT400DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.VT300DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao VT300 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.VT300DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao VT300 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.VT300DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.VT300DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Meiligao.VT310DeviceDefinition">
+            <summary>
+            Defines the capabilities of Meiligao VT310 device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Meiligao.VT310DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add Meiligao VT310 message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listField"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Meiligao.VT310DeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Meiligao.VT310DeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+    </members>
+</doc>

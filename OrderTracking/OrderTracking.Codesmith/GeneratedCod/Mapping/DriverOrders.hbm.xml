@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.DriverOrder, OrderTracking.Dao" table="tbl_DriverOrders">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_DriverOrders"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="OrderId" class="OrderTracking.Dao.Domain.Order, OrderTracking.Dao">
+			<column name="OrderId" length="8" sql-type="bigint" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="DriverId" class="OrderTracking.Dao.Domain.Driver, OrderTracking.Dao">
+			<column name="DriverId" length="8" sql-type="bigint" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

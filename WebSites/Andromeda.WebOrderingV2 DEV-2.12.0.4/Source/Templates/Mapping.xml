@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Mappings>
+  <Mapping>
+    <Domain>{DOMAINNAME}</Domain>
+    <ApplicationId>{APPLICATIONID}</ApplicationId>
+    <SignpostServerUrl>https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/host</SignpostServerUrl>
+    <EmailTemplates>
+      <EmailTemplate>
+        <Name>OrderAlertEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To>weborderalerts@androtech.com</To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>ORDER ALERT: {WEBSITE}</Subject>
+        <Body>
+          An attempt to send an Andro web order to a store failed.&lt;br /&gt;
+          &lt;br /&gt;
+          Error code: {ERRORCODE}&lt;br /&gt;
+          Website: {WEBSITE}&lt;br /&gt;
+          External site id: {SITEID}&lt;br /&gt;
+          Order id: {ORDERID}&lt;br /&gt;
+          Amount: {AMOUNT}&lt;br /&gt;
+          Date: {DATE}&lt;br /&gt;
+          Time: {TIME}&lt;br /&gt;
+        </Body>
+      </EmailTemplate>
+      <EmailTemplate>
+        <Name>PasswordResetEmail</Name>
+        <Username>Onlineordering@androtech.com</Username>
+        <Password>oo181113</Password>
+        <ServerType>EXCHANGE</ServerType>
+        <Server>https://outlook.hs20.net/ews/Exchange.asmx</Server>
+        <To></To>
+        <From>Onlineordering@androtech.com</From>
+        <Subject>password reset</Subject>
+        <Body>
+          please use the following link to reset your password:&lt;br /&gt;
+          &lt;br /&gt;
+          http://{domain}?passwordreset={passwordResetToken}&amp;for={username}&lt;br /&gt;
+          &lt;br /&gt;
+          note that this link will only be valid for 30 minutes
+        </Body>
+      </EmailTemplate>
+    </EmailTemplates>
+  </Mapping>
+</Mappings>

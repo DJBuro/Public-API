@@ -1,0 +1,89 @@
+http://www.bluetreelocationservices.com:89/LocationService.asmx
+
+/*Add Vehicle*/
+exec sp_executesql N'INSERT INTO [users] ([username], [name], [surname], [password], [email], [active], [description], [source_address], [created], [bo_type]) VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10)',N'@p1 varchar(3),@p2 varchar(3),@p3 varchar(8000),@p4 varchar(3),@p5 varchar(8000),@p6 smallint,@p7 varchar(8000),@p8 varchar(8000),@p9 datetime,@p10 varchar(23)',@p1='111',@p2='111',@p3=NULL,@p4='111',@p5=NULL,@p6=1,@p7='',@p8=NULL,@p9='2010-05-07 08:45:25.6970000',@p10='GpsGate.Online.GateUser'
+
+
+exec sp_executesql N'INSERT INTO [gate_user] ([user_id], [longitude], [latitude], [ground_speed], [altitude], [heading], [time_stamp], [server_time_stamp], [device_activity], [delay], [last_transport]) VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11)',N'@p1 int,@p2 float,@p3 float,@p4 float,@p5 float,@p6 float,@p7 datetime,@p8 datetime,@p9 datetime,@p10 int,@p11 varchar(8000)',@p1=6,@p2=0,@p3=0,@p4=0,@p5=0,@p6=0,@p7=NULL,@p8='2010-05-07 08:45:25',@p9=NULL,@p10=NULL,@p11=NULL
+
+exec sp_executesql N'INSERT INTO [user_groups] ([user_id], [group_id], [group_right_id], [admin_right_id], [enable_public_tracks]) VALUES (@p1, @p2, @p3, @p4, @p5)',N'@p1 int,@p2 int,@p3 int,@p4 int,@p5 smallint',@p1=6,@p2=1,@p3=7,@p4=3,@p5=NULL
+
+/*Add Device*/
+
+exec sp_executesql N'INSERT INTO [device] ([device_name], [bo_type], [created], [owner_id], [hide_position], [proximity], [IMEI], [phone_number], [last_ip], [last_port], [static_ip], [static_port], [longitude], [latitude], [ground_speed], [altitude], [heading], [time_stamp], [milliseconds], [protocol_id], [protocol_version_id], [valid], [apn], [gprs_username], [gprs_password], [msg_field_dict_id], [dev_def_id], [mobile_network_id], [outgoing_transport], [email]) VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30)',N'@p1 varchar(3),@p2 varchar(31),@p3 datetime,@p4 int,@p5 int,@p6 float,@p7 varchar(3),@p8 varchar(13),@p9 varchar(8000),@p10 int,@p11 varchar(8000),@p12 int,@p13 float,@p14 float,@p15 float,@p16 float,@p17 float,@p18 datetime,@p19 int,@p20 varchar(8),@p21 int,@p22 smallint,@p23 varchar(8000),@p24 varchar(8000),@p25 varchar(8000),@p26 int,@p27 int,@p28 int,@p29 varchar(8000),@p30 varchar(8000)',@p1='101',@p2='GpsGate.Online.Directory.Device',@p3='2010-05-07 08:49:10.0870000',@p4=6,@p5=NULL,@p6=NULL,@p7='101',@p8='+447949484844',@p9=NULL,@p10=NULL,@p11=NULL,@p12=0,@p13=NULL,@p14=NULL,@p15=NULL,@p16=NULL,@p17=NULL,@p18=NULL,@p19=NULL,@p20='Meiligao',@p21=NULL,@p22=NULL,@p23=NULL,@p24=NULL,@p25=NULL,@p26=103,@p27=27,@p28=NULL,@p29=NULL,@p30=NULL
+
+/*Remove Device*/
+exec sp_executesql N'DELETE FROM [device] WHERE (([device_id] = @p1))',N'@p1 int',@p1=8
+
+/*Remove Vehicle (only if no device)*/
+exec sp_executesql N'DELETE FROM [user_groups] WHERE (([user_id] = @p1) AND ([group_id] = @p2))',N'@p1 int,@p2 int',@p1=6,@p2=1
+
+exec sp_executesql N'DELETE FROM [users] WHERE (([user_id] = @p1))',N'@p1 int',@p1=6
+
+exec sp_executesql N'DELETE FROM [gate_user] WHERE (([user_id] = @p1))',N'@p1 int',@p1=6
+
+/*Add Device etc.*/
+INSERT INTO [device] (
+1[device_name], 
+2[bo_type], 
+3[created], 
+4[owner_id], 
+5[hide_position], 
+6[proximity], 
+7[IMEI], 
+8[phone_number], 
+9[last_ip], 
+10[last_port], 
+11[static_ip], 
+12[static_port], 
+13[longitude],
+14[latitude], 
+15[ground_speed], 
+16[altitude], 
+17[heading], 
+18[time_stamp], 
+19[milliseconds], 
+20[protocol_id], 
+21[protocol_version_id], 
+22[valid], 
+23[apn], 
+24[gprs_username], 
+25[gprs_password], 
+26[msg_field_dict_id], 
+27[dev_def_id], 
+28[mobile_network_id], 
+29[outgoing_transport], 
+30[email]
+) 
+VALUES (@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21, @p22, @p23, @p24, @p25, @p26, @p27, @p28, @p29, @p30)',N'@p1 varchar(3),@p2 varchar(31),@p3 datetime,@p4 int,@p5 int,@p6 float,@p7 varchar(3),@p8 varchar(13),@p9 varchar(8000),@p10 int,@p11 varchar(8000),@p12 int,@p13 float,@p14 float,@p15 float,@p16 float,@p17 float,@p18 datetime,@p19 int,@p20 varchar(8),@p21 int,@p22 smallint,@p23 varchar(8000),@p24 varchar(8000),@p25 varchar(8000),@p26 int,@p27 int,@p28 int,@p29 varchar(8000),@p30 varchar(8000)',
+@p1='101',
+@p2='GpsGate.Online.Directory.Device',
+@p3='2010-05-07 08:49:10.0870000',
+@p4=6,
+@p5=NULL,
+@p6=NULL,
+@p7='101',
+@p8='+447949484844',
+@p9=NULL,
+@p10=NULL,
+@p11=NULL,
+@p12=0,
+@p13=NULL,
+@p14=NULL,
+@p15=NULL,
+@p16=NULL,
+@p17=NULL,
+@p18=NULL,
+@p19=NULL,
+@p20='Meiligao',
+@p21=NULL,
+@p22=NULL,
+@p23=NULL,
+@p24=NULL,
+@p25=NULL,
+@p26=103,
+@p27=27,
+@p28=NULL,
+@p29=NULL,
+@p30=NULL
+

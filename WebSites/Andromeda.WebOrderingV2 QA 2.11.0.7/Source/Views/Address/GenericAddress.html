@@ -1,0 +1,163 @@
+﻿    <!-- Generic address template-->
+    <script type="text/html" id="genericAddress-template">
+
+        <!-- Org1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg1">Department: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text2" type="text" autofocus data-bind="value: addressHelper.bindableAddress().org1, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. Sales Department
+            </div>
+        </div>
+
+        <!-- Org2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutOrg2">Organisation name: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text8" type="text" data-bind="value: addressHelper.bindableAddress().org2, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. Andromeda Trading Ltd.
+            </div>
+        </div>
+
+        <!-- Prem1 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem1">House name: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text10" type="text" data-bind="value: addressHelper.bindableAddress().prem1, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. Flat 1 or 'Sandy Cottage'
+            </div>
+        </div>
+        
+        <!-- Prem2 -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutPrem2">Building name: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text11" type="text" data-bind="value: addressHelper.bindableAddress().prem2, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                 E.g. Nelson Mandela House
+            </div>
+        </div>
+
+        <!-- RoadNumber -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutRoadNumber">House number: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text12" maxlength="16" type="text" data-bind="value: addressHelper.bindableAddress().roadNum, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. "4"
+            </div>
+        </div>
+
+        <!-- RoadName -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutRoadName">Road name: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text13" maxlength="64" type="text" data-bind="value: addressHelper.bindableAddress().roadName, 'attr': { 'class': addressHelper.bindableAddress().roadNameHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. "Park Road"
+            </div>
+        </div>
+
+        <!-- Town -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">*</div>
+                <label for="checkoutTown">Town: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text14" maxlength="64" type="text" data-bind="value: addressHelper.bindableAddress().town, 'attr': { 'class': addressHelper.bindableAddress().townHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                The town name. E.g. "Ely"
+            </div>
+        </div>
+
+        <!-- Locality -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <div class="required">&nbsp;</div>
+                <label for="checkoutLocality">Locality: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text15" maxlength="64" type="text" data-bind="value: addressHelper.bindableAddress().locality, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. Town “London”, Locality “Westminster”
+            </div>
+        </div>
+        	
+        <!-- Postcode -->
+        <div class="checkoutAddressLine">
+            <div class="checkoutAddressColumn1">
+                <!-- ko if: settings.postcodeRequired -->
+                <div class="required">*</div>
+                <!-- /ko -->
+                <!-- ko if: !settings.postcodeRequired -->
+                <div class="required">&nbsp;</div>
+                <!-- /ko -->
+                <label for="checkoutPostcode">Postcode: </label>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <input id="Text16" maxlength="16" type="text" data-bind="value: addressHelper.bindableAddress().postcode, 'attr': { 'class': addressHelper.bindableAddress().postcodeHasError() ? 'checkoutDataError' : '' }, disable: settings.lockCustomerAddressPage" />
+            </div>
+            <div class="checkoutAddressColumn3">
+                E.g. "SM6 0DZ"
+            </div>
+        </div>
+
+        <!-- Directions -->
+        <div class="checkoutAddressLine">
+            <div class="orderNotesColumn1">
+                <label for="checkoutDirections" data-bind="text: textStrings.checkDirections"></label>
+                <br />
+                <span data-bind="text: textStrings.checkDirectionsEx"></span>
+            </div>
+            <div class="checkoutAddressColumn2">
+                <textarea id="checkoutDirections" autofocus data-bind="value: addressHelper.bindableAddress().directions" maxlength="255"></textarea>
+            </div>
+        </div>
+
+        <div class="requiredLine">
+            * Required
+        </div>
+
+        <!-- ko if: addressHelper.bindableAddress().addressMissingDetails() -->
+        <div class="checkoutError">
+            Missing information!  Please enter details in the boxes highlighted in red.
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: addressHelper.bindableAddress().postcode().length > 0 && addressHelper.bindableAddress().outOfDeliveryArea() -->
+        <div class="checkoutError">
+            Sorry, this store doesn't deliver to your postcode.  <!--However, you can collect your order from the store by clicking the "Modify order" button and selecting "Collect from store".-->
+        </div>
+        <!-- /ko -->
+
+    </script>

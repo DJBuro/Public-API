@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="RoleValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="RolenameValidator" test="Rolename"><v:message id="error.Rolename.required" providers="RolenameErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

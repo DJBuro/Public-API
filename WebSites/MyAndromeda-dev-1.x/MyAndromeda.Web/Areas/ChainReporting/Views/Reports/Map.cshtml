@@ -1,0 +1,67 @@
+﻿@model MyAndromeda.Data.Domain.Site[]
+@{
+    var valid = Model.Where(e=> !string.IsNullOrWhiteSpace(e.Longitude) && !string.IsNullOrWhiteSpace(e.Longitude)).ToArray();
+    var coords = new
+    {
+        MaxLatitude = valid.Max(e => Convert.ToDecimal(e.Latitude)),
+        MinLatitude = valid.Max(e => Convert.ToDecimal(e.Latitude)),
+        MaxLong = valid.Max(e => Convert.ToDecimal(e.Longitude)),
+        MinLong = valid.Min(e => Convert.ToDecimal(e.Longitude))
+    };
+
+    var middle = new
+    {
+        x = (coords.MaxLatitude + coords.MinLatitude) / 2,
+        y = (coords.MaxLong + coords.MinLong) / 2
+    };
+}
+
+<div id="MapPage" class="map-wrapper" style="margin: auto;">
+    <div id="map" style="position: relative;"                                                                                                                                                                               
+        data-role="map"                                                                                                                                                                          
+        data-center="[@middle.x, @middle.y]"
+        data-zoom="6"
+
+        data-layers="[
+            {
+                type: 'tile',
+                urlTemplate: 'http://tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png'
+            }
+        ]"
+        data-markers="@valid.Select(e => new { shape = "pin", location = new[] { e.Latitude, e.Longitude }, tooltip = new { 
+                 content = e.ClientSiteName
+                 } }).JsonNetToString()"
+        data-bind="events: { shapeCreated: onShapeCreated, shapeMouseLeave: onShapeMouseLeave }">
+    </div>
+</div>
+<div>
+    @foreach (var itm in valid) {
+        <p>@itm.ClientSiteName</p>
+    }
+</div>
+
+@using(Html.BeginScripts(Area.Foot))
+{
+    <script type="text/javascript">
+        $(function () {
+            var vm = kendo.observable({
+                onShapeCreated: function (e) { }
+            });
+            kendo.bind("#MapPage", vm);
+
+            //$("#map").kendoMap({
+            //    center: [35.1107, -106.6100],
+            //    zoom: 4,
+            //    //layers: [{
+            //    //    type: "tile",
+            //    //    urlTemplate: "http://tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png"
+            //    //}]
+            //    layers: [{
+            //        type: "tile",
+            //        urlTemplate: "http://tile2.opencyclemap.org/transport/#= zoom #/#= x #/#= y #.png",
+            //        attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
+            //    }]
+            //});
+        });
+    </script>
+}

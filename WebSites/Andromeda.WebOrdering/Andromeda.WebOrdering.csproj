@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9BB95BA2-BBFF-4F56-9F55-C9215AC665CB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Andromeda.WebOrdering</RootNamespace>
+    <AssemblyName>Andromeda.WebOrdering</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Chains\v1\Content\Images\HomeLogo1.png" />
+    <Content Include="Chains\v1\Content\Images\Scooter.png" />
+    <Content Include="Chains\v1\images\background_browser.gif" />
+    <Content Include="Chains\v1\images\browser_chrome.gif" />
+    <Content Include="Chains\v1\images\browser_firefox.gif" />
+    <Content Include="Chains\v1\images\browser_gcf.gif" />
+    <Content Include="Chains\v1\images\browser_konqueror.gif" />
+    <Content Include="Chains\v1\images\browser_msie.gif" />
+    <Content Include="Chains\v1\images\browser_opera.gif" />
+    <Content Include="Chains\v1\images\browser_safari.gif" />
+    <Content Include="Chains\v1\OriginalScripts\jreject.js" />
+    <Content Include="Chains\v1\Terms.html" />
+    <Content Include="Chains\v1\OriginalScripts\img\blank.gif" />
+    <Content Include="Chains\v1\OriginalScripts\img\cloud-popup-relative.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\drag-rectangle-off.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\drag-rectangle-on.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\east-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\layer-switcher-maximize.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\layer-switcher-minimize.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\marker-blue.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\marker-gold.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\marker-green.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\marker.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\measuring-stick-off.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\measuring-stick-on.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\north-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\panning-hand-off.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\panning-hand-on.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\slider.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\south-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\west-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\zoom-minus-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\zoom-plus-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\zoom-world-mini.png" />
+    <Content Include="Chains\v1\OriginalScripts\img\zoombar.png" />
+    <Content Include="Chains\v1\OriginalScripts\OpenLayers.js" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\google.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\google.tidy.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\ie6-style.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\ie6-style.tidy.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\add_point_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\add_point_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\blank.gif" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\close.gif" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\drag-rectangle-off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\drag-rectangle-on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_line_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_line_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_point_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_point_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_polygon_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\draw_polygon_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\editing_tool_bar.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\move_feature_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\move_feature_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\navigation_history.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\overview_replacement.gif" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\pan-panel.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\panning-hand-off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\panning-hand-on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\pan_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\pan_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\remove_point_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\remove_point_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\ruler.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\save_features_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\save_features_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\view_next_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\view_next_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\view_previous_off.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\view_previous_on.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\img\zoom-panel.png" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\style.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\style.mobile.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\style.mobile.tidy.css" />
+    <Content Include="Chains\v1\OriginalScripts\theme\default\style.tidy.css" />
+    <Content Include="Chains\v1\img\blank.gif" />
+    <Content Include="Chains\v1\img\cloud-popup-relative.png" />
+    <Content Include="Chains\v1\img\drag-rectangle-off.png" />
+    <Content Include="Chains\v1\img\drag-rectangle-on.png" />
+    <Content Include="Chains\v1\img\east-mini.png" />
+    <Content Include="Chains\v1\img\layer-switcher-maximize.png" />
+    <Content Include="Chains\v1\img\layer-switcher-minimize.png" />
+    <Content Include="Chains\v1\img\marker-blue.png" />
+    <Content Include="Chains\v1\img\marker-gold.png" />
+    <Content Include="Chains\v1\img\marker-green.png" />
+    <Content Include="Chains\v1\img\marker.png" />
+    <Content Include="Chains\v1\img\measuring-stick-off.png" />
+    <Content Include="Chains\v1\img\measuring-stick-on.png" />
+    <Content Include="Chains\v1\img\north-mini.png" />
+    <Content Include="Chains\v1\img\panning-hand-off.png" />
+    <Content Include="Chains\v1\img\panning-hand-on.png" />
+    <Content Include="Chains\v1\img\slider.png" />
+    <Content Include="Chains\v1\img\south-mini.png" />
+    <Content Include="Chains\v1\img\west-mini.png" />
+    <Content Include="Chains\v1\img\zoom-minus-mini.png" />
+    <Content Include="Chains\v1\img\zoom-plus-mini.png" />
+    <Content Include="Chains\v1\img\zoom-world-mini.png" />
+    <Content Include="Chains\v1\img\zoombar.png" />
+    <Content Include="Chains\v1\theme\default\google.css" />
+    <Content Include="Chains\v1\theme\default\google.tidy.css" />
+    <Content Include="Chains\v1\theme\default\ie6-style.css" />
+    <Content Include="Chains\v1\theme\default\ie6-style.tidy.css" />
+    <Content Include="Chains\v1\theme\default\img\add_point_off.png" />
+    <Content Include="Chains\v1\theme\default\img\add_point_on.png" />
+    <Content Include="Chains\v1\theme\default\img\blank.gif" />
+    <Content Include="Chains\v1\theme\default\img\close.gif" />
+    <Content Include="Chains\v1\theme\default\img\drag-rectangle-off.png" />
+    <Content Include="Chains\v1\theme\default\img\drag-rectangle-on.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_line_off.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_line_on.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_point_off.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_point_on.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_polygon_off.png" />
+    <Content Include="Chains\v1\theme\default\img\draw_polygon_on.png" />
+    <Content Include="Chains\v1\theme\default\img\editing_tool_bar.png" />
+    <Content Include="Chains\v1\theme\default\img\move_feature_off.png" />
+    <Content Include="Chains\v1\theme\default\img\move_feature_on.png" />
+    <Content Include="Chains\v1\theme\default\img\navigation_history.png" />
+    <Content Include="Chains\v1\theme\default\img\overview_replacement.gif" />
+    <Content Include="Chains\v1\theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="Chains\v1\theme\default\img\pan-panel.png" />
+    <Content Include="Chains\v1\theme\default\img\panning-hand-off.png" />
+    <Content Include="Chains\v1\theme\default\img\panning-hand-on.png" />
+    <Content Include="Chains\v1\theme\default\img\pan_off.png" />
+    <Content Include="Chains\v1\theme\default\img\pan_on.png" />
+    <Content Include="Chains\v1\theme\default\img\remove_point_off.png" />
+    <Content Include="Chains\v1\theme\default\img\remove_point_on.png" />
+    <Content Include="Chains\v1\theme\default\img\ruler.png" />
+    <Content Include="Chains\v1\theme\default\img\save_features_off.png" />
+    <Content Include="Chains\v1\theme\default\img\save_features_on.png" />
+    <Content Include="Chains\v1\theme\default\img\view_next_off.png" />
+    <Content Include="Chains\v1\theme\default\img\view_next_on.png" />
+    <Content Include="Chains\v1\theme\default\img\view_previous_off.png" />
+    <Content Include="Chains\v1\theme\default\img\view_previous_on.png" />
+    <Content Include="Chains\v1\theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="Chains\v1\theme\default\img\zoom-panel.png" />
+    <Content Include="Chains\v1\theme\default\style.css" />
+    <Content Include="Chains\v1\theme\default\style.mobile.css" />
+    <Content Include="Chains\v1\theme\default\style.mobile.tidy.css" />
+    <Content Include="Chains\v1\theme\default\style.tidy.css" />
+    <Content Include="Chains\OLDv2\Channel.html" />
+    <Content Include="Chains\OLDv2\Custom\Skin.css" />
+    <Content Include="Chains\OLDv2\Custom\Custom.css" />
+    <Content Include="Chains\OLDv2\Custom\Custom.js" />
+    <Content Include="Chains\OLDv2\Custom\Images\BadDeliveryZone.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\commander-pizza-bronx.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\DeliveryZone.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\Facebook.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\Go.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\header.jpg" />
+    <Content Include="Chains\OLDv2\Custom\Images\HotWokHeader.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\noporc.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\nouveau-logo.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\SiteSelector.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\speedRabbit.png" />
+    <Content Include="Chains\OLDv2\Custom\Images\speedRabbitBackground.jpg" />
+    <Content Include="Chains\OLDv2\Custom\Images\speedRabbitFooter.jpg" />
+    <Content Include="Chains\OLDv2\Custom\Images\speedRabbitHeader.jpg" />
+    <Content Include="Chains\OLDv2\Custom\Images\speedRabbitLogo.jpg" />
+    <Content Include="Chains\OLDv2\Custom\Images\Twitter.png" />
+    <Content Include="Chains\OLDv2\Content\Images\AMEX.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\AURORE.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\Basket.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Cart.png" />
+    <Content Include="Chains\OLDv2\Content\Images\CB.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\CLEF.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\Cross.png" />
+    <Content Include="Chains\OLDv2\Content\Images\facebook-icon.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Go.png" />
+    <Content Include="Chains\OLDv2\Content\Images\googleplus-icon.png" />
+    <Content Include="Chains\OLDv2\Content\Images\halfandhalf.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Header.jpg" />
+    <Content Include="Chains\OLDv2\Content\Images\Home.png" />
+    <Content Include="Chains\OLDv2\Content\Images\INTERVAL.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\loader.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\logoSmall.png" />
+    <Content Include="Chains\OLDv2\Content\Images\MASTERCARD.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\mCSB_buttons.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Menu.png" />
+    <Content Include="Chains\OLDv2\Content\Images\SearchPostcode.png" />
+    <Content Include="Chains\OLDv2\Content\Images\store.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Tick.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Ticked.png" />
+    <Content Include="Chains\OLDv2\Content\Images\TickedSmall.png" />
+    <Content Include="Chains\OLDv2\Content\Images\twitter-icon.png" />
+    <Content Include="Chains\OLDv2\Content\Images\Unticked.png" />
+    <Content Include="Chains\OLDv2\Content\Images\UntickedSmall.png" />
+    <Content Include="Chains\OLDv2\Content\Images\VISA.gif" />
+    <Content Include="Chains\OLDv2\Content\Images\Zoom.cur" />
+    <Content Include="Chains\OLDv2\Content\Images\Zoom.png" />
+    <Content Include="Chains\OLDv2\Source\Tests\CartHelperTests.js" />
+    <Content Include="Chains\OLDv2\Source\Tests\TestHelper.js" />
+    <Content Include="Chains\OLDv2\Source\Tests\MenuHelperTests.js" />
+    <Content Include="Chains\OLDv2\Source\Tests\Index.html" />
+    <Content Include="Chains\OLDv2\Source\Tests\Resources\qunit.css" />
+    <Content Include="Chains\OLDv2\Source\Tests\Resources\qunit.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\checkoutHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\checkoutMenuHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\accountHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\cookieHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\cacheHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\cartHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\helper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\queryStringHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\siteSelectorHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\imageHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\mobileMenuHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\mapHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\tandcHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\postcodeCheckHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\deliveryZoneHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\dealPopupHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\popupHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\dealHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\openingTimesHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\menuHelper.js" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\guiHelper.js" />
+    <Content Include="Chains\OLDv2\Content\Styles.css" />
+    <Content Include="Chains\OLDv2\Source\StyleSheets\WebOrdering.css" />
+    <Content Include="Chains\OLDv2\Source\StyleSheets\WebOrderingMobile.css" />
+    <Content Include="Chains\OLDv2\Source\StyleSheets\WebOrderingPC.css" />
+    <Content Include="Chains\OLDv2\Source\StyleSheets\WebOrderingPCandTablet.css" />
+    <Content Include="Chains\OLDv2\Source\StyleSheets\WebOrderingTablet.css" />
+    <Content Include="Chains\OLDv2\Cancel.aspx" />
+    <Content Include="Chains\OLDv2\Source\Scripts\ACSAPI.js" />
+    <Content Include="Chains\OLDv2\Source\Index.html" />
+    <Content Include="Chains\OLDv2\img\blank.gif" />
+    <Content Include="Chains\OLDv2\img\cloud-popup-relative.png" />
+    <Content Include="Chains\OLDv2\img\drag-rectangle-off.png" />
+    <Content Include="Chains\OLDv2\img\drag-rectangle-on.png" />
+    <Content Include="Chains\OLDv2\img\east-mini.png" />
+    <Content Include="Chains\OLDv2\img\layer-switcher-maximize.png" />
+    <Content Include="Chains\OLDv2\img\layer-switcher-minimize.png" />
+    <Content Include="Chains\OLDv2\img\marker-blue.png" />
+    <Content Include="Chains\OLDv2\img\marker-gold.png" />
+    <Content Include="Chains\OLDv2\img\marker-green.png" />
+    <Content Include="Chains\OLDv2\img\marker.png" />
+    <Content Include="Chains\OLDv2\img\measuring-stick-off.png" />
+    <Content Include="Chains\OLDv2\img\measuring-stick-on.png" />
+    <Content Include="Chains\OLDv2\img\north-mini.png" />
+    <Content Include="Chains\OLDv2\img\panning-hand-off.png" />
+    <Content Include="Chains\OLDv2\img\panning-hand-on.png" />
+    <Content Include="Chains\OLDv2\img\slider.png" />
+    <Content Include="Chains\OLDv2\img\south-mini.png" />
+    <Content Include="Chains\OLDv2\img\west-mini.png" />
+    <Content Include="Chains\OLDv2\img\zoom-minus-mini.png" />
+    <Content Include="Chains\OLDv2\img\zoom-plus-mini.png" />
+    <Content Include="Chains\OLDv2\img\zoom-world-mini.png" />
+    <Content Include="Chains\OLDv2\img\zoombar.png" />
+    <Content Include="Chains\OLDv2\Source\MSBuild.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Chains\OLDv2\Source\Scripts\OpenLayers.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\Settings.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\jquery.signalR-2.0.0.min.js" />
+    <Content Include="Chains\OLDv2\Content\Scripts.js" />
+    <Content Include="Chains\OLDv2\Terms.html" />
+    <Content Include="Chains\OLDv2\theme\default\google.css" />
+    <Content Include="Chains\OLDv2\theme\default\google.tidy.css" />
+    <Content Include="Chains\OLDv2\theme\default\ie6-style.css" />
+    <Content Include="Chains\OLDv2\theme\default\ie6-style.tidy.css" />
+    <Content Include="Chains\OLDv2\theme\default\img\add_point_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\add_point_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\blank.gif" />
+    <Content Include="Chains\OLDv2\theme\default\img\close.gif" />
+    <Content Include="Chains\OLDv2\theme\default\img\drag-rectangle-off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\drag-rectangle-on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_line_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_line_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_point_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_point_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_polygon_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\draw_polygon_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\editing_tool_bar.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\move_feature_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\move_feature_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\navigation_history.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\overview_replacement.gif" />
+    <Content Include="Chains\OLDv2\theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\pan-panel.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\panning-hand-off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\panning-hand-on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\pan_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\pan_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\remove_point_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\remove_point_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\ruler.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\save_features_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\save_features_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\view_next_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\view_next_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\view_previous_off.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\view_previous_on.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="Chains\OLDv2\theme\default\img\zoom-panel.png" />
+    <Content Include="Chains\OLDv2\theme\default\style.css" />
+    <Content Include="Chains\OLDv2\theme\default\style.mobile.css" />
+    <Content Include="Chains\OLDv2\theme\default\style.mobile.tidy.css" />
+    <Content Include="Chains\OLDv2\theme\default\style.tidy.css" />
+    <Content Include="Chains\OLDv2\Source\ViewModels\viewModel.js" />
+    <Content Include="Chains\OLDv2\Source\Views\Address\FrenchAddress.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Address\USAddress.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Address\UKAddress.html" />
+    <Content Include="Chains\OLDv2\Source\Views\CartSidebar.html" />
+    <Content Include="Chains\OLDv2\Source\Views\AddEditDeal.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\Checkout.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\ContactDetails.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\OrderAccepted.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\SubmitOrder.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\Payment.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\DeliveryCollectionTime.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\DeliveryAddress.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Checkout\OrderNotes.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Address\GenericAddress.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Toppings.html" />
+    <Content Include="Chains\OLDv2\Source\Views\DealsSection.html" />
+    <Content Include="Chains\OLDv2\Source\Views\MenuSection.html" />
+    <Content Include="Chains\OLDv2\Source\Views\LoginRegister.html" />
+    <Content Include="Chains\OLDv2\Source\Views\PostcodeCheck.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Home.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Error.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Selector.html" />
+    <Content Include="Chains\OLDv2\Source\Views\Sites.html" />
+    <Content Include="Chains\OLDv2\Source\Views\StoreSelector.html" />
+    <Content Include="Chains\OLDv2\Source\Views\PleaseWait.html" />
+    <Content Include="Chains\OLDv2\WaitForOrder.aspx" />
+    <Content Include="Chains\OLDv2\Done.html" />
+    <Content Include="Chains\OLDv2\Index.html" />
+    <Content Include="Chains\OLDv2\Source\Scripts\amplify.min.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\jquery.history.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\knockout-2.2.1.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\modernizr.min.js" />
+    <Content Include="Chains\OLDv2\Source\ResourceStrings\en-GB.js" />
+    <Content Include="Chains\OLDv2\Source\ResourceStrings\fr-FR.js" />
+    <Content Include="Chains\OLDv2\Source\Scripts\OLDWebOrdering.js" />
+    <Content Include="Chains\v1\Content\Images\background.jpg" />
+    <Content Include="Chains\v1\Content\Images\bougainvillea.png" />
+    <Content Include="Chains\v1\Content\Images\Cart.png" />
+    <Content Include="Chains\v1\Content\Images\CharcoalGrillLogo.jpg" />
+    <Content Include="Chains\v1\Content\Images\Cross.png" />
+    <Content Include="Chains\v1\Content\Images\DaddyDLogo.jpg" />
+    <Content Include="Chains\v1\Content\Images\DaddyDonkeyLogo.png" />
+    <Content Include="Chains\v1\Content\Images\facebook-icon.png" />
+    <Content Include="Chains\v1\Content\Images\googleplus-icon.png" />
+    <Content Include="Chains\v1\Content\Images\halfandhalf.png" />
+    <Content Include="Chains\v1\Content\Images\loader.gif" />
+    <Content Include="Chains\v1\Content\Images\mCSB_buttons.png" />
+    <Content Include="Chains\v1\Content\Images\pinata.png" />
+    <Content Include="Chains\v1\Content\Images\PiriPiriLogo.png" />
+    <Content Include="Chains\v1\Content\Images\PiriPiriLogo2.png" />
+    <Content Include="Chains\v1\Content\Images\store.png" />
+    <Content Include="Chains\v1\Content\Images\Tick.png" />
+    <Content Include="Chains\v1\Content\Images\Ticked.png" />
+    <Content Include="Chains\v1\Content\Images\TickedSmall.png" />
+    <Content Include="Chains\v1\Content\Images\twitter-icon.png" />
+    <Content Include="Chains\v1\Content\Images\Unticked.png" />
+    <Content Include="Chains\v1\Content\Images\UntickedSmall.png" />
+    <Content Include="Chains\v1\Content\WebOrdering.css" />
+    <Content Include="Chains\v1\Content\WebOrderingMobile.css" />
+    <Content Include="Chains\v1\Content\WebOrderingPC.css" />
+    <Content Include="Chains\v1\Content\WebOrderingPCandTablet.css" />
+    <Content Include="Chains\v1\Done.html" />
+    <Content Include="Chains\v1\Index.html" />
+    <Content Include="Chains\v1\MSBuild.xml" />
+    <Content Include="Chains\v1\OriginalScripts\amplify.min.js" />
+    <Content Include="Chains\v1\OriginalScripts\google.fastbutton.js" />
+    <Content Include="Chains\v1\OriginalScripts\jquery-1.7.1.min.js" />
+    <Content Include="Chains\v1\OriginalScripts\knockout-2.2.1.js" />
+    <Content Include="Chains\v1\OriginalScripts\modernizr.min.js" />
+    <Content Include="Chains\v1\OriginalScripts\WebOrdering.js" />
+    <Content Include="Chains\v1\Scripts\Scripts.js" />
+    <Content Include="Chains\OLDv3\Content\Images\Basket.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Cart.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Cross.png" />
+    <Content Include="Chains\OLDv3\Content\Images\facebook-icon.png" />
+    <Content Include="Chains\OLDv3\Content\Images\googleplus-icon.png" />
+    <Content Include="Chains\OLDv3\Content\Images\halfandhalf.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Header.jpg" />
+    <Content Include="Chains\OLDv3\Content\Images\Home.png" />
+    <Content Include="Chains\OLDv3\Content\Images\loader.gif" />
+    <Content Include="Chains\OLDv3\Content\Images\logoSmall.png" />
+    <Content Include="Chains\OLDv3\Content\Images\mCSB_buttons.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Menu.png" />
+    <Content Include="Chains\OLDv3\Content\Images\SearchPostcode.png" />
+    <Content Include="Chains\OLDv3\Content\Images\store.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Tick.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Ticked.png" />
+    <Content Include="Chains\OLDv3\Content\Images\TickedSmall.png" />
+    <Content Include="Chains\OLDv3\Content\Images\twitter-icon.png" />
+    <Content Include="Chains\OLDv3\Content\Images\Unticked.png" />
+    <Content Include="Chains\OLDv3\Content\Images\UntickedSmall.png" />
+    <Content Include="Chains\OLDv3\Content\WebOrdering.css" />
+    <Content Include="Chains\OLDv3\Content\WebOrderingMobile.css" />
+    <Content Include="Chains\OLDv3\Content\WebOrderingPC.css" />
+    <Content Include="Chains\OLDv3\Content\WebOrderingPCandTablet.css" />
+    <Content Include="Chains\OLDv3\Content\WebOrderingTablet.css" />
+    <Content Include="Chains\OLDv3\Done.html" />
+    <Content Include="Chains\OLDv3\Index.html" />
+    <Content Include="Chains\OLDv3\Scripts\amplify.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\Custom.js" />
+    <Content Include="Chains\OLDv3\Scripts\history.js" />
+    <Content Include="Chains\OLDv3\Scripts\json2.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\Cart.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\ACSAPI.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\Cache.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\Helper.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\Site.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\ViewEngine.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\Menu.js" />
+    <Content Include="Chains\OLDv3\Scripts\google.fastbutton.js" />
+    <Content Include="Chains\OLDv3\Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\jquery-ui-1.10.3.custom.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\jquery.ui.ufd.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\knockout-2.2.1.js" />
+    <Content Include="Chains\OLDv3\Scripts\modernizr.min.js" />
+    <Content Include="Chains\OLDv3\Scripts\ui.core.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\CartViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\PostcodeCheckViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\MenuViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\HomeViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\SitesViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\ErrorViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\HeaderViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\ViewModels\PleaseWaitViewModel.js" />
+    <Content Include="Chains\OLDv3\Scripts\Models\App.js" />
+    <Content Include="Web.config" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Antlr3.Runtime.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\EcmaScript.NET.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Iesi.Collections.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\NAnt.Core.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\New BSD License.txt" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\System.Web.Optimization.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\WebGrease.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.Nant.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Web.Optimization.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Chains\v1\Content\Images\Thumbs.db" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:1660/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe" "$(ProjectDir)chains\v1\MSBuild.xml"
+
+
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

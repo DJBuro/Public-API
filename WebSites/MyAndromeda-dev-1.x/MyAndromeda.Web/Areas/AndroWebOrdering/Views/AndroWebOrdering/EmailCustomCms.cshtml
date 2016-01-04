@@ -1,0 +1,136 @@
+﻿<div ng-controller="EmailCmsPagesController">
+
+    <div ng-repeat="store in stores">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="header">
+                    <h3>{{store.Name}}</h3>
+                    <a class="k-button k-primary" ng-click="SaveChanges()">Save</a>
+                </div>
+            </div>
+        </div>
+        <store-email-section ng-model="store">
+        </store-email-section>
+
+
+        @*<div class="row">
+                <div class="col-sm-3">
+                    <div class="k-widget">
+                        <div class="k-header">
+                            <div class="k-toolbar k-header">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        Email Sections
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-repeat="cmsPage in pages">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{cmsPage.Title}}
+                                    <span ng-if="!cmsPage.Enabled">(Disabled)</span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <a class="k-button" ng-click="edit(cmsPage)">Edit</a>
+                                    <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
+                                    <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9" ng-show="page != null">
+                    <div class="well">
+                        <div class="row">
+                            {{page.Title}}
+                        </div>
+
+                        <div class="row">
+                            <textarea kendo-editor k-ng-model="page.Content" k-resizable="{ content: true, toolbar: true }"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-sm-8" ng-show="page == null">
+                    <p>Select a section from the left to edit.</p>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <a class="k-button k-primary" ng-click="save()">Save</a>
+                </div>
+
+            </div>*@
+
+    </div>
+
+
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    <script type="text/ng-template" id="StoreEmailSection">
+        <div class='row'>
+            <div class="col-sm-3">
+                <div class="k-widget">
+                    <div class="k-header">
+                        <div class="k-toolbar k-header">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    Email Sections
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="cmsPage in context.Pages">
+                        <div class="col-xs-12">
+                            {{cmsPage.Title}}
+                            <span ng-if="!cmsPage.Enabled">(Disabled)</span>
+                        </div>
+                        <div class="col-xs-12">
+                            @*<a class="k-button" ng-click="edit(cmsPage)">Edit</a>*@
+                            <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
+                            <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
+                        </div>
+                    </div>
+
+                    @*<div ng-repeat="cmsPage in lookup(store)">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{cmsPage.Title}}
+                                    <span ng-if="!cmsPage.Enabled">(Disabled)</span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <a class="k-button" ng-click="edit(cmsPage)">Edit</a>
+                                    <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
+                                    <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            <div class="col-sm-9" ng-show="context.Page != null">
+                <div class="well">
+                    <div class="row">
+                        {{context.Store.Name}} - {{context.Page.Title}}
+                    </div>
+
+                    <div class="row">
+                        <textarea kendo-editor k-ng-model="context.Page.Content" k-resizable="{ content: true, toolbar: true }"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-8" ng-show="context.Page == null">
+                <p>Select a section from the left to edit.</p>
+            </div>
+        </div>
+    </script>
+}

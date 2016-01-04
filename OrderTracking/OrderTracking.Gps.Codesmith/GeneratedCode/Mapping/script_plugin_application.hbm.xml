@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Scriptpluginapplication, OrderTracking.Gps.Dao" table="script_plugin_application">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="script_plugin_application_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__script_p__D09EE8AB0D64F3ED"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+			<column name="application_id" length="4" sql-type="int" not-null="true" index="UNIQUE_script_plugin_application"/>
+		</many-to-one>
+		<many-to-one name="Scriptplugin" class="OrderTracking.Gps.Dao.Domain.Scriptplugin, OrderTracking.Gps.Dao">
+			<column name="script_plugin_id" length="4" sql-type="int" not-null="true" index="UNIQUE_script_plugin_application"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

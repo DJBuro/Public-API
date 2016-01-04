@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Scheduler, OrderTracking.Gps.Dao" table="scheduler">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="scheduler_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__schedule__25029096737017C0"/>
+			<generator class="native" />
+		</id>
+		<property name="Schedulername" type="String">
+			<column name="scheduler_name" length="45" sql-type="varchar" not-null="true" unique="true" index="Index_unique_name"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<bag name="scheduler_tasks" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="scheduler_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Schedulertask, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

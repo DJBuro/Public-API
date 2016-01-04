@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Dashboard.Dao.Domain.SiteMessage, Dashboard.Dao" table="SiteMessages">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="SiteMessageID" length="4" sql-type="int" not-null="true" unique="true" index="PK_SiteMessages"/>
+			<generator class="native" />
+		</id>
+		<property name="Message" type="String">
+			<column name="Message" length="1000" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="CreatedDate" type="DateTime">
+			<column name="CreatedDate" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+		<property name="CreatedBy" type="String">
+			<column name="CreatedBy" length="50" sql-type="varchar" not-null="true"/>
+		</property>
+		<many-to-one name="HeadOffice" class="Dashboard.Dao.Domain.HeadOffice, Dashboard.Dao">
+			<column name="HeadOfficeID" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

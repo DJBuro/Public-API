@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="C:\Andromeda Development Source\OrderTracking\WebOrderTracking\PublishedDemoTrackingService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="DemoTrackingService.svc" publishTime="07/12/2011 16:00:22" />
+    <file relUrl="jquery.js" publishTime="07/12/2011 16:22:34" />
+    <file relUrl="Web.config" publishTime="07/19/2011 15:20:14" />
+    <file relUrl="TrackOrder.htm" publishTime="07/19/2011 15:15:55" />
+    <file relUrl="bin/DemoTrackingService.pdb" publishTime="07/18/2011 12:31:13" />
+    <file relUrl="bin/DemoTrackingService.dll" publishTime="07/18/2011 12:31:14" />
+  </publishProfile>
+</publishData>

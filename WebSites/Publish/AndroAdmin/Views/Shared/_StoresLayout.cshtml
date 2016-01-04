@@ -1,0 +1,48 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@section Head {
+  @RenderSection("Head", false)
+}
+
+@section Script {
+  @RenderSection("Script", false)
+}
+
+@section SubMenu {
+    @*<section id="subMenuSection" class="menu">
+        <ul>
+            @{
+                List<string> permissions = ViewBag.Permissions;
+            }
+
+            <!-- Manage Stores -->
+            @if (permissions.Contains("ViewStores"))
+            {
+            <li>
+                @Html.ActionLink("Manage Stores", "Index", "Store", new { }, new { @class = ViewBag.SelectedStoreMenu == AndroAdmin.Model.StoresMenuItemEnum.Stores ? "navSelected" : "navLink" })
+            </li>
+            }
+
+            <!-- Payment Providers -->
+            @if (permissions.Contains("ViewPaymentProviders"))
+            {
+            <li>
+                @Html.ActionLink("Payment Providers", "Index", "PaymentProvider", new { }, new { @class = ViewBag.SelectedStoreMenu == AndroAdmin.Model.StoresMenuItemEnum.PaymentProviders ? "navSelected" : "navLink" })
+            </li>
+            }
+            
+            <li>
+                <a class="@(ViewBag.SelectedStoreMenu == AndroAdmin.Model.StoresMenuItemEnum.StoreDevices ? "navSelected" : "navLink" )" 
+                    href="@Url.Action("Index", "StoreDevices", new { })">Store Devices</a>
+            </li>
+            <li>
+                <a class="@(ViewBag.SelectedStoreMenu == AndroAdmin.Model.StoresMenuItemEnum.Apis ? "navSelected" : "navLink" )"
+                    href="@Url.Action("Index", "ExternalApi")">
+                    Device Apis
+                </a>
+            </li>
+        </ul>
+    </section>*@
+}
+
+@RenderBody()

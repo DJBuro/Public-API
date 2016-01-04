@@ -1,0 +1,152 @@
+﻿@using MyAndromedaDataAccess.Domain.Reporting;
+@model OrdersSummary
+
+<table class="sparkline" data-date="">
+    <colgroup>
+        <col style="width: 100px" />
+        <col style="width: 100px" />
+        <col style="width: 100px" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Sales</td>
+            <td>@Model.TotalRangeTurnover.ToString("C")</td>
+            <td>
+                <span id="TotalTurnoverWeekSparkLine"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Daily Avg
+            </td>
+            <td>@(string.Format("{0:C}", Model.RangeAverage ))</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Orders</td>
+            <td>
+                @Model.RangeCount
+            </td>
+            <td>
+                <span id="TotalOrdersWeekSparkLine"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Delivery<br />
+                Collection
+            </td>
+            <td>
+                @Model.DeliveryOrderQuantity<br />
+                @Model.CollectionQuantity
+            </td>
+            <td><span id="CountCollectionWeek"></span></td>
+        </tr>
+    </tbody>
+</table>
+
+@using (Html.BeginScripts())
+{ 
+    <script type="text/javascript">
+        $(function () {
+            var service = $("#dashboardreport").data("ReportingService");
+
+            var filter = {
+                from: kendo.parseDate("@DateTime.Now.AddDays(-7).ToString("u")"),
+                to: kendo.parseDate("@DateTime.Now.ToString("u")")
+            };
+
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: function (options) {
+                            var from = filter.from;
+                            var to= filter.to;
+                            var url = "@Url.Action("ReadOrderSummary", "Orders")" + "?from={0}&to={1}&dayOnly={2}";
+                            var destination = kendo.format(url, from.toJSON(), to.toJSON(), true);
+                            
+                            return destination;
+                        },
+                        dataType: "json",
+                        type: "POST"
+                    }
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            "Day":{"type":"date"},
+                            "Total":{"type":"number"},
+                            "Count":{"type":"number"},
+                            "Average":{"type":"number"},
+                            "Min":{"type":"number"},
+                            "Max":{"type":"number"}
+                        }
+                    }
+                }
+            });
+
+            service.Bind("change", function (e) {
+                if (e.field !== "from") return;
+
+                var value = service.Get("from");
+                var to = new Date(value);
+                var from = new Date();
+
+                from.setDate(to.getDate() - 7);
+                filter.to = to;
+                filter.from = to;
+                dataSource.fetch();
+            });
+
+            dataSource.fetch(function (result) {
+                console.log(result);
+            });
+
+            service.AddResult("WeeklyLook", dataSource);
+
+            $("#TotalTurnoverWeekSparkLine").kendoSparkline({
+                series: [{ "name": "Total", "type": "line", "field": "Total" }],
+                dataSource: dataSource,
+                tooltip: {
+                    template: "<div>#: kendo.toString(dataItem.Day, 'd')# (#: kendo.toString(dataItem.Day, 'ddd')#)</div><div>Total:#: kendo.toString(value, 'c') #</div> "
+                }
+            });
+
+            $("#TotalOrdersWeekSparkLine").kendoSparkline({
+                series: [{ "name": "Value", "type": "column", "field": "Count" }],
+                dataSource: dataSource,
+                tooltip: {
+                    template: "<div>#: kendo.toString(dataItem.Day, 'd')# (#: kendo.toString(dataItem.Day, 'ddd')#)</div><div>Order Count:#: value #</div>",
+                    position: "top"
+                }
+            });
+
+            $("#CountCollectionWeek").kendoSparkline({
+                series: [
+                    { "name": "Delivery", "type": "line", "field": "DeliveryCount" },
+                    { "name": "Collection", "type": "line", "field": "CollectionCount" },
+                ],
+                dataSource: dataSource,
+                tooltip: {
+                    template: "#: kendo.toString(dataItem.Day, 'd')# (#: kendo.toString(dataItem.Day, 'ddd')#) | Total:#: value #"
+                }
+            });
+            //$("#CountDeliveryWeek").kendoSparkline({
+            //    series: [{ "name": "Delivery", "type": "line", "field": "DeliveryCount" }],
+            //    dataSource: dataSource,
+            //    tooltip: {
+            //        template: "<div>Date: #: kendo.toString(dataItem.Day, 'd')#</div><div>Total:#: value #</div> "
+            //    }
+            //});
+
+        });
+    </script>
+
+}

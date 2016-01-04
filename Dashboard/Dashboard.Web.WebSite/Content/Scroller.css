@@ -1,0 +1,42 @@
+﻿body
+{
+	font-size: 90%;
+	font-weight:bold;
+	font-family: Lucida Sans, Sans-Serif;
+}
+
+div.scrollerTickets
+{
+    float: left;
+    width: 100%;
+    margin: 5px 0 0 0;
+    padding: 0;
+    color: #C0C0C0;
+    background-color: #339966;
+    padding: 4px 0 4px 0;
+}
+ div.scrollerOPD
+{
+    float: left;
+    width: 100%;
+    margin: 5px 0 0 0;
+    padding: 0;
+    color: #C0C0C0;
+    background-color: #000000;
+    padding: 4px 0 4px 0;
+}
+ 
+div.scrollerOTD
+{
+    float: left;
+    width: 100%;
+    margin: 5px 0 0 0;
+    padding: 0;
+    color: #FF0000;
+    background-color: #000000;
+    padding: 4px 0 4px 0;
+}
+
+.pointer {
+    cursor:default;
+}

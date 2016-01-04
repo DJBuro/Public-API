@@ -1,0 +1,414 @@
+﻿@using MyAndromeda.Authorization;
+@using SiteEntrollmentPermissions = MyAndromeda.Web.Areas.Authorization.SiteEnrollmentUserPermissions;
+@using UserRolePermissions = MyAndromeda.Web.Areas.Authorization.UserRolesUserPermissions;
+@using UserPermissions = MyAndromeda.Web.Areas.Users.UserManagementUserPermissions;
+@using OrderManagementPermissions = MyAndromeda.Web.Areas.OrderManagement;
+@using LoyaltyPermissions = MyAndromeda.Web.Areas.Loyalty;
+@using DeliveryZonePermissions = MyAndromeda.Web.Areas.DeliveryZone;
+@using VoucherPermissions = MyAndromeda.Web.Areas.Voucher;
+@using MarketingPermissions = MyAndromeda.Web.Areas.Marketing;
+@using ReportingPermissions = MyAndromeda.Web.Areas.Reporting;
+@using WebsitePermissions = MyAndromeda.Web.Areas.AndroWebOrdering;
+@using MenuPermisssinos = MyAndromeda.Web.Areas.Menu;
+@using AcsPermissions = MyAndromeda.Web.Areas.Acs.UserPermissions;
+@using VoucherUserPermissions = MyAndromeda.Web.Areas.Voucher.UserPermissions;
+
+@model MyAndromeda.Web.Areas.Authorization.ViewModels.NavigationViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+
+}
+
+<div class="panel-wrap">
+
+    @(Html.Kendo()
+    .Menu()
+    .Name("Menu")
+    .SecurityTrimming(false)
+    .Items(items =>
+    {
+        if (Model.AccessToManyChains())
+        {
+            items.Add().Text(translator.T("My Chains"))
+                .Action("index", "Chains", new { Area = string.Empty });
+        }
+
+        if (Model.WorkContext.CurrentUser.AccessibleChains.Any())
+        {
+            if (workContext.CurrentChain.Available)
+            {
+                if (authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewChainReports))
+                {
+
+                    items.Add().Text(translator.T("Chain Reports")).Action("index", "Reports", new { Area = "ChainReporting" })
+                        .Items(chainMenuItems =>
+                        {
+                            chainMenuItems.Add().Text("hi").Action("index", "Dashboard", new { Area = "ChainReporting" });
+                            //chainMenuItems.Add().Text("Map").Action("map", "Reporting", new { Area = "ChainReporting" });
+                        });
+
+                }
+            }
+        }
+
+        if (Model.AccessToManySites())
+        {
+            if (!workContext.CurrentUser.FlattenedChains.Any())
+            {
+
+                items.Add().Text(translator.T("My Sites"))
+                    .Action("Index", "Sites", new { Area = string.Empty })
+                    .Items(siteItems =>
+                    {
+                        var sites = workContext.CurrentUser.AccessibleSites.OrderBy(e => e.ClientSiteName);
+
+                        foreach (var site in sites)
+                        {
+                            siteItems.Add()
+                                .Text(site.ClientSiteName)
+                                .Action("Index", "Store", new { Area = "Store", ChainId = site.ChainId, ExternalSiteId = site.ExternalSiteId });
+                        }
+                    });
+            }
+
+
+        }
+
+        if (Model.WorkContext.CurrentSite.Available && Model.Authorizer.AuthorizedForChainAndStore().IsUserAllowedToSiteWithinChain)
+        {
+            if (authorizer.AuthorizeAll(WebsitePermissions.StoreEnrolementPermissions.ViewDeliveryZoneFeature, WebsitePermissions.UserPermissions.ViewWebsites))
+            {
+
+                if (Model.WorkContext.CurrentSite.AndroWebOrderingSites.Count() > 0)
+                {
+                    items.Add().Text(translator.T("My Websites")).Action("List", "AndroWebOrdering", new { Area = "AndroWebOrdering" })
+                       .Items(e =>
+                       {
+                       });
+                }
+            }
+
+            items.Add()
+                .Text(translator.T("My Store"))
+                .Items(storeItems =>
+                {
+
+                    storeItems.Add().Text("Store Details").Action("Index", "Store", new { Area = "Store" });
+
+                    if (authorizer.AuthorizeAll(VoucherPermissions.VoucherCodesFeature.HasVoucherCodesFeature, VoucherUserPermissions.ViewVoucherCodes))
+                    {
+                        storeItems.Add().Text("Vouchers").Action("Index", "SiteVoucherCodes", new { Area = "Voucher" });
+                    }
+
+                    if (authorizer.AuthorizeAll(LoyaltyPermissions.StoreEnrolementPermissions.ViewLoyaltyFeature, LoyaltyPermissions.LoyaltyUserPermissions.ViewLoyalty))
+                    {
+                        storeItems.Add().Text("Loyalty").Action("Index", "StoreLoyalty", new { Area = "Loyalty" });
+                    }
+
+                    if (authorizer.Authorize(MyAndromeda.Web.Areas.Authorization.SiteEnrollmentUserPermissions.ViewSiteEnrollment))
+                    {
+                        storeItems.Add()
+                            .Text(translator.T("Change Enrolment"))
+                            .Action("EditEnrolement", "StoreEnrolmentPermission", new { Area = "Authorization", StoreId = Model.WorkContext.CurrentSite.SiteId })
+                            .Enabled(workContext.CurrentSite.Available);
+                    }
+
+                    bool authRole = authorizer.Authorize(MyAndromeda.Web.Areas.AndroWebOrdering.StoreEnrolementPermissions.ViewDeliveryZoneFeature);
+                    bool authUser = authorizer.Authorize(DeliveryZonePermissions.UserPermissions.ViewDeliveryZone);
+
+                    if (authRole && authUser)
+                    {
+                        storeItems.Add()
+                              .Text(translator.T("Delivery Zone"))
+                              .Action("DeliveryZonesByRadius", "DeliveryZone", new { Area = "DeliveryZone" })
+                              .Enabled(workContext.CurrentSite.Available);
+                    }
+
+                    if (authorizer.AuthorizeAll(
+                        OrderManagementPermissions.StoreEnrolementPermissions.ViewOrderManagementFeature,
+                        OrderManagementPermissions.UserPermissions.ViewOrderManagement))
+                    {
+                        storeItems.Add().Text("Order Monitoring").Action("Index", "Orders", new { Area = "OrderManagement" });
+                    }
+
+                    if (authorizer.Authorize(MyAndromeda.Web.Areas.Store.LocalizationPermissions.ViewAndEditLocalization))
+                    {
+                        storeItems.Add().Text(translator.T("Localization")).Action("Index", "Localization", new { Area = "Store" });
+                    }
+                });
+
+        }
+
+        if (Html.IsAuthorizedForAll(MarketingPermissions.MarketingFeatureEnrollment.MaketingFeature, MarketingPermissions.UserPermissions.ViewEmailCampaigns))
+        {
+            items.Add().Text(translator.T("Store Marketing"))//.Action("Index", "Email", new { Area = "Marketing" })
+                .Items(children =>
+                {
+                    if (Html.IsAuthorizedFor(MarketingPermissions.UserPermissions.ViewEmailCampaigns))
+                    {
+                        children.Add()
+                            .Text("Email Campaign")
+                            .Action("Index", "Email", new { Area = "Marketing" });
+                    }
+
+                    if (Html.IsAuthorizedFor(MarketingPermissions.UserPermissions.ChangeEventMarketing))
+                    {
+                        children.Add()
+                            .Text("Event Driven Campaigns")
+                            .Action("Index", "Event", new { Area = "Marketing" });
+                    }
+
+                    if (Html.IsAuthorizedFor(MarketingPermissions.UserPermissions.ChangeEmailSettings))
+                    {
+                        children.Add()
+                            .Text("Email Settings")
+                            .Action("Index", "EmailSettings", new { Area = "Marketing" });
+                    }
+                });
+        }
+
+        bool reportingFeature = Html.IsAuthorizedForAny(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature, ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
+        bool userPermission = Html.IsAuthorizedForAny(ReportingPermissions.UserReportingPermissions.ViewGprsReports, ReportingPermissions.UserReportingPermissions.ViewRamesesReports);
+
+        if (reportingFeature && userPermission)
+        {
+            items.Add().Text("Reporting")
+                //.Action("Index", "DailyReporting", new { Area = "Reporting" })
+                .Items(reportingItems =>
+                {
+                    bool gprsRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature);
+                    bool ramesesRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
+
+                    if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllOrdersReport))
+                    {
+                        reportingItems.Add().Text("All Orders").Action("Index", "DailyReporting", new { Area = "Reporting" });
+                    }
+                    if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                    {
+                        reportingItems.Add().Text("Online Orders").Action("Index", "Store", new { Area = "Reporting" });
+                    }
+                    if ((ramesesRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                    {
+                        reportingItems.Add().Text("In Store Orders").Action("InStore", "Store", new { Area = "Reporting" });
+                    }
+
+                    if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewPerformanceReport))
+                    {
+                        reportingItems.Add().Text("Performance").Action("ServiceTime", "DailyReporting", new { Area = "Reporting" });
+                    }
+                    if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewDeliveryPerformanceMetrics))
+                    {
+                        reportingItems.Add().Text("Delivery Time").Action("Index", "DeliveryPerformance", new { Area = "Reporting" });
+                    }
+                    if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewProductReport))
+                    {
+                        reportingItems.Add().Text("Products").Action("Index", "Product", new { Area = "Reporting" });
+                    }
+                    if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerReports))
+                    {
+                        reportingItems.Add().Text("Customers").Action("Index", "Customer", new { Area = "Reporting" });
+                    }
+                    if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewVoucherReport))
+                    {
+                        reportingItems.Add().Text("Vouchers").Action("Index", "Voucher", new { Area = "Reporting" });
+                    }
+
+                    if (Context.User.Identity.Name.Equals("Matt", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        reportingItems.Add().Text("Map").Action("Index", "Map", new { Area = "Reporting" });
+                    }
+
+                    if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerLoyaltyReport))
+                    {
+                        reportingItems.Add().Text("Loyalty").Action("Index", "CustomerLoyalty", new { Area = "Reporting" });
+                    }
+
+                });
+        }
+
+
+
+        bool storeCanAccessMenu = Html.IsAuthorizedFor(MyAndromeda.Web.Areas.Menu.StoreEnrolementPermissions.ViewMenuFeature);
+        bool userCanAccessMenu = Html.IsAuthorizedForAny(MyAndromeda.Web.Areas.Menu.UserPermissions.ViewStoreMenu, MyAndromeda.Web.Areas.Menu.UserPermissions.EditStoreMenu);
+
+        if (storeCanAccessMenu && userCanAccessMenu)
+        {
+            bool navigatedWithinStore = Model.WorkContext.CurrentSite.Available;
+            if (navigatedWithinStore)
+            {
+                items.Add().Text("Online Menu")
+                    .Content(@<text>
+                        <div class="html-menu-item-wrapper" style="padding:1em">
+                            <div class="header"><h3>@translator.T("Online menu editor")</h3></div>
+                            @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.ViewToppings))
+                            {
+                                <a class="k-button" href="@Url.Action("Index", "Modifiers", new { Area = "Menu" })">Matt's secret modifiers - a ghost town ... like many parts of My Andromeda.</a>
+                            }
+                            <div class="clearfix content-row" style="width:600px">
+                                <div class="content1 k-widget">
+                                    <div class="header">
+                                        <h4><i class="fa fa-edit"></i> @translator.T("Edit Web items")</h4>
+                                    </div>
+
+                                    <p>@translator.T("This part of the editor can be used to edit the online menu items:")</p>
+
+                                    <ul>
+                                        <li>@translator.T("A menu items title")</li>
+                                        <li>@translator.T("Online description")</li>
+                                        <li>@translator.T("Delivery and collection price)")</li>
+                                        <li>@translator.T("And dine-in price")</li>
+                                    </ul>
+                                    <a class="k-button k-button-link" href="@Url.Action("Index", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit items")</a>
+                                </div>
+
+                                <div class="content1 k-widget">
+                                    <div class="header">
+                                        <h4><i class="fa fa-sort-amount-asc"></i> @translator.T("Web sequencing")</h4>
+                                    </div>
+                                    <p>@translator.T("Use this editor to change the order of how your menu items appear on your online menu.")</p>
+                                    @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.EditStoreMenu))
+                                    {
+                                        <a class="k-button k-button-link" href="@Url.Action("Hierarchy", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit sequence")</a>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @translator.T("you are not authorized to edit the menu sequence")
+                                        </span>
+                                    }
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </text>);
+
+                //.Items(menuItems => {
+                //    menuItems.Add().Text("Edit Items").Action("Index", "MenuNavigation", new { Area = "Menu" });
+                //    menuItems.Add().Text("Web Sequencing").Action("Hierarchy", "MenuNavigation", new { Area = "Menu" });
+                //});
+            }
+        }
+
+        if (Html.IsAuthorizedFor(AcsPermissions.ViewAcsPermission))
+        {
+            items.Add().Text(translator.T("ACS")).Action("Index", "Default", new { Area = "Acs" });
+        }
+
+        if (Html.IsAuthorizedForAny(UserPermissions.ListUsers, UserRolePermissions.ViewUserRoleDefinitions, UserRolePermissions.EditUserRoleDefinitions))
+        {
+            items.Add().Text(translator.T("Admin"))
+            .Items(authItems =>
+            {
+                authItems.Add()
+                .Text(translator.T("Email Report"))
+                .Action("Index", "EmailSummary", new { Area = "admin" });
+
+                if (Html.IsAuthorizedFor(UserPermissions.ListUsers))
+                {
+                    authItems.Add()
+                    .Text(translator.T("All Users"))
+                    .SpriteCssClasses("fa fa-users")
+                    .Route("Users_list", new { controller = "UserManagement" });
+                }
+                //authItems.Add()
+                //    .Text(translator.T("Chain"))
+                //    .SpriteCssClasses("fa fa-sitemap")
+                //    .Enabled(workContext.CurrentChain.Available)
+                //    .Items(chainItems =>
+                //    {
+                //        if (workContext.CurrentChain.Available)
+                //        {
+                //            chainItems.Add()
+                //                .Text(translator.T("Users"))
+                //                .Enabled(workContext.CurrentChain.Available)
+                //                .Action("Index", "UserManagement", new { Area = "Users" });
+                //            chainItems.Add()
+                //                .Text(translator.T("Culture"))
+                //                .Enabled(workContext.CurrentChain.Available)
+                //                .Action("UpdateCulture", "Chains", new { Area = "", ChainId = workContext.CurrentChain.Chain.Id });
+                //        }
+                //    });
+
+                if (Html.IsAuthorizedFor(SiteEntrollmentPermissions.ViewSiteEnrollment))
+                {
+                    authItems.Add()
+                    .Text(translator.T("Store Enrolment Levels"))
+                    .Action("Levels", "StoreEnrolmentPermission", new { Area = "Authorization" });
+                }
+
+                if (Html.IsAuthorizedFor(UserRolePermissions.ViewUserRoleDefinitions))
+                {
+                    authItems.Add()
+                    .Text(translator.T("User Roles"))
+                    .Action("Levels", "UserRoleAuthorization", new { Area = "Authorization" });
+                }
+            });
+        }
+
+        if (authorizer.AuthorizeAny(MyAndromeda.Web.DebugPermissions.TestApiSection, MyAndromeda.Web.DebugPermissions.ViewTestSection))
+        {
+
+            items.Add().Text("Test").Items(testItems =>
+            {
+                testItems.Add().Text("Order Monitoring").Action("MonitoringTest", "TestWebApi", new { Area = "" });
+                testItems.Add().Text("Success Failure Email").Action("SuccessFailureEmailTest", "TestWebApi", new { Area = "" });
+                testItems.Add().Text("Publish Menu").Action("PublishMenu", "Test", new { Area = "Menu" });
+                testItems.Add().Text("Announcements").Action("Announce", "Debug", new { Area = "" });
+
+                testItems.Add().Text("Permissions").Action("TestPermissions", "Debug", new { Area = "" });
+
+                testItems.Add().Text("Order").Action("TestOrder", "Debug", new { Area = "" });
+
+
+                testItems.Add().Text("Web hooks - doorbell").Action("WebHooks", "Debug", new { Area = "" });
+
+                if (workContext.CurrentSite.Available)
+                {
+                    testItems.Add().Text("Orders").Action("Orders", "Debug", new
+                    {
+                        Area = "",
+                        AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId,
+                        ChainId = workContext.CurrentSite.ChainId
+                    });
+
+                    testItems.Add()
+                        .Text("TestCampaingEmail")
+                        .Action("TestCampaingEmail", "Debug", new { Area = "", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId });
+                }
+            });
+
+        }
+    })
+    )
+
+
+</div>
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+        <script src="~/Scripts/kendo/2015.2.703/kendo.all.min.js"></script>
+    }
+    @*<script type="text/javascript">
+            $("#sidebar").kendoResponsivePanel({
+                breakpoint: 1000,
+                width: 320,
+                orientation: "left"
+            });
+        </script>*@
+    <script type="text/javascript">
+        //$(function () {
+        //    var r = new MyAndromeda.Services.ResizeService();
+        //    r.ResizeObservable.subscribe(function (e) {
+        //        var menu = $("#MainMenu").data("kendoMenu");
+        //        kendo.resize(menu);
+        //    });
+        //});
+    </script>
+}

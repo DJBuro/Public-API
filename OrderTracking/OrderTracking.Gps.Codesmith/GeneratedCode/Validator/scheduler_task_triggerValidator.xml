@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="SchedulertasktriggerValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="TriggerassemblynameValidator" test="Triggerassemblyname"><v:message id="error.Triggerassemblyname.required" providers="TriggerassemblynameErrors, ValidationSummary"/></v:required>
+	<v:required id="TriggertypenameValidator" test="Triggertypename"><v:message id="error.Triggertypename.required" providers="TriggertypenameErrors, ValidationSummary"/></v:required>
+	<v:required id="TriggerdataValidator" test="Triggerdata"><v:message id="error.Triggerdata.required" providers="TriggerdataErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

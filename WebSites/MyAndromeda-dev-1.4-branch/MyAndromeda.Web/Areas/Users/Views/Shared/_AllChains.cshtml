@@ -1,0 +1,12 @@
+﻿@(Html.Kendo().Grid<MyAndromedaDataAccess.Domain.Chain>()
+        .Name("chains_#=Id#")
+        .Columns(columns => { columns.Bound(col => col.Name); })
+        .DataSource(dataSource =>
+            dataSource.Ajax()
+                .Sort(sort => sort.Add(field => field.Name))
+                .PageSize(10)
+                .Read(read => read.Action("List", "Chains", new { area = "", UserId = "#=Id#" })))
+        .Pageable()
+        .Sortable()
+        .ToClientTemplate()
+)

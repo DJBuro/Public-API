@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Schedulertasktrigger, OrderTracking.Gps.Dao" table="scheduler_task_trigger">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="scheduler_task_trigger_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__schedule__73B876E87DEDA633"/>
+			<generator class="native" />
+		</id>
+		<property name="Triggerassemblyname" type="String">
+			<column name="trigger_assembly_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Triggertypename" type="String">
+			<column name="trigger_type_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Triggerdata" type="String">
+			<column name="trigger_data" length="16" sql-type="text" not-null="true"/>
+		</property>
+		<many-to-one name="Schedulertask" class="OrderTracking.Gps.Dao.Domain.Schedulertask, OrderTracking.Gps.Dao">
+			<column name="scheduler_task_id" length="4" sql-type="int" not-null="true" unique="true" index="Index_unique_task_trigger"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

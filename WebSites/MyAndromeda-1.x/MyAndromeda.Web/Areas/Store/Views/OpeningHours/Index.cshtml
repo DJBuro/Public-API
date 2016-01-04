@@ -1,0 +1,39 @@
+﻿@model MyAndromeda.Web.Areas.Store.Models.OpeningTimesViewModel
+           
+@{
+    var workContext = Html.GetWorkContext();
+    ViewBag.Title = "OpeningTimes";
+}
+@Html.Action("OpeningHours", "Help")
+
+@*@section Breadcrumb
+{
+    <ul>
+        <li>
+            @Html.ActionLink("My Sites", "Index", "Sites")
+        </li>
+        <li>
+            @Html.ActionLink(@Model.SiteDetails.ClientSiteName, "Index", "Site")
+        </li>
+        <li>
+            Change Opening Hours
+        </li>
+    </ul>
+}*@
+
+<div class="header">
+    <h3>@workContext.CurrentSite.Site.ClientSiteName Opening Hours</h3>
+    <a class="k-button" href="@Url.Action("Index", "Site")">Back</a>
+</div>
+@Html.ValidationSummary()
+<div class="clearfix">
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Monday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Tuesday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Wednesday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Thursday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Friday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Saturday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Sunday"}})
+</div>
+
+<div style="clear:both;"></div>

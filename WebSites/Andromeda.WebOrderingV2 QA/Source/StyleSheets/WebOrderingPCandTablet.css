@@ -1,0 +1,3500 @@
+﻿@media only screen and (min-width: 601px)
+{
+    header
+    {
+        background-color: #f9f9f9;
+        border: 0;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    .page, .pageWithPopup
+    {
+        height: 100%;
+    }
+
+    #pageHeader
+    {
+        padding: 0;
+        height: 140px;
+    }
+
+    .button, .highlightedButton
+    {
+        float: none;
+    }
+
+    .highlightedButton a, .button a
+    {
+        color: #383838;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+    }
+
+    header h1
+    {
+        float: right;
+        font-size: 28pt;
+        padding-right: 20px;
+    }
+
+    #headerRight
+    {
+        float: right;
+        width: 700px;
+    }
+
+    #headerLeft
+    {
+        float: left;
+        margin: 20px 30px 0 20px;
+        height: 140px;
+    }
+
+    #headerCompanyLogo
+    {
+        position: absolute;
+        height: 130px;
+        top: 55px;
+        cursor: pointer;
+    }
+
+    #CDSSCROLLINGRAVE
+    {
+        height: 38px;
+    }
+
+    #logo
+    {
+        display: none;
+    }
+
+    #logo:hover
+    {
+        display: none;
+    }
+
+    #phone
+    {
+        display: none;
+        float: right;
+        margin: 5px 10px 0 0;
+        font-size: 12pt;
+        color: gray;
+    }
+
+    #supportEmail
+    {
+        display: none;
+        float: right;
+        margin: 5px 10px 0 0;
+        font-size: 12pt;
+        color: gray;
+    }
+
+    #socialMedia
+    {
+        float: right;
+        font-size: 10pt;
+        margin: 0;
+        padding: 6px 20px 6px 20px;
+    }
+
+    /* SOCIAL MEDIA */
+
+    #facebookLikeButton
+    {
+        float: right;
+    }
+
+    #socialMediaAddThis
+    {
+        float: left;
+        width: 150px;
+    }
+
+    #socialMedia p
+    {
+        float: left;
+        padding: 3px 10px 0 0;
+        margin: 0;
+        font-size: 14pt;
+        color: black;
+    }
+
+    #facebook
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/facebook.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #facebook a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #twitter
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/twitter.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #twitter a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #instagram
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/instagram.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #instagram a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #pinterest
+    {
+        float: right;
+        height: 40px;
+        width: 40px;
+        background: url('Images/pinterest.png') no-repeat;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    #pinterest a
+    {
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 0 0 35px;
+        display: block;
+    }
+
+    #headerHello
+    {
+        /*float: left;*/
+        position:absolute;
+        left: 10px;
+        top: 0;
+        margin-top: 5px;
+    }
+
+    /* POSTCODE SELECTOR */
+    #siteSelectorPostcode
+    {
+        clear: right;
+        float: right;
+        margin-top: 15px;
+    }
+
+    #siteSelectorPostcodePrompt
+    {
+        width: 420px;
+        padding-bottom: 5px;
+    }
+
+    #siteSelectorPostcodeTextbox
+    {
+        clear: left;
+        float: left;
+        margin-left: 30px;
+    }
+
+    #siteSelectorPostcodeTextbox input
+    {
+        width: 190px;
+        height: 35px;
+        font-size: 16pt;
+        padding: 0 10px 0 10px;
+    }
+
+    #siteSelectorPostcodeGoButton
+    {
+        float: left;
+    }
+
+    #siteSelectorPostcodeExample
+    {
+        position: absolute;
+        left: 675px;
+        top: 115px;
+    }
+
+    #siteSelectorShowSitesButton
+    {
+        float: left;
+    }
+
+    /* SITE LIST */
+    #siteListPromptContainer
+    {
+    }
+
+    /* STORE ADDRESS */
+
+    #storeDetailsAddressWrapper 
+    {
+        clear: right;
+        float: right;
+        margin-right: 10px;
+        overflow: hidden;
+    }
+
+    #storeDetailsAddress
+    {
+        font-size: 12pt;
+        padding: 0;
+        margin: 0;
+        float: left;
+        width: 265px;
+    }
+
+    #chooseStoreSelectContainer
+    {
+        overflow: auto;
+        width: 100%;
+    }
+
+    #chooseStoreSelectOuter
+    {
+        float: right;
+        right: 50%;
+        position: relative;
+    }
+
+    #chooseStoreSelectInner
+    {
+        float: right;
+        right: -50%;
+        position: relative;
+    }
+
+    #slSorry
+    {
+        margin: 20px 0 0 0;
+    }
+
+    #slChangePostcodePrompt, #slSelectedPostcode, #slChangePostcodeWrapper a, #slSelectPostcodeWrapper a
+    {
+        color: #EA85B8;
+    }
+
+    #slChangePostcodeWrapper a, #slSelectPostcodeWrapper a
+    {
+        font-size: 10pt;
+    }
+
+    #slChangePostcodeWrapper
+    {
+        width: 350px;
+        margin: 0 auto;
+    }
+
+    #slSelectPostcodeWrapper
+    {
+        width: 230px;
+        margin: 0 auto;
+    }
+
+    /* LOGIN */
+    #headerLoggedIn
+    {
+        position: absolute;
+        bottom: 5px;
+        right: 190px;
+    }
+
+    #headerLogoutButton, #headerMyOrdersButton
+    {
+        display: none;
+    }
+
+    #headerMyProfileButton, #headerMyOrdersButton, #headerLogoutButton
+    {
+        float: right;
+        margin-right: 8px;
+        overflow: hidden;
+    }
+
+    #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active,
+    #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active,
+    #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active
+    {
+        display: block;
+        text-decoration: none;
+        font-size: 14pt;
+        color: #383838;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        font-weight: normal;
+    }
+
+    #headerLoginBox
+    {
+        clear: right;
+        float: right;
+        margin: 10px 0 0 0;
+    }
+
+    #headerUsernamePrompt
+    {
+        float: left;
+        margin: 7px 5px 0 0;
+    }
+
+    #headerUsername
+    {
+        float: left;
+        margin: 0 4px 0 4px;
+    }
+
+    #headerUsername input
+    {
+        height: 27px;
+        padding: 0 0 0 5px;
+    }
+
+    #headerPassword
+    {
+        float: left;
+        margin: 0 4px 0 4px;
+    }
+
+    #headerPassword input
+    {
+        height: 27px;
+        padding: 0 0 0 5px;
+    }
+
+    #headerForgotPasswordButton
+    {
+        clear: both;
+        float: left;
+        margin: 0 10px 0 0;
+    }
+
+    #headerForgotPasswordButton a
+    {
+        font-size: 10pt;
+        color: #383838;
+    }
+
+    #headerRegisterButton a
+    {
+        font-size: 10pt;
+        color: #383838;
+    }
+
+    #headerLoginError
+    {
+        float: left;
+    }
+    /* MAIN MENU */
+    #mainMenu
+    {
+        overflow: hidden;
+        position: absolute;
+        bottom: 5px;
+        right: 0;
+    }
+
+    .mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted
+    {
+        float: right;
+        margin-right: 8px;
+        overflow: hidden;
+    }
+
+    .mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active,
+    .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active
+    {
+        display: block;
+        text-decoration: none;
+        font-size: 14pt;
+        color: #383838;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        font-weight: normal;
+    }
+
+    .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active
+    {
+        display: block;
+        text-decoration: none;
+        font-size: 14pt;
+        color: white;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #aaaaaa;
+        border-radius: 3px;
+        font-weight: normal;
+    }
+
+    #mobileMenuSections
+    {
+        display: none;
+    }
+
+    /* PASSWORD */
+
+    #forgotPasswordBox
+    {
+        overflow: hidden;
+        margin: 23px auto 20px auto;
+        width: 600px;
+    }
+
+    #forgotPasswordBox h1
+    {
+        text-align: center;
+        font-size: 20pt;
+        padding: 0;
+        margin: 10px 0 0 0;
+        color: #36490D;
+        font-weight: normal;
+    }
+
+    #forgotPasswordEmailPrompt
+    {
+        float: left;
+        margin: 28px 15px 0 20px;
+    }
+
+    #forgotPasswordEmail
+    {
+        float: left;
+        margin-top: 25px;
+    }
+
+    #forgotPasswordEmail input
+    {
+        width: 200px;
+    }
+
+    #forgotPasswordButton
+    {
+        float: left;
+        margin: 23px 15px 15px 40px;
+    }
+
+    #forgotPasswordCancelButton
+    {
+        float: left;
+        margin: 23px 15px 15px 0;
+    }
+
+    #forgotPasswordMessage
+    {
+        clear: both;
+        color: red;
+        text-align: center;
+    }
+
+    /* MAIN VIEW */
+    #viewContainer
+    {
+        position: relative;
+        margin-bottom: 35px;
+        width: 1024px;
+        margin: 0 auto;
+    }
+
+    .sitesBox, #siteSelectorBox
+    {
+        color: #493700;
+        padding: 0 50px 0 50px;
+        position: relative;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: 7px;
+    }
+
+    .welcomeHeader
+    {
+        font-weight: normal;
+        text-align: center;
+        font-size: 20pt;
+        color: #493700;
+        padding: 0;
+        margin: 10px 0 0 0;
+    }
+
+    #postcodeCheckHeader
+    {
+        display: none;
+    }
+
+    .chooseStorePrompt
+    {
+        margin: 20px 0 20px 0;
+    }
+
+    #pleaseWaitBox
+    {
+        margin: 0 auto;
+        color: #493700;
+    }
+
+    #pleaseWaitContent
+    {
+        padding-bottom: 30px;
+    }
+
+    .siteButtonsContainer
+    {
+        clear: both;
+        float: right;
+        right: 50%;
+        position: relative;
+    }
+
+    .siteButtonsInner
+    {
+        float: right;
+        right: -50%;
+        position: relative;
+    }
+
+    .sitesBox h2
+    {
+        color: #493700;
+    }
+
+    .sitesBox select
+    {
+        clear: both;
+        float: left;
+        display: block;
+        font-size: 16pt;
+        padding: 5px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 16pt;
+    }
+
+    .siteButton
+    {
+        width: 180px;
+        height: 135px;
+        margin: 0 10px 10px 0;
+        float: left;
+    }
+
+    .siteButton a
+    {
+        padding-top: 15px;
+    }
+
+    .waitPrompt
+    {
+        margin: 50px 0 20px 0;
+    }
+
+    .content
+    {
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+        padding: 10px 0 20px 0;
+    }
+
+    /* HOME VIEW */
+    #homeContent
+    {
+        padding: 0 0 100px 0;
+    }
+
+    #homeFullOrderDeal
+    {
+        color: red;
+        text-align: center;
+    }
+
+    /* Top Carousel */
+    #homeCarousel1Container
+    {
+        position: relative; 
+        top: 0;
+        left: 0;
+        width: 1022px; 
+        height: 300px;
+        border-top: 1px solid #e3e3e3;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    #homeCarousel1
+    {
+        cursor: move; 
+        position: absolute; 
+        overflow: hidden; 
+        left: 0;
+        top: 0;
+        width: 1022px; 
+        height: 300px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard h2
+    {
+        font-size: 20pt;
+        display: block;
+        background-color: #6FC3A1;
+        padding: 10px;
+        margin: 0;
+        color: white;
+        text-align: center;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard p
+    {
+        font-size: 20pt;
+        display: block;
+        padding: 10px;
+        margin: 0;
+        text-align: center;
+    }
+
+    #homeCarousel1 .homeCarouselDealCard
+    {
+        position: relative;
+        height: 300px;
+        width: initial;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardDetailsWrapper
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #D3DED6;
+        bottom: 0;
+        width: 250px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardInner
+    {
+        height: 300px;
+    }
+
+    #homeCarousel1 .homeCarouselDealCardPrice
+    {
+        font-size: 22pt;
+        color: #85171A;
+        text-align: center;
+    }
+
+    /* Bottom Carousel */
+    #homeCarousel2Container
+    {
+        position: relative;     
+        top: 0;
+        left: 0; 
+        width: 1022px; 
+        height: 190px;
+        margin-top: 10px;
+        border-top: 1px solid #e3e3e3;
+        border-bottom: 1px solid #e3e3e3;
+        background-color: white;
+    }
+
+    #homeCarousel2
+    {
+        cursor: move; 
+        position: absolute; 
+        overflow: hidden; 
+        left: 60px; 
+        top: 0;
+        width: 895px; 
+        height: 190px;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCard h2
+    {
+        padding: 0;
+        margin: 5px;
+        color: #493700;
+        font-size: 14pt;
+        text-align: left;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCard p
+    {
+        margin: 5px;
+        padding: 0;
+        text-align: left;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCardImageWrapper
+    {
+        position: relative;
+        width: 130px;
+        height: 130px;
+    }
+
+    #homeCarousel2 .homeCarouselMenuItemCardImagePrice
+    {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(100, 100, 100, 0.5);
+        padding: 5px;
+        color: white;
+    }
+
+
+    #homeOptionsWrapper
+    {
+        overflow: hidden;
+    }
+
+    #homeLeftOptions
+    {
+        clear: both;
+        float: left;
+        width: 49%;
+        margin-left: 1%;
+    }
+
+    #homeRightOptions
+    {
+        float: left;
+        width: 49%;
+        margin-right: 1%;
+    }
+
+    #homeStoreDetailsTitle
+    {
+        font-size: 20pt;
+        color: #493700;
+        padding: 5px;
+        margin: 10px 0 0 0;
+    }
+
+    #homeStoreDetails
+    {
+        padding: 0 10px 0 5px;
+    }
+
+    #homeStoreDetailsButton
+    {
+        width: 150px;
+    }
+
+    #homeMenuTitle
+    {
+        font-size: 20pt;
+        color: #493700;
+        padding: 5px;
+        margin: 10px 0 0 0;
+    }
+
+    #homeMenu
+    {
+        padding: 0 10px 0 5px;
+    }
+
+    #homeMenuButton
+    {
+        width: 300px;
+        margin: 15px auto 5px auto;
+        float: none;
+    }
+
+    #homeMenuButton a
+    {
+        width: 260px;
+        height: 38px;
+        font-size: 18pt;
+        line-height: 28pt;
+        font-weight: bold;
+    }
+
+    .home
+    {
+        text-align: center;
+        height: 190px;
+    }
+
+    /* ORDER DETAILS VIEW */
+    #storeDetailsAddressWrapperInner
+    {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    #storeDetailsAddressWrapperInner2
+    {
+        padding: 20px 0 0 20px;
+    }
+
+    #homeCheckPostcodeButton
+    {
+        display: none;
+    }
+
+    #storeDetailsAddress h1
+    {
+        padding: 0;
+        margin: 0 0 10px 0;
+        font-size: 11pt;
+        font-weight: bold;
+    }
+
+    #storeDetailsAddressLinesMultiLine
+    {
+        display: block;
+    }
+
+    #storeDetailsAddressLinesSingleLine
+    {
+        display: none;
+    }
+
+    #storeDetailsAddressLinesTel 
+    {
+        margin-top: 10px;
+    }
+
+    #storeDetailsSupportEmail
+    {
+        margin-top: 10px;
+    }
+
+    #storeDetailsAddressMap
+    {
+        float: left;
+        width: 415px;
+    }
+
+    #mapContainer
+    {
+        height: 250px;
+        overflow: hidden;
+        float: left;
+        margin: 0 0 0 10px;
+        border: solid 1px gray;
+        width: 96%;
+    }
+
+    #map
+    {
+        width: 100%;
+        height: 100%;
+    }
+
+    #deliveryTimesAddressWrapper
+    {
+        overflow: hidden;
+        position: relative;
+        margin: 10px 0 0 0;
+        padding: 0;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        float: left;
+        width: 250px;
+        min-height: 250px;
+        padding: 20px;
+        overflow: hidden;
+    }
+
+    #storeDetailsDeliveryTimes h1
+    {
+        font-size: 11pt;
+        font-weight: bold;
+        padding: 0;
+        margin: 0 0 15px 0;
+    }
+
+    #storeDetailsDeliveryTimes h2
+    {
+        font-size: 11pt;
+        font-weight: bold;
+        padding: 0;
+        margin: 15px 0 0 0;
+    }
+
+    .storeDetailsDeliveryTimesDay
+    {
+        clear: both;
+        overflow: hidden;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn1
+    {
+        float: left;
+        width: 100px;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn2
+    {
+        float: left;
+    }
+
+    #homeMenuSections
+    {
+        display: none;
+        clear: both;
+        padding: 0 0 10px 0;
+        overflow: hidden;
+    }
+
+    #homeMenuSections h1
+    {
+        font-size: 20pt;
+        font-weight: normal;
+        padding: 0;
+        margin: 5px 0 10px 0;
+        color: #493700;
+    }
+
+    #homeMenuSections p
+    {
+        font-size: 14pt;
+        font-weight: normal;
+        padding: 0;
+        margin: 0 0 10px 0;
+        color: #493700;
+    }
+
+    .homeMenuSectionButton
+    {
+        float: left;
+        width: 120px;
+        height: 65px;
+        margin: 0 15px 15px 0;
+        position: relative;
+    }
+
+    .homeMenuSectionButton a:link, .homeMenuSectionButton a:visited, .homeMenuSectionButton a:active
+    {
+        font-size: 14pt;
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        width: 120px;
+        height: 65px;
+    }
+
+    #homeMenuButtonsWrapper
+    {
+        clear: both;
+        float: right;
+        right: 50%;
+        position: relative;
+        margin-top: 5px;
+    }
+
+    #homeMenuButtons
+    {
+        overflow: hidden;
+        float: right;
+        right: -50%;
+        position: relative;
+    }
+
+    #homeDeliveryMinimumOrder
+    {
+        margin: 5px 0 0 0;
+        font-weight: bold;
+        font-size: 11pt;
+    }
+
+    /* POSTCODE CHECK */
+    #postcodeCheck
+    {
+        overflow: hidden;
+    }
+
+    #postcodeCheckInner
+    {
+        padding: 10px;
+    }
+
+    #postcodeCheckTop
+    {
+        margin: 10px 0 0 0;
+    }
+
+    #postcodeCheckTop input
+    {
+        float: left;
+        margin: 0 0 0 40px;
+        width: 100px;
+        height: 30px;
+        font-size: 16pt;
+        text-align: center;
+    }
+
+    #postcodeCheckButton
+    {
+        float: left;
+        margin: 0 0 0 15px;
+        width: 180px;
+    }
+
+    #postcodeCheck h1
+    {
+        color: #815126;
+        text-align: center;
+        font-weight: normal;
+        font-size: 15pt;
+        padding: 0;
+        margin: 0 0 5px 0;
+    }
+
+    #postcodeCheck p
+    {
+        margin: 5px 0 0 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    #postcodeCheckResult
+    {
+        clear: both;
+        padding-top: 5px;
+    }
+
+    #postcodeCheckFail
+    {
+        padding-top: 5px;
+        color: red;
+    }
+
+    #postcodeCheckOk
+    {
+        padding-top: 5px;
+        color: #4CFF00;
+    }
+
+    #postcodeCheckChangeStoreButton
+    {
+        position: absolute;
+        bottom: 10px;
+        width: 150px;
+        margin: 0 0 0 10px;
+    }
+
+    #postcodeCheckShowMenuButton
+    {
+        position: absolute;
+        bottom: 10px;
+        width: 200px;
+        margin: 0 0 0 175px;
+    }
+
+    /* Login/register */
+    #loginContent
+    {
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 20px 0 20px 0;
+    }
+
+    #lrLoginButtonContainer
+    {
+        clear: left;
+    }
+
+    #lrRegisterContainer
+    {
+        clear: left;
+        width: 50%;
+        float: left;
+    }
+
+    #lrEmailRegisterMarketing
+    {
+        clear: left;
+        font-size: 10pt;
+        margin: 0 0 0 20px;
+        background-color: #F2F2F2;
+        padding: 0 0 5px 10px;
+    }
+
+    #lrEmailRegisterMarketing label
+    {
+        font-size: 10pt;
+    }
+
+    #lrSMSRegisterMarketing
+    {
+        clear: left;
+        font-size: 10pt;
+        margin: 0 0 0 20px;
+        background-color: #F2F2F2;
+        padding: 0 0 5px 10px;
+    }
+
+    #lrSMSRegisterMarketing label
+    {
+        font-size: 10pt;
+    }
+
+    .lrLoginFormPrompt
+    {
+        clear: left;
+        float: left;
+        width: 180px;
+        margin: 5px 0 0 10px;
+        background-color: #F2F2F2;
+        padding: 0 0 0 5px;
+    }
+
+    .lrLoginFormInput textarea
+    {
+        width: 97%;
+        height: 75px;
+        font-size: 10pt;
+        padding: 5px;
+    }
+
+    #signUpWrapper
+    {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #lrBox
+    {
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #lrCreateAnAccount
+    {
+        font-size: 17pt;
+        font-weight: normal;
+        color: #493700;
+        padding: 5px 0 5px 0;
+        margin: 0 0 5px 0;
+        text-align: center;
+    }
+
+    #lrRegisterAddressContainer
+    {
+        width: 50%;
+        float: left;
+        margin-top: 5px;
+    }
+
+    #lrCreateAnAccountAddress
+    {
+        font-weight: normal;
+        font-size: 17pt;
+        color: #493700;
+        padding: 5px 0 5px 0;
+        margin: 0;
+        text-align: center;
+        background-color: #F2F2F2;
+    }
+
+    #lrAddressDetails
+    {
+        background-color: #F2F2F2;
+        margin-top: 5px;
+    }
+
+    #lrRegisterButton, #lrCancelButton
+    {
+        margin: 5px;
+    }
+
+    #registerWrapper
+    {
+        width: 49%;
+        float: left;
+    }
+
+    /* IMAGE */
+    #imagePopup
+    {
+        position: fixed;
+        top: 0;
+        top: 50%;
+        left: 50%;
+        margin: 0 0 0 0;
+        overflow: hidden;
+        z-index: 1004;
+        background-color: white;
+    }
+
+    #imageInner p
+    {
+        padding: 0;
+        margin: 0;
+        font-size: 10pt;
+        color: gray;
+        text-align: center;
+    }
+
+    /* Terms and conditions */
+
+    #tandcPopupBox
+    {
+        overflow: hidden;
+    }
+
+    #tandcInner
+    {
+        padding: 10px;
+    }
+
+    #tandcInner h1
+    {
+        color: black;
+        padding: 0;
+        margin: 0;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    #tandcText
+    {
+        margin: 10px 10px 0 10px;
+        width: 640px;
+        height: 250px;
+        overflow-y: scroll;
+        padding: 10px;
+    }
+
+    #tandcText iframe
+    {
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    #tandcOkButton
+    {
+        position: absolute;
+        bottom: 10px;
+        width: 75px;
+        margin: 10px 0 0 313px;
+    }
+
+    .menuPage
+    {
+        margin: 0;
+        position: relative;
+    }
+
+    #rightColumnWrapper
+    {
+        z-index: 10;
+        width: 250px;
+        float: right;
+        margin-top: 5px;
+    }
+    #rightColumn
+    {
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+    }
+
+    #yourOrderContainer
+    {
+        overflow: hidden;
+    }
+
+    #orderItemsHeader
+    {
+        margin-top: 5px;
+        display: none;
+    }
+
+    #orderItemsHeader h2
+    {
+        font-size: 12pt;
+    }
+
+    #cartItems, #offlineCart
+    {
+        padding: 0 0 15px 0;
+        overflow: hidden;
+    }
+
+    #emptyBasket
+    {
+        padding: 5px;
+    }
+
+    #emptyBasket h2
+    {
+        font-size: 12pt;
+    }
+
+    #sOffline
+    {
+        text-align: center !IMPORTANT;
+        color: red;
+    }
+
+    #cartHelp
+    {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    #deliveryOrCollectionText
+    {
+        font-size: 14pt;
+        margin-left: 20px;
+    }
+
+    #cartWrapper
+    {
+        position: relative;
+    }
+
+    #checkoutOrderDetails
+    {
+        margin-right: 20px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 270px;
+    }
+
+    #cartLineItems
+    {
+        padding: 10px 0 0 0;
+    }
+
+    #cartLineItemsHeader
+    {
+        border-bottom: black 2px solid;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+
+    #cartLineItemsItemHeader
+    {
+        float: left;
+        font-size: 12pt;
+        color: black;
+    }
+
+    #cartLineItemsQuantityHeader
+    {
+        float: right;
+        padding-right: 20px;
+        font-size: 12pt;
+        color: black;
+    }
+
+    #cartLineItemsPriceHeader
+    {
+        float: right;
+        font-size: 12pt;
+        margin-right: 20px;
+        color: black;
+    }
+
+    .cartQuantity
+    {
+        position: absolute;
+        right: 120px;
+    }
+
+    .menuPage .cartQuantity
+    {
+        right: 85px;
+    }
+
+    .menuPage .cartName
+    {
+        width: 135px;
+    }
+    
+    .menuPage #yourOrderContainer h2
+    {
+        margin: 0 5px 10px 0;
+    }
+
+    .menuPage #cartLineItemsQuantityHeader
+    {
+        padding-right: 2px;
+    }
+
+    .menuPage #cartLineItemsPriceHeader
+    {
+        padding-right: 20px;
+    }
+
+    .menuPage .cartIndent1
+    {
+        display: block;
+        float: left;
+        width: 167px;
+    }
+
+    .cartRowItemTopping .cartPrice, .cartRowItemTopping .cartPriceDisabled
+    {
+        padding-right: 18px;
+    }
+
+    .menuPage .cartRowItemTopping .cartPrice, .menuPage .cartRowItemTopping .cartPriceDisabled
+    {
+        display: block;
+        margin-right: 0;
+        float: left;
+        width: 40px;
+        padding-right: 0;
+        text-align: right;
+    }
+    
+    .menuPage #cartLineItemsItemHeader, .menuPage #cartLineItemsPriceHeader, .menuPage #cartLineItemsQuantityHeader
+    {
+        font-size: 10pt;
+    }
+    
+    #cartDealItemsWrapper .cartPrice, #cartDealItemsWrapper .cartPriceDisabled
+    {
+        width: 50px;
+    }
+
+    .menuPage #cartDealItemsWrapper .cartName
+    {
+        width: 160px;
+    }
+
+    #deliveryOrCollection
+    {
+        text-align: left;
+        font-size: 14pt;
+        margin: 0 0 10px 20px;
+    }
+
+    #deliveryOrCollection input
+    {
+        margin-right: 20px;
+    }
+
+    #cartTitle h1
+    {
+        color: #36490D;
+        font-size: 20pt;
+        font-weight: normal;
+        text-align: center;
+        margin: 10px 10px 10px 10px;
+        padding: 0 0 5px 0;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    #cartSubTotalWrapper
+    {
+        clear: both;
+        border-top: solid 2px black;
+        overflow: hidden;
+    }
+
+    #cartSubTotalWrapper span
+    {
+        font-size: 10pt;
+        margin: 5px 25px 0 0;
+    }
+
+    #cartDiscountWrapper
+    {
+        clear: both;
+        overflow: hidden;
+    }
+
+    #cartDiscountWrapper span
+    {
+        font-size: 10pt;
+    }
+
+    #cartTotalWrapper
+    {
+        overflow: hidden;
+        border-top: solid 2px black;
+        padding-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    .cartItem a:link, .cartItem a:visited, .cartItem a:active 
+    {
+        color: #383838;
+    }
+
+    .cartRemove
+    {
+        float: right;
+        background-image: url('../Custom/images/trashcan.png');
+        width: 18px;
+        height: 20px;
+    }
+
+    .cartTotalPrice
+    {
+        margin: 5px 25px 0 0;
+    }
+
+    .cartTotal
+    {
+        position: absolute;
+        right: 100px;
+        margin: 5px 25px 0 0;
+    }
+
+    .ticked
+    {
+        background: url(Images/TickedSmall.png) no-repeat;
+        padding-left: 25px;
+        line-height: 20pt;
+    }
+
+    .unticked
+    {
+        background: url(Images/UntickedSmall.png) no-repeat;
+        padding-left: 25px;
+        line-height: 20pt;
+    }
+
+    #optionsContainer
+    {
+        margin: 12px 0 0 0;
+        min-height: 50px;
+    }
+
+    #optionsTitle
+    {
+        color: white;
+        font-size: 16pt;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #options
+    {
+        font-size: 10pt;
+    }
+
+    #clearOrderButton
+    {
+        float: left;
+        width: 100px;
+        margin-left: 10px;
+    }
+
+    #clearOrderButton a
+    {
+        font-size: 11pt;
+    }
+
+    #checkoutButton a
+    {
+        font-size: 11pt;
+    }
+
+    /* Checkout */
+
+    .checkoutPage
+    {
+        overflow: hidden;
+        background: white;
+        min-height: 600px;
+    }
+
+    .checkoutPage h1
+    {
+        color: #36490D;
+        font-size: 26pt;
+        margin: 0;
+        padding: 5px;
+        font-weight: normal;
+    }
+
+    #checkoutSectionsContainer
+    {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .checkoutSection
+    {
+        padding: 10px 20px 10px 10px;
+        overflow: hidden;
+    }
+
+    .checkoutAddressLine input
+    {
+        width: 270px;
+        padding: 5px;
+    }
+
+    .checkoutAddressLine textarea
+    {
+        width: 437px;
+        height: 100px;
+        margin: 0 0 0 25px;
+        padding: 2px 5px 0 5px;
+    }
+
+    .checkoutAddressColumn1
+    {
+        width: 180px;
+        margin: 5px 0 0 10px;
+    }
+
+    .checkoutAddressColumn1 span
+    {
+        font-size: 9pt;
+        color: gray;
+    }
+
+    .checkoutAddressColumn3
+    {
+        display: none;
+    }
+
+    #checkoutPostcodeContainer input
+    {
+        width: 135px;
+    }
+
+    #checkoutPostcodeContainer .checkoutAddressColumn3
+    {
+        display: block;
+        line-height: 35px;
+        color: grey;
+    }
+
+    #checkoutPaymentContainer
+    {
+        height: 500px;
+        padding: 0 20px 20px 20px;
+        overflow: hidden;
+    }
+
+    #checkoutDeliveryTimePrompt
+    {
+        clear: both;
+        border-top: 2px solid black;
+        overflow: hidden;
+    }
+
+    #checkoutDeliveryTimePrompt h3
+    {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #checkoutSAddressTitle
+    {
+        font-size: 14pt;
+        font-weight: bold;
+    }
+
+    #checkoutCustomerName
+    {
+        font-weight: bold;
+    }
+
+    #checkoutPaymentButtons
+    {
+        clear: both;
+        width: 100%;
+    }
+    
+    #checkoutPayment
+    {
+        background: url(Images/CardPayments.png) no-repeat center;
+        width: 100%;
+        height: 200px;
+    }
+
+    #checkoutSAddVoucherContainer
+    {
+        padding-top: 10px;
+    }
+
+    #checkoutSVoucherCode
+    {
+        width: 220px;
+    }
+    .orderNotesColumn1
+    {
+       margin: 0 5px 5px 25px;
+    }
+
+    .orderNotesColumn1 span
+    {
+        display: none;
+        font-size: 9pt;
+        color: gray;
+    }
+
+    #rememberAddressWrapper
+    {
+        margin-top: 5px;
+        text-align: center;
+    }
+
+    .checkoutButtons
+    {
+        clear: both;
+        margin: 10px 5px 5px 5px;
+    }
+
+    #checkoutSPaymentSelection
+    {
+        margin-top: 5px;
+    }
+
+    #checkoutSPaymentTitle
+    {
+        font-size: 18pt;
+        font-weight: bold;
+    }
+
+    .backButton
+    {
+        width: 100px;
+        float: left;
+    }
+
+    .nextButton
+    {
+        width: 100px;
+        float: right;
+        margin-right: 20px;
+    }
+
+    .checkoutDataError
+    {
+        color: black;
+    }
+
+    #checkoutCart
+    {
+        margin-left: 20px;
+        margin-right: 320px;
+    }
+
+    #checkoutAddressButtons
+    {
+        overflow: hidden;
+        margin: 0 auto;
+        width: 340px;
+    }
+
+    .checkoutRedeemPrompt
+    {
+        font-size: 11pt;
+    }
+
+    #checkoutOptionsSection h1
+    {
+        padding: 0 0 5px 0;
+        border-bottom: 1px solid #e3e3e3;
+        margin-bottom: 5px;
+    }
+
+    #cartAwardLoyalty
+    {
+        font-size: 11pt;
+        margin: 10px 0 0 5px;
+    }
+
+    #upsellList
+    {
+        overflow: hidden;
+    }
+
+    #paymentPayLine
+    {
+        width: 310px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    #paymentTandCCheckbox
+    {
+        width: 375px;
+        margin: 0 auto;
+    }
+
+    #mercuryPaymentContainer
+    {
+        text-align: center;
+        width: 647px;
+        height: 500px;
+    }
+
+    #mercuryPaymentIFrame
+    {
+        width: 647px;
+        height: 500px;
+        text-align: center;
+        border: 0;
+    }
+
+    #dataCashPaymentContainer
+    {
+        text-align: center;
+        width: 100%;
+        height: 510px;
+    }
+
+    #dataCashPaymentIFrame
+    {
+        width: 647px;
+        height: 700px;
+        text-align: center;
+        border: 0;
+    }
+
+    #mercanetPaymentContainer
+    {
+        text-align: center;
+        width: 647px;
+        height: 300px;
+    }
+
+    #mercanetPaymentIFrame
+    {
+        width: 300px;
+        height: 700px;
+        text-align: center;
+        border: 0;
+    }
+
+    .paymentPage p
+    {
+        margin: 20px 50px 0 50px;
+    }
+
+    #paymentCardCharge
+    {
+        text-align: center;
+    }
+
+    #storeDetailsContainer
+    {
+        margin: 12px 0 0 0;
+        min-height: 50px;
+    }
+
+    #storeDetailsTitle
+    {
+        font-size: 18pt;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #storeDetails
+    {
+        font-size: 13pt;
+    }
+
+    .storeDetailsDayColumn1
+    {
+        font-style: italic;
+    }
+
+    .menu
+    {
+        margin: 12px 0 0 0;
+    }
+
+    #menuSectionWrapper 
+    {
+        width: 100%;
+        padding: 1px 0 1px 0;
+    }
+
+    #menuSection
+    {
+        width: 1024px;
+        margin: 0 auto;
+    }
+
+    #sectionHeaders
+    {
+        z-index: 10;
+        float: left;
+        width: 135px;
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+        margin-top: 5px;
+        margin-left: 3px;
+        bottom: 45px;
+        overflow-y: auto;
+    }
+
+    #sectionHeadersTop h1
+    {
+        font-size: 20pt;
+        margin: 10px 10px 10px 10px;
+        padding: 0 0 5px 0;
+        font-weight: normal;
+        color: #36490D;
+        text-align: center;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    .sectionHeader
+    {
+        margin: 5px 0 5px 0;
+        clear: both;
+        overflow: hidden;
+    }
+
+    .selectedSectionHeader
+    {
+        margin: 5px 0 5px 0;
+        clear: both;
+        overflow: hidden;
+        width: 135px;
+        background-color: #888;
+    }
+
+    .sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active
+    {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 14pt;
+        text-decoration: none;
+        padding: 2px 7px 2px 7px;
+        color: #383838;
+    }
+
+    .selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+    {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: 14pt;
+        text-decoration: none;
+        padding: 2px 7px 2px 7px;
+        color: white;
+    }
+
+    .sectionHeader h1
+    {
+        text-align: center;
+        padding: 0;
+        margin: 20px;
+    }
+
+    #sectionsWrapper
+    {
+        width: 623px;
+        position: absolute;
+        left: 135px;
+        padding: 5px 0 50px 7px;
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+        right: 0;
+    }
+
+    .fixedSectionHeaders
+    {
+        position: fixed;
+        top: 0;
+        bottom: 45px;
+        overflow-y: auto;
+    }
+
+    .normalCartSidebar
+    {
+        overflow-y: auto;
+    }
+    .fixedCartSidebar
+    {
+        position: fixed;
+        top: 0;
+        margin-left: 773px;
+        bottom: 45px;
+        overflow-y: auto;
+    }
+
+    #orderAccepted
+    {
+        overflow: hidden;
+    }
+
+    #orderAcceptedOptions
+    {
+        clear: both;
+        width: 924px;
+    }
+
+    #orderAcceptedOptions .button
+    {
+        width: 220px;
+        margin: 0 auto;
+        float: none;
+    }
+
+    #orderAcceptedOptions .button a
+    {
+        padding: 5px 0 5px 0;
+        width: 220px;
+        float: none;
+    }
+
+    #marketingSection
+    {
+        margin-top: 10px;
+    }
+
+    #marketingSection input
+    {
+        clear: left;
+        float: left;
+        width: 20px;
+        text-align: right;
+        margin-top: 5px;
+    }
+
+    #marketingSection label
+    {
+        float: left;
+    }
+
+    #rememberSection input
+    {
+        clear: left;
+        float: left;
+        width: 20px;
+        text-align: right;
+        margin-top: 5px;
+    }
+
+    #rememberAddressWrapper label
+    {
+        font-size: 10pt;
+    }
+
+    .itemRow
+    {
+        clear: both;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .itemRow:not(:last-child)
+    {
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    .itemRow select
+    {
+        height: 30px;
+        font-size: 12pt;
+    }
+
+    .itemImage
+    {
+        float: left;
+        position: relative;
+        margin-top: 30px;
+    }
+
+    .itemImageOverlay
+    {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        cursor: url('Images/zoom.png') 0 0, move;
+        cursor: url('Images/zoom.cur'), -moz-zoom-in;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        overflow: hidden;
+        padding-left: 10px;
+        min-width: 150px;
+    }
+
+    .nameDescriptionContainer
+    {
+        float: left;
+        width: 310px;
+        color: black;
+    }
+
+    .itemName
+    {
+        font-size: 16pt;
+        color: #383838;
+        padding: 0;
+        margin: 0;
+        font-weight: bold;
+        position: absolute;
+        left: 10px;
+        top: 0;
+    }
+
+    .itemDescription
+    {
+        font-size: 12pt;
+        margin-bottom: 10px;
+        margin-top: 30px;
+        -ms-word-break: break-all;
+        word-break: break-all;
+    }
+
+    .descriptionContainer
+    {
+        overflow: hidden;
+    }
+
+    .itemImage img
+    {
+        float: left;
+        margin: 0 5px 0 0;
+        cursor: url('Images/zoom.png') 0 0, move;
+        cursor: url('Images/zoom.cur'), -moz-zoom-in;
+    }
+
+    .notAvailable
+    {
+        font-size: 10pt;
+    }
+
+    .priceCategoryContainer
+    {
+        float: right;
+    }
+
+    .quantity
+    {
+        float: right;
+        margin-left: 10px;
+    }
+
+    .quantity select
+    {
+        float: right;
+        height: 30px;
+        margin-right: 0;
+    }
+
+    .itemPrice
+    {
+        float: right;
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+        color: #383838;
+        min-width: 120px;
+        text-align: right;
+        font-size: 28pt;
+        margin-top: 3px;
+    }
+
+    .categoryQuantityContainer
+    {
+        overflow: hidden;
+    }
+
+    .category1
+    {
+        float: right;
+    }
+
+    .category2
+    {
+        float: right;
+    }
+
+    .priceAddContainer
+    {
+        margin-top: 5px;
+    }
+
+    .addItemButton
+    {
+        float: right;
+        margin-top: 5px;
+    }
+
+    .addItemButton a
+    {
+        padding: 7px 0 7px 0;
+        text-align: center;
+        border: none;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .dealItem
+    {
+        margin: 10px 35px 10px 10px;
+        padding: 10px;
+        color: black;
+        overflow: hidden;
+        padding: 0 10px 10px 10px;
+    }
+
+    .dealOptions
+    {
+        float: right;
+        margin: 0 0 0 5px;
+    }
+
+    #popupBody
+    {
+        overflow-x: hidden;
+        height: 100%;
+        padding: 0 0 0 20px;
+    }
+
+    #popupDealBoxBodyContainer
+    {
+        padding: 0 0 0 10px;
+    }
+
+    .popupDealCustomize
+    {
+        width: 160px;
+        float: left;
+        min-height: 1px;
+    }
+
+    .popupDealLineDetails
+    {
+        float: left;
+    }
+
+    .dealPopupItemNo
+    {
+        float: left;
+        font-weight: bold;
+    }
+
+    .popupDealLine
+    {
+        font-size: 16pt;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .popupDealLineItem
+    {
+        padding-right: 20px;
+    }
+
+    .popupDealLine select
+    {
+        height: 35px;
+        font-size: 16pt;
+        padding: 0;
+        margin: 0;
+    }
+
+    .popupDealItemSelected
+    {
+        float: left;
+        font-size: 18px;
+        margin-left: 10px;
+    }
+
+    #mobileHeader
+    {
+        display: none;
+    }
+
+    #mobileMenu
+    {
+        display: none;
+    }
+
+    #mobileCheckoutMenu
+    {
+        display: none;
+    }
+
+    .popupBoxBackgroundVisible
+    {
+        display: block;
+        background-color: rgba(0,0,0,0.3);
+    }
+
+    .popupDealCustomizeItemButton
+    {
+        width: 100px;
+    }
+
+    .popupBoxBackgroundHidden
+    {
+        display: none;
+    }
+
+    .popupBoxBackgroundHidden, .popupBoxBackgroundVisible
+    {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .popupItemDetails
+    {
+        padding: 10px 20px 0 20px;
+        float: left;
+        color: white;
+    }
+
+    .dealPopupBoxBackgroundHidden
+    {
+        display: none;
+    }
+
+    .dealPopupBoxBackgroundVisible
+    {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.3);
+    }
+
+    #dealPopupBox
+    {
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+        padding: 10px;
+    }
+
+    .popupItemDetails h2
+    {
+        padding: 0;
+        margin: 0;
+        color: #383838;
+        font-weight: bold;
+    }
+
+    #popupName
+    {
+        font-size: 18pt;
+    }
+
+    .popupBoxHeaderContainer
+    {
+        padding-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .popupBoxHeaderContainer h1
+    {
+        padding: 0;
+        margin: 10px 0 0 10px;
+    }
+
+    .popupBoxHeaderContainer h2, .popupBoxHeaderContainer a
+    {
+        font-weight: bold;
+    }
+
+    #popupOptionsLeft
+    {
+        overflow: hidden;
+        text-align: center;
+        margin: 15px 0 0 0;
+    }
+
+    #popupOptionsTopQuantity
+    {
+        float: right;
+    }
+
+    #popupQuantity
+    {
+        font-weight: normal;
+    }
+
+    #popupQuantityHeader
+    {
+        margin-bottom: 5px;
+    }
+
+    #popupQuantity label
+    {
+        color: white;
+    }
+
+    #popupQuantity select
+    {
+        font-size: 16pt;
+    }
+
+    #popupOptionsTopPrice
+    {
+        float: right;
+        width: 125px;
+    }
+
+    #popupPrice
+    {
+        clear: both;
+        float: right;
+        font-weight: normal;
+        font-size: 26pt;
+        text-align: right;
+        margin: 0 15px 10px 20px;
+        padding: 0;
+        line-height: 26pt;
+    }
+
+    #popupCatContainer
+    {
+        float: right;
+        margin: 0 20px 0 0;
+        height: 100%;
+    }
+
+    #popupCatContainer select
+    {
+        font-size: 16pt;
+    }
+
+    #popupCatHeader
+    {
+        float: right;
+        color: white;
+        padding: 0;
+        margin: 0;
+    }
+
+    #popupCategory1
+    {
+        clear: both;
+        float: right;
+        font-weight: normal;
+        overflow: hidden;
+    }
+
+    #popupCategory2
+    {
+        clear: both;
+        float: right;
+        font-weight: normal;
+        overflow: hidden;
+    }
+
+    #popupOptionsRight
+    {
+        float: right;
+        margin: 0;
+    }
+
+    #popupCancelButton
+    {
+        clear: both;
+        width: 150px;
+        margin: 0 5px 0 0;
+    }
+
+    #popupDealOptions
+    {
+        float: right;
+        position: relative;
+        padding: 15px 0 8000px 10px; /* This little trick simulates height 100% */
+        margin: 0 0 -8000px 0;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #popupAddToCartButton
+    {
+        clear: both;
+        width: 150px;
+        margin: 0 10px 5px 0;
+        padding: 0;
+    }
+
+    #popupRemoveFromCartButton
+    {
+        clear: both;
+        width: 190px;
+        margin: 0 5px 0 0;
+    }
+
+    #popupUpdateItemButton
+    {
+        clear: both;
+        width: 190px;
+        margin: 0 15px 5px 0;
+    }
+
+    #popupAddToDealButton
+    {
+        clear: both;
+        width: 125px;
+        margin: 0 15px 5px 5px;
+    }
+
+    #popupCancelDealButton
+    {
+        clear: both;
+        width: 125px;
+        margin: 0 15px 0 5px;
+    }
+
+    #dealPopupAddToCartButton
+    {
+        clear: both;
+        width: 150px;
+        margin: 0 10px 0 0;
+    }
+
+    #dealPopupUpdateCartButton
+    {
+        clear: both;
+        width: 190px;
+        margin: 0 10px 0 0;
+    }
+
+    #dealPopupRemoveFromCartButton
+    {
+        clear: both;
+        width: 190px;
+        margin: 5px 10px 0 0;
+    }
+
+    #dealPopupCancelButton
+    {
+        clear: both;
+        width: 150px;
+        margin: 5px 10px 0 0;
+    }
+
+    .popupOptions select
+    {
+        height: 35px;
+        font-size: 12pt;
+        padding: 0 0 0 5px;
+        margin: 0;
+    }
+
+    #popupBox
+    {
+        background-color: #f9f9f9;
+        border: 1px solid #e3e3e3;
+    }
+
+    #popupBody h2
+    {
+        padding: 5px 0 0 0;
+        margin: 10px 0 10px 0;
+        font-size: 16pt;
+        font-weight: normal;
+        color: #EFB300;
+    }
+
+    #popupRemainingToppings
+    {
+        text-align: center;
+        margin: 5px 0 5px 0;
+    }
+
+    #popupNoRemainingToppings
+    {
+        text-align: center;
+        margin: 5px 0 5px 0;
+        color: red;
+    }
+
+    #popupFreeToppings
+    {
+        text-align: center;
+        color: red;
+        margin: 5px 0 5px 0;
+    }
+
+    #popupQuantityDetails span
+    {
+        font-size: 18pt;
+        font-weight: bold;
+        float: left;
+    }
+
+    #popupIncreaseQty
+    {
+        text-decoration: none;
+        margin: 0 5px 0 0;
+        font-size: 10pt;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        color: #383838;
+        width: 15px;
+        height: 15px;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 10pt;
+    }
+
+    #popupDecreaseQty
+    {
+        text-decoration: none;
+        margin: 0 5px 0 10px;
+        font-size: 10pt;
+        border: 1px solid gray;
+        padding: 5px;
+        background-color: #cccccc;
+        border-radius: 3px;
+        color: #383838;
+        width: 15px;
+        height: 15px;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 10pt;
+    }
+
+    .errorBox
+    {
+        overflow: hidden;
+        padding: 10px 50px 30px 50px;
+        margin: 20px 0 0 0;
+    }
+
+    .errorBox a
+    {
+        font-size: 20pt;
+    }
+
+    .errorMessage
+    {
+        text-align: center;
+        margin: 20px 0 20px 0;
+        font-weight: normal;
+    }
+
+    .errorOptions
+    {
+        width: 160px;
+        margin: 0 auto;
+    }
+
+    .errorBox h2
+    {
+        color: white;
+    }
+
+    .menuSectionHasFocus, .menuSectionDoesntHaveFocus
+    {
+        display: block;
+    }
+
+    .headFootNoPopup, .headFootPopup
+    {
+        display: block;
+    }
+
+    #payAtDoorButton
+    {
+        width: 150px;
+        margin-right: 5px;
+    }
+
+    #payNowButton
+    {
+        width: 150px;
+        margin-left: 5px;
+    }
+
+    .sectionTitle h1
+    {
+        color: #36490D;
+        font-size: 20pt;
+        font-weight: normal;
+        text-align: center;
+        margin: 5px 10px 10px 10px;
+        padding: 0 0 5px 0;
+        border-bottom: 1px solid #e3e3e3;
+    }
+
+    /* Login/register popup */
+    .loginRegisterAndroOnly
+    {
+        width: 800px !IMPORTANT;
+        margin: -400px 0 0 -400px !IMPORTANT;
+    }
+
+    .loginRegisterAndroOnly #loginSection
+    {
+        width: initial;
+    }
+
+    .loginRegisterAndroOnly .loginFormInput
+    {
+    }
+
+    .loginRegisterFacebookOnly
+    {
+        width: 400px !IMPORTANT;
+        margin: -200px 0 0 -200px !IMPORTANT;
+    }
+
+    #loginRegister
+    {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -200px 0 0 -400px;
+        height: 260px;
+        width: 800px;
+        overflow: hidden;
+        z-index: 1004;
+    }
+
+    #loginRegisterInner h1
+    {
+        padding: 0;
+        margin: 0 0 5px 0;
+        text-align: center;
+        padding-top: 5px;
+        color: #493700;
+    }
+
+    #signIn
+    {
+        padding: 0 10px 0 10px;
+        margin: 0 auto;
+    }
+
+    #loginUsingFacebook
+    {
+        overflow: hidden;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    #loginUsingFacebook p
+    {
+        display: none;
+    }
+
+    #facebookLoginDivider 
+    {
+        overflow: hidden;
+        text-align: center;
+        margin: 15px auto 15px auto;
+        width: 300px;
+    }
+
+    #facebookLoginDivider:before, #facebookLoginDivider:after 
+    {
+        background-color: #000;
+        content: "";
+        display: inline-block;
+        height: 1px;
+        position: relative;
+        vertical-align: middle;
+        width: 50%;
+    }
+
+    #facebookLoginDivider:before 
+    {
+        right: 0.5em;
+        margin-left: -50%;
+    }
+
+    #facebookLoginDivider:after 
+    {
+        left: 0.5em;
+        margin-right: -50%;
+    }
+
+    #loginSection
+    {
+        margin: 15px auto 0 auto;
+        overflow: hidden;
+    }
+
+    #loginSectionInner
+    {
+        overflow: hidden;
+    }
+
+    .loginFormPrompt
+    {
+        clear: both;
+        float: left;
+        width: 70px;
+        margin: 7px 10px 0 3px;
+        font-size: 12pt;
+    }
+
+    .loginFormInput
+    {
+        display: block;
+        padding: 4px;
+        margin: 0 auto;
+        width: 300px;
+    }
+
+    #loginButtonContainer
+    {
+        width: 100%;
+        margin-top: 10px;
+        clear: left;
+        text-align: center;
+        position: relative;
+    }
+
+    #loginButton
+    {
+        float: none;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .loginFormInput input
+    {
+        width:288px;
+    }
+
+    #loginButton a:link, #loginButton a:visited, #loginButton a:active
+    {
+        color:white;
+    }
+
+    #signInWrapper
+    {
+        width: 49%;
+        border-right: 3px solid #e3e3e3;
+    }
+
+    #loginError
+    {
+        color: red;
+        font-size: 10pt;
+        margin-top: 5px;
+    }
+
+    #toggleRegisterButton
+    {
+        display: none;
+    }
+
+    .lrpRegisterSectionHidden
+    {
+        display: block;
+    }
+
+    #registerContainer
+    {
+        clear: both;
+        padding-top: 45px;
+        overflow: hidden;
+        height: 218px;
+    }
+
+    #createAnAccount h2
+    {
+        margin: 0 0 10px 0;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .registerSection
+    {
+        overflow: hidden;
+        width: 380px;
+        float: left;
+    }
+
+    #registerMarketing
+    {
+        clear: left;
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    #registerErrorMessage
+    {
+        clear: left;
+        text-align: center;
+        color: red;
+    }
+
+    #loginRegisterButtons
+    {
+        overflow: hidden;
+        width: 310px;
+        margin: 5px auto 10px auto;
+        text-align: center;
+    }
+
+    #loginRegisterButtons a
+    {
+        text-decoration: none;
+        color: #525CAF;
+        font-weight: bold;
+    }
+
+    #signUpButton
+    {
+        float: left;
+        width: 80px;
+        margin-right: 5px;
+    }
+
+    #hmForgotPasswordButton
+    {
+        float: left;
+        width: 140px;
+        margin-right: 5px;
+    }
+
+    #closeLoginRegisterPopupButton
+    {
+        float: none;
+        width: 80px;
+        margin: 0 auto;
+    }
+
+    #sendingOrderToStore
+    {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Wait for order page */
+    #waitForOrderStatus
+    {
+        text-align: center;
+    }
+
+    #waitForOrderButton
+    {
+        margin-left: 380px;
+        width: 150px;
+    }
+
+    .disabled
+    {
+        pointer-events: none;
+    }
+
+    /* Information */
+
+    #informationBox
+    {
+        height: 100%;
+    }
+
+    #informationInner
+    {
+        position: absolute;
+        top: 185px;
+        z-index: 10;
+        height: auto;
+        bottom: 110px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 1024px;
+    }
+
+    #informationBackButton
+    {
+        display: none;
+        position: absolute;
+        bottom: 70px;
+        left: 50%;
+        margin-left: -35px;
+    }
+
+    /* My orders */
+    #moContent
+    {
+        margin-top: 20px;
+    }
+
+    #moPleaseWaitOrders h1
+    {
+        text-align: center;
+        font-size: 16pt;
+    }
+
+    .moPleaseWait
+    {
+        overflow: hidden;
+        background: url(Images/loader.gif) no-repeat;
+        width: 35px;
+        height: 35px;
+        margin: 0 auto 10px auto;
+    }
+    
+    .moOrder
+    {
+        overflow: hidden;
+        border: solid 1px #C4C4C4;
+        background-color: white;
+    }
+
+    .moOrder h1
+    {
+        text-align: center;
+        font-size: 12pt;
+    }
+
+    .moOrderHeader
+    {
+        background-color: #F2F2F2;
+        overflow: hidden;
+        padding: 5px 0 5px 5px;
+        cursor: pointer;
+    }
+
+    .moPlacedDate
+    {
+        float: left;
+        width: 110px;
+        font-weight: bold;
+    }
+
+    .moPlacedTime
+    {
+        float: left;
+        width: 100px;
+    }
+
+    .moStatus
+    {
+        float: left;
+        width: 160px;
+        font-weight: bold;
+    }
+
+    .moQuantityTitle
+    {
+        float: left;
+        width: 140px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .moPriceTitle
+    {
+        float: left;
+        width: 50px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .moOrderLines
+    {
+        margin-top: 5px;
+        padding: 5px;
+        border-top: 1px solid #C4C4C4;
+        overflow: hidden;
+    }
+
+    .moName
+    {
+        float: left;
+        width: 430px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .moQuantity
+    {
+        float: left;
+        font-weight: bold;
+        color: black;
+    }
+
+    .moPrice
+    {
+        float: right;
+        font-weight: bold;
+    }
+
+    .moModName
+    {
+        clear: both;
+        float: left;
+        width: 360px;
+        font-weight: normal;
+        color: black;
+    }
+
+    .moModPrice
+    {
+        float: right;
+        font-weight: normal;
+    }
+
+    .moOrderTotal
+    {
+        clear: both;
+        overflow: hidden;
+        padding: 5px;
+    }
+    .moDeliveryCharge
+    {
+        clear: both;
+        overflow: hidden;
+        padding: 5px;
+    }
+    .moPaymentCharge
+    {
+        clear: both;
+        overflow: hidden;
+        padding: 5px;
+    }
+
+    .moTotalTitle
+    {
+        float: right;
+        margin-right: 50px;
+    }
+
+    .moTotal
+    {
+        float: right;
+        color: black;
+        font-weight: bold;
+    }
+
+    .moRepeatOrder
+    {
+        clear: both;
+        float: right;
+        padding: 5px;
+    }
+
+    #moNoOrders
+    {
+        text-align:center;
+    }
+
+    /* Repeat order */
+    .roOrderLine, .roOrderLineProblem, #roButtons, #roTotal
+    {
+        width: 600px;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+
+    .roOrderLineProblem
+    {
+        color: red;
+    }
+
+    .roName, .roNameProblem
+    {
+        clear: both;
+        float: left;
+        width: 400px;
+        font-weight: bold;
+    }
+
+    .roQuantity, .roQuantityProblem
+    {
+        float: left;
+        width: 100px;
+        font-weight: bold;
+    }
+
+    .roPrice, .roPriceProblem
+    {
+        float: right;
+        font-weight: bold;
+    }
+
+    .roProblem
+    {
+        clear: both;
+    }
+
+    .roPriceBad
+    {
+        float: right;
+    }
+
+    .roPriceBad, .roNameProblem, .roQuantityProblem, .roPriceProblem
+    {
+        text-decoration: line-through;
+    }
+
+    .roNewPrice
+    {
+        clear: right;
+        float: right;
+        color: red;
+    }
+
+    #roRepeatOrderButton, #roBackButton
+    {
+        clear: both;
+        float: right;
+    }
+
+    #roOrderTotal, #roOldOrderTotal, #roNewOrderTotal
+    {
+        float: right;
+        font-weight: bold;
+    }
+
+    #roOldOrderTotal
+    {
+        text-decoration: line-through;
+    }
+
+    #roNewOrderTotal
+    {
+        color: red;
+    }
+
+    #roOrderTotal
+    {
+        float: right;
+    }
+
+    #roTotalPrompt
+    {
+        float: left;
+        margin-left: 400px;
+    }
+
+    /* Reset password */
+    .prFormPrompt
+    {
+        clear: left;
+        float: left;
+        width: 200px;
+        text-align: right;
+        margin-right: 10px;
+    }
+
+    .prFormInput
+    {
+        float: left;
+    }
+
+    #prButtons
+    {
+        clear: both;
+    }
+
+    /* My profile */
+
+    #myProfileContent
+    {
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #mpMenu
+    {
+        height: 35px;
+    }
+
+    #mpContent h1
+    {
+        display: none;
+    }
+
+    #mpRegisterContainer
+    {
+        background-color: #F2F2F2;
+        float: left;
+        width: 50%;
+        padding: 2em;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    #mpRegisterContainer h2
+    {
+        padding: 5px;
+        margin: 5px 0 0 0;
+        background-color: #F2F2F2;
+        font-size: 12pt;
+        text-align: center;
+    }
+
+    #mpMyProfile
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #F2F2F2;
+        cursor: pointer;
+    }
+
+    #mpMyOrders
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #mpLogout
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #mpBack
+    {
+        display: none;
+    }
+
+    /* My Orders */
+    #myOrdersContent
+    {
+        overflow: hidden;
+        background-color: #F2F2F2;
+    }
+
+    #moMyProfile
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #moMyOrders
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #F2F2F2;
+        cursor: pointer;
+    }
+
+    #moLogout
+    {
+        display: block;
+        float: left;
+        width: 33%;
+        text-align: center;
+        line-height: 35px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+    }
+
+    #moBack
+    {
+        display: none;
+    }
+
+    #mpRegisterAddressContainer
+    {
+        background-color: #F2F2F2;
+        margin-top: 5px;
+        float: left;
+        width: 50%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 2em;
+    }
+
+    .requiredLine
+    {
+        background-color: #F2F2F2;
+        padding: 5px;
+        margin: 0;
+    }
+
+    #mpRegisterButton
+    {
+        margin: 5px 10px 5px 5px;
+    }
+
+    /*#staticContentOuter
+    {
+        background-color: #f0eeef;
+        width: 100%;
+    }
+
+    #staticContent
+    {
+        width: 1024px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 10px 0 30px 0;
+        border: 1px solid #e3e3e3;
+    }*/
+
+    #genericPopupBox
+    {
+        padding: 10px;
+        margin: 20px 0 0 -275px;
+        width: 550px;
+    }
+
+    #genericPopupBox h1, #genericPopupBox h1
+    {
+        margin: 0 0 15px 10px;
+    }
+
+    #genericPopupBox .checkoutSidebarActions a
+    {
+        height: 40px;
+    }
+
+    #genericPopupBox #checkUseAddressNoSave, #genericPopupBox #checkCancelAddress
+    {
+        line-height: 40px;
+    }
+}

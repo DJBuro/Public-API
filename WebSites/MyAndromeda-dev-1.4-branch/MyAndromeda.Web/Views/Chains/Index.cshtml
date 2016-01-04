@@ -1,0 +1,24 @@
+﻿@using MyAndromeda.Authorization
+@model MyAndromeda.Web.ViewModels.ChainListViewModel
+
+<div class="header">
+    <h3>My Chains</h3>
+</div>
+@*@(Html.Kendo().TabStrip()
+    .Name("FindChain")
+    .Items(items => {
+        items.Add().Text("Tree view")
+            .Selected(false)
+            .Enabled(false)
+            .Content(@<text>@Html.Partial("ChainTreeView", Model)</text>);
+        items.Add().Text("List view")
+            .Selected(true)
+            .Content(@<text>
+                @Html.Partial("GridTreeView")
+            </text>);
+    })
+)*@
+
+@Html.Partial("GridTreeView")
+
+@Html.Partial("Help")

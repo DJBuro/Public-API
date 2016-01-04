@@ -1,0 +1,98 @@
+﻿@using Permissions = MyAndromeda.Web.Areas.Menu;
+@{
+    var authorizer = Html.GetAuthorizer();
+}
+
+@using (Html.BeginScripts())
+{
+    var translator = @Html.GetTranslator();
+
+    <script type="text/template" id="itemTemplate">
+        <div class="menu-item row" data-id="#:Id#">
+
+            <div class="header #=Enabled?'enabled':'disabled'#" style="border-left-color: #:ColorStatus() #">
+
+                <div class="col-sm-6 col-md-8 col-xs-10">
+                    <div>
+                        <h3>
+                            #= DisplayName() #
+                            #if(!Enabled){ #
+                            (Disabled)
+                            #}#
+                        </h3>
+                    </div>
+                    <div>
+                        # if(DisplayName() !== Name){ #
+                        <div>(@translator.T("Store item name:") #: Name #)</div>
+                        # } #
+                        <div>
+                            @translator.T("Web Section:") #:DisplayCategoryName#
+                            # if ((Category1Name) || (Category2Name)) { #
+                                # if(Category1Name) { #
+                                <span> | @translator.T("Category1:") #: Category1Name #</span>
+                                # } #
+                                # if(Category2Name) { #
+                                <span> | @translator.T("Category2:") #: Category2Name #</span>
+                                # } #
+                            # } #
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2 col-md-1 hidden-xs text-right">
+                    # if(Thumbs && Thumbs.length > 0) { #
+                    <img align="right" src="#:Thumbs[Thumbs.length-1].Url#" alt="" class="menu-list-thumbnail" />
+                    # } #
+                </div>
+
+                # if(Prices) { #
+                <div class="col-sm-3 col-md-2 hidden-xs text-right">
+                    <div>
+                        <div>Dine in: #: kendo.toString(Prices.Instore, "c") #</div>
+                        <div>Delivery: #: kendo.toString(Prices.Delivery, "c") #</div>
+                        <div>Collect: #: kendo.toString(Prices.Collection, "c") #</div>
+                    </div>
+                </div>
+                # } #
+
+                <div class="col-xs-2 col-sm-1">
+                    @if (authorizer.Authorize(Permissions.UserPermissions.EditStoreMenu))
+                    {
+                        <text>
+                            <a class="k-button k-button-edit" style="margin-bottom:1em;">Edit</a>
+                            # if(Enabled){ #
+                            <a class="k-button k-button-disable enable-button" style="">Disable</a>
+                            # } else { #
+                            <a class="k-button k-button-enable disable-button" style="">Enable</a>
+                            # } #
+                        </text>
+                    }
+                </div>
+                <div style="clear:both"></div>
+            </div>
+            #if (WebDescription) { #
+            <div class="space">
+                Web Description:
+                #= WebDescription #
+            </div>
+            # } #
+            #if (Toppings && (Toppings.DefaultToppings || Toppings.OptionalToppings) && (Toppings.DefaultToppings.length > 0 || Toppings.OptionalToppings.length > 0)) { #
+            <div>
+
+                <div class="space">
+                    Default Toppings:<br />
+                    # for(var i = 0; i< Toppings.DefaultToppings.length; i++){ #
+                    <i>#=Toppings.DefaultToppings[i].Name#</i># if(i< Toppings.DefaultToppings.length-1){ #,# } #
+                    # } #
+                    <br />
+                    Optional Toppings:<br />
+                    # for(var i = 0; i< Toppings.OptionalToppings.length; i++){ #
+                    <i>#=Toppings.OptionalToppings[i].Name#</i># if(i< Toppings.OptionalToppings.length-1){ #,# } #
+                    # } #
+                </div>
+            </div>
+            # } #
+        </div>
+    </script>
+
+}

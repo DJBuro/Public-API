@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="SchedulerValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="SchedulernameValidator" test="Schedulername"><v:message id="error.Schedulername.required" providers="SchedulernameErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

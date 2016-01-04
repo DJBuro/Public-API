@@ -1,0 +1,264 @@
+﻿<div class="row">
+    <div class="ticketColumn row" style="margin-right:50px;">
+        <div class="ticket">
+            <div class="store-header" data-template="StoreTemplate" data-bind="source: Header">
+            </div>
+            <div class="customer" data-template="CustomerTemplate" data-bind="source: Customer">
+            </div>
+            <div class="customer" data-template="AddressTemplate" data-bind="source: Customer">
+            </div>
+            <table class="order-line-grid">
+                <colgroup>
+                    <col style="width: 40px" />
+                    <col class="item-description" />
+                    <col style="width: 80px; text-align: left" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td><b>Qty</b></td>
+                        <td><b>Description</b></td>
+                        <td><b>Price</b></td>
+                    </tr>
+                </thead>
+                <tbody data-template="OrderLineItem" data-bind="source: LineItems"></tbody>
+                <tfoot data-template="OrderLineAggregate" data-bind="source: OrderLineAggregate"></tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="ticketColumn row">
+        <div class="ticket">
+            <div data-template="DeliveryTemplate" data-bind="source: Delivery"></div>
+
+            <div data-template="ReferenceIdTemplate" data-bind="source: ReferenceIds"></div>
+
+            <div data-template="VoucherTemplate" data-bind="source: Vouchers"></div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginScripts("ListViewInitDetail"))
+{
+    <script type="text/javascript">
+        function manageDetailInit(e) {
+            var detailRow = e.detailRow;
+            var detailData = e.data;
+
+            var request = $.ajax({
+                url: "@Url.Action("FindOrder", "Orders", new { Area = "OrderManagement" })",
+                data: { Id: detailData.ID },
+                type: "POST",
+                dataType: "json"
+            });
+
+            request.success(function (data) {
+                var element = $(detailRow);
+                kendo.bind(element, data);
+            });
+        }
+    </script>
+}
+
+@using (Html.BeginScripts("ListViewTicketTemplates"))
+{
+    @* Main ticket template *@
+    <script type="text/html" id="TicketTemplate">
+        <div class="clearfix">
+            <div class="ticketColumn">
+                <div class="ticket">
+                    <div class="store-header" data-template="StoreTemplate" data-bind="source: Header">
+                    </div>
+                    <div class="customer" data-template="CustomerTemplate" data-bind="source: Customer">
+                    </div>
+                    <table class="order-line-grid">
+                        <colgroup>
+                            <col style="width: 40px" />
+                            <col class="item-description" />
+                            <col style="width: 80px; text-align: left" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <td><b>Qty</b></td>
+                                <td><b>Description</b></td>
+                                <td><b>Price</b></td>
+                            </tr>
+                        </thead>
+                        <tbody data-template="OrderLineItem" data-bind="source: LineItems"></tbody>
+                        <tfoot data-template="OrderLineAggregate" data-bind="source: OrderLineAggregate"></tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="ticketColumn">
+                <div class="ticket">
+                    <div data-template="DeliveryTemplate" data-bind="source: Delivery"></div>
+
+                    <div data-template="ReferenceIdTemplate" data-bind="source: ReferenceIds"></div>
+
+                    @*<div data-template="VoucherTemplate" data-bind="source: Vouchers"></div>*@
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="DeliveryTemplate">
+        <h3>#: OrderType #</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:center">Ordered at</th>
+                    <th style="text-align:center">Wanted at</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        #: OrderPlacedTimeLocalString #
+                    </td>
+                    <td>
+                        # if((kendo.parseDate(OrderWantedTime) - kendo.parseDate(OrderPlacedTime)) / 1000 < 60) { #
+                        <span>ASAP</span>
+                        # } else{ #
+                        #: OrderWantedTimeLocalString #
+                        # } #
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+    <script type="text/html" id="StoreTemplate">
+        <h3>#: Name #</h3>
+        <div>
+            #if(Address.RoadNum != null){# #: Address.RoadNum # # } #
+            #if(Address.RoadName != null){# #: Address.RoadName # # } #
+        </div>
+        <div>#if(Address.City != null){# #: Address.City # # } #</div>
+        <div>#if(Address.State != null){# #: Address.State # # } #</div>
+        <div>#if(Address.ZipCode != null){# #: Address.ZipCode # # } #</div>
+        <div>#if(Address.Country != null){# #: Address.Country # # } #</div>
+    </script>
+    <script type="text/html" id="CustomerTemplate">
+        <div class="person">
+            <span>#: FirstName #</span>
+            <span>#: LastName #</span>
+        </div>
+    </script>
+    <script type="text/html" id="AddressTemplate">
+        <div>
+            #if(Addresses.RoadNum != null){# #: Addresses.RoadNum # # } #
+            #if(Addresses.RoadName != null){# #: Addresses.RoadName # # } #
+        </div>
+        <div>#if(Addresses.City != null){# #: Addresses.City # # } #</div>
+        <div>#if(Addresses.State != null){# #: Addresses.State # # } #</div>
+        <div>#if(Addresses.ZipCode != null){# #: Addresses.ZipCode # # } #</div>
+        <div>#if(Addresses.Country != null){# #: Addresses.Country # # } #</div>
+        #if(Mobile && Mobile != null){#
+        <div><span> #: Mobile # </span></div>
+        #}#
+    </script>
+    <script type="text/html" id="OrderLineItem">
+        <tr>
+            <td>#: Qty #</td>
+            <td style="text-align: left">
+                #if(Cat1 != null ){ # #: Cat1 # # } #
+                #if(Cat2 != null ){ # #: Cat2 # # } #
+
+                #: Description #
+            </td>
+            <td>#: kendo.toString(Price, "c") #</td>
+        </tr>
+        #if(Modifiers.length > 0){#
+        <tr>
+            <td>&nbsp;</td>
+            <td style="text-align: left" colspan="1">
+                # for (var i=0; i< Modifiers.length; i++) { #
+                # var modifier = Modifiers[i]; #
+                <div>
+                    &nbsp;&nbsp;&nbsp;
+                    #if(modifier.Removed){#
+                    -
+                    #} else {#
+                    +
+                    #}#
+                    #= modifier.Qty # X #= modifier.Description #
+                </div>
+                # } #
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        #}#
+    </script>
+
+    <script type="text/html" id="OrderLineAggregate">
+        #if(Sum !== FinalPrice){#
+        <tr>
+            <td></td>
+            <td style="text-align: right">Sub-Total</td>
+            <td>#: kendo.toString(Sum, "c") #</td>
+        </tr>
+        #}#
+        #if(DeliveryCharge){#
+        <tr>
+            <td></td>
+            <td style="text-align: right">Delivery</td>
+            <td>#: kendo.toString(Delivery, "c") #</td>
+        </tr>
+        #}#
+        #if(TotalTax > 0){ #
+        <tr>
+            <td></td>
+            <td style="text-align: right">Total Tax</td>
+            <td>#: kendo.toString(TotalTax, "c") #</td>
+        </tr>
+        #}#
+        #if(Sum !== FinalPrice){#
+        <tr>
+            <td></td>
+            <td style="text-align: right">Savings</td>
+            <td>#: kendo.toString(Sum - FinalPrice, "c") #</td>
+        </tr>
+        #}#
+        <tr>
+            <td></td>
+            <td style="text-align: right">Final Price</td>
+            <td><b>#: kendo.toString(FinalPrice, "c") #</b></td>
+        </tr>
+    </script>
+    <script id="ReferenceIdTemplate" type="text/html">
+        <h3 style="margin-top: 1em;">Order Reference</h3>
+        <table>
+            @*<thead>
+                    <tr>
+                        <th>RamessesOrderNum</th>
+                        <th>ExternalOrderRef</th>
+                    </tr>
+                </thead>*@
+            <tbody>
+                <tr>
+                    <td><h3>#: RamesesOrderNum #</h3></td>
+                    @*<td>#: ExternalOrderRef #</td>*@
+                </tr>
+            </tbody>
+        </table>
+    </script>
+    <script id="VoucherTemplate" type="text/html">
+        <h3>Vouchers</h3>
+        <table class="order-line-grid">
+            <thead>
+                <tr>
+                    <th style="text-align:center">Voucher Code</th>
+                    <th style="text-align:center">Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>#: VoucherCode #</td>
+                    <td>
+                        #if(DiscountType == 'Fixed'){#
+                        #: kendo.toString(DiscountValue,"c") #
+                        #} else {#
+                        #: DiscountValue # %
+                        #}#
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Session, OrderTracking.Gps.Dao" table="sessions">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="session_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__sessions__69B13FDC2E1BDC42"/>
+			<generator class="native" />
+		</id>
+		<property name="Userid" type="Int32">
+			<column name="user_id" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="Timestamp" type="DateTime">
+			<column name="`timestamp`" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+		<property name="Expire" type="DateTime">
+			<column name="expire" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+		<property name="Created" type="DateTime">
+			<column name="created" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+		<property name="Ipaddress" type="String">
+			<column name="ipaddress" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Deviceid" type="Int32">
+			<column name="device_id" length="4" sql-type="int" not-null="false"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

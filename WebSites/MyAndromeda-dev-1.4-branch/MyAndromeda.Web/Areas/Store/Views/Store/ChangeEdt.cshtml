@@ -1,0 +1,14 @@
+﻿@using MyAndromedaDataAccessEntityFramework.Model.AndroAdmin;
+
+@model Store
+
+@using (Html.BeginForm()) 
+{
+    <div>
+        <label for="edt">Estimated delivery time: (mins)</label>
+        @Html.Kendo().NumericTextBox().Name("edt").Value(Model.EstimatedDeliveryTime).Decimals(0)
+    </div>
+    <div>
+        <button class="k-button" type="submit">Save</button>
+    </div>
+}

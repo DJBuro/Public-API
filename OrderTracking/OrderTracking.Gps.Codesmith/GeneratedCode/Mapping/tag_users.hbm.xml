@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Taguser, OrderTracking.Gps.Dao" table="tag_users">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="PK__tag_user__A90D41C60F824689"/>
+			<column name="user_id" length="4" sql-type="int" not-null="true" index="PK__tag_user__A90D41C60F824689"/>
+			<generator class="native" />
+		</id>
+		<property name="Servertimestamp" type="DateTime">
+			<column name="server_time_stamp" length="8" sql-type="datetime" not-null="true"/>
+		</property>
+		<property name="Servertimestampms" type="Int32">
+			<column name="server_time_stamp_ms" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<many-to-one name="Tag" class="OrderTracking.Gps.Dao.Domain.Tag, OrderTracking.Gps.Dao">
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="PK__tag_user__A90D41C60F824689"/>
+		</many-to-one>
+		<many-to-one name="User" class="OrderTracking.Gps.Dao.Domain.User, OrderTracking.Gps.Dao">
+			<column name="user_id" length="4" sql-type="int" not-null="true" index="PK__tag_user__A90D41C60F824689"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

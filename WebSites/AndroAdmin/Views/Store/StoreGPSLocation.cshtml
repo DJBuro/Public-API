@@ -1,0 +1,411 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@{
+    // House Number, Street Direction, Street Name, Street Suffix, City, State, Zip, Country
+    string addressString = "";
+
+    if (ViewBag.Edit)
+    {
+        // House Number
+        if (Model.Store.Address.RoadNum != null && Model.Store.Address.RoadNum.Length > 0)
+        {
+            addressString += Model.Store.Address.RoadNum;
+        }
+
+        // Street Direction
+
+        // Street Name
+        if (Model.Store.Address.RoadName != null && Model.Store.Address.RoadName.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.RoadName;
+        }
+            
+        // Street Suffix
+
+        // City
+        if (Model.Store.Address.Town != null && Model.Store.Address.Town.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.Town;
+        }
+            
+        // State
+        if (Model.Store.Address.State != null && Model.Store.Address.State.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.State;
+        }
+        else if (Model.Store.Address.County != null && Model.Store.Address.County.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.County;
+        }
+            
+        // Zip
+        if (Model.Store.Address.PostCode != null && Model.Store.Address.PostCode.Length > 0)
+        {
+            addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.PostCode;
+        }
+            
+        // Country
+        addressString = (addressString.Length > 0 ? addressString + "," : addressString) + Model.Store.Address.Country.CountryName;
+    }
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+}
+
+@section Script 
+{
+    var map = undefined;
+    var storeMarker = undefined;
+    var markersLayer = undefined;
+    var urls =
+    [
+        "http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        "http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
+        "http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
+    ];
+
+    $(document).ready
+    (
+        function() 
+        {
+            // Initialise the map
+            initialiseMap();
+        }
+    );
+
+    function initialiseMap()
+    {
+        map = new OpenLayers.Map
+        (
+            {
+                div: "map",
+                layers: [
+                    new OpenLayers.Layer.XYZ("OSM (with buffer)", urls, {
+                        transitionEffect: "resize", buffer: 2, sphericalMercator: true,
+                        attribution: "Data CC-By-SA by <a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+                    }),
+                    new OpenLayers.Layer.XYZ("OSM (without buffer)", urls, {
+                        transitionEffect: "resize", buffer: 0, sphericalMercator: true,
+                        attribution: "Data CC-By-SA by <a href='http://openstreetmap.org/'>OpenStreetMap</a>"
+                    })
+                ],
+                controls: [
+                    new OpenLayers.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    }),
+                    new OpenLayers.Control.PanZoom(),
+                    new OpenLayers.Control.Attribution()
+                ],
+                center: [0, 0],
+                zoom: 3
+            }
+        );
+
+        var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        // allow testing of specific renderers via "?renderer=Canvas", etc
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+        var wgs84 = new OpenLayers.Projection("EPSG:4326");
+        markersLayer = new OpenLayers.Layer.Vector
+        (
+            "Markers", 
+            {
+                /*renderers: renderer*/
+                styleMap: new OpenLayers.StyleMap
+                (
+                    {
+                        externalGraphic: "@Url.Content("~/Content/Images/store.png")",
+                        graphicOpacity: 1.0,
+                        graphicWidth: 32,
+                        graphicHeight: 37,
+                        graphicYOffset: -37
+                    }
+                ),
+                projection: wgs84
+            }
+        );
+        window.mapped="yes";
+
+        map.addLayer(markersLayer);
+
+        @if (ViewBag.Edit)
+        {
+            @: enableMarkerDrag();
+        }
+
+        // Do we need to add the store marker?
+        @if (Model.Store.Address.Lat != null && Model.Store.Address.Lat.Length > 0 &&
+                Model.Store.Address.Long != null && Model.Store.Address.Long.Length > 0)
+        {
+            @: setStoreMarker();
+        }
+        else
+        {
+            @: var position = new OpenLayers.LonLat(-0.15022, 51.36037).transform(fromProjection, toProjection);
+
+            @: map.setCenter(position, 8);
+        }
+    }
+
+    function enableMarkerDrag()
+    {
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        var dragFeature = new OpenLayers.Control.DragFeature
+        (
+            markersLayer, 
+            {
+                onComplete: function(feature, pixel)
+                {
+                    var pixel = new OpenLayers.Pixel(pixel.x, pixel.y);
+                    var lonlat = map.getLonLatFromPixel(pixel);
+
+                    var newLatLon = new OpenLayers.LonLat(lonlat.lon, lonlat.lat).transform(toProjection, fromProjection)
+
+                    $('#Store_Address_Lat').attr('value', newLatLon.lat);
+                    $('#Store_Address_Long').attr('value', newLatLon.lon);
+                }
+            }
+        );
+            
+        dragFeature.handlers['drag'].stopDown = false; 
+        dragFeature.handlers['drag'].stopUp = false; 
+        dragFeature.handlers['drag'].stopClick = false; 
+
+        map.addControls([dragFeature]);
+
+        dragFeature.activate();
+    }
+
+    function findAddress()
+    {
+        var geocoder = new google.maps.Geocoder();
+        var addressString = $('#addressString').attr('value');
+   
+        geocoder.geocode
+        ( 
+            { 'address': addressString }, 
+            function(results, status) 
+            {
+                if (status == google.maps.GeocoderStatus.OK) 
+                {
+                    $('#Store_Address_Lat').attr('value', results[0].geometry.location.lat());
+                    $('#Store_Address_Long').attr('value', results[0].geometry.location.lng());
+
+                    setStoreMarker();
+                }
+                else 
+                {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            }
+        );
+    }
+
+    function setStoreMarker()
+    {
+        @if (ViewBag.Edit)
+        {
+            @: var storeLat = $('#Store_Address_Lat').attr('value');
+            @: var storeLon = $('#Store_Address_Long').attr('value');
+        }
+        else
+        {
+            @: var storeLat = '@Model.Store.Address.Lat';
+            @: var storeLon = '@Model.Store.Address.Long';
+        }
+
+        // Is there already a store feature on the map?
+        if (typeof(storeMarker) == 'object')
+        {
+            // Remove the store feature
+            markersLayer.removeAllFeatures();
+            markersLayer.destroyFeatures();
+            storeMarker = undefined;
+        }
+
+        var fromProjection = new OpenLayers.Projection("EPSG:4326"); // Transform from WGS 1984
+        var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+        // Is there a gps location?
+        if (storeLat.length > 0 && storeLon.length > 0)
+        {
+            var lonLat = new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection);
+
+            // Create a new feature
+            storeMarker = 
+            {
+                "type" : "Feature",
+                "geometry" : 
+                {
+                    "type": "Point", 
+                    "coordinates": [ lonLat.lon, lonLat.lat ]
+                }
+            };
+
+            // Add the feature to the map
+            var features = 
+            {
+                "type": "FeatureCollection",
+                "features": [ storeMarker ]
+            };
+
+            var reader = new OpenLayers.Format.GeoJSON();
+
+            var locator = reader.read(features);
+
+            markersLayer.addFeatures(locator);
+        }
+
+        // Center the map on the feature
+        var latLonBounds = new OpenLayers.Bounds();
+
+        latLonBounds.extend(new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection));
+
+        // Set the zoom level and center position
+        map.zoomToExtent(latLonBounds, false);
+    }
+}
+
+<!-- Breadcrumb -->
+<h2>@Html.ActionLink("Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreDetailsPage" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <!-- Tabs -->
+    @Html.Partial("StoreDetailsTabsPartial", Model, new ViewDataDictionary {{ "SelectedTab", "StoreGPSLocation" }})
+    
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+
+        @if (ViewBag.Edit)
+        {
+            using (Html.BeginForm())
+            { 
+                @Html.HiddenFor(model => model.Store.Id)
+
+                if (ViewBag.Permissions.Contains("EditStore"))
+                {           
+                    <div>
+                        <div class="actionLinks" style="float:left;">
+                            <input type="submit" value="save changes" class="button" />
+                                @Html.ActionLink("cancel changes", "StoreGPSLocation", new { id = Model.Store.Id, edit = false }, new { @class = "changeLink" })
+                        </div>
+                        <span style="float:right;">@Html.ActionLink("Help", "StoreGPSLocation", "Help", null, new { target = "_blank" })</span>
+                    </div>
+
+                    <div style="clear:both;"></div>
+                }
+                
+                <fieldset>
+
+                    <legend>
+                        <span>Store GPS location</span>
+                    </legend>
+
+                    <!-- Lat -->
+                    <div class="editor-label">
+                        GPS Latitude:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Lat, new {onkeyup = "setStoreMarker();"}) 
+                        @Html.ValidationMessageFor(model => model.Store.Address.Lat)
+                    </div>
+                    <div class="formFieldHelp">The GPS latitude of the address</div>
+
+                    <!-- Long -->
+                    <div class="editor-label">
+                        GPS Longitude:
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBoxFor(model => model.Store.Address.Long, new {onkeyup = "setStoreMarker();"}) 
+                        @Html.ValidationMessageFor(model => model.Store.Address.Long)
+                    </div>
+                    <div class="formFieldHelp">The GPS longitude of the address</div>
+
+                    <div style="clear:both; padding-top:10px;">
+                        <input type="text" id="addressString" value="@addressString" style="width:600px;" />
+                        <a href="#" onclick="findAddress(); return false;" style="margin-left:10px;">Find address on map</a>
+                    </div>
+                    
+                    <div id="mapContainer">
+                        <div id="map"></div>
+                    </div>
+
+                    <div style="clear:both;"></div>
+
+                </fieldset>
+            }
+        }
+        else
+        {
+            if (ViewBag.Permissions.Contains("EditStore"))
+            {
+                <div>
+                    <div class="actionLinks" style="float:left;">
+                        @Html.ActionLink("change the store GPS location", "StoreGPSLocation", new { id = Model.Store.Id, edit = true }, new { @class = "changeLink" })
+                    </div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreGPSLocation", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>
+            }
+            else
+            { 
+                <div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreGPSLocation", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>
+            }
+            
+            <fieldset>
+
+                <legend>
+                    <span>Store GPS location</span>
+                </legend>
+
+                <!-- Lat -->
+                <div class="editor-label">
+                    GPS Latitude:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Lat
+                </div>
+                <div class="formFieldHelp">The GPS latitude of the address</div>
+
+                <!-- Long -->
+                <div class="editor-label">
+                    GPS Longitude:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Long
+                </div>
+                <div class="formFieldHelp">The GPS longitude of the address</div>
+                
+                <div id="mapContainer" style="clear:both; padding-top:10px;">
+                    <div id="map"></div>
+                </div>
+
+            </fieldset>
+        }
+
+    </div>
+
+</div>

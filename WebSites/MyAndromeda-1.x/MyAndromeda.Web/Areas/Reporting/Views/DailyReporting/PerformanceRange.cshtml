@@ -1,0 +1,180 @@
+﻿@model MyAndromedaDataAccess.Domain.Reporting.Query.FilterQuery
+@{
+    string elementId = string.Format("Performance-Range-{0}", this.Model.TotalDays);
+}
+
+<div id="@elementId">
+    <table class="sparkline">
+        <colgroup>
+            <col style="width: 100px" />
+            <col style="width: 100px" />
+            <col style="width: 100px" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Total Orders</td>
+                <td>
+                    <span data-bind="text: orderCount.sum"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[{ 'name': 'Total Orders', 'type': 'column', 'field': 'Combined.OrderCount' }]"
+                        data-tooltip="{ template: $('#PerformanceToolTipCount').html(), visible: true }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.Count", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipCount" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Orders: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>< 30 Mins</td>
+                <td>
+                    <span data-bind="percent: less30Mins.percent"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[
+                            { 'name': '< 30 Min Service Time', 'type': 'line', 'field': 'Performance.NumOrdersLT30MinsPercentage' }
+                        ]"
+                        data-tooltip="{ template: $('#PerformanceToolTipCountServiceTime').html(), visible: true }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.ServiceTime", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipCountServiceTime" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Count: #: dataItem.Performance.NumOrdersLT30Mins#</div>
+                            <div>Percentage: #: kendo.toString(dataItem.Performance.NumOrdersLT30MinsPercentage, 'p') #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>OTD</td>
+                <td>
+                    <span data-bind="twoDecimal: outDoorTime.average"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[{ 'name': 'Out the door', 'type': 'line', 'field': 'Performance.AvgOutTheDoor' }]"
+                        data-tooltip="{ template: $('#PerformanceToolTipOutTheDoor').html() }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.OutDoorTime", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipOutTheDoor" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Out the door: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>TTD</td>
+                <td>
+                    <span data-bind="twoDecimal: doorTime.average"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[{ 'name': 'To the door', 'type': 'line', 'field': 'Performance.AvgDoorTime' }]"
+                        data-tooltip="{ template: $('#PerformanceToolTipDelivery').html() }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.Delivery", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipDelivery" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>To the door: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Rack</td>
+                <td>
+                    <span data-bind="twoDecimal: rackTime.average"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[{ 'name': 'To the door', 'type': 'line', 'field': 'Performance.AvgRackTime' }]"
+                        data-tooltip="{ template: $('#PerformanceToolTipRack').html() }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.Rack", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipRack" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Avg rack time: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Make</td>
+                <td>
+                    <span data-bind="twoDecimal: makeTime.average"></span>
+                </td>
+                <td>
+                    <div data-role="sparkline"
+                        data-theme="bootstrap"
+                        data-series="[{ 'name': 'To the door', 'type': 'line', 'field': 'Performance.AvgMakeTime' }]"
+                        data-tooltip="{ template: $('#PerformanceToolTipMake').html() }"
+                        data-bind="source: dataSource, visible: showCharts">
+                    </div>
+                    @using (Html.BeginScripts("Performance.Range.Make", Area.Foot)) 
+                    {
+                        <script id="PerformanceToolTipMake" type="text/template">
+                            <div>#: kendo.toString(dataItem.Date, 'd')# (#: kendo.toString(dataItem.Date, 'ddd') #)</div>
+                            <div>Avg make time: #: value #</div>
+                        </script>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@using (Html.BeginScripts())
+{
+    Html.RequireScript("~/Scripts/app/Reporting/OrderPerformance.js");
+
+    if (false)
+    { 
+    <script type="text/javascript" src="~/Scripts/app/Reporting/OrderPerformance.js"></script>
+    }
+    
+    <script type="text/javascript">
+        $(function () {
+            var options = {
+                elementId: "#@elementId",
+                autoFetch: true,
+                url: "@Url.Action("Data", "Performance", new { Area = "Reporting" })",
+                data: {
+                    FilterFrom: kendo.parseDate("@this.Model.FilterFrom.Value.AddDays(-1).ToString("u")").toJSON(),
+                    FilterTo: kendo.parseDate("@this.Model.FilterTo.Value.ToString("u")").toJSON()
+                }
+            };
+
+            var service = new MyAndromeda.Services.Reporting.dailyPerformanceService(options);
+            service.init();
+        });
+    </script>
+
+}

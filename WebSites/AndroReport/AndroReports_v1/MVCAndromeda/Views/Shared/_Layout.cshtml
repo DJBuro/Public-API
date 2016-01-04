@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Andromeda Store Activity Checker</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+     @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript">
+        jQuery(function () {
+            jQuery(".rssbutton, .cssbutton, button").on("click", function (e) {
+                //e.preventDefault()
+                $("#loading").fadeIn(2000);
+            });
+        });
+
+</script>
+
+
+</head>    
+
+<body>    
+    <div id="loading" style="width:40px;display:none;position:absolute; left:50%; top:50%">
+    <img src="~/Content/ajax-loader.gif"  alt="Please wait" />
+</div>
+    <header>
+        <div class="content-wrapper">
+            @RenderSection("header", required: false) 
+            
+
+            <span class="float-left">
+                <p class="site-title">
+                    @Session["Owner Name"] 
+                </p>
+            </span>
+            <span class="float-right">
+                <span id="login">
+                    @Html.Partial("_LoginPartial")
+                </span>
+                </span>
+            <br />
+           
+                <div class="float-right">
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        @if (Request.IsAuthenticated)
+                        {  <li>@Html.ActionLink("All Stores", "Index", "StoreData", routeValues: 
+                        new { chosenCountry=ViewBag.country, Time = ViewBag.Time, term = ViewBag.term, unitsAgo = ViewBag.unitsAgo, 
+                            orderHow=ViewBag.orderHow, orderWhat=ViewBag.orderWhat},htmlAttributes: null)</li>}
+                        <!--      <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                      -->
+                    </ul>
+                </div>          
+        </div>
+    </header>
+
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>   
+        <div class="content-wrapper">
+            <div class="float-left">               
+                <nav>
+                     @DateTime.Now.Year - Andromeda Store Activity Checker:
+                    @Html.ActionLink("About", "About", "Home")
+                        @Html.ActionLink("Contact", "Contact", "Home")                   
+                </nav>
+            </div>
+        </div>
+    @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

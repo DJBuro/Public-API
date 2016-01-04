@@ -1,0 +1,244 @@
+﻿/*
+    Copyright © 2014 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+function LoginViewModel(isCheckoutLogin)
+{
+    "use strict";
+
+    var self = this;
+
+    self.isShowStoreDetailsButtonVisible = ko.observable(true);
+    self.isShowHomeButtonVisible = ko.observable(true);
+    self.isShowMenuButtonVisible = ko.observable(true);
+    self.isShowCartButtonVisible = ko.observable(true);
+
+    self.isHeaderVisible = ko.observable(true);
+    self.isPostcodeSelectorVisible = ko.observable(settings.storeSelectorMode && settings.storeSelectorInHeader);
+    self.areHeaderOptionsVisible = ko.observable(true);
+    self.isHeaderLoginVisible = ko.observable(true);
+
+    // Mobile mode
+    self.title = ko.observable(textStrings.mmChangeStoreButton); // Current section name - shown in the header
+    self.titleClass = ko.observable('mobileSectionSelectStore'); // Class to use to style the section name - used for showing an icon for the section
+
+    self.isCheckoutLogin = isCheckoutLogin;
+
+    self.onLogout = function ()
+    {
+    };
+
+    if (viewModel.contentViewModel() != undefined && viewModel.contentViewModel().previousViewName != undefined && viewModel.contentViewModel().previousViewName.length > 0)
+    {
+        self.previousViewName = viewModel.contentViewModel().previousViewName;
+        self.previousContentViewModel = viewModel.contentViewModel().previousContentViewModel;
+    }
+    else
+    {
+        self.previousViewName = guiHelper.getCurrentViewName();
+        self.previousContentViewModel = viewModel.contentViewModel();
+    };
+
+    self.onShown = function ()
+    {
+        $('#loginFormInput').focus();
+    };
+
+    self.register = function()
+    {
+        // Tell Google analytics that a register has been started
+        ga
+        (
+            "send",
+            "event",
+            {
+                eventCategory: "Account",
+                eventAction: "Register",
+                eventLabel: "Started",
+                eventValue: 1,
+                metric1: 1
+            }
+        );
+
+        if (settings.fullRegistration)
+        {
+            accountHelper.hidePopup
+            (
+                function ()
+                {
+                    guiHelper.showView('registerFullView', new RegisterFullViewModel(false, undefined, accountHelper.isFacebookLogin));
+                }
+            );
+        }
+        else
+        {
+            if (accountHelper.isRegisterOpen)
+            {
+                accountHelper.register();
+            }
+            else
+            {
+                $('#loginRegister').animate
+                (
+                    {
+                        height: 450
+                    },
+                    {
+                        duration: 500,
+                        queue: false
+                    }
+                );
+
+                $('#registerContainer').animate
+                (
+                    {
+                        paddingTop: 10
+                    },
+                    {
+                        duration: 500,
+                        queue: false
+                    }
+                );
+
+                accountHelper.isRegisterOpen = true;
+            }
+        }
+    }
+
+    self.cancel = function()
+    {
+        guiHelper.showView(self.previousViewName, self.previousContentViewModel);
+    }
+
+    self.loginRegisterKeyPress = function (data, event)
+    {
+        // Did the user press enter?
+        if (event.which == 13 || event.keyCode == 13)
+        {
+            self.login();
+            return false;
+        }
+
+        return true;
+    }
+
+    self.facebookLogin = function (response)
+    {
+        ga
+        (
+            "send",
+            "event",
+            {
+                eventCategory: "Account",
+                eventAction: "Login",
+                eventLabel: "Facebook",
+                eventValue: 1,
+                metric1: 1
+            }
+        );
+
+        FB.login(self.facebookLoginCallback, { scope: 'email' });
+    }
+
+    self.facebookLoginCallback = function (response)
+    {
+        return accountHelper.facebookLogin
+        (
+            response,
+            self.loginCallback
+        );
+    }
+
+    self.login = function ()
+    {
+        ga
+        (
+            "send",
+            "event",
+            {
+                eventCategory: "Account",
+                eventAction: "Login",
+                eventLabel: "Andro",
+                eventValue: 1,
+                metric1: 1
+            }
+
+        );
+        return accountHelper.login
+        (
+            accountHelper.loginDetails.emailAddress(),
+            accountHelper.loginDetails.password(),
+            self.loginCallback
+        );
+    }
+
+    self.loginCallback = function (success, pleaseWaitViewModel)
+    {
+        if (success)
+        {
+            // Are we logging in to checkout?
+            if (self.isCheckoutLogin)
+            {
+                // Proceed to the checkout view
+                if (cartHelper.showCheckoutView())
+                {
+                    // Switch the cart to checkout mode
+                    guiHelper.isMobileMenuVisible(false);
+                    guiHelper.canChangeOrderType(false);
+                    guiHelper.cartActions(guiHelper.cartActionsCheckout);
+                }
+            }
+            else
+            {
+                // Just a normal login.  Return to the previous view
+                guiHelper.showView(self.previousViewName, self.previousContentViewModel);
+            }
+        }
+        else
+        {
+            guiHelper.showView('loginView', self);
+        }
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateeventlog, OrderTracking.Gps.Dao" table="gate_event_log">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="gate_event_log_id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK__gate_eve__22F205022F650636"/>
+			<generator class="native" />
+		</id>
+		<property name="Modifiedbyuserid" type="Int32">
+			<column name="modified_by_user_id" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="Servertimestamp" type="DateTime">
+			<column name="server_time_stamp" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Servertimestampms" type="Int32">
+			<column name="server_time_stamp_ms" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<many-to-one name="Gateeventstate" class="OrderTracking.Gps.Dao.Domain.Gateeventstate, OrderTracking.Gps.Dao">
+			<column name="gate_event_state_id" length="4" sql-type="int" not-null="true" index="Index_gate_event_state_id"/>
+		</many-to-one>
+		<many-to-one name="Gateevent" class="OrderTracking.Gps.Dao.Domain.Gateevent, OrderTracking.Gps.Dao">
+			<column name="gate_event_id" length="8" sql-type="bigint" not-null="true" index="Index_gate_event_id"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

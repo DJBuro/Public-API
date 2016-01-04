@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+    <object id="SiteBaseController" abstract="true">
+        <property name="AndroUserDao" ref="AndroUserDao" />
+    </object>
+
+    <object id="HomeController" parent="SiteBaseController" type="AndroAdmin.Controllers.HomeController" singleton="false">
+        <property name="AndroUserDao" ref="AndroUserDao" />
+    </object>   
+    
+     <object id="AccountController" parent="SiteBaseController" type="AndroAdmin.Controllers.AccountController" singleton="false">
+    </object>     
+    
+    <object id="AuthenticationController" parent="SiteBaseController" type="AndroAdmin.Controllers.AuthenticationController" singleton="false">
+    </object>    
+    
+    <object id="AdminController" parent="SiteBaseController" type="AndroAdmin.Controllers.AdminController" singleton="false">
+        <property name="AndroUserPermissionDao" ref="AndroUserPermissionDao" />
+        <property name="ProjectDao" ref="ProjectDao" />
+    </object>
+    
+    <object id="TranslationController" parent="SiteBaseController" type="AndroAdmin.Controllers.TranslationController" singleton="false">
+
+    </object>
+
+</objects>

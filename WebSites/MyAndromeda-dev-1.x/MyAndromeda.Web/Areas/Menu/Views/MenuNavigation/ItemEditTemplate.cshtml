@@ -1,0 +1,207 @@
+﻿@using (Html.BeginScripts())
+{
+    var translator = Html.GetTranslator();
+    <script type="text/template" id="itemEditTemplate">
+        <div class="menu-item k-widget" data-id="#:Id#">
+            <div class="header">
+                <a class="k-button k-button-cancel" title="Cancel, and forfit any changes to this item">Cancel</a>
+                <a class="k-button k-button-save" title="Finish changes this this item. Note this will not save yet.">Continue</a>
+                <h3>#= DisplayName() #</h3>
+                # if(DisplayName() !== Name){ # 
+                <p><span>(Store item name: #: Name #)</span></p>
+                # } # 
+                <p>@translator.T("Web section:") #:DisplayCategoryName#
+                # if ((Category1Name) || (Category2Name)) { #
+                    # if(Category1Name){ #
+                    <span>| @translator.T("Category1:") #: Category1Name #</span>
+                    # } #
+                    # if(Category2Name){ # 
+                    <span>| @translator.T("Category2:") #: Category2Name #</span>
+                    # } # 
+                # } #
+                </p>
+            </div>
+            <div class="tab-strip-wrapper">
+                <div data-role="tabstrip">
+                    <ul>
+                        <li class="k-state-active k-state-default">Name & Description</li>
+                        <li>Prices</li>
+                        <li>Thumbnails</li>
+                        @*<li>Stock</li>*@
+                        @*<li class="">Thumbnails - Advanced</li>*@
+                    </ul>
+                    @* Tab 1 - Name and Description *@
+                    <div>
+                        <div class="clearfix" data-bind="visible: ShowCantEditMessage">
+                            <p><span class="k-icon k-i-note"></span>The menu database could not be be found to update the web description name and description in the menu.</p>
+                        </div>
+
+                        <div class="clearfix" data-bind="visible: CanEditNameAndDescription">
+                            <div class="form-group">
+                                <label for="WebName">Web Name:</label>
+                                <input id="WebName" type="text" 
+                                    maxlength="255" data-value-update="keyup" data-bind="value: WebName" class="form-control k-textbox" />
+                                <button data-role="button" data-bind="click: ClearWebName">Clear</button>
+                                <span data-bind="text: WebNameCount"></span>
+                                <input type="hidden" name="WebName" data-bind="value: WebName" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix" data-bind="visible: CanEditNameAndDescription">
+                            <label for="WebDescription">Web Description:</label>
+                            <input id="WebDescription" type="text" 
+                                maxlength="255"  data-value-update="keyup"
+                                data-bind="value: WebDescription" class="form-control k-textbox" />
+
+                            <button data-role="button" data-bind="click: ClearDescription">Clear</button>
+                            <span data-bind="text: WebDescriptionCount"></span>
+                            <input type="hidden" name="WebDescription" data-bind="value: WebDescription" />
+                        </div>
+                        <p style="text-align: right">
+                            <a class="k-button k-button-save">Continue</a>
+                            <a class="k-button k-button-cancel">Cancel</a>
+                        </p>
+                    </div>
+                    @* Tab 2 - Prices *@
+                    <div>
+                        <div class="clearfix" data-bind="visible: ShowCantEditMessage">
+                            <p><span class="k-icon k-i-note"></span>The menu database could not be be found to update the web description name and description in the menu.</p>
+                        </div>
+
+                        <div class="clearfix" data-bind="visible: CanEditNameAndDescription">
+                            <div>
+                                <label for="InStore">Dine in</label>
+                            </div>
+                            <div>
+                                <input name="InStore" data-bind="value: Prices.Instore" data-role="numerictextbox" data-format="c" data-max="21474836.47" data-min="0" />
+                            </div>
+                            <div>
+                                <label for="Delivery">Delivery</label>
+                            </div>
+                            <div>
+                                <input name="Delivery" data-bind="value: Prices.Delivery" data-role="numerictextbox" data-format="c" data-max="21474836.47" data-min="0" />
+                            </div>
+                            <div>
+                                <label for="Collection">Collection</label>
+                            </div>
+                            <div>
+                                <input name="Collection" data-bind="value: Prices.Collection" data-role="numerictextbox" data-format="c" data-max="21474836.47" data-min="0" />
+                            </div>
+
+                        </div>
+
+                        <p style="text-align: right">
+                            <a class="k-button k-button-save">Continue</a>
+                            <a class="k-button k-button-cancel">Cancel</a>
+                        </p>
+                    </div>
+                    @* Tab 3 - Thumbnails *@
+                    <div>
+                        <input name="files" id="files#:Id#" type="file" accept="image/gif,image/jpeg,image/pjpeg,image/png,image/svg+xml,image/tiff" />
+                        <div data-template="thumbnails-template-summary" data-bind="source: this" class="thumbWrapper"></div>
+
+                        @* All thumbs: *@
+                        @*<div data-template="thumbnails-template" data-bind="source: Thumbs" class="thumbWrapper" ></div> *@
+                    </div>
+                    @* Tab 4 - Stock *@
+                    <div style="height: 300px"></div>
+                    @* Tab 3 *@
+                    @*                    <div>
+                        <p><span class="k-icon k-i-note"></span>Thumbnail cropping</p>
+                        <div class="k-content">
+                            <input name="files" id="cropFiles#:Id#" type="file" accept="image/gif,image/jpeg,image/pjpeg,image/png,image/svg+xml,image/tiff" />
+                            <button class="k-button k-button-file-upload">Upload</button>
+                        </div>
+
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/template" id="thumbnails-crop-template">
+        <span class='k-progress'></span>
+        <div class='file-wrapper'>
+            # console.log(files) #
+            <span class='file-icon'>#: files[0].extension#</span>
+            <h4 class='file-heading file-name-heading'>Name: #:name#; Size: #:size# bytes</h4>
+            <div class="imageHolder imageFrame">
+            </div>
+            <button type='button' class='k-crop-upload-action'></button>
+        </div>
+    </script>
+    
+    <script type="text/template" id="thumbnails-template-summary">
+        #if (Thumbs && Thumbs.length > 0){ # 
+        <div class="thumb" data-file-name="#: Thumbs[0].FileName #">
+            <div class="imageFrame" style="margin-bottom:10px !important;">
+                <img src="#: Thumbs[0].Url #" alt="Alternate Text" />                
+            </div>
+        </div>     
+
+        <div class="thumb">
+            <div class="imageFrame">
+                <p>
+                    There are #: Thumbs.length # images stored for this item.
+                    <br />
+                    These are for creating the best experience over different devices and resolutions.
+                </p>
+                <a class="k-button show-more-dimensions" href="\\#">Show dimensions</a>
+                <a class="k-button k-button-remove-thumb k-button-removeall-thumb">Remove All</a>
+                <div class="more" style="display: none">
+                    <ul>
+                        # for(var i=0; i< Thumbs.length; i++) { # 
+                        <li class="thumb" data-file-name="#: Thumbs[i].FileName #">
+                            #: kendo.format("Width: {0}px x Height: {1}px", Thumbs[i].Width, Thumbs[i].Height) #
+                            <a class="k-button k-button-remove-thumb">Remove</a>
+                        </li>
+                        # }#
+                    </ul>
+                </div>
+            </div>
+        </div>
+        # } #
+    </script>
+    <script type="text/template" id="thumbnails-template">
+        <div class="thumb" data-file-name="#: FileName #">
+            <div class="imageFrame">
+                <img data-bind="attr: { src: Url }" alt="Alternate Text" />
+                <div><a class="k-button k-button-remove-thumb">Remove</a></div>
+            </div>
+        </div>
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#menuItemsListView").on("click", "a.show-more-dimensions", function (e) {
+                e.preventDefault();
+                $(this).closest(".imageFrame").find(".more").slideToggle();
+            });
+        });
+    </script>
+}
+
+@*@using (Html.BeginScripts()) { 
+    <script type="text/template" id="itemEditTemplate">
+        <div class="product" data-id="#:Id#">
+            <div class="header">
+                <h3 data-bind="text: Name"></h3>
+                <a class="k-button k-button-cancel">Cancel</a>
+                <a class="k-button k-button-save">Save Changes</a>
+            </div>
+            <p style="margin:0; padding:0;"><span class="k-icon k-i-note"></span> Once uploaded the image will be optimized for many devices covering different dimensions</p>
+            <input name="files" id="files#:Id#" type="file" accept="image/gif,image/jpeg,image/pjpeg,image/png,image/svg+xml,image/tiff" />
+
+            
+            <div id="files" data-template="thumbnails-template" data-bind="source: Thumbs" class="thumbWrapper" >       
+            </div>
+        </div>
+    </script>
+    <script type="text/template" id="thumbnails-template">
+        <div class="thumb" data-file-name="#: FileName #">
+            <div class="imageFrame">
+                <img data-bind="attr: { src: Url }" alt="Alternate Text" />
+                <div><a class="k-button k-button-remove-thumb">Remove</a></div>
+            </div>            
+        </div>
+    </script>
+}*@

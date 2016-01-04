@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="WebDashboard.Dao.Domain.Indicator, WebDashboard.Dao" table="tbl_Indicator">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_Indicator"/>
+			<generator class="native" />
+		</id>
+		<property name="BenchMark" type="Decimal">
+			<column name="BenchMark" length="5" sql-type="decimal" not-null="true"/>
+		</property>
+		<property name="ReverseSort" type="Boolean">
+			<column name="ReverseSort" length="1" sql-type="bit" not-null="true"/>
+		</property>
+		<property name="DivisorColumn" type="Int32">
+			<column name="DivisorColumnId" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="AllowZero" type="Boolean">
+			<column name="AllowZero" length="1" sql-type="bit" not-null="true"/>
+		</property>
+		<property name="MaxValue" type="Int32">
+			<column name="MaxValue" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="DisplayAsScroller" type="Boolean">
+			<column name="DisplayAsScroller" length="1" sql-type="bit" not-null="false"/>
+		</property>
+		<property name="LongName" type="String">
+			<column name="LongName" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="ShortName" type="String">
+			<column name="ShortName" length="10" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="CustomDivisorValue" type="Int32">
+			<column name="CustomDivisorValue" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<many-to-one name="HeadOffice" class="WebDashboard.Dao.Domain.HeadOffice, WebDashboard.Dao">
+			<column name="HeadOfficeId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="DivisorType" class="WebDashboard.Dao.Domain.DivisorType, WebDashboard.Dao">
+			<column name="DivisorTypeId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="Definition" class="WebDashboard.Dao.Domain.Definition, WebDashboard.Dao">
+			<column name="DefinitionId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="IndicatorType" class="WebDashboard.Dao.Domain.IndicatorType, WebDashboard.Dao">
+			<column name="IndicatorTypeId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="ValueType" class="WebDashboard.Dao.Domain.ValueType, WebDashboard.Dao">
+			<column name="ValueTypeId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

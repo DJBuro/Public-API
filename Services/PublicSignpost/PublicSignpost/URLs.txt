@@ -1,0 +1,1 @@
+﻿http://localhost/services/PublicSignpost/AndroCloudAPI/WeborderAPI/host?partnerId=x&applicationId=y

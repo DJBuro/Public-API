@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Applicationdef, OrderTracking.Gps.Dao" table="application_def">
+		<id name="Id" type="String" unsaved-value="null">
+			<column name="application_def_name" length="128" sql-type="varchar" not-null="true" unique="true" index="PK__applicat__88B1983B6B79F03D"/>
+			<generator class="native" />
+		</id>
+		<property name="Applicationdefdescription" type="String">
+			<column name="application_def_description" length="255" sql-type="varchar" not-null="true"/>
+		</property>
+		<many-to-one name="Loadabletype" class="OrderTracking.Gps.Dao.Domain.Loadabletype, OrderTracking.Gps.Dao">
+			<column name="type_id" length="4" sql-type="int" not-null="true" index="Index_type_id"/>
+		</many-to-one>
+		<one-to-one name="Applicationdefreportviewer" class="OrderTracking.Gps.Dao.Domain.Applicationdefreportviewer, OrderTracking.Gps.Dao"/>
+		<one-to-one name="Applicationdefgateeventchannel" class="OrderTracking.Gps.Dao.Domain.Applicationdefgateeventchannel, OrderTracking.Gps.Dao"/>
+	</class>
+</hibernate-mapping>
+
+
+

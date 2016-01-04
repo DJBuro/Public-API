@@ -1,0 +1,18 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="AccountAddressValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="AddressLineOneValidator" test="AddressLineOne"><v:message id="error.AddressLineOne.required" providers="AddressLineOneErrors, ValidationSummary"/></v:required>
+	<v:required id="TownCityValidator" test="TownCity"><v:message id="error.TownCity.required" providers="TownCityErrors, ValidationSummary"/></v:required>
+	<v:required id="CountyProvinceValidator" test="CountyProvince"><v:message id="error.CountyProvince.required" providers="CountyProvinceErrors, ValidationSummary"/></v:required>
+	<v:required id="PostCodeValidator" test="PostCode"><v:message id="error.PostCode.required" providers="PostCodeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

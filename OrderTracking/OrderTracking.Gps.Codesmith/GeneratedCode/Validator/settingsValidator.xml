@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="SettingValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="NamespaceValidator" test="Namespace"><v:message id="error.Namespace.required" providers="NamespaceErrors, ValidationSummary"/></v:required>
+	<v:required id="ValuenameValidator" test="Valuename"><v:message id="error.Valuename.required" providers="ValuenameErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

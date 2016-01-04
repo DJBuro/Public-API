@@ -1,0 +1,1017 @@
+﻿/*!
+    Copyright © 2014 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+html 
+{
+    height: 100%;
+    width: 100%;
+}
+
+body
+{
+    /*font-family: 'Roboto Condensed', cursive, Arial;*/
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-height: 100%;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    -webkit-text-size-adjust: 100%;
+}
+
+textarea 
+{ 
+    resize: none; 
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* WELCOME */
+.welcomeHeader
+{
+    font-weight:normal;
+    text-align:center;
+    color:#FCF800;
+    margin:5px 0 0 0;
+    padding:0;
+}
+
+.waitPrompt
+{
+    text-align:center; 
+    padding:0; 
+    line-height:15px; 
+    color:#493700;
+    font-weight:normal;
+}
+
+.chooseStorePrompt
+{
+    text-align:center; 
+    font-weight:normal;
+    color:#493700;
+}
+
+.chooseStorePrompt h2
+{
+    padding:0; 
+    margin:50px auto 20px auto; 
+    line-height:12px; 
+    color:#493700;
+    font-weight:normal;
+}
+
+/* SITES */
+.sites
+{
+    overflow:hidden;
+}
+
+.chooseStoreOptions
+{
+    width:210px;
+    margin: 20px auto 0 auto;
+}
+
+/* MENU */
+.menuPage
+{
+    margin: 0;
+}
+
+/* CART */
+#yourOrderContainer
+{
+    background-color: #F2F2F2;   
+}
+
+#forDelivery
+{
+     /*margin-right: 5px;*/
+}
+
+#forCollection
+{
+     /*margin-left: 5px;*/
+}
+#delivery
+{
+    display: none;
+}
+
+#collection
+{
+    display: none;
+}
+
+.ticked
+{
+    background: url(/Content/Images/Ticked.png) no-repeat;
+    display:inline-block;
+    line-height:35px;
+    padding-left: 35px;
+}
+
+.unticked
+{
+    background: url(/Content/Images/Unticked.png) no-repeat;
+    display:inline-block;
+    line-height:35px;
+    padding-left: 35px;
+}
+
+#emptyBasket
+{
+    text-align:center;
+}
+
+#yourOrderContainer h2
+{
+    padding:0; 
+    margin:0 0 10px 0;
+    text-align: center;
+    color:#0F2D69;
+    font-weight:normal;
+}
+
+.cartItem, .cartItemDisabled
+{
+    padding-bottom:10px;
+    overflow:hidden;
+}
+
+.cartItem a:hover span
+{
+    cursor:pointer;
+}
+.cartItem a:link, .cartItem a:visited, .cartItem a:active
+{
+    color: blue;
+    text-decoration:none;
+}
+
+.cartItemDisabled, .cartItemDisabled a:link, .cartItemDisabled a:visited, .cartItemDisabled a:active
+{
+    color: red;
+    text-decoration:none;
+}
+
+.cartRow
+{
+    clear:both;
+    overflow: hidden;
+}
+
+.cartRowItemTopping, .cartRowDealLine
+{
+    clear:both;
+    margin-left:10px;
+}
+
+.cartRowDealLineTopping
+{
+    clear:both;
+    margin-left:20px;
+}
+
+.cartName
+{
+    float:left;
+    width:138px;
+}
+
+.cartIndent1
+{
+    float:left;
+    width:128px;
+}
+
+.cartIndent2
+{
+    float:left;
+    width:108px;
+}
+
+.cartDivider
+{
+    padding: 0 5px 0 5px;
+    float:left;
+}
+
+#cartActions
+{
+    clear:both;
+    text-align: center;
+}
+
+#cartActions a
+{
+    width: 50%;
+    padding: 0 10px 0 10px;
+    font-size: 16pt;
+}
+
+#cartSidebarActions
+{
+    overflow: hidden;
+    padding: 0 0 10px 0;
+    /*width:260px;*/
+    /*margin: 0 auto 10px auto;*/
+}
+
+.cartPriceTitle
+{
+    float: right;
+    width:60px;
+    font-weight: bold;
+    text-align:right;
+    font-size:11pt;
+}
+
+.cartPrice, .cartPriceDisabled
+{
+    float: right;
+    width:60px;
+    font-weight: bold;
+    text-align:right;
+}
+
+.cartPriceDisabled
+{
+    text-decoration: line-through;
+}
+
+.cartItemTitle
+{
+    float:left;
+    font-weight: bold;
+    font-size:11pt;
+}
+
+#cartTotalWrapper
+{
+    clear:both;
+    overflow:hidden;
+    margin: 0 0 10px 0;
+}
+
+.cartTotal
+{
+    float:left;
+    margin:10px 0 0 10px;
+    font-size: 22px;
+    font-weight:bold;
+}
+
+.cartTotalPrice
+{
+    float:right;
+    margin:10px 10px 0 0;
+    font-size: 22px;
+    font-weight:bold;
+}
+
+/* OPTIONS */
+
+#optionsContainer
+{
+    font-size: 10pt;
+    background-color: #F2F2F2;
+}
+
+/* STORE DETAILS */
+
+#storeDetailsContainer
+{
+    font-size: 10pt;
+    background-color: #F2F2F2;
+}
+
+#storeDetails
+{
+    margin: 10px 0 10px 20px;
+    overflow: hidden;
+}
+
+#differentStore
+{
+    clear: both;
+    padding-top: 20px;
+    width:260px;
+    margin: 5px auto 0 auto;
+}
+
+#storeDetailsAddress
+{
+    /*padding-bottom: 10px;*/
+}
+
+#storeDetails h2
+{
+    padding:0; 
+    margin:0 0 10px 0;
+    text-align: left;
+    color:#0F2D69;
+    font-weight:normal;
+}
+
+#storeDetails h3
+{
+    padding:0; 
+    margin:0 0 10px 0;
+    text-align: left;
+    color:#0F2D69;
+    font-weight:normal;
+}
+
+/* MENU */
+
+/*.menu
+{
+    background-color: white;
+}*/
+
+#sectionHeaders
+{
+    overflow:hidden;
+}
+
+.notAvailable
+{
+    clear:both;
+    color:red;
+}
+
+.dealItem p
+{
+    padding: 0;
+    margin: 0;
+}
+
+.dealName
+{
+    font-size:16pt;
+    color:#383838;
+    padding:0;
+    margin:0;
+    font-weight:bold;
+}
+
+.addHalfAndHalfToCart
+{
+    float:right;
+    background: url(/Content/Images/halfandhalf.png) no-repeat;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    margin-right:5px;
+}
+
+.addItemButton
+{
+    width:135px;
+}
+
+.quantity
+{
+    clear:right;
+    float:right;
+}
+
+.quantity label
+{
+    float:right;
+    font-size:12pt;
+    line-height: 30px;
+    margin-right: 5px;
+}
+
+.quantity select
+{
+    float:right;
+}
+
+.cartError
+{
+    color: red;
+    text-decoration: none;
+    margin-left:10px;
+}
+
+.cartAutoRemove
+{
+    clear:both;
+    color: red;
+    padding: 5px;
+    text-align: center;
+}
+
+/* TOPPINGS POPUP */
+
+#popupBody
+{
+    overflow: hidden; 
+    padding-bottom: 20px;
+}
+
+.popupItemDetails
+{
+    overflow:hidden;
+    margin: 0;
+}
+
+.popupBoxVisible h2, .popupBoxHidden h2
+{
+    padding:0 0 20px 0; 
+    margin:0;
+}
+
+/* Popup header */
+
+.popupBoxHeaderContainer
+{
+    overflow:hidden;
+}
+
+#popupName
+{
+    float:left;
+    padding-right: 20px;
+}
+
+#popupDescription
+{
+    clear: both;
+    width: 400px;
+}
+
+.popupRemoveFromCartButton
+{
+    float:right;
+    margin-right: 10px;
+}
+
+.popupAcceptChangesButton
+{
+    float:right;
+    background: url(/Content/Images/Tick.png) no-repeat;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+/* Popup body */
+#popupToppingsContainer
+{
+    clear:both;
+    overflow:hidden;
+}
+
+#popupToppingsContainer h2
+{
+    clear:both;
+    font-size: 15pt;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#popupToppingsHelp
+{
+    display: block;
+    overflow: hidden;
+    text-align: center;
+}
+
+.popupToppingsHeaders
+{
+    overflow:hidden;
+    margin:15px 0 5px 0;
+}
+
+.popupToppingsSingle, .popupToppingsSingle2
+{
+    float:left;
+    font-size:12pt;
+    margin:0 0 0 150px;
+}
+
+.popupToppingsDouble, .popupToppingsDouble2
+{
+    float:left;
+    font-size:12pt;
+    margin:0 30px 0 20px;
+}
+
+.popupToppings
+{
+    clear:both;
+}
+
+.popupTopping
+{
+    float:left;
+    width:268px;
+    font-size:9pt;
+    background-color: #EAEAEA;
+    margin-right:15px;
+    padding-left:5px;
+}
+
+.popupTopping input
+{
+    width:20px;
+    /*margin-right:5px;*/
+    float:left;
+}
+
+.popupToppingName
+{
+    display:block;
+    float:left;
+    width:140px;
+}
+
+.popupToppingPrice
+{
+    float:left;
+    margin-right:2px;
+    width:30px;
+}
+
+.popupAdditionalTopping
+{
+    float:left;
+    width: 200px;
+    display: block;
+    overflow: hidden;
+    margin-right: 2px;
+    padding-left:5px;
+}
+
+.popupRemovableTopping
+{
+    float:left;
+    width: 200px;
+    display: block;
+    overflow: hidden;
+    background-color: #ffc000;
+    margin-right: 2px;
+    padding-left:5px;
+}
+
+.popupExtraBits
+{
+    padding-bottom:20px;
+    overflow:hidden;
+}
+
+.dealPopupBoxBackgroundVisible
+{
+    z-index:1000;
+}
+
+#dealPopupBox
+{
+    margin-bottom: 20px;
+    z-index: 1001;
+}
+
+.popupBoxBackgroundHidden, .popupBoxBackgroundVisible
+{
+    z-index: 1003;
+}
+
+.popupBoxHidden, .popupBoxVisible
+{
+    z-index: 1004;
+}
+
+.popupDealItemPicker
+{
+    float: left;
+}
+
+.popupDealCustomizeItemButton
+{
+    float:left;
+    cursor: pointer;
+    margin-right: 5px;
+    /*margin-left: 10px;*/
+}
+
+.popupDealFreeTopsReminder
+{
+    float: left;
+    font-size: 12pt;
+    margin-left: 15px;
+    line-height: 18pt;
+    color: red;
+}
+
+/* Submit order view */
+
+.submitOrderPage
+{
+}
+
+/* CHECKOUT */
+
+#checkoutHeader h2
+{
+    text-align: center;
+}
+
+.checkoutPage h3
+{
+    font-weight: normal;
+}
+
+#checkoutTitle
+{
+    margin-right: 10px;
+    width: 75px;
+}
+
+.checkoutContactLine
+{
+    font-size: 13pt;
+    margin: 0 0 10px 10px;
+    overflow: hidden;
+}
+.checkoutContactColumn1
+{
+    float: left;
+    width: 180px;
+}
+
+.checkoutContactColumn2
+{
+    float: left;
+    width: 205px;
+    margin-right: 30px;
+}
+
+.checkoutContactColumn2 input
+{
+    width: 200px;
+    font-size: 12pt;
+    height: 20px;
+    padding-left: 3px;
+}
+
+#marketingLine
+{
+    clear: both;
+    padding-top:10px;
+}
+
+#marketingLine label
+{
+    font-size: 10pt;
+}
+
+#checkoutDeliveryTime
+{
+    text-align:center;
+    padding-right: 5px;
+}
+
+#checkoutDeliveryTime select
+{
+    font-size: 11pt;
+}
+
+#checkoutOptions
+{
+    text-align: center;
+    margin-top: 10px;
+}
+
+#checkoutOptions a
+{
+    font-size:20pt;
+    text-align:center;
+}
+
+.checkoutAddressLine
+{
+    clear: both;
+    overflow: hidden;
+}
+
+.checkoutAddressLine textarea
+{
+    width: 350px;
+    height: 80px;
+}
+
+.checkoutAddressLine input
+{
+    width: 160px;
+}
+
+.orderNotesColumn1
+{
+    float: left;
+    width: 200px;
+}
+
+.checkoutAddressColumn2
+{
+    float: left;
+    margin-right: 10px;
+}
+
+.checkoutAddressColumn3
+{
+    float: left;
+    font-size: 9pt;
+}
+
+.checkoutAddressColumn1
+{
+    float: left;
+    width: 160px;
+}
+
+#checkoutPaymentContainer h2
+{
+    text-align:center;
+}
+
+#checkoutAddress
+{
+    overflow: hidden;
+}
+
+#checkoutSidebarActions
+{
+    overflow: hidden;
+    padding: 5px 0 5px 0;
+    width:160px;
+    margin: 0 auto 10px auto;
+}
+.checkoutSectionHeaders
+{
+    margin: 10px 0 0 10px;
+    padding: 5px 5px 0 0;
+    overflow:hidden;
+}
+.checkoutSectionHeader, .selectedCheckoutSectionHeader
+{
+    float:left; 
+    padding:10px;
+    
+    border: solid 1px gray;
+    margin: 0 5px 0 0;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+.checkoutSectionHeader h2, .selectedCheckoutSectionHeader h2
+{
+    padding:0; 
+    margin:0; 
+    cursor: pointer;
+    font-weight:normal;
+    font-size: 12pt;
+}
+
+.checkoutSectionHeader
+{
+    background-color:white;
+    color:black;
+}
+.selectedCheckoutSectionHeader
+{
+    background-color:#404040;
+    color:white;
+}
+
+.checkoutButtons
+{
+    margin: 20px 0 20px 20px;
+}
+
+.checkoutDataError
+{
+    border: solid 1px red;
+    background-color: #FFE8E8;
+}
+
+.checkoutError
+{
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#checkoutContactDetailsContainer
+{
+}
+
+#checkoutDeliveryTimeContainer
+{
+}
+
+#checkoutDeliveryAddress
+{
+}
+
+#paymentPage
+{
+}
+
+#paymentSidebarActions
+{
+    overflow:hidden;
+    padding: 5px 0 5px 0;
+    width:210px;
+    margin: 0 auto 10px auto;
+}
+
+#paymentActions
+{
+    padding: 5px 0 5px 0;
+    width:410px;
+    margin: 0 auto;
+}
+
+/* ERRORS */
+
+.errorPage
+{
+    overflow: hidden;
+}
+
+.errorBox
+{
+    background-color: #b87a46;
+    overflow: hidden;
+    padding: 10px 50px 50px 50px;
+    margin: 0;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+
+/* GLOBAL */
+.button, .highlightedButton
+{
+    float: left;
+    text-align:center;
+    cursor: pointer;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+    overflow:hidden;
+}
+
+.button a, .highlightedButton a
+{
+    display:block;
+
+    width:100%;
+    height:100%;
+    font-size:12pt;
+    text-decoration: none;
+    color: #494949;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+}
+
+.highlightedButton a
+{
+    /*background: #ffc000;*/
+}
+
+#orderAccepted h3, #orderAccepted h4
+{
+    color: #493700;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: normal;
+}
+#orderAccepted h4
+{
+    font-size: 14pt;
+}
+
+#deliveryTimeRequired
+{
+    color: red;
+}
+#deliveryTimeRequired select
+{
+    margin-left: 5px;
+}
+
+.required
+{
+    color: red;
+    float: left;
+    width: 15px;
+}
+
+.requiredLine
+{
+    color: red;
+    clear: both;
+    margin-top:10px;
+}
+
+#paymentTandCContainer
+{
+    clear: both;
+    margin: 20px auto 0 auto;
+
+}
+
+#paymentTAndC
+{
+    width: 600px;
+    height: 350px;
+    border: solid 1px gray;
+    overflow-y:hidden;
+    margin: 10px auto 0 auto;
+}
+
+#paymentTandCError
+{
+    color: red;
+    text-align:center;
+}
+
+#footer
+{
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    height: 25px;
+    line-height:25px;
+    background-color: #E0E0E0;
+    color: #606060;
+    width: 100%;
+    z-index: 100;
+}
+
+.olMapViewport 
+{
+    z-index:0;
+}
+
+.homeMenuSection
+{
+    float:left; 
+    text-align:center;
+    cursor: pointer;
+
+    /*border: solid 1px #9E7100;*/
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+    overflow:hidden;
+}
+
+.homeMenuSection a:link, .homeMenuSection a:visited, .homeMenuSection a:active
+{
+    color: black;
+    text-decoration: none;
+
+    width:100%;
+    height:100%;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="GeoCode.Dao.Domain.Coordinates, GeoCode.Dao" table="tbl_Coordinates" batch-size="100">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_Coordinates"/>
+			<generator class="native" />
+		</id>
+		<property name="Longitude" type="float">
+			<column name="Longitude" length="8" sql-type="float" not-null="true"/>
+		</property>
+		<property name="Latitude" type="float">
+			<column name="Latitude" length="8" sql-type="float" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

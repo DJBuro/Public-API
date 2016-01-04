@@ -1,0 +1,131 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-timepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/checkbox.js")" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/timepicker.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/checkbox.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+}
+    
+<!-- Breadcrumb -->
+<h2>@Html.ActionLink("Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreDetailsPage" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <!-- Tabs -->
+    @Html.Partial("StoreDetailsTabsPartial", Model, new ViewDataDictionary {{ "SelectedTab", "StoreOpeningTimes" }})
+
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+
+        @if (ViewBag.Edit)
+        {
+            if (ViewBag.Permissions.Contains("EditStore"))
+            {
+                <div>
+                    <div class="actionLinks" style="float:left;">
+                        @Html.ActionLink("finished making changes", "StoreOpeningTimes", new { id = Model.Store.Id, edit = false }, new { @class = "changeLink" })
+                    </div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreOpeningTimes", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>
+            }
+                
+            <!-- Opening times -->
+            <div>
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Monday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Tuesday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Wednesday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Thursday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Friday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Saturday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{ "SiteId", Model.Store.Id }, {"Day", "Sunday"}})
+                </div>
+            </div>
+            
+            <div style="clear:both;"></div>
+        }
+        else
+        {
+            if (ViewBag.Permissions.Contains("EditStore"))
+            {           
+                <div>
+                    <div class="actionLinks" style="float:left;">
+                        @Html.ActionLink("change the store opening times", "StoreOpeningTimes", new { id = Model.Store.Id, edit = true }, new { @class = "changeLink" })
+                    </div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreOpeningTimes", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div> 
+            }
+            else
+            {
+                <div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreOpeningTimes", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>  
+            }
+            
+            <div>
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Monday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Tuesday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Wednesday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Thursday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Friday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Saturday"}})
+                </div>
+
+                <div style="float:left;">
+                    @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Sunday"}})
+                </div>
+            </div>
+            
+            <div style="clear:both;"></div>
+        }
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿Guam;en-US
+United States;en-US
+Russian Federation;ru-RU
+Turkey;tr
+United Kingdom;en-GB
+Azerbaijan;az
+Canada;en-Ca
+Bolivia, Plurinational State of;es-BO
+Bulgaria;bg-BG
+Cyprus;cy
+France; fr-FR
+India; en-IN
+Ireland;en-IE
+Netherlands;nl-NL
+Spain;es-ES
+Zimbabwe;en-ZW

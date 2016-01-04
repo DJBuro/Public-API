@@ -1,0 +1,162 @@
+﻿    <!-- HOME PAGE -->
+<script type="text/html" id="homeView">
+    
+    <div id="homeContent" class="content">
+        <div class="homeBox">
+
+            <!-- ko if: homePageHelper.NeedToChooseStore() -->
+            <div id="pickStoreOptions">
+                <div class="welcome">
+                    <h2 data-bind="html: textStrings.homeStoreDetailsTitle"></h2>
+                    <div data-bind="html: textStrings.homeStoreDetails"></div>
+                </div>
+
+                <div class="postcodeLookup">
+                    <h2 data-bind="html: textStrings.homeOrderOnline"></h2>
+                    <p data-bind="html: textStrings.homeStorePrompt"></p>
+                    <div class="postcodeSearch">
+                        <!-- input row -->
+                        <input type="search" name="PostCodeSearch" value="" data-bind="value: homePageHelper.PostCodeSearch, valueUpdate: 'input'" />
+                        <!-- go button -->
+                        <button type="button" class="button" data-bind="click:homePageActionHelper.SelectStoreFromPostCode, enable: homePageHelper.FoundAStore(), html: textStrings.homeGo"></button>
+                    </div>
+                    <!-- ko if: homePageHelper.FoundAStore() -->
+                    <div class="message good-message" data-bind="html: textStrings.homeDeliveryAvail"></div>
+                    <!-- /ko -->
+                    <!-- ko if: homePageHelper.NoStoresDeliver() -->
+                    <div class="message bad-message" data-bind="html: textStrings.homeCollectAvail"></div>
+                    <!-- /ko -->
+                    <div class="lookupStore" data-bind="visible: !homePageHelper.FoundAStore()">
+                        <!-- -->
+                        <p data-bind="html: textStrings.homeChooseStore"></p>
+                        <select class="storeDropDown" data-bind="
+                            options: viewModel.sites,
+                            optionsText: 'name',
+                            optionCaption:'Choose a store',
+                            value: homePageActionHelper.SelectedDropDownItem"></select>
+
+                        <button type="button" class="button" data-bind="click:homePageActionHelper.SelectStoreFromDropdown, html: textStrings.homeGo"></button>
+                        <div style="clear:both"></div>
+                    </div> 
+                </div>
+
+            </div>
+            <!-- /ko -->
+            <div style="clear:both"></div>
+            <div class="homeBoxInner">
+
+                <h2 id="homeFullOrderDeal" data-bind="html: menuHelper.fullOrderDiscountDeal == undefined ? '' : menuHelper.fullOrderDiscountDeal.Description"></h2>
+
+
+                <!-- ko if: $root.contentViewModel().homePageCarousels != undefined &&
+                            $root.contentViewModel().homePageCarousels()[0].items().length > 0 -->
+                <div id="homeCarousel1Container">
+                    <!-- Slides Container -->
+                    <div u="slides" id="homeCarousel1">
+                        <!-- ko foreach: $root.contentViewModel().homePageCarousels()[0].items -->
+                        <!-- ko template: { name: ($data).templateName } -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <!-- Arrow Left -->
+                    <span u="arrowleft" class="jssora01l" style="width: 55px; height: 55px; top: 122px; left: 8px;">
+                    </span>
+                    <!-- Arrow Right -->
+                    <span u="arrowright" class="jssora01r" style="width: 55px; height: 55px; top: 122px; right: 8px;">
+                    </span>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: homePageHelper.SitePicked() -->
+                <div id="homeOptionsWrapper">
+
+                    <!-- ko ifnot: settings.enableDineIn === true -->
+                    <div class="button" id="homeMenuButton">
+                        <a data-bind="html: textStrings.homeMenuButton, click: $root.contentViewModel().showMenu, attr: { title: textStrings.homeMenuButton, href: viewModel.selectedSite() === undefined ? '#' : '/' + viewModel.selectedSite().name + '/Menu/' + viewModel.sections()[0].display.Name + '/' } "></a>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: settings.enableDineIn === true -->
+                    <div class="button" id="homeDineInButton1">
+                        <a data-bind="html: textStrings.homeMenuButton, click: $root.contentViewModel().showMenu, attr: { title: textStrings.homeMenuButton, href: viewModel.selectedSite() === undefined ? '#' : '/' + viewModel.selectedSite().name + '/Menu/' + viewModel.sections()[0].display.Name + '/' } "></a>
+                    </div>
+                    <div class="button" id="homeDineInButton2">
+                        <a data-bind="html: textStrings.homeDineInButton, click: $root.contentViewModel().showDineInMenu, attr: { title: textStrings.homeMenuButton, href: viewModel.selectedSite() === undefined ? '#' : '/' + viewModel.selectedSite().name + '/Menu/' + viewModel.sections()[0].display.Name + '/' } "></a>
+                    </div>
+                    <!-- /ko -->
+
+                    <div id="homeLeftOptions">
+                        <h1 id="homeStoreDetailsTitle" data-bind="html: textStrings.homeStoreDetailsTitle"></h1>
+                        <div id="homeStoreDetails" data-bind="html: textStrings.homeStoreDetails"></div>
+                    </div>
+                    <div id="homeRightOptions">
+                        <h1 id="homeMenuTitle" data-bind="html: textStrings.homeMenuTitle"></h1>
+                        <div id="homeMenu" data-bind="html: textStrings.homeMenu"></div>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: $root.contentViewModel().homePageCarousels != undefined &&
+                            $root.contentViewModel().homePageCarousels()[1].items().length > 0 -->
+                <div id="homeCarousel2Container">
+                    <div u="slides" id="homeCarousel2">
+                        <!-- ko foreach: $root.contentViewModel().homePageCarousels()[1].items -->
+                        <!-- ko template: { name: ($data).templateName } -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <!-- Arrow Left -->
+                    <span u="arrowleft" class="jssora01l" style="width: 55px; height: 55px; top: 73px; left: 8px;">
+                    </span>
+                    <!-- Arrow Right -->
+                    <span u="arrowright" class="jssora01r" style="width: 55px; height: 55px; top: 73px; right: 8px;">
+                    </span>
+                </div>
+                <!-- /ko -->
+
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="homeCarouselMenuItemCard">
+    <div class="homeCarouselMenuItemCard" data-bind="'attr': { 'id': ($data).id, 'class': ($data).className }">
+        <div class="homeCarouselMenuItemCardImageWrapper">
+            <!-- ko if: ($data).src != undefined && ($data).src.length > 0 -->
+            <img data-bind="'attr': { 'src': ($data).src, 'alt': ($data).alt }" />
+            <!-- /ko -->
+            <div class="homeCarouselMenuItemCardImagePrice" data-bind="'html': ($data).price"></div>
+        </div>
+        <h2 data-bind="'html': ($data).name"></h2>
+        <p data-bind="'html': ($data).description"></p>
+    </div>
+</script>
+
+<script type="text/html" id="homeCarouselDealCard">
+    <div class="homeCarouselDealCard" data-bind="'attr': { 'id': ($data).id, 'class': ($data).className }">
+        <div class="homeCarouselDealCardInner">
+            <div class="homeCarouselDealCardImageWrapper">
+                <!-- ko if: ($data).src != undefined && ($data).src.length > 0 -->
+                <img data-bind="'attr': { 'src': ($data).src, 'alt': ($data).alt }" u="image" />
+                <!-- /ko -->
+            </div>
+            <!-- ko if: ($data).isoverlayvisible -->
+            <div class="homeCarouselDealCardDetailsWrapper">
+                <h2 data-bind="'html': ($data).name"></h2>
+                <p data-bind="'html': ($data).description"></p>
+                <div class="homeCarouselDealCardPrice" data-bind="'html': ($data).price"></div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="homeCarouselImageCard">
+    <div class="homeCarouselImageCard" data-bind="'attr': { 'id': ($data).id, 'class': ($data).className }">
+        <!-- ko if: ($data).src != undefined && ($data).src.length > 0 -->
+        <img data-bind="'attr': { 'src': ($data).src, 'alt': ($data).alt }" />
+        <!-- /ko -->
+    </div>
+</script>
+
+<script type="text/html" id="homeCarouselHtmlCard">
+    <div class="homeCarouselHtmlCard" data-bind="'html': ($data).description, 'attr': { 'id': ($data).id, 'class': ($data).className }"></div>
+</script>

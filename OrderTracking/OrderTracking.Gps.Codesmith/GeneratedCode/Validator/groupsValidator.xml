@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="GroupValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="GroupnameValidator" test="Groupname"><v:message id="error.Groupname.required" providers="GroupnameErrors, ValidationSummary"/></v:required>
+	<v:required id="PublicflagValidator" test="Publicflag"><v:message id="error.Publicflag.required" providers="PublicflagErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

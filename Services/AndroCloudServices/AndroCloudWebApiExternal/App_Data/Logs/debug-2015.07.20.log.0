@@ -1,0 +1,141 @@
+2015-07-20 12:58:34,766 [8] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-20 12:58:34,775 [8] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-20 12:58:34,779 [8] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-20 12:58:34,785 [8] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: JE-API-KEY DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: 9c8c4abb-5981-c5b7-c44b-648bdc66e8ae
+2015-07-20 12:58:34,787 [8] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-20 12:58:34,790 [8] AndroCloudWebApiExternal.Handlers.LogHandler - {
+    "Id": "2qjr3pz0q0aitasdasdsuu6yg",
+    "CustomerOrderId": 174688823,
+    "Order": {
+        "NoteToRestaurant": "JE Test Order",
+        "ServiceType": "Delivery",
+        "PlacedDate": "2015-07-13T06:51:13.2910833+00:00",
+        "DueDate": "2015-07-13T09:45:00+00:00",
+        "DueDateWithUtcOffset": "2015-07-13T10:45:00+01:00",
+        "InitialDueDate": "2015-07-13T09:45:00+00:00",
+        "InitialDueDateWithUtcOffset": "2015-07-13T10:45:00+01:00",
+        "PromptAsap": false
+    },
+    "RestaurantInfo": {
+        "Id": "52413",
+        "Name": "JE4 - Orderpad - Test restaurant",
+        "PhoneNumber": "8787654566",
+        "AddressLines": [
+            "60Test Road"
+        ],
+        "City": "Testville",
+        "Postcode": "AR63 2AA",
+        "DispatchMethod": "JctV3",
+        "EmailAddress": null
+    },
+    "PaymentInfo": {
+        "PaymentLines": [
+            {
+                "Type": "Cash",
+                "CardFee": 0,
+                "Value": 17.2
+            }
+        ],
+        "Total": 17.2,
+        "TotalComplementary": 0,
+        "PaidDate": "2015-07-13T06:51:18.3266496+00:00",
+        "CashOnDelivery": true
+    },
+    "CustomerInfo": {
+        "Id": "8911829",
+        "Email": "jetestpad1@gmail.com",
+        "Name": "Adrian",
+        "Address": "test",
+        "City": "test",
+        "Postcode": "AR63 1AA",
+        "PhoneNumber": "0123456789",
+        "TimeZone": "GMT Standard Time",
+        "PreviousRestuarantOrderCount": 2
+    },
+    "BasketInfo": {
+        "BasketId": "Kk6r9e7Fqk6S2U62cNTe2Q",
+        "MenuId": 183581,
+        "Discounts": [
+            {
+                "Id": 194027,
+                "Discount": 20,
+                "DiscountType": "Percent",
+                "QualifyingValue": 25
+            }
+        ],
+        "SubTotal": 16.2,
+        "ToSpend": 0,
+        "MultiBuyDiscount": 0,
+        "Discount": 0,
+        "DeliveryCharge": 1,
+        "Total": 17.2,
+        "GroupedBasketItems": [
+            {
+                "BasketItem": {
+                    "ProductId": 16425788,
+                    "ProductTypeId": 15,
+                    "MenuCardNumber": "30",
+                    "Name": "Hawaiian",
+                    "Synonym": "Large Deep Pan",
+                    "UnitPrice": 12,
+                    "CombinedPrice": 16.2,
+                    "MealParts": [],
+                    "OptionalAccessories": [
+                        {
+                            "OptionalAccessoryId": 9,
+                            "Quantity": 1,
+                            "UnitPrice": 0.8,
+                            "Name": "Ham"
+                        },
+                        {
+                            "OptionalAccessoryId": 37,
+                            "Quantity": 1,
+                            "UnitPrice": 0.8,
+                            "Name": "Green Peppers"
+                        },
+                        {
+                            "OptionalAccessoryId": 70,
+                            "Quantity": 1,
+                            "UnitPrice": 0.8,
+                            "Name": "Chillies"
+                        },
+                        {
+                            "OptionalAccessoryId": 336,
+                            "Quantity": 1,
+                            "UnitPrice": 0.8,
+                            "Name": "Extra Cheese"
+                        }
+                    ],
+                    "RequiredAccessories": [
+                        {
+                            "RequiredAccessoryId": 1209,
+                            "GroupId": 2,
+                            "UnitPrice": 1,
+                            "Name": "Regular Crust"
+                        }
+                    ],
+                    "Discounts": [],
+                    "MultiBuyDiscounts": []
+                },
+                "Quantity": 1,
+                "CombinedPrice": 16.2,
+                "OrderSubId": 0,
+                "MenuCardNumber": null
+            }
+        ]
+    },
+    "IsAMiniFistPumpOrder": false
+}
+2015-07-20 12:58:34,792 [8] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-20 12:58:46,506 [11] AndroCloudWebApiExternal.Controllers.JustEatController - Sent to ACS: https://test1.androcloudservices.com/AndroCloudAPI/weborderapiv2/sites/52413/orders/2qjr3pz0q0aitasdasdsuu6yg?applicationId=AA3399DC-1DA7-4BA6-A198-F7DC2E926673
+2015-07-20 12:58:47,195 [11] AndroCloudWebApiExternal.Controllers.JustEatController - <log4net.Error>Exception during StringFormat: Input string was not in a correct format. <format>{"Id":"2qjr3pz0q0aitasdasdsuu6yg","CustomerOrderId":174688823,"Order":{"NoteToRestaurant":"JE Test Order","ServiceType":"Delivery","PlacedDate":"2015-07-13T07:51:13.2910833+01:00","DueDate":"2015-07-13T10:45:00+01:00","DueDateWithUtcOffset":"2015-07-13T10:45:00+01:00","InitialDueDate":"2015-07-13T10:45:00+01:00","InitialDueDateWithUtcOffset":"2015-07-13T10:45:00+01:00","PromptAsap":false},"RestaurantInfo":{"Id":"52413","Name":"JE4 - Orderpad - Test restaurant","PhoneNumber":"8787654566","AddressLines":["60Test Road"],"City":"Testville","Postcode":"AR63 2AA","DispatchMethod":"JctV3","EmailAddress":null},"PaymentInfo":{"PaymentLines":[{"Type":"Cash","CardFee":0.0,"Value":17.2}],"Total":17.2,"TotalComplementary":0.0,"PaidDate":"2015-07-13T06:51:18.3266496+00:00","CashOnDelivery":true},"CustomerInfo":{"Id":"8911829","Email":"jetestpad1@gmail.com","Name":"Adrian","Address":"test","City":"test","Postcode":"AR63 1AA","PhoneNumber":"0123456789","TimeZone":"GMT Standard Time","PreviousRestuarantOrderCount":2},"BasketInfo":{"BasketId":"Kk6r9e7Fqk6S2U62cNTe2Q","MenuId":183581,"Discounts":[{"Id":194027,"Discount":20.0,"DiscountType":"Percent","QualifyingValue":25.0}],"SubTotal":16.2,"ToSpend":0.0,"MultiBuyDiscount":0.0,"Discount":0.0,"DeliveryCharge":1.0,"Total":17.2,"GroupedBasketItems":[{"BasketItem":{"ProductId":16425788,"ProductTypeId":15,"MenuCardNumber":"30","Name":"Hawaiian","Synonym":"Large Deep Pan","UnitPrice":12.0,"CombinedPrice":16.2,"MealParts":[],"OptionalAccessories":[{"OptionalAccessoryId":9,"Quantity":1,"UnitPrice":0.8,"Name":"Ham"},{"OptionalAccessoryId":37,"Quantity":1,"UnitPrice":0.8,"Name":"Green Peppers"},{"OptionalAccessoryId":70,"Quantity":1,"UnitPrice":0.8,"Name":"Chillies"},{"OptionalAccessoryId":336,"Quantity":1,"UnitPrice":0.8,"Name":"Extra Cheese"}],"RequiredAccessories":[{"OptionalAccessoryId":0,"Quantity":0,"UnitPrice":1.0,"Name":"Regular Crust"}],"Discounts":[],"MultiBuyDiscounts":[]},"Quantity":1,"CombinedPrice":16.2,"OrderSubId":0,"MenuCardNumber":null}]},"IsAMiniFistPumpOrder":false}</format><args>{}</args></log4net.Error>
+2015-07-20 12:58:52,546 [11] AndroCloudWebApiExternal.Controllers.JustEatController - Success: 2qjr3pz0q0aitasdasdsuu6yg; Customer: Adrian

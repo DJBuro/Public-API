@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TrackrecorderValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="BotypeValidator" test="Botype"><v:message id="error.Botype.required" providers="BotypeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

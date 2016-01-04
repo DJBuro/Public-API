@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Loadabletype, OrderTracking.Gps.Dao" table="loadable_type">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="type_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__loadable__2C0005983552E9B6"/>
+			<generator class="native" />
+		</id>
+		<property name="Assemblyname" type="String">
+			<column name="assembly_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Typename" type="String">
+			<column name="type_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Typedescription" type="String">
+			<column name="type_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Basetypename" type="String">
+			<column name="base_type_name" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Basetypedescription" type="String">
+			<column name="base_type_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Deleted" type="Int16">
+			<column name="deleted" length="2" sql-type="smallint" not-null="false"/>
+		</property>
+		<property name="Created" type="DateTime">
+			<column name="created" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Version" type="String">
+			<column name="version" length="45" sql-type="varchar" not-null="true"/>
+		</property>
+		<bag name="report_viewers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Reportviewer, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="service_plugins" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Serviceplugin, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="gate_commands" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Gatecommand, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="notifiers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Notifier, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="listeners" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Listener, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="message_providers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Messageprovider, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="post_processors" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Postprocessor, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="evaluator_conditions" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Evaluatorcondition, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="device_defs" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Devicedef, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="application_defs" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Applicationdef, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="recorder_rules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Recorderrule, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="gate_event_expressions" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Gateeventexpression, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="application_rules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="type_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Applicationrule, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

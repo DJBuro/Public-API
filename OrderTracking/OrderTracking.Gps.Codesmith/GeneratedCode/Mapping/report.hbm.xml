@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Report, OrderTracking.Gps.Dao" table="report">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="report_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__report__779B7C586A1BB7B0"/>
+			<generator class="native" />
+		</id>
+		<property name="Reportname" type="String">
+			<column name="report_name" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Reportdescription" type="String">
+			<column name="report_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<many-to-one name="Reportviewer" class="OrderTracking.Gps.Dao.Domain.Reportviewer, OrderTracking.Gps.Dao">
+			<column name="report_viewer_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+			<column name="application_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<bag name="report_parameters" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="report_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Reportparameter, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

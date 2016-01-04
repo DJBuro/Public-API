@@ -1,0 +1,380 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Antares</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Antares.AntaresBinaryReport">
+            <summary>
+            Antares binary report
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresBinaryReport.#ctor(System.Byte[])">
+            <summary>
+            Create binary report from byte array.
+            </summary>
+            <param name="arrData"></param>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresBinaryReport.ToString">
+            <summary>
+            For logging
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresBinaryReport.UnitID">
+            <summary>
+            Unit ID
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresBinaryReport.TrackPoint">
+            <summary>
+            TrackPoint
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresBinaryReport.Status">
+            <summary>
+            Status
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresBinaryReport.Length">
+            <summary>
+            Number of bytes used to .
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresDeviceDefinition">
+            <summary>
+            All Antares device definitions inherit from this class.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add common Antares message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="retListEntries"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Add default mapping to GpsGate fields.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Register outgoing commands for device type.
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Unit ID".
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresDeviceDefinition.NamespaceName">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for Antares
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresGprsSettingsCmdExe.Execute">
+            <summary>
+            Throws exception
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            Returns false
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresParser">
+            <summary>
+            Parses Antares data.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresParser.#ctor">
+            <summary>
+            Create parser
+            </summary>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresParser.Write(System.Byte[])">
+            <summary>
+            Data to parse.
+            </summary>
+            <param name="arrData"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresParser.NextReport">
+            <summary>
+            Call repeatedly after Write() until null is returned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresProtocol">
+            <summary>
+            Implements Antares protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create protocol.
+            </summary>
+            <param name="conn"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresProtocol.TranslateFromDevice(Franson.Message.ProviderMessage)">
+            <summary>
+            Parse message (SMS) from device.
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse data from device over IP.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresProtocol.StringID">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresReport">
+            <summary>
+            Report encapsulating a TAIP report or a binary report.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresReport.#ctor(Franson.Taip.TaipBase)">
+            <summary>
+            Create from TAIP sentence.
+            </summary>
+            <param name="taip"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresReport.#ctor(GpsGate.Antares.AntaresBinaryReport)">
+            <summary>
+            Create from Antares binary report.
+            </summary>
+            <param name="binReport"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresReport.#ctor(Franson.Taip.TaipSentence)">
+            <summary>
+            From generic sentence. GateMessage cannot be extracted from this report.
+            </summary>
+            <param name="taip"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresReport.ToString">
+            <summary>
+            For logging.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresReport.OriginalReport">
+            <summary>
+            Returns a <see cref="T:Franson.Taip.TaipBase"/> or <see cref="T:GpsGate.Antares.AntaresBinaryReport"/> this report was created from.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresReport.UnitID">
+            <summary>
+            Unit ID, or null of no present.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresReport.TrackPoint">
+            <summary>
+            TrackPoint
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresReport.Status">
+            <summary>
+            Status.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresSBDeviceDefinition">
+            <summary>
+            Defines the capabilities of Antares SB device such as MessageFields, Default Mapper and Command support
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSBDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add common Antares message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="retListEntries"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresSBDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresSBDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresSmsConnection">
+            <summary>
+            Handles incoming and outgoing SMS to Antares trackers.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS connection for Antares.
+            </summary>
+            <param name="numPhone"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSmsConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.Antares.AntaresProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresSmsListener">
+            <summary>
+            Antares SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Antares.AntaresSmsConnection"/> object for incoming data.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSmsListener.OnStart">
+            <summary>
+            Installs Antares protocol and start s up listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Adds default settings for Antares. Enable by default.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresSmsListener.ProtocolID">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresTcpConnection">
+            <summary>
+            Handles TCP/IP connection to a Antares device.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a Antares device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresTcpConnection.CreateProtocol">
+            <summary>
+            Returns Antares protocol object. <see cref="T:GpsGate.Antares.AntaresProtocol"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresTcpListener">
+            <summary>
+            Handles a Antares device connected over TCP/IP
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresTcpListener.OnStart">
+            <summary>
+            Called when listener is started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Antares.AntaresTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed. Enable by default.
+            Sets default server port to 2145
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresTcpListener.ProtocolID">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresUdpConnection">
+            <summary>
+            Antares UDP protocol translator
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresUdpConnection.#ctor(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Antares UDP connection
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresUdpConnection.CreateProtocol">
+            <summary>
+            Returns a <see cref="T:GpsGate.Antares.AntaresProtocol"/> object. Which is used to convert beween Antares and GpsGate
+            protocol.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Antares.AntaresUdpListener">
+            <summary>
+            Handles UDP datagrams from Antares devices.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresUdpListener.OnStart">
+            <summary>
+            Called when listener started.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresUdpListener.CreateUdpConnection(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create new <see cref="T:GpsGate.Antares.AntaresUdpConnection"/> object for a Antares device.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Antares.AntaresUdpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 2145
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Antares.AntaresUdpListener.ProtocolID">
+            <summary>
+            Returns "Antares"
+            </summary>
+        </member>
+    </members>
+</doc>

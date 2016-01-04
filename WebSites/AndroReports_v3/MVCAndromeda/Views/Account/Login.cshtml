@@ -1,0 +1,51 @@
+﻿@model MVCAndromeda.Models.LoginModel
+@{
+    ViewBag.Title = "Home Page";
+} 
+
+
+   @*section header
+       {
+       <img src="../Images/logo2.png" width="120" style="top:15px;left:10px" />
+       }*@
+<script type="text/javascript">
+    function datevalue() {
+        document.getElementById("date").value = (new Date()).toDateString();
+    }
+</script>
+@if (ViewBag.invalidCredentials == true) { 
+<script type="text/javascript">alert("Invalid Credentials!")</script>
+}
+
+<div id="forms" data-role="view" data-title="@ViewBag.Message" data-init="initForm" data-use-native-scrolling="true">
+    <header data-role="header">
+        <div data-role="navbar">
+            <span data-role="view-title">Login</span>
+            @*<a data-align="right" data-role="button" class="nav-button" href="#index">Index</a>*@
+        </div>
+    </header>
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+            <ul data-role="listview" data-style="inset">
+                <li>
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName)
+                    @Html.ValidationMessageFor(m => m.UserName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+                <li>
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    <input type="checkbox" name="@Html.NameFor(e=> e.RememberMe)" id="@Html.IdFor(e=>e.RememberMe)" data-role="switch" />
+                    @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                </li>
+            </ul>
+            <input type="hidden" id="date" name="today"/>
+            <input type="submit" value="Log in" onclick="datevalue()"/>
+    }
+</div>

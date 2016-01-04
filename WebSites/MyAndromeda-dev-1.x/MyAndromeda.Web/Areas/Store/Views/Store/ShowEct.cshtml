@@ -1,0 +1,30 @@
+﻿@using MyAndromeda.Services.Gprs;
+
+@{
+    var workContext = Html.GetWorkContext();
+    var gprsService = Html.GetService<IGprsService>();
+    var isGprsStore = gprsService.IsStoreGprsDeviceBySiteId(workContext.CurrentSite.SiteId);
+    var authorizer = Html.GetAuthorizer();
+}
+
+
+<div class="header">
+    <h3>Estimated collection time</h3>
+    @if (authorizer.Authorize(MyAndromeda.Web.Areas.Store.StoreUserPermissions.EditEdtTime))
+    {
+        <a class="k-button" href="@Url.Action("ChangeEct")">Edit</a>
+    }
+</div>
+<div class="content">
+    <div>
+        @if (!workContext.CurrentSite.Store.EstimatedCollectionTime.HasValue)
+        {
+            <span>No time has been entered. The default is 45 minutes</span>
+        }
+        else
+        {
+            @workContext.CurrentSite.Store.EstimatedCollectionTime
+        }
+    </div>
+
+</div>

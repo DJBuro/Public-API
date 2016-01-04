@@ -1,0 +1,629 @@
+@media only screen and (max-width: 601px)
+{
+    #loginRegisterInner h1
+    {
+        font-weight: normal !important;
+        border: none;
+        height: auto;
+        font-size: 17pt;
+        margin:0;
+    }
+
+    #loginRegisterInner h1, #signIn, #loginRegisterInner, #forgotPasswordBox
+    {
+        background-color: #ffffff;
+    }
+
+    header
+    {
+        height: auto;
+        background: none;
+    }
+
+    #mobileHeader
+    {
+        display: block;
+        margin: 0 auto;
+    }
+
+    #mobileSubHeader
+    {
+        height: 45px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    #headerHello, #loyaltyHello
+    {
+        margin: 3px 0 3px 0;
+        text-align: center;
+    }
+    #headerLoginBox
+    {
+        display: inline-block;
+        margin-top: 0;
+    }
+
+    #homeOptionsWrapper > div
+    {
+        clear: both;
+        padding-top: 10px;
+    }
+
+    #viewContainer
+    {
+        background-color: #f0eeef;
+        padding:0 10px;
+        min-height: 0;
+    }
+
+    #forgotPasswordCancelButton, #forgotPasswordButton
+    {
+        display: inline-block;
+        clear: none;
+        float: none;
+        margin-top: 12px;
+    }
+
+    #forgotPasswordBox h1
+    {
+        height: auto;
+    }
+
+    #forgotPasswordBox
+    {
+        text-align: center;
+    }
+
+    #forgotPasswordEmailPrompt, #forgotPasswordEmail
+    {
+        display: inline;
+    }
+
+    #forgotPasswordEmailPrompt
+    {
+        float: none;
+    }
+
+    #homeMenuTitle, #homeStoreDetailsTitle
+    {
+        font-size: 20px;
+        line-height: 23px;
+    }
+
+    #homeMenu, #homeStoreDetails
+    {
+        font-size: 10pt;
+    }
+
+    #homeContent
+    {
+        margin: 10px 0 20px;
+    }
+
+    #homeOptionsWrapper .button, #homeOptionsWrapper .highlightedButton
+    {
+        float: none;
+        display: inline-block;
+    }
+
+    #homeLeftOptions, #homeRightOptions
+    {
+        width: auto;
+    }
+
+    #sectionsWrapper, #mobileMenuSections
+    {
+        background-color: #ffffff;
+        top: 0;
+    }
+
+    #mobileMenuSections
+    {
+        text-align: left;
+    }
+
+    #mobileMenuSectionsPrompt
+    {
+        font-weight: normal !important;
+        font-size: 26px;
+        line-height: 50px;
+        padding-left: 10px;
+    }
+
+    #mobileMenuSections select
+    {
+        text-align: center;
+    }
+
+    p.dealName
+    {
+        font-size: 18px;
+        line-height: 26px;
+    }
+
+    #sections
+    {
+        margin-bottom: 20px;
+    }
+
+    .popupItemDetails
+    {
+        color: #000000;
+        width: 100%;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        float: none;
+    }
+
+    #storeDetailsAddressMap
+    {
+        width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0 10px;
+        background-color: #ffffff;
+    }
+
+    .welcomeHeader h1
+    {
+        background-color: #ffffff;
+    }
+
+    .storeDetailsBox h1
+    {
+        background-color: transparent;
+    }
+
+    #pickStoreOptions .welcome {
+        float: none;
+        width: 100%;
+        display: none;
+    }
+    #pickStoreOptions .postcodeLookup {
+        float: none;
+        width: 100%;
+    }
+
+    #storeDetailsDeliveryTimes, #storeDetailsDeliveryTimes h1
+    {
+        color: #ffffff;
+        float: none;
+    }
+
+    #storeDetailsDeliveryTimes h1, #storeDetailsAddress h1
+    {
+        font-size: 23px;
+        height: auto;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        float: none;
+        margin-right: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .storeDetailsDeliveryTimesDay
+    {
+        font-size: 12pt;
+        display: inline-block;
+        text-align: left;
+    }
+
+    .storeDetailsDeliveryTimesDayColumn1
+    {
+        width: 150px;
+    }
+
+    #storeDetailsAddress
+    {
+        color: #000000;
+        background-color: #ffffff;
+        padding: 5px 10px 10px;
+    }
+
+    .dealName, .itemName
+    {
+        font-size: 19px;
+        line-height: 21px;
+    }
+
+    #forgotPasswordEmail input
+    {
+        width: 59%;
+    }
+
+    #cartTitle > h1
+    {
+        height: auto;
+        font-size: 18pt;
+    }
+
+    #cartTitle h1, #deliveryOrCollection, #cartWrapper
+    {
+        background-color: #ffffff;
+    }
+
+    #checkoutPageInner h1
+    {
+        font-size: 25px;
+    }
+
+    .priceAddContainer
+    {
+        width: auto;
+        margin: 0;
+        float: none;
+    }
+
+    #popupDescription
+    {
+        margin-top: 10px;
+    }
+
+    #popupOptionsRight, #popupOptionsLeft
+    {
+        background-color: #ffffff;
+    }
+
+    #popupOptions
+    {
+        height: 180px;
+    }
+
+    #popupCatContainer, #popupCategory1, #popupCatHeader
+    {
+        display: inline-block;
+    }
+
+    #popupOptionsRight
+    {
+        top: 90px;
+    }
+
+    .popupBoxHeaderContainer h1
+    {
+        background-color: #ffffff;
+        font-size: 21px !important;
+        font-weight: normal;
+    }
+
+    .checkoutPage h1
+    {
+        font-size: 25px;
+    }
+
+    #popupName
+    {
+        font-size: 19px;
+    }
+
+    .backButton, .checkoutButtons .nextButton
+    {
+        width: 60px;
+    }
+
+    #checkoutContactDetailsContainer h3, #checkoutDeliveryTimePrompt h3, #checkoutDeliveryAddressContainer h3, #checkoutOrderNotesContainer h3
+    {
+        font-size: 17px;
+    }
+
+    .button.nextButton.checkoutSendOrderToStoreButton
+    {
+        width: 106px;
+    }
+
+    .checkoutError
+    {
+        clear: both;
+        margin-top: 20px;
+    }
+
+    .checkoutPage #checkoutPageInner
+    {
+        border: none;
+        background-color: #ffffff;
+    }
+
+    #checkoutSAddressContainer > div, #checkoutSTime > div, #checkoutSPaymentSelection > div, #checkoutSAddVoucherTitle
+    {
+        display: block;
+        padding: 5px;
+        width: auto;
+        float: none;
+    }
+
+    #menuSection, #viewContainer
+    {
+        height: auto;
+        overflow: hidden;
+        min-height: 0;
+    }
+
+    .popupTopping
+    {
+        width: 100%;
+    }
+
+    #checkoutSectionsContainer
+    {
+        overflow: hidden;
+    }
+
+    #checkoutSPayNowSection
+    {
+        margin-left: 156px;
+    }
+
+    .homeBoxInner > div
+    {
+        padding:0 10px;
+    }
+
+    .loginFormPrompt > label
+    {
+        font-size: 11pt;
+    }
+
+    #lrEmailRegisterMarketing label, #lrSMSRegisterMarketing label
+    {
+        font-size: 9pt;
+    }
+
+    .lrLoginFormPrompt > label, .checkoutAddressColumn1 > label
+    {
+        display: inline-block;
+        font-size: 11pt;
+        padding: 3px 0;
+    }
+
+    #lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2
+    {
+        font-size: 25px;
+        margin: 10px;
+    }
+
+    .orderNotesColumn1
+    {
+        width: auto;
+    }
+
+    .checkoutAddressLine input, .lrLoginFormInput input, .checkoutAddressLine textarea,
+    #checkoutSAddressContainer > div, #checkoutSTime > div, #checkoutSPaymentSelection > div,
+    #checkoutSTotalPrompt, #checkoutSAddVoucherTitle, .checkoutError
+    {
+        font-size: 10pt;
+    }
+
+    .checkoutContactColumn1, #marketingLine, .checkoutAddressColumn1, #checkoutDeliveryTime p
+    {
+        font-size: 11pt;
+        margin: 10px 5px 0;
+    }
+
+    #popupOptionsLeft > div
+    {
+        margin-top: 5px;
+    }
+
+    .itemDescription
+    {
+        clear: initial;
+        float: initial;
+        margin-top: 40px;
+    }
+
+    #informationInner
+    {
+        font-size: 10pt;
+    }
+
+    #footer
+    {
+        display: block;
+    }
+
+    #footerLinks
+    {
+        width: 100%;
+    }
+
+    #poweredByAndro
+    {
+        display: inline-block;
+        float: none;
+        width: 100%;
+        margin-left:0;
+    }
+
+    #footerLinks #poweredByAndro
+    {
+        display: inline-block !important;
+    }
+
+    #termsOfUse
+    {
+        margin-left:0;
+    }
+
+    .checkoutButtons
+    {
+        clear: both;
+    }
+
+    .checkoutPage
+    {
+        width: 100%;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        float: none;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .checkoutPage h3
+    {
+        font-size: 21px;
+    }
+
+    .itemName
+    {
+        min-width: initial;
+        padding: 5px;
+        background-color: #a7b321;
+        color: #ffffff;
+        left: 5px;
+        display: inline-block;
+        margin: 0 70px 0 0;
+    }
+
+    .itemImage
+    {
+        float: left;
+        position: initial;
+        margin: 0;
+    }
+
+    .itemImage img
+    {
+        margin: 35px 10px 0 0;
+    }
+
+    .itemRow
+    {
+        padding: 5px 35px 5px 5px;
+    }
+
+    #dataCashPaymentContainer
+    {
+        height: initial;
+    }
+ 
+    .siteListMap
+    {
+        height: 130px;
+    }
+
+    .siteListSite
+    {
+        clear: both;
+        margin:0 0 10px 0;
+        border-top: 1px dashed #d6d6d6;
+        padding-top: 20px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 14pt;
+        background-color: #a7b321;
+        display: block;
+        text-align: center;
+        padding: 5px 0 5px 0;
+        text-decoration: none;
+        color: white;
+    }
+
+    .siteListSiteCityPostcode
+    {
+        padding-bottom: 5px;
+    }
+
+    .siteListClickForLocation a
+    {
+        background-color: gray;
+    }
+
+    .mmButton
+    {
+        float: none;
+    }
+
+    #mpContent h2
+    {
+        font-size: 12pt;
+        font-weight: bold !IMPORTANT;
+        margin: 5px 0 0 0;
+    }
+
+    #mpContent p
+    {
+        padding: 5px 0 5px 0;
+        margin: 0;
+    }
+
+    #lrEmailRegisterMarketingCheckbox, #lrSMSRegisterMarketingCheckbox
+    {
+        float: left;
+    }
+
+    .lrLoginFormInput span
+    {
+        line-height: 22pt;
+        float: left;
+        margin-left: 5px;
+    }
+}
+
+@media only screen and (max-width: 590px)
+{
+    #viewContainer
+    {
+        background-color: #ffffff;
+    }
+
+    header
+    {
+        height: auto;
+    }
+
+    .checkoutAddressLine input, .checkoutAddressLine textarea
+    {
+        width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 359px)
+{
+    .checkoutSVoucherCode
+    {
+        margin-left: 160px;
+    }
+
+    #checkoutSAddressContainer > div, #checkoutSTime > div
+    {
+        width: 140px;
+    }
+
+    #checkoutSPayNowSection
+    {
+        margin-left: 150px;
+    }
+}
+
+@media only screen and (max-width: 689px)
+{
+    .popupToppingsDouble2, .popupToppingsSingle2
+    {
+        display: none;
+    }
+
+    .checkoutButtons
+    {
+        clear: both;
+    }
+
+    #headerMyProfileButton
+    {
+        right: 145px;
+        /*text-transform: uppercase;*/
+    }
+}

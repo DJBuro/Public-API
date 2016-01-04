@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TrackpostprocessorlogValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="TimestampstartedValidator" test="Timestampstarted"><v:message id="error.Timestampstarted.required" providers="TimestampstartedErrors, ValidationSummary"/></v:required>
+	<v:required id="TimestampstartedmsValidator" test="Timestampstartedms"><v:message id="error.Timestampstartedms.required" providers="TimestampstartedmsErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

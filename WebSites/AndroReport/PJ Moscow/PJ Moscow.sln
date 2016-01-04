@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "PJ Moscow", "PJ UK\PJ Moscow.dwproj", "{45BB89F6-DE3E-4AEA-AC0F-7D7FF08E0320}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45BB89F6-DE3E-4AEA-AC0F-7D7FF08E0320}.Development|Default.ActiveCfg = Development
+		{45BB89F6-DE3E-4AEA-AC0F-7D7FF08E0320}.Development|Default.Build.0 = Development
+		{45BB89F6-DE3E-4AEA-AC0F-7D7FF08E0320}.Development|Default.Deploy.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,508 @@
+﻿body
+{
+    min-height: 100%; /* real browsers */
+    height: auto !important; /* real browsers */
+    height: 100%; /* IE6: treated as min-height*/
+    width:100%;
+    overflow: auto;
+}
+
+header
+{
+    /*position: absolute;*/
+    min-width: 100%;
+    margin: 0;
+    left: 0;
+    border:0;
+    /*overflow: hidden;*/
+    height: 150px;
+    z-index: 999;
+    background: white url('Images/Header.jpg') repeat-x;
+}
+
+#pageHeader
+{
+    width:100%;
+    height: 140px;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#DDDDDD));
+    background: -webkit-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -moz-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -ms-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -o-linear-gradient(top, #ffffff, #DDDDDD);
+
+    moz-box-shadow: 0 0 7px 1px #888;
+    -webkit-box-shadow: 0 0 7px 1px #888;
+    box-shadow: 0 0 7px 1px #888;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#DDDDDD');
+}
+
+#pageHeaderInner
+{
+    background: transparent url('Images/logoSmall.png') no-repeat;
+    background-position: 30px 10px;
+    width:100%;
+    height:100%;
+}
+
+#viewContainer
+{
+    min-height: 100%; /* real browsers */
+    height: auto !important; /* real browsers */
+    height: 100%; /* IE6: treated as min-height*/
+    width:100%;
+}
+
+/* SITES VIEW */
+.sites
+{
+    float:left;
+}
+
+.sitesBox
+{
+    color: #493700;
+    padding: 20px 50px 20px 50px;
+}
+
+.content
+{
+    min-height: 100%; /* real browsers */
+    height: auto !important; /* real browsers */
+    height: 100%; /* IE6: treated as min-height*/
+    /*overflow: hidden;*/
+    /*position:absolute;*/
+    /*height:auto;
+    top:155px;
+    bottom:30px;*/
+    border-top: solid 1px black;
+    border-bottom: solid 1px black;
+    background-color: #EAEAEA;
+
+    margin: 0 0 30px 0;
+}
+
+/* HOME VIEW */
+.homeBox
+{
+    color: white;
+    padding: 20px 25px 20px 25px;
+
+    position: relative;
+    min-height: 100%; /* real browsers */
+    height: auto !important; /* real browsers */
+    height: 100%; /* IE6: treated as min-height*/
+    overflow-x: hidden;
+}
+
+#homeAddressWrapper
+{
+    padding: 20px 0 0 20px;
+    margin: 0 0 0 150px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    overflow: hidden;
+    background-color:white;
+    border: 1px solid black;
+
+    color: #493700;
+}
+
+.welcomeHeader
+{
+    display: none;
+}
+
+#homeDeliveryTimes
+{
+    display: none;
+}
+
+#homeAddress
+{
+    display:none;
+}
+
+#homeDeliveryTimesTablet
+{
+    float:left;
+    width: 250px;
+    margin: 0 0 10px 0;
+}
+
+#homeDeliveryTimesTablet h1
+{
+    font-size: 12pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 0 0 10px 0;
+    text-align:center;
+}
+
+#homeDeliveryTimesTablet h2
+{
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 0;
+    margin: 0 0 10px 0;
+    text-align:center;
+}
+
+@media screen and (min-width: 750px)
+{
+    #homeAddressMap
+    {
+        margin: 0 40px 20px 250px;
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 750px)
+{
+    #homeAddressMap
+    {
+        clear: left;
+        margin: 20px 40px 20px 0;
+        height: 250px;
+    }
+}
+
+#mapContainer
+{
+    width: 100%;
+    min-width: 50px;
+    height: 250px;
+    overflow: hidden;
+    float: left;
+    margin: 0 0 0 10px;
+    border: solid 1px gray;
+}
+
+#homeMenuSectionsTablet
+{
+    float: left;
+    width: 130px;
+    padding: 10px 0 10px 0;
+    overflow:hidden;
+}
+
+#homeMenuSectionsTablet h1
+{
+    font-size: 16pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 10px 0 15px 0;
+    color: #493700;
+}
+
+#homeMenuSections
+{
+    display:none;
+}
+
+.homeMenuSection
+{
+    margin:5px 0 5px 0;
+    clear: both;
+    overflow: hidden;
+    width: 125px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+     background-color: #ffc000;
+}
+
+.homeMenuSection a:link, .homeMenuSection a:visited, .homeMenuSection a:active
+{
+    display:block;
+    
+    width:100%;
+    height:100%;
+    color:#383838;
+    font-size:15pt;
+    text-decoration: none;
+
+    padding: 2px 7px 2px 7px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+}
+
+#homeDeliveryMinimumOrderTablet
+{
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+/* MENU */
+#rightColumn
+{
+    float: right;
+    /*margin: 0 0 0 765px;*/
+    height: auto;
+    bottom: 30px;
+}
+
+#rightColumnInner
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width:265px;
+}
+
+#yourOrderContainer
+{
+    width:245px;
+    position:relative;
+
+    border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#menuContainer
+{
+    overflow: hidden;
+    position:relative;
+    height:100%;
+}
+
+#optionsContainer
+{
+    min-height:100px;
+}
+
+#storeDetailsContainer
+{
+    min-height:100px;
+}
+
+#postcodeCheck
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -115px 0 0 -200px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 230px;
+    width: 400px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+.tandcPopupHidden, .tandcPopupVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -350px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 400px;
+    width: 700px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+/*.menu
+{
+    float:left;
+    width: 647px;
+}*/
+
+#topColumn
+{
+
+}
+
+#leftColumn
+{
+    display:none;
+}
+
+#leftColumnInner
+{
+    /*overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;*/
+    width: 145px;
+}
+
+#sectionHeadersContainer
+{
+    width:125px;
+    position:relative;
+
+    border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#centerColumn
+{
+    /*position: absolute;
+    top: 155px;*/
+    margin: 0 200px 0 0;
+    height: auto;
+    bottom: 30px;
+
+    /*overflow: hidden;
+    height:auto;
+    position:absolute;
+    top:155px;
+    bottom:30px;
+    margin-left:150px;*/
+    /*margin-left:-370px;*/
+    /*margin: 0 auto;*/
+    
+    /*border: solid 1px black;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    
+    background-color: white;*/
+}
+#centerColumnInner
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    /*width: 610px;*/
+}
+
+#sectionsContainer
+{
+    /*width:590px;*/
+    position:relative;
+
+    /*border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;*/
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#sections
+{
+    width: 612px;
+}
+
+.selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+{
+    padding: 2px 0 2px 7px;
+}
+
+.popupBoxHidden, .popupBoxVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin: 20px 0 0 -450px;
+    background-color:white;
+    border: solid 1px gray;
+    min-height: 300px;
+    width: 900px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+}
+
+.popupChefComments
+{
+    width:410px; 
+    float:left;
+}
+
+.popupChefComments p
+{
+    font-size:10pt;
+}
+
+.popupChefComments textarea
+{
+    width:410px; 
+    resize: none; 
+    height:75px;
+}
+
+.popupPerson
+{
+    width:410px; 
+    float:right;
+    margin-right:20px;
+}
+
+.popupPerson p
+{
+    font-size:10pt;
+}
+
+.popupPerson input
+{
+    width:410px; 
+}

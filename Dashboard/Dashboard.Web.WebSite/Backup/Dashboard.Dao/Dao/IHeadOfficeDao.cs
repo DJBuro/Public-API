@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Dashboard.Dao.Dao;
+using Dashboard.Dao.Domain;
+
+namespace Dashboard.Dao
+{
+    public interface IHeadOfficeDao : IGenericDao<HeadOffice, int>
+    {
+    }
+}

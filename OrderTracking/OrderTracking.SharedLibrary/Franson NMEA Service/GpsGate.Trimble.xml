@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Trimble</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Trimble.TaipDeviceDefinition">
+            <summary>
+            Defines the capabilities of a TAIP device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TaipDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace)">
+            <summary>
+            No fields in TAIP. Returns null.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TaipDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Returns null. No default mapper entries for TAIP.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TaipDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Returns null. No commands available for TAIP.
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Trimble.TaipDeviceDefinition.Name">
+            <summary>
+            Name of the Device Model
+            </summary>
+        </member>
+        <member name="P:GpsGate.Trimble.TaipDeviceDefinition.Description">
+            <summary>
+            Device model description
+            </summary>
+        </member>
+        <member name="P:GpsGate.Trimble.TaipDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Vehicle ID"
+            </summary>
+        </member>
+        <member name="P:GpsGate.Trimble.TaipDeviceDefinition.NamespaceName">
+            <summary>
+            Message namespace. Returns "TAIP"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleProtocol">
+            <summary>
+            Handles Trimble TAIP protocol.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create Trimble TAIP protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Convert TAIP data from device to GpsGate protocol.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleProtocol.UseChecksum">
+            <summary>
+            Specifies if Trimble parser uses checksum or not. Default false.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleProtocol.StringID">
+            <summary>
+            Returns "TAIP" which is the name of the protocol this class implements.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleProtocol.Name">
+            <summary>
+            Returns free text name of protocol.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleSmsConnection">
+            <summary>
+            Handles a SMS connection to/from one client.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS conneciton for Trimble TAIP
+            </summary>
+            <param name="msisdn"></param>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsConnection.CreateProtocol">
+            <summary>
+            Returns TrimbleProtocol object. Forces use of checksum for SMS.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleSmsListener">
+            <summary>
+            Trimble TAIP SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsListener.IsCompatible(Franson.Message.ProviderMessage)">
+            <summary>
+            Returns true if SMS is sent from a TAIP device.
+            </summary>
+            <param name="smsMessage">SMS message to investigate.</param>
+            <returns>True if a StarsNav SMS</returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsListener.OnStart">
+            <summary>
+            Installs Trimble protocol and starts up listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a new <see cref="T:GpsGate.Trimble.TrimbleSmsConnection"/> object.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Override and enable listener.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleSmsListener.ProtocolID">
+            <summary>
+            Returns "Trimble"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleTcpConnection">
+            <summary>
+            Handles a Trimble TAIP TCP connection.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleTcpListener">
+            <summary>
+            Handles Trimble TAIP protocol over TCP/IP
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleTcpListener.OnStart">
+            <summary>
+            Install protocol and start listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.Trimble.TrimbleTcpConnection"/> object
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8000
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleTcpListener.ProtocolID">
+            <summary>
+            Returns "TAIP"
+            </summary>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleUdpConnection">
+            <summary>
+            Handles a Trimble TAIP UDP connection
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleUdpConnection.#ctor(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create object to handle one TAIP UDP connection.
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleUdpConnection.CreateProtocol">
+            <summary>
+            Returns a <see cref="T:GpsGate.Trimble.TrimbleProtocol"/> object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Trimble.TrimbleUdpListener">
+            <summary>
+            Handles UDP TAIP (Trimble) data
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleUdpListener.OnStart">
+            <summary>
+            Install protocol, and start listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleUdpListener.CreateUdpConnection(GpsGate.Online.Net.Udp.UdpClientWrapper)">
+            <summary>
+            Create new connection object for a Trimble device.
+            </summary>
+            <param name="wrapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Trimble.TrimbleUdpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8000
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.Trimble.TrimbleUdpListener.ProtocolID">
+            <summary>
+            Returns "TAIP"
+            </summary>
+        </member>
+    </members>
+</doc>

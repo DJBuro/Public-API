@@ -1,0 +1,28 @@
+﻿@using AndroAdminDataAccess.Domain.WebOrderingSetup;
+@model MyAndromeda.Services.Orders.Emails.ICommonEmailSetings
+@{
+    WebSiteConfigurations websiteConfigurations = this.Model.PreviewWebsiteConfiguration;
+
+    var orderEmailHeaderColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.HeaderColour : "#FFFFFF";
+    var orderEmailFooterColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.FooterColour : "#FFFFFF";     
+}
+
+<table border="0" cellpadding="0" cellspacing="0" bgcolor="@orderEmailHeaderColour" width="100%" heighth="130">
+    <tr>
+        <td style="line-height: 0;">
+            <center style="line-height: 0;">               
+                <a href="@websiteConfigurations.SiteDetails.DomainName" title="@websiteConfigurations.WebSiteName">
+                     @if (string.IsNullOrWhiteSpace(websiteConfigurations.SiteDetails.WebsiteLogoPath))
+                     {
+                        @websiteConfigurations.WebSiteName
+                     }
+                     else
+                     {
+                     <img height="130" src="@websiteConfigurations.SiteDetails.WebsiteLogoPath" alt="@websiteConfigurations.WebSiteName" />
+                     }
+                </a>
+            </center>
+
+        </td>
+    </tr>
+</table>

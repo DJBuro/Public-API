@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Web.Mvc", "Dashboard.Web.Mvc.csproj", "{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dashboard.Dao", "..\Dashboard.Dao\Dashboard.Dao.csproj", "{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfsvm:8080/tfs/androtfs
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\Dashboard.Dao\\Dashboard.Dao.csproj
+		SccProjectName1 = ../Dashboard.Dao
+		SccLocalPath1 = ..\\Dashboard.Dao
+		SccProjectUniqueName2 = Dashboard.Web.Mvc.csproj
+		SccLocalPath2 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

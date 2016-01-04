@@ -1,0 +1,39 @@
+﻿@model MyAndromeda.Data.DataWarehouse.Models.Customer
+@{
+    var translator = @Html.GetTranslator();
+}
+<div class="k-widget">
+    <div class="header">
+        <h3>@Model.FirstName @Model.LastName</h3>
+    </div>
+
+
+    @(Html.Kendo().TabStrip()
+        .Name("Person")
+        .Items(items =>
+        {
+            items.Add()
+                .Text(translator.T("Address"))
+                .Selected(true)
+                .Content(@<text>
+
+                    @Html.Partial("_CustomerDetail_Address")
+
+                </text>);
+
+            items.Add()
+                .Text(translator.T("Marketing Details"))
+                .Content(@<text>
+
+                    @Html.Partial("_CustomerDetail_MarketingInfo")
+
+                </text>);
+
+            items.Add().Text(translator.T("Order History")).Content(@<text>
+
+            @Html.Partial("_CustomerDetail_OrderHistory")
+
+            </text>);
+        }))
+
+</div>

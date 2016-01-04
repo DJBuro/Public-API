@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Setting, OrderTracking.Gps.Dao" table="settings">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__settings__256E1E32619B8048"/>
+			<generator class="native" />
+		</id>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Namespace" type="String">
+			<column name="namespace" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Valuename" type="String">
+			<column name="value_name" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Valuetype" type="String">
+			<column name="value_type" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Valuedata" type="String">
+			<column name="value_data" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Description" type="String">
+			<column name="description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<joined-subclass name="OrderTracking.Gps.Dao.Domain.Groupsetting, OrderTracking.Gps.Dao" table="group_settings">
+			<key>
+				<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true"/>
+			</key>
+			<many-to-one name="Group" class="OrderTracking.Gps.Dao.Domain.Group, OrderTracking.Gps.Dao">
+				<column name="group_id" length="4" sql-type="int" not-null="true"/>
+			</many-to-one>
+		</joined-subclass>
+		<joined-subclass name="OrderTracking.Gps.Dao.Domain.Msgprovsetting, OrderTracking.Gps.Dao" table="msg_prov_settings">
+			<key>
+				<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true"/>
+			</key>
+			<many-to-one name="Messageprovider" class="OrderTracking.Gps.Dao.Domain.Messageprovider, OrderTracking.Gps.Dao">
+				<column name="msg_prov_id" length="4" sql-type="int" not-null="true"/>
+			</many-to-one>
+		</joined-subclass>
+		<joined-subclass name="OrderTracking.Gps.Dao.Domain.Appsetting, OrderTracking.Gps.Dao" table="app_settings">
+			<key>
+				<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true"/>
+			</key>
+			<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+				<column name="application_id" length="4" sql-type="int" not-null="true"/>
+			</many-to-one>
+		</joined-subclass>
+		<joined-subclass name="OrderTracking.Gps.Dao.Domain.Sitesetting, OrderTracking.Gps.Dao" table="site_settings">
+			<key>
+				<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true"/>
+			</key>
+		</joined-subclass>
+		<joined-subclass name="OrderTracking.Gps.Dao.Domain.Usersetting, OrderTracking.Gps.Dao" table="user_settings">
+			<key>
+				<column name="setting_id" length="4" sql-type="int" not-null="true" unique="true"/>
+			</key>
+			<many-to-one name="User" class="OrderTracking.Gps.Dao.Domain.User, OrderTracking.Gps.Dao">
+				<column name="user_id" length="4" sql-type="int" not-null="true"/>
+			</many-to-one>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,630 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.WebService</name>
+    </assembly>
+    <members>
+        <!-- Badly formed XML comment ignored for member "M:GpsGate.Tracks.Service.TracksFacade.GetFatPoints(System.Int32,System.Int32,System.DateTime,System.DateTime)" -->
+        <member name="T:GpsGate.Tracks.Service.soap.SoapTracksFacade">
+            <summary>
+            Soap Version of Tracks Service Facade base class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Tracks.Service.soap.SoapTracksFacade.#ctor(System.String)">
+            <summary>
+            Create a new Soap version of Tracks Service Facade
+            </summary>
+            <param name="strEncryptedSessionID"></param>
+        </member>
+        <member name="P:GpsGate.Tracks.Service.soap.SoapTracksFacade.GetSessionID">
+            <summary>
+            Implements the ServiceFacdeBase abstract methods.
+            Soap Service receive the session ID from WebMethod argument.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Tracks.Service.soap.Tracks">
+            <summary>
+            Summary description for Tracks
+            </summary>
+        </member>
+        <member name="M:GpsGate.Tracks.Service.soap.Tracks.GetTracksFacade(System.String)">
+            <summary>
+            Get the Tracks Facade Object
+            </summary>
+        </member>
+        <member name="T:GpsGate.Tracks.Service.json.JsonTracksFacade">
+            <summary>
+            Json Version of Tracks Facade class.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Tracks.Service.json.JsonTracksFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="P:GpsGate.Tracks.Service.json.Tracks.TracksFacade">
+            <summary>
+            Get the DirectoryService base
+            </summary>
+        </member>
+        <member name="M:GpsGate.SignUp.Service.SignUpBase.GetDevices(System.Int32)">
+            <summary>
+            Returns a list of device protocols supported by the server.
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.SignUp.Service.SignUpBase.GetOperatorCountries">
+            <summary>
+            Get a list of countries for which mobile network exists
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.SignUp.Service.SignUpBase.GetNetworksInCountry(System.String)">
+            <summary>
+            Get a list of Mobile network operators in a country.
+            </summary>
+            <param name="strCountry">Contry to list operators in</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.SignUp.Service.SignUpBase.CommitSignUp(System.Int32,System.String,System.String,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">
+             <summary>
+             Commit the Application signup.
+             
+             1. Check s If strUsername, strEmail, strIMEI and strMSISDN are valid.
+             2. Create a <see cref="T:GpsGate.Online.GateUser"/> with the provided username.
+             3. Create a <see cref="T:GpsGate.Online.Directory.Device"/> for the user with the provided IMIE, MSISDN and protocol.
+             4. Create a new <see cref="N:GpsGate.SignUp.Application"/> instance and set the user as Administrator.
+             5. Sends an E-Mail to the provided Email address with login and device information.
+             6. Commit changes if all OK.
+             7. Sends a configuration SMS to the device. 
+             </summary>
+             <param name="strUsername">Username of the administrator user to create</param>
+             <param name="strEmail">E-Mail address to send complete sign up mail to.</param>
+             <param name="iDeviceDefinitionID">Is of DeviceDefinition of the Device to create.</param>
+             <param name="strIMEI">IMEI to the device. </param>
+             <param name="strMSISDN">The phone number of the device. Format as +46701112233</param>
+             <param name="strAPN">Mobile Operator APN. E.g online.telia.com</param>
+             <param name="strGPRSUname">Mobile operator GPRS username. E.g "guest". Allow null or blank</param>
+             <param name="strGPRSPwd">Mobile operator GPRS password E.g "guest". Allow null or blank</param>
+             <param name="strServerUrl">base Url to Server web sites. E.g. http://apps.gpsgate.com or http://myserver.com/GpsGateServer</param> 
+             <returns>
+             Returns a list with <see cref="T:GpsGate.SignUp.Application.SignUpApplication"/> errors.
+            </returns>
+        </member>
+        <member name="T:GpsGate.Directory.Service.GateFacade">
+            <summary>
+            All facade classes inherits from this class
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GateFacade.DisconnectDevice(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Disconnects all devices in the given list of device ID's using DisconnnectDeviceCommand sent to service.
+            </summary>
+            <param name="listDeviceIDs"></param>
+        </member>
+        <member name="M:GpsGate.Directory.Service.CommandFacade.GetCommandsByDevice(System.Int32,System.Int32)">
+            <summary>
+            Returns list of commands that session may execute on this device.
+            </summary>
+            <param name="iApplicationID"></param>
+            <param name="iDevice"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.CommandFacade.ExecuteOutgoingCommand(System.Int32,System.Int32,System.String)">
+            <summary>
+            Execute an outgoing GpsGate Command without arguments.
+            </summary>
+            <param name="iApplicationID"></param>
+            <param name="iDeviceID"></param>
+            <param name="strCommandName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.CommandFacade.ExecuteOutgoingCommandWithArgs(System.Int32,System.Int32,System.String)">
+            <summary>
+            Execute an outgoing GpsGate Command with arguments.
+            </summary>
+            <param name="iApplicationID"></param>
+            <param name="iDeviceID"></param>
+            <param name="strCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Directory.Service.CommandQueueStatusBag">
+            <summary>
+            "Bag" object used to sterilize response from querying current status command
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.TotalSteps">
+            <summary>
+            Total step in current ongoing command progress
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.CurrentStep">
+            <summary>
+            Current step in command progress
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.StepDescription">
+            <summary>
+            Last message status
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.CommandName">
+            <summary>
+            Name of the command requesting status for
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.ErrorDescription">
+            <summary>
+            Description of latest error
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.CommandQueueStatusBag.LastActivity">
+            <summary>
+            Time stamp for last activity
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetWorkspaces(System.Int32,System.Int32)">
+            <summary>
+            Gets the workspaces corresponding to the provided user id and application id, as well as any workspaces marked as shared. 
+            The returned list is sorted by (in order) name, user id and application id
+            </summary>
+            <param name="iUserID">The user ID of the workspace</param>
+            <param name="iApplicationID">The application ID of the workspace</param>
+            <returns>Container of a list of workspaces together with user id and application id. The list of Workspaces 
+            is ordered by name, user id and application id. The list is empty if none found.</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.SaveWorkspace(System.Int32,System.Int32,System.Int32,System.String,System.String,System.Boolean)">
+            <summary>
+            Saves a workspace for this user and application. If id is 0 a new Workspace will be created.
+            </summary>
+            <param name="iApplicationID">The application id.</param>
+            <param name="iUserID">The user id.</param>
+            <param name="iWorkspaceid">The workspace id. If 0 a new Workspace will be created.</param>
+            <param name="strName">The name of the workspace. Does not have to be unique.</param>
+            <param name="strState">The state of the workpace. Typically this is a JSON formatted string.</param>
+            <param name="bShared">Specifies if the workspace should be shared or not. Only administrators may share workspaces.</param>
+            <returns>Id of the saved workspace.</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.DeleteWorkspace(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Deletes a Workspace. A non-admin user may delete own Workspaces only.
+            </summary>
+            <param name="iApplicationID">The application id.</param>
+            <param name="iUserID">The user id.</param>
+            <param name="iWorkspaceid">The workspace id to be deleted.</param>
+            <returns>true if success, false if error.</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetAvailableMessageFields(System.Int32)">
+            <summary>
+            Get all <see cref="T:Franson.Message.MessageField"/> which which data has been reported for.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.ClearResourceCache">
+            <summary>
+            Service side clears of locale factory caches.
+            Note. This should be in Franson.Localization.Service but since Command is GpsGate.Client dependent it cannot be there.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetSiteSmsProxy(System.Int32)">
+            <summary>
+            Get the default proxy for the system.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetOperatorCountries">
+            <summary>
+            Get a list of countries for which mobile network exists
+            </summary>
+            <param name="appId"></param>
+            <param name="groupName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetNetworksInCountry(System.String)">
+            <summary>
+            Get a list of Mobile network operators in a country.
+            </summary>
+            <param name="strCountry">Country to list operators in</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetNetworkById(System.Int32)">
+            <summary>
+            Get an operator specified by ID
+            </summary>
+            <param name="iMobileNetworkId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetReports(System.Int32)">
+            <summary>
+            Get all <see cref="T:GpsGate.Online.Reporting.StoredReport">StoredReports</see> associated to an application identified by ID.
+            </summary>
+            <param name="iApplicationID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.RemoveReport(System.Int32)">
+            <summary>
+            Removes a <see cref="T:GpsGate.Online.Reporting.StoredReport"/>
+            </summary>
+            <param name="iReportID"></param>
+        </member>
+        <member name="M:GpsGate.Directory.Service.DirectoryFacade.GetColumnsByApplication(System.Int32)">
+            <summary>
+            Gets all possible user attribute columns for the specified application.
+            </summary>
+            <param name="appId"></param>
+            <param name="iUserID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeocoderFacade.ReverseGeocode(System.Int32,System.Collections.Generic.List{Franson.Geo.Position})">
+            <summary>
+            Reverse geocodes the provided positions.
+            </summary>
+            <param name="appId"></param>
+            <param name="lstPositions">The positions to reverse geocode</param>
+            <returns>The result containing a list with the found locations. Empty locations list if none found.</returns>
+            <exception cref="T:Franson.Geo.Geocoding.GeocodingException">If no geocoder is found for this application id</exception>
+        </member>
+        <member name="T:GpsGate.Directory.Service.GeofenceFacade">
+            <summary>
+            Base wrapper class that WebServices use to manage Geofence related objects.
+            </summary>
+        </member>
+        <member name="F:GpsGate.Directory.Service.GeofenceFacade.m_nlog">
+            <summary>
+            Logger instance.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.AddTag(System.String,System.String,System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Creates a new <see cref="T:GpsGate.Online.Directory.GeofenceTag"/>.
+            </summary>
+            <param name="strName">Max 255 characters</param>
+            <param name="strDescription">Max 255 Characters</param>
+            <param name="iApplicationID">ID of the application to associate with the tag.</param>
+            <param name="arrGeofences">Array of geofence IDs to associate to the tag.</param>
+            <returns>Create GeofenceTag bag</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.EditTag(System.Int32,System.Int32,System.String,System.String,System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Edit an Existing <see cref="T:GpsGate.Online.Directory.GeofenceTag"/> identified by ID.
+            </summary>
+            <param name="iTagID">ID of the tag to be edit</param>
+            <param name="strNewName">
+            New name. 
+            Max 255 characters.
+            Set to null to keep old.
+            </param>
+            <param name="strNewDescription">
+            New description.
+            Max 255 characters.
+            Set to null to keep old.
+            </param>
+            <param name="arrNewGeofences">
+            List of geofence IDs to associate to the tag.
+            Note. Not only new ones. The tag will remove geofence if not in array.
+            Set to null to keep old.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.RemoveTag(System.Int32,System.Int32)">
+            <summary>
+            Remove tag identified by the ID
+            </summary>
+            <param name="iTagID">ID of tag to remove</param>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.GetTagsByApplication(System.Int32)">
+            <summary>
+            Return all tags for the given <see cref="T:Franson.Directory.Application"/> identified with ID.
+            </summary>
+            <param name="iApplicationID">ID of application to list tags by.</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.GetGeofencesByTag(System.Int32,System.Int32)">
+            <summary>
+            Load all geofences for the given tag identified by ID
+            </summary>
+            <param name="iTagID">ID of tag to list geofences by.</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.GeofenceFacade.GetAllGeofences(System.Int32)">
+            <summary>
+            Load all Geofences in application.
+            </summary>
+            <param name="iAppID">ID of application to list Geofences by.</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Directory.GetColumnsByApplication(System.Int32)">
+            <summary>
+            Gets all possible user attribute columns for the specified application.
+            </summary>
+            <param name="appId"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.Directory.DirectoryFacade">
+            <summary>
+            Get the DirectoryService base
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.Geocoder">
+            <summary>
+            Json Web service to manage Geocoder related objects.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geocoder.ReverseGeocode(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Reverse geocodes the provided positions.
+            </summary>
+            <param name="appId">ID of application to validate request and associate tag to.</param>
+            <param name="positions">Array of JSONObjects representing positions to reverse geocode</param>
+            <returns>Wrapped list of locations that have been reverse geocoded</returns>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.Geocoder.GeocoderFacade">
+            <summary>
+            Gets a facade for the Geocoder
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.Geofence">
+            <summary>
+            Json Web service to manage Geofence related objects.
+            </summary>
+        </member>
+        <member name="F:GpsGate.Directory.Service.json.Geofence.m_nlog">
+            <summary>
+            Logger instance
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.AddTag(System.Int32,System.String,System.String,System.Int32[])">
+            <summary>
+            Creates a new <see cref="T:GpsGate.Online.Directory.GeofenceTag"/>.
+            </summary>
+            <param name="iAppID">ID of application to validate request and associate tag to.</param>
+            <param name="strGroup">Group used to validate request.</param>
+            <param name="strName">Max 255 characters</param>
+            <param name="strDescription">Max 255 Characters</param>
+            <param name="arrGeofences">Array of geofence IDs to associate to the tag.</param>
+            <returns>Created GeofenceTag wrapped in serialization wrapper named "tag"</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.EditTag(System.Int32,System.Int32,System.String,System.String,System.Int32[])">
+            <summary>
+            Edit an Existing <see cref="T:GpsGate.Online.Directory.GeofenceTag"/> identified by ID.
+            </summary>
+            <param name="iAppID">ID of application to validate request against.</param>
+            <param name="strGroup">Group used to validate request.</param>
+            <param name="iTagID">ID of the tag to be edit</param>
+            <param name="strNewName">
+            New name. 
+            Max 255 characters.
+            Set to null to keep old.
+            </param>
+            <param name="strNewDescription">
+            New description.
+            Max 255 characters.
+            Set to null to keep old.
+            </param>
+            <param name="arrNewGeofences">
+            List of geofence IDs to associate to the tag.
+            Note. Not only new ones. The tag will remove geofence if not in array.
+            Set to null to keep old.
+            </param>
+            <returns>Edited GeofenceTag wrapped in serialization wrapper named "tag"</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.RemoveTag(System.Int32,System.Int32)">
+            <summary>
+            Remove tag identified by the ID
+            </summary>
+            <param name="iAppID">ID of application to validate request against.</param>
+            <param name="strGroup">Group used to validate request.</param>
+            <param name="iTagID">ID of tag to remove</param>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.GetAllTags(System.Int32)">
+            <summary>
+            Return all tags for the given <see cref="T:Franson.Directory.Application"/> identified with ID.
+            </summary>
+            <param name="iAppID">ID of application to validate request against.</param>
+            <param name="strGroup">Group used to validate request.</param>
+            <param name="iApplicationID">ID of application to list tags by.</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.AddGeofences(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Adds a new Geofence.
+            </summary>
+            <param name="iAppID">ID of application to validate http request against and associate the geofence to.</param>
+            <param name="strGroup">Group name to validate request against.</param>
+            <param name="joGeofence">
+            Geofence JsonObject. 
+            Required properties:
+            type:[string] .NET BoType of Geofence. E.g. GpsGate.Online.Geofence.CircularGeofence
+            
+            Properties are matched with the Serialize attribute on the object, which means if add name:"a name" that will used to set the Name property tagged with Serialize("name")]
+            </param>
+            <returns>Created Geofence are returned.</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.EditGeofences(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Edit existing Geofence identified by JsonObject["id"] where value = geofence id.
+            </summary>
+            <param name="iAppID">ID of application to validate http request against and associate the geofence to.</param>
+            <param name="strGroup">Group name to validate request against.</param>
+            <param name="joGeofence">
+            Geofence JsonObject. 
+            Required properties:
+            type:[string] .NET BoType of Geofence. E.g. GpsGate.Online.Geofence.CircularGeofence
+            id:[int] name of the object.
+            
+            Properties are matched with the Serialize attribute on the object, which means if add name:"a name" that will used to set the Name property tagged with Serialize("name")]
+            </param>
+            <returns>Created Geofence are returned.</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.RemoveGeofences(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Removes Geofence identified by JsonObject["id"] where value = geofence id.
+            </summary>
+            <param name="iAppID">ID of application to validate http request against and associate the geofence to.</param>
+            <param name="strGroup">Group name to validate request against.</param>
+            <param name="joGeofence">
+            Geofence JsonObject. 
+            Required properties:
+            type:[string] .NET BoType of Geofence. E.g. GpsGate.Online.Geofence.CircularGeofence
+            id:[int] name of the object.
+            </param>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.GetGeofencesByTag(System.Int32,System.Int32)">
+            <summary>
+            Load all geofences for the given tag identified by ID
+            </summary>
+            <param name="iAppID">ID of application to validate http request against and associate the geofence to.</param>
+            <param name="strGroup">Group name to validate request against.</param>
+            <param name="iTagID">ID of tag to list geofences by.</param>
+            <returns>Enumerable of Geofence</returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.Geofence.GetAllGeofences(System.Int32)">
+            <summary>
+            Load all geofences for the given <see cref="T:Franson.Directory.Application"/> identified by ID
+            </summary>
+            <param name="iAppID">
+            ID of application top list Geofences by. 
+            Also used to validate http request against and associate the geofence to.</param>
+            <param name="strGroup">Group name to validate request against.</param>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.Geofence.GeofenceFacade">
+            <summary>
+            Get the Settings Service base
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.JsonCommandFacade">
+            <summary>
+            Json interface to Command web services.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.JsonCommandFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.JsonDirectoryFacade">
+            <summary>
+            Json Version of DirectoryFacade base class.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.JsonDirectoryFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.JsonGeocoderFacade">
+            <summary>
+            Json Version of GeocoderService base class.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.JsonGeocoderFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.JsonGeofenceFacade">
+            <summary>
+            Json Version of DirectoryService base class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.JsonGeofenceFacade.AddGeofences(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Adds a new Geofence.
+            </summary>
+            <param name="appId"></param>
+            <param name="arrJoGeofence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Directory.Service.json.JsonGeofenceFacade.EditGeofences(System.Int32,Jayrock.Json.JsonObject[])">
+            <summary>
+            Edit existing Geofence identified by JsonObject["id"] where value = geofence id.
+            </summary>
+            <param name="appId"></param>
+            <param name="arrJoGeofence"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.JsonGeofenceFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.JsonSettingsFacade">
+            <summary>
+            Json Version of DirectoryService base class.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.JsonSettingsFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Json Service receive the session ID from HttpCookie
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.json.Settings">
+            <summary>
+            Settings Json Web Service
+            </summary>
+        </member>
+        <member name="P:GpsGate.Directory.Service.json.Settings.SettingsFacade">
+            <summary>
+            Get the Settings Service base
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.soap.Directory.GetDirectoryService(System.String)">
+            <summary>
+            Get the Directory Facade Object
+            </summary>
+        </member>
+        <member name="T:GpsGate.Directory.Service.soap.SoapDirectoryFacade">
+            <summary>
+            Json Version of DirectoryService base class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Directory.Service.soap.SoapDirectoryFacade.#ctor(System.String)">
+            <summary>
+            Create a new Soap version of Directory Service Facade
+            </summary>
+            <param name="strEncryptedSessionID"></param>
+        </member>
+        <member name="P:GpsGate.Directory.Service.soap.SoapDirectoryFacade.GetSessionID">
+            <summary>
+            Implements the ServiceBase abstract methods.
+            Soap Service receive the session ID from WebMethod argument.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebService.ActivationException">
+            <summary>
+            Summary description for RegistrationException
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebService.WSBuddyManager.m_CurrentSession">
+            <summary>
+            Return current session 
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebService.WSBuddyManager.m_loggedInGateUser">
+            <summary>
+            Return the currently logged in user
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebService.WSBuddyManager.m_BuddyList">
+            <summary>
+            Return the buddy list belonging to the currently logged in user
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebService.WSBuddyManager.m_getBuddyTrackerApp">
+            <summary>
+            Loads the BuddyTracker application 
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

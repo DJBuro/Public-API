@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Statisticdata, OrderTracking.Gps.Dao" table="statistic_data">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="data_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__statisti__F5A76B3B625A9A57"/>
+			<generator class="native" />
+		</id>
+		<property name="Value" type="String">
+			<column name="`value`" length="45" sql-type="varchar" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

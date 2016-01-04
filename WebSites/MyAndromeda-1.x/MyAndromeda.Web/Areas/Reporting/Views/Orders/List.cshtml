@@ -1,0 +1,146 @@
+﻿@using MyAndromedaDataAccess.Domain.Reporting.Query;
+@model FilterQuery
+@{
+    var translator = Html.GetTranslator();    
+}
+
+<div class="header">
+    <a class="k-button" href="@Url.Action("Index", "Store")">@translator.T("Back")</a>
+    <h3>Web Order List</h3>
+    @if (Model.FilterFrom.HasValue || Model.FilterTo.HasValue)
+    {
+        <p>@Model.FilterFrom.Value.ToShortDateString() - @Model.FilterTo.Value.ToShortDateString()</p>
+    }
+    @if (!Model.FilterFrom.HasValue || !Model.FilterTo.HasValue)
+    {
+    
+        <ul>
+            @if (Model.FilterFrom.HasValue)
+            {
+                <li>Orders from @Model.FilterFrom.Value.ToShortDateString()</li>
+            }
+            @if (Model.FilterTo.HasValue)
+            {
+                <li>Orders to @Model.FilterTo.Value.ToShortDateString()</li>
+            }
+        </ul>
+    }
+</div>
+
+@using (Html.BeginForm("ReadExcel", "Orders"))
+{ 
+    <input type="hidden" id="Title" name="Title" />
+    <input type="hidden" id="Data" name="Data" />
+    <input type="hidden" id="Model" name="Model" />
+    
+    @(Html.Kendo()
+    .Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.OrderHeaderViewModel>()
+    .Name("OrderList")
+    .ToolBar(tools =>
+    {
+        tools.Template(@<text>
+    <input type="submit" value="Excel" class="k-button k-button-for-excel" />
+    </text>);
+        //tools.Custom()
+        //    .Text("Excel")
+        //    .Action("read", "Orders", new { export = "excel" });
+        //tools.Custom().Text("PDF")
+        //    .Action("read", "Orders", new { export = "pdf" });
+    })
+    .Resizable(r => r.Columns(true))    
+    .Scrollable(s => s.Height(500))
+    .Sortable()
+    .Filterable()
+    .Groupable()
+    .ColumnMenu(e => e.Filterable(true).Sortable(true))
+    .Columns(cols =>
+    {
+        
+        cols.Bound(e => e.OrderPlacedTime)
+            .Title("Order Placed Time")
+            .ClientTemplate("#: kendo.toString(kendo.parseDate(OrderPlacedTime),'g') #")
+            .Width(135);
+        cols.Bound(e => e.FirstName).Title(translator.T("First Name")).Width(100)
+            .ClientGroupHeaderTemplate("Ordered by: #: value #");
+        cols.Bound(e => e.LastName).Title(translator.T("Last Name"))
+            .ClientGroupHeaderTemplate("Ordered by: #: value #").Width(100);
+        cols.Bound(e => e.PayType).Title(translator.T("Pay Type"))
+            .ClientGroupHeaderTemplate("Payments made by: #: value #").Width(100);
+        cols.Bound(e => e.FinalPrice).Title(translator.T("Final Price"))
+            .ClientTemplate("#:kendo.toString(FinalPrice, 'c')#").Width(100)
+            .ClientFooterTemplate("<div>Total for all:</div><div> #: kendo.toString(sum, 'c') #</div>")
+            .ClientGroupFooterTemplate("<div>Total: #: kendo.toString(sum, 'c') #</div><div>Avg: #: kendo.toString(average, 'c')#");
+        cols.Bound(e => e.OrderType).Title(translator.T("Order Type")).Width(110);
+        cols.Bound(e => e.Status).EditorTemplateName("StatusTemplate").Width(150)
+            .ClientTemplate("#: OrderStatus.Description #").Title("Status");
+    })
+    .ClientDetailTemplateId("OrderHeaderTabstripTemplate")
+    .Events(e => e.DetailInit("manageDetailInit").Change("gridChanged"))
+    .Mobile()
+
+    .DataSource(data =>
+        data.Ajax()
+        .Events(e => e.Change("gridChanged"))
+        .Read("read", "Orders", new
+        {
+            fromYear = Model.FilterFrom.Value.Year,
+            fromMonth = Model.FilterFrom.Value.Month,
+            fromDay = Model.FilterFrom.Value.Day,
+            toYear = Model.FilterTo.Value.Year,
+            toMonth = Model.FilterTo.Value.Month,
+            toDay = Model.FilterTo.Value.Day
+        })
+        .ServerOperation(false)
+        .Aggregates(aggs =>
+        {
+            aggs.Add(e => e.FinalPrice).Min().Max().Sum().Average();
+            aggs.Add(e => e.PayType).Count();
+        })
+        .Sort(sort => sort.Add(meber => meber.TimeStamp).Descending())
+    )
+)
+    
+}
+
+@using (Html.BeginScripts("List_grid_child_templates")) 
+{
+    <script type="text/html" id="OrderHeaderTabstripTemplate">
+        @(Html.Kendo().TabStrip().Name("orderheadertabs_#=ACSOrderId#").Items(items => {
+        items.Add()
+            .Text("Order")
+            .Selected(true)
+            .Content(@<text> @Html.Partial("_List_TicketTemplates") </text>);
+
+        items.Add()
+            .Text("Previous Orders")
+            .Content(@<text> @Html.Partial("_List_PreviousOrdersTemplate") </text>);
+        }).ToClientTemplate())
+    </script>
+}
+
+@Html.Partial("_List_Charts")
+
+@using (Html.BeginScripts())
+{
+    if (false) { 
+    <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+                                                                    
+    <script type="text/javascript">
+        $(function () {
+            var exportService = new MyAndromeda.GridExport.Services.KendoGridExcelExporter({
+                title: "Orders",
+                gridSelector: "#OrderList",
+                downloadSelector: "input.k-button-for-excel",
+                titleSelector: "#Title",
+                modelSelector: "#Model",
+                dataSelector: "#Data"
+            });
+            exportService.init();
+        });
+    </script>
+
+    
+}
+
+@Html.Partial("_List_Help")

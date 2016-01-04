@@ -1,0 +1,248 @@
+﻿body {
+	font-size: 90%;
+	background: #08080A;
+	font-family: Lucida Sans, Sans-Serif;
+	margin: 20px;
+}
+/*be nice to Opera*/
+html>body{
+	/*font-size: small;*/
+	background: #08080A;
+	font-family: Lucida Sans, Sans-Serif;
+	margin: 20px;
+}
+
+#container {
+	margin: auto;
+	width: 927px;
+	background: #08080A url(imgs/bg.gif) repeat-y;
+	
+}
+
+#footer{
+	clear: both;
+	margin: 0;
+	
+}
+#footer li{
+	list-style: none;
+	float: left;
+	padding: 5px 0 0 50px;
+	margin: 2px;
+}
+#footer li a{
+	color: #6C6C6E;
+}
+
+a{
+	text-decoration: none;
+	border: none;
+	/*cursor: auto;*/
+}
+a:hover
+{
+	/*cursor: auto;*/
+}
+img{
+	border: 0;
+}
+
+/*navigation*/
+#nav{
+	float: left;
+	width: 100%;
+	margin: 0 0 5px 0;
+	padding: 0;
+	list-style: none;
+	font-size: 140%;
+	background: #D8CEB2;
+
+}
+
+#nav li{
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#nav a{
+	float: left;
+	/*display: block;*/
+	margin: 0 0 0 0;
+	padding: 5px 15px 5px 15px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+
+}
+
+#nav a:hover{
+	float: left;
+	/*display: block;*/
+	margin: 0;
+	padding: 5px 15px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+	background: #FEFCF6;
+}
+
+
+#siteMessage{
+    margin:0 0 0 0;
+    padding: 10px 0 10px 20px;
+    background: #D8CEB2;
+    clear:both;
+}
+
+/*default page upsells*/
+#upsells{
+
+}
+
+#upsells dl{
+	width: 179px;
+	margin: 5px 6px 5px 0;
+	float: left;
+	display: inline;/*  IE bug*/
+	background: #D8CEB2;
+}
+
+#upsells dt{
+	font-size: 120%;
+	padding: 2px 0 4px 0px;
+	letter-spacing: 1px;
+	font-weight: bold;
+	color: #6C6C6E;
+	text-align: center;
+}
+
+#upsells dd{
+	margin:0;
+	padding: 0 0 0 6px;
+}
+
+#upsells a{
+	color: #000000;
+}
+
+#upsells dd p {
+	margin: 0 0 4px 0;
+	font-size: 100%;
+	padding:2px 0 4px 0;
+	text-align: center;
+	font-weight:bold;
+}
+
+#upsells dd ul li  {
+	margin: 0 0 4px 0;
+	font-size: 90%;
+	padding: 0px 0px 0px 0;list-style: none;
+}
+
+#upsells dd ol li  {
+	margin: 0 0 4px 0;
+	font-size: 90%;
+	padding: 0px 0 0px 0;
+}
+
+#upsells dd.upsellImage img{
+	float: left;/**/
+	padding: 0 4px 7px 0px;
+}
+
+/*default page content*/
+#pageContent{
+	/*clear: both;
+	border: 1px solid red;*/
+}
+
+#accountContent{
+	/*clear: both;
+	border: 1px solid red;*/
+	float: left;
+	padding: 10px;
+	background: #D8CEB2;
+}
+
+
+#league{
+    float:left;
+    clear: both;
+   /* border: solid 1px red; */
+    background: #D8CEB2;
+    margin: 0 0 7px 0;
+    padding: 2px 0px 5px 0px;
+    width: 100%;
+}
+
+
+#league dl{
+    float:left;
+	display: inline;/*  IE bug*/
+    background: #D8CEB2;
+    padding: 0px 0px 0px 5px;
+}
+
+#league dt{
+	font-size: 120%;
+	padding: 0px 0 4px 0px;
+	letter-spacing: 1px;
+	font-weight: bold;
+	color: #6C6C6E;
+	/*border: solid 1px red;*/
+}
+
+
+#scroller {
+   /*border: solid 1px blue;*/ 
+    width: 100px;
+    margin: 0 0 0 0;
+    padding: 10px 0 10px 0;width: 100px;
+
+    display: inline;/*  IE bug*/
+}
+
+
+
+#scroller dt{
+    padding: 10px 0 0 0;
+	font-weight:bold;
+	text-align: center;
+}
+
+#scroller dl dd{
+	padding: 0;
+	margin: 0 0 0 0;
+}
+
+
+
+div.demo {
+  padding: 0;
+  margin: 0;
+ /* float:left;*/
+  clear:both;
+ background: #D8CEB2;
+}
+
+#tickets{
+    float:left;	
+    clear:both;
+    color:#FF5914;
+	margin: 5px 0 5px 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+div.tickerTape {
+    float:left;
+	width: 100%;
+	margin: 5px 0 0 0;
+	padding: 0;
+    width:80%;
+	color:#D8CEB2;
+ }
+
+
+.pointer {
+    cursor:default;
+}

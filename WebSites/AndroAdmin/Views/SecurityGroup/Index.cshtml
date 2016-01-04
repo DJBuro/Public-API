@@ -1,0 +1,46 @@
+﻿@model List<AndroAdmin.Model.SecurityGroupModel>
+
+@{
+    ViewBag.Title = "Security groups";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="ApplicationView">
+    <h2>Security Groups</h2>
+
+    @if (ViewBag.Permissions.Contains("AddSecurityGroup"))
+    {
+    <div class="topLink">
+        @Html.ActionLink("Add a new security group", "Add")
+    </div>
+    }
+
+    <table class="listTable" id="securityGroups">
+        <thead>
+            <tr>
+                <th>Group</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (AndroAdmin.Model.SecurityGroupModel securityGroupModel in Model)
+    { 
+        <tr>
+            <td>@Html.ActionLink(securityGroupModel.SecurityGroup.Name, "Details", new { id = securityGroupModel.SecurityGroup.Id.ToString() })</td>
+            <td>@securityGroupModel.SecurityGroup.Description</td>
+        </tr>
+    }
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        $('#securityGroups').dataTable(
+            {
+                "sScrollY": "500px",
+                "bScrollCollapse": true,
+                "bPaginate": false,
+                "sPaginationType": "scrolling"
+            }
+         );
+    </script>
+</div>

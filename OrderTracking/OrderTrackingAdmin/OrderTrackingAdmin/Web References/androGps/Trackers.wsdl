@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://gps.andromedagps.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://gps.andromedagps.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://gps.andromedagps.com">
+      <s:element name="GetTrackerByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="trackerName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetTrackerByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTrackerByNameResult" type="tns:Tracker" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Tracker">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" nillable="true" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" nillable="true" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="BatteryLevel" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasFix" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTrackersByNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="trackerNames" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetTrackersByNamesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetTrackersByNamesResult" type="tns:ArrayOfTracker" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTracker">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Tracker" nillable="true" type="tns:Tracker" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddTracker">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="trackerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phoneNumber" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="trackerType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddTrackerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AddTrackerResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTrackerPhoneNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="trackerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="phoneNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateTrackerPhoneNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="UpdateTrackerPhoneNumberResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLicense">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetLicenseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLicenseResult" type="tns:License" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="License">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Licensedusers" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RegisteredDevices" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Tracker" nillable="true" type="tns:Tracker" />
+      <s:element name="boolean" type="s:boolean" />
+      <s:element name="License" nillable="true" type="tns:License" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetTrackerByNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTrackerByName" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerByNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTrackerByNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackersByNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetTrackersByNames" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackersByNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetTrackersByNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerSoapIn">
+    <wsdl:part name="parameters" element="tns:AddTracker" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerSoapOut">
+    <wsdl:part name="parameters" element="tns:AddTrackerResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateTrackerPhoneNumber" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateTrackerPhoneNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLicenseSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLicense" />
+  </wsdl:message>
+  <wsdl:message name="GetLicenseSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLicenseResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerByNameHttpGetIn">
+    <wsdl:part name="trackerName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerByNameHttpGetOut">
+    <wsdl:part name="Body" element="tns:Tracker" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerHttpGetIn">
+    <wsdl:part name="trackerName" type="s:string" />
+    <wsdl:part name="phoneNumber" type="s:string" />
+    <wsdl:part name="trackerType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberHttpGetIn">
+    <wsdl:part name="trackerName" type="s:string" />
+    <wsdl:part name="phoneNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetLicenseHttpGetIn" />
+  <wsdl:message name="GetLicenseHttpGetOut">
+    <wsdl:part name="Body" element="tns:License" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerByNameHttpPostIn">
+    <wsdl:part name="trackerName" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetTrackerByNameHttpPostOut">
+    <wsdl:part name="Body" element="tns:Tracker" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerHttpPostIn">
+    <wsdl:part name="trackerName" type="s:string" />
+    <wsdl:part name="phoneNumber" type="s:string" />
+    <wsdl:part name="trackerType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddTrackerHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberHttpPostIn">
+    <wsdl:part name="trackerName" type="s:string" />
+    <wsdl:part name="phoneNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTrackerPhoneNumberHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetLicenseHttpPostIn" />
+  <wsdl:message name="GetLicenseHttpPostOut">
+    <wsdl:part name="Body" element="tns:License" />
+  </wsdl:message>
+  <wsdl:portType name="TrackersSoap">
+    <wsdl:operation name="GetTrackerByName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the current details of a tracker</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackerByNameSoapIn" />
+      <wsdl:output message="tns:GetTrackerByNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackersByNames">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the current details of a list of trackers</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackersByNamesSoapIn" />
+      <wsdl:output message="tns:GetTrackersByNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a new tracker</wsdl:documentation>
+      <wsdl:input message="tns:AddTrackerSoapIn" />
+      <wsdl:output message="tns:AddTrackerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update a tracker phone number</wsdl:documentation>
+      <wsdl:input message="tns:UpdateTrackerPhoneNumberSoapIn" />
+      <wsdl:output message="tns:UpdateTrackerPhoneNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets license info</wsdl:documentation>
+      <wsdl:input message="tns:GetLicenseSoapIn" />
+      <wsdl:output message="tns:GetLicenseSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TrackersHttpGet">
+    <wsdl:operation name="GetTrackerByName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the current details of a tracker</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackerByNameHttpGetIn" />
+      <wsdl:output message="tns:GetTrackerByNameHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a new tracker</wsdl:documentation>
+      <wsdl:input message="tns:AddTrackerHttpGetIn" />
+      <wsdl:output message="tns:AddTrackerHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update a tracker phone number</wsdl:documentation>
+      <wsdl:input message="tns:UpdateTrackerPhoneNumberHttpGetIn" />
+      <wsdl:output message="tns:UpdateTrackerPhoneNumberHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets license info</wsdl:documentation>
+      <wsdl:input message="tns:GetLicenseHttpGetIn" />
+      <wsdl:output message="tns:GetLicenseHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="TrackersHttpPost">
+    <wsdl:operation name="GetTrackerByName">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets the current details of a tracker</wsdl:documentation>
+      <wsdl:input message="tns:GetTrackerByNameHttpPostIn" />
+      <wsdl:output message="tns:GetTrackerByNameHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Adds a new tracker</wsdl:documentation>
+      <wsdl:input message="tns:AddTrackerHttpPostIn" />
+      <wsdl:output message="tns:AddTrackerHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Update a tracker phone number</wsdl:documentation>
+      <wsdl:input message="tns:UpdateTrackerPhoneNumberHttpPostIn" />
+      <wsdl:output message="tns:UpdateTrackerPhoneNumberHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets license info</wsdl:documentation>
+      <wsdl:input message="tns:GetLicenseHttpPostIn" />
+      <wsdl:output message="tns:GetLicenseHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TrackersSoap" type="tns:TrackersSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTrackerByName">
+      <soap:operation soapAction="http://gps.andromedagps.com/GetTrackerByName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackersByNames">
+      <soap:operation soapAction="http://gps.andromedagps.com/GetTrackersByNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <soap:operation soapAction="http://gps.andromedagps.com/AddTracker" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <soap:operation soapAction="http://gps.andromedagps.com/UpdateTrackerPhoneNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <soap:operation soapAction="http://gps.andromedagps.com/GetLicense" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackersSoap12" type="tns:TrackersSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetTrackerByName">
+      <soap12:operation soapAction="http://gps.andromedagps.com/GetTrackerByName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTrackersByNames">
+      <soap12:operation soapAction="http://gps.andromedagps.com/GetTrackersByNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <soap12:operation soapAction="http://gps.andromedagps.com/AddTracker" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <soap12:operation soapAction="http://gps.andromedagps.com/UpdateTrackerPhoneNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <soap12:operation soapAction="http://gps.andromedagps.com/GetLicense" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackersHttpGet" type="tns:TrackersHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetTrackerByName">
+      <http:operation location="/GetTrackerByName" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <http:operation location="/AddTracker" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <http:operation location="/UpdateTrackerPhoneNumber" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <http:operation location="/GetLicense" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TrackersHttpPost" type="tns:TrackersHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetTrackerByName">
+      <http:operation location="/GetTrackerByName" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddTracker">
+      <http:operation location="/AddTracker" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTrackerPhoneNumber">
+      <http:operation location="/UpdateTrackerPhoneNumber" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLicense">
+      <http:operation location="/GetLicense" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Trackers">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+    <wsdl:port name="TrackersSoap" binding="tns:TrackersSoap">
+      <soap:address location="http://gps.andromedagps.com/Trackers.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackersSoap12" binding="tns:TrackersSoap12">
+      <soap12:address location="http://gps.andromedagps.com/Trackers.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackersHttpGet" binding="tns:TrackersHttpGet">
+      <http:address location="http://gps.andromedagps.com/Trackers.asmx" />
+    </wsdl:port>
+    <wsdl:port name="TrackersHttpPost" binding="tns:TrackersHttpPost">
+      <http:address location="http://gps.andromedagps.com/Trackers.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

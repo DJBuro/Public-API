@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx?wsdl" docRef="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" xmlns:q1="http://www.Androtechnology.co.uk/OrderTrackingAdmin" binding="q1:OrderTrackingAdminSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://test.androtechnology.co.uk/Ordertracking/OrderTrackingAdmin.asmx" xmlns:q2="http://www.Androtechnology.co.uk/OrderTrackingAdmin" binding="q2:OrderTrackingAdminSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://localhost/LoyaltyCard/LoyaltyCardSiteWebService.asmx?wsdl" docRef="http://localhost/LoyaltyCard/LoyaltyCardSiteWebService.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://localhost/LoyaltyCard/LoyaltyCardSiteWebService.asmx" xmlns:q1="http://www.Andromeda.co.uk/LoyaltyCardSite" binding="q1:LoyaltyCardSiteWebServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://localhost/LoyaltyCard/LoyaltyCardSiteWebService.asmx" xmlns:q2="http://www.Andromeda.co.uk/LoyaltyCardSite" binding="q2:LoyaltyCardSiteWebServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="FatpointValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="StarttrackdataidValidator" test="Starttrackdataid"><v:message id="error.Starttrackdataid.required" providers="StarttrackdataidErrors, ValidationSummary"/></v:required>
+	<v:required id="EndtrackdataidValidator" test="Endtrackdataid"><v:message id="error.Endtrackdataid.required" providers="EndtrackdataidErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

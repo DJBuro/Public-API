@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+    <object id="SiteBaseController" abstract="true">
+        <!--<property name="HeadOfficeDao" ref="HeadOfficeDao" />
+        <property name="SiteDao" ref="SiteDao" />
+        <property name="DashboardUserDao" ref="DashboardUserDao" />
+        <property name="CountryDao" ref="CountryDao" />-->
+    </object>
+
+    <object id="HomeController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.HomeController" singleton="false">
+        <property name="CompanyDao" ref="CompanyDao" />
+    </object>
+
+    <object id="GlobalController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.GlobalController" singleton="false">
+        <property name="CompanyDao" ref="CompanyDao" />
+        <property name="CountryDao" ref="CountryDao" />
+        <property name="CurrencyDao" ref="CurrencyDao" />
+        <property name="LoyaltyLogDao" ref="LoyaltyLogDao" />
+        <property name="SiteDao" ref="SiteDao" />
+    </object>
+
+    <object id="AccountController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.AccountController" singleton="false">
+    </object>
+
+    <object id="CompanyController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.CompanyController" singleton="false">
+        <property name="CompanyDao" ref="CompanyDao" />
+        <property name="SiteDao" ref="SiteDao" />
+        <property name="LoyaltyAccountDao" ref="LoyaltyAccountDao" />
+        <property name="CountryDao" ref="CountryDao" />
+        <property name="CompanyUserTitleDao" ref="CompanyUserTitleDao" />
+        <property name="UserTitleDao" ref="UserTitleDao" />
+    </object>
+
+    <object id="LoyaltyAccountController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.LoyaltyAccountController" singleton="false">
+        <property name="LoyaltyAccountDao" ref="LoyaltyAccountDao" />
+        <property name="CompanyDao" ref="CompanyDao" />
+        <property name="AccountStatusDao" ref="AccountStatusDao" />
+    </object>    
+    
+    <object id="LoyaltyUserController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.LoyaltyUserController" singleton="false">
+        <property name="LoyaltyUserDao" ref="LoyaltyUserDao" />
+    </object>
+    
+    <object id="LoyaltyCardController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.LoyaltyCardController" singleton="false">
+        <property name="LoyaltyAccountDao" ref="LoyaltyAccountDao" />
+        <property name="CompanyDao" ref="CompanyDao" />
+        <property name="LoyaltyCardDao" ref="LoyaltyCardDao" />
+        <property name="StatusDao" ref="StatusDao" />
+    </object>    
+
+  
+    <object id="SearchController" parent="SiteBaseController" type="AndroWebAdmin.Controllers.SearchController" singleton="false">
+      <property name="CompanyDao" ref="CompanyDao" />
+      <property name="LoyaltyCardDao" ref="LoyaltyCardDao" />
+      <property name="LoyaltyAccountDao" ref="LoyaltyAccountDao" />
+      <property name="LoyaltyUserDao" ref="LoyaltyUserDao" />
+    </object>
+
+
+</objects>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Smsproxyqueue, OrderTracking.Gps.Dao" table="sms_proxy_queue">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="provider_message_queue_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__sms_prox__6C29ECCA1D114BD1"/>
+			<generator class="native" />
+		</id>
+		<property name="Smsproxyid" type="Int32">
+			<column name="sms_proxy_id" length="4" sql-type="int" not-null="true" unique="true" index="UN_sms_proxy_queue_sms_proxy_id"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

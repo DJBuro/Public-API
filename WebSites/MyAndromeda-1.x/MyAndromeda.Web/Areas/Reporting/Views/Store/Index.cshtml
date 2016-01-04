@@ -1,0 +1,106 @@
+﻿@using MyAndromeda.Web.Areas.Reporting.Context;
+@using MyAndromedaDataAccess.Domain.Reporting.Query;
+
+@model IReportingContext
+@{
+    var dailyFilter = new FilterQuery() { FilterFrom = DateTime.Today, FilterTo = DateTime.Today.AddDays(1) };
+    var weeklyFilter = new FilterQuery() { FilterFrom = DateTime.Today.AddDays(-7), FilterTo = DateTime.Today.AddDays(1) };
+    var monthlyFilter = new FilterQuery() { FilterFrom = DateTime.Today.AddDays(-30), FilterTo = DateTime.Today.AddDays(1) };
+}
+
+@using (Html.BeginScripts())
+{
+    if (false) { 
+        <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+    
+    
+    <script type="text/javascript">
+        $(function () {
+            var service = new MyAndromeda.Reporting.Services.ReportingServiceWatcher({
+                id: "#dashboardreport"
+            });
+            var today = new Date();
+            
+            //set the time going 
+            service.Tick();
+            //service.Set("from", today);
+            //console.log("dashboard");
+            service.Init();
+        });
+    </script>
+}
+
+<div id="dashboardreport">
+    <div class="header">
+        @*<a class="k-button k-button-change-date">Change Date</a>*@
+        <h3>ACS Dashboard for @Model.SiteName</h3>
+        <p class="subtitle-block">Online orders</p>
+@*        <p class="subtitle-block">
+            <span data-bind="text: today"></span>
+        </p>
+        <p>Last update:<span data-bind="text: from"></span></p>*@
+    </div>
+@*    <input id="fromPicker" type="text" data-role="datepicker" data-bind="value:from" />*@
+    @* todo: leave for a more inspiring day.
+    <div id="Filters">
+        <input data-role="datepicker" data-bind="value: from" />
+        <input data-role="datepicker" data-bind="value: to" />
+    </div>*@
+    <div id="ChartWrapper">
+        <div class="row">
+
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <h3>Today's Orders</h3>
+                    <a class="k-button" href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo })">More</a>
+                </div>
+                @Html.Action("Daily", "Orders", dailyFilter)
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <h3>Last 7 days</h3>
+                    <a class="k-button" href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo })">More</a>
+                </div>
+                @Html.Action("Week", "Orders", weeklyFilter)
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <div class="header">
+                    <h3>Last 30 Days</h3>
+                    <a class="k-button" href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo })">More</a>
+                </div>
+                @Html.Action("Month", "Orders", monthlyFilter)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="header">
+                    <h3>Best selling items - last 30 days</h3>
+                    @*<a class="k-button" href="#">More</a>*@
+                </div>
+                 @Html.Action("PopularItems", "Orders", monthlyFilter)
+            </div>
+        </div>
+
+
+        <div class="clearfix" style="margin-top:20px;">
+            <div class="sb-right content3">
+                
+               
+                @*@Html.Action("DashboardChart", "Test")*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            //var datePicker = $("#fromPicker").data("kendoDatePicker");
+            //datePicker.max(new Date());
+            //datePicker.enable(false);
+        });
+    </script>
+}

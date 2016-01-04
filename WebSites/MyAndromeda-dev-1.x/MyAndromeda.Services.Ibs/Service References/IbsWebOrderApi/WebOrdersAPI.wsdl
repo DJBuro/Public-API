@@ -1,0 +1,3450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ibs-systems.co.uk/WebOrdersAPI/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://ibs-systems.co.uk/WebOrdersAPI/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ibs-systems.co.uk/WebOrdersAPI/">
+      <s:element name="ServiceTest">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ServiceTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ServiceTestResult" type="tns:cServiceTestResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cServiceTestResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szVersion" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cErrorResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_bError" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szError" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bInvalidToken" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Logon">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szCompanyCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szAppGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LogonResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LogonResult" type="tns:cLogonResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cLogonResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szToken" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lTokenHours" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtTokenExpire" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szNotificationURL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrAPIAccessLevels" type="tns:ArrayOfEnumAPIFunction" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfEnumAPIFunction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="enumAPIFunction" type="tns:enumAPIFunction" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="enumAPIFunction">
+        <s:restriction base="s:string">
+          <s:enumeration value="eUnknown" />
+          <s:enumeration value="eAccessALL" />
+          <s:enumeration value="eUpdateWebOrdersStatus" />
+          <s:enumeration value="eGetWebOrders" />
+          <s:enumeration value="eUpdatePluStockLevel" />
+          <s:enumeration value="eListVouchers" />
+          <s:enumeration value="eGetMedias" />
+          <s:enumeration value="eGetOrderDates" />
+          <s:enumeration value="eGetLocations" />
+          <s:enumeration value="eGetMenu" />
+          <s:enumeration value="eGetGiftCardDetails" />
+          <s:enumeration value="eGetCustomer" />
+          <s:enumeration value="eUpdateCustomer" />
+          <s:enumeration value="eAddDeliveryLocation" />
+          <s:enumeration value="eCheckVoucherCode" />
+          <s:enumeration value="eAddOrder" />
+          <s:enumeration value="eUpdatePreSalesBooking" />
+          <s:enumeration value="eAddVoucherCode" />
+          <s:enumeration value="eGetPLUDetails" />
+          <s:enumeration value="eGetTimeZonedByMajorGroup" />
+          <s:enumeration value="eGetTARecords" />
+          <s:enumeration value="eGetTransactionDetails" />
+          <s:enumeration value="eUpdateCustomerDetails" />
+          <s:enumeration value="eAddCashLessFund" />
+          <s:enumeration value="eUpdateCashLessCustomer" />
+          <s:enumeration value="eGetCompanyDetails" />
+          <s:enumeration value="eUpdateReceiptPrintedStatus" />
+          <s:enumeration value="eUpdateWebOrdersNotificationSettings" />
+          <s:enumeration value="eGetPreSalesBookingTransaction" />
+          <s:enumeration value="eUpdateMultiPluStockLevel" />
+          <s:enumeration value="eActivateLoyaltyCard" />
+          <s:enumeration value="eUpdateCustomerFields" />
+          <s:enumeration value="eEposTabAPIFunctions" />
+          <s:enumeration value="eUpdateAtStoreStatus" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="ActivateLoyaltyCard">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="szCardNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szActivationCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ActivateLoyaltyCardResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ActivateLoyaltyCardResult" type="tns:cActivateLoyaltyCardResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cActivateLoyaltyCardResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOldCustomerNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szActivationCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOldPoints" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dOldCashValue" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateWebOrdersNotificationSettings">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szURL" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szAuthHeader" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szAuthValue" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateWebOrdersNotificationSettingsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateWebOrdersNotificationSettingsResult" type="tns:cUpdateNotificationSettingsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateNotificationSettingsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szURL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAuthHeader" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAuthValue" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateWebOrdersStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lOrderNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNewOrderStatus" type="tns:eOrderStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="eOrderStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="eProcessNotStarted" />
+          <s:enumeration value="eAtStore" />
+          <s:enumeration value="ePrintedInKitchen" />
+          <s:enumeration value="eCookingStarted" />
+          <s:enumeration value="eCookingEnded" />
+          <s:enumeration value="eAvailableForCollection" />
+          <s:enumeration value="eOrderCollected" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdateWebOrdersStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateWebOrdersStatusResult" type="tns:cUpdateTotalsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateTotalsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAPITriggered" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eNumAcceptStatus" type="tns:eNumAcceptStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eNumAcceptStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eNotified" />
+          <s:enumeration value="eRejected" />
+          <s:enumeration value="eAccepted" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdateAtStoreStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lOrderNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrItems" type="tns:ArrayOfCWebTransItem" />
+            <s:element minOccurs="1" maxOccurs="1" name="eStatus" type="tns:eAtStoreStatus" />
+            <s:element minOccurs="1" maxOccurs="1" name="dPayTotal" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCWebTransItem">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebTransItem" nillable="true" type="tns:cWebTransItem" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebTransItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOffset" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eLineType" type="tns:eWebOrderLineType" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iQty" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dStockQty" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dGrossValue" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iLineNum" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iLinkedLineNum" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iModifier" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eWebOrderLineType">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="ePLU" />
+          <s:enumeration value="ePayment" />
+          <s:enumeration value="eStockNetVoucher" />
+          <s:enumeration value="eOnAccount" />
+          <s:enumeration value="eAdjustment" />
+          <s:enumeration value="eTip" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="eAtStoreStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eOrderAck" />
+          <s:enumeration value="eCancelOrder" />
+          <s:enumeration value="eReady" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdateAtStoreStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateAtStoreStatusResult" type="tns:cUpdateAtStoreStatusResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateAtStoreStatusResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAPITriggered" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eAcceptStatus" type="tns:eNumAcceptStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eOrderStatus" type="tns:eOrderStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateReceiptPrintedStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lOrderNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNewPrintedStatus" type="tns:ePrintOrderStatus" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ePrintOrderStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNotSet" />
+          <s:enumeration value="eDontPrint" />
+          <s:enumeration value="ePrint" />
+          <s:enumeration value="ePrinted" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdateReceiptPrintedStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateReceiptPrintedStatusResult" type="tns:cUpdateTotalsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdatePluStockLevel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lPluNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumInuse" type="tns:eInuse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="eInuse">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNoChange" />
+          <s:enumeration value="eInuse" />
+          <s:enumeration value="eNotInuse" />
+          <s:enumeration value="eResetALL" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdatePluStockLevelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdatePluStockLevelResult" type="tns:cUpdateTotalsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMultiPluStockLevel">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="szPLUS" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumInuse" type="tns:eInuse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateMultiPluStockLevelResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateMultiPluStockLevelResult" type="tns:cUpdateTotalsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLocations">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLocationsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLocationsResult" type="tns:cGetLocationsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetLocationsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrLocations" type="tns:ArrayOfCWebOrderLocation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderLocation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderLocation" nillable="true" type="tns:cWebOrderLocation" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderLocation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLocation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szSiteReference" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szContact" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostcode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szTelephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szFax" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCountryCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dLongitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dLatitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bWebOrderDeliveryOffLine" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bWebOrderCollectionOffline" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtLastWebPollDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iWebOrderingPriceLevel" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCollectionMiles" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDeliveryMiles" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iAllowedMinsBeforeDelSlot" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iMaxCollectionsPerTimeSlot" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iMaxDeliveriesPerTimeSlot" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCollectNotAllowedUnder" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDeliveryNotAllowedUnder" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCollectChargeAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCollectChargeThreshold" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDeliveryChargeAmount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDeliveryChargeThreshold" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eCollectChargeRule" type="tns:eChargeRule" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eDeliveryChargeRule" type="tns:eChargeRule" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCollectMinSpend" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDeliveryMinSpend" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAllowWebOrderDelivery" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAllowWebOrderCollection" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDelServChgPerc" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dColServChgPerc" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrOrderTimes" type="tns:ArrayOfCWebOrderTimeCat" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDeliverySlots" type="tns:ArrayOfCWebOrderTimeSlot" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrCollectionSlots" type="tns:ArrayOfCWebOrderTimeSlot" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eChargeRule">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eMinimumCharge" />
+          <s:enumeration value="eDeliveryCharge" />
+          <s:enumeration value="eNotAllowedUnderMinSpend" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfCWebOrderTimeCat">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderTimeCat" nillable="true" type="tns:cWebOrderTimeCat" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderTimeCat">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iCatNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrTimeSlots" type="tns:ArrayOfCWebOrderTimeSlot" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderTimeSlot">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderTimeSlot" nillable="true" type="tns:cWebOrderTimeSlot" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderTimeSlot">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iSlotNo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iTimeCat" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iDOW" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iTimeFrom" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iTimeTo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iCutoffDayOfWeek" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMedias">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lMediaNo" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMediasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMediasResult" type="tns:cGetMediasResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetMediasResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrMedias" type="tns:ArrayOfCMediaRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCMediaRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cMediaRec" nillable="true" type="tns:cMediaRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cMediaRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLocation" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lMediaNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eMediaType" type="tns:eMediaType" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bOtherCurrency" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eMediaType">
+        <s:restriction base="s:string">
+          <s:enumeration value="CASH" />
+          <s:enumeration value="CHEQUE" />
+          <s:enumeration value="EFT" />
+          <s:enumeration value="LOYALTY" />
+          <s:enumeration value="ROOMS" />
+          <s:enumeration value="GIFTCARD" />
+          <s:enumeration value="DEPOSIT" />
+          <s:enumeration value="LEDGER" />
+          <s:enumeration value="WASTAGE" />
+          <s:enumeration value="BOPZYLOYALTYREDEEMPOINTS" />
+          <s:enumeration value="BOPZYLOYALTYPREPAY" />
+          <s:enumeration value="COMP" />
+          <s:enumeration value="LOYALTEK" />
+          <s:enumeration value="PAYPAL" />
+          <s:enumeration value="PLAYLINKUSEDEPOSIT" />
+          <s:enumeration value="GIVEXGIFTCARD" />
+          <s:enumeration value="GIVEXLOYALTY" />
+          <s:enumeration value="PAYPALPAYCODE" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetCompanyDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCompanyDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCompanyDetailsResult" type="tns:cGetCompanyDetailsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetCompanyDetailsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrTaxRates" type="tns:ArrayOfCTaxRec" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPendingNotifications" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCTaxRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cTaxRec" nillable="true" type="tns:cTaxRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cTaxRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iTaxNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dRate" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetOrderDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOrderDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetOrderDatesResult" type="tns:cGetOrderDatesResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetOrderDatesResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDates" type="tns:ArrayOfCWebOrderDates" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderDates">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderDates" nillable="true" type="tns:cWebOrderDates" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderDates">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iYear" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDays" type="tns:ArrayOfInt" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInt">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="int" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMenu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bWebOrderItemsOnly" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMenuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMenuResult" type="tns:cGetGetMenuResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetGetMenuResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iWebOrderingPriceLevel" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrModifiers" type="tns:ArrayOfCModifierRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrSalesGroups" type="tns:ArrayOfCSalesGroupRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrMajorGroups" type="tns:ArrayOfCMajorGroupRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPrimaryGroups" type="tns:ArrayOfCPrimaryGroupRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrItems" type="tns:ArrayOfCMainOrderCat" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCModifierRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cModifierRec" nillable="true" type="tns:cModifierRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cModifierRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iModNo" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dFactor" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPrefix" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCSalesGroupRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cSalesGroupRec" nillable="true" type="tns:cSalesGroupRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cSalesGroupRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lSalesGroupNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lMajorGroupNo" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCMajorGroupRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cMajorGroupRec" nillable="true" type="tns:cMajorGroupRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cMajorGroupRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lMajorGroupNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPrimaryGroupNo" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCPrimaryGroupRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cPrimaryGroupRec" nillable="true" type="tns:cPrimaryGroupRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cPrimaryGroupRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPrimaryGroupNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCMainOrderCat">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cMainOrderCat" nillable="true" type="tns:cMainOrderCat" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cMainOrderCat">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lRef" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrOrderSubCat" type="tns:ArrayOfCOrderSubCat" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCOrderSubCat">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cOrderSubCat" nillable="true" type="tns:cOrderSubCat" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cOrderSubCat">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lRef" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPlus" type="tns:ArrayOfCPluRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCPluRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cPluRec" nillable="true" type="tns:cPluRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cPluRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPluNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lSalesGroup" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDetails" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szThumbURL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szNewImgURL" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dMaxOrderQty" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bInUse" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bIgnoreDietReq" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bIsPlatterPLU" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bCompulsoryCondiments" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bWebShoppingCondimentsOverride" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPrices" type="tns:ArrayOfCPriceRec" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dCookingTimeMins" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lTaxNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPluType" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrCondLists" type="tns:ArrayOfCCondimentRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrNutrition" type="tns:ArrayOfCNutritionRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDietaryRequirements" type="tns:ArrayOfCDietaryRequirementsRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrTimeCats" type="tns:ArrayOfLong" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCPriceRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cPriceRec" nillable="true" type="tns:cPriceRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cPriceRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iModNo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dPrice" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCCondimentRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cCondimentRec" nillable="true" type="tns:cCondimentRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCondimentRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lKeybNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iMin" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iMax" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bUntilClear" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrCondimentPlus" type="tns:ArrayOfCCondimentPluRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCCondimentPluRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cCondimentPluRec" nillable="true" type="tns:cCondimentPluRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCondimentPluRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPluNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPrices" type="tns:ArrayOfCPriceRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCNutritionRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cNutritionRec" nillable="true" type="tns:cNutritionRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cNutritionRec" />
+      <s:complexType name="ArrayOfCDietaryRequirementsRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cDietaryRequirementsRec" nillable="true" type="tns:cDietaryRequirementsRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cDietaryRequirementsRec" />
+      <s:complexType name="ArrayOfLong">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="KeepAlive">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sCompanyCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="KeepAliveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="KeepAliveResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGiftCardDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szCardNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGiftCardDetailsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGiftCardDetailsResult" type="tns:cGetGiftCardDetailsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetGiftCardDetailsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dBalance" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szEmailAddress" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCustomerResult" type="tns:cGetCustomerResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetCustomerResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_objCustomerRec" type="tns:cCustomerRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDeliveryAddresses" type="tns:ArrayOfCDeliveryAddressInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrLoyaltyCards" type="tns:ArrayOfCLoyaltyCardRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCustomerRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lCustomerID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szFirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szBuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szFax" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szMobile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szContact" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szEmail" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDOB" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lLoyaltyPoints" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szWebPassword" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szHomeLocation" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bEmailValidated" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtSignUpDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtLastVisitDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bSubscribed" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lAccountID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eAccountStatus" type="tns:eAccountStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bSignUpEmailSent" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDateFirstVisited" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPhotoBytes" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eAccountStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="eUnverified" />
+          <s:enumeration value="eApproved" />
+          <s:enumeration value="eSuspended" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfCDeliveryAddressInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cDeliveryAddressInfo" nillable="true" type="tns:cDeliveryAddressInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cDeliveryAddressInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLocation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szForeName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szSurname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szBuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAdddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAdddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAdddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAdddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szMobile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szEmail" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDeliveryInstructions" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dLongitude" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dLatitude" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCLoyaltyCardRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cLoyaltyCardRec" nillable="true" type="tns:cLoyaltyCardRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cLoyaltyCardRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCardNo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lSchemeNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDateIssued" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDateExpired" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDateLastUsed" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bEnabled" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateCustomerFields">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrUpdateFields" type="tns:ArrayOfCCustomerUpdateFields" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCCustomerUpdateFields">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cCustomerUpdateFields" nillable="true" type="tns:cCustomerUpdateFields" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCustomerUpdateFields">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_eField" type="tns:eCustomerField" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szVal" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eCustomerField">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eTitle" />
+          <s:enumeration value="eForename" />
+          <s:enumeration value="eSurname" />
+          <s:enumeration value="eBuildingName" />
+          <s:enumeration value="eAddress1" />
+          <s:enumeration value="eAddress2" />
+          <s:enumeration value="eAddress3" />
+          <s:enumeration value="eAddress4" />
+          <s:enumeration value="ePostcode" />
+          <s:enumeration value="ePhone" />
+          <s:enumeration value="eFax" />
+          <s:enumeration value="eContact" />
+          <s:enumeration value="eMobile" />
+          <s:enumeration value="eEMail" />
+          <s:enumeration value="eTrade" />
+          <s:enumeration value="eDOB" />
+          <s:enumeration value="eCompanyName" />
+          <s:enumeration value="eWebPassword" />
+          <s:enumeration value="eHomeLocation" />
+          <s:enumeration value="eWelcomeLetterSent" />
+          <s:enumeration value="eEMailValidated" />
+          <s:enumeration value="eAlwaysShowCustomerPopUp" />
+          <s:enumeration value="eCustomField1" />
+          <s:enumeration value="eCustomField2" />
+          <s:enumeration value="eCustomField3" />
+          <s:enumeration value="eCustomField4" />
+          <s:enumeration value="eCustomField5" />
+          <s:enumeration value="eCustomField6" />
+          <s:enumeration value="eCustomField7" />
+          <s:enumeration value="eCustomField8" />
+          <s:enumeration value="eSignupDate" />
+          <s:enumeration value="eRewardGroup" />
+          <s:enumeration value="eSubscribed" />
+          <s:enumeration value="eReferralCode" />
+          <s:enumeration value="eTermsAndConditionsVersion" />
+          <s:enumeration value="eOverridePLUMaxOrderQty" />
+          <s:enumeration value="eAccountID" />
+          <s:enumeration value="eStatementMethod" />
+          <s:enumeration value="eSwitchboard" />
+          <s:enumeration value="eExt" />
+          <s:enumeration value="eDepartment" />
+          <s:enumeration value="eDeptCostCode" />
+          <s:enumeration value="eAccountStatus" />
+          <s:enumeration value="eSignUpEMailSent" />
+          <s:enumeration value="eIsAccountAdmin" />
+          <s:enumeration value="eChangePasswordAtNextLogon" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="UpdateCustomerFieldsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCustomerFieldsResult" type="tns:cUpdateCustomerFieldsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateCustomerFieldsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAPITriggered" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szEmailAddress" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="objCustomer" type="tns:cUpdateCustomerRec" />
+            <s:element minOccurs="0" maxOccurs="1" name="objLoyaltyCard" type="tns:cLoyaltyCardRec" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateCustomerRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szTitle" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szFirstName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLastName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szBuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szFax" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szMobile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szContact" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szEmail" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iDOBDay" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iDOBMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iDOBYear" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szWebPassword" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szHomeLocation" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lAccountID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eAccountStatus" type="tns:eAccountStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPhotoBytes" type="s:base64Binary" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCustomerResult" type="tns:cUpdateCustomerResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cUpdateCustomerResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lCustomerNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bAPITriggered" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eEditMode" type="tns:eEditMode" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDeliveryAddresses" type="tns:ArrayOfCDeliveryAddressInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eEditMode">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eAddNew" />
+          <s:enumeration value="eEdit" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AddDeliveryLocation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="objDeliveryAddress" type="tns:cDeliveryAddressInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddDeliveryLocationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddDeliveryLocationResult" type="tns:cAddDeliveryLocationResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cAddDeliveryLocationResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_objLocationAddressRec" type="tns:cDeliveryAddressInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bCommit" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumOrderType" type="tns:eOrderType" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDeliveryCollectDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDeliveryCollectMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDeliveryCollectYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDeliveryCollectFromTime" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDeliveryCollectToTime" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="objCustomerDetails" type="tns:cOrderCustomerDetails" />
+            <s:element minOccurs="1" maxOccurs="1" name="iLocationTimeCat" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="szDeliveryInstructions" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szRef" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szCostCentre" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iCovers" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrItems" type="tns:ArrayOfCWebTransItem" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrPhotoBytes" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="lTableNo" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="szEFTTransactionID" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iOrderDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iOrderMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iOrderYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iOrderHour" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iOrderMin" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iRoomSelection" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iAreaSelection" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="bSendEmails" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLoyCardNo" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="bPayOnCollectionDelivery" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumPrintOrderStatus" type="tns:ePrintOrderStatus" />
+            <s:element minOccurs="1" maxOccurs="1" name="enumProductionType" type="tns:eProductionType" />
+            <s:element minOccurs="1" maxOccurs="1" name="bIsTraining" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="bConfirmOnPOS" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="eOrderType">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eDelivery" />
+          <s:enumeration value="eCollection" />
+          <s:enumeration value="eInStoreAtTable" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="cOrderCustomerDetails">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szForename" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szSurname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szBuildingName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostcode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szEMail" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eProductionType">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNotSet" />
+          <s:enumeration value="eUseProductionSession" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AddOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddOrderResult" type="tns:cAddOrderResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cAddOrderResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOrderNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOrderBatchNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szVatNo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_sLocationEmails" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDistanceFromStore" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lReportNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szMailFromAddress" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bMailSendResult" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lLoyaltyScheme" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPointsGained" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPointsUsed" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPointsBalance" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lCustomerNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dLoyaltyCashBalance" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrAdjustment" type="tns:ArrayOfCCalcAdjustmentsItemResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalDiscount" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dSaleTotal" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrTaxes" type="tns:ArrayOfCAddOrderTax" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bUseSimpleTaxSystem" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bTaxCalcOnAdjustedValue" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iDefaultTaxRate" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bUseTaxRoundingOnEachPLU" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalTips" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCCalcAdjustmentsItemResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cCalcAdjustmentsItemResult" nillable="true" type="tns:cCalcAdjustmentsItemResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCalcAdjustmentsItemResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lAdjustMentNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dValue" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iQty" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szError" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bError" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPluInfo" type="tns:ArrayOfCCalcAdjustmentsPluInfoResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCCalcAdjustmentsPluInfoResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cCalcAdjustmentsPluInfoResult" nillable="true" type="tns:cCalcAdjustmentsPluInfoResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCalcAdjustmentsPluInfoResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPluNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDiscVal" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szKey" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCAddOrderTax">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cAddOrderTax" nillable="true" type="tns:cAddOrderTax" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cAddOrderTax">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_iLineNum" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lTaxNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTaxRate" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTax" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ListVouchers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ListVouchersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ListVouchersResult" type="tns:cListVouchersResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cListVouchersResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrVouchers" type="tns:ArrayOfCVoucherCodeRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCVoucherCodeRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cVoucherCodeRec" nillable="true" type="tns:cVoucherCodeRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cVoucherCodeRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_szVoucherCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lVoucherNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lCustomerNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iIssueDay" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iIssueMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iIssueYear" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szIssueLocation" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CheckVoucherCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szVoucherCode" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iCovers" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iHour" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMin" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrItems" type="tns:ArrayOfCWebTransItem" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLoyCardNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckVoucherCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckVoucherCodeResult" type="tns:cCheckVoucherCodeResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cCheckVoucherCodeResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_objAdjustment" type="tns:cCalcAdjustmentsResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lVoucherNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iExpireDay" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iExpireMonth" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iExpireYear" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lRemain" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eOffsetType" type="tns:eVoucherOffsetType" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOffset" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dVal" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lUsedCount" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lRedemptionTimesAllowed" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eAllowedType" type="tns:eVoucherRedemptionAllowedType" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cCalcAdjustmentsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrAdjustmentResult" type="tns:ArrayOfCCalcAdjustmentsItemResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eVoucherOffsetType">
+        <s:restriction base="s:string">
+          <s:enumeration value="eUnknown" />
+          <s:enumeration value="eAdjustment" />
+          <s:enumeration value="eMedia" />
+          <s:enumeration value="ePLU" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="eVoucherRedemptionAllowedType">
+        <s:restriction base="s:string">
+          <s:enumeration value="eEveryone" />
+          <s:enumeration value="ePerCustomer" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="SetPollMode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="bStart" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetPollModeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetPollModeResult" type="tns:cPollResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cPollResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetWebOrders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDaysSpan" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumOrderType" type="tns:eOrderType" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumOrderStatus" type="tns:eOrderStatus" />
+            <s:element minOccurs="1" maxOccurs="1" name="lOrderNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="bIgnoreOrderStatus" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWebOrdersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWebOrdersResult" type="tns:cGetWebOrdersResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cGetWebOrdersResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrRecs" type="tns:ArrayOfCWebOrderRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderRec" nillable="true" type="tns:cWebOrderRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lCustomerID" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lOrderNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCompanyName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress2" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress3" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szAddress4" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPostCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szPhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szEmail" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dtDeliveryDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDelTimeFrom" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDelTimeTo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eProdStage" type="tns:eProductionStage" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_ePaidBy" type="tns:ePaidBy" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalGross" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalDisc" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalVat" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalNet" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eNumOrderType" type="tns:eOrderType" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eNumOrderStatus" type="tns:eOrderStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDeliveryInstructions" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDistanceFromLocation" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eRecordSource" type="tns:eRecordSource" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lTableNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szLoyaltyCardNo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bPayOnCollectionDelivery" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrDetails" type="tns:ArrayOfCWebOrderDetailRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrPayments" type="tns:ArrayOfCWebOrderPaymentsRec" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrAdjustments" type="tns:ArrayOfCWebOrderAdjustmentRec" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eReceiptPrintedStatus" type="tns:ePrintOrderStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bIsTraining" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iTillNoPolled" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iCovers" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTips" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bConfirmOnPOS" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_eAcceptStatus" type="tns:eNumAcceptStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="eProductionStage">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eLocked" />
+          <s:enumeration value="eMadeUp" />
+          <s:enumeration value="eDispatched" />
+          <s:enumeration value="eReceived" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ePaidBy">
+        <s:restriction base="s:string">
+          <s:enumeration value="eNone" />
+          <s:enumeration value="eAccount" />
+          <s:enumeration value="eMedia" />
+          <s:enumeration value="eOnCollectionDelivery" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="eRecordSource">
+        <s:restriction base="s:string">
+          <s:enumeration value="eStockNet" />
+          <s:enumeration value="eAPI" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfCWebOrderDetailRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderDetailRec" nillable="true" type="tns:cWebOrderDetailRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderDetailRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lPluNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dInitQty" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dQty" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dGross" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dNet" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dVat" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dVatRate" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lTaxNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lLineNum" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_lLinkedLineNum" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dDisc" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iModifierNo" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bSalesRecorded" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderPaymentsRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderPaymentsRec" nillable="true" type="tns:cWebOrderPaymentsRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderPaymentsRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lMediaNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szCardNo" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTakings" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfCWebOrderAdjustmentRec">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cWebOrderAdjustmentRec" nillable="true" type="tns:cWebOrderAdjustmentRec" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cWebOrderAdjustmentRec">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lAdjustmentNo" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalValue" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SetOrdersPolled">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="szIDNos" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetOrdersPolledResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SetOrdersPolledResult" type="tns:cSetOrdersPolledResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cSetOrdersPolledResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddPayment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="lCustomerNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="lOrderNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="lMediaNo" type="s:long" />
+            <s:element minOccurs="1" maxOccurs="1" name="dValue" type="s:double" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPaymentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddPaymentResult" type="tns:cAddPaymentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cAddPaymentResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dTotalPayment" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_bComplete" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PollWebOrders">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iTerminalNo" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDaysSpan" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumOrderType" type="tns:eOrderType" />
+            <s:element minOccurs="1" maxOccurs="1" name="eNumOrderStatus" type="tns:eOrderStatus" />
+            <s:element minOccurs="1" maxOccurs="1" name="iWaitSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLastPosError" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szPosGUID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="PollWebOrdersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PollWebOrdersResult" type="tns:cPollWebOrdersResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="cPollWebOrdersResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="m_objError" type="tns:cErrorResult" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_arrRecs" type="tns:ArrayOfCWebOrderRec" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_iWebOrdersInProgress" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CalcAdjustments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrItems" type="tns:ArrayOfCWebTransItem" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iHour" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMin" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="arrCheckAdjustments" type="tns:ArrayOfCUseAdjustMent" />
+            <s:element minOccurs="1" maxOccurs="1" name="iCovers" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLoyCardNo" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfCUseAdjustMent">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="cUseAdjustMent" nillable="true" type="tns:cUseAdjustMent" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="cUseAdjustMent">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="m_lAdjustmentNo" type="s:long" />
+          <s:element minOccurs="1" maxOccurs="1" name="m_dUserVal1" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CalcAdjustmentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CalcAdjustmentsResult" type="tns:cCalcAdjustmentsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="cServiceTestResult" nillable="true" type="tns:cServiceTestResult" />
+      <s:element name="cLogonResult" nillable="true" type="tns:cLogonResult" />
+      <s:element name="cActivateLoyaltyCardResult" nillable="true" type="tns:cActivateLoyaltyCardResult" />
+      <s:element name="cUpdateNotificationSettingsResult" nillable="true" type="tns:cUpdateNotificationSettingsResult" />
+      <s:element name="cUpdateTotalsResult" nillable="true" type="tns:cUpdateTotalsResult" />
+      <s:element name="cGetLocationsResult" nillable="true" type="tns:cGetLocationsResult" />
+      <s:element name="cGetMediasResult" nillable="true" type="tns:cGetMediasResult" />
+      <s:element name="cGetCompanyDetailsResult" nillable="true" type="tns:cGetCompanyDetailsResult" />
+      <s:element name="cGetOrderDatesResult" nillable="true" type="tns:cGetOrderDatesResult" />
+      <s:element name="cGetGetMenuResult" nillable="true" type="tns:cGetGetMenuResult" />
+      <s:element name="boolean" type="s:boolean" />
+      <s:element name="cGetGiftCardDetailsResult" nillable="true" type="tns:cGetGiftCardDetailsResult" />
+      <s:element name="cGetCustomerResult" nillable="true" type="tns:cGetCustomerResult" />
+      <s:element name="cListVouchersResult" nillable="true" type="tns:cListVouchersResult" />
+      <s:element name="cPollResult" nillable="true" type="tns:cPollResult" />
+      <s:element name="cGetWebOrdersResult" nillable="true" type="tns:cGetWebOrdersResult" />
+      <s:element name="cSetOrdersPolledResult" nillable="true" type="tns:cSetOrdersPolledResult" />
+      <s:element name="cAddPaymentResult" nillable="true" type="tns:cAddPaymentResult" />
+      <s:element name="cPollWebOrdersResult" nillable="true" type="tns:cPollWebOrdersResult" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ServiceTestSoapIn">
+    <wsdl:part name="parameters" element="tns:ServiceTest" />
+  </wsdl:message>
+  <wsdl:message name="ServiceTestSoapOut">
+    <wsdl:part name="parameters" element="tns:ServiceTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="LogonSoapIn">
+    <wsdl:part name="parameters" element="tns:Logon" />
+  </wsdl:message>
+  <wsdl:message name="LogonSoapOut">
+    <wsdl:part name="parameters" element="tns:LogonResponse" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardSoapIn">
+    <wsdl:part name="parameters" element="tns:ActivateLoyaltyCard" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardSoapOut">
+    <wsdl:part name="parameters" element="tns:ActivateLoyaltyCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateWebOrdersNotificationSettings" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateWebOrdersNotificationSettingsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateWebOrdersStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateWebOrdersStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateAtStoreStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateAtStoreStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateAtStoreStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateAtStoreStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateReceiptPrintedStatus" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateReceiptPrintedStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdatePluStockLevel" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdatePluStockLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateMultiPluStockLevel" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateMultiPluStockLevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLocations" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLocationsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMedias" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMediasResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCompanyDetails" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCompanyDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOrderDates" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOrderDatesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMenu" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveSoapIn">
+    <wsdl:part name="parameters" element="tns:KeepAlive" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveSoapOut">
+    <wsdl:part name="parameters" element="tns:KeepAliveResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGiftCardDetails" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGiftCardDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCustomer" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerFieldsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerFields" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerFieldsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerFieldsResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCustomer" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCustomerSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddDeliveryLocationSoapIn">
+    <wsdl:part name="parameters" element="tns:AddDeliveryLocation" />
+  </wsdl:message>
+  <wsdl:message name="AddDeliveryLocationSoapOut">
+    <wsdl:part name="parameters" element="tns:AddDeliveryLocationResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:AddOrder" />
+  </wsdl:message>
+  <wsdl:message name="AddOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:AddOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersSoapIn">
+    <wsdl:part name="parameters" element="tns:ListVouchers" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersSoapOut">
+    <wsdl:part name="parameters" element="tns:ListVouchersResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckVoucherCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckVoucherCode" />
+  </wsdl:message>
+  <wsdl:message name="CheckVoucherCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckVoucherCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeSoapIn">
+    <wsdl:part name="parameters" element="tns:SetPollMode" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeSoapOut">
+    <wsdl:part name="parameters" element="tns:SetPollModeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWebOrders" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWebOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledSoapIn">
+    <wsdl:part name="parameters" element="tns:SetOrdersPolled" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledSoapOut">
+    <wsdl:part name="parameters" element="tns:SetOrdersPolledResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentSoapIn">
+    <wsdl:part name="parameters" element="tns:AddPayment" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentSoapOut">
+    <wsdl:part name="parameters" element="tns:AddPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersSoapIn">
+    <wsdl:part name="parameters" element="tns:PollWebOrders" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersSoapOut">
+    <wsdl:part name="parameters" element="tns:PollWebOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalcAdjustmentsSoapIn">
+    <wsdl:part name="parameters" element="tns:CalcAdjustments" />
+  </wsdl:message>
+  <wsdl:message name="CalcAdjustmentsSoapOut">
+    <wsdl:part name="parameters" element="tns:CalcAdjustmentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ServiceTestHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ServiceTestHttpGetOut">
+    <wsdl:part name="Body" element="tns:cServiceTestResult" />
+  </wsdl:message>
+  <wsdl:message name="LogonHttpGetIn">
+    <wsdl:part name="szCompanyCode" type="s:string" />
+    <wsdl:part name="szUserName" type="s:string" />
+    <wsdl:part name="szPassword" type="s:string" />
+    <wsdl:part name="szAppGUID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="LogonHttpGetOut">
+    <wsdl:part name="Body" element="tns:cLogonResult" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="szCardNo" type="s:string" />
+    <wsdl:part name="szActivationCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardHttpGetOut">
+    <wsdl:part name="Body" element="tns:cActivateLoyaltyCardResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szURL" type="s:string" />
+    <wsdl:part name="szAuthHeader" type="s:string" />
+    <wsdl:part name="szAuthValue" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsHttpGetOut">
+    <wsdl:part name="Body" element="tns:cUpdateNotificationSettingsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="eNewOrderStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusHttpGetOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="eNewPrintedStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusHttpGetOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lPluNo" type="s:string" />
+    <wsdl:part name="eNumInuse" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelHttpGetOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="szPLUS" type="s:string" />
+    <wsdl:part name="eNumInuse" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelHttpGetOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetLocationsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="lMediaNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetMediasResult" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetCompanyDetailsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetOrderDatesResult" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="bWebOrderItemsOnly" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetGetMenuResult" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveHttpGetIn">
+    <wsdl:part name="sCompanyCode" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szCardNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetGiftCardDetailsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szEmailAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetCustomerResult" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersHttpGetOut">
+    <wsdl:part name="Body" element="tns:cListVouchersResult" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="bStart" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeHttpGetOut">
+    <wsdl:part name="Body" element="tns:cPollResult" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iDaysSpan" type="s:string" />
+    <wsdl:part name="eNumOrderType" type="s:string" />
+    <wsdl:part name="eNumOrderStatus" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="bIgnoreOrderStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersHttpGetOut">
+    <wsdl:part name="Body" element="tns:cGetWebOrdersResult" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="szIDNos" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledHttpGetOut">
+    <wsdl:part name="Body" element="tns:cSetOrdersPolledResult" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="lMediaNo" type="s:string" />
+    <wsdl:part name="dValue" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentHttpGetOut">
+    <wsdl:part name="Body" element="tns:cAddPaymentResult" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iDaysSpan" type="s:string" />
+    <wsdl:part name="eNumOrderType" type="s:string" />
+    <wsdl:part name="eNumOrderStatus" type="s:string" />
+    <wsdl:part name="iWaitSeconds" type="s:string" />
+    <wsdl:part name="szLastPosError" type="s:string" />
+    <wsdl:part name="szPosGUID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersHttpGetOut">
+    <wsdl:part name="Body" element="tns:cPollWebOrdersResult" />
+  </wsdl:message>
+  <wsdl:message name="ServiceTestHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ServiceTestHttpPostOut">
+    <wsdl:part name="Body" element="tns:cServiceTestResult" />
+  </wsdl:message>
+  <wsdl:message name="LogonHttpPostIn">
+    <wsdl:part name="szCompanyCode" type="s:string" />
+    <wsdl:part name="szUserName" type="s:string" />
+    <wsdl:part name="szPassword" type="s:string" />
+    <wsdl:part name="szAppGUID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="LogonHttpPostOut">
+    <wsdl:part name="Body" element="tns:cLogonResult" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="szCardNo" type="s:string" />
+    <wsdl:part name="szActivationCode" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ActivateLoyaltyCardHttpPostOut">
+    <wsdl:part name="Body" element="tns:cActivateLoyaltyCardResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szURL" type="s:string" />
+    <wsdl:part name="szAuthHeader" type="s:string" />
+    <wsdl:part name="szAuthValue" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersNotificationSettingsHttpPostOut">
+    <wsdl:part name="Body" element="tns:cUpdateNotificationSettingsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="eNewOrderStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWebOrdersStatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="eNewPrintedStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateReceiptPrintedStatusHttpPostOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lPluNo" type="s:string" />
+    <wsdl:part name="eNumInuse" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdatePluStockLevelHttpPostOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="szPLUS" type="s:string" />
+    <wsdl:part name="eNumInuse" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="UpdateMultiPluStockLevelHttpPostOut">
+    <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetLocationsHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetLocationsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="lMediaNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMediasHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetMediasResult" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCompanyDetailsHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetCompanyDetailsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetOrderDatesHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetOrderDatesResult" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="bWebOrderItemsOnly" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetMenuHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetGetMenuResult" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveHttpPostIn">
+    <wsdl:part name="sCompanyCode" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="KeepAliveHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szCardNo" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetGiftCardDetailsHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetGiftCardDetailsResult" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szEmailAddress" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetCustomerHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetCustomerResult" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ListVouchersHttpPostOut">
+    <wsdl:part name="Body" element="tns:cListVouchersResult" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="bStart" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetPollModeHttpPostOut">
+    <wsdl:part name="Body" element="tns:cPollResult" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iDaysSpan" type="s:string" />
+    <wsdl:part name="eNumOrderType" type="s:string" />
+    <wsdl:part name="eNumOrderStatus" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="bIgnoreOrderStatus" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetWebOrdersHttpPostOut">
+    <wsdl:part name="Body" element="tns:cGetWebOrdersResult" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="szIDNos" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SetOrdersPolledHttpPostOut">
+    <wsdl:part name="Body" element="tns:cSetOrdersPolledResult" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="lCustomerNo" type="s:string" />
+    <wsdl:part name="lOrderNo" type="s:string" />
+    <wsdl:part name="lMediaNo" type="s:string" />
+    <wsdl:part name="dValue" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="AddPaymentHttpPostOut">
+    <wsdl:part name="Body" element="tns:cAddPaymentResult" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="sLocation" type="s:string" />
+    <wsdl:part name="iTerminalNo" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+    <wsdl:part name="iDaysSpan" type="s:string" />
+    <wsdl:part name="eNumOrderType" type="s:string" />
+    <wsdl:part name="eNumOrderStatus" type="s:string" />
+    <wsdl:part name="iWaitSeconds" type="s:string" />
+    <wsdl:part name="szLastPosError" type="s:string" />
+    <wsdl:part name="szPosGUID" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="PollWebOrdersHttpPostOut">
+    <wsdl:part name="Body" element="tns:cPollWebOrdersResult" />
+  </wsdl:message>
+  <wsdl:portType name="WebOrdersAPISoap">
+    <wsdl:operation name="ServiceTest">
+      <wsdl:input message="tns:ServiceTestSoapIn" />
+      <wsdl:output message="tns:ServiceTestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <wsdl:input message="tns:LogonSoapIn" />
+      <wsdl:output message="tns:LogonSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <wsdl:input message="tns:ActivateLoyaltyCardSoapIn" />
+      <wsdl:output message="tns:ActivateLoyaltyCardSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <wsdl:input message="tns:UpdateWebOrdersNotificationSettingsSoapIn" />
+      <wsdl:output message="tns:UpdateWebOrdersNotificationSettingsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <wsdl:input message="tns:UpdateWebOrdersStatusSoapIn" />
+      <wsdl:output message="tns:UpdateWebOrdersStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAtStoreStatus">
+      <wsdl:input message="tns:UpdateAtStoreStatusSoapIn" />
+      <wsdl:output message="tns:UpdateAtStoreStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <wsdl:input message="tns:UpdateReceiptPrintedStatusSoapIn" />
+      <wsdl:output message="tns:UpdateReceiptPrintedStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <wsdl:input message="tns:UpdatePluStockLevelSoapIn" />
+      <wsdl:output message="tns:UpdatePluStockLevelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <wsdl:input message="tns:UpdateMultiPluStockLevelSoapIn" />
+      <wsdl:output message="tns:UpdateMultiPluStockLevelSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <wsdl:input message="tns:GetLocationsSoapIn" />
+      <wsdl:output message="tns:GetLocationsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <wsdl:input message="tns:GetMediasSoapIn" />
+      <wsdl:output message="tns:GetMediasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <wsdl:input message="tns:GetCompanyDetailsSoapIn" />
+      <wsdl:output message="tns:GetCompanyDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <wsdl:input message="tns:GetOrderDatesSoapIn" />
+      <wsdl:output message="tns:GetOrderDatesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <wsdl:input message="tns:GetMenuSoapIn" />
+      <wsdl:output message="tns:GetMenuSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <wsdl:input message="tns:KeepAliveSoapIn" />
+      <wsdl:output message="tns:KeepAliveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <wsdl:input message="tns:GetGiftCardDetailsSoapIn" />
+      <wsdl:output message="tns:GetGiftCardDetailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <wsdl:input message="tns:GetCustomerSoapIn" />
+      <wsdl:output message="tns:GetCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomerFields">
+      <wsdl:input message="tns:UpdateCustomerFieldsSoapIn" />
+      <wsdl:output message="tns:UpdateCustomerFieldsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomer">
+      <wsdl:input message="tns:UpdateCustomerSoapIn" />
+      <wsdl:output message="tns:UpdateCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddDeliveryLocation">
+      <wsdl:input message="tns:AddDeliveryLocationSoapIn" />
+      <wsdl:output message="tns:AddDeliveryLocationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <wsdl:input message="tns:AddOrderSoapIn" />
+      <wsdl:output message="tns:AddOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <wsdl:input message="tns:ListVouchersSoapIn" />
+      <wsdl:output message="tns:ListVouchersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckVoucherCode">
+      <wsdl:input message="tns:CheckVoucherCodeSoapIn" />
+      <wsdl:output message="tns:CheckVoucherCodeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <wsdl:input message="tns:SetPollModeSoapIn" />
+      <wsdl:output message="tns:SetPollModeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <wsdl:input message="tns:GetWebOrdersSoapIn" />
+      <wsdl:output message="tns:GetWebOrdersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <wsdl:input message="tns:SetOrdersPolledSoapIn" />
+      <wsdl:output message="tns:SetOrdersPolledSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <wsdl:input message="tns:AddPaymentSoapIn" />
+      <wsdl:output message="tns:AddPaymentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <wsdl:input message="tns:PollWebOrdersSoapIn" />
+      <wsdl:output message="tns:PollWebOrdersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalcAdjustments">
+      <wsdl:input message="tns:CalcAdjustmentsSoapIn" />
+      <wsdl:output message="tns:CalcAdjustmentsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WebOrdersAPIHttpGet">
+    <wsdl:operation name="ServiceTest">
+      <wsdl:input message="tns:ServiceTestHttpGetIn" />
+      <wsdl:output message="tns:ServiceTestHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <wsdl:input message="tns:LogonHttpGetIn" />
+      <wsdl:output message="tns:LogonHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <wsdl:input message="tns:ActivateLoyaltyCardHttpGetIn" />
+      <wsdl:output message="tns:ActivateLoyaltyCardHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <wsdl:input message="tns:UpdateWebOrdersNotificationSettingsHttpGetIn" />
+      <wsdl:output message="tns:UpdateWebOrdersNotificationSettingsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <wsdl:input message="tns:UpdateWebOrdersStatusHttpGetIn" />
+      <wsdl:output message="tns:UpdateWebOrdersStatusHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <wsdl:input message="tns:UpdateReceiptPrintedStatusHttpGetIn" />
+      <wsdl:output message="tns:UpdateReceiptPrintedStatusHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <wsdl:input message="tns:UpdatePluStockLevelHttpGetIn" />
+      <wsdl:output message="tns:UpdatePluStockLevelHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <wsdl:input message="tns:UpdateMultiPluStockLevelHttpGetIn" />
+      <wsdl:output message="tns:UpdateMultiPluStockLevelHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <wsdl:input message="tns:GetLocationsHttpGetIn" />
+      <wsdl:output message="tns:GetLocationsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <wsdl:input message="tns:GetMediasHttpGetIn" />
+      <wsdl:output message="tns:GetMediasHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <wsdl:input message="tns:GetCompanyDetailsHttpGetIn" />
+      <wsdl:output message="tns:GetCompanyDetailsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <wsdl:input message="tns:GetOrderDatesHttpGetIn" />
+      <wsdl:output message="tns:GetOrderDatesHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <wsdl:input message="tns:GetMenuHttpGetIn" />
+      <wsdl:output message="tns:GetMenuHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <wsdl:input message="tns:KeepAliveHttpGetIn" />
+      <wsdl:output message="tns:KeepAliveHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <wsdl:input message="tns:GetGiftCardDetailsHttpGetIn" />
+      <wsdl:output message="tns:GetGiftCardDetailsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <wsdl:input message="tns:GetCustomerHttpGetIn" />
+      <wsdl:output message="tns:GetCustomerHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <wsdl:input message="tns:ListVouchersHttpGetIn" />
+      <wsdl:output message="tns:ListVouchersHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <wsdl:input message="tns:SetPollModeHttpGetIn" />
+      <wsdl:output message="tns:SetPollModeHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <wsdl:input message="tns:GetWebOrdersHttpGetIn" />
+      <wsdl:output message="tns:GetWebOrdersHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <wsdl:input message="tns:SetOrdersPolledHttpGetIn" />
+      <wsdl:output message="tns:SetOrdersPolledHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <wsdl:input message="tns:AddPaymentHttpGetIn" />
+      <wsdl:output message="tns:AddPaymentHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <wsdl:input message="tns:PollWebOrdersHttpGetIn" />
+      <wsdl:output message="tns:PollWebOrdersHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="WebOrdersAPIHttpPost">
+    <wsdl:operation name="ServiceTest">
+      <wsdl:input message="tns:ServiceTestHttpPostIn" />
+      <wsdl:output message="tns:ServiceTestHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <wsdl:input message="tns:LogonHttpPostIn" />
+      <wsdl:output message="tns:LogonHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <wsdl:input message="tns:ActivateLoyaltyCardHttpPostIn" />
+      <wsdl:output message="tns:ActivateLoyaltyCardHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <wsdl:input message="tns:UpdateWebOrdersNotificationSettingsHttpPostIn" />
+      <wsdl:output message="tns:UpdateWebOrdersNotificationSettingsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <wsdl:input message="tns:UpdateWebOrdersStatusHttpPostIn" />
+      <wsdl:output message="tns:UpdateWebOrdersStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <wsdl:input message="tns:UpdateReceiptPrintedStatusHttpPostIn" />
+      <wsdl:output message="tns:UpdateReceiptPrintedStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <wsdl:input message="tns:UpdatePluStockLevelHttpPostIn" />
+      <wsdl:output message="tns:UpdatePluStockLevelHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <wsdl:input message="tns:UpdateMultiPluStockLevelHttpPostIn" />
+      <wsdl:output message="tns:UpdateMultiPluStockLevelHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <wsdl:input message="tns:GetLocationsHttpPostIn" />
+      <wsdl:output message="tns:GetLocationsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <wsdl:input message="tns:GetMediasHttpPostIn" />
+      <wsdl:output message="tns:GetMediasHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <wsdl:input message="tns:GetCompanyDetailsHttpPostIn" />
+      <wsdl:output message="tns:GetCompanyDetailsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <wsdl:input message="tns:GetOrderDatesHttpPostIn" />
+      <wsdl:output message="tns:GetOrderDatesHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <wsdl:input message="tns:GetMenuHttpPostIn" />
+      <wsdl:output message="tns:GetMenuHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <wsdl:input message="tns:KeepAliveHttpPostIn" />
+      <wsdl:output message="tns:KeepAliveHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <wsdl:input message="tns:GetGiftCardDetailsHttpPostIn" />
+      <wsdl:output message="tns:GetGiftCardDetailsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <wsdl:input message="tns:GetCustomerHttpPostIn" />
+      <wsdl:output message="tns:GetCustomerHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <wsdl:input message="tns:ListVouchersHttpPostIn" />
+      <wsdl:output message="tns:ListVouchersHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <wsdl:input message="tns:SetPollModeHttpPostIn" />
+      <wsdl:output message="tns:SetPollModeHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <wsdl:input message="tns:GetWebOrdersHttpPostIn" />
+      <wsdl:output message="tns:GetWebOrdersHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <wsdl:input message="tns:SetOrdersPolledHttpPostIn" />
+      <wsdl:output message="tns:SetOrdersPolledHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <wsdl:input message="tns:AddPaymentHttpPostIn" />
+      <wsdl:output message="tns:AddPaymentHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <wsdl:input message="tns:PollWebOrdersHttpPostIn" />
+      <wsdl:output message="tns:PollWebOrdersHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WebOrdersAPISoap" type="tns:WebOrdersAPISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ServiceTest">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ServiceTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/Logon" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ActivateLoyaltyCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersNotificationSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAtStoreStatus">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateAtStoreStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateReceiptPrintedStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdatePluStockLevel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateMultiPluStockLevel" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetLocations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetMedias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetCompanyDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetOrderDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetMenu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/KeepAlive" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetGiftCardDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomerFields">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateCustomerFields" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomer">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDeliveryLocation">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddDeliveryLocation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ListVouchers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckVoucherCode">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/CheckVoucherCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/SetPollMode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetWebOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/SetOrdersPolled" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/PollWebOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcAdjustments">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/CalcAdjustments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebOrdersAPISoap12" type="tns:WebOrdersAPISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ServiceTest">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ServiceTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/Logon" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ActivateLoyaltyCard" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersNotificationSettings" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAtStoreStatus">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateAtStoreStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateReceiptPrintedStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdatePluStockLevel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateMultiPluStockLevel" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetLocations" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetMedias" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetCompanyDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetOrderDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetMenu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/KeepAlive" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetGiftCardDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetCustomer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomerFields">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateCustomerFields" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomer">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateCustomer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddDeliveryLocation">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddDeliveryLocation" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOrder">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/ListVouchers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckVoucherCode">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/CheckVoucherCode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/SetPollMode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/GetWebOrders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/SetOrdersPolled" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/AddPayment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/PollWebOrders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcAdjustments">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/CalcAdjustments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebOrdersAPIHttpGet" type="tns:WebOrdersAPIHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="ServiceTest">
+      <http:operation location="/ServiceTest" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <http:operation location="/Logon" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <http:operation location="/ActivateLoyaltyCard" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <http:operation location="/UpdateWebOrdersNotificationSettings" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <http:operation location="/UpdateWebOrdersStatus" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <http:operation location="/UpdateReceiptPrintedStatus" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <http:operation location="/UpdatePluStockLevel" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <http:operation location="/UpdateMultiPluStockLevel" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <http:operation location="/GetLocations" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <http:operation location="/GetMedias" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <http:operation location="/GetCompanyDetails" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <http:operation location="/GetOrderDates" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <http:operation location="/GetMenu" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <http:operation location="/KeepAlive" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <http:operation location="/GetGiftCardDetails" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <http:operation location="/GetCustomer" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <http:operation location="/ListVouchers" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <http:operation location="/SetPollMode" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <http:operation location="/GetWebOrders" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <http:operation location="/SetOrdersPolled" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <http:operation location="/AddPayment" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <http:operation location="/PollWebOrders" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WebOrdersAPIHttpPost" type="tns:WebOrdersAPIHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="ServiceTest">
+      <http:operation location="/ServiceTest" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logon">
+      <http:operation location="/Logon" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActivateLoyaltyCard">
+      <http:operation location="/ActivateLoyaltyCard" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersNotificationSettings">
+      <http:operation location="/UpdateWebOrdersNotificationSettings" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWebOrdersStatus">
+      <http:operation location="/UpdateWebOrdersStatus" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateReceiptPrintedStatus">
+      <http:operation location="/UpdateReceiptPrintedStatus" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdatePluStockLevel">
+      <http:operation location="/UpdatePluStockLevel" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMultiPluStockLevel">
+      <http:operation location="/UpdateMultiPluStockLevel" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLocations">
+      <http:operation location="/GetLocations" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMedias">
+      <http:operation location="/GetMedias" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCompanyDetails">
+      <http:operation location="/GetCompanyDetails" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderDates">
+      <http:operation location="/GetOrderDates" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMenu">
+      <http:operation location="/GetMenu" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="KeepAlive">
+      <http:operation location="/KeepAlive" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGiftCardDetails">
+      <http:operation location="/GetGiftCardDetails" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomer">
+      <http:operation location="/GetCustomer" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListVouchers">
+      <http:operation location="/ListVouchers" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetPollMode">
+      <http:operation location="/SetPollMode" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWebOrders">
+      <http:operation location="/GetWebOrders" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetOrdersPolled">
+      <http:operation location="/SetOrdersPolled" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPayment">
+      <http:operation location="/AddPayment" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PollWebOrders">
+      <http:operation location="/PollWebOrders" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WebOrdersAPI">
+    <wsdl:port name="WebOrdersAPISoap" binding="tns:WebOrdersAPISoap">
+      <soap:address location="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebOrdersAPISoap12" binding="tns:WebOrdersAPISoap12">
+      <soap12:address location="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebOrdersAPIHttpGet" binding="tns:WebOrdersAPIHttpGet">
+      <http:address location="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WebOrdersAPIHttpPost" binding="tns:WebOrdersAPIHttpPost">
+      <http:address location="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

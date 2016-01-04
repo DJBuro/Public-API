@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="StatusValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="NameValidator" test="Name"><v:message id="error.Name.required" providers="NameErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

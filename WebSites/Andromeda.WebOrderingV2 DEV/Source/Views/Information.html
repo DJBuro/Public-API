@@ -1,0 +1,9 @@
+﻿<!-- FORGOT PASSWORD VIEW -->
+    <script type="text/html" id="informationView">
+        <div id="informationBox">
+            <div id="informationInner" data-bind="html: $root.contentViewModel().information"></div>
+            <div class="button" id="informationBackButton">
+                <a data-bind="click: $root.contentViewModel().back, html: textStrings.infBack" href="#"></a>
+            </div>
+        </div>
+    </script>

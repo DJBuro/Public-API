@@ -1,0 +1,716 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.TeamSharp</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.TeamSharp.MT100DeviceDefinition">
+            <summary>
+            Defines the capabilities of TeamSharp MT-100 device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSharpDeviceDefinition">
+            <summary>
+            All TeamSharp device definition inherit from this class.
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpDeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listFields"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpDeviceDefinition.InstallDefaultMapperEntryFor(Franson.Message.MessageField,Franson.Message.MessageFieldDictionary)">
+            <summary>
+            Default message field mappings.
+            </summary>
+            <param name="inField"></param>
+            <param name="defaultMapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpDeviceDefinition.RegisterCommad(GpsGate.Online.Command.GateCmd)">
+            <summary>
+            Commands.
+            </summary>
+            <param name="gateCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamSharpDeviceDefinition.DeviceIdentifierLabel">
+            <summary>
+            Returns "Identifier"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamSharpDeviceDefinition.NamespaceName">
+            <summary>
+            Returns "TeamSharp".
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.MT100DeviceDefinition.Name">
+            <summary>
+            Returns "TeamSharp MT-100"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.MT100DeviceDefinition.Description">
+            <summary>
+            Free text description.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.PT600DeviceDefinition">
+            <summary>
+            Defines the capabilities of TeamSharp PT-600 device such as MessageFields, Default Mapper and Command support
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.PT600DeviceDefinition.InstallMessageFields(Franson.Message.MessageNamespace,System.Collections.Generic.List{GpsGate.Online.Directory.DeviceFieldProperty})">
+            <summary>
+            Add message fields.
+            </summary>
+            <param name="deviceNamespace"></param>
+            <param name="listFields"></param>
+        </member>
+        <member name="P:GpsGate.TeamSharp.PT600DeviceDefinition.Name">
+            <summary>
+            Returns "TeamSharp PT-600"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.PT600DeviceDefinition.Description">
+            <summary>
+            Free text description.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSharpStatus">
+            <summary>
+            Check <see cref="M:GpsGate.TeamSharp.TeamParser.ParseStatus(System.String)"/> for mapping between field value and enum.
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Unknown">
+            <summary>
+            Unnkown
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.GsmPositioning">
+            <summary>
+            "0"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Prefix1">
+            <summary>
+            "1"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Prefix2">
+            <summary>
+            "2"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Prefix3">
+            <summary>
+            "3"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Prefix4">
+            <summary>
+            "4"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.SOS">
+            <summary>
+            "5"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.GEOFENCE">
+            <summary>
+            "6"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.LOWBATTERY">
+            <summary>
+            "7"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.VIBRATION">
+            <summary>
+            "8"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CLOCK">
+            <summary>
+            "9"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.POWERON">
+            <summary>
+            "A"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.SPEEDING">
+            <summary>
+            "B"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.MANDOWN">
+            <summary>
+            "C"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.STRAPOPEN">
+            <summary>
+            "D"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.LeaveHome">
+            <summary>
+            "E"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.EnterHome">
+            <summary>
+            "F"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.GeofenceEnter">
+            <summary>
+            "G"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.Parking">
+            <summary>
+            "H"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.AccOn">
+            <summary>
+            "I"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.AccOff">
+            <summary>
+            "J"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.PowerCut">
+            <summary>
+            "K"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.ExternalAlarm1">
+            <summary>
+            "L"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.ExternalAlarm2">
+            <summary>
+            "M"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.InternalAlarm1">
+            <summary>
+            "N"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.InternalAlarm2">
+            <summary>
+            "O"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint1">
+            <summary>
+            "P"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint2">
+            <summary>
+            "Q"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint3">
+            <summary>
+            "R"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint4">
+            <summary>
+            "S"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint5">
+            <summary>
+            "T"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint6">
+            <summary>
+            "U"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint7">
+            <summary>
+            "V"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint8">
+            <summary>
+            "W"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint9">
+            <summary>
+            "X"
+            </summary>
+        </member>
+        <member name="F:GpsGate.TeamSharp.TeamSharpStatus.CheckPoint10">
+            <summary>
+            "Y"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamBase">
+            <summary>
+            Base class for all TeamSharp sentences.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.GetTrackPoint(System.Int32)">
+            <summary>
+            Returns TrackPoint objects from sentence
+            </summary>
+            <param name="iIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.SetTrackPoints(Franson.Geo.TrackPoint[])">
+            <summary>
+            Called by parser in derived class.
+            </summary>
+            <param name="arrTP"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.GetStatus(System.Int32)">
+            <summary>
+            Returns the Status from sentence for the given sequence number
+            </summary>
+            <param name="iIndex">Index</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.SetStatus(GpsGate.TeamSharp.TeamSharpStatus[])">
+            <summary>
+            Called by parser i derived class.
+            </summary>
+            <param name="arrStatus"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.SetFirmware(System.String)">
+            <summary>
+            Called by parser in derived class. Sets firmware identifier.
+            </summary>
+            <param name="firmware"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.BuildSentence">
+            <summary>
+            Not implemented
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.SetIdentifier(System.String)">
+            <summary>
+            Called by parser in derived class. Sets identifier.
+            </summary>
+            <param name="strIdentifier"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamBase.CreateTeamBase(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create a TeamBase sentence from a generic sentence.
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamBase.Length">
+            <summary>
+            Number of TrackPoint objects in sentence
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamBase.Identifier">
+            <summary>
+            Identifier.
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamBase.Firmware">
+            <summary>
+            Firmware identifier
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamFormatExpection">
+            <summary>
+            Could not parse position report.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamFormatExpection.#ctor(System.String)">
+            <summary>
+            Create exception.
+            </summary>
+            <param name="strMessage"></param>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamGG1">
+            <summary>
+            TeamSharp GG1 sentence
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG1.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create TeamGG1
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG1.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence to typed sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG1.IsGG1(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Returns true if sentence is of type GG1
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamGG3">
+            <summary>
+            TeamSharp GG3 sentence
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG3.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create TeamGG1
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG3.IsGG3(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Returns true if sentence is of type GG3 or SG3
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamGG3.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse GG3 sentence.
+            </summary>
+            <param name="sentence"></param>
+            
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamParser">
+            <summary>
+            Parse TeamSharp data.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamParser.#ctor">
+            <summary>
+            Create parser
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamParser.ValidateSentence(System.Byte[])">
+            <summary>
+            Returns true. teamSharp has no checksum.
+            </summary>
+            <param name="arrData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamParser.CreateSentence(System.Byte[])">
+            <summary>
+            Returns a <see cref="T:GpsGate.TeamSharp.TeamSentence"/> object.
+            </summary>
+            <param name="arrSentence"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamParser.ParseStatus(System.String)">
+            <summary>
+            Parses field to status enum.
+            </summary>
+            <param name="strStatus"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamProtocol">
+            <summary>
+            TeamSharp "MobyFinder" protocol.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamProtocol.#ctor(GpsGate.Online.Net.NmeaConnection)">
+            <summary>
+            Create TeamSharp protocol object.
+            </summary>
+            <param name="nmeaConn"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamProtocol.TranslateFromDevice(Franson.Message.ProviderMessage)">
+            <summary>
+            SMS from device to teamSharp protocol.
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamProtocol.TranslateFromDevice(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            TCP/IP (GPRS) message from device to TeamSharp protocol.
+            </summary>
+            <param name="arrData"></param>
+            <param name="iStart"></param>
+            <param name="iLength"></param>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamProtocol.StringID">
+            <summary>
+            Returns the string "TeamSharp"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSentence">
+            <summary>
+            Generic TeamSharp sentence.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSentence.#ctor(System.Byte[])">
+            <summary>
+            Create generic sentence.
+            </summary>
+            <param name="arrSentence"></param>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSG">
+            <summary>
+            All typed SGx sentences inherit from this class.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSG.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create typed sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSG.ParseSentence(Franson.Nmea.Sentence)">
+            <summary>
+            Parse generic sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:GpsGate.TeamSharp.TeamSG1" -->
+        <member name="M:GpsGate.TeamSharp.TeamSG1.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create typed sentence
+            </summary>
+            <param name="sentence"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSG1.IsSG1(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Returns true if sentence is of type SG1
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:GpsGate.TeamSharp.TeamSG2" -->
+        <member name="M:GpsGate.TeamSharp.TeamSG2.#ctor(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Create typed sentence
+            </summary>
+            <param name="sentences"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSG2.IsSG2(GpsGate.TeamSharp.TeamSentence)">
+            <summary>
+            Returns true if sentence is of type SG2
+            </summary>
+            <param name="sentence"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSharpSmsConnection">
+            <summary>
+            TeamSharp SMS connection implementation.
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpSmsConnection.#ctor(Franson.Message.MSISDN)">
+            <summary>
+            Create incoming SMS connection for TeamSharp
+            </summary>
+            <param name="msisdn"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpSmsConnection.CreateProtocol">
+            <summary>
+            Create TeamSharp protocol object. Returns <see cref="T:GpsGate.TeamSharp.TeamProtocol"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamSharpSmsListener">
+            <summary>
+            TeamSharp SMS listener.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpSmsListener.CreateSmsConnection(Franson.Message.MSISDN)">
+            <summary>
+            Returns a new <see cref="T:GpsGate.TeamSharp.TeamSharpSmsConnection"/> object.
+            </summary>
+            <param name="msisdn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpSmsListener.OnStart">
+            <summary>
+            Installs protocol and starts listener.
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamSharpSmsListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Install and enable listener.
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamSharpSmsListener.ProtocolID">
+            <summary>
+            Returns "TeamSharp"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamTcpConnection">
+            <summary>
+            Handles connection to TeamSharp 
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpConnection.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Creates a TeamSharp device connection from a socket.
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpConnection.Start">
+            <summary>
+            Start connection. Set timeout before kill to 15 minutes.
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpConnection.CreateProtocol">
+            <summary>
+            Returns <see cref="T:GpsGate.TeamSharp.TeamProtocol"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.TeamSharp.TeamTcpListener">
+            <summary>
+            Handles TeamSharp protocol over TCP/IP
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpListener.OnStart">
+            <summary>
+            Installs protocol and starts listener
+            </summary>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpListener.CreateTcpConnection(System.Net.Sockets.Socket)">
+            <summary>
+            Returns a <see cref="T:GpsGate.TeamSharp.TeamTcpConnection"/> object.
+            </summary>
+            <param name="socket"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.TeamSharp.TeamTcpListener.Install(Franson.Reflection.LoadableType)">
+            <summary>
+            Called when listener type is installed.
+            Sets default server port to 8001
+            </summary>
+            <param name="typeInfo"></param>
+        </member>
+        <member name="P:GpsGate.TeamSharp.TeamTcpListener.ProtocolID">
+            <summary>
+            Returns "TeamSharp"
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.Command.TeamSharpGprsSettingsCmdExe">
+            <summary>
+            Handles outgoing _GprsSettings command for TeamSharp
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.Command.TeamSharpGprsSettingsCmdExe.Execute">
+            <summary>
+            Queue GPRS configuration SMS.
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpGprsSettingsCmdExe.Namespace">
+            <summary>
+            Returns "TeamSharp"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpGprsSettingsCmdExe.RequiresAck">
+            <summary>
+            TeamSharp requires ACK for outgoing SMS.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.Command.TeamSharpPollPositionCmdExe">
+            <summary>
+            Handles outgoing _PollPosition command for TeamSharp
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.Command.TeamSharpPollPositionCmdExe.Execute">
+            <summary>
+            Poll position
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpPollPositionCmdExe.Namespace">
+            <summary>
+            Returns "TeamSharp"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpPollPositionCmdExe.RequiresAck">
+            <summary>
+            TeamSharp requires ACK for outgoing SMS.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.Command.TeamSharpStartTrackingCmdExe">
+            <summary>
+            Handles outgoing _StartTracking command for TeamSharp
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.Command.TeamSharpStartTrackingCmdExe.Execute">
+            <summary>
+            Start tracking
+            </summary>
+            <exception cref="T:GpsGate.Online.GateCmdException"></exception>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpStartTrackingCmdExe.Namespace">
+            <summary>
+            Returns "TeamSharp"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpStartTrackingCmdExe.RequiresAck">
+            <summary>
+            TeamSharp requires ACK for outgoing SMS.
+            </summary>
+        </member>
+        <member name="T:GpsGate.TeamSharp.Command.TeamSharpStopTrackingCmdExe">
+            <summary>
+            Handles outgoing _StopTracking command for TeamSharp
+            </summary>
+            <threadsafety static="true" instance="false"/>
+        </member>
+        <member name="M:GpsGate.TeamSharp.Command.TeamSharpStopTrackingCmdExe.Execute">
+            <summary>
+            Stop tracking
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpStopTrackingCmdExe.Namespace">
+            <summary>
+            Return "TeamSharp"
+            </summary>
+        </member>
+        <member name="P:GpsGate.TeamSharp.Command.TeamSharpStopTrackingCmdExe.RequiresAck">
+            <summary>
+            TeamSharp requires ACK for outgoing SMS.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net">
+
+    <object id="SiteBaseController" abstract="true">
+
+    </object>
+
+    <object id="HomeController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.HomeController" singleton="false">
+        <property name="DashboardDataDao" ref="DashboardDataDao" />
+
+    </object>
+
+    <object id="DashboardController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.DashboardController" singleton="false">
+      <property name="DashboardDataDao" ref="DashboardDataDao" />
+
+    </object>
+
+    <object id="HeadOfficeController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.HeadOfficeController" singleton="false">
+      <property name="DashboardDataDao" ref="DashboardDataDao" />
+      <property name="IndicatorDefinitionDao" ref="IndicatorDefinitionDao" />
+    </object>
+
+    <object id="DisplayController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.DisplayController" singleton="false">
+      <property name="DashboardDataDao" ref="DashboardDataDao" />
+      <property name="IndicatorDefinitionDao" ref="IndicatorDefinitionDao" />
+    </object>
+
+    <object id="AccountController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.AccountController" singleton="false">
+    </object>
+
+  <object id="AdminController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.AdminController" singleton="false">
+    <property name="SitesRegionDao" ref="SitesRegionDao" />
+    </object>
+
+
+<!-- todo: test for singleton = true -->
+    <object id="ScrollerController" parent="SiteBaseController" type="Dashboard.Web.WebSite.Controllers.ScrollerController" singleton="false">
+        <!--<property name="DashboardDataDao" ref="DashboardDataDao" />
+        <property name="IndicatorDefinitionDao" ref="IndicatorDefinitionDao" />-->
+    </object>
+
+
+</objects>

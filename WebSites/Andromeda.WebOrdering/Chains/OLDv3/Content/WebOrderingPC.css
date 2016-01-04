@@ -1,0 +1,513 @@
+﻿body
+{
+    height: 100%;
+    width:100%;
+    top: 0;
+}
+
+.page, .pageWithPopup
+{
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+header
+{
+    /*position: absolute;*/
+    min-width: 100%;
+    margin: 0;
+    left: 0;
+    border:0;
+    /*overflow: hidden;*/
+    height: 150px;
+    z-index: 999;
+    background: transparent url('Images/Header.jpg') repeat-x;
+}
+
+#pageHeader
+{
+    /*position: absolute;*/
+    width:1024px;
+    /*left:50%;
+    margin:0 0 0 -512px;*/
+    padding:0 10px 0 0;
+    margin: 0 auto;
+    
+    height: 140px;
+    /*border: solid 1px black;*/
+    -moz-border-bottom-right-radius: 7px;
+    -moz-border-bottom-left-radius: 7px;
+    -webkit-border-bottom-right-radius: 7px;
+    -webkit-border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    -khtml-bottom-right-border-radius: 7px;
+    -khtml-bottom-left-border-radius: 7px;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#DDDDDD));
+    background: -webkit-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -moz-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -ms-linear-gradient(top, #ffffff, #DDDDDD);
+    background: -o-linear-gradient(top, #ffffff, #DDDDDD);
+
+    moz-box-shadow: 0 0 7px 1px #888;
+    -webkit-box-shadow: 0 0 7px 1px #888;
+    box-shadow: 0 0 7px 1px #888;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#DDDDDD');
+}
+
+#pageHeaderInner
+{
+    background: transparent url('Images/logoSmall.png') no-repeat;
+    background-position: 30px 10px;
+    width:100%;
+    height:100%;
+}
+
+#viewContainer
+{
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/* SITES VIEW */
+.sites
+{
+    float:left;
+    width: 984px; /* Minus padding */
+}
+
+.sitesBox
+{
+    color: #493700;
+    padding: 20px 50px 20px 50px;
+    width: 924px;
+}
+
+/* HOME VIEW */
+
+#homeDeliveryTimes
+{
+    float:right; 
+    width: 250px;
+    min-height: 250px;
+
+    padding: 20px;
+    margin: 10px 0 0 0;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    overflow: hidden;
+    background-color:white;
+    border: 1px solid black;
+
+    color: #493700;
+}
+
+#homeDeliveryTimes h1
+{
+    font-size: 16pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 0 0 10px 0;
+    text-align:center;
+}
+
+#homeDeliveryTimes h2
+{
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 0;
+    margin: 0 0 10px 0;
+    text-align:center;
+}
+
+.welcomeHeader
+{
+    font-weight:normal;
+    text-align:center;
+    font-size:36pt;
+    color:#493700;
+    padding:0;
+    margin:10px 0 0 0;
+}
+
+#homeDeliveryTimesTablet
+{
+    display: none;
+}
+
+.content
+{
+    overflow: hidden;
+    /*position:absolute;*/
+    /*height:auto;
+    top:155px;
+    bottom:30px;*/
+    border: solid 1px black;
+    background-color: #EAEAEA;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    margin: 0 0 30px 0;
+}
+
+/* HOME VIEW */
+.homeBox
+{
+    color: white;
+    padding: 0 25px 0 25px;
+
+    position: relative;
+    height: 100%;
+    width: 974px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-right: 7px;
+}
+
+#homeAddressWrapper
+{
+    float:left; 
+    width: 630px;
+    height: 270px;
+
+    padding: 20px 0 0 20px;
+    margin: 10px 0 0 0;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    overflow: hidden;
+    background-color:white;
+    border: 1px solid black;
+
+    color: #493700;
+}
+
+#homeAddress
+{
+    float:left;
+    width: 200px;
+}
+
+#homeAddressMap
+{
+    float: left;
+}
+
+#mapContainer
+{
+    width: 400px;
+    height: 250px;
+    overflow: hidden;
+    float: left;
+    margin: 0 0 0 10px;
+    border: solid 1px gray;
+}
+
+#homeMenuSectionsTablet
+{
+    display:none;
+}
+
+#homeMenuSections
+{
+    clear: both;
+    padding: 10px 0 10px 0;
+    overflow:hidden;
+}
+
+.homeMenuSection
+{
+    float:left;
+    width: 120px; 
+    height: 65px;
+    margin: 0 15px 15px 0;
+
+    text-align:center;
+    cursor: pointer;
+
+    /*border: solid 1px #9E7100;*/
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+    overflow:hidden;
+}
+
+/* MENU VIEW */
+#rightColumn
+{
+    position: absolute;
+    top: 155px;
+    margin: 0 0 0 765px;
+    height: auto;
+    bottom: 30px;
+}
+
+#rightColumnInner
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width:265px;
+}
+
+#yourOrderContainer
+{
+    width:245px;
+    position:relative;
+
+    border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#menuContainer
+{
+    overflow: hidden;
+    position:relative;
+    height:100%;
+}
+
+#optionsContainer
+{
+    min-height:100px;
+}
+
+#storeDetailsContainer
+{
+    min-height:100px;
+}
+
+#postcodeCheck
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -115px 0 0 -200px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 230px;
+    width: 400px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+.tandcPopupHidden, .tandcPopupVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -350px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 400px;
+    width: 700px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+/*.menu
+{
+    float:left;
+    width: 647px;
+}*/
+#topColumn
+{
+    display:none;
+}
+
+#leftColumn
+{
+    position: absolute;
+    top: 155px;
+    height: auto;
+    bottom: 30px;
+}
+
+#leftColumnInner
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width: 145px;
+}
+
+#sectionHeadersContainer
+{
+    width:125px;
+    position:relative;
+
+    border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#centerColumn
+{
+    position: absolute;
+    top: 155px;
+    margin: 0 0 0 150px;
+    height: auto;
+    bottom: 30px;
+
+    /*overflow: hidden;
+    height:auto;
+    position:absolute;
+    top:155px;
+    bottom:30px;
+    margin-left:150px;*/
+    /*margin-left:-370px;*/
+    /*margin: 0 auto;*/
+    
+    /*border: solid 1px black;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    
+    background-color: white;*/
+}
+#centerColumnInner
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width: 610px;
+}
+
+#sectionsContainer
+{
+    width:590px;
+    position:relative;
+
+    border: solid 1px black;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: white;
+
+    padding: 0 5px 10px 5px;
+}
+
+#sections
+{
+    width: 612px;
+}
+
+.selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+{
+    padding: 2px 0 2px 7px;
+}
+
+.popupBoxHidden, .popupBoxVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin: 20px 0 0 -450px;
+    background-color:white;
+    border: solid 1px gray;
+    min-height: 300px;
+    width: 900px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+}
+
+.popupChefComments
+{
+    width:410px; 
+    float:left;
+}
+
+.popupChefComments p
+{
+    font-size:10pt;
+}
+
+.popupChefComments textarea
+{
+    width:410px; 
+    resize: none; 
+    height:75px;
+}
+
+.popupPerson
+{
+    width:410px; 
+    float:right;
+    margin-right:20px;
+}
+
+.popupPerson p
+{
+    font-size:10pt;
+}
+
+.popupPerson input
+{
+    width:410px; 
+}

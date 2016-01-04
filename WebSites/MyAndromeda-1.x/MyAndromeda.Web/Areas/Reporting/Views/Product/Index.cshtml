@@ -1,0 +1,73 @@
+﻿@using MyAndromeda.Web.Areas.Reporting.Context;
+@using MyAndromedaDataAccess.Domain.Reporting.Query;
+
+@model IReportingContext
+@{
+    var today = DateTime.Today;
+    var dailyFilter = new FilterQuery() { FilterFrom = DateTime.Today, FilterTo = DateTime.Today.AddDays(1) };
+    var weeklyFilter = new FilterQuery() { FilterFrom = DateTime.Today.AddDays(-7), FilterTo = DateTime.Today };
+    var monthlyFilter = new FilterQuery() { FilterFrom = DateTime.Today.AddDays(-30), FilterTo = DateTime.Today };
+
+}
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    { 
+    <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var service = new MyAndromeda.Reporting.Services.ReportingServiceWatcher({
+                id: "#dashboardreport"
+            });
+            var today = new Date();
+
+            //set the time going
+            //service.Tick();
+            service.Set("from", today);
+            //console.log("dashboard");
+            //service.Init();
+        });
+    </script>
+}
+
+
+<div id="ChartWrapper">
+    <div class="clearfix" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="header">
+                    <h3>Store Dashboard for @Model.SiteName - last 30 days</h3>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                @Html.Action("PopularItems", "Orders", monthlyFilter)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var datePicker = $("#fromPicker").data("kendoDatePicker");
+            var today = new Date();
+            if (datePicker) {
+                datePicker.max(today);
+            }
+        });
+    </script>
+}
+
+@using (Html.BeginHelpSection("Charts", TabArea.Help, true))
+{
+    <div class="header">
+        <h3>Charts</h3>
+    </div>
+
+    <p>Hover over the spark lines to reveal more data.</p>
+    <p>Click on a a chart to see a bigger representation</p>
+}

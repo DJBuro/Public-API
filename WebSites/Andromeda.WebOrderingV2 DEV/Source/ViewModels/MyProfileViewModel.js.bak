@@ -1,0 +1,331 @@
+﻿/*
+    Copyright © 2014 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+function MyProfileViewModel()
+{
+    "use strict";
+
+    var self = this;
+
+    self.isShowStoreDetailsButtonVisible = ko.observable(true);
+    self.isShowHomeButtonVisible = ko.observable(true);
+    self.isShowMenuButtonVisible = ko.observable(true);
+    self.isShowCartButtonVisible = ko.observable(true);
+
+    self.isHeaderVisible = ko.observable(true);
+    self.isPostcodeSelectorVisible = ko.observable(settings.storeSelectorMode && settings.storeSelectorInHeader);
+    self.areHeaderOptionsVisible = ko.observable(true);
+    self.isHeaderLoginVisible = ko.observable(true);
+
+    // Mobile mode
+    self.title = ko.observable(textStrings.mmChangeStoreButton); // Current section name - shown in the header
+    self.titleClass = ko.observable('mobileSectionSelectStore'); // Class to use to style the section name - used for showing an icon for the section
+
+    // Create a new address & customer that we can bind to
+    addressHelper.bindableAddress(new Address());
+    customerHelper.bindableCustomer(new Customer());
+
+    self.onLogout = function ()
+    {
+        this.backToMenu();
+        if (typeof (self.previousContentViewModel.onLogout) == 'function')
+        {
+            self.previousContentViewModel.onLogout();
+        }
+    }
+
+    if (viewModel.contentViewModel() != undefined && viewModel.contentViewModel().previousViewName != undefined && viewModel.contentViewModel().previousViewName.length > 0)
+    {
+        self.previousViewName = viewModel.contentViewModel().previousViewName;
+        self.previousContentViewModel = viewModel.contentViewModel().previousContentViewModel;
+    }
+    else
+    {
+        self.previousViewName = guiHelper.getCurrentViewName();
+        self.previousContentViewModel = viewModel.contentViewModel();
+    }
+
+    accountHelper.newAccount.errorMessage('');
+    accountHelper.newAccount.currentPassword('');
+    accountHelper.newAccount.currentPasswordHasError('');
+    accountHelper.newAccount.password('');
+    accountHelper.newAccount.reenterPassword('');
+    accountHelper.newAccount.passwordHasError('');
+
+    customerHelper.bindableCustomer().errorMessage(''),
+    customerHelper.bindableCustomer().firstName(accountHelper.customerDetails.firstname);
+    customerHelper.bindableCustomer().surname(accountHelper.customerDetails.surname);
+    if (accountHelper.customerDetails.contacts != undefined)
+    {
+        for (var index = 0; index < accountHelper.customerDetails.contacts.length; index++)
+        {
+            var contact = accountHelper.customerDetails.contacts[index];
+            if (contact.type == 'Mobile')
+            {
+                customerHelper.bindableCustomer().phoneNumber(contact.value);
+                customerHelper.bindableCustomer().smsMarketing(contact.marketingLevel == '3rdParty');
+            }
+            if (contact.type == 'Email')
+            {
+                customerHelper.bindableCustomer().emailAddress(contact.value);
+                customerHelper.bindableCustomer().marketing(contact.marketingLevel == '3rdParty');
+            }
+        }
+    }
+    customerHelper.bindableCustomer().firstNameHasError(false);
+    customerHelper.bindableCustomer().surnameHasError(false);
+    customerHelper.bindableCustomer().emailAddressHasError(false);
+    customerHelper.bindableCustomer().phoneNumberHasError(false);
+
+    addressHelper.bindableAddress().fromPlainObject(accountHelper.customerDetails.address);
+
+    addressHelper.bindableAddress().errorMessage(''),
+    addressHelper.bindableAddress().addressMissingDetails(false); // True when any of the required address elements are missing
+    addressHelper.bindableAddress().addressHasError(false); // True when there are any problems with the address
+    addressHelper.bindableAddress().outOfDeliveryArea(false); // True when the address is not in the delivery area of the currently selected store
+    addressHelper.bindableAddress().roadNameHasError(false);
+    addressHelper.bindableAddress().townHasError(false);
+    addressHelper.bindableAddress().postcodeHasError(false);
+
+    // For facebook if the facebook account already has an email address then use it but don't let the user change it
+    self.canModifyEmailAddress = true;
+    if (self.isFacebookRegister &&
+        customerHelper.bindableCustomer().emailAddress() != undefined &&
+        customerHelper.bindableCustomer().emailAddress().length > 0)
+    {
+        self.canModifyEmailAddress = false;
+    }
+
+    self.addressType = function ()
+    {
+        // Figure out what address format to use
+        if (settings.culture == "en-GB")
+        {
+            return 'ukAddress-template';
+        }
+        else if (settings.culture == "en-US")
+        {
+            return 'usAddress-template';
+        }
+        else if (settings.culture == "fr-FR")
+        {
+            return 'frenchAddress-template';
+        }
+        else
+        {
+            return 'genericAddress-template';
+        }
+    };
+
+    self.saveChanges = function ()
+    {
+        if (!self.validate()) return;
+
+        var customerDetails =
+        {
+            title: '',
+            firstname: customerHelper.bindableCustomer().firstName(),
+            surname: customerHelper.bindableCustomer().surname(),
+            contacts:
+            [
+                {
+                    type: 'Email',
+                    value: customerHelper.bindableCustomer().emailAddress(),
+                    marketingLevel: customerHelper.bindableCustomer().marketing() ? '3rdParty' : 'OrderOnly'
+                },
+                {
+                    type: 'Mobile',
+                    value: customerHelper.bindableCustomer().phoneNumber(),
+                    marketingLevel: customerHelper.bindableCustomer().smsMarketing() ? '3rdParty' : 'OrderOnly'
+                }
+            ],
+            address: addressHelper.bindableAddress().toPlainObject()
+        };
+
+        // Validation passed - try and create a new customer account
+        acsapi.postCustomer
+        (
+            accountHelper.username,
+            accountHelper.password,
+            accountHelper.newAccount.password(),
+            customerDetails,
+            function (putCustomerResponse)
+            {
+                if (putCustomerResponse != undefined && putCustomerResponse.errorCode != undefined)
+                {
+                    // Server returned an error
+                    if (putCustomerResponse.errorCode == 1041)
+                    {
+                        accountHelper.newAccount.errorMessage(textStrings.lrEmailAlreadyUsed);
+                        customerHelper.bindableCustomer().emailAddressHasError(true);
+                    }
+                    else
+                    {
+                        accountHelper.newAccount.errorMessage(textStrings.mpUnableToCreateAccount);
+                    }
+                }
+                else
+                {
+                    // Has the password changed?
+                    var password = accountHelper.password;
+                    if (accountHelper.newAccount.password() != undefined && accountHelper.newAccount.password().length > 0)
+                    {
+                        password = accountHelper.newAccount.password();
+                    }
+
+                    // Success
+                    accountHelper.loggedIn
+                    (
+                        customerDetails,
+                        accountHelper.username,
+                        customerHelper.bindableCustomer().emailAddress(),
+                        password,
+                        accountHelper.isFacebookLogin
+                    );
+
+                    accountHelper.previousPostcode = accountHelper.customerDetails.address.postcode;
+                    accountHelper.hidePopup(accountHelper.loggedInCallback);
+
+                    guiHelper.showView(self.previousViewName, self.previousContentViewModel);
+                }
+            },
+            function ()
+            {
+                accountHelper.newAccount.errorMessage(textStrings.mpUnableToCreateAccount);
+            }
+        );
+    };
+
+    self.myOrders = function ()
+    {
+        guiHelper.showView('myOrdersView', new MyOrdersViewModel());
+    };
+
+    self.logout = function ()
+    {
+        viewModel.headerViewModel().logout();
+    }
+
+    self.backToMenu = function ()
+    {
+        guiHelper.showView(self.previousViewName, self.previousContentViewModel);
+    };
+
+    self.validate = function ()
+    {
+        // Clear errors
+        accountHelper.newAccount.errorMessage('');
+        accountHelper.newAccount.passwordHasError(false);
+
+        // Validate customer details
+        if (!customerHelper.validateCustomer(customerHelper.bindableCustomer()))
+        {
+            self.setError(customerHelper.bindableCustomer().errorMessage());
+        }
+
+        if (accountHelper.newAccount.currentPassword().length > 0 ||
+            accountHelper.newAccount.password().length > 0 ||
+            accountHelper.newAccount.reenterPassword().length > 0)
+        {
+            // Check existing password
+            if (accountHelper.newAccount.currentPassword().length == 0)
+            {
+                self.setError(textStrings.mpMissingPasswords);
+                accountHelper.newAccount.currentPasswordHasError(true);
+            }
+
+            // Check re-entered password
+            if (accountHelper.newAccount.reenterPassword().length == 0)
+            {
+                self.setError(textStrings.mpMissingPasswords);
+                accountHelper.newAccount.passwordHasError(true);
+            }
+
+            // Check new password
+            if (accountHelper.newAccount.password().length == 0)
+            {
+                self.setError(textStrings.mpMissingPasswords);
+                accountHelper.newAccount.passwordHasError(true);
+            }
+
+            // Check existing password is correct
+            if (accountHelper.newAccount.currentPassword() != accountHelper.password)
+            {
+                self.setError(textStrings.mpWrongCurrentPassword);
+                accountHelper.newAccount.currentPasswordHasError(true);
+            }
+
+            // Check passwords match
+            if (accountHelper.newAccount.password() != accountHelper.newAccount.reenterPassword())
+            {
+                self.setError(textStrings.lrPasswordsDontMatch);
+                accountHelper.newAccount.passwordHasError(true);
+            }
+
+            // Minimum password length
+            if (!accountHelper.validatePassword(accountHelper.newAccount.password()))
+            {
+                self.setError(textStrings.lrPasswordTooShort);
+                accountHelper.newAccount.passwordHasError(true);
+            }
+        }
+
+        // Validate address
+        if (!addressHelper.validateAddress(addressHelper.bindableAddress()))
+        {
+            self.setError(addressHelper.bindableAddress().errorMessage());
+        }
+
+        // Were there any errors?
+        return accountHelper.newAccount.errorMessage().length == 0;
+    };
+    self.setError = function (errorMessage)
+    {
+        // Only set the first error
+        if (accountHelper.newAccount.errorMessage().length == 0)
+        {
+            accountHelper.newAccount.errorMessage(errorMessage);
+        }
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+﻿@model MyAndromeda.Core.Authorization.IUserRole
+
+@using (Html.BeginForm()) { 
+    <div>
+        @Html.LabelFor(e=> e.Name)
+        <input type="text" name="@Html.NameFor(e=> e.Name)" id="@Html.NameFor(e=> e.Name)" required="required" />
+    </div>
+    
+    <div>
+        <input class="k-button" type="submit" value="Save" />
+    </div>
+}

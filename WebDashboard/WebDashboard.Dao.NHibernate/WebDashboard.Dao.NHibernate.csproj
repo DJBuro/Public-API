@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E2658E2C-1B63-4570-90DC-AB009167642E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebDashboard.Dao.NHibernate</RootNamespace>
+    <AssemblyName>WebDashboard.Dao.NHibernate</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\WebDashboard.Web\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging">
+      <HintPath>..\WebDashboard.Web\packages\Common.Logging.2.2.0\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core">
+      <HintPath>..\WebDashboard.Web\packages\Common.Logging.Core.2.2.0\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\WebDashboard.Web\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\WebDashboard.Web\packages\NHibernate.3.2.0.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Aop">
+      <HintPath>..\WebDashboard.Web\packages\Spring.Aop.2.0.0-RC1\lib\net40\Spring.Aop.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core">
+      <HintPath>..\WebDashboard.Web\packages\Spring.Core.2.0.0-RC1\lib\net40\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Data">
+      <HintPath>..\WebDashboard.Web\packages\Spring.Data.2.0.0-RC1\lib\net40\Spring.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Data.NHibernate32">
+      <HintPath>..\WebDashboard.Web\packages\Spring.Data.NHibernate32.2.0.0-RC1\lib\net40\Spring.Data.NHibernate32.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\Factory\AbstractHibernateDAOFactory.cs" />
+    <Compile Include="Dao\Factory\WebDashboardHibernateDAOFactory.cs" />
+    <Compile Include="Dao\Factory\WebDashboardHibernateDAOImpl.cs" />
+    <Compile Include="Dao\Factory\GenericNHibernateDAO.cs" />
+    <Compile Include="Dao\NHibernate\GroupExchangeRateDao.cs" />
+    <Compile Include="Dao\NHibernate\UserRegionDao.cs" />
+    <Compile Include="Dao\NHibernate\DefinitionDao.cs" />
+    <Compile Include="Dao\NHibernate\DivisorTypeDao.cs" />
+    <Compile Include="Dao\NHibernate\HeadOfficeDao.cs" />
+    <Compile Include="Dao\NHibernate\HistoricalDataDao.cs" />
+    <Compile Include="Dao\NHibernate\IndicatorDao.cs" />
+    <Compile Include="Dao\NHibernate\IndicatorTypeDao.cs" />
+    <Compile Include="Dao\NHibernate\LogDao.cs" />
+    <Compile Include="Dao\NHibernate\PermissionDao.cs" />
+    <Compile Include="Dao\NHibernate\RegionDao.cs" />
+    <Compile Include="Dao\NHibernate\SiteDao.cs" />
+    <Compile Include="Dao\NHibernate\SiteTypeDao.cs" />
+    <Compile Include="Dao\NHibernate\UserDao.cs" />
+    <Compile Include="Dao\NHibernate\ValueTypeDao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Definition.hbm.xml" />
+    <EmbeddedResource Include="Mapping\HeadOffice.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Indicator.hbm.xml" />
+    <EmbeddedResource Include="Mapping\IndicatorType.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Permissions.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Region.hbm.xml" />
+    <EmbeddedResource Include="Mapping\Site.hbm.xml" />
+    <EmbeddedResource Include="Mapping\SiteType.hbm.xml" />
+    <EmbeddedResource Include="Mapping\User.hbm.xml" />
+    <EmbeddedResource Include="Mapping\ValueType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dao\Dao.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebDashboard.Dao\WebDashboard.Dao.csproj">
+      <Project>{598CD87F-04B8-4398-B730-5914767E04D3}</Project>
+      <Name>WebDashboard.Dao</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\HistoricalData.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\DivisorType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\Log.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapping\UserRegion.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <Content Include="Mapping\GroupExchangeRate.hbm.xml" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

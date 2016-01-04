@@ -1,0 +1,339 @@
+﻿using MyAndromeda.Framework.Authorization;
+using MyAndromeda.Framework.Contexts;
+using MyAndromeda.Framework.Notification;
+using MyAndromeda.Framework.Translation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using MyAndromeda.Services.Vouchers.Services;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using MyAndromeda.Web.Areas.Voucher.Models;
+
+namespace MyAndromeda.Web.Areas.Voucher.Controllers
+{
+    public class SiteVoucherCodesController : Controller
+    {
+        /* Utility services */
+        private readonly IAuthorizer authorizer;
+        private readonly INotifier notifier;
+        private readonly ITranslator translator;
+
+        /* Context variables */
+        private readonly ISiteVoucherService siteVoucherService;
+
+        public SiteVoucherCodesController(
+            IAuthorizer authorizer,
+            INotifier notifier,
+            ITranslator translator,
+            ISiteVoucherService siteVoucherService
+            )
+        {
+            this.authorizer = authorizer;
+            this.notifier = notifier;
+            this.translator = translator;
+            this.siteVoucherService = siteVoucherService;
+        }
+        //
+        // GET: /Voucher/SiteVoucherCodes/
+
+        public ActionResult Index()
+        {
+            if (!this.authorizer.Authorize(UserPermissions.ViewVoucherCodes))
+            {
+                this.notifier.Error(translator.T("You do not have permissions to view voucher codes"));
+                return new HttpUnauthorizedResult();
+            }
+
+            return View();
+        }
+
+        public JsonResult List([DataSourceRequest] DataSourceRequest request)
+        {
+            var data = this.siteVoucherService.List();
+
+            var result = data.ToDataSourceResult(request, e => e.ToViewModel());
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Enable(Guid id) 
+        {
+            var voucher = this.siteVoucherService.Get(id);
+
+            if (voucher == null) 
+            {
+                this.notifier.Equals(translator.T("This voucher does not exist"));
+
+                return RedirectToAction("Index");
+            }
+
+            voucher.Active = true;
+            this.siteVoucherService.Update(voucher);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Disable(Guid id) 
+        {
+            var voucher = this.siteVoucherService.Get(id);
+            if (voucher == null)
+            {
+                this.notifier.Equals(translator.T("This voucher does not exist"));
+
+                return RedirectToAction("Index");
+            }
+
+            voucher.Active = false;
+            this.siteVoucherService.Update(voucher);
+
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Used to serach voucher codes
+        /// </summary>
+        /// <param name="active">voucher code removed or not</param>
+        /// <param name="searchText">voucher code and description search</param>
+        /// <returns>json result of voucher codes list</returns>
+        //public JsonResult SearchVoucherCodes(string active, string searchText)
+        //{
+        //    var data = this.siteVoucherService.List().ToList<MyAndromeda.Data.DataWarehouse.Models.Voucher>();
+
+        //    if (data != null && data.Count > 0 && (!string.IsNullOrEmpty(active)))
+        //    {
+        //        var results = data.Where(d => d.Removed != Convert.ToBoolean(Convert.ToInt32(active)));
+        //        if (!string.IsNullOrEmpty(searchText))
+        //        {
+        //            if (searchText.Trim() != string.Empty)
+        //            {
+        //                results = results.Where(r => (r.VoucherCode.Contains(searchText) || r.Description.Contains(searchText))).ToList<MyAndromeda.Data.DataWarehouse.Models.Voucher>();
+        //            }
+        //        }
+        //        var bindList = new List<VoucherViewModel>();
+        //        if (data != null)
+        //            bindList = convertToViewModel(data);
+
+        //        return Json(bindList.ToList(), JsonRequestBehavior.AllowGet);
+        //    }
+
+        //    return null;
+        //}
+
+        //
+        // GET: /Voucher/SiteVoucherCodes/Create
+
+        public ActionResult Create()
+        {
+            if (!this.authorizer.Authorize(UserPermissions.CreateOrEditVoucherCodes))
+            {
+                this.notifier.Error(translator.T("You do not have permission to create voucher codes"));
+                return new HttpUnauthorizedResult();
+            }
+
+            var viewModel = new VoucherViewModel();
+
+            //defaults
+            viewModel.IsActive = true;
+            viewModel.SelectedOccasions = new List<string>() { "Delivery", "Collection" };
+            viewModel.SelectedAvailableOnDays = new List<string>() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            
+            return this.View("Edit",viewModel);
+        }
+
+        //
+        // POST: /Voucher/SiteVoucherCodes/Create
+
+        [HttpPost]
+        [ActionName("Create")]
+        public ActionResult CreatePost(VoucherViewModel viewModel)
+        {
+            try
+            {
+                if (!this.authorizer.Authorize(UserPermissions.ViewVoucherCodes))
+                {
+                    this.notifier.Error(translator.T("You do not have permissions to view voucher codes"));
+                    return new HttpUnauthorizedResult();
+                }
+
+                var voucherInDB = this.siteVoucherService.GetByExpression(e => e.VoucherCode == viewModel.VoucherCode);
+                if (voucherInDB != null)
+                {
+                    this.notifier.Error(translator.T("Voucher Code already exists. choose another name."));
+                    return View("Edit", viewModel);
+                }
+
+                if (viewModel.StartDateTime > viewModel.EndDataTime)
+                {
+                    this.notifier.Error(translator.T("Start date time should be less than End date time"));
+                    return View("Edit", viewModel);
+                }
+
+                var newVoucher = this.siteVoucherService.New();
+
+                newVoucher.UpdateFromViewModel(viewModel);
+
+                this.siteVoucherService.Create(newVoucher);
+                this.notifier.Notify(this.translator.T("The voucher code is created"));
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.notifier.Error(translator.T(ex.Message));
+                return View("Edit", viewModel);
+            }
+        }
+
+        //
+        // GET: /Voucher/SiteVoucherCodes/Edit/5
+
+        public ActionResult Edit(Guid id)
+        {
+            if (!this.authorizer.Authorize(UserPermissions.CreateOrEditVoucherCodes))
+            {
+                this.notifier.Error(translator.T("You do not have permission to Edit voucher codes"));
+                return new HttpUnauthorizedResult();
+            }
+
+            var dbModel = this.siteVoucherService.Get(id);
+            VoucherViewModel viewModel = dbModel.ToViewModel();
+
+            return View(viewModel);
+        }
+
+        //
+        // POST: /Voucher/SiteVoucherCodes/Edit/5
+
+        [HttpPost]
+        [ActionName("Edit")]
+        public ActionResult EditPost(Guid id, VoucherViewModel viewModel)
+        {
+            try
+            {
+                if (!this.authorizer.Authorize(UserPermissions.CreateOrEditVoucherCodes))
+                {
+                    this.notifier.Error(translator.T("You do not have permission to Edit voucher codes"));
+                    return new HttpUnauthorizedResult();
+                }
+
+                var currentVoucher= this.siteVoucherService.GetByExpression(e => e.Id == viewModel.Id);
+
+                var voucherInDB = this.siteVoucherService.GetByExpression(e => e.VoucherCode == viewModel.VoucherCode);
+                
+                if (voucherInDB != null && voucherInDB.Id != id)
+                {
+                    this.notifier.Error(translator.T("Voucher Code already exists. choose another name."));
+                    return View(viewModel);
+                }
+
+                if (viewModel.StartDateTime > viewModel.EndDataTime)
+                {
+                    this.notifier.Error(translator.T("Start date time should be less than End date time"));
+                    return View(viewModel);
+                }
+
+                currentVoucher.UpdateFromViewModel(viewModel);
+                this.siteVoucherService.Update(currentVoucher);
+
+                this.notifier.Notify(this.translator.T("The voucher code is modified"));
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.notifier.Error(translator.T(ex.Message));
+                return View(viewModel);
+            }
+        }
+
+        public ActionResult Remove(Guid id) 
+        {
+            var currentVoucher = this.siteVoucherService.GetByExpression(e => e.Id == id);
+
+            if (currentVoucher != null) 
+            {
+                this.siteVoucherService.Delete(currentVoucher);
+            } 
+
+            this.notifier.Notify(currentVoucher.VoucherCode + translator.T(" has been removed."));
+
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult DeletePost(Guid id, VoucherViewModel viewModel)
+        {
+            try
+            {
+                if (!this.authorizer.Authorize(UserPermissions.DeleteVoucherCodes))
+                {
+                    this.notifier.Error(translator.T("You do not have permission to Delete voucher codes"));
+                    return new HttpUnauthorizedResult();
+                }
+                var model = this.siteVoucherService.Get(viewModel.Id);
+                this.siteVoucherService.Delete(model);
+                //this.siteVoucherService.Delete(convertToModel(new List<VoucherViewModel> { viewModel })[0]);
+                this.notifier.Notify(this.translator.T("The voucher code is deleted"));
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                this.notifier.Error(translator.T(ex.Message));
+                return View(viewModel);
+            }
+        }
+
+        //public JsonResult List()
+        //{
+        //    if (!this.authorizer.Authorize(UserPermissions.ViewVoucherCodes))
+        //    {
+        //        this.notifier.Error(translator.T("You do not have permission to view voucher codes"));
+        //        return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
+        //    }
+        //    if(!this.currentSite.Available)
+        //        return null;
+
+        //    var data = this.siteVoucherService.List().ToList<MyAndromeda.Data.DataWarehouse.Models.Voucher>(); 
+        //    return Json(data, JsonRequestBehavior.AllowGet);
+        //}
+
+        public JsonResult ListVoucherCodesDescriptions(string searchText, bool isactive)
+        {
+            var data = this.siteVoucherService.List().ToList();
+            List<string> results = new List<string>();
+            foreach (var item in data)
+            {
+                bool valid = false;
+                if (isactive != null)
+                {
+                    if (isactive != item.Removed)
+                    {
+                        valid = true;
+                    }
+                }
+                if (searchText != null)
+                {
+                    if (searchText.Trim() != string.Empty && (item.VoucherCode + " " + item.Description).Contains(searchText))
+                    {
+                        valid = true;
+                    }
+                    else
+                    {
+                        valid = false;
+                    }
+                }
+                if (valid)
+                {
+                    results.Add(item.VoucherCode + " " + item.Description);
+                }
+            }
+
+            return Json(results, JsonRequestBehavior.AllowGet);
+
+        }
+    }
+}

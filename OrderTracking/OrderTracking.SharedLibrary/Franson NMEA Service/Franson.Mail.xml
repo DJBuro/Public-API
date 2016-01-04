@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Franson.Mail</name>
+    </assembly>
+    <members>
+        <member name="T:Franson.Mail.MailException">
+            <summary>
+            Generic Exception trowed when E-Mail related errors oqures.
+            </summary>
+        </member>
+        <member name="M:Franson.Mail.MailException.#ctor(System.String,System.Exception)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="message">Error message</param>
+            <param name="exInnerException">Inner exception.</param>
+        </member>
+        <member name="M:Franson.Mail.MailException.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="T:Franson.Mail.TemplateNotFoundException">
+            <summary>
+            Exception thrown when E-Mail temlate files not found.
+            </summary>
+        </member>
+        <member name="T:Franson.Mail.MailTemplates">
+            <summary>
+            Mail templates for buddy tracker.
+            </summary>
+        </member>
+        <member name="T:Franson.Mail.MailEventHandler">
+            <summary>
+            Event handler for <see cref="T:Franson.Mail.MailSender"/> events.
+            </summary>
+            <param name="sender"></param>
+            <param name="message"></param>
+        </member>
+        <member name="T:Franson.Mail.MailSender">
+            <summary>
+            Email sending object.
+            </summary>
+        </member>
+        <member name="M:Franson.Mail.MailSender.SendMail(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Sends an email.
+            </summary>
+            <param name="strFromAddress">Address of the sender</param>
+            <param name="strToAddress">Email address to deliver to.</param>
+            <param name="strSubject">Subject of the email.</param>
+            <param name="strMessageBoddy">Content of the email.</param>
+            <param name="strSMTPUsername">SMTP server username.</param>
+            <param name="strSMTPPassword">SMTP server password.</param>
+            <param name="strSMTPHost">SMTP server host name.</param>
+            <param name="iSMTPPort">SMTP server port id.</param>
+            <param name="bIsBodyHTML">Determs if the message body should be formated as HTML. If HTML tags in body, set this to true.</param>
+            <exception cref="T:System.ArgumentException">If sender address is not specified.</exception>
+            <exception cref="T:System.ArgumentException">If recipiant address is not specified.</exception>
+            <exception cref="T:System.ArgumentException">If not subject is specified is not specified.</exception>
+            <exception cref="T:System.ArgumentException">If email is enmpty.</exception>
+            <exception cref="T:System.ArgumentException">If not SMTP server hostname is specified.</exception>
+            <exception cref="T:Franson.Mail.MailException">Sending of email failed.</exception>
+        </member>
+        <member name="M:Franson.Mail.MailSender.SendMail(System.String,System.String,System.String,System.Boolean,Franson.Mail.SMTPSettings)">
+            <summary>
+            Sends a e-mail
+            </summary>
+            <param name="strToAddress">E-mail Address to send to</param>
+            <param name="strSubject">Subject of the E-Mail</param>
+            <param name="strMessageBoddy">The body of the email. 
+            Provide true in bIsBodyHTML to send HTML message body.</param>
+            <param name="bIsBodyHTML">Set to true if message body is HTML</param>
+            <param name="smtpSettings">Settings object with the SMTP server settings. Use <see cref="T:Franson.Mail.MailSettingsFactory"/> to get this object.</param>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.FormatException"></exception>
+            <exception cref="T:Franson.Mail.MailException"></exception>
+        </member>
+        <member name="M:Franson.Mail.MailSender.SendMail(System.String,System.Collections.Specialized.NameValueCollection,Franson.Mail.MailTemplates,Franson.Mail.SMTPSettings)">
+            <summary>
+            Note! Old BuddyTracker method. Do not use!
+            Send a mail based from the provided EmailTeplate.
+            
+            This method loads the corresponding Template file and replace all the tags (identified with ##TAGNAME## with the content of 
+            the NameValueCollection where the Name is the tag name (without beginning and tailing ##) and value is the value to replace with.
+            </summary>
+            <param name="strTo">-Mail address to send to.</param>
+            <param name="keyValuesPair">Collection of tag names and values</param>
+            <param name="mtTemplate">The Email template</param>
+            <param name="smtpSettings">Settings object with the SMTP server settings. Use <see cref="T:Franson.Mail.MailSettingsFactory"/> to get this object.</param>
+            <exception cref="T:System.ArgumentException"></exception>
+            <exception cref="T:System.FormatException"></exception>
+            <exception cref="T:Franson.Mail.MailException"></exception>
+            <exception cref="T:Franson.Mail.TemplateNotFoundException"></exception>
+        </member>
+        <member name="E:Franson.Mail.MailSender.OnMessageSend">
+            <summary>
+            Event fired before the MailMessage are beeing sent.
+            </summary>
+        </member>
+        <member name="E:Franson.Mail.MailSender.OnMessageSent">
+            <summary>
+            Event fired after mail have been sent
+            </summary>
+        </member>
+        <member name="T:Franson.Mail.MailSettingsFactory">
+            <summary>
+            Gets settings used by mail module, such as SMTP settings.
+            </summary>
+        </member>
+        <member name="M:Franson.Mail.MailSettingsFactory.GetSMTPSettings(System.Int32)">
+            <summary>
+            Get the default Site SMTPSettings but with "SMTP Sender" from ApplicationSettings if found.
+            </summary>
+            <param name="iApplicationID">Application for which </param>
+            <returns></returns>
+        </member>
+        <member name="M:Franson.Mail.MailSettingsFactory.GetSMTPSettings">
+            <summary>
+            Get the default Site SMTPSettings.
+            </summary>
+            <returns><see cfre="SMTPSettings" /></returns>
+        </member>
+        <member name="T:Franson.Mail.SettingsKeys">
+            <summary>
+            Contains Keys to receive settings used by Franson.Mail namespace using <see cref="T:Franson.Directory.Settings"/>
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_SENDER">
+            <summary>
+            Email address account. 
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_USERNAME">
+            <summary>
+            SMTP Server username.
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_PASSWORD">
+            <summary>
+            SMTP Server password.
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_HOSTNAME">
+            <summary>
+            SMTP Server hostname.
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_PORT">
+            <summary>
+            SMTP Server port number.
+            </summary>
+        </member>
+        <member name="F:Franson.Mail.SettingsKeys.MAIL_SMTP_SSL">
+            <summary>
+            Use secure SSL connection.
+            </summary>
+        </member>
+        <member name="T:Franson.Mail.SMTPSettings">
+            <summary>
+            Struct containing SMTP server settings.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:Franson.Mail.SMTPSettings.#ctor(System.String,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="strSender">Sender address</param>
+            <param name="strSMTPUsername">SMTP Sender address</param>
+            <param name="strSMTPPassword">SMTP password</param>
+            <param name="strSMTPHostname">SMTP hostname</param>
+            <param name="iSMTPPort">SMTP port</param>
+        </member>
+        <member name="M:Franson.Mail.SMTPSettings.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="strSender">Sender address</param>
+            <param name="strSMTPUsername">SMTP Sender address</param>
+            <param name="strSMTPPassword">SMTP password</param>
+            <param name="strSMTPHostname">SMTP hostname</param>
+            <param name="iSMTPPort">SMTP port</param>
+            <param name="bSSL">Use secure connection</param>
+        </member>
+        <member name="M:Franson.Mail.SMTPSettings.ToString">
+            <summary>
+            Returns a string representation of the object in format.		
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Franson.Mail.SMTPSettings.Equals(System.Object)">
+            <summary>
+            Determs if obj equals this.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Franson.Mail.SMTPSettings.GetHashCode">
+            <summary>
+            Returns the nhash code of this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.Sender">
+            <summary>
+            E.g: foo@bar.com
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.SMTPUsername">
+            <summary>
+            Username to the SMTP Server
+            
+            Usual the sender email address.
+            
+            E.g: foo@bar.com
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.SMTPPassword">
+            <summary>
+            Password to the SMTP server
+            
+            E.g: mypassword
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.SMTPHostname">
+            <summary>
+            Address to the SMTP server
+            
+            E.g: mail.bar.com
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.SMTPPort">
+            <summary>
+            E.g; 110 (default)
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.SSL">
+            <summary>
+            Wther to use secure connection.
+            </summary>
+        </member>
+        <member name="P:Franson.Mail.SMTPSettings.IsEmpty">
+            <summary>
+            Checks if mail settings is empty.
+            </summary>
+        </member>
+        <member name="T:Franson.Mail.TemplateParser">
+            <summary>
+            Class used to parse E-Mail templates.
+            </summary>
+            <threadsafety static="true" instance="true"/>
+        </member>
+        <member name="M:Franson.Mail.TemplateParser.Parse(System.String,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Replace all keys found in the HTML email string defined in format "##KEYNAME##" with matched values found in name value collection.
+            </summary>
+            <param name="strHTML">Template HTML string.</param>
+            <param name="nameValuePairs">Collection of KEYS with matching values.</param>
+            <returns>Returne the HTML string with KEYS replaced with valius.</returns>
+            <exception cref="T:System.ArgumentException"/>
+        </member>
+    </members>
+</doc>

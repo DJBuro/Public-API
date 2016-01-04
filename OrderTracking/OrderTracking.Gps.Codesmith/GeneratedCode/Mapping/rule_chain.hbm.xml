@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Rulechain, OrderTracking.Gps.Dao" table="rule_chain">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="rule_chain_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__rule_cha__5D7F9CA46D9742D9"/>
+			<generator class="native" />
+		</id>
+		<property name="Name" type="String">
+			<column name="name" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Description" type="String">
+			<column name="description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<bag name="recorder_rules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="rule_chain_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Recorderrule, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="application_rules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="rule_chain_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Applicationrule, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

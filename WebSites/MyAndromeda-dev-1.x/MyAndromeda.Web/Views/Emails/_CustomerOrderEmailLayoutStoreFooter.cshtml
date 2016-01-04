@@ -1,0 +1,61 @@
+﻿@using AndroAdminDataAccess.Domain.WebOrderingSetup;
+@model MyAndromeda.SendGridService.Models.ICommonEmailSetings
+
+@{
+    WebSiteConfigurations websiteConfigurations = this.Model.PreviewWebsiteConfiguration;
+
+    var orderEmailHeaderColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.HeaderColour : "#FFFFFF";
+    var orderEmailFooterColour = websiteConfigurations.CustomEmailTemplate != null ? websiteConfigurations.CustomEmailTemplate.FooterColour : "#FFFFFF";     
+}
+
+<table border="0" cellpadding="0" cellspacing="0" bgcolor="@orderEmailFooterColour" style="height:65px;width:100%;">
+    <tr>
+        <td style="text-align: center">
+            <center>
+                <table cellpadding="3">
+                    <tr>
+                        @if (websiteConfigurations.SocialNetworkSettings != null)
+                        {
+                            if (websiteConfigurations.SocialNetworkSettings.FacebookSettings != null && websiteConfigurations.SocialNetworkSettings.FacebookSettings.IsEnable && (!string.IsNullOrEmpty(websiteConfigurations.SocialNetworkSettings.FacebookSettings.FollowURL)))
+                            {
+                                <td>
+                                    <a href="@websiteConfigurations.SocialNetworkSettings.FacebookSettings.FollowURL" target="_blank" 
+                                        title="@websiteConfigurations.SocialNetworkSettings.FacebookSettings.FollowURL">
+                                        <img style="border:0 !important" src="http://cdn.myandromedaweb.co.uk/live/icons/icon-facebook-32.png" alt="Facebook" />
+                                    </a>
+                                </td>
+                            }
+                            if (websiteConfigurations.SocialNetworkSettings.TwitterSettings != null && websiteConfigurations.SocialNetworkSettings.TwitterSettings.IsEnable && (!string.IsNullOrEmpty(websiteConfigurations.SocialNetworkSettings.TwitterSettings.FollowURL)))
+                            {
+                                <td>
+                                    <a href="@websiteConfigurations.SocialNetworkSettings.TwitterSettings.FollowURL" target="_blank" 
+                                        title="@websiteConfigurations.SocialNetworkSettings.TwitterSettings.FollowURL">
+                                        <img style="border:0 !important" src="http://cdn.myandromedaweb.co.uk/live/icons/icon-twitter-32.png" alt="Twitter" />
+                                    </a>
+                                </td>
+                            }
+                            if (websiteConfigurations.SocialNetworkSettings.InstagramSettings != null && websiteConfigurations.SocialNetworkSettings.InstagramSettings.IsEnable && (!string.IsNullOrEmpty(websiteConfigurations.SocialNetworkSettings.InstagramSettings.FollowURL)))
+                            {
+                                <td>
+                                    <a href="@websiteConfigurations.SocialNetworkSettings.InstagramSettings.FollowURL" target="_blank" 
+                                        title="@websiteConfigurations.SocialNetworkSettings.InstagramSettings.FollowURL">
+                                        <img style="border:0 !important" src="http://cdn.myandromedaweb.co.uk/live/icons/icon-instagram-32.png" alt="Instagram" />
+                                    </a>
+                                </td>
+                            }
+                            if (websiteConfigurations.SocialNetworkSettings.PinterestSettings != null && websiteConfigurations.SocialNetworkSettings.PinterestSettings.IsEnable && (!string.IsNullOrEmpty(websiteConfigurations.SocialNetworkSettings.PinterestSettings.FollowURL)))
+                            {
+                                <td>
+                                    <a href="@websiteConfigurations.SocialNetworkSettings.PinterestSettings.FollowURL" target="_blank" 
+                                        title="@websiteConfigurations.SocialNetworkSettings.PinterestSettings.FollowURL">
+                                        <img style="border:0 !important" src="http://cdn.myandromedaweb.co.uk/live/icons/icon-pinterest-32.png" alt="Pinterest" />
+                                    </a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+</table>

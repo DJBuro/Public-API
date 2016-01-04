@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="UnitValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="SymbolValidator" test="Symbol"><v:message id="error.Symbol.required" providers="SymbolErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

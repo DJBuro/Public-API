@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Menu Sync";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery.signalR-1.0.0.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/signalr/hubs")" type="text/javascript"></script>
+}
+
+@section Script 
+{
+    function startMenuSync() 
+    {
+        var menuSync = $.connection.menuSync;
+
+        $('#messagesContainer').html('<ul id="messages"></ul>');
+
+        menuSync.client.message = function (message) 
+        {
+            $('#messages').append('<li>' + message + '</li>');
+
+            var objDiv = document.getElementById('messagesContainer');
+            objDiv.scrollTop = objDiv.scrollHeight;
+        };
+
+        $.connection.hub.start()
+            .done
+            (
+                function() 
+                {
+                    menuSync.server.startMenuSync();
+                }
+            )
+            .fail
+            (
+                function() 
+                { 
+                    alert("Could not Connect!"); 
+                }
+            );
+    }
+}
+<h2>Menu Sync</h2>
+
+<div class="topLink">
+    <a href="#" onclick="startMenuSync()">Start menu sync</a>
+</div>
+
+<div>
+    Scans through the menus currently in the cloud1 database and looks to see if the menu is up to date in cloud2.  If not then the menu in cloud is copied to cloud2.
+</div>
+
+<div id="messagesContainer" style="max-height:600px; overflow-y:auto;">
+    
+</div>

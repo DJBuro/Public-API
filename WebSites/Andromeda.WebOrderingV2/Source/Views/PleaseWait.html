@@ -1,0 +1,17 @@
+﻿    <!-- PLEASE WAIT VIEW -->
+    <script type="text/html" id="pleaseWaitView">
+        <div id="pleaseWaitContent" class="content">
+            <div id="pleaseWaitBox">
+                <!-- Please wait -->
+                <h1 class="welcomeHeader" data-bind="text: textStrings.welcomeHeader"></h1>
+                <h2 class="waitPrompt" data-bind="text: textStrings.pwOneMomentPlease"></h2>
+                <div id="pleaseWaitLogoWrapper">
+                    <div id="pleaseWaitLogo"></div>
+                </div>
+                <p style="text-align:center;">
+                    <span data-bind="text: $root.pleaseWaitMessage()"></span>
+                    <span data-bind="text: $root.pleaseWaitProgress()"></span>
+                </p>
+            </div>
+        </div>
+    </script>

@@ -1,0 +1,942 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B656822-407A-4E3F-8ABF-57CE0D6EC87F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Andromeda.WebOrderingV2</RootNamespace>
+    <AssemblyName>Andromeda.WebOrderingV2</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Cancel.aspx" />
+    <Content Include="Channel.html" />
+    <Content Include="Content\Images\a01.png" />
+    <Content Include="Content\Images\a02.png" />
+    <Content Include="Content\Images\a03.png" />
+    <Content Include="Content\Images\a04.png" />
+    <Content Include="Content\Images\a06.png" />
+    <Content Include="Content\Images\a07.png" />
+    <Content Include="Content\Images\a08.png" />
+    <Content Include="Content\Images\a09.png" />
+    <Content Include="Content\Images\a10.png" />
+    <Content Include="Content\Images\a11.png" />
+    <Content Include="Content\Images\a12.png" />
+    <Content Include="Content\Images\a13.png" />
+    <Content Include="Content\Images\a14.png" />
+    <Content Include="Content\Images\a15.png" />
+    <Content Include="Content\Images\a16.png" />
+    <Content Include="Content\Images\a17.png" />
+    <Content Include="Content\Images\a18.png" />
+    <Content Include="Content\Images\a19.png" />
+    <Content Include="Content\Images\a20.png" />
+    <Content Include="Content\Images\a21.png" />
+    <Content Include="Content\Images\AddToCartMobile.png" />
+    <Content Include="Content\Images\back.png" />
+    <Content Include="Content\Images\BasketSelectedSmall.png" />
+    <Content Include="Content\Images\BasketSmall.png" />
+    <Content Include="Content\Images\Clock.png" />
+    <Content Include="Content\Images\Feedback.png" />
+    <Content Include="Content\Images\HomeSelectedSmall.png" />
+    <Content Include="Content\Images\HomeSmall.png" />
+    <Content Include="Content\Images\menuicon.png" />
+    <Content Include="Content\Images\Basketicon.png" />
+    <Content Include="Content\Images\MenuSelectedSmall.png" />
+    <Content Include="Content\Images\MenuSmall.png" />
+    <Content Include="Content\Images\orderhistorysmall.png" />
+    <Content Include="Content\Images\Profileicon.png" />
+    <Content Include="Content\Images\orderhistoryicon.png" />
+    <Content Include="Content\Images\logouticon.png" />
+    <Content Include="Content\Images\AMEX.gif" />
+    <Content Include="Content\Images\AURORE.gif" />
+    <Content Include="Content\Images\Basket.png" />
+    <Content Include="Content\Images\Facebook.png" />
+    <Content Include="Content\Images\Instagram.png" />
+    <Content Include="Content\Images\Pinterest.png" />
+    <Content Include="Content\Images\ProfileSelectedsmall.png" />
+    <Content Include="Content\Images\Profilesmall.png" />
+    <Content Include="Content\Images\StoreDetailsSelectedSmall.png" />
+    <Content Include="Content\Images\StoreDetailsSmall.png" />
+    <Content Include="Content\Images\Twitter.png" />
+    <Content Include="DataCash\2169\Index.html" />
+    <Content Include="DataCash\PaymentDataCash.html" />
+    <Content Include="DataCash\2346\BROKEN Index.html" />
+    <Content Include="DataCash\TBD\Index.html" />
+    <Content Include="Debug\Done.html" />
+    <Content Include="images\background_browser.gif" />
+    <Content Include="images\browser_chrome.gif" />
+    <Content Include="images\browser_firefox.gif" />
+    <Content Include="images\browser_gcf.gif" />
+    <Content Include="images\browser_konqueror.gif" />
+    <Content Include="images\browser_msie.gif" />
+    <Content Include="images\browser_opera.gif" />
+    <Content Include="images\browser_safari.gif" />
+    <Content Include="Content\Images\Cart.png" />
+    <Content Include="Content\Images\CB.gif" />
+    <Content Include="Content\Images\CLEF.gif" />
+    <Content Include="Content\Images\Cross.png" />
+    <Content Include="Content\Images\facebook-icon.png" />
+    <Content Include="Content\Images\Go.png" />
+    <Content Include="Content\Images\googleplus-icon.png" />
+    <Content Include="Content\Images\halfandhalf.png" />
+    <Content Include="Content\Images\Header.jpg" />
+    <Content Include="Content\Images\Home.png" />
+    <Content Include="Content\Images\INTERVAL.gif" />
+    <Content Include="Content\Images\loader.gif" />
+    <Content Include="Content\Images\logoSmall.png" />
+    <Content Include="Content\Images\MASTERCARD.gif" />
+    <Content Include="Content\Images\mCSB_buttons.png" />
+    <Content Include="Content\Images\SearchPostcode.png" />
+    <Content Include="Content\Images\store.png" />
+    <Content Include="Content\Images\Tick.png" />
+    <Content Include="Content\Images\Ticked.png" />
+    <Content Include="Content\Images\TickedSmall.png" />
+    <Content Include="Content\Images\twitter-icon.png" />
+    <Content Include="Content\Images\Unticked.png" />
+    <Content Include="Content\Images\UntickedSmall.png" />
+    <Content Include="Content\Images\VISA.gif" />
+    <Content Include="Content\Images\Zoom.cur" />
+    <Content Include="Content\Images\Zoom.png" />
+    <Content Include="Done.html" />
+    <Content Include="Content\Images\RefreshSmall.png" />
+    <Content Include="Content\Images\facebookLogo.png" />
+    <Content Include="img\blank.gif" />
+    <Content Include="img\cloud-popup-relative.png" />
+    <Content Include="img\drag-rectangle-off.png" />
+    <Content Include="img\drag-rectangle-on.png" />
+    <Content Include="img\east-mini.png" />
+    <Content Include="img\layer-switcher-maximize.png" />
+    <Content Include="img\layer-switcher-minimize.png" />
+    <Content Include="img\marker-blue.png" />
+    <Content Include="img\marker-gold.png" />
+    <Content Include="img\marker-green.png" />
+    <Content Include="img\marker.png" />
+    <Content Include="img\measuring-stick-off.png" />
+    <Content Include="img\measuring-stick-on.png" />
+    <Content Include="img\north-mini.png" />
+    <Content Include="img\panning-hand-off.png" />
+    <Content Include="img\panning-hand-on.png" />
+    <Content Include="img\slider.png" />
+    <Content Include="img\south-mini.png" />
+    <Content Include="img\west-mini.png" />
+    <Content Include="img\zoom-minus-mini.png" />
+    <Content Include="img\zoom-plus-mini.png" />
+    <Content Include="img\zoom-world-mini.png" />
+    <Content Include="img\zoombar.png" />
+    <TypeScriptCompile Include="Scripts\typings\androWebOrdering\androWebOrdering.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\androWebOrdering\androWebOrdering.Helpers.ts" />
+    <TypeScriptCompile Include="Scripts\typings\androWebOrdering\androWebOrdering.Models.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\androWebOrdering\androWebOrdering.Services.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\androWebOrdering\androWebOrdering.ViewModels.ts" />
+    <TypeScriptCompile Include="Scripts\typings\google.analytics\ga.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout.projections\knockout.projections.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\modernizr\modernizr.d.ts" />
+    <TypeScriptCompile Include="Source\Helpers\homePageHelper.ts" />
+    <TypeScriptCompile Include="Source\Helpers\loyaltyHelper.ts" />
+    <TypeScriptCompile Include="Source\Helpers\pageManager.ts" />
+    <Content Include="Source\Helpers\viewHelper.js" />
+    <Content Include="Source\Models\Address.js" />
+    <Content Include="Source\Models\Customer.js" />
+    <Content Include="Source\Scripts\Animation.js" />
+    <Content Include="Source\Tests\toppingViewModel\popupToppingChanged.js" />
+    <Content Include="Source\Tests\checkoutHelper\removeUnavailableDeliverySlots.js" />
+    <Content Include="Source\Tests\menuHelper\getAvailableTimes.js" />
+    <Content Include="Source\Themes\1\comingsoon.jpg" />
+    <Content Include="Source\Themes\1\index.html" />
+    <Content Include="Source\Themes\2\Custom\Images\BasketSmallAct.png" />
+    <Content Include="Source\Themes\2\Custom\Images\CardPayments.png" />
+    <Content Include="Source\Themes\2\Custom\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\2\Custom\Images\footer-bg.gif" />
+    <Content Include="Source\Themes\2\Custom\Images\footer-bg.png" />
+    <Content Include="Source\Themes\2\Custom\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\2\Custom\Images\header-bg.gif" />
+    <Content Include="Source\Themes\2\Custom\Images\HomeSmallAct.png" />
+    <Content Include="Source\Themes\2\Custom\Images\icon-facebook-32.png" />
+    <Content Include="Source\Themes\2\Custom\Images\icon-instagram-32.png" />
+    <Content Include="Source\Themes\2\Custom\Images\icon-pinterest-32.png" />
+    <Content Include="Source\Themes\2\Custom\Images\icon-twitter-32.png" />
+    <Content Include="Source\Themes\2\Custom\Images\instagram-icon.png" />
+    <Content Include="Source\Themes\2\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %282%29.jpg" />
+    <Content Include="Source\Themes\2\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %285%29.jpg" />
+    <Content Include="Source\Themes\2\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %287%29.jpg" />
+    <Content Include="Source\Themes\2\Custom\Images\MenuSmallAct.png" />
+    <Content Include="Source\Themes\2\Custom\Images\MyLogo.png" />
+    <Content Include="Source\Themes\2\Custom\Images\pinterest-icon.png" />
+    <Content Include="Source\Themes\2\Custom\Images\price-bg.png" />
+    <Content Include="Source\Themes\2\Custom\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\2\Custom\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\2\Custom\Images\trashcan.png" />
+    <Content Include="Source\Themes\2\Custom\Images\twitter-icon.png" />
+    <Content Include="Source\Themes\2\Custom\SkinDefault.css" />
+    <Content Include="Source\Themes\2\Custom\SkinMobile.css" />
+    <Content Include="Source\Themes\2\Custom\SkinTablet.css" />
+    <Content Include="Source\Themes\2\Custom\SkinPCTablet.css" />
+    <Content Include="Source\Themes\4\Custom\Skin.css" />
+    <Content Include="Source\Themes\5\Custom\Skin.css" />
+    <Content Include="Source\Themes\6\Cancel.aspx" />
+    <Content Include="Source\Themes\6\Channel.html" />
+    <Content Include="Source\Themes\6\Content\Images\a01.png" />
+    <Content Include="Source\Themes\6\Content\Images\a02.png" />
+    <Content Include="Source\Themes\6\Content\Images\a03.png" />
+    <Content Include="Source\Themes\6\Content\Images\a04.png" />
+    <Content Include="Source\Themes\6\Content\Images\a06.png" />
+    <Content Include="Source\Themes\6\Content\Images\a07.png" />
+    <Content Include="Source\Themes\6\Content\Images\a08.png" />
+    <Content Include="Source\Themes\6\Content\Images\a09.png" />
+    <Content Include="Source\Themes\6\Content\Images\a10.png" />
+    <Content Include="Source\Themes\6\Content\Images\a11.png" />
+    <Content Include="Source\Themes\6\Content\Images\a12.png" />
+    <Content Include="Source\Themes\6\Content\Images\a13.png" />
+    <Content Include="Source\Themes\6\Content\Images\a14.png" />
+    <Content Include="Source\Themes\6\Content\Images\a15.png" />
+    <Content Include="Source\Themes\6\Content\Images\a16.png" />
+    <Content Include="Source\Themes\6\Content\Images\a17.png" />
+    <Content Include="Source\Themes\6\Content\Images\a18.png" />
+    <Content Include="Source\Themes\6\Content\Images\a19.png" />
+    <Content Include="Source\Themes\6\Content\Images\a20.png" />
+    <Content Include="Source\Themes\6\Content\Images\a21.png" />
+    <Content Include="Source\Themes\6\Content\Images\AddToCartMobile.png" />
+    <Content Include="Source\Themes\6\Content\Images\AMEX.gif" />
+    <Content Include="Source\Themes\6\Content\Images\AURORE.gif" />
+    <Content Include="Source\Themes\6\Content\Images\Basket.png" />
+    <Content Include="Source\Themes\6\Content\Images\Basketicon.png" />
+    <Content Include="Source\Themes\6\Content\Images\BasketSelectedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\BasketSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\Cart.png" />
+    <Content Include="Source\Themes\6\Content\Images\CB.gif" />
+    <Content Include="Source\Themes\6\Content\Images\CLEF.gif" />
+    <Content Include="Source\Themes\6\Content\Images\Cross.png" />
+    <Content Include="Source\Themes\6\Content\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\6\Content\Images\Facebook.png" />
+    <Content Include="Source\Themes\6\Content\Images\facebookLogo.png" />
+    <Content Include="Source\Themes\6\Content\Images\Go.png" />
+    <Content Include="Source\Themes\6\Content\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\6\Content\Images\halfandhalf.png" />
+    <Content Include="Source\Themes\6\Content\Images\Header.jpg" />
+    <Content Include="Source\Themes\6\Content\Images\Home.png" />
+    <Content Include="Source\Themes\6\Content\Images\HomeSelectedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\HomeSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\Instagram.png" />
+    <Content Include="Source\Themes\6\Content\Images\INTERVAL.gif" />
+    <Content Include="Source\Themes\6\Content\Images\loader.gif" />
+    <Content Include="Source\Themes\6\Content\Images\logoSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\Logout.png" />
+    <Content Include="Source\Themes\6\Content\Images\logouticon.png" />
+    <Content Include="Source\Themes\6\Content\Images\ManageAcount.png" />
+    <Content Include="Source\Themes\6\Content\Images\MASTERCARD.gif" />
+    <Content Include="Source\Themes\6\Content\Images\mCSB_buttons.png" />
+    <Content Include="Source\Themes\6\Content\Images\Menu.png" />
+    <Content Include="Source\Themes\6\Content\Images\menuicon.png" />
+    <Content Include="Source\Themes\6\Content\Images\MenuSelectedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\MenuSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\OpeningTimes.png" />
+    <Content Include="Source\Themes\6\Content\Images\orderhistoryicon.png" />
+    <Content Include="Source\Themes\6\Content\Images\orderhistorysmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\Pinterest.png" />
+    <Content Include="Source\Themes\6\Content\Images\Profileicon.png" />
+    <Content Include="Source\Themes\6\Content\Images\ProfileSelectedsmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\Profilesmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\6\Content\Images\RefreshSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\SearchPostcode.png" />
+    <Content Include="Source\Themes\6\Content\Images\slider1.png" />
+    <Content Include="Source\Themes\6\Content\Images\slider2.png" />
+    <Content Include="Source\Themes\6\Content\Images\slider3.png" />
+    <Content Include="Source\Themes\6\Content\Images\store.png" />
+    <Content Include="Source\Themes\6\Content\Images\StoreDetails.png" />
+    <Content Include="Source\Themes\6\Content\Images\StoreDetailsSelectedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\StoreDetailsSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\6\Content\Images\Tick.png" />
+    <Content Include="Source\Themes\6\Content\Images\Ticked.png" />
+    <Content Include="Source\Themes\6\Content\Images\TickedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\twitter-icon.png" />
+    <Content Include="Source\Themes\6\Content\Images\Twitter.png" />
+    <Content Include="Source\Themes\6\Content\Images\Unticked.png" />
+    <Content Include="Source\Themes\6\Content\Images\UntickedSmall.png" />
+    <Content Include="Source\Themes\6\Content\Images\VISA.gif" />
+    <Content Include="Source\Themes\6\Content\Images\Zoom.cur" />
+    <Content Include="Source\Themes\6\Content\Images\Zoom.png" />
+    <Content Include="Source\Themes\6\Custom\Skin.css" />
+    <Content Include="Source\Themes\6\Custom\Images\BasketSmallAct.png" />
+    <Content Include="Source\Themes\6\Custom\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\6\Custom\Images\footer-bg.gif" />
+    <Content Include="Source\Themes\6\Custom\Images\footer-bg.png" />
+    <Content Include="Source\Themes\6\Custom\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\6\Custom\Images\header-bg.gif" />
+    <Content Include="Source\Themes\6\Custom\Images\HomeSmallAct.png" />
+    <Content Include="Source\Themes\6\Custom\Images\icon-facebook-32.png" />
+    <Content Include="Source\Themes\6\Custom\Images\icon-instagram-32.png" />
+    <Content Include="Source\Themes\6\Custom\Images\icon-pinterest-32.png" />
+    <Content Include="Source\Themes\6\Custom\Images\icon-twitter-32.png" />
+    <Content Include="Source\Themes\6\Custom\Images\instagram-icon.png" />
+    <Content Include="Source\Themes\6\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %282%29.jpg" />
+    <Content Include="Source\Themes\6\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %285%29.jpg" />
+    <Content Include="Source\Themes\6\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %287%29.jpg" />
+    <Content Include="Source\Themes\6\Custom\Images\MenuSmallAct.png" />
+    <Content Include="Source\Themes\6\Custom\Images\MyLogo.png" />
+    <Content Include="Source\Themes\6\Custom\Images\pinterest-icon.png" />
+    <Content Include="Source\Themes\6\Custom\Images\price-bg.png" />
+    <Content Include="Source\Themes\6\Custom\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\6\Custom\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\6\Custom\Images\twitter-icon.png" />
+    <Content Include="Source\Themes\6\Done.html" />
+    <Content Include="Source\Themes\6\images\background_browser.gif" />
+    <Content Include="Source\Themes\6\images\browser_chrome.gif" />
+    <Content Include="Source\Themes\6\images\browser_firefox.gif" />
+    <Content Include="Source\Themes\6\images\browser_gcf.gif" />
+    <Content Include="Source\Themes\6\images\browser_konqueror.gif" />
+    <Content Include="Source\Themes\6\images\browser_msie.gif" />
+    <Content Include="Source\Themes\6\images\browser_opera.gif" />
+    <Content Include="Source\Themes\6\images\browser_safari.gif" />
+    <Content Include="Source\Themes\6\img\blank.gif" />
+    <Content Include="Source\Themes\6\img\cloud-popup-relative.png" />
+    <Content Include="Source\Themes\6\img\drag-rectangle-off.png" />
+    <Content Include="Source\Themes\6\img\drag-rectangle-on.png" />
+    <Content Include="Source\Themes\6\img\east-mini.png" />
+    <Content Include="Source\Themes\6\img\layer-switcher-maximize.png" />
+    <Content Include="Source\Themes\6\img\layer-switcher-minimize.png" />
+    <Content Include="Source\Themes\6\img\marker-blue.png" />
+    <Content Include="Source\Themes\6\img\marker-gold.png" />
+    <Content Include="Source\Themes\6\img\marker-green.png" />
+    <Content Include="Source\Themes\6\img\marker.png" />
+    <Content Include="Source\Themes\6\img\measuring-stick-off.png" />
+    <Content Include="Source\Themes\6\img\measuring-stick-on.png" />
+    <Content Include="Source\Themes\6\img\north-mini.png" />
+    <Content Include="Source\Themes\6\img\panning-hand-off.png" />
+    <Content Include="Source\Themes\6\img\panning-hand-on.png" />
+    <Content Include="Source\Themes\6\img\slider.png" />
+    <Content Include="Source\Themes\6\img\south-mini.png" />
+    <Content Include="Source\Themes\6\img\west-mini.png" />
+    <Content Include="Source\Themes\6\img\zoom-minus-mini.png" />
+    <Content Include="Source\Themes\6\img\zoom-plus-mini.png" />
+    <Content Include="Source\Themes\6\img\zoom-world-mini.png" />
+    <Content Include="Source\Themes\6\img\zoombar.png" />
+    <Content Include="Source\Themes\6\Terms.html" />
+    <Content Include="Source\Themes\6\theme\default\google.css" />
+    <Content Include="Source\Themes\6\theme\default\google.tidy.css" />
+    <Content Include="Source\Themes\6\theme\default\ie6-style.css" />
+    <Content Include="Source\Themes\6\theme\default\ie6-style.tidy.css" />
+    <Content Include="Source\Themes\6\theme\default\img\add_point_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\add_point_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\blank.gif" />
+    <Content Include="Source\Themes\6\theme\default\img\close.gif" />
+    <Content Include="Source\Themes\6\theme\default\img\drag-rectangle-off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\drag-rectangle-on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_line_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_line_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_point_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_point_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_polygon_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\draw_polygon_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\editing_tool_bar.png" />
+    <Content Include="Source\Themes\6\theme\default\img\move_feature_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\move_feature_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\navigation_history.png" />
+    <Content Include="Source\Themes\6\theme\default\img\overview_replacement.gif" />
+    <Content Include="Source\Themes\6\theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="Source\Themes\6\theme\default\img\pan-panel.png" />
+    <Content Include="Source\Themes\6\theme\default\img\panning-hand-off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\panning-hand-on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\pan_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\pan_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\remove_point_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\remove_point_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\ruler.png" />
+    <Content Include="Source\Themes\6\theme\default\img\save_features_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\save_features_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\view_next_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\view_next_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\view_previous_off.png" />
+    <Content Include="Source\Themes\6\theme\default\img\view_previous_on.png" />
+    <Content Include="Source\Themes\6\theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="Source\Themes\6\theme\default\img\zoom-panel.png" />
+    <Content Include="Source\Themes\6\theme\default\style.css" />
+    <Content Include="Source\Themes\6\theme\default\style.mobile.css" />
+    <Content Include="Source\Themes\6\theme\default\style.mobile.tidy.css" />
+    <Content Include="Source\Themes\6\theme\default\style.tidy.css" />
+    <Content Include="Source\Themes\6\WaitForOrder.aspx" />
+    <Content Include="Source\Themes\6\WaitForOrderS.aspx" />
+    <Content Include="Source\Themes\5\Cancel.aspx" />
+    <Content Include="Source\Themes\5\Channel.html" />
+    <Content Include="Source\Themes\5\Content\Images\a01.png" />
+    <Content Include="Source\Themes\5\Content\Images\a02.png" />
+    <Content Include="Source\Themes\5\Content\Images\a03.png" />
+    <Content Include="Source\Themes\5\Content\Images\a04.png" />
+    <Content Include="Source\Themes\5\Content\Images\a06.png" />
+    <Content Include="Source\Themes\5\Content\Images\a07.png" />
+    <Content Include="Source\Themes\5\Content\Images\a08.png" />
+    <Content Include="Source\Themes\5\Content\Images\a09.png" />
+    <Content Include="Source\Themes\5\Content\Images\a10.png" />
+    <Content Include="Source\Themes\5\Content\Images\a11.png" />
+    <Content Include="Source\Themes\5\Content\Images\a12.png" />
+    <Content Include="Source\Themes\5\Content\Images\a13.png" />
+    <Content Include="Source\Themes\5\Content\Images\a14.png" />
+    <Content Include="Source\Themes\5\Content\Images\a15.png" />
+    <Content Include="Source\Themes\5\Content\Images\a16.png" />
+    <Content Include="Source\Themes\5\Content\Images\a17.png" />
+    <Content Include="Source\Themes\5\Content\Images\a18.png" />
+    <Content Include="Source\Themes\5\Content\Images\a19.png" />
+    <Content Include="Source\Themes\5\Content\Images\a20.png" />
+    <Content Include="Source\Themes\5\Content\Images\a21.png" />
+    <Content Include="Source\Themes\5\Content\Images\AddToCartMobile.png" />
+    <Content Include="Source\Themes\5\Content\Images\AMEX.gif" />
+    <Content Include="Source\Themes\5\Content\Images\AURORE.gif" />
+    <Content Include="Source\Themes\5\Content\Images\Basket.png" />
+    <Content Include="Source\Themes\5\Content\Images\Basketicon.png" />
+    <Content Include="Source\Themes\5\Content\Images\BasketSelectedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\BasketSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\Cart.png" />
+    <Content Include="Source\Themes\5\Content\Images\CB.gif" />
+    <Content Include="Source\Themes\5\Content\Images\CLEF.gif" />
+    <Content Include="Source\Themes\5\Content\Images\Cross.png" />
+    <Content Include="Source\Themes\5\Content\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\5\Content\Images\Facebook.png" />
+    <Content Include="Source\Themes\5\Content\Images\facebookLogo.png" />
+    <Content Include="Source\Themes\5\Content\Images\Go.png" />
+    <Content Include="Source\Themes\5\Content\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\5\Content\Images\halfandhalf.png" />
+    <Content Include="Source\Themes\5\Content\Images\Header.jpg" />
+    <Content Include="Source\Themes\5\Content\Images\Home.png" />
+    <Content Include="Source\Themes\5\Content\Images\HomeSelectedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\HomeSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\Instagram.png" />
+    <Content Include="Source\Themes\5\Content\Images\INTERVAL.gif" />
+    <Content Include="Source\Themes\5\Content\Images\loader.gif" />
+    <Content Include="Source\Themes\5\Content\Images\logoSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\Logout.png" />
+    <Content Include="Source\Themes\5\Content\Images\logouticon.png" />
+    <Content Include="Source\Themes\5\Content\Images\ManageAcount.png" />
+    <Content Include="Source\Themes\5\Content\Images\MASTERCARD.gif" />
+    <Content Include="Source\Themes\5\Content\Images\mCSB_buttons.png" />
+    <Content Include="Source\Themes\5\Content\Images\Menu.png" />
+    <Content Include="Source\Themes\5\Content\Images\menuicon.png" />
+    <Content Include="Source\Themes\5\Content\Images\MenuSelectedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\MenuSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\OpeningTimes.png" />
+    <Content Include="Source\Themes\5\Content\Images\orderhistoryicon.png" />
+    <Content Include="Source\Themes\5\Content\Images\orderhistorysmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\Pinterest.png" />
+    <Content Include="Source\Themes\5\Content\Images\Profileicon.png" />
+    <Content Include="Source\Themes\5\Content\Images\ProfileSelectedsmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\Profilesmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\5\Content\Images\RefreshSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\SearchPostcode.png" />
+    <Content Include="Source\Themes\5\Content\Images\slider1.png" />
+    <Content Include="Source\Themes\5\Content\Images\slider2.png" />
+    <Content Include="Source\Themes\5\Content\Images\slider3.png" />
+    <Content Include="Source\Themes\5\Content\Images\store.png" />
+    <Content Include="Source\Themes\5\Content\Images\StoreDetails.png" />
+    <Content Include="Source\Themes\5\Content\Images\StoreDetailsSelectedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\StoreDetailsSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\5\Content\Images\Tick.png" />
+    <Content Include="Source\Themes\5\Content\Images\Ticked.png" />
+    <Content Include="Source\Themes\5\Content\Images\TickedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\twitter-icon.png" />
+    <Content Include="Source\Themes\5\Content\Images\Twitter.png" />
+    <Content Include="Source\Themes\5\Content\Images\Unticked.png" />
+    <Content Include="Source\Themes\5\Content\Images\UntickedSmall.png" />
+    <Content Include="Source\Themes\5\Content\Images\VISA.gif" />
+    <Content Include="Source\Themes\5\Content\Images\Zoom.cur" />
+    <Content Include="Source\Themes\5\Content\Images\Zoom.png" />
+    <Content Include="Source\Themes\5\Custom\Images\BasketSmallAct.png" />
+    <Content Include="Source\Themes\5\Custom\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\5\Custom\Images\footer-bg.gif" />
+    <Content Include="Source\Themes\5\Custom\Images\footer-bg.png" />
+    <Content Include="Source\Themes\5\Custom\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\5\Custom\Images\header-bg.gif" />
+    <Content Include="Source\Themes\5\Custom\Images\HomeSmallAct.png" />
+    <Content Include="Source\Themes\5\Custom\Images\icon-facebook-32.png" />
+    <Content Include="Source\Themes\5\Custom\Images\icon-instagram-32.png" />
+    <Content Include="Source\Themes\5\Custom\Images\icon-pinterest-32.png" />
+    <Content Include="Source\Themes\5\Custom\Images\icon-twitter-32.png" />
+    <Content Include="Source\Themes\5\Custom\Images\instagram-icon.png" />
+    <Content Include="Source\Themes\5\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %282%29.jpg" />
+    <Content Include="Source\Themes\5\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %285%29.jpg" />
+    <Content Include="Source\Themes\5\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %287%29.jpg" />
+    <Content Include="Source\Themes\5\Custom\Images\MenuSmallAct.png" />
+    <Content Include="Source\Themes\5\Custom\Images\MyLogo.png" />
+    <Content Include="Source\Themes\5\Custom\Images\pinterest-icon.png" />
+    <Content Include="Source\Themes\5\Custom\Images\price-bg.png" />
+    <Content Include="Source\Themes\5\Custom\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\5\Custom\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\5\Custom\Images\twitter-icon.png" />
+    <Content Include="Source\Themes\5\Done.html" />
+    <Content Include="Source\Themes\5\images\background_browser.gif" />
+    <Content Include="Source\Themes\5\images\browser_chrome.gif" />
+    <Content Include="Source\Themes\5\images\browser_firefox.gif" />
+    <Content Include="Source\Themes\5\images\browser_gcf.gif" />
+    <Content Include="Source\Themes\5\images\browser_konqueror.gif" />
+    <Content Include="Source\Themes\5\images\browser_msie.gif" />
+    <Content Include="Source\Themes\5\images\browser_opera.gif" />
+    <Content Include="Source\Themes\5\images\browser_safari.gif" />
+    <Content Include="Source\Themes\5\img\blank.gif" />
+    <Content Include="Source\Themes\5\img\cloud-popup-relative.png" />
+    <Content Include="Source\Themes\5\img\drag-rectangle-off.png" />
+    <Content Include="Source\Themes\5\img\drag-rectangle-on.png" />
+    <Content Include="Source\Themes\5\img\east-mini.png" />
+    <Content Include="Source\Themes\5\img\layer-switcher-maximize.png" />
+    <Content Include="Source\Themes\5\img\layer-switcher-minimize.png" />
+    <Content Include="Source\Themes\5\img\marker-blue.png" />
+    <Content Include="Source\Themes\5\img\marker-gold.png" />
+    <Content Include="Source\Themes\5\img\marker-green.png" />
+    <Content Include="Source\Themes\5\img\marker.png" />
+    <Content Include="Source\Themes\5\img\measuring-stick-off.png" />
+    <Content Include="Source\Themes\5\img\measuring-stick-on.png" />
+    <Content Include="Source\Themes\5\img\north-mini.png" />
+    <Content Include="Source\Themes\5\img\panning-hand-off.png" />
+    <Content Include="Source\Themes\5\img\panning-hand-on.png" />
+    <Content Include="Source\Themes\5\img\slider.png" />
+    <Content Include="Source\Themes\5\img\south-mini.png" />
+    <Content Include="Source\Themes\5\img\west-mini.png" />
+    <Content Include="Source\Themes\5\img\zoom-minus-mini.png" />
+    <Content Include="Source\Themes\5\img\zoom-plus-mini.png" />
+    <Content Include="Source\Themes\5\img\zoom-world-mini.png" />
+    <Content Include="Source\Themes\5\img\zoombar.png" />
+    <Content Include="Source\Themes\5\Terms.html" />
+    <Content Include="Source\Themes\5\theme\default\google.css" />
+    <Content Include="Source\Themes\5\theme\default\google.tidy.css" />
+    <Content Include="Source\Themes\5\theme\default\ie6-style.css" />
+    <Content Include="Source\Themes\5\theme\default\ie6-style.tidy.css" />
+    <Content Include="Source\Themes\5\theme\default\img\add_point_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\add_point_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\blank.gif" />
+    <Content Include="Source\Themes\5\theme\default\img\close.gif" />
+    <Content Include="Source\Themes\5\theme\default\img\drag-rectangle-off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\drag-rectangle-on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_line_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_line_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_point_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_point_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_polygon_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\draw_polygon_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\editing_tool_bar.png" />
+    <Content Include="Source\Themes\5\theme\default\img\move_feature_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\move_feature_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\navigation_history.png" />
+    <Content Include="Source\Themes\5\theme\default\img\overview_replacement.gif" />
+    <Content Include="Source\Themes\5\theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="Source\Themes\5\theme\default\img\pan-panel.png" />
+    <Content Include="Source\Themes\5\theme\default\img\panning-hand-off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\panning-hand-on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\pan_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\pan_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\remove_point_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\remove_point_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\ruler.png" />
+    <Content Include="Source\Themes\5\theme\default\img\save_features_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\save_features_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\view_next_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\view_next_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\view_previous_off.png" />
+    <Content Include="Source\Themes\5\theme\default\img\view_previous_on.png" />
+    <Content Include="Source\Themes\5\theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="Source\Themes\5\theme\default\img\zoom-panel.png" />
+    <Content Include="Source\Themes\5\theme\default\style.css" />
+    <Content Include="Source\Themes\5\theme\default\style.mobile.css" />
+    <Content Include="Source\Themes\5\theme\default\style.mobile.tidy.css" />
+    <Content Include="Source\Themes\5\theme\default\style.tidy.css" />
+    <Content Include="Source\Themes\5\WaitForOrder.aspx" />
+    <Content Include="Source\Themes\5\WaitForOrderS.aspx" />
+    <Content Include="Source\Themes\4\Custom\Images\BasketSmallAct.png" />
+    <Content Include="Source\Themes\4\Custom\Images\facebook-icon.png" />
+    <Content Include="Source\Themes\4\Custom\Images\footer-bg.gif" />
+    <Content Include="Source\Themes\4\Custom\Images\footer-bg.png" />
+    <Content Include="Source\Themes\4\Custom\Images\googleplus-icon.png" />
+    <Content Include="Source\Themes\4\Custom\Images\header-bg.gif" />
+    <Content Include="Source\Themes\4\Custom\Images\HomeSmallAct.png" />
+    <Content Include="Source\Themes\4\Custom\Images\icon-facebook-32.png" />
+    <Content Include="Source\Themes\4\Custom\Images\icon-instagram-32.png" />
+    <Content Include="Source\Themes\4\Custom\Images\icon-pinterest-32.png" />
+    <Content Include="Source\Themes\4\Custom\Images\icon-twitter-32.png" />
+    <Content Include="Source\Themes\4\Custom\Images\instagram-icon.png" />
+    <Content Include="Source\Themes\4\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %282%29.jpg" />
+    <Content Include="Source\Themes\4\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %285%29.jpg" />
+    <Content Include="Source\Themes\4\Custom\Images\MenuImages\phpThumb_generated_thumbnailjpg %287%29.jpg" />
+    <Content Include="Source\Themes\4\Custom\Images\MenuSmallAct.png" />
+    <Content Include="Source\Themes\4\Custom\Images\MyLogo.png" />
+    <Content Include="Source\Themes\4\Custom\Images\pinterest-icon.png" />
+    <Content Include="Source\Themes\4\Custom\Images\price-bg.png" />
+    <Content Include="Source\Themes\4\Custom\Images\ProfilesmallAct.png" />
+    <Content Include="Source\Themes\4\Custom\Images\StoreDetailsSmallAct.png" />
+    <Content Include="Source\Themes\4\Custom\Images\twitter-icon.png" />
+    <Content Include="Source\Helpers\popupHelper.js" />
+    <Content Include="Source\Scripts\knockout.validation.min.js" />
+    <Content Include="Source\ViewModels\BaseViewModel.js">
+      <DependentUpon>BaseViewModel.ts</DependentUpon>
+    </Content>
+    <Content Include="Source\ViewModels\PopupViewModel.js" />
+    <Content Include="Source\ViewModels\AddressViewModel.js" />
+    <Content Include="Source\ViewModels\ToppingsWrapperViewModel.js" />
+    <Content Include="Source\Views\AccountDetail.html" />
+    <Content Include="Source\Views\CmsPage.html" />
+    <Content Include="Source\Views\Feedback.html" />
+    <Content Include="Source\Views\Popup.html" />
+    <Content Include="Source\Views\Checkout\CustomerAddress.html" />
+    <Content Include="Source\Views\Address\UKAddressMinimal.html" />
+    <Content Include="Source\Views\QuickRegister.html" />
+    <Content Include="Source\Templates\robots.txt" />
+    <Content Include="Source\Themes\3\index.html" />
+    <Content Include="Source\Themes\3\TemporarilyUnavailable.jpg" />
+    <Content Include="Source\DebugIndex.html" />
+    <Content Include="Source\Helpers\addressHelper.js" />
+    <Content Include="Source\Helpers\customerHelper.js" />
+    <Content Include="Source\Helpers\myOrdersHelper.js" />
+    <Content Include="Source\Helpers\informationHelper.js" />
+    <Content Include="Source\Index.html" />
+    <Content Include="Source\Models\MenuItemWrapper.js" />
+    <Content Include="Source\Models\CartDealLine.js" />
+    <Content Include="Source\Models\CartDeal.js" />
+    <Content Include="Source\Models\CartItemTopping.js" />
+    <Content Include="Source\Models\CartItem.js" />
+    <Content Include="Source\MSBuild.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Source\ResourceStrings\fr-FR.js" />
+    <Content Include="Source\Helpers\ACSAPI.js" />
+    <Content Include="Source\Scripts\amplify.min.js" />
+    <Content Include="Source\Scripts\jreject.js" />
+    <Content Include="Source\Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Source\Scripts\jquery.signalR-2.0.0.min.js" />
+    <Content Include="Source\Scripts\jssor.core.js" />
+    <Content Include="Source\Scripts\jssor.slider.js" />
+    <Content Include="Source\Scripts\jssor.slider.mini.js" />
+    <Content Include="Source\Scripts\jssor.utils.js" />
+    <Content Include="Source\Scripts\knockout-3.0.0.js" />
+    <Content Include="Source\Scripts\modernizr.min.js" />
+    <Content Include="Source\Scripts\OpenLayers.js" />
+    <Content Include="Source\StyleSheets\WebOrdering.css" />
+    <Content Include="Source\StyleSheets\WebOrderingMobile.css" />
+    <Content Include="Source\StyleSheets\WebOrderingPC.css" />
+    <Content Include="Source\StyleSheets\WebOrderingPCandTablet.css" />
+    <Content Include="Source\StyleSheets\WebOrderingTablet.css" />
+    <Content Include="Source\Tests\cartHelper\CartHelperTests.js" />
+    <Content Include="Source\Tests\checkoutHelper\CheckoutHelperTests.js" />
+    <Content Include="Source\Tests\dealHelper\DealHelperTests.js" />
+    <Content Include="Source\Tests\Index.html" />
+    <Content Include="Source\Tests\menuHelper\MenuHelperTests.js" />
+    <Content Include="Source\Tests\Resources\qunit.css" />
+    <Content Include="Source\Tests\Resources\qunit.js" />
+    <Content Include="Source\Tests\TestHelper.js" />
+    <Content Include="Source\Helpers\accountHelper.js" />
+    <Content Include="Source\Helpers\cacheHelper.js" />
+    <Content Include="Source\Helpers\cartHelper.js" />
+    <Content Include="Source\Helpers\checkoutHelper.js" />
+    <Content Include="Source\Helpers\checkoutMenuHelper.js" />
+    <Content Include="Source\Helpers\cookieHelper.js" />
+    <Content Include="Source\Helpers\dealHelper.js" />
+    <Content Include="Source\Helpers\dealPopupHelper.js" />
+    <Content Include="Source\Helpers\deliveryZoneHelper.js" />
+    <Content Include="Source\Helpers\guiHelper.js" />
+    <Content Include="Source\Helpers\helper.js" />
+    <Content Include="Source\Helpers\imageHelper.js" />
+    <Content Include="Source\Helpers\mapHelper.js" />
+    <Content Include="Source\Helpers\menuHelper.js" />
+    <Content Include="Source\Helpers\openingTimesHelper.js" />
+    <Content Include="Source\Helpers\toppingsPopupHelper.js" />
+    <Content Include="Source\Helpers\postcodeCheckHelper.js" />
+    <Content Include="Source\Helpers\queryStringHelper.js" />
+    <Content Include="Source\Helpers\siteSelectorHelper.js" />
+    <Content Include="Source\ViewModels\CartViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\OrderAcceptedViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\CheckoutViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\PaypalPaymentViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\PaymentViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\MercanetPaymentViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\DataCashPaymentViewModel.js" />
+    <Content Include="Source\ViewModels\Checkout\MercuryPaymentViewModel.js" />
+    <Content Include="Source\ViewModels\ErrorViewModel.js" />
+    <Content Include="Source\ViewModels\StoreDetailsViewModel.js" />
+    <Content Include="Source\ViewModels\DealViewModel.js" />
+    <Content Include="Source\ViewModels\ToppingsViewModel.js" />
+    <Content Include="Source\ViewModels\LoginViewModel.js" />
+    <Content Include="Source\ViewModels\RepeatOrderViewModel.js" />
+    <Content Include="Source\ViewModels\PasswordResetViewModel.js" />
+    <Content Include="Source\ViewModels\PleaseWaitViewModel.js" />
+    <Content Include="Source\ViewModels\MyOrdersViewModel.js" />
+    <Content Include="Source\ViewModels\InformationViewModel.js" />
+    <Content Include="Source\ViewModels\MyProfileViewModel.js" />
+    <Content Include="Source\ViewModels\SitesViewModel.js" />
+    <Content Include="Source\ViewModels\PasswordResetRequestViewModel.js" />
+    <Content Include="Source\ViewModels\MobileMenuViewModel.js" />
+    <Content Include="Source\ViewModels\PostcodeStoreLocatorViewModel.js" />
+    <Content Include="Source\ViewModels\MenuViewModel.js" />
+    <Content Include="Source\ViewModels\HomeViewModel.js" />
+    <Content Include="Source\ViewModels\DefaultViewModel.js" />
+    <Content Include="Source\ViewModels\HeaderViewModel.js" />
+    <Content Include="Source\ViewModels\ViewModel.js" />
+    <Content Include="Source\Views\AddEditDeal.html" />
+    <Content Include="Source\Views\Address\FrenchAddress.html" />
+    <Content Include="Source\Views\Address\GenericAddress.html" />
+    <Content Include="Source\Views\Address\UKAddress.html" />
+    <Content Include="Source\Views\Address\USAddress.html" />
+    <Content Include="Source\Views\CartSidebar.html" />
+    <Content Include="Source\Views\Checkout\Checkout.html" />
+    <Content Include="Source\Views\Checkout\ContactDetails.html" />
+    <Content Include="Source\Views\Checkout\OrderSummary.html" />
+    <Content Include="Source\Views\Checkout\Upselling.html" />
+    <Content Include="Source\Views\Checkout\DeliveryAddress.html" />
+    <Content Include="Source\Views\Checkout\DeliveryCollectionTime.html" />
+    <Content Include="Source\Views\Checkout\OrderAccepted.html" />
+    <Content Include="Source\Views\Checkout\OrderNotes.html" />
+    <Content Include="Source\Views\Checkout\Payment.html" />
+    <Content Include="Source\Views\Checkout\SubmitOrder.html" />
+    <Content Include="Source\Views\StoreDetails.html" />
+    <Content Include="Source\Views\RepeatOrder.html" />
+    <Content Include="Source\Views\PasswordReset.html" />
+    <Content Include="Source\Views\MyOrders.html" />
+    <Content Include="Source\Views\Information.html" />
+    <Content Include="Source\Views\MyProfile.html" />
+    <Content Include="Source\Views\PostcodeStoreLocatorBody.html" />
+    <Content Include="Source\Views\RegisterFull.html" />
+    <Content Include="Source\Views\PasswordResetRequest.html" />
+    <Content Include="Source\Views\MobileMenu.html" />
+    <Content Include="Source\Views\Menu.html" />
+    <Content Include="Source\Views\ImagePopup.html" />
+    <Content Include="Source\Views\DealsSection.html" />
+    <Content Include="Source\Views\Error.html" />
+    <Content Include="Source\Views\Header\MobileHeader.html" />
+    <Content Include="Source\Views\Header\Header.html" />
+    <Content Include="Source\Views\Home.html" />
+    <Content Include="Source\Views\Login.html" />
+    <Content Include="Source\Views\MenuSection.html" />
+    <Content Include="Source\Views\PleaseWait.html" />
+    <Content Include="Source\Views\PostcodeCheck.html" />
+    <Content Include="Source\Views\PostcodeStoreLocator.html" />
+    <Content Include="Source\Views\Sites.html" />
+    <Content Include="Source\Views\StoreSelector.html" />
+    <Content Include="Source\Views\Toppings.html" />
+    <Content Include="Source\Templates\custom.css" />
+    <Content Include="Source\Templates\Custom.js" />
+    <Content Include="Source\Templates\Mapping.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="theme\default\google.css" />
+    <Content Include="theme\default\google.tidy.css" />
+    <Content Include="theme\default\ie6-style.css" />
+    <Content Include="theme\default\ie6-style.tidy.css" />
+    <Content Include="theme\default\img\add_point_off.png" />
+    <Content Include="theme\default\img\add_point_on.png" />
+    <Content Include="theme\default\img\blank.gif" />
+    <Content Include="theme\default\img\close.gif" />
+    <Content Include="theme\default\img\drag-rectangle-off.png" />
+    <Content Include="theme\default\img\drag-rectangle-on.png" />
+    <Content Include="theme\default\img\draw_line_off.png" />
+    <Content Include="theme\default\img\draw_line_on.png" />
+    <Content Include="theme\default\img\draw_point_off.png" />
+    <Content Include="theme\default\img\draw_point_on.png" />
+    <Content Include="theme\default\img\draw_polygon_off.png" />
+    <Content Include="theme\default\img\draw_polygon_on.png" />
+    <Content Include="theme\default\img\editing_tool_bar.png" />
+    <Content Include="theme\default\img\move_feature_off.png" />
+    <Content Include="theme\default\img\move_feature_on.png" />
+    <Content Include="theme\default\img\navigation_history.png" />
+    <Content Include="theme\default\img\overview_replacement.gif" />
+    <Content Include="theme\default\img\pan-panel-NOALPHA.png" />
+    <Content Include="theme\default\img\pan-panel.png" />
+    <Content Include="theme\default\img\panning-hand-off.png" />
+    <Content Include="theme\default\img\panning-hand-on.png" />
+    <Content Include="theme\default\img\pan_off.png" />
+    <Content Include="theme\default\img\pan_on.png" />
+    <Content Include="theme\default\img\remove_point_off.png" />
+    <Content Include="theme\default\img\remove_point_on.png" />
+    <Content Include="theme\default\img\ruler.png" />
+    <Content Include="theme\default\img\save_features_off.png" />
+    <Content Include="theme\default\img\save_features_on.png" />
+    <Content Include="theme\default\img\view_next_off.png" />
+    <Content Include="theme\default\img\view_next_on.png" />
+    <Content Include="theme\default\img\view_previous_off.png" />
+    <Content Include="theme\default\img\view_previous_on.png" />
+    <Content Include="theme\default\img\zoom-panel-NOALPHA.png" />
+    <Content Include="theme\default\img\zoom-panel.png" />
+    <Content Include="theme\default\style.css" />
+    <Content Include="theme\default\style.mobile.css" />
+    <Content Include="theme\default\style.mobile.tidy.css" />
+    <Content Include="theme\default\style.tidy.css" />
+    <Content Include="Version.txt" />
+    <Content Include="WaitForOrderS.aspx" />
+    <Content Include="WaitForOrder.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Antlr3.Runtime.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\EcmaScript.NET.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Iesi.Collections.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\NAnt.Core.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\New BSD License.txt" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\System.Web.Optimization.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\WebGrease.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.MsBuild.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Build.Nant.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.dll" />
+    <Content Include="Yahoo.Yui.Compressor v2.2.0.0\Yahoo.Yui.Compressor.Web.Optimization.dll" />
+    <TypeScriptCompile Include="Source\Helpers\Settings.ts" />
+    <TypeScriptCompile Include="Source\Helpers\telemetryHelper.ts" />
+    <TypeScriptCompile Include="Source\ResourceStrings\custom.d.ts" />
+    <TypeScriptCompile Include="Source\ResourceStrings\en-Gb.ts" />
+    <TypeScriptCompile Include="Source\ResourceStrings\fr-FR.ts" />
+    <TypeScriptCompile Include="Source\ViewModels\BaseViewModel.ts" />
+    <TypeScriptCompile Include="Source\ViewModels\FeedbackViewModel.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Source\Templates\sitemap.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config" />
+    <None Include="Source\Tests\✔ QUnit Tests.url" />
+    <Content Include="Source\Themes\2\Custom\build.cmd" />
+    <Content Include="Source\Themes\2\Custom\devbuild.cmd" />
+    <Content Include="Source\ViewModels\BaseViewModel.js.map">
+      <DependentUpon>BaseViewModel.ts</DependentUpon>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Custom\" />
+    <Folder Include="Source\Themes\itsu\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\typings\knockout.validation\knockout.validation.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
+    <TypeScriptCompile Include="Source\Models\cart.d.ts" />
+    <TypeScriptCompile Include="Source\Models\checkout.d.ts" />
+    <TypeScriptCompile Include="Source\Models\customer.d.ts" />
+    <TypeScriptCompile Include="Source\Models\Loyalty.d.ts" />
+    <TypeScriptCompile Include="Source\Helpers\logger.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>51929</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/websites/webordering</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://localhost/websites/webordering</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>"C:\Andromeda Development Source\Rameses Web Components\WebSites\Andromeda.WebOrderingBuilder\bin\Debug\Andromeda.WebOrderingBuilder.exe" "$(ProjectDir)"" DebugIndex.html excludeScriptsFile
+"C:\Andromeda Development Source\Rameses Web Components\WebSites\Andromeda.WebOrderingBuilder\bin\Debug\Andromeda.WebOrderingBuilder.exe" "$(ProjectDir)"" Index.html excludeScriptsFile
+copy "$(ProjectDir)DebugIndex.html" "$(ProjectDir)Debug\Index.html"
+
+"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\msbuild.exe" "$(ProjectDir)Source\MSBuild.xml"
+
+rmdir "$(ProjectDir)Build\AndroWebOrdering\" /s /q
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Templates\"
+copy "$(ProjectDir)Source\Templates\*.*" "$(ProjectDir)Build\AndroWebOrdering\Templates\"
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Themes\"
+xcopy  "$(ProjectDir)Source\Themes\*.*" "$(ProjectDir)Build\AndroWebOrdering\Themes\" /e /q /y
+
+copy "$(ProjectDir)Index.html" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Index.html"
+copy "$(ProjectDir)Cancel.aspx" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Cancel.aspx"
+copy "$(ProjectDir)Channel.html" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Channel.html"
+copy "$(ProjectDir)Done.html" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Done.html"
+copy "$(ProjectDir)WaitForOrder.aspx" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\WaitForOrder.aspx"
+copy "$(ProjectDir)WaitForOrderS.aspx" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\WaitForOrderS.aspx"
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Content\"
+xcopy  "$(ProjectDir)Content\*.*" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Content\" /e /q /y
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Images\"
+xcopy  "$(ProjectDir)Images\*.*" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Images\" /e /q /y
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Img\"
+xcopy  "$(ProjectDir)Img\*.*" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\Img\" /e /q /y
+
+mkdir "$(ProjectDir)Build\AndroWebOrdering\Themes\2\theme\"
+xcopy  "$(ProjectDir)theme\*.*" "$(ProjectDir)Build\AndroWebOrdering\Themes\2\theme\" /e /q /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

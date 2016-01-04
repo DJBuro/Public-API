@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Exporter.Service</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Exporter.Service.ExportFacade">
+            <summary>
+            Base facade containg Export methods.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Exporter.Service.ExportFacade.ExportTrackToKml(System.Int32,System.Int32[],System.DateTime,System.DateTime,System.Boolean,System.String[])">
+            <summary>
+            Export TrackData as KML to Response.OutStream
+            </summary>
+            <param name="appId"></param>
+            <param name="trackInfoId"></param>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="cutTrack"></param>
+        </member>
+        <member name="M:GpsGate.Exporter.Service.ExportFacade.ExportTrackToKmlFiltered(System.Int32,System.Int32[],System.DateTime,System.DateTime,System.DateTime,System.DateTime,System.Double,System.Double,System.Double,System.Double,System.Boolean,System.String[])">
+            <summary>
+            Export track data as KML to Response.OutStream
+            </summary>
+            <param name="appId"></param>
+            <param name="trackInfoId"></param>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="timeFilterFrom"></param>
+            <param name="timeFilterTo"></param>
+            <param name="speedFilterFrom"></param>
+            <param name="speedFilterTo"></param>
+            <param name="altFilterFrom"></param>
+            <param name="altFilterTo"></param>
+            <param name="cutTrack"></param>
+        </member>
+        <member name="M:GpsGate.Exporter.Service.ExportFacade.ExportTrackToCsv(System.Int32,System.Int32[],System.DateTime,System.DateTime,System.Boolean,System.String[])">
+            <summary>
+            Export TrackData + Message data as CSV to Response.OutStream
+            </summary>
+            <param name="appId"></param>
+            <param name="trackInfoId"></param>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="cutTrack"></param>
+        </member>
+        <member name="M:GpsGate.Exporter.Service.ExportFacade.ExportTrackToCsvFiltered(System.Int32,System.Int32[],System.DateTime,System.DateTime,System.DateTime,System.DateTime,System.Double,System.Double,System.Double,System.Double,System.Boolean,System.String[])">
+            <summary>
+            Export TrackData + Message data as CSV to Response.OutStream.
+            With some filter options.
+            </summary>
+            <param name="appId"></param>
+            <param name="trackInfoId"></param>
+            <param name="from"></param>
+            <param name="to"></param>
+            <param name="timeFilterFrom"></param>
+            <param name="timeFilterTo"></param>
+            <param name="speedFilterFrom"></param>
+            <param name="speedFilterTo"></param>
+            <param name="altFilterFrom"></param>
+            <param name="altFilterTo"></param>
+            <param name="cutTrack"></param>
+        </member>
+        <member name="T:GpsGate.Exporter.Service.JsonExporterFacade">
+            <summary>
+            Json version of exporter facade
+            </summary>
+        </member>
+        <member name="P:GpsGate.Exporter.Service.JsonExporterFacade.GetSessionID">
+            <summary>
+            Get the SessionID from FransonSessionID cookie.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Exporter.Service.TrackExporter.ExportFacade">
+            <summary>
+            Get the json Exporter facade
+            </summary>
+        </member>
+    </members>
+</doc>

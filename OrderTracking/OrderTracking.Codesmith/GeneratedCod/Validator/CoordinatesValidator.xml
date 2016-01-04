@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="CoordinateValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="LongitudeValidator" test="Longitude"><v:message id="error.Longitude.required" providers="LongitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="LatitudeValidator" test="Latitude"><v:message id="error.Latitude.required" providers="LatitudeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

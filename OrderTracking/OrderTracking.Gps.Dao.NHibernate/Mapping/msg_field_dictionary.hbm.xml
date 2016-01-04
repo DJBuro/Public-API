@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Msgfielddictionary, OrderTracking.Gps.Dao" table="msg_field_dictionary">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="msg_field_dict_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__msg_fiel__9B9A123B55BFB948"/>
+			<generator class="native" />
+		</id>
+		<property name="Name" type="String">
+			<column name="name" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Description" type="String">
+			<column name="description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<!--<many-to-one name="Group" class="OrderTracking.Gps.Dao.Domain.Group, OrderTracking.Gps.Dao">
+			<column name="group_id" length="4" sql-type="int" not-null="false" index="Index_group_id"/>
+		</many-to-one>
+		<one-to-one name="Devicedefmsgfielddictionary" class="OrderTracking.Gps.Dao.Domain.Devicedefmsgfielddictionary, OrderTracking.Gps.Dao"/>
+		<bag name="devices" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="msg_field_dict_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Device, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="msg_field_dictionary_entries" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="msg_field_dict_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Msgfielddictionaryentry, OrderTracking.Gps.Dao"/>
+		</bag>-->
+	</class>
+</hibernate-mapping>
+
+
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateeventexpressionevaluatornotifier, OrderTracking.Gps.Dao" table="gate_event_expression_evaluator_notifier">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="gate_event_expression_evaluator_id" length="4" sql-type="int" not-null="true" index="PK__gate_eve__5AEE89AC3EFC4F81"/>
+			<column name="notifier_id" length="4" sql-type="int" not-null="true" index="PK__gate_eve__5AEE89AC3EFC4F81"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Gateeventexpressionevaluator" class="OrderTracking.Gps.Dao.Domain.Gateeventexpressionevaluator, OrderTracking.Gps.Dao">
+			<column name="gate_event_expression_evaluator_id" length="4" sql-type="int" not-null="true" index="PK__gate_eve__5AEE89AC3EFC4F81"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

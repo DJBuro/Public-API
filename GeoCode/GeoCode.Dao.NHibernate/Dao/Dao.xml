@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<objects xmlns="http://www.springframework.net"
+         xmlns:db="http://www.springframework.net/database">
+
+    <!-- Referenced by main application context configuration file -->
+    <description>
+        The Order Tracking object definitions for the Data Access Objects.
+    </description>
+
+    <object type="Spring.Objects.Factory.Config.PropertyPlaceholderConfigurer, Spring.Core">
+        <property name="ConfigSections">
+            <list>
+                <value>databaseSettings</value>
+                <value>SiteConfiguration</value>
+            </list>
+        </property>
+    </object>
+
+    <!-- Database and NHibernate Configuration -->
+    <db:provider id="DbProvider"
+                     provider="System.Data.SqlClient"
+                     connectionString="Server=${db.datasource};Integrated Security=no;User ID=${db.user};PWD=${db.password};initial catalog=${db.database}"/>
+
+    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate21">
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="MappingAssemblies">
+            <list>
+                <value>GeoCode.Dao.NHibernate</value>
+            </list>
+        </property>
+
+        <property name="HibernateProperties">
+            <dictionary>
+                <entry key="show_sql" value="false"/>
+
+                <entry key="connection.provider"
+                     value="NHibernate.Connection.DriverConnectionProvider"/>
+
+                <entry key="connection.isolation" value="ReadCommitted" />
+
+                <entry key="default_schema" value="OrderTracking.dbo" />
+                 <!--<entry key="default_schema" value="OrderTracking_Test.dbo" />-->
+
+                <entry key="dialect"
+                       value="NHibernate.Dialect.MsSql2005Dialect"/>
+
+                <entry key="connection.driver_class"
+                       value="NHibernate.Driver.SqlClientDriver"/>
+
+                <entry key="cache.use_second_level_cache"
+                        value="false"/>
+                <entry key="cache.use_query_cache"
+                  value="false"/>
+
+                <entry key="cache.current_session_context_class"
+                       value="Spring.Data.NHibernate.SpringSessionContext"/>
+             </dictionary>
+        </property>
+
+        <property name="ExposeTransactionAwareSessionFactory" value="true" />
+
+    </object>
+
+
+    <object id="transactionManager" type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate21">
+        <property name="DbProvider" ref="DbProvider"/>
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+    </object>
+
+    <!-- Data Access Objects-->
+    <object id="GenericHibernateDAOFactory" abstract="true">
+        <property name="SessionFactory" ref="NHibernateSessionFactory"/>
+    </object>
+
+    <object id="GeoCodeHibernateDaoFactory" type="GeoCode.Dao.NHibernate.Dao.Factory.GeoCodeHibernateDAOFactory, GeoCode.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+    </object>
+
+    <!--<object id="CoordinatesDao" type="GeoCode.Dao.NHibernate.CoordinatesDao, GeoCode.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="GeoCodeHibernateDaoFactory" ref="GeoCodeHibernateDaoFactory"/>
+    </object>-->
+    
+    <object id="PostCodeDao" type="GeoCode.Dao.NHibernate.PostCodeDao, GeoCode.Dao.NHibernate" parent="GenericHibernateDAOFactory">
+        <property name="GeoCodeHibernateDaoFactory" ref="GeoCodeHibernateDaoFactory"/>
+    </object>
+
+</objects>

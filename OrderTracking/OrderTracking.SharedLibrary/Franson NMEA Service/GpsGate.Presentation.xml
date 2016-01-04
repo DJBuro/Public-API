@@ -1,0 +1,469 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.#ctor(GpsGate.Presentation.IEventRuleSetupView)">
+            <summary>
+            Creates a new EventRuleSetupPresenter. 
+            </summary>
+            <param name="view">View</param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.Init">
+            <summary>
+            Initialize the EventRuleSetupPresenter.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnNewRule(System.Object,System.EventArgs)">
+            <summary>
+            View fired create new rule.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnRuleSelected(System.Int32)">
+            <summary>
+            View fired RuleSelected
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnCancelRule(System.Int32)">
+            <summary>
+            View fired cancel edit/create rule.
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnSaveRule(System.Int32,System.Boolean)">
+            <summary>
+            View fired save rule.
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnDeleteRule(System.Int32)">
+            <summary>
+            View fired delete rule
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnRemoveExpression(System.Int32,GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            View removes expression.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnAddExpression(System.Int32,System.Int32)">
+            <summary>
+            View adds a Expression.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="iExpressionTypeID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnRemoveEndExpression(System.Int32,GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            View removes an EndExpression.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnAddEndExpression(System.Int32,System.Int32)">
+            <summary>
+            View adds an EndExpression.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="iExpressionTypeID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnExpressionDirty(System.Object,System.EventArgs)">
+            <summary>
+            Expression plugin control is dirty.
+            Need to update notifiers with new template variables.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnRemoveNotifier(System.Int32,GpsGate.Online.Notification.Notifier,System.String)">
+            <summary>
+            View removes a notifier.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="notifier"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.View_OnAddNotifier(System.Int32,System.Int32)">
+            <summary>
+            View adds a notifier.
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="iNotifierTypeID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.RefreshSchedulers">
+            <summary>
+            Reschedul the default scheduler.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.DisconnectDevices(System.Collections.Generic.List{System.Int32},System.Int32)">
+            <summary>
+            Disconnects all devices affected by the rule modification.
+            </summary>
+            <param name="TagIDs"></param>
+            <param name="iApplicationID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.GetEventRule(System.Int32)">
+            <summary>
+            Gets the event rule by the given ID.
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.CollectRuleBagInView">
+            <summary>
+            Collects the view into a EventRule
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.GetEvaluatorConditions(GpsGate.Presentation.IEventRuleSetupView)">
+            <summary>
+            Creates a list evaluator conditions from the pre conditions and post conditions of the supplied view.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.Presentation.EventRuleSetupPresenter.PopulateRuleFromView(GpsGate.Online.Event.EventExpressionEvaluatorWriter)">
+            <summary>
+            Populate everything in the View to a Rule.
+            </summary>
+            <param name="rule"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.EventExpressionEvaluatorSource">
+            <summary>
+            Source containing all Event Rules.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.EventExpressionLoadablesSource">
+            <summary>
+            Source containing all Expression types.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.NotifierLoadablesSource">
+            <summary>
+            Source containing all Notifier types.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.PreConditionLoadablesSource">
+            <summary>
+            Source containing all EvaluatorPreCondition types.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.PostConditionLoadablesSource">
+            <summary>
+            Source containing all EvaluatorPostCondition types.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.EventRuleSetupPresenter.TagSource">
+            <summary>
+            Source containing all UserTags
+            </summary>
+        </member>
+        <member name="T:GpsGate.Presentation.EventRuleEventHandler">
+            <summary>
+            Event handle for select event rule.
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.EventRuleSaveEventHandler">
+            <summary>
+            Event handle for select event rule.
+            </summary>
+            <param name="iEventRuleID"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.StepChangedEventHandler">
+            <summary>
+            Called when view change step.
+            </summary>
+            <param name="strStep"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.ValidationEventHandler">
+            <summary>
+            
+            </summary>
+            <param name="iIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.Presentation.RemoveExpressionHandler">
+            <summary>
+            Event handle for remove EventExpression events
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.AddExpressionHandler">
+            <summary>
+            Event handler for Add Expression
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="iExpressionTypeID"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.AddNotifierHandler">
+            <summary>
+            Event handler for AddNotifier
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="iNotifierTypeID"></param>
+        </member>
+        <member name="T:GpsGate.Presentation.RemoveNotifierHandler">
+            <summary>
+            Event handle for remove Notifier
+            </summary>
+            <param name="iEventRuleID"></param>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.Translate">
+            <summary>
+            Called when GUI should be translated.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListEventRules(System.Collections.Generic.Dictionary{GpsGate.Online.Event.EventExpressionEvaluator,System.Collections.Generic.IEnumerable{Franson.Validation.ValidationError}})">
+            <summary>
+            List the provided rules.
+            </summary>
+            <param name="rules">The rules to list.</param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListRuleTags(System.Collections.Generic.IEnumerable{GpsGate.Online.Directory.UserTag},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            List <see cref="T:GpsGate.Online.Directory.UserTag">tags</see> to choose from when setup a rule.
+            </summary>
+            <param name="tags">The tags to list.</param>
+            <param name="selected">List of tag IDs for which to be selected.</param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListExpressions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EventExpression})">
+            <summary>
+            List the <see cref="T:GpsGate.Online.Event.EventExpression">expressions</see> the rule consist of.
+            </summary>
+            <param name="expressions"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListExpressionTypes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{GpsGate.Online.Event.EventExpression,Franson.Reflection.LoadableType}})">
+            <summary>
+            List all expression plugin types.
+            </summary>
+            <param name="expressionTypes"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.AddExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Add an expression to view.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.RemoveExpression(GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            Remove an expresssion from view.
+            </summary>
+            <param name="expression"></param>
+            <param name="strCustomID">custom id passed from OnRemoveExpression. Often used to identifie controls</param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.AddEndExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Add an end expression to view.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.RemoveEndExpression(GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            Remove an end expression from view.
+            </summary>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListNotifiers(System.Collections.Generic.IEnumerable{GpsGate.Online.Notification.Notifier},Franson.Text.ITemplateResolver)">
+            <summary>
+            List the <see cref="T:GpsGate.Online.Notification.Notifier">notifiers</see> the rule consist of.
+            </summary>
+            <param name="expressions"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListNotifierTypes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{GpsGate.Online.Notification.Notifier,Franson.Reflection.LoadableType}})">
+            <summary>
+            List all notifier plugin types.
+            </summary>
+            <param name="notifierType"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.AddNotifier(GpsGate.Online.Notification.Notifier,Franson.Text.ITemplateResolver)">
+            <summary>
+            Add a <see cref="T:GpsGate.Online.Notification.Notifier"/>  to view.
+            </summary>
+            <param name="notifier"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.RemoveNotifier(GpsGate.Online.Notification.Notifier,System.String)">
+            <summary>
+            Removes a <see cref="T:GpsGate.Online.Notification.Notifier"/> from view.
+            </summary>
+            <param name="notifier"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListPreConditions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EvaluatorPreCondition})">
+            <summary>
+            List the <see cref="T:GpsGate.Online.Event.EvaluatorPreCondition">pre conditions</see> the rule uses.
+            </summary>
+            <param name="preConditions"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ListPostConditions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EvaluatorPostCondition})">
+            <summary>
+            List the <see cref="T:GpsGate.Online.Event.EvaluatorPostCondition">post conditions</see> the rule uses.
+            </summary>
+            <param name="postConditions"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.SetMode(System.String)">
+             <summary>
+             Sets the mode of the view.
+             The view setup the layout consider the given mode.
+            
+             Possible modes:
+             - ListRules
+             - CreateNewRule
+             - EditRule
+             </summary>
+             <param name="strMode">Mode to setup view after.</param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ShowSaveWithErrorsDialogue(System.Collections.Generic.List{Franson.Validation.ValidationError})">
+            <summary>
+            Show dialouge when saving rule with errors.
+            </summary>
+            <param name="errors"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ShowSaveWithWarningsDialogue(System.Collections.Generic.List{Franson.Validation.ValidationError})">
+            <summary>
+            Show dialouge when saving rule with warnings.
+            </summary>
+            <param name="errors"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.ShowException(System.Exception)">
+            <summary>
+            Unhandle exception.
+            </summary>
+            <param name="ex"></param>
+        </member>
+        <member name="M:GpsGate.Presentation.IEventRuleSetupView.CheckValid">
+            <summary>
+            View will go through all steps and call OnValidateStep
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.Expressions">
+            <summary>
+            Get the expressions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.Notifiers">
+            <summary>
+            Get the notifiers in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.PreConditions">
+            <summary>
+            Get the pre conditions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.PostConditions">
+            <summary>
+            Get the post conditions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.Name">
+            <summary>
+            Set and get the rule name.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.ExpressionOperatorMatchAll">
+            <summary>
+            Get the Expression boolean operator.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.EndExpressionOperatorMatchAll">
+            <summary>
+            Get the End expression boolean operator.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.Description">
+            <summary>
+            Set and get the rule description.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Presentation.IEventRuleSetupView.Tags">
+            <summary>
+            Get list of tag IDs
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnRuleSelected">
+            <summary>
+            View fire this event when a view is selected.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnStepChange">
+            <summary>
+            View fire this event when step are beeing changed
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnValidateStep">
+            <summary>
+            Called when step should be validated.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnNewRule">
+            <summary>
+            View fire this event when a new event rule should be created.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnRemoveExpression">
+            <summary>
+            View fire this event when an expression should be removed.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnAddExpression">
+            <summary>
+            View fire this event when a expression is should be added.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnRemoveEndExpression">
+            <summary>
+            View fire this event when an end expression should be removed.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnAddEndExpression">
+            <summary>
+            View fire this event when an end expression should be removed.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnExpressionDirty">
+            <summary>
+            View fire this event when expression has been internally changed.
+            E.g. MessageField has been changed.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnAddNotifier">
+            <summary>
+            View fire this event when a notifier should be added.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnRemoveNotifier">
+            <summary>
+            View fire this event when a notifier should be removed
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnSaveRule">
+            <summary>
+            View fire this event when rule should be saved.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnCancelRule">
+            <summary>
+            View fire this event when rule edit should be canceled.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Presentation.IEventRuleSetupView.OnDeleteRule">
+            <summary>
+            View fired delete
+            </summary>
+        </member>
+    </members>
+</doc>

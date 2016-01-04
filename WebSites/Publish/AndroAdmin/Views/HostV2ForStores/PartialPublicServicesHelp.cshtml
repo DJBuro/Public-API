@@ -1,0 +1,41 @@
+﻿@model AndroAdmin.ViewModels.HostV2.HostStoreSelectionViewModel
+@{
+    var groups = Model.PossibleHosts;
+    var applications = Model.Applications;
+    var publicHosts = groups.Where(e => e.Key == "WebOrderingAPI").SingleOrDefault();
+}
+
+<div class="k-block content">
+    <div class="k-header">
+        Test public services by this store's application ids 
+    </div>
+    <p>The public host list is defined by the application id. So site specific requests will return only the application specific list or the default list.</p>
+    
+@(Html.Kendo().Grid(applications).Name("ApplicationList")
+.Columns(columns =>
+{
+    columns.Template(@<text>
+    <ul style="margin: 0.5em">
+        @foreach (var host in publicHosts.Value.Where(e => e.Version == 2))
+        {
+            <li>
+                @host.Url
+                <ul>
+                    @foreach (var application in applications)
+                    {
+                        <li>
+                            <a class="k-button" href="@string.Format("{0}/host?applicationid={1}", host.Url, application.ExternalApplicationId)">V2 host endpoint test</a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+    </text>).Title("V2 Endpoints");
+}).Pageable().Sortable()
+
+)
+</div>
+
+
+

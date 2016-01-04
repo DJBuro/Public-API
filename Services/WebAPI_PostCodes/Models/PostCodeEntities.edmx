@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AndroPostCodeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="OSPostCodes">
+          <Key>
+            <PropertyRef Name="PostCode" />
+          </Key>
+          <Property Name="PostCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PostCodeNormalized" Type="nvarchar" MaxLength="10" />
+          <Property Name="Positional_quality_indicator" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Eastings" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Northings" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Country_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NHS_regional_HA_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NHS_HA_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_county_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_district_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_ward_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Lat" Type="float" />
+          <Property Name="Long" Type="float" />
+          <Property Name="Location" Type="geography" />
+        </EntityType>
+        <EntityType Name="OSPostCodeSector">
+          <Key>
+            <PropertyRef Name="PostCodeSector" />
+          </Key>
+          <Property Name="PostCodeSector" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="Positional_quality_indicator" Type="nvarchar" MaxLength="20" />
+          <Property Name="Eastings" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Northings" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Country_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="NHS_regional_HA_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="NHS_HA_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="Admin_county_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="Admin_district_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="Admin_ward_code" Type="nvarchar" MaxLength="20" />
+          <Property Name="Lat" Type="float" />
+          <Property Name="Long" Type="float" />
+          <Property Name="Location" Type="geography" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'AndroPostCode.dbo.OSPostCodesView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OSPostCodesView">
+          <Key>
+            <PropertyRef Name="PostCode" />
+            <PropertyRef Name="Positional_quality_indicator" />
+            <PropertyRef Name="Eastings" />
+            <PropertyRef Name="Northings" />
+            <PropertyRef Name="Country_code" />
+            <PropertyRef Name="NHS_regional_HA_code" />
+            <PropertyRef Name="NHS_HA_code" />
+            <PropertyRef Name="Admin_county_code" />
+            <PropertyRef Name="Admin_district_code" />
+            <PropertyRef Name="Admin_ward_code" />
+          </Key>
+          <Property Name="PostCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Positional_quality_indicator" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Eastings" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Northings" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Country_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NHS_regional_HA_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="NHS_HA_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_county_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_district_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Admin_ward_code" Type="nvarchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <Function Name="BulkInsertOSPostcodes_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="filepath" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="DeleteExistingOSPostCodes_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GeneratePostCodeSectors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetPostCodes_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="postcode" Type="nvarchar" Mode="In" />
+          <Parameter Name="radius" Type="float" Mode="In" />
+        </Function>
+        <Function Name="GetPostCodeSectors_SP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="origin" Type="nvarchar" Mode="In" />
+          <Parameter Name="radius" Type="float" Mode="In" />
+        </Function>
+        <Function Name="NEtoLL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="float">
+          <Parameter Name="East" Type="int" Mode="In" />
+          <Parameter Name="North" Type="int" Mode="In" />
+          <Parameter Name="LatOrLng" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="UpdatePostCodes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="AndroPostCodeModelStoreContainer">
+          <EntitySet Name="OSPostCodes" EntityType="Self.OSPostCodes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OSPostCodeSector" EntityType="Self.OSPostCodeSector" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OSPostCodesView" EntityType="Self.OSPostCodesView" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OSPostCodesView].[PostCode] AS [PostCode], 
+    [OSPostCodesView].[Positional_quality_indicator] AS [Positional_quality_indicator], 
+    [OSPostCodesView].[Eastings] AS [Eastings], 
+    [OSPostCodesView].[Northings] AS [Northings], 
+    [OSPostCodesView].[Country_code] AS [Country_code], 
+    [OSPostCodesView].[NHS_regional_HA_code] AS [NHS_regional_HA_code], 
+    [OSPostCodesView].[NHS_HA_code] AS [NHS_HA_code], 
+    [OSPostCodesView].[Admin_county_code] AS [Admin_county_code], 
+    [OSPostCodesView].[Admin_district_code] AS [Admin_district_code], 
+    [OSPostCodesView].[Admin_ward_code] AS [Admin_ward_code]
+    FROM [dbo].[OSPostCodesView] AS [OSPostCodesView]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AndroPostCodeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="OSPostCode">
+          <Key>
+            <PropertyRef Name="PostCode" />
+          </Key>
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostCodeNormalized" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Positional_quality_indicator" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Eastings" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Northings" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NHS_regional_HA_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NHS_HA_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_county_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_district_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_ward_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lat" Type="Double" />
+          <Property Name="Long" Type="Double" />
+          <Property Name="Location" Type="Geography" />
+        </EntityType>
+        <EntityType Name="OSPostCodeSector">
+          <Key>
+            <PropertyRef Name="PostCodeSector" />
+          </Key>
+          <Property Name="PostCodeSector" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PostCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Positional_quality_indicator" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Eastings" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Northings" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NHS_regional_HA_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="NHS_HA_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Admin_county_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Admin_district_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Admin_ward_code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Lat" Type="Double" />
+          <Property Name="Long" Type="Double" />
+          <Property Name="Location" Type="Geography" />
+        </EntityType>
+        <EntityType Name="OSPostCodesView">
+          <Key>
+            <PropertyRef Name="PostCode" />
+            <PropertyRef Name="Positional_quality_indicator" />
+            <PropertyRef Name="Eastings" />
+            <PropertyRef Name="Northings" />
+            <PropertyRef Name="Country_code" />
+            <PropertyRef Name="NHS_regional_HA_code" />
+            <PropertyRef Name="NHS_HA_code" />
+            <PropertyRef Name="Admin_county_code" />
+            <PropertyRef Name="Admin_district_code" />
+            <PropertyRef Name="Admin_ward_code" />
+          </Key>
+          <Property Name="PostCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Positional_quality_indicator" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Eastings" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Northings" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NHS_regional_HA_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NHS_HA_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_county_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_district_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin_ward_code" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="AndroPostCodeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OSPostCodes" EntityType="Self.OSPostCode" />
+          <EntitySet Name="OSPostCodeSectors" EntityType="Self.OSPostCodeSector" />
+          <EntitySet Name="OSPostCodesViews" EntityType="Self.OSPostCodesView" />
+          <FunctionImport Name="BulkInsertOSPostcodes_SP">
+            <Parameter Name="filepath" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteExistingOSPostCodes_SP" />
+          <FunctionImport Name="GeneratePostCodeSectors" />
+          <FunctionImport Name="GetPostCodes_SP" ReturnType="Collection(String)">
+            <Parameter Name="postcode" Mode="In" Type="String" />
+            <Parameter Name="radius" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="GetPostCodeSectors_SP" ReturnType="Collection(String)">
+            <Parameter Name="origin" Mode="In" Type="String" />
+            <Parameter Name="radius" Mode="In" Type="Double" />
+          </FunctionImport>
+          <FunctionImport Name="UpdatePostCodes" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AndroPostCodeModelStoreContainer" CdmEntityContainer="AndroPostCodeEntities">
+          <EntitySetMapping Name="OSPostCodes">
+            <EntityTypeMapping TypeName="AndroPostCodeModel.OSPostCode">
+              <MappingFragment StoreEntitySet="OSPostCodes">
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="PostCodeNormalized" ColumnName="PostCodeNormalized" />
+                <ScalarProperty Name="Positional_quality_indicator" ColumnName="Positional_quality_indicator" />
+                <ScalarProperty Name="Eastings" ColumnName="Eastings" />
+                <ScalarProperty Name="Northings" ColumnName="Northings" />
+                <ScalarProperty Name="Country_code" ColumnName="Country_code" />
+                <ScalarProperty Name="NHS_regional_HA_code" ColumnName="NHS_regional_HA_code" />
+                <ScalarProperty Name="NHS_HA_code" ColumnName="NHS_HA_code" />
+                <ScalarProperty Name="Admin_county_code" ColumnName="Admin_county_code" />
+                <ScalarProperty Name="Admin_district_code" ColumnName="Admin_district_code" />
+                <ScalarProperty Name="Admin_ward_code" ColumnName="Admin_ward_code" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OSPostCodeSectors">
+            <EntityTypeMapping TypeName="AndroPostCodeModel.OSPostCodeSector">
+              <MappingFragment StoreEntitySet="OSPostCodeSector">
+                <ScalarProperty Name="PostCodeSector" ColumnName="PostCodeSector" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Positional_quality_indicator" ColumnName="Positional_quality_indicator" />
+                <ScalarProperty Name="Eastings" ColumnName="Eastings" />
+                <ScalarProperty Name="Northings" ColumnName="Northings" />
+                <ScalarProperty Name="Country_code" ColumnName="Country_code" />
+                <ScalarProperty Name="NHS_regional_HA_code" ColumnName="NHS_regional_HA_code" />
+                <ScalarProperty Name="NHS_HA_code" ColumnName="NHS_HA_code" />
+                <ScalarProperty Name="Admin_county_code" ColumnName="Admin_county_code" />
+                <ScalarProperty Name="Admin_district_code" ColumnName="Admin_district_code" />
+                <ScalarProperty Name="Admin_ward_code" ColumnName="Admin_ward_code" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OSPostCodesViews">
+            <EntityTypeMapping TypeName="AndroPostCodeModel.OSPostCodesView">
+              <MappingFragment StoreEntitySet="OSPostCodesView">
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Positional_quality_indicator" ColumnName="Positional_quality_indicator" />
+                <ScalarProperty Name="Eastings" ColumnName="Eastings" />
+                <ScalarProperty Name="Northings" ColumnName="Northings" />
+                <ScalarProperty Name="Country_code" ColumnName="Country_code" />
+                <ScalarProperty Name="NHS_regional_HA_code" ColumnName="NHS_regional_HA_code" />
+                <ScalarProperty Name="NHS_HA_code" ColumnName="NHS_HA_code" />
+                <ScalarProperty Name="Admin_county_code" ColumnName="Admin_county_code" />
+                <ScalarProperty Name="Admin_district_code" ColumnName="Admin_district_code" />
+                <ScalarProperty Name="Admin_ward_code" ColumnName="Admin_ward_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="BulkInsertOSPostcodes_SP" FunctionName="AndroPostCodeModel.Store.BulkInsertOSPostcodes_SP" />
+          <FunctionImportMapping FunctionImportName="DeleteExistingOSPostCodes_SP" FunctionName="AndroPostCodeModel.Store.DeleteExistingOSPostCodes_SP" />
+          <FunctionImportMapping FunctionImportName="GeneratePostCodeSectors" FunctionName="AndroPostCodeModel.Store.GeneratePostCodeSectors" />
+          <FunctionImportMapping FunctionImportName="GetPostCodes_SP" FunctionName="AndroPostCodeModel.Store.GetPostCodes_SP" />
+          <FunctionImportMapping FunctionImportName="GetPostCodeSectors_SP" FunctionName="AndroPostCodeModel.Store.GetPostCodeSectors_SP" />
+          <FunctionImportMapping FunctionImportName="UpdatePostCodes" FunctionName="AndroPostCodeModel.Store.UpdatePostCodes" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,478 @@
+﻿>>> DEV <<<
+
+http://qa4.androtest.co.uk/services/webordering/webordering/test
+
+SITELIST (GET)
+https://localhost/services/WebOrdering/WebOrdering/SiteList?key=x
+https://localhost/services/WebOrdering/WebOrdering/SiteList?deliveryZone=SM6+0&key=x
+http://dev.androtest.co.uk//Services/WebOrdering/webordering/SiteList?key=x
+
+SITE (GET)
+https://localhost/services/WebOrdering/WebOrdering/Sites/53391C2E-B2A4-4C5D-A524-A6BC3807C8DA?key=x&gotMenuVersion=999
+
+SITEDETAILS (GET)
+https://54.217.208.103/services/WebOrdering/SiteDetails/41724ADF-54DD-4611-9CE1-99A246BC0DE8?key=x
+
+MERCANET (PUT)
+https://localhost/services/WebOrdering/WebOrdering/mercanetpayment/53391C2E-B2A4-4C5D-A524-A6BC3807C8DA?key=x
+
+{ amount: 1000 }
+
+PAYPAL (PUT)
+https://localhost/services/WebOrdering/WebOrdering/paypalpayment/A997D53D-8CC8-47AF-B9E6-ACA94C74B886?key=x
+
+{
+    "paymentType": "PayPalTest",
+    "order":
+    {
+        "partnerReference": "12345",
+        "type": "delivery",
+        "orderTimeType": "TIMED",
+        "orderWantedTime": "2014-04-23T11:15:38Z",
+        "orderPlacedTime": "2014-04-23T10:54:38Z",
+        "timeToTake": 218,
+        "chefNotes": "",
+        "oneOffDirections": "",
+        "estimatedDeliveryTime": 0,
+        "customer": 
+        {
+            "title": "Mr",
+            "firstName": "Test",
+            "surname": "McTest",
+            "contacts": 
+            [
+                {
+                    "type": "Mobile",
+                    "value": "0123456789",
+                    "marketingLevel": "3rdParty"
+                },
+                {
+                    "type": "Email",
+                    "value": "robert.dunn@androtech.com",
+                    "marketingLevel": "3rdParty"
+                }
+            ],
+            "address": 
+            {
+                "prem1": "prem1",
+                "prem2": "prem2",
+                "prem3": "prem3",
+                "prem4": "prem4",
+                "prem5": "prem5",
+                "prem6": "prem6",
+                "org1": "org1",
+                "org2": "org2",
+                "org3": "org3",
+                "roadNumber": "roadNum",
+                "roadName": "roadName",
+                "city": "city",
+                "town": "town",
+                "zipCode": "zipCode",
+                "county": "county",
+                "state": "state",
+                "locality": "locality",
+                "directions": "directions",
+                "country": "United Kingdom"
+            },
+        },
+        "pricing": 
+        {
+            "priceBeforeDiscount": 1390,
+            "pricesIncludeTax": "false",
+            "priceAfterDiscount": 1390
+        },
+        "orderLines": 
+        [
+            {
+                "productId": 679,
+                "quantity": "1",
+                "price": 1230,
+                "name": "Harlem",
+                "orderLineIndex": 0,
+                "lineType": 1,
+                "instructions": "instructions",
+                "person": "person",
+                "inDealFlag": false,
+                "addToppings": [],
+                "removeToppings": []
+            },
+            {
+                "productId": 714,
+                "quantity": "1",
+                "price": 160,
+                "name": "Coca-Cola 33cl",
+                "orderLineIndex": 1,
+                "lineType": 1,
+                "instructions": "instructions",
+                "person": "person",
+                "inDealFlag": false,
+                "addToppings": [],
+                "removeToppings": []
+            }
+        ],
+        "orderPayments": 
+        [
+            {
+                "PaymentType": "PayLater",
+                "Value": "1390",
+                "AuthCode": null,
+                "CVVStatus": null,
+                "PaytypeName": null,
+                "LastFourDigits": null,
+                "PayProcessor": null,
+                "PSPSpecificDetails": null
+            }
+        ]
+    }
+}
+
+PAYPAL CALLBACK (POST)
+https://localhost/services/WebOrdering/WebOrdering/PayPalCallback/d5e960d67d96481097f9708fa27df828?key=x
+
+{ "result":"Accepted", "token":"EC-627244432P899244S" }
+
+
+
+CUSTOMERS (GET)
+
+https://localhost/services/WebOrdering/WebOrdering/customers/robert.dunn%40androtech.com?applicationid=1AC1D77D-722C-4115-A90A-D2EBF2D15225
+Authorization: Basic dGVzdHdvcmQ=
+
+CUSTOMERS (PUT)
+
+https://localhost/services/WebOrdering/WebOrdering/customers/robert.dunn2%40androtech.com?applicationid=1AC1D77D-722C-4115-A90A-D2EBF2D15225
+Authorization: Basic dGVzdHdvcmQ=
+
+{
+    title: 'Mr', 
+    firstname: 'Test', 
+    surname: 'McTest',
+    address: 
+    {
+        prem1: 'prem1',
+        prem2: 'prem2',
+        prem3: 'prem3',
+        prem4: 'prem4',
+        prem5: 'prem5',
+        prem6: 'prem6',
+        org1: 'org1',
+        org2: 'org2',
+        org3: 'org3',
+        roadNum: 'roadNum',
+        roadName: 'roadName',
+        town: 'town',
+        postcode: 'postcode',
+        county: 'county',
+        state: 'state',
+        locality: 'locality',
+        country: 'United Kingdom'
+    },
+    contacts:
+    [
+        {
+            type: 'EMail',
+            value: 'test.mctest@test.com',
+            marketingLevel: '3rdParty'
+        }
+    ]
+}
+
+CUSTOMERS (POST)
+
+https://localhost/services/WebOrdering/WebOrdering/customers/robert.dunn%40androtech.com?applicationid=1AC1D77D-722C-4115-A90A-D2EBF2D15225
+Authorization: Basic dGVzdHdvcmQ=
+
+{
+    title: 'Mrx', 
+    firstname: 'Testx', 
+    surname: 'McTestx',
+    address: 
+    {
+        prem1: 'prem1x',
+        prem2: 'prem2x',
+        prem3: 'prem3x',
+        prem4: 'prem4x',
+        prem5: 'prem5x',
+        prem6: 'prem6x',
+        org1: 'org1x',
+        org2: 'org2x',
+        org3: 'org3x',
+        roadNum: 'roadNumx',
+        roadName: 'roadNamex',
+        town: 'townx',
+        postcode: 'postcodex',
+        county: 'countyx',
+        state: 'statex',
+        locality: 'localityx',
+        country: 'United States'
+    },
+    contacts:
+    [
+        {
+            type: 'EMail',
+            value: 'test.mctest@test.comx',
+            marketingLevel: 'OrderOnly'
+        }
+    ]
+}
+
+CUSTOMERS (POST)
+
+https://localhost/services/WebOrdering/WebOrdering/customers/robert.dunn%40androtech.com?passwordReset=true&applicationid=1AC1D77D-722C-4115-A90A-D2EBF2D15225
+
+
+DELIVERYTOWNS (GET)
+https://localhost/services/WebOrdering/WebOrdering/DeliveryTowns?key=x
+http://dev.androtest.co.uk/Services/WebOrdering/webordering/DeliveryTowns?key=x
+
+DELIVERYROADS (GET)
+https://localhost/services/WebOrdering/WebOrdering/DeliveryRoads/sm52?key=x
+http://dev.androtest.co.uk/Services/WebOrdering/webordering/DeliveryRoads/sm52?key=x
+
+FEEDBACK (PUT)
+https://localhost/services/WebOrdering/WebOrdering/Feedback/AB622361-7757-4B19-A0E3-26E7D82CACBF?key=x
+{
+    name: "Rob", email: "robert.dunn@androtech.com", feedbackCategory: 2, feedback: "This is some feedback"
+}
+
+TELEMETRY SESSION (PUT)
+https://localhost/services/WebOrdering/WebOrdering/Feedback/AB622361-7757-4B19-A0E3-26E7D82CACBF?key=x
+{
+    createdDateTime: "2015-03-17 15:00:00", referrer: "referrer", browserDetails: "browserDetails"
+}
+
+TELEMETRY (PUT)
+https://localhost/services/WebOrdering/WebOrdering/Feedback/AB622361-7757-4B19-A0E3-26E7D82CACBF?key=x
+{
+    sessionId: "xxxxxx", dateTime: "2015-03-17 15:00:00", action: "an action"
+}
+
+WEBSITES (POST)
+https://localhost/services/WebOrdering/WebOrdering/WebSites?key=2E6A6992402245F2BC0ED3721FCD660823BDDA896C7A44939B5B746B2542CBFE
+http://54.217.208.103/services/WebOrdering/WebOrdering/WebSites?key=2E6A6992402245F2BC0ED3721FCD660823BDDA896C7A44939B5B746B2542CBFE
+
+{
+    "WebSiteId": 0,
+    "WebSiteName": null,
+    "ACSApplicationId": 'xxxxxxxxxxxxxxxx',
+    "IsWebSiteEnabled": false,
+    "ChainId": null,
+    "SubScriptionTypeId": 0,
+    "DisabledReason": null,
+    "Home": {
+        "Welcome": {
+            "TitleText": "welcome title",
+            "DescriptionText": "blah"
+        },
+        "Menu": {
+            "TitleText": "about my store",
+            "DescriptionText": "blah"
+        },
+        "Carousels": [{
+            "Name": "Featured",
+            "CarouselContainer": {
+                "AutoPlay": false,
+                "DisplayPieces": 0,
+                "AutoPlaySteps": 0,
+                "SlideWidth": 0,
+                "SlideDuration": 0
+            },
+            "CarouselNavigator": {
+                "AutoCenter": 0,
+                "ChanceToShow": 0,
+                "Steps": 0,
+                "Class": null
+            },
+            "Items": [{
+                "Id": "74f4d64a-a94d-4b1f-a0ec-1315a6154086",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/74f4d64a-a94d-4b1f-a0ec-1315a6154086_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "1210834b-9ec2-4b3e-3953-cec070b0ddc0",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/1210834b-9ec2-4b3e-3953-cec070b0ddc0_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "89271135-f6d7-4a60-d5bf-1ec459b50391",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/89271135-f6d7-4a60-d5bf-1ec459b50391_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "47e6e3c4-e5b0-46b6-ead4-1125c117fb62",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/47e6e3c4-e5b0-46b6-ead4-1125c117fb62_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "6ece59a4-9209-4ed6-adbe-c92f74400458",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/6ece59a4-9209-4ed6-adbe-c92f74400458_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "4054f13b-d64a-4fb4-878b-2ebcff079fae",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "http://cdn.myandromedaweb.co.uk/dev/websites/1/carousels/featured/4054f13b-d64a-4fb4-878b-2ebcff079fae_970x270.png",
+                "Description": "",
+                "Type": "image"
+            },
+            {
+                "Id": "73f370c7-0cbb-4cf4-eab9-78e593372a8c",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "",
+                "Description": "",
+                "Type": "Html"
+            },
+            {
+                "Id": "8dae3433-13d4-45de-4629-0eb6208680e0",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "",
+                "Description": "",
+                "Type": "Html"
+            },
+            {
+                "Id": "3b54f768-a6f2-4a4a-8f19-5563f769f597",
+                "IsOverlayText": false,
+                "IsOverrideDefaultMenuImage": false,
+                "HTML": null,
+                "ImageUrl": "",
+                "Description": "",
+                "Type": "Html"
+            }]
+        }]
+    },
+    "LegalNotices": {
+        "TermsOfUse": null,
+        "PrivacyPolicy": null,
+        "CookiePolicy": null
+    },
+    "SiteDetails": {
+        "DomainName": "xxxxxxxxxxxxxxxxxxxx",
+        "OldDomainName": null,
+        "ParentWebSiteName": "test",
+        "RedirectToParentAfterCheckout": true,
+        "RedirectToParentOnLogoClick": false,
+        "WebSiteLogo": null,
+        "MobileLogo": null,
+        "WebsiteLogoPath": "http://cdn.myandromedaweb.co.uk/dev/websites/1/sitedetails/websitelogo/websitelogo320x320.png",
+        "MobileLogoPath": "http://cdn.myandromedaweb.co.uk/dev/websites/1/sitedetails/mobilelogo/mobilelogo320x320.png"
+    },
+    "GeneralSettings": {
+        "MinimumDeliveryAmount": 12.0,
+        "DeliveryCharge": 0.0,
+        "ApplyDeliveryCharges": false,
+        "EnableStoreLocatorPage": false,
+        "IsList": false,
+        "IsEnterPostCode": false
+    },
+    "ThemeSettings": {
+        "Id": 2,
+        "ThemePath": "http://cdn.myandromedaweb.co.uk/dev/themes/theme_1_600x600.png",
+        "Height": 600,
+        "Width": 600,
+        "ThemeName": "test",
+        "InternalName": null,
+        "Description": "test desc1",
+        "FileName": null
+    },
+    "HomePageSettings": {
+        "EnableStoreDetails": false,
+        "ShowMinimumDelivery": false,
+        "ShowDeliveryCharge": false,
+        "ShowETD": false,
+        "PostcodeLocator": false
+    },
+    "SocialNetworkSettings": {
+        "FacebookSettings": {
+            "IsEnable": true,
+            "IsShare": true,
+            "IsFollow": false,
+            "FollowURL": 'facebookxxxxxxx',
+            "LikeURL": 'http://facebook.com/andromedapos'
+        },
+        "TwitterSettings": {
+            "IsEnable": true,
+            "IsShare": true,
+            "IsFollow": false,
+            "FollowURL": 'twitterxxxxxxx'
+        },
+        "InstagramSettings": {
+            "IsEnable": true,
+            "IsShare": true,
+            "IsFollow": false,
+            "FollowURL": 'instagramxxxxxxx'
+        },
+        "PinterestSettings": {
+            "IsEnable": true,
+            "IsShare": true,
+            "IsFollow": false,
+            "FollowURL": 'pinterestxxxxxxx'
+        }
+    },
+    "CustomerAccountSettings": {
+        "IsEnable": false,
+        "IsEnableAndromedaLogin": false,
+        "IsEnableFacebookLogin": false,
+        "IsEnableFacebookAndromeda": false,
+        "IsEnableOtherFacebook": false,
+        "OtherFacebookAccountID": null,
+        "IsEnableOrderHistory": false,
+        "IsEnableRepeatOrder": false
+    },
+    "MenuPageSettings": {
+        "IsEnableCommentsForChef": false,
+        "IsEnableWhosItemIsThisFor": false,
+        "IsDisplayAlwaysShowToppingsPopupWhenAddingItemsToTheBasket": false,
+        "IsEnableImangesForItems": true,
+        "IsDisplayItemQuantityDropDown": true,
+        "IsEnableDoubleToppings": true,
+        "IsDisplayMinimumDeliveryAmountOnMenuPage": false,
+        "IsDisplayETDOnMenuPage": false
+    },
+    "CheckoutSettings": {
+        "IsEnableCustomerDetailsCheckoutPage": false,
+        "IsEnableAddressDetailsCheckoutPage": true,
+        "IsEnableFutureTimeOrders": true
+    },
+    "UpSellingSettings": {
+        "IsEnable": false,
+        "Soup": null,
+        "Sushi_Boxes": null,
+        "Sharing_Boxes": null,
+        "Side_Dishes": null,
+        "Desserts": null,
+        "Snacks": null,
+        "Drinks": null
+    },
+    "AnalyticsSettings": {
+        "GoogleAnalyticsId": 'UA-56031822-1'
+    },
+    "LastUpdatedUtc": "2014-10-10T13:33:28.4914042Z"
+}
+
+

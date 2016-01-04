@@ -1,0 +1,22 @@
+﻿@model MyAndromeda.Web.Areas.Store.Models.OpeningTimesViewModel
+@{
+    ViewBag.Title = "ListOpeningHours";
+}
+
+@if (Model.OpeningHours == null)
+{ 
+    <p class="subtitle-block">There are no opening times for this site</p>
+}
+else
+{    
+    <h4 style="margin-left: 7px;"></h4>
+    <div class="siteDetails">
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Monday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Tuesday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Wednesday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Thursday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Friday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Saturday" } })
+        @Html.Partial("OpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Sunday" } })
+    </div>
+}

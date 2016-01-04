@@ -1,0 +1,29 @@
+﻿<script type="text/html" id="repeatOrderView">
+    <div id="repeatOrderContent" class="content">
+
+        <div id="roContent">
+
+            <h1 id="roRepeatOrder" data-bind="html: textStrings.roRepeatOrder"></h1>
+            <p data-bind="html: textStrings.roDescription"></p>
+
+            <div id="repeatOrderDetails" />
+
+            <div id="roButtons">
+                <!-- ko if: AndroWeb.ViewModels.RepeatOrderViewModel.canBeRepeated -->
+                <div class="button" id="roRepeatOrderButton">
+                    <a data-bind="html: textStrings.roAddToCart, click: $root.contentViewModel().addToCart"></a>
+                </div>
+                <div class="button" id="roRepeatOrderButton">
+                    <a data-bind="html: textStrings.roAddToCartAndCheckout, click: $root.contentViewModel().addToCartAndCheckout"></a>
+                </div>
+                <!-- /ko -->
+
+                <div class="button" id="roRepeatOrderButton">
+                    <a data-bind="html: textStrings.roBack, click: $root.contentViewModel().cancel"></a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</script>

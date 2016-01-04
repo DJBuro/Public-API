@@ -1,0 +1,92 @@
+﻿@model MyAndromeda.Web.ViewModels.ChainListViewModel
+@{
+    var chainTemplate = Html.CreateHtmlTemplate();
+    var storeTemplate = Html.CreateHtmlTemplate();
+    var reportTemplate = Html.CreateHtmlTemplate();
+    var menuTemplate = Html.CreateHtmlTemplate();
+    var translator = Html.GetTranslator();
+}
+
+@using (chainTemplate.CreateTemplate) 
+{
+    <a class="k-button" href='@Url.ActionClientTemplate("Index", "Reports", new { ChainId = "#=Id#", Area = "ChainReporting" })'>
+        <i class="fa fa-bar-chart-o"></i> 
+        @translator.T("Chain reports")
+    </a>
+}
+
+@(Html.Kendo().Grid<MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Chain>()
+    .Name("Areas")
+    .Sortable()
+    .Filterable()
+    .Scrollable(c => c.Height(400))
+    .ClientDetailTemplateId("ChainSiteTemplate")
+    .Events(e=> e.DataBound("BoundChain"))
+    .Columns(col =>
+    {
+        col.Bound(e => e.Name);
+            
+        col.Template(@<text></text>)
+            .ClientTemplate(chainTemplate.Result);
+    }).DataSource(data =>
+    {
+        data.Ajax()
+            .Read("List", "Chains")
+            .Sort(sort => sort.Add(e => e.Name));
+    })
+)
+
+@using (storeTemplate.CreateTemplate) 
+{
+    <a class="k-button"
+        href="@Url.ActionClientTemplate("Index", "Orders", new { ChainId = "#=Id#", ExternalSiteId = "\\#=ExternalSiteId\\#", Area= "OrderManagement" })">
+        @translator.T("Order Management")</a>
+    <a class="k-button" 
+        href='@Url.ActionClientTemplate("Index", "Store", new { ChainId = "#=Id#", ExternalSiteId = "\\#=ExternalSiteId\\#", Area = "Store" })'>
+        @translator.T("Store")
+    </a>
+    <a class="k-button" href='@Url.ActionClientTemplate("Index", "Store", new { ChainId = "#=Id#", ExternalSiteId = "\\#=ExternalSiteId\\#", Area = "Reporting" })'>
+        <i class="fa fa-bar-chart-o"></i> 
+        @translator.T("Store Reports")
+    </a>
+    <a class="k-button" href='@Url.ActionClientTemplate("Index", "MenuNavigation", new { ChainId = "#=Id#", ExternalSiteId = "\\#=ExternalSiteId\\#", Area = "Menu" })'>
+        <i class="fa fa-edit"></i> 
+        @translator.T("Menu")
+    </a>
+}
+
+
+@using (Html.BeginScripts()) 
+{
+<script type="text/html" id="ChainSiteTemplate">
+    @(
+     Html.Kendo()
+        .Grid<MyAndromedaDataAccess.Domain.Site>()
+        .Name("InternalSiteList_#=Id#")
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+        .Sortable()
+        .Columns(cols => {
+            cols.Bound(e => e.ClientSiteName);  
+            cols.Template(@<text></text>)
+                    .Title("Actions")
+                    .ClientTemplate(storeTemplate.Result);
+        })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .Read(read => read.Action("ListSiteGrid", "Chains", new { Area = "", ChainId = "#=Id#" })).Sort(e=> e.Add(field => field.ClientSiteName));
+        })
+        .ToClientTemplate()
+    )
+</script>
+}
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        function BoundChain()
+        {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+}

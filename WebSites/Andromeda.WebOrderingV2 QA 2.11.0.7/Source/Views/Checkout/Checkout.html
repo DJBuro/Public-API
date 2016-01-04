@@ -1,0 +1,120 @@
+﻿    <!-- CHECKOUT DETAILS VIEW -->
+<script type="text/html" id="checkoutView">
+
+    <div class="checkoutPage">
+
+        <div id="checkoutCart">
+            <div data-bind="template: { name: 'cartView' }"></div>
+        </div>
+
+        <div id="checkoutOrderDetails">
+            <h2 data-bind="text: textStrings.lrCustomerDetails"></h2>
+
+            <!-- ko if: $root.orderType() == 'collection' -->
+            <div id="checkoutCustomerName">
+                <span data-bind="text: accountHelper.customerDetails.firstname"></span>&nbsp;
+                <span data-bind="text: accountHelper.customerDetails.surname"></span>
+            </div>
+            <div id="checkoutSAddressTitle" data-bind="text: textStrings.checkSCollectionAddressTitle"></div>
+
+            <!-- /ko -->
+            <!-- Name -->
+            <!-- ko if: $root.orderType() == 'delivery' -->
+            <div id="checkoutSAddressTitle" data-bind="text: textStrings.checkSDeliveryAddressTitle"></div>
+            <div id="checkoutCustomerName">
+                <span data-bind="text: accountHelper.customerDetails.firstname"></span>&nbsp;
+                <span data-bind="text: accountHelper.customerDetails.surname"></span>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: $root.orderType() == 'dinein' -->
+            <div id="checkoutDineInTitle" data-bind="text: textStrings.checkSDineInTitle"></div>
+            <div id="checkoutCustomerName">
+                <span data-bind="text: accountHelper.customerDetails.firstname"></span>&nbsp;
+                <span data-bind="text: accountHelper.customerDetails.surname"></span>
+            </div>
+            <div id="checkoutDineInText" data-bind="text: textStrings.checkSDineInText"></div>
+            <div id="checkoutTableNumber">
+                <span data-bind="text: textStrings.checkSTableNumber"></span>
+                <input type="text" maxlength="5" data-bind="value: checkoutHelper.checkoutDetails.tableNumber, event: { keypress: helper.numbersOnly }" />
+            </div>
+            <!-- /ko -->
+
+            <!-- Address -->
+            <!-- ko if: $root.orderType() != 'dinein' -->
+            <div id="checkoutSAddressContainer">
+                <div id="checkoutSAddress">
+                    <p data-bind="html: $root.orderType() == 'collection' ? viewModel.displayAddressMultiLine() : checkoutHelper.displayAddressMultiLine"></p>
+                </div>
+
+                <!-- Phone number -->
+                <!-- ko if: checkoutHelper.telephoneNumber().length > 0 -->
+                <div id="checkoutCustomerPhone">
+                    <span data-bind="text: textStrings.checkoutPhone"></span>
+                    <span data-bind="text: checkoutHelper.telephoneNumber"></span>
+                </div>
+                <!-- /ko -->
+
+                <!-- Change delivery address -->
+                <!-- ko if: $root.orderType() == 'delivery' -->
+                <div class="checkoutSidebarActions button">
+                    <a data-bind="click: checkoutHelper.changeAddress, html: checkoutHelper.checkoutDetails.isMissingAddress() ? textStrings.checkEnterAddress : textStrings.checkChangeAddress" href="#"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: $root.orderType() != 'dinein' -->
+            <!-- Wanted time -->
+            <div id="checkoutDeliveryTimePrompt">
+                <h3>
+                    <span data-bind="visible: $root.orderType() == 'collection', text: textStrings.checkCollectTime"></span>
+                    <span data-bind="visible: $root.orderType() == 'delivery', text: textStrings.checkDeliverTime"></span>
+                </h3>
+            </div>
+            <div id="checkoutDeliveryTime">
+                <div id="deliveryTimeRequired">
+                    <select id="deliveryTime" autofocus data-bind="options: checkoutHelper.times, optionsText: 'text', value: checkoutHelper.checkoutDetails.wantedTime, 'attr': { 'class': checkoutHelper.errors.deliveryTimeError() ? 'checkoutDataError' : '' }, event: { change: checkoutHelper.deliveryTimeChanged }"></select>
+                </div>
+                <div>
+                    <p data-bind="text: textStrings.checkSlotWarning"></p>
+                </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- Payment selection -->
+            <!-- ko if: AndroWeb.Helpers.CartHelper.cart().checkoutEnabled -->
+            <div id="checkoutSPaymentSelection">
+                <div id="checkoutSPaymentTitle" data-bind="text: textStrings.checkSPaymentTitle"></div>
+
+                <div id="checkoutPaymentButtons">
+                    <!-- ko if: $root.orderType() != 'dinein' -->
+                    <div class="checkoutSidebarActions button">
+                        <a data-bind="click: checkoutHelper.payAtDoor, html: textStrings.checkSPayLater" href="#"></a>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: viewModel.siteDetails().paymentProvider -->
+                    <div class="checkoutSidebarActions button">
+                        <a data-bind="click: checkoutHelper.payNow, html: checkoutHelper.payNowText" href="#"></a>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: AndroWeb.Helpers.CartHelper.cart().displayCardCharge() != undefined && AndroWeb.Helpers.CartHelper.cart().displayCardCharge().length > 0 -->
+            <div id="checkoutCardPayment" data-bind="html: AndroWeb.Helpers.CartHelper.cart().displayCardCharge"></div>
+            <!-- /ko -->
+
+            <div id="checkoutPayment">
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<!-- Checkout section header -->
+<script type="text/html" id="checkoutSectionHeader-template">
+    <div class="checkoutSectionHeader" data-bind="'attr': { 'class': checkoutHelper.visibleCheckoutSection() == index ? 'selectedCheckoutSectionHeader' : 'checkoutSectionHeader' }">
+        <h2 data-bind="click: $parent.showCheckoutSection, text: displayName"></h2>
+    </div>
+</script>

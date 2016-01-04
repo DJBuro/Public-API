@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Providermessage, OrderTracking.Gps.Dao" table="provider_message">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="provider_message_id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK__provider__D3DE59AF21D600EE"/>
+			<generator class="native" />
+		</id>
+		<property name="Clientdeviceid" type="Int32">
+			<column name="client_device_id" length="4" sql-type="int" not-null="false" index="Index_client_device_id"/>
+		</property>
+		<property name="Clientaddress" type="String">
+			<column name="client_address" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Message" type="String">
+			<column name="message" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Deliverystatus" type="Int32">
+			<column name="delivery_status" length="4" sql-type="int" not-null="true" index="INX_provider_message_delivery_status"/>
+		</property>
+		<property name="Outgoing" type="Int16">
+			<column name="outgoing" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<property name="Timestampclient" type="DateTime">
+			<column name="timestamp_client" length="8" sql-type="datetime" not-null="false" index="Index_provider_message_timestamp_client"/>
+		</property>
+		<property name="Timestampqueued" type="DateTime">
+			<column name="timestamp_queued" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Timestampdelivered" type="DateTime">
+			<column name="timestamp_delivered" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Timestamplasttry" type="DateTime">
+			<column name="timestamp_last_try" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Retrycount" type="Int32">
+			<column name="retry_count" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="Transport" type="String">
+			<column name="transport" length="16" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="client_" class="OrderTracking.Gps.Dao.Domain.User, OrderTracking.Gps.Dao">
+			<column name="client_user_id" length="4" sql-type="int" not-null="false" index="INX_provider_message_client_user_id"/>
+		</many-to-one>
+		<many-to-one name="sender_" class="OrderTracking.Gps.Dao.Domain.User, OrderTracking.Gps.Dao">
+			<column name="sender_user_id" length="4" sql-type="int" not-null="false" index="INX_provider_message_sender_user_id"/>
+		</many-to-one>
+		<many-to-one name="queue_id" class="OrderTracking.Gps.Dao.Domain.Providermessagequeue, OrderTracking.Gps.Dao">
+			<column name="queue_id" length="4" sql-type="int" not-null="true" index="INX_provider_message"/>
+		</many-to-one>
+		<one-to-one name="Smsmessage" class="OrderTracking.Gps.Dao.Domain.Smsmessage, OrderTracking.Gps.Dao"/>
+	</class>
+</hibernate-mapping>
+
+
+

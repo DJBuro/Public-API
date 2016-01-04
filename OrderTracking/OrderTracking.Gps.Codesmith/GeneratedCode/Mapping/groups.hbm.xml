@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Group, OrderTracking.Gps.Dao" table="groups">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="group_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__groups__D57795A021B6055D"/>
+			<generator class="native" />
+		</id>
+		<property name="Groupname" type="String">
+			<column name="group_name" length="45" sql-type="varchar" not-null="true" index="UN_groups_name_app"/>
+		</property>
+		<property name="Groupdescription" type="String">
+			<column name="group_description" length="255" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Created" type="DateTime">
+			<column name="created" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Publicflag" type="Int16">
+			<column name="public_flag" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<many-to-one name="Application" class="OrderTracking.Gps.Dao.Domain.Application, OrderTracking.Gps.Dao">
+			<column name="application_id" length="4" sql-type="int" not-null="false" index="UN_groups_name_app"/>
+		</many-to-one>
+		<bag name="group_route_rules" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="group_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Grouprouterule, OrderTracking.Gps.Dao"/>
+		</bag>
+		<one-to-one name="Mapsgroup" class="OrderTracking.Gps.Dao.Domain.Mapsgroup, OrderTracking.Gps.Dao"/>
+		<bag name="group_settingses" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="group_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Groupsetting, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="msg_field_dictionaries" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="group_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Msgfielddictionary, OrderTracking.Gps.Dao"/>
+		</bag>
+		<bag name="group_referrer_logs" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="group_id"/>
+			<one-to-many class="OrderTracking.Gps.Dao.Domain.Groupreferrerlog, OrderTracking.Gps.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

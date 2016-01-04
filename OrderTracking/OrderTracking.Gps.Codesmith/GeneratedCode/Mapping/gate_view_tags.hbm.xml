@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Gateviewtag, OrderTracking.Gps.Dao" table="gate_view_tags">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="gate_view_id" length="4" sql-type="int" not-null="true" index="PK__gate_vie__DBBAC2311AF3F935"/>
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="PK__gate_vie__DBBAC2311AF3F935"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Gateview" class="OrderTracking.Gps.Dao.Domain.Gateview, OrderTracking.Gps.Dao">
+			<column name="gate_view_id" length="4" sql-type="int" not-null="true" index="PK__gate_vie__DBBAC2311AF3F935"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

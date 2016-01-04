@@ -1,0 +1,46 @@
+﻿    <!-- STORE SELECTOR VIEW -->
+    <script type="text/html" id="storeSelectorSitesView">
+        <div class="content">
+            <div class="sitesBox">
+                <!-- Site list -->
+                <h1 class="welcomeHeader" data-bind="html: textStrings.welcomeHeader"></h1>
+               
+                <!-- ko if: settings.storeSelectorMode -->
+                <!-- ko if: deliverySites().length > 0 -->
+                <h2 class="chooseStorePrompt" data-bind="text: textStrings.ssStoreSelector"></h2>
+
+                <div class="siteButtonsContainer">
+                    <div class="siteButtonsInner">
+                    <!-- ko foreach: deliverySites -->
+                        <div class="button siteButton" data-bind="click: $root.storeSelected">
+                            <a href="#" data-bind="text: displayText"></a>
+                        </div>
+                    <!-- /ko -->
+                    </div>
+                </div>
+
+                <!-- /ko -->
+
+                <!-- ko if: deliverySites().length == 0 -->
+                <!-- ko if: collectionOnlySites().length > 0 -->
+                <h2 class="chooseStorePrompt" data-bind="text: textStrings.ssCollect"></h2>
+                <!-- ko foreach: collectionOnlySites -->
+                    <div class="button siteButton" data-bind="click: $root.storeSelected">
+                        <a href="#" data-bind="text: displayText"></a>
+                    </div>
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko ifnot: settings.storeSelectorMode -->
+                <!-- ko foreach: sites -->
+                    <div class="button siteButton" data-bind="click: $root.storeSelected">
+                        <a href="#" data-bind="text: displayText"></a>
+                    </div>
+                <!-- /ko -->
+                <!-- /ko -->
+
+            </div>
+        </div>
+    </script>

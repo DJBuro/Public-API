@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Andro Admin Home";
+}
+
+<div class="helpPage">
+    <h2>@Html.ActionLink("Help", "Index") / Store opening times</h2>
+
+    <p>The "Opening times (web)" tab allows you to specify when the store is open for web ordering.  The web ordering opening times are usually slightly different from the normal store opening times.  Stores will often start taking web orders after the store is opened and stop taking web orders before the store closes. Please check with the store that you have the correct web ordering times.</p>
+
+    <p>The page shows the web ordering times for each day of the week.  The store can be open all day, closed all day or only open at specific times during the day.</p>
+
+    <img src="@Url.Content("~/Content/Images/Help/StoreOpeningTimes.png")" />
+
+    <p>Click the button "change the store opening times" to switch to edit mode.</p>
+
+    <img src="@Url.Content("~/Content/Images/Help/EditOpeningTimes.png")" />
+
+    <p>When in edit mode, a set of controls will appear below each day of the week that allows you to change the opening hours for that day.</p>
+    
+    <p>Click on the slider to toggle the store between open all day and closed all day.  These changes are instant - you don't need to save the changes.  There may be a slight delay while Andro Admin makes the change.</p>
+
+    <img style="width:111px;" src="@Url.Content("~/Content/Images/Help/slider.png")" />
+
+    <img style="width:111px;" src="@Url.Content("~/Content/Images/Help/slider2.png")" />
+
+    <p>To select specific opening times use the the two clock buttons to select an opening and closing time.  Then click the add button to add the opening and closing time.</p>
+
+    <img style="width:111px;" src="@Url.Content("~/Content/Images/Help/openingtimes.png")" />
+
+    <p>When you click the add button the new opening time will be saved (if it is valid).  There might be a short delay while it is saved.  The new opening time will appear in the list above.</p>
+    
+    <img style="width:111px;" src="@Url.Content("~/Content/Images/Help/NewOpeningTime.png")" />
+    <img style="width:111px;" src="@Url.Content("~/Content/Images/Help/NewOpeningTime2.png")" />
+
+    <p>You can add multiple opening times for the same day so long as they do not overlap.</p>
+
+</div>
+

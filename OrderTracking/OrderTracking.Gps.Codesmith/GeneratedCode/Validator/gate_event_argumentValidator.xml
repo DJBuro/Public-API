@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="GateeventargumentValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="BotypeValidator" test="Botype"><v:message id="error.Botype.required" providers="BotypeErrors, ValidationSummary"/></v:required>
+	<v:required id="ArgumentdescriptionValidator" test="Argumentdescription"><v:message id="error.Argumentdescription.required" providers="ArgumentdescriptionErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

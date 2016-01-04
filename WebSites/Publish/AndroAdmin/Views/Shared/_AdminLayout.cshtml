@@ -1,0 +1,27 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@section SubMenu {
+    @*<section id="subMenuSection" class="menu">
+        <ul>
+            @{
+                List<string> permissions = ViewBag.Permissions;
+            }
+
+            @if (permissions.Contains("ViewUsers"))
+            {
+                <li>
+                    @Html.ActionLink("Users", "Index", "Admin", new { }, new { @class = ViewBag.SelectedAdminMenu == AndroAdmin.Model.AdminMenuItemEnum.Users ? "navSelected" : "navLink" })
+                </li>
+            }
+
+            @if (permissions.Contains("ViewSecurityGroups"))
+            {
+                <li>
+                    @Html.ActionLink("Security groups", "Index", "SecurityGroup", new { }, new { @class = ViewBag.SelectedAdminMenu == AndroAdmin.Model.AdminMenuItemEnum.SecurityGroups ? "navSelected" : "navLink" })
+                </li>
+            }
+        </ul>
+    </section>*@
+}
+
+@RenderBody()

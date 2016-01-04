@@ -1,0 +1,412 @@
+﻿@model AndroAdmin.Model.StoreModel
+
+@{
+    ViewBag.Title = "StoreDetails";
+    Layout = "~/Views/Shared/_StoresLayout.cshtml";
+}
+
+@section Head 
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui.js")" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jqueryui.css")" />
+}
+
+<!-- Breadcrumb -->
+<h2>@Html.ActionLink("Manage Stores", "Index", "Store", new { }) / @Model.Store.Name</h2>
+
+<div id="StoreDetailsPage" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+
+    <!-- Tabs -->
+    @Html.Partial("StoreDetailsTabsPartial", Model, new ViewDataDictionary {{ "SelectedTab", "StoreDetails" }})
+    
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+        
+        <!-- Store details -->
+        @if (ViewBag.Edit)
+        {
+            using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.Store.Id)
+                
+                if (ViewBag.Permissions.Contains("EditStore"))
+                {
+                    <div>
+                        <div class="actionLinks" style="float:left;">
+                            <input type="submit" value="save changes" class="button" />
+                            @Html.ActionLink("cancel changes", "StoreDetails", new { id = Model.Store.Id, edit = false }, new { @class = "changeLink" })
+                        </div>
+                        <span style="float:right;">@Html.ActionLink("Help", "StoreDetails", "Help", null, new { target="_blank" })</span>
+                    </div>
+
+                    <div style="clear:both;"></div>
+                }
+        
+                <div>
+                    @*Andromeda store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>Internal store details used within Andromeda only</span>
+                        </legend>
+
+                        <!-- AndromedaSiteId -->
+                        <div class="editor-label">
+                            Store ID:
+                        </div>
+                        <div class="editor-field">
+                            @Model.Store.AndromedaSiteId
+                        </div>
+                        <div class="formFieldHelp">The site id used internally by Andromeda</div>
+
+                        <!-- StoreName -->
+                        <div class="editor-label">
+                            Store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Name) 
+                        </div>
+                        <div class="formFieldHelp">The store name used internally by Andromeda</div>
+
+                        <!-- StoreStatus -->
+                        <div class="editor-label">
+                            Store status: 
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => model.StoreStatusId,
+                                new SelectList(Model.StoreStatuses, "Id", "Status", Model.StoreStatusId))
+                            @Html.ValidationMessageFor(model => model.Store.StoreStatus.Status)
+                        </div>
+                        <div class="formFieldHelp">Live, Disabled or Future</div>
+
+                        <!-- Country -->
+                        <div class="editor-label">
+                            Country:
+                        </div>
+                        <div class="editor-field" style="width:350px">
+                            @Html.DropDownListFor(model => Model.CountryId, new SelectList(Model.Countries, "Id", "CountryName"))
+                        </div>
+                        <div class="formFieldHelp">The country that the store is in</div>
+
+                        <!-- Chain --> 
+                        <div class="editor-label">
+                            Chain:
+                        </div>
+                        <div class="editor-field" style="width:350px">
+                            @Html.DropDownListFor(model => Model.ChainId, new SelectList(Model.Chains, "Id", "Name"))
+                        </div>
+                        <div class="formFieldHelp">The chain that the store is part of</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            
+                <div>
+                    @*Customer store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>Customer store details</span>
+                        </legend>
+
+                        <!-- CustomerSiteId -->
+                        <div class="editor-label">
+                            Customer store ID:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.CustomerSiteId) 
+                        </div>
+                        <div class="formFieldHelp">An id that the customer (PJ, Herbies etc...) use to identify their store</div>
+
+                        <!-- CustomerName -->
+                        <div class="editor-label">
+                            Customer store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.CustomerSiteName) 
+                        </div>
+                        <div class="formFieldHelp">The name that the customer (PJ, Herbies etc...) use to identify their store</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            
+                <div>
+                    @*External store details*@
+                    <fieldset>
+
+                        <legend>
+                            <span>External store details visible to third parties or the general public</span>
+                        </legend>
+
+                        <!-- ExternalSiteId -->
+                        <div class="editor-label">
+                            External store ID: 
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.ExternalSiteId) 
+                        </div>
+                        <div class="formFieldHelp">The store id visible to 3rd parties e.g. companies working for the customer</div>
+
+                        <!-- ExternalStoreName -->
+                        <div class="editor-label">
+                            External store name:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.ExternalSiteName) 
+                        </div>
+                        <div class="formFieldHelp">The store name visible to the general public</div>
+
+                        <!-- Telephone -->
+                        <div class="editor-label">
+                            Store telephone number:
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Store.Telephone) 
+                        </div>
+                        <div class="formFieldHelp">The store phone number visible to the general public</div>
+
+                        <!-- Timezone -->
+                        <div class="editor-label">
+                            Timezone (AMS):
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(model => Model.Store.TimeZone,
+                                new List<SelectListItem>{
+                                    new SelectListItem() {Text = "GMT-12 (IDLW:International Date Line West)", Value = "GMT-12"},	
+                                    new SelectListItem() {Text = "GMT-11 (NT:Nome)", Value = "GMT-11"},
+                                    new SelectListItem() {Text = "GMT-10 (AHST:Alaska-Hawaii Standard, CAT:Central Alaska, HST:Hawaii Standard)", Value = "GMT-10"},		
+                                    new SelectListItem() {Text = "GMT-9:30", Value = "GMT-9:30"},
+                                    new SelectListItem() {Text = "GMT-9 (YST:Yukon Standard)", Value = "GMT-9"},
+                                    new SelectListItem() {Text = "GMT-8:30", Value = "GMT-8:30"},
+                                    new SelectListItem() {Text = "GMT-8 (PST:Pacific Standard)", Value = "GMT-8"},
+                                    new SelectListItem() {Text = "GMT-7 (MST:Mountain Standard)", Value = "GMT-7"},
+                                    new SelectListItem() {Text = "GMT-6 (CST:Central Standard)", Value = "GMT-6"},
+                                    new SelectListItem() {Text = "GMT-5 (EST:Eastern Standard)", Value = "GMT-5"},
+                                    new SelectListItem() {Text = "GMT-4 (AST:Atlantic Standard)", Value = "GMT-4"},
+                                    new SelectListItem() {Text = "GMT-3:30", Value = "GMT-3:30"},
+                                    new SelectListItem() {Text = "GMT-3", Value = "GMT-3"},
+                                    new SelectListItem() {Text = "GMT-2 (AT:Azores)", Value = "GMT-2"},
+                                    new SelectListItem() {Text = "GMT-1 (WAT:West Africa)", Value = "GMT-1"},
+                                    new SelectListItem() {Text = "GMT (UTC)", Value = "GMT"},
+                                    new SelectListItem() {Text = "GMT+1 (CET:Central European)", Value = "GMT+1"},
+                                    new SelectListItem() {Text = "GMT+2 (EET:Eastern European)", Value = "GMT+2"},
+                                    new SelectListItem() {Text = "GMT+3 (BT:Baghdad)", Value = "GMT+3"},
+                                    new SelectListItem() {Text = "GMT+3:30", Value = "GMT+3:30"},
+                                    new SelectListItem() {Text = "GMT+4", Value = "GMT+4"},
+                                    new SelectListItem() {Text = "GMT+4:30", Value = "GMT+4:30"},
+                                    new SelectListItem() {Text = "GMT+5", Value = "GMT+5"},
+                                    new SelectListItem() {Text = "GMT+5:30", Value = "GMT+5:30"},
+                                    new SelectListItem() {Text = "GMT+6", Value = "GMT+6"},
+                                    new SelectListItem() {Text = "GMT+6:30", Value = "GMT+6:30"},
+                                    new SelectListItem() {Text = "GMT+7", Value = "GMT+7"},
+                                    new SelectListItem() {Text = "GMT+8 (CCT:China Coast)", Value = "GMT+8"},
+                                    new SelectListItem() {Text = "GMT+9 (JST:Japan Standard)", Value = "GMT+9"},
+                                    new SelectListItem() {Text = "GMT+9:30 (Australia Central Standard)", Value = "GMT+9:30"},
+                                    new SelectListItem() {Text = "GMT+10 (GST:Guam Standard)", Value = "GMT+10"},
+                                    new SelectListItem() {Text = "GMT+10:30", Value = "GMT+10:30"},
+                                    new SelectListItem() {Text = "GMT+11", Value = "GMT+11"},
+                                    new SelectListItem() {Text = "GMT+11:30", Value = "GMT+11:30"},
+                                    new SelectListItem() {Text = "GMT+12 (IDLE:International Date Line East, NZST:New Zealand Standard)", Value = "GMT+12"},
+                                    new SelectListItem() {Text = "GMT+13:00", Value = "GMT+13:00"},
+                                    new SelectListItem() {Text = "GMT+14:00", Value = "GMT+14:00"}
+                                })
+                        </div>
+
+                        <!-- Payment provider -->
+                        <div class="editor-label">
+                            Web payment provider:
+                        </div>
+                        <div class="editor-field">
+                            @{
+                                List<SelectListItem> paymentProviders = new List<SelectListItem>();
+                                paymentProviders.Add(new SelectListItem() { Text = "None", Value = "-1" });
+                                if (Model.StorePaymentProviders != null)
+                                {
+                                    foreach (AndroAdminDataAccess.Domain.StorePaymentProvider storePaymentProvider in Model.StorePaymentProviders)
+                                    {
+                                        paymentProviders.Add(new SelectListItem() 
+                                            { 
+                                                Text = storePaymentProvider.DisplayText, 
+                                                Value = storePaymentProvider.Id.ToString()
+                                            });
+                                    }
+                                }
+                            }
+                            @Html.DropDownListFor(model => Model.PaymentProviderId, paymentProviders)
+                        </div>
+                        <div class="formFieldHelp">The payment provider used to take payments for web ordering</div>
+
+                        <div style="clear:both;">
+                            @Html.ValidationSummary() 
+                        </div>
+
+                    </fieldset>
+                </div>
+            }
+        }
+        else
+        {
+            if (ViewBag.Permissions.Contains("EditStore"))
+            {           
+                <div>
+                    <div class="actionLinks" style="float:left;">
+                        @Html.ActionLink("change the store details", "StoreDetails", new { id = Model.Store.Id, edit = true }, new { @class = "changeLink" })
+                    </div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreDetails", "Help", null, new { target = "_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div>
+            }
+            else
+            {
+                <div>
+                    <span style="float:right;">@Html.ActionLink("Help", "StoreDetails", "Help", null, new { target="_blank" })</span>
+                </div>
+
+                <div style="clear:both;"></div> 
+            }
+                    
+            @*Andromeda store details*@
+            <fieldset>
+
+                <legend>
+                    <span>Internal store details used within Andromeda only</span>
+                </legend>
+
+                <!-- AndromedaSiteId -->
+                <div class="editor-label">
+                    Store ID:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.AndromedaSiteId
+                </div>
+                <div class="formFieldHelp">The site id used internally by Andromeda</div>
+
+                <!-- StoreName -->
+                <div class="editor-label">
+                    Store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Name
+                </div>
+                <div class="formFieldHelp">The store name used internally by Andromeda</div>
+
+                <!-- StoreStatus -->
+                <div class="editor-label">
+                    Store status: 
+                </div>
+                <div class="editor-field">
+                    @Model.Store.StoreStatus.Status
+                </div>
+                <div class="formFieldHelp">Live, Disabled or Future</div>
+
+                <!-- Country -->
+                <div class="editor-label">
+                    Country:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Address.Country.CountryName
+                </div>
+                <div class="formFieldHelp">The country that the store is in</div>
+
+                <!-- Chain -->
+                <div class="editor-label">
+                    Chain:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Chain.Name
+                </div>
+                <div class="formFieldHelp">The chain that the store is part of</div>
+
+            </fieldset>
+            
+            @*Customer store details*@
+            <fieldset>
+
+                <legend>
+                    <span>Customer store details</span>
+                </legend>
+
+                <!-- CustomerSiteId -->
+                <div class="editor-label">
+                    Customer store ID:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.CustomerSiteId
+                </div>
+                <div class="formFieldHelp">An id that the customer (PJ, Herbies etc...) use to identify their store</div>
+
+                <!-- CustomerName -->
+                <div class="editor-label">
+                    Customer store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.CustomerSiteName
+                </div>
+                <div class="formFieldHelp">The name that the customer (PJ, Herbies etc...) use to identify their store</div>
+
+            </fieldset> 
+            
+            @*External store details*@
+            <fieldset>
+
+                <legend>
+                    <span>External store details visible to third parties or the general public</span>
+                </legend>
+
+                <!-- ExternalSiteId -->
+                <div class="editor-label">
+                    External store ID: 
+                </div>
+                <div class="editor-field">
+                    @Model.Store.ExternalSiteId
+                </div>
+                <div class="formFieldHelp">The store id visible to 3rd parties e.g. companies working for the customer</div>
+
+                <!-- ExternalStoreName -->
+                <div class="editor-label">
+                    External store name:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.ExternalSiteName
+                </div>
+                <div class="formFieldHelp">The store name visible to the general public</div>
+
+                <!-- Telephone -->
+                <div class="editor-label">
+                    Store telephone number:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.Telephone
+                </div>
+                <div class="formFieldHelp">The store phone number visible to the general public</div>
+
+                <!-- Timezone -->
+                <div class="editor-label">
+                    Timezone:
+                </div>
+                <div class="editor-field">
+                    @Model.Store.TimeZone
+                </div>
+                <div class="formFieldHelp">The timezone that the store is in</div>
+
+                <!-- Payment provider -->
+                <div class="editor-label">
+                    Web payment provider:
+                </div>
+                <div class="editor-field">
+                    @(Model.Store.PaymentProvider != null ? Model.Store.PaymentProvider.DisplayText : "None")
+                </div>
+                <div class="formFieldHelp">The payment provider used to take payments for web ordering</div>
+
+            </fieldset>
+        }
+    </div>
+</div>

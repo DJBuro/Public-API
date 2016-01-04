@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Listener, OrderTracking.Gps.Dao" table="listener">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="listener_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__listener__0FC0C55437FA4C37"/>
+			<generator class="native" />
+		</id>
+		<property name="Enabled" type="Int16">
+			<column name="enabled" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<property name="Serveraddress" type="String">
+			<column name="server_address" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<property name="Serverport" type="Int32">
+			<column name="server_port" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="128" sql-type="varchar" not-null="false"/>
+		</property>
+		<many-to-one name="Loadabletype" class="OrderTracking.Gps.Dao.Domain.Loadabletype, OrderTracking.Gps.Dao">
+			<column name="type_id" length="4" sql-type="int" not-null="true" index="Index_type_id"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

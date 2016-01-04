@@ -1,0 +1,125 @@
+﻿@model MVCAndromeda.Models.Store
+@using MVCAndromeda.Models;
+@using MVCAndromeda.Controllers;
+@{
+    ViewBag.Title = "Data for " + Model.StoreName;
+    int numOfStoreData = Model.StoreData.Count();
+}
+
+<h3>@Model.StoreName</h3>
+<header>
+    <div class="content-wrapper" style="background-color: lightblue">
+        <div class="menu2">
+            @for (int i = 0; i < DateUtilities.averagingPeriod.Length / 2; i++)//loop over averaging span: day, weeks etc
+            {
+                for (int j = 0; j < StoreDataController.timeGrid.GetLength(1); j++) //loop over present  and past times
+                {
+                    string time = StoreDataController.timeGrid[i, j];
+                    if (ViewBag.Time == time)  // then this option is chosen, so do not make a link
+                    {
+                        //just text, no link
+                <span class="rssbuttonvisited">
+                    @StoreDataController.shortTimeGrid[i, j]
+                </span>                 
+                    }
+                    else
+                    {//make a link as usual
+                <span class="rssbutton">
+                    @Html.ActionLink(@StoreDataController.shortTimeGrid[i, j], "Individual", new
+                   {
+                       storename = Model.StoreName,
+                       country = Model.Country
+                       ,
+                       term = DateUtilities.averagingPeriod[i],
+                       unitsAgo = j,
+                       Time = time
+                   })
+                </span>                   
+                    }
+                }
+            }
+        </div>
+        <div class="menu2">
+
+            @for (int i = DateUtilities.averagingPeriod.Length / 2; i < DateUtilities.averagingPeriod.Length; i++)//loop over averaging span: day, weeks etc
+            {
+                for (int j = 0; j < StoreDataController.timeGrid.GetLength(1); j++) //loop over present  and past times
+                {
+                    string time = StoreDataController.timeGrid[i, j];
+                    if (ViewBag.Time == time)  // then this option is chosen, so do not make a link
+                    {
+                        //just text, no link
+                <div class="rssbuttonvisited">
+                    @StoreDataController.shortTimeGrid[i, j]
+                </div>
+                    
+                    }
+                    else
+                    {//make a link as usual
+                   
+                <div class="rssbutton">
+                    @Html.ActionLink(@StoreDataController.shortTimeGrid[i, j], "Individual", new
+                   {
+                       storename = Model.StoreName,
+                       country = Model.Country
+                       ,
+                       term = DateUtilities.averagingPeriod[i],
+                       unitsAgo = j,
+                       Time = time
+                   })
+                </div>
+                   
+                    }
+                }
+            }
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</header>
+
+<h4>@ViewBag.TimeDesc</h4>
+
+<table class="list">
+    <tr>
+        <th class="list" style="width:60%">Indicator</th>
+        <th class="list" style="width:40%">Value</th>
+    </tr>
+
+    @for (int i = 0; i < CubeAdapter.storeDataNames.Length; i++)
+    {
+        <tr>
+            <td style="width:60%" >
+                <div class="cssbutton">
+                @Html.ActionLink(@CubeAdapter.storeDataNames[i], "StorePlot",
+                        new { storeName = Model.StoreName, country = Model.Country, storeDataIndex = i })
+                </div>
+            </td>
+            @{double? data = CubeAdapter.Scale(Model, i)[0];}
+
+            @if (data == null)
+            {                    
+                <td style="width:40%">NR
+                </td>
+            }
+            else
+            {
+                string num;
+                if (CubeAdapter.storeDataFormat[i] == "C")
+                {
+                    num = ((double)data).ToString(CubeAdapter.storeDataFormat[i], 
+                        new System.Globalization.CultureInfo(CultureName.getName(Model.Country)));
+                }
+                else
+                {
+                    num = ((int)data).ToString(CubeAdapter.storeDataFormat[i], 
+                        new System.Globalization.CultureInfo(CultureName.getName(Model.Country)));
+                }
+                <td style="white-space: nowrap; width:40%">
+                    @num
+                </td>
+            }
+        </tr>
+    }
+</table>
+
+

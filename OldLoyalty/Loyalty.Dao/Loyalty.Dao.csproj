@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{355474F9-CBBE-4C4A-98C2-0BAC50DC309F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Loyalty.Dao</RootNamespace>
+    <AssemblyName>Loyalty.Dao</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TeamSystem.Data.UnitTesting, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\IAccountAddressDao.cs" />
+    <Compile Include="Dao\IAccountStatusDao.cs" />
+    <Compile Include="Dao\ICompanyDao.cs" />
+    <Compile Include="Dao\ICompanyUserTitleDao.cs" />
+    <Compile Include="Dao\ICountryDao.cs" />
+    <Compile Include="Dao\ICurrencyDao.cs" />
+    <Compile Include="Dao\ILoyaltyAccountStatusDao.cs" />
+    <Compile Include="Dao\ILoyaltyLogDao.cs" />
+    <Compile Include="Dao\IOrderTypeDao.cs" />
+    <Compile Include="Dao\ISiteDao.cs" />
+    <Compile Include="Dao\ILoyaltyAccountDao.cs" />
+    <Compile Include="Dao\ILoyaltyCardStatusDao.cs" />
+    <Compile Include="Dao\ILoyaltyUserDao.cs" />
+    <Compile Include="Dao\IOrderItemHistoryDao.cs" />
+    <Compile Include="Dao\IRamesesAddressDao.cs" />
+    <Compile Include="Dao\IRamesesAddressLoyaltyCardDao.cs" />
+    <Compile Include="Dao\IStatusDao.cs" />
+    <Compile Include="Dao\ITransactionHistoryDao.cs" />
+    <Compile Include="Dao\IUserTitleDao.cs" />
+    <Compile Include="Domain\AccountAddress.cs" />
+    <Compile Include="Domain\AccountStatus.cs" />
+    <Compile Include="Domain\Company.cs" />
+    <Compile Include="Domain\CompanyLoyaltyAccount.cs" />
+    <Compile Include="Domain\CompanyUserTitles.cs" />
+    <Compile Include="Domain\Country.cs" />
+    <Compile Include="Domain\CountryCurrency.cs" />
+    <Compile Include="Domain\Currency.cs" />
+    <Compile Include="Domain\LoyaltyAccountStatus.cs" />
+    <Compile Include="Domain\LoyaltyLog.cs" />
+    <Compile Include="Domain\OrderType.cs" />
+    <Compile Include="Domain\Service\serviceAccountAddress.cs" />
+    <Compile Include="Domain\Service\serviceCompany.cs" />
+    <Compile Include="Domain\Service\serviceCountry.cs" />
+    <Compile Include="Domain\Service\serviceOrderAddress.cs" />
+    <Compile Include="Domain\Service\serviceOrderItemHistory.cs" />
+    <Compile Include="Domain\Service\serviceRatio.cs" />
+    <Compile Include="Domain\Service\serviceRegister.cs" />
+    <Compile Include="Domain\Service\serviceSite.cs" />
+    <Compile Include="Domain\Service\serviceTransactionHistory.cs" />
+    <Compile Include="Domain\Site.cs" />
+    <Compile Include="Domain\LoyaltyAccount.cs" />
+    <Compile Include="Domain\LoyaltyCard.cs" />
+    <Compile Include="Domain\LoyaltyCardStatus.cs" />
+    <Compile Include="Domain\LoyaltyUser.cs" />
+    <Compile Include="Domain\OrderItemHistory.cs" />
+    <Compile Include="Domain\RamesesAddress.cs" />
+    <Compile Include="Domain\RamesesAddressLoyaltyCard.cs" />
+    <Compile Include="Domain\Service\serviceLoyaltyAccount.cs" />
+    <Compile Include="Domain\Service\serviceLoyaltyCard.cs" />
+    <Compile Include="Domain\Service\serviceLoyaltyUser.cs" />
+    <Compile Include="Domain\Status.cs" />
+    <Compile Include="Domain\TransactionHistory.cs" />
+    <Compile Include="Domain\UserTitle.cs" />
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Dao\IGenericDao.cs" />
+    <Compile Include="Dao\ILoyaltyCardDao.cs" />
+    <Compile Include="Entity\Message.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

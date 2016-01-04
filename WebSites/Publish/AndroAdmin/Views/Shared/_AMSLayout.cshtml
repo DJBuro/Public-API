@@ -1,0 +1,39 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@section SubMenu {
+    @*<section id="subMenuSection" class="menu">
+        <ul>
+            @{
+                List<string> permissions = ViewBag.Permissions;
+            }
+
+            <!-- AMS stores -->
+            @if (permissions.Contains("ViewAMSStores"))
+            {
+            <li>
+                @Html.ActionLink("AMS stores", "Index", "AMSStore", new { }, new { @class = ViewBag.SelectedAMSMenu == AndroAdmin.Model.AMSMenuItemEnum.AMSStores ? "navSelected" : "navLink" })
+            </li>
+            }
+
+            <!-- AMS servers -->
+            @if (permissions.Contains("ViewAMSServers"))
+            {
+            <li>
+                @Html.ActionLink("AMS servers", "Index", "AMSServer", new { }, new { @class = ViewBag.SelectedAMSMenu == AndroAdmin.Model.AMSMenuItemEnum.AMSServers ? "navSelected" : "navLink" })
+            </li>
+            }
+
+            <!-- FTP sites -->
+            @if (permissions.Contains("ViewFTPSites"))
+            {
+            <li>
+                @Html.ActionLink("FTP sites", "Index", "FTPSite", new { }, new { @class = ViewBag.SelectedAMSMenu == AndroAdmin.Model.AMSMenuItemEnum.FTPSites ? "navSelected" : "navLink" })
+            </li>
+            }
+
+            
+        </ul>
+    </section>*@
+}
+
+@RenderBody()

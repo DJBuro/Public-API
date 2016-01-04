@@ -1,0 +1,26 @@
+﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
+
+@using (Html.BeginForm("CarouselContainer2", "AndroWebOrdering", FormMethod.Post, new { Id = Request.QueryString["id"] }))
+{
+    @Html.Hidden("Id", Request.QueryString["id"])
+    <div style="height:430px;width:auto;">
+
+        <div>
+            <div style="height:130px;margin-top:20px;">
+                <div class="editor-label1">Auto Play : </div>
+                <div class="editor-field1">@Html.CheckBoxFor(e => e.WebsiteConfigurations.Home.Carousel2.CarouselContainer.AutoPlay)</div>
+                <div class="editor-label1">Display Pieces : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel2.CarouselContainer.DisplayPieces)</div>
+                <div class="editor-label1">Autoplay Steps : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel2.CarouselContainer.AutoPlaySteps)</div>
+                <div class="editor-label1">Slide Width : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel2.CarouselContainer.SlideWidth)</div>
+                <div class="editor-label1">Slide Duration : </div>
+                <div class="editor-field1">@Html.TextBoxFor(e => e.WebsiteConfigurations.Home.Carousel2.CarouselContainer.SlideDuration)</div>
+            </div>
+        </div>
+        <div class="editor-label saveDiv" style="margin-top:15px;">
+            <button id="saveContainerSettings2" class="k-button k-primary">Save</button>
+        </div>
+    </div>
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.Store, OrderTracking.Dao" table="tbl_Store">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_Store"/>
+			<generator class="native" />
+		</id>
+		<property name="ExternalStoreId" type="String">
+			<column name="ExternalStoreId" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Name" type="String">
+			<column name="Name" length="100" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="DeliveryRadius" type="Int16">
+			<column name="DeliveryRadius" length="2" sql-type="smallint" not-null="true"/>
+		</property>
+		<many-to-one name="Coordinates" class="OrderTracking.Dao.Domain.Coordinate, OrderTracking.Dao">
+			<column name="Coordinates" length="8" sql-type="bigint" not-null="true"/>
+		</many-to-one>
+		<bag name="StoreIdOrders" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="StoreId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.Order, OrderTracking.Dao"/>
+		</bag>
+		<bag name="StoreIdDrivers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="StoreId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.Driver, OrderTracking.Dao"/>
+		</bag>
+		<bag name="StoreIdAccounts" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="StoreId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.Account, OrderTracking.Dao"/>
+		</bag>
+		<bag name="StoreIdTrackers" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="StoreId"/>
+			<one-to-many class="OrderTracking.Dao.Domain.Tracker, OrderTracking.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

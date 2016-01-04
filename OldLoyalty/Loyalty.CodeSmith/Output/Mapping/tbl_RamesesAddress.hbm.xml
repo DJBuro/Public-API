@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Loyalty.Dao.Domain.TblRamesesAddress, Loyalty.Dao" table="tbl_RamesesAddress">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_RamesesAddress"/>
+			<generator class="native" />
+		</id>
+		<property name="ContactID" type="Int32">
+			<column name="contactID" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="Contact" type="String">
+			<column name="contact" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="AddressType" type="Int32">
+			<column name="addressType" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="OptFlag" type="Int32">
+			<column name="optFlag" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="AddressID" type="Int32">
+			<column name="addressID" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="PostOfficeID" type="Int32">
+			<column name="postOfficeID" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="SubAddress" type="String">
+			<column name="subAddress" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Org1" type="String">
+			<column name="org1" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Org2" type="String">
+			<column name="org2" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Org3" type="String">
+			<column name="org3" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Prem1" type="String">
+			<column name="prem1" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Prem2" type="String">
+			<column name="prem2" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Prem3" type="String">
+			<column name="prem3" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="RoadNum" type="String">
+			<column name="roadNum" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="RoadName" type="String">
+			<column name="roadName" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Locality" type="String">
+			<column name="locality" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Town" type="String">
+			<column name="town" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="County" type="String">
+			<column name="county" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="PostCode" type="String">
+			<column name="postCode" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Grid" type="String">
+			<column name="grid" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Refno" type="String">
+			<column name="refno" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Directions" type="String">
+			<column name="directions" length="500" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Dps" type="String">
+			<column name="dps" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="PafType" type="String">
+			<column name="pafType" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Flags" type="Int32">
+			<column name="flags" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="TimesOrdered" type="Int32">
+			<column name="timesOrdered" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<bag name="RamesesAddressIdtbl_RamesesAddressLoyaltyCards" inverse="true" lazy="true" cascade="all-delete-orphan">
+			<key column="RamesesAddressId"/>
+			<one-to-many class="Loyalty.Dao.Domain.TblRamesesAddressLoyaltyCard, Loyalty.Dao"/>
+		</bag>
+	</class>
+</hibernate-mapping>
+
+
+

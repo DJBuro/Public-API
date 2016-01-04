@@ -1,0 +1,33 @@
+﻿@model MyAndromeda.Web.Areas.Reporting.Context.IReportingContext
+
+<div class="header">
+    <div id="StoreList">
+        
+    </div>
+</div>
+
+@if (false) { 
+    <script src="~/Scripts/app/Chain/ChainService.js"></script>
+    <script src="~/Scripts/app/Chain/StoreService.js"></script>
+}
+@using (Html.BeginScripts())
+{ 
+    <script type="text/javascript">
+        $(function () {
+            var chainRoutes = {
+                getById: "@Url.Action("Get", "Chain", new { Area="" })"
+            };
+            var storeRoutes = {
+                getById: "@Url.Action("Get", "Store", new { Area="" })",
+                getByExternalId: "@Url.Action("GetByExternalId", "Store", new { Area="" })",
+                getByChainId: "@Url.Action("GetByChainId", "Store", new { Area = "" })"
+            };
+
+            var chainService = new MyAndromeda.Service.chainService(chainRoutes);
+            var storeService = new MyAndromeda.Service.storeService(storeRoutes);
+
+            chainService.get(1, function (chain) { console.log(chain); });
+            storeService.get(1, function (store) { console.log(store); });
+        });
+    </script>
+}

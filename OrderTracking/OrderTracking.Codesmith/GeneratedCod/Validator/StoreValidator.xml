@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="StoreValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="DeliveryRadiusValidator" test="DeliveryRadius"><v:message id="error.DeliveryRadius.required" providers="DeliveryRadiusErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

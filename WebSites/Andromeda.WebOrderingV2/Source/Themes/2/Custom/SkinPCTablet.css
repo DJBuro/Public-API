@@ -1,0 +1,318 @@
+@media only screen and (min-width: 601px)
+{
+    #headerLoginBox
+    {
+        margin-top: 24px;
+    }
+
+    header
+    {
+        height: 196px;
+    }
+
+    #homeMenuTitle, #homeStoreDetailsTitle
+    {
+        font-size: 25px;
+        line-height: 26px;
+    }
+
+    #sectionsWrapper
+    {
+        position: relative;
+        top: 5px;
+        left: 0;
+        margin-left: 140px;
+    }
+
+    #storeDetailsAddressWrapper
+    {
+        clear: left;
+        float: none;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding-right: 300px;
+        width: 100%;
+        overflow: visible;
+    }
+
+    #storeDetailsDeliveryTimes h1, #storeDetailsAddress h1
+    {
+        font-size: 22px;
+    }
+
+    #storeDetailsDeliveryTimes
+    {
+        float: right;
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+    #storeDetailsAddressMap
+    {
+        width: 54%;
+    }
+
+    .dealName, .itemName
+    {
+        font-size: 20px;
+        line-height: 25px;
+    }
+    .dealName
+    {
+        padding: 15px 10px 5px 10px;
+    }
+    #storeDetailsAddressWrapperInner2
+    {
+        padding-top: 0;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    #storeDetailsAddress
+    {
+        width: 40%;
+        padding-right: 2%;
+    }
+
+    #popupDescription
+    {
+        margin-top: 0;
+    }
+
+    .popupItemDetails
+    {
+        color: #000000;
+        width: 50%;
+    }
+
+    .priceAddContainer
+    {
+        width: 160px;
+    }
+
+    .checkoutButtons .nextButton
+    {
+        width: auto;
+    }
+
+    .checkoutPage #checkoutPageInner
+    {
+        background-color: #ffffff;
+        border: 1px solid #e3e3e3;
+    }
+
+    #menuSectionWrapper
+    {
+        background-color: #f0eeef;
+        padding: 0;
+    }
+
+    #menuSection, #viewContainer
+    {
+        min-height: 676px;
+        height: auto;
+        background-color: #f0eeef;
+    }
+
+    #viewContainerOuter
+    {
+        background-color: #f0eeef;
+        width: 100%;
+    }
+
+    #loginRegisterInner h1
+    {
+        font-weight: normal !important;
+        border: none;
+        height: auto;
+        font-size: 23px;
+        margin: 0;
+    }
+
+    .loginFormInput
+    {
+        padding: 4px;
+    }
+
+    #lrCreateAnAccount, #lrCreateAnAccountAddress, #mpRegisterContainer h2
+    {
+        font-size: 22px;
+        margin: 10px 0;
+    }
+
+    .orderNotesColumn1
+    {
+        width: 160px;
+        float: left;
+    }
+
+    .itemDescription
+    {
+        margin-top: 00px;
+    }
+
+    #footerLinks
+    {
+        color: #ffffff;
+        width: 600px;
+    }
+
+    #viewContainer
+    {
+        min-height: 600px;
+        background-color: #f0eeef;
+    }
+
+    .checkoutError
+    {
+        clear: both;
+        margin-top: 20px;
+        padding-top: 10px;
+    }
+
+    .checkoutSectionHeader, .selectedCheckoutSectionHeader
+    {
+        padding: 10px 18px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin-right: 1px;
+    }
+
+    .itemDetails, .itemDetailsWithImage
+    {
+        float: right;
+        margin-top: 0px;
+        width: 160px;
+    }
+
+    .checkoutPage h1
+    {
+        font-size: 21pt;
+    }
+
+    .mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted
+    {
+        float: left;
+    }
+
+    #headerLogoutButton
+    {
+        right: 0;
+    }
+
+    #headerMyOrdersButton
+    {
+        right: 64px;
+        text-transform: uppercase;
+    }
+
+    #headerMyProfileButton
+    {
+        right: 174px;
+        text-transform: uppercase;
+    }
+
+    #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active
+    {
+        color: #ffffff;
+        padding: 10px 8px;
+    }
+
+    #mpMenu
+    {
+        display: none;
+    }
+
+    .mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active, .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active, #headerMyProfileButton a:link, #headerMyProfileButton a:visited, #headerMyProfileButton a:active, #headerMyOrdersButton a:link, #headerMyOrdersButton a:visited, #headerMyOrdersButton a:active, #headerLogoutButton a:link, #headerLogoutButton a:visited, #headerLogoutButton a:active
+    {
+        font-size: 12pt;
+    }
+
+    #mainMenu
+    {
+        padding-left: 20px;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .siteListMap
+    {
+        height: 130px;
+    }
+
+    .siteListSite
+    {
+        float: left;
+        margin: 0 10px;
+        width: 180px;
+    }
+
+    .sitesBox a
+    {
+        font-size: 14pt;
+        background-color: #a7b321;
+        display: block;
+        text-align: center;
+        padding: 5px 0 5px 0;
+        text-decoration: none;
+        color: white;
+    }
+
+    .siteListSiteCityPostcode
+    {
+        padding-bottom: 5px;
+    }
+
+    .sitesBox, #siteSelectorBox
+    {
+        padding: 0 50px 25px 50px;
+    }
+
+    .siteListClickForLocation a
+    {
+        background-color: gray;
+    }
+
+    #headerLoggedIn
+    {
+        position: absolute;
+        right: 0;
+        left: 275px;
+        height: 40px;
+        top: 112px;
+        background-color: #dddddd;
+    }
+
+    #headerLoggedIn a
+    {
+        color: #ffffff;
+    }
+
+    #headerLoggedIn div
+    {
+        top: initial;
+        position: initial;
+        float: right;
+    }
+
+    #pageHeader
+    {
+        background: url('Images/header-bg.gif') left top repeat-x #f0eeef;
+    }
+
+    #pickStoreOptions .welcome {
+        float: left;
+        width: 49%;
+    }
+    #pickStoreOptions .postcodeLookup {
+        float: right;
+        width: 49%;
+        max-width: 430px;
+        margin-right: 10px;
+    }
+}

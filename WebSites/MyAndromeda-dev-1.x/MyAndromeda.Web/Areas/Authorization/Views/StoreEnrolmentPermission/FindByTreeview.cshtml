@@ -1,0 +1,24 @@
+﻿@model dynamic
+
+@(Html.Kendo()
+    .MultiSelect()
+    .Name("SelectStore")
+    .DataSource(storeDataSource => storeDataSource.Read("Read", "Store", new { Area="" } )
+        .Events(events => events.Change("multiSelectStore")))
+)
+
+@(Html.Kendo().DropDownList()
+    .Name("SelectEnrolment")
+    .DataTextField("Name")
+    .DataValueField("Id")
+    .DataSource(enrolementDataSourec => enrolementDataSourec.Read("Read", "Enrolment", new { Area = "" })))
+
+@using(Html.BeginScripts())
+{
+    <script type="text/javascript">
+        function multiSelectStore(e)
+        {
+
+        }
+    </script>
+}

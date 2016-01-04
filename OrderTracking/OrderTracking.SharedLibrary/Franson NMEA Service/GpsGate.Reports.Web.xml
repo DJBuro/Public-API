@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.Reports.Web</name>
+    </assembly>
+    <members>
+        <member name="T:GpsGate.Reports.Web.ReportControl">
+            <summary>
+            ReportControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.ReportControl.DropDownListReports">
+            <summary>
+            DropDownListReports control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.ReportControl.btnOpenReport">
+            <summary>
+            btnOpenReport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.ReportControl.LabelErrorMessage">
+            <summary>
+            LabelErrorMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.Reports.Web.ReportPage">
+            <summary>
+            Extend this instead of <see cref="T:System.Web.UI.Page"/> when creating a aspx page to view a report.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.ReportPage.ReportPageInit">
+            <summary>
+            Override this instead of page load!!
+            
+            Are called after PageLoad and when this page has initiated all properties.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.ReportPage.OnSessionException(System.Exception)">
+            <summary>
+            Override to write authentication error message.
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.Viewer">
+            <summary>
+            Returns the <see cref="T:GpsGate.Online.Reporting.ReportViewer"/> this page are going to render.
+            
+            Retuns Null if not overridden.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.ApplicationId">
+            <summary>
+            The id of the application this report page has been launched for.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.ClientCulture">
+            <summary>
+            Returns the Specific CultureInfo of the client created from the provided HTTP headers.
+            If not found the CultureInfo.CurrentCulture of the system is used,
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.LocalTimeOffset">
+            <summary>
+            The Clients time offset to UTC. 
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.UserSource">
+            <summary>
+            The users in the application for which this report was launched for.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.Users">
+            <summary>
+            The users in the application for which this report was launched for.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.FransonSession">
+            <summary>
+            Current logged in users session
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.FransonUserLocale">
+            <summary>
+            The Localization object received from the user settings.
+            Ff not user settings is set application default is used if not found either site settings is used.
+            
+            Used to localize and translate.
+            
+            E.g using language: 
+            m_locale.Lang["KEY"] will return the phrase found in the lang files for the matching key.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.ReportPage.FransonApplication">
+            <summary>
+            The <see cref="T:Franson.Directory.Application"/> object of the application this report page is launched for.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl">
+            <summary>
+            Control to handle Editing, Creation and View of a <see cref="T:GpsGate.Online.Reporting.StoredReport"/>
+            
+            To make a <see cref="T:GpsGate.Online.Reporting.ReportViewer"/> storeable implement the IStoreableReport inteface.
+            Add this UserControl to your report display aspx page and implement the event listeners to bind/collect necessary properties to and from GUI.
+            </summary>
+            <summary>
+            StoredReportControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.OnInit(System.EventArgs)">
+            <summary>
+            Override OnInit to instantiate templates as early as possible to have all child controls of the created upon Page_Load.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            Override Page_Load to initialize and setup the control.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.SetInsert">
+            <summary>
+            Set the StoredReportControl in Insert mode.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.SetEdit">
+            <summary>
+            Set the StoredReportControl in Edit mode. 
+            Call BindReport event to let the page set GUI controls in EditInsertTemplate according to the StoredReport.
+            </summary>
+            <param name="mode"></param>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.SetView">
+            <summary>
+            Set control to View mode.
+            Will call the RenderReport event.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.OnError(System.String,System.Exception)">
+            <summary>
+            Called when error in UserControlBase occurs.
+            </summary>
+            <param name="strMessage"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.PlaceHolderContent">
+            <summary>
+            PlaceHolderContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.PlaceHolderEditInsertControls">
+            <summary>
+            PlaceHolderEditInsertControls control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.ButtonSave">
+            <summary>
+            ButtonSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.ButtonRender">
+            <summary>
+            ButtonRender control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.PlaceHolderViewControls">
+            <summary>
+            PlaceHolderViewControls control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.ButtonPreviousPeriod">
+            <summary>
+            ButtonPreviousPeriod control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.ButtonNextPeriod">
+            <summary>
+            ButtonNextPeriod control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.DropDownListPeriodSkip">
+            <summary>
+            DropDownListPeriodSkip control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.btnPrint">
+            <summary>
+            btnPrint control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.Reports.Web.StoredReportControl.PlaceHolderRenderArea">
+            <summary>
+            PlaceHolderRenderArea control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="E:GpsGate.Reports.Web.StoredReportControl.BindReport">
+            <summary>
+            Called when the <see cref="T:GpsGate.Online.Reporting.StoredReport"/> is initialized in ReportMode.Edit.
+            Bind the report properties to GUI controls in this event.
+            
+            E.g:
+            <code>
+            protected void StoredReportControl_BindReport(object sender, StoredReportControl.ReportEventArgs e)
+            {
+            	
+            	TextBoxName.Text = e.Report.Name;
+            	// Bind e.Report.Parameters to GUI controls
+                .
+                .
+                .
+            }
+            </code>
+            </summary>
+        </member>
+        <member name="E:GpsGate.Reports.Web.StoredReportControl.CollectReport">
+            <summary>
+            Called when GUI controls need to be collected into a <see cref="T:GpsGate.Online.Reporting.StoredReport"/>
+            
+            E.g:
+            <code>
+            protected void StoredReportControl_CollectReport(object sender, StoredReportControl.ReportEventArgs e)
+            {
+            	if (e.Mode == StoredReportControl.ReportMode.Insert)
+            	{
+            		DistanceReportViewerWeekly distanceReprot = new DistanceReportViewerWeekly();
+            		distanceReprot.Load();
+            		e.Report = new StoredReport(e.Context.Application.ID, distanceReprot);
+            	}
+            
+            	e.Report.Name = TextBoxName.Text;
+            	e.Report.Parameters["users"] = new ArrayReportParameter(new object[] { 1, 2, 3 });
+            	e.Report.Parameters["period"] = new DailyReportParameter(0);
+            }
+            </code>
+            </summary>
+        </member>
+        <member name="E:GpsGate.Reports.Web.StoredReportControl.RenderReport">
+            <summary>
+            Called when report is rendered.
+            CollectReport is called right before to collect the <see cref="T:GpsGate.Online.Reporting.StoredReport"/>
+            
+            E.g:
+            <code>
+            protected void StoredReportControl_RenderReport(object sender, StoredReportControl.ReportEventArgs e)
+            {
+            	ReportViewer viewer = e.Report.LoadReport(e.Context);
+            
+            	ReportXml.TransformSource = "./Weekly.English.xslt";
+            	ReportXml.XPathNavigator = viewer.Source.XPathNavigator;
+            }
+            </code>
+            </summary>
+        </member>
+        <member name="E:GpsGate.Reports.Web.StoredReportControl.PageNext">
+            <summary>
+            Called when page next button is clicked.
+            </summary>
+        </member>
+        <member name="E:GpsGate.Reports.Web.StoredReportControl.PagePrevious">
+            <summary>
+            Called when page previos button is clicked.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.EditInsertParametersTemplate">
+            <summary>
+            Template containg GUI controls necessary for creating a new <see cref="T:GpsGate.Online.Reporting.StoredReport"/>.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ViewParametersTemplate">
+            <summary>
+            Template containg optional GUI controls to render a <see cref="T:GpsGate.Online.Reporting.StoredReport"/>.
+            
+            This template is loaded when the report is requested to be directley rendered from a stored <see cref="T:GpsGate.Online.Reporting.StoredReport"/>
+            In most cases all parameters should have been saved and optional parameters shold not be necessary.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.RenderAreaTemplate">
+            <summary>
+            This template is loaded when the report is rendered. 
+            Put controls here needed for rendering.
+            
+            If printing is enabled the content of this template will be included in the printout.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.EnablePaging">
+             <summary>
+             Set or Get from markup if the StoredReportControl should include Paging functionallity when ViewTemplate is active.
+             If enabled paging buttons are created and PagePrevious and PageNext events will be called.
+            
+             E.g of implementation of PageNext and PgePrevious.
+             <code>
+            	protected void StoredReportControl_Next(object sender, StoredReportControl.ReportPagingEventArgs e)
+            	{
+            		// Get period parameter
+            		PeroidicalParameter period = (PeroidicalParameter)e.Report.Parameters["period"];
+            	
+            		// Add offset
+            		e.Report.Parameters["period"] = period.AddPeriod(e.PageIndex);
+            	
+            		// Rerender the report now.
+            	}
+            	
+            	protected void StoredReportControl_Previous(object sender, StoredReportControl.ReportPagingEventArgs e)
+            	{
+            		// Get period parameter
+            		PeroidicalParameter period = (PeroidicalParameter)e.Report.Parameters["period"];
+            	
+            		// Add offset
+            		e.Report.Parameters["period"] = period.AddPeriod(e.PageIndex);
+            	
+            		// Rerender the report now.
+            	}
+             </code>
+             </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.EnablePrinting">
+            <summary>
+            Set or Get from markup if th StoredReportControl should include printing functionallity.
+            If set to true in markup a print button and print script will be included when ViewTemplate is active.
+            The cntent of RenderAreaTemplate will be printed.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.Mode">
+            <summary>
+            This current ReportMode of this control.
+            Try to find Mode from ViewState["reportmode"],
+            if that does not exist try parse QueryString["reportmode"].
+            Note. First load ViewState["reportmode"] is not set and must exist in querystring. 
+            If not existing the mode will be Insert.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.Report">
+            <summary>
+            Get the <see cref="T:GpsGate.Online.Reporting.StoredReport"/> instance.
+            Try to find report id from ViewState["reportid"],
+            if that does not exist try to parse QueryString. 
+            Note. First load ViewState["reportid"] is not set and must exist in QueryString if Control initial mode should be Edit or View.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportContext">
+            <summary>
+            Context object containg contextual information about the application and reporting environment such as
+            Application ID, Localization object for translations and measurements along with Client culture and timezone offsets.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ClientCulture">
+            <summary>
+            Returns the Specific CultureInfo of the client created from the provided HTTP headers.
+            If not found the CultureInfo.CurrentCulture of the system is used,
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl.ReportTemplate">
+            <summary>
+            Reporting template.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl.ReportMode">
+            <summary>
+            Enum defining the current mode of the StoredReportControl.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl.ReportHandler">
+            <summary>
+            Report EventHandler
+            </summary>
+            <param name="sender">Instance of the current StoredReportControl</param>
+            <param name="e">ReportEventArgs containg contextual information such as the StordReport instance, Localization object and application.</param>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl.ReportPagingEventArgs">
+            <summary>
+            Event argument for StoredReportControl paging events.
+            </summary>
+        </member>
+        <member name="T:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs">
+            <summary>
+            Event argument for StoredReportControl events.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs.#ctor(GpsGate.Online.Reporting.StoredReport,GpsGate.Online.Reporting.ReportContext,GpsGate.Reports.Web.StoredReportControl.ReportMode)">
+            <summary>
+            Creates a new ReportEventArgs
+            </summary>
+            <param name="report">StoredReport</param>
+            <param name="mode">Control mode</param>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs.Report">
+            <summary>
+            Get / Set the <see cref="T:GpsGate.Online.Reporting.StoredReport"/>.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs.Mode">
+            <summary>
+            Get the StoredReportControl current mode.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs.Context">
+            <summary>
+            Get the <see cref="P:GpsGate.Reports.Web.StoredReportControl.ReportContext"/>.
+            </summary>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportEventArgs.Cancel">
+            <summary>
+            Set this to true to cancel operation.
+            E.g: If not all information needed to save a report can be collected from UI (missing name or similar), 
+            then set Cancel to true to avoid report to be saved.
+            </summary>
+        </member>
+        <member name="M:GpsGate.Reports.Web.StoredReportControl.ReportPagingEventArgs.#ctor(System.Int32,GpsGate.Online.Reporting.StoredReport,GpsGate.Online.Reporting.ReportContext)">
+            <summary>
+            Creates a new ReportPagingEventArgs.
+            </summary>
+            <param name="iPageIndex">Page index.</param>
+            <param name="report">StoredReport to page.</param>
+            <param name="context">Current ReportContext.</param>
+        </member>
+        <member name="P:GpsGate.Reports.Web.StoredReportControl.ReportPagingEventArgs.PageIndex">
+            <summary>
+            Get the PageIndex.
+            </summary>
+        </member>
+    </members>
+</doc>

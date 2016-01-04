@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="AttributeValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="AttributenameValidator" test="Attributename"><v:message id="error.Attributename.required" providers="AttributenameErrors, ValidationSummary"/></v:required>
+	<v:required id="AttributetypeValidator" test="Attributetype"><v:message id="error.Attributetype.required" providers="AttributetypeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

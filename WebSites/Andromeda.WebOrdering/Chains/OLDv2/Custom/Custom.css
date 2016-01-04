@@ -1,0 +1,881 @@
+﻿/*!
+    Copyright © 2014 Andromeda Trading Limited.  All rights reserved.  
+    THIS FILE AND ITS CONTENTS ARE PROTECTED BY COPYRIGHT AND/OR OTHER APPLICABLE LAW. 
+    ANY USE OF THE CONTENTS OF THIS FILE OR ANY PART OF THIS FILE WITHOUT EXPLICIT PERMISSION FROM ANDROMEDA TRADING LIMITED IS PROHIBITED. 
+*/
+
+/* All */
+
+    #paymentTandCContainer
+    {
+        display:none;
+    }
+    
+    .popupChefComments 
+    {
+        display: none;
+    }
+
+    body
+    { 
+        background: transparent url('Images/speedRabbitBackground.jpg');
+    }
+    .dealName 
+    {
+        color: #330000;
+        font-size: 14px;
+    }
+
+    .quantity label 
+    {
+        color: #000000;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .popupTopping 
+    {
+       background-color: #FFCC00;
+        font-size: 9px;
+        margin-right: 10px;
+    }
+    
+    #yourOrderContainer h2 
+    {
+        color: #D40202;
+        font-size: 12px;
+    }
+    
+    .cartItem a:link, .cartItem a:visited, .cartItem a:active 
+    {
+        color: #330000;
+    }
+    
+    .selectedCheckoutSectionHeader 
+    {
+        background-color: #FFFFFF;
+        color: #330000;
+    }
+    
+    .checkoutSectionHeader  
+    {
+        background-color: #330000;
+        color: #FFCC00;
+        border: solid 1px #FFCC00;
+    }
+    
+/*	.checkoutSectionHeader a:hover
+    {
+        color: #FF6600;
+    }*/
+    .requiredLine  
+    {
+       color: #D40202;
+    }
+    
+    .checkoutError 
+    {
+        color: #D40202;
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+    
+    .cartAutoRemove 
+    {
+        color: #D40202;
+    }
+    
+    .button a, .highlightedButton a 
+    {	
+        background: #330000;
+        /*background: -webkit-linear-gradient(top, #330000, #330000);
+        background: -moz-linear-gradient(top, #330000, #330000);
+        background: -ms-linear-gradient(top, #330000, #330000);
+        background: -o-linear-gradient(top, #330000, #330000);*/
+        color: #FFCC00;
+        font-size: 10px;
+    }
+    
+    .button a:hover, .highlightedButton a:hover 
+    {
+        color: #FF6600;
+    }
+    
+    body 
+    {
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 12px;
+        color: #330000;
+    }
+    
+    .cartTotal 
+    {
+        font-size: 12px;
+    }
+    
+    .cartTotalPrice 
+    {
+        font-size: 12px;
+    }
+    
+    h1
+    {		font-family: Verdana, Geneva, sans-serif;
+        font-size: 14px;
+    }
+    
+    .popupToppingsSingle, .popupToppingsSingle2 
+    {
+        font-size: 12px;
+    }
+    
+    .popupToppingsDouble, .popupToppingsDouble2 
+    {
+        font-size: 12px;
+    }
+    
+    .popupToppingPrice 
+    {
+        font-size: 10px;
+    }
+    
+    .checkoutSectionHeader h2, .selectedCheckoutSectionHeader h2 
+   {
+        font-size: 12px;
+    }
+    
+    .checkoutContactLine 
+    {
+        font-size: 12px;
+    }
+    
+    .popupToppings 
+    {
+        overflow: hidden;
+        background-color: #FFCC00;
+        margin-right: 20px;
+    }
+    
+    .popupRemovableTopping 
+    {
+        background-color: #FFAE00;
+    }
+
+    .itemImageOverlay
+    {
+        width: 42px;
+        height: 50px;
+        background: transparent url('Images/noporc.png') no-repeat;   
+    }
+
+/* PCandTablet */
+@media only screen and (min-width: 601px)
+{
+    /* Header */
+    header
+    {
+        height: 209px;
+        background: none;
+    }
+
+    #pageHeader
+    {
+        height: 209px;
+        background: none;
+        box-shadow: none;
+    }
+    
+    #pageHeaderInner
+    {
+        width: 100%;
+        height: 209px;
+        background: transparent url('Images/commander-pizza-bronx.png') no-repeat;
+        background-position: 0px 20px;
+    }
+
+    #siteSelectorPostcode
+    {
+        display:none;
+    }
+
+    #siteSelectorPostcodeExample
+    {
+        color: white;
+    }
+
+    #siteSelectorShowSitesButton
+    {
+        display:none;
+        -moz-box-shadow: 0px 3px 13px rgba(0,0,0,0.6);
+        -webkit-box-shadow: 0px 3px 13px rgba(0,0,0,0.6);
+        box-shadow: 0px 3px 13px rgba(0,0,0,0.6);
+    }
+
+    #siteSelectorShowSitesButton a
+    {
+        background: none;
+        background-color:black;
+        color: #FFC82F;
+    }
+
+    #twitter
+    {
+        height: 28px;
+        top: 2px;
+        background: transparent url('Images/Twitter.png') no-repeat;   
+    }
+
+    #twitter a
+    {
+        color: #FFC82F;
+    }
+
+    #facebook
+    {
+        height: 28px;
+        top: 2px;
+        background: transparent url('Images/Facebook.png') no-repeat;
+    }
+
+    /*#facebook a
+    {
+        color: #FFC82F;
+    }*/
+
+    #menuDeliveryAreaCheck
+    {
+        display:none;
+    }
+
+    .deliveryZoneOk
+    {
+        display:none;
+    }
+
+    .badDeliveryZone
+    {
+        width: 288px;
+        height: 100px;
+        background: transparent url('Images/BadDeliveryZone.png') no-repeat;
+        position: absolute;
+        left: 275px;
+        top: 5px;
+    }
+
+    /* General */
+    .content
+    {
+        top: 209px;
+        border-radius: 0;
+        border: none;
+        background-color: white;
+        overflow-y:auto;
+    }
+
+    /* Site selector */
+    .siteSelectorBox
+    {
+        background: transparent url('Images/SiteSelector.png') no-repeat;
+        width:1024px;
+        height: 699px;
+        padding: 0;
+    }
+
+    #siteSelectorPostcodeGoButton
+    {
+        width: 63px;
+        height: 63px;
+    }
+
+    #siteSelectorPostcodeGoButton a
+    {
+        background: transparent url('Images/Go.png') no-repeat;
+        width: 63px;
+        height: 63px;
+        display: block
+    }
+
+    .welcomeHeader
+    {
+        display: none;
+    }
+
+    .siteSelectorBox .chooseStorePrompt
+    {
+        display: none;
+    }
+    
+    .mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active 
+    {
+        background: -webkit-linear-gradient(top, #FFCC00, #FFCC00);
+        color: #C00000;
+        top: 200px;
+    }
+    
+    #mainMenu
+    {
+        padding: 70px 0 4px 10px;
+    }
+    
+    .dealItem 
+    {
+        background-color: #FFCC00;
+        color: black;
+    }
+    
+    .mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active, .mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active 
+  {
+        background: -webkit-linear-gradient(top, #330000, #330000);
+        background: -moz-linear-gradient(top, #330000, #330000);
+        background: -ms-linear-gradient(top, #330000, #330000);
+        background: -o-linear-gradient(top, #330000, #330000);
+        color: #FFCC00;
+        font-size: 12px;
+    }
+    
+    .mainMenuButton a:hover
+  {
+        color: #FF6600;
+    }
+    .mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted 
+    {
+        margin-right: 6px;
+        margin-top: -50px;
+        
+    }   
+    .sectionTitle h1 
+    {
+        color: #C70505;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active  
+  {
+        color: #330000;
+        background: -webkit-linear-gradient(top, #FFCC00, #FFCC00);
+        background: -moz-linear-gradient(top, #FFCC00, #FFCC00);
+        background: -ms-linear-gradient(top, #FFCC00, #FFCC00);
+        background: -o-linear-gradient(top, #FFCC00, #FFCC00);
+        font-size: 14px;
+    }
+    
+    .sectionHeader a:hover 
+    {
+        color: #FF6600;
+    }
+    
+
+    .selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active  
+    {
+        color: #FFCC00;
+        background: -webkit-linear-gradient(top, #330000, #330000);
+        background: -moz-linear-gradient(top, #330000, #330000);
+        background: -ms-linear-gradient(top, #330000, #330000);
+        background: -o-linear-gradient(top, #330000, #330000);
+        font-size: 14px;
+    }
+    
+    .selectedSectionHeader a:hover 
+    {
+        color: #FF6600;
+    }
+    
+    .itemRow 
+    {
+        border: solid 1px #FFCC00;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -khtml-border-radius: 10px;
+        background-color: #FFCC00;
+    }
+    
+    .itemName 
+    {
+        color: #330000;
+        font-size: 14px;
+    }
+    
+    .itemPrice 
+    {
+        color: #D40202;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    .popupBoxHeaderContainer 
+   {
+        background-color: #FFCC00;
+    }
+    
+    #popupDealOptions 
+    {
+    background-color: #FFCC00;
+    }
+
+    #popupBody 
+    {
+        background-color: #FFFFFF;
+    }	
+    
+    .popupItemDetails h2 
+    {
+        color: #000000;
+        font-size: 12px;
+    }
+    
+    .popupItemDetails 
+    {
+        color: #330000;
+        font-size: 12px;
+    }
+    
+    #popupCatHeader 
+    {
+        color: #D40202;
+        line-height: normal;
+    }
+    
+    #popupQuantity label 
+    {
+        color: #D40202;
+    }
+    #popupPriceHeader 
+    {
+        color: #D40202;
+        margin: 0 20px;
+    }
+    
+    #popupPrice 
+    {
+        color: #D40202;
+        font-size: 12px;
+        margin: 0 20px 0 0;
+        line-height: 31px;
+    }
+    
+    #cartWrapper 
+    {
+        border-top: 1px solid #330000;
+        background: #FFCC00;
+    }
+    
+    .checkoutPage {
+        border: solid 1px #FFFFFF;
+        background-color: #FFCC00;
+        top: 210px;
+    }
+    
+    #tandcPopupBox 
+    {
+        background-color: #FFCC00;
+    }
+
+    #headerRight
+    {
+        background-color: transparent;
+        width: 430px;
+        height: 35px;
+        margin-right: 100px;
+
+        -moz-border-bottom-left-radius: 10px;
+        -webkit-border-bottom-left-radius: 10px;
+        border-bottom-left-radius: 10px; 
+        -khtml-border-bottom-left-radius: 10px; 
+
+        -moz-border-bottom-right-radius: 10px;
+        -webkit-border-bottom-right-radius: 10px;
+        border-bottom-right-radius: 10px; 
+        -khtml-border-bottom-right-radius: 10px;
+    }
+
+    #twitter a
+    {
+        color: black;
+    }
+
+    #facebook a
+    {
+        color: black;
+    }
+
+    #socialMedia
+    {
+        background-color:transparent;
+    }
+    
+    #phone 
+    {
+        color: #330000;
+        background: #ffffff;
+        margin: 50px -30px 0 0;
+        padding: 5px 0px 0px 10px;
+        width: 250px;
+        opacity: 0.9;
+        -moz-opacity: 0.9;
+        -khtml-opacity: 0.9;
+        -ms-filter: "alpha(opacity=90)";
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+        filter: alpha(opacity=90);
+        font-size: 12px;
+        font-weight: bold;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+    
+    #storeDetailsAddress
+    {
+        color: #330000;
+        background: #ffffff;
+        margin: 0 10px 0 0;
+        padding: 0px 0px 5px 10px;
+        width: 250px;
+        opacity: 0.9;
+        -moz-opacity: 0.9;
+        -khtml-opacity: 0.9;
+        -ms-filter: "alpha(opacity=90)";
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+        filter: alpha(opacity=90);
+        font-size: 12px;
+        font-weight: bold;
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+    
+    /*#storeDetailsAddress
+    {
+        color:#330000;
+        font-weight: bold;
+        background: #FFCC00;
+        margin-top: 8px;
+        padding: 5px 7px 5px 7px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        -khtml-border-radius: 10px;
+        -moz-opacity: 0.9;
+        -khtml-opacity: 0.9;
+        -ms-filter: "alpha(opacity=90)";
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+        filter: alpha(opacity=90);
+        opacity: 0.9;
+    }*/
+
+    /* Please wait page */
+    .content
+    {
+        border: none;
+        background-color: transparent;
+    }
+
+    .sitesBox, .siteSelectorBox
+    {
+        color: black;
+    }
+
+    /* Menu Sections sidebar */
+    #sectionHeadersContainer
+    {
+        border: solid 1px white;
+        background-color: #FFCC00;
+    }
+
+    /* Cart sidebar */
+    #yourOrderContainer
+    {
+        border: solid 1px white;
+        background-color: #FFCC00;
+    }
+
+    /* Menu sections */
+    #sectionsWrapper
+    {
+        border: solid 1px #FFCC00;
+        background-color: #FFFFFF;
+    }
+    
+    .checkoutPage h1 {
+        color: #330000;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    #popupCategory2 span 
+    {
+        color: #D40202;
+    }
+    
+    .orderNotesColumn1 span {
+        color: #D40202;
+    }
+    
+    #popupCatContainer span 
+    {
+        color: #D40202;
+        font-size: 12px;
+    }
+    
+    #sectionHeadersTop h1 
+    {
+        color: #330000;
+        font-size: 12px;
+    }
+    
+    #cartTitle h1 
+    {
+        color: #330000;
+    }
+    
+    #deliveryOrCollection 
+   {
+        font-size: 12px;
+    }
+    
+    .dealPopupItemNo 
+    {
+        font-size: 12px;
+    }
+    
+    .popupDealLine {
+        font-size: 12px;
+    }
+    
+    .popupDealLine select 
+    {
+        font-size: 12px;
+    }
+    
+    #popupName 
+    {
+        font-size: 14px;
+    }
+    
+    #popupCatContainer select 
+    {
+        font-size: 12px;
+    }
+    
+    #popupQuantity select 
+    {
+        font-size: 12px;
+    }
+    
+    #clearOrderButton a 
+    {
+        font-size: 12px;
+    }
+    
+    #checkoutButton a 
+    {
+        font-size: 12px;
+    }
+    
+    #deliveryOrCollectionText 
+    {
+        font-size: 12px;
+    }
+    
+    #mercanetPaymentIFrame 
+    {
+        height: 200px;
+    }
+    
+    #mercanetPaymentContainer 
+    {
+        height: 200px;
+    }
+    
+    #popupCategory1 
+    {
+        margin-top: 3px;
+    }
+    
+    #popupCategory1 span
+    {
+        margin-right: 3px;
+    }
+
+    #popupCategory2 
+    {
+        margin-top: 3px;
+    }
+
+    #popupCategory2 span
+    {
+        margin-right: 3px;
+    }
+}
+
+/* PC */
+@media only screen and (min-width: 601px)
+{
+    #rightColumn, #sectionHeaders, #sectionsWrapper
+    {
+        top: 209px;
+    }
+    
+    .popupChefComments p 
+    {
+        font-size: 12px;
+    }
+    
+    .popupPerson p 
+    {
+        font-size: 12px;
+    }
+    
+    .popupPerson 
+    {
+        float: left;
+    }
+}
+
+/*Mobile*/
+@media only screen and (max-width: 600px)
+{
+    .dealItem 
+    {
+        background-color: #FFCC00;
+        border: 2px solid #FFFFFF;
+        color: #330000;
+    }
+    
+    .itemRow 
+    {
+        background-color: #FFCC00;
+        border: 2px solid #FFFFFF;
+        color: #330000;
+    }
+    
+    .itemPrice 
+    {
+        color: #D40202;
+    }
+    
+    .popupBoxHeaderContainer
+    {
+        background-color: #FFCC00;
+    }
+    
+    .popupItemDetails h2
+    {
+        color: #330000;
+    }
+    
+    .popupItemDetails 
+    {
+        color: #330000;
+    }
+    
+    #popupPriceHeader 
+    {
+        color: #D40202;
+    }
+    
+    #popupPrice 
+    {
+        color: #D40202;
+    }
+    #popupQuantity label
+    {
+        color: #D40202;
+    }
+    
+    #popupCatHeader 
+    {
+        color: #D40202;
+    }
+    
+    #popupDealOptions
+    {
+        color: #FFCC00;
+    }
+    
+    #popupBody h1 
+    {
+        color: #FFCC00;
+        background-color: #330000;
+    }
+    
+    #popupDealOptions 
+    {
+        background-color: #FFCC00;
+    }
+    
+    .popupDealLine 
+    {
+        background-color: #FFFFFF;
+        border-top: solid 2px #FFCC00;
+    }
+    
+    #popupCategory2 span 
+    {
+        color: #D40202;
+    }
+    
+    #cartTitle h1 
+    {
+        color: #FFCC00;
+        background-color: #330000;
+    }
+    
+    #cartWrapper 
+     {
+        border-top: 1px solid #FFCC00;
+        border-bottom: solid 1px #FFCC00;
+        background: #FFCC00;
+    }
+    
+    #checkoutContactDetailsContainer h3, #checkoutDeliveryTimePrompt h3, #checkoutDeliveryAddressContainer h3, #checkoutOrderNotesContainer h3 
+    {
+        color: #FFCC00;
+        background-color: #330000;
+    }
+    
+    #mobileCheckoutMenu 
+    {
+        background: #330000;
+        color: #FFCC00
+    }
+    
+    .mobileMenuButtonInner a:link, .mobileMenuButtonInner a:visited, .mobileMenuButtonInner a:active, .mobileMenuButtonSelectedInner a:link, .mobileMenuButtonSelectedInner a:visited, .mobileMenuButtonSelectedInner a:active 
+    {	
+        color: #FFCC00;
+        
+    }
+    
+    .addItemButton 
+    { 
+        height: 37px;
+    }
+    
+    #yourOrderContainer 
+    {
+        background-color: #FFCC00;
+    }
+    
+    .popupDealLine 
+    {
+        background-color: #FFCC00;
+    }
+    
+    #popupBody 
+    {
+        background-color: #FFCC00;
+    }
+    
+    /*#mercanetPaymentContainer
+    {
+        height: 140px;
+    }
+    
+    #mercanetPaymentIFrame
+    {
+        height: 140px;
+    }
+    
+    html
+    {
+        height: 140px;
+    }*/
+}

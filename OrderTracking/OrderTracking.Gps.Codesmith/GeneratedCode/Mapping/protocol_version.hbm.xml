@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Protocolversion, OrderTracking.Gps.Dao" table="protocol_version">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="protocol_version_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__protocol__E1E5B87B22751F6C"/>
+			<generator class="native" />
+		</id>
+		<property name="Botype" type="String">
+			<column name="bo_type" length="64" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Protocolid" type="String">
+			<column name="protocol_id" length="16" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Majorversion" type="Int32">
+			<column name="major_version" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="Minorversion" type="Int32">
+			<column name="minor_version" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="Clientname" type="String">
+			<column name="client_name" length="64" sql-type="varchar" not-null="false"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

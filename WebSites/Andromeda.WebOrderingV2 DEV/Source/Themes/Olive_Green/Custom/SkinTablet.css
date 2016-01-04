@@ -1,0 +1,15 @@
+@media only screen and (min-width: 601px) and (max-width: 1023px)
+{
+    .sitesBox, #siteSelectorBox 
+    {
+        padding: 0;
+    }
+
+    .dealName
+    {
+        display: block;
+        margin-top: 0 !important;
+        margin-right: 100px;
+        min-width: 0;
+    }
+}

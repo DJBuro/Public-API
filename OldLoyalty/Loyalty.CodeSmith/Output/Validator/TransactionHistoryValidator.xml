@@ -1,0 +1,19 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TransactionHistoryValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="DateTimeOrderedValidator" test="DateTimeOrdered"><v:message id="error.DateTimeOrdered.required" providers="DateTimeOrderedErrors, ValidationSummary"/></v:required>
+	<v:required id="LoyaltyPointsRedeemedValidator" test="LoyaltyPointsRedeemed"><v:message id="error.LoyaltyPointsRedeemed.required" providers="LoyaltyPointsRedeemedErrors, ValidationSummary"/></v:required>
+	<v:required id="LoyaltyPointsAddedValidator" test="LoyaltyPointsAdded"><v:message id="error.LoyaltyPointsAdded.required" providers="LoyaltyPointsAddedErrors, ValidationSummary"/></v:required>
+	<v:required id="LoyaltyPointsValueValidator" test="LoyaltyPointsValue"><v:message id="error.LoyaltyPointsValue.required" providers="LoyaltyPointsValueErrors, ValidationSummary"/></v:required>
+	<v:required id="OrderTotalValidator" test="OrderTotal"><v:message id="error.OrderTotal.required" providers="OrderTotalErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

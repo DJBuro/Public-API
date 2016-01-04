@@ -1,0 +1,226 @@
+﻿@model AndroAdminDataAccess.Domain.AndroWebOrderingWebsite
+
+@{
+    ViewBag.Title = "Edit";    
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    
+    @Html.HiddenFor(e=> e.ACSApplicationId)
+    if (this.Model.ACSApplication != null) 
+    {
+        <div>
+            <i>Create site based on: ACS Application: @Model.ACSApplication.Name (@Model.ACSApplication.Id)</i>
+        </div>    
+    }
+    
+    <h2>
+        @Html.ActionLink("Manage Andro Web Ordering", "Index", "AndroWebOrdering", new AjaxOptions { HttpMethod = "GET" }, new { @class = "actionLink" })
+        /
+        @if (!string.IsNullOrEmpty(Model.Name))
+        {
+            @Model.Name
+        }
+    </h2>
+    <div>
+        <div style="margin-top: 18px; height: 270px;">
+            @Html.HiddenFor(m => m.UpdatedMappedStoreIds)
+            @Html.Hidden("HdnChainId", Model.ChainId)
+
+            <div class="editor-label">
+                <b>Website Name:</b>
+            </div>
+            <div class="editor-field">
+                <input type="text"
+                       required="required"
+                       id="@Html.IdFor(e => e.Name)" name="@Html.NameFor(e => e.Name)"
+                       title="Website name is required."                       
+                       value="@Model.Name" /> 
+            </div>
+
+            <div class="editor-label">
+                <b>For Chain:</b>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(e => e.ChainId, new SelectList(Model.Chains, "Id", "Name", Model.ChainId), "None")
+            </div>
+
+            <div class="editor-label">
+                <b>UI Culture:</b>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(e => e.SelectedCultureType, new SelectList(Model.CultureChoices, "Name", "EnglishName", Model.SelectedCultureType), "en-GB")
+            </div>
+
+            <div class="editor-label">
+                <b>Time Zone:</b>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(e => e.SelectedTimeZoneId, new SelectList(Model.TimezoneChoices, "Id", "DisplayName", Model.SelectedTimeZoneId), "GMT Standard Time")
+            </div>
+
+            <div class="editor-label">
+                <b>Live Domain Name:</b>
+            </div>
+            <div class="editor-field">
+                <input type="text"
+                       required="required"
+                       id="@Html.IdFor(e => e.LiveDomainName)" name="@Html.NameFor(e => e.LiveDomainName)"
+                       title="Live Domain is required."
+                       value="@Model.LiveDomainName" /> 
+            </div>
+            <div class="editor-label">
+                <b>Preview Domain Name:</b>
+            </div>
+            <div class="editor-field">
+                <input type="text"
+                       required="required"
+                       id="@Html.IdFor(e => e.PreviewDomainName)" name="@Html.NameFor(e => e.PreviewDomainName)"
+                       title="Preview Domain is required."
+                       value="@Model.PreviewDomainName" />
+            </div>
+            <div class="editor-label">
+                <b>Website Status : </b>
+            </div>
+            <div class="editor-field">
+                @Html.RadioButtonFor(model => model.Enabled, true) Enabled
+                @Html.RadioButtonFor(model => model.Enabled, false) Disabled
+            </div>
+            <div class="editor-label">
+                <b>Disabled Reason:</b>
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(e => e.DisabledReason)
+            </div>
+
+            <div class="editor-label">
+                <b>Subscription Type:</b>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(e => e.SubscriptionTypeId, new SelectList(Model.SubscriptionsList, "Id", "Subscription", Model.SubscriptionTypeId))
+            </div>
+
+            <div class="editor-label">
+                <b>Environment:</b>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(e => e.EnvironmentId, new SelectList(Model.EnvironmentsList, "Id", "Name", Model.EnvironmentId))
+            </div>
+
+            <div class="editor-label" style="width: 185px !important; margin-top: 10px;">
+                <b style="text-align: left">Select stores for this chain:</b>
+            </div>
+            <div id="filters" style="float: right; padding-right: 10px;">
+                <b>Search: </b>
+                <input id="searchText" class="k-textbox" style="width: 200px;" type="text" />
+            </div>
+        </div>
+        <div>
+
+
+            @(Html.Kendo().Grid(Model.AllStores)
+            .Name("WebOrderingSitesGrid")
+            .Columns(
+                cols =>
+                {
+                    cols
+                        .Bound(e => e.AndromedaSiteId).Title("<b>Andro Id</b>").ClientTemplate(
+                                 "<input type='checkbox' class='chkStores' name='#= Name #' value='#= Id #' /><label>#= AndromedaSiteId #</label>"
+                        );
+                    cols.Bound(e => e.Name).Title("<b>Store Name</b>");
+                    cols.Bound(e => e.StoreStatus.Status).Title("<b>Status</b>");
+                })
+                .Filterable()
+                .Sortable()
+                .Events(ev => ev.DataBound("checkSites"))
+                .Pageable(paging => paging.Refresh(true))
+                .DataSource(dataSource =>
+                    dataSource
+                        .Ajax()
+                        .ServerOperation(false)
+                        .Model(m=>
+                        {
+                            m.Id(e => e.Id);
+                            m.Field("AndromedaSiteId", typeof(System.String));
+                        })
+                )
+            )
+            <div>
+                <button class="k-button k-primary" id="btnSubmit" type="submit" style="margin-top: 5px;">Apply Changes</button>
+            </div>
+        </div>
+
+    </div>
+}
+
+<script src="~/Scripts/app/AndroWebOrdering/WebsiteStores.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        var services = new AndroAdminWebOrderingSites.Services.Websites.SitesListService();
+        services.Init();
+        var chainId = $("#ChainId").val();
+        if (chainId != null && chainId != "") {
+            services.vm.selectedChainId = chainId;
+            services.VmChanged();
+        }
+
+        checkSites();
+
+    });
+
+    function checkSites() {
+        var storeIds = $("#UpdatedMappedStoreIds").val();
+        var selectedStores = storeIds.split(',');
+        if (selectedStores != null) {
+            $(".chkStores").each(function () {
+                if (selectedStores.indexOf($(this).val()) > -1) {
+                    $(this).attr('checked', true);
+                }
+                else {
+                    $(this).attr('checked', false);
+                }
+            });
+        }
+    }
+
+    $("#ChainId").change(function () {
+        var d = new AndroAdminWebOrderingSites.Services.Websites.SitesListService();
+        d.vm.set("selectedChainId", $(this).val());
+        d.vm.set("searchText", $("#searchText").val());
+        d.VmChanged();
+        //$("#UpdatedMappedStoreIds").val('');
+        checkSites();
+    });
+
+    $("#searchText").keyup(function (event) {
+        var d = new AndroAdminWebOrderingSites.Services.Websites.SitesListService();
+        d.vm.set("selectedChainId", $("#ChainId").val());
+        d.vm.set("searchText", $(this).val());
+        d.VmChanged();
+    });
+
+    $("#WebOrderingSitesGrid").on("change", "input", function (e) {
+        var $element = $(this);
+        var name = $element.attr("name");
+        var value = $element.val();
+        var exists = false;
+        var val = $("#UpdatedMappedStoreIds").val() === "" ? [] : $("#UpdatedMappedStoreIds").val().split(',');
+
+        for (i = 0; i < val.length; i++) {
+            if (val[i].trim() == value) {
+                exists = true;
+                val.splice(i, 1);
+            }
+        }
+        if (!exists) {
+            val.push(value);
+        }
+        var commaSeperatedValues = val.join(',');
+        $("#UpdatedMappedStoreIds").val(commaSeperatedValues);
+
+    });
+
+</script>

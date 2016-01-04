@@ -1,0 +1,216 @@
+﻿* {
+    margin:0;
+    padding:0;
+}
+
+body {
+	color:#FFF;
+	font:Arial, Helvetica, sans-serif;
+	font-size: 80%;
+	background: #1e1e1e;
+	margin: 0px;
+    padding: 0;
+    font-family:Arial;
+    font-size:80%;	
+}
+
+/*be nice to Opera*/
+html>body {
+	font-size: 80%;
+	background: #1e1e1e;
+	font-family: Helvetica, sans-serif;
+	margin: 0px;
+}
+
+a {
+	color:#FFF;
+	text-decoration:underline;
+}
+
+a:hover {
+	color:#FFF !important;
+	text-decoration:none
+}
+
+h2{ padding: 10px 0px 10px 0px;}
+
+input{border: solid 2px #FFF;}
+table{width:100%;}
+
+table td{padding: 2px;}
+
+.separator{
+    height:20px;
+    background:transparent url(images/table_separator.gif) repeat-x bottom;
+}
+
+.page {
+	margin: auto;
+	width: 927px;
+}
+
+.topMenuContainer { 
+    background:url(images/menuBg.gif) 0 0; 
+    width:100%;
+    clear:both; 
+    height:40px;
+}
+
+.topMenuLeft {
+    background:url(images/Topmenu_bottom_left.gif)  no-repeat left bottom; 
+    height:40px;
+    clear:left;
+}
+
+.logOn{
+    height:40px; 
+    /*width:680px;*/
+    float:left; 
+    padding-top:10px; 
+    text-align:right;
+}
+
+.rightMenu{
+    height:40px; width:30px;
+    float:right;background:url(images/Topmenu_bottom_right.gif)  no-repeat right bottom;
+}
+
+ul.topNav {
+	list-style: none;
+}
+
+ul.topNav li {
+	margin: 0;
+	padding: 0;
+	float:left;
+	padding: 10px;
+}
+
+.True
+{
+    background:url(images/checkMark.gif) no-repeat center bottom; 
+    height:15px;     
+    width:15px;
+}
+
+.False{
+    background:url(images/cross.gif) no-repeat center bottom; 
+    height:15px;
+    width:15px;
+}
+
+.content {
+    float:left;
+    clear:both;
+    margin: 10px 0 0 0;
+    width:100%;
+    padding-bottom:20px;
+}
+
+/* LEFT NAVIGATION */
+.leftContent { 
+    float:left;    
+    text-align:left;  
+    width:247px;
+    background: #FFF;
+    clear:left;
+    
+}
+.leftNavTop {
+    background:url(images/LeftNavTop.gif)  no-repeat left top; 
+    padding: 20px 0 0 0;
+}
+
+.leftNavBottom {
+background:url(images/LeftNavBottom.gif)  no-repeat left bottom; 
+    padding: 20px 0 20px 0;
+}
+
+#leftContentTitle {
+    text-align:center;  
+    font-weight:bold;
+    color:#232323;
+    padding:0 0 20px 0;
+}
+
+
+
+ul.leftNav {
+   list-style: none;
+}
+
+.leftNav li {
+    border-bottom:1px solid #E7E7E7;
+}
+
+.leftNav li a {
+    background:url(images/menu_marker1.gif) 19px 11px no-repeat; 
+    padding:5px 0 8px 33px; 
+    display:block; 
+    color:#232323; 
+    text-decoration:none; 
+}
+
+.leftNav li a:hover { 
+    color:#FF5501 !important; 
+    background:url(images/menu_marker1.gif) 21px 11px no-repeat;
+}
+
+/* MAIN CONTENT */
+.copyContent {
+    float:left;
+    clear:right;
+    margin: 0 0 20px 20px;
+    width:70%;
+    
+}
+
+/* FOOTER */
+.footerContainer {  
+    background:url(images/menuBg.gif) 0 0; 
+    width:100%;
+    clear:both; height:20px;
+}
+
+.footerLeft{
+    background:url(images/Footer_bottom_left.gif)  no-repeat left bottom; 
+    height:20px;
+    clear:left;
+}
+.footerContent ul{
+    list-style: none;
+}
+.footerContent li{
+    padding:1px 5px 0 15px; 
+    display:block; 
+    color:#232323; 
+    text-decoration:none; float:left;
+}
+
+
+.footerRight{
+    background:url(images/Footer_bottom_right.gif)  no-repeat right bottom; 
+    height:20px;
+    clear:right;
+}
+
+/*OrderTracking -  - used for Order Status*/
+.orderStatus5{
+    color:Gray;
+}
+
+.orderStatus6{
+    color:Gray;
+}
+
+
+/*OrderTracking - used for error logs etc.*/
+.error{
+    color:Red;
+}
+.warning{
+    
+}
+.debug{
+    color:Gray;
+}

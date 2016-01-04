@@ -1,0 +1,64 @@
+﻿<script type="text/html" id="mobileMenuView">
+
+    <div id="mobileMenuBackground"></div>
+
+    <div id="mobileMenuInner">
+
+        <!-- ko if: settings.isHomePageEnabled -->
+        <div class="button mmButton" id="hmHomeButton">
+            <a data-bind="click: showHome, text: textStrings.mmHome, attr: { href: (viewModel.selectedSite() === undefined ? '' : ('/' + viewModel.selectedSite().name)) + '/Home/' }"></a>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: viewModel.selectedSite() != undefined -->
+            <div class="button mmButton" id="hmMenuButton">
+                <a data-bind="click: showMenu, text: textStrings.mmMenu, attr: { href: '/' + viewModel.selectedSite().name + '/Menu/' }"></a>
+            </div>
+
+            <div class="button mmButton" id="hmMyOrderButton">
+                <a href="#" data-bind="click: showCart">
+                    <span id="hmMyOrderCount" data-bind="text: AndroWeb.Helpers.CartHelper.cart().totalItemCount"></span>
+                    <span id="hmMyOrderText" data-bind="click: showMenu, text: textStrings.mmMyOrder"></span>
+                </a>
+            </div>
+
+            <!-- ko if: settings.isStoreDetailsPageEnabled -->
+            <div class="button mmButton" id="hmStoreDetailsButton">
+                <a data-bind="click: showStoreDetails, text: textStrings.pmmHome, attr: { href: '/' + viewModel.selectedSite().name + '/StoreDetails/' }"></a>
+            </div>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: accountHelper.isLoggedIn() -->
+        <div class="button mmButton" id="hmMyProfileButton">
+            <a data-bind="click: myProfile, html: textStrings.hMyProfileButton" href="#"></a>
+        </div>
+        <div class="button mmButton" id="hmMyOrdersButton">
+            <a data-bind="click: myOrders, html: textStrings.hMyOrdersButton" href="#"></a>
+        </div>
+        <div class="button mmButton" id="hmLogoutButton">
+            <a data-bind="click: logout, html: textStrings.hLogoutButton" href="#"></a>
+        </div>
+        <!-- /ko -->
+
+        <div class="button mmButton" id="hmFeedbackButton">
+            <a data-bind="click: showFeedback, text: textStrings.hMFeedbackButton" href="#"></a>
+        </div>
+
+        <!-- ko if: viewModel.selectedSite() && viewModel.sites() !== undefined && viewModel.sites().length > 1 -->
+        <div class="button mmButton" id="hmChooseStoreButton">
+            <a data-bind="click: homePageActionHelper.ClearCurrentStore, text: textStrings.hMChangeStoreButton" href="#"></a>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: viewModel.selectedSite() != undefined -->
+        <!-- ko ifnot: accountHelper.isLoggedIn() -->
+        <div class="button mmButton" id='hmMyProfileButton'>
+            <a data-bind="click: mobileLogin, html: textStrings.hmLoginRegisterButton" href="#"></a>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+
+        <div class="button mmButton" id='hmCancelButton'>
+            <a data-bind="click: mobileCancel, html: textStrings.mmBack" href="#"></a>
+        </div>
+
+    </div>
+</script>

@@ -1,0 +1,40 @@
+﻿<script type="text/html" id="myProfileView">
+    <div id="myProfileContent" class="content">
+        <div id="mpMenu">
+            <a id="mpMyProfile" data-bind="html: textStrings.mpMyProfile, click: $root.contentViewModel().myProfile"></a>
+            <a id="mpMyOrders" data-bind="html: textStrings.mpMyOrders, click: $root.contentViewModel().myOrders"></a>
+            <a id="mpLogout" data-bind="html: textStrings.mpLogout, click: $root.contentViewModel().logout"></a>
+            <a id="mpBack" data-bind="html: textStrings.mpBackToMenu, click: $root.contentViewModel().backToMenu"></a>
+        </div>
+
+        <div id="mpContent">
+            <h1 data-bind="text: textStrings.mpMyProfile"></h1>
+
+            <!-- Register -->
+            <div id="mpRegisterContainer">
+                <h2 id="lrCreateAnAccount" data-bind="text: textStrings.mpWhoAreYou"></h2>
+                
+                <div data-bind="template: { name: 'accountDetailTemplate' }"></div>
+
+                <!--<div class="requiredLine" data-bind="text: textStrings.checkRequired"></div>-->
+                <div id="registerErrorMessage" data-bind="text: customerHelper.bindableCustomer().errorMessage"></div>
+
+            </div>
+
+            <!-- Register address -->
+            <div id="mpRegisterAddressContainer">
+                <h2 id="lrCreateAnAccountAddress" data-bind="text: textStrings.lrCreateAccountAddress"></h2>
+
+                <div data-bind="template: { name: $root.contentViewModel().addressType == undefined ? '' : $root.contentViewModel().addressType() }"></div>
+
+                <div id="mpRegisterButtonContainer">
+                    <div class="button" id="mpRegisterButton">
+                        <a href="#" data-bind="title: textStrings.mpSaveChangesButton, text: textStrings.mpSaveChangesButton, click: $root.contentViewModel().saveChanges"></a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</script>

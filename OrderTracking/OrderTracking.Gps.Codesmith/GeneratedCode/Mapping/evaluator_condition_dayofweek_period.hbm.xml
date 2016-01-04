@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Evaluatorconditiondayofweekperiod, OrderTracking.Gps.Dao" table="evaluator_condition_dayofweek_period">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="evaluator_condition_dayofweek_period_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__evaluato__C8F12B8259B045BD"/>
+			<generator class="native" />
+		</id>
+		<property name="Starttimeofday" type="Int64">
+			<column name="start_time_of_day" length="8" sql-type="bigint" not-null="true"/>
+		</property>
+		<property name="Stoptimeofday" type="Int64">
+			<column name="stop_time_of_day" length="8" sql-type="bigint" not-null="true"/>
+		</property>
+		<property name="Dayofweek" type="Int32">
+			<column name="day_of_week" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<property name="Evaluationmethod" type="Int32">
+			<column name="evaluation_method" length="4" sql-type="int" not-null="true"/>
+		</property>
+		<many-to-one name="Evaluatorcondition" class="OrderTracking.Gps.Dao.Domain.Evaluatorcondition, OrderTracking.Gps.Dao">
+			<column name="evaluator_condition_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

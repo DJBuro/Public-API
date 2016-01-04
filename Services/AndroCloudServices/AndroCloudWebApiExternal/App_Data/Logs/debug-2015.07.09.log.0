@@ -1,0 +1,730 @@
+2015-07-09 15:44:21,066 [13] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-09 15:44:21,076 [13] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-09 15:44:21,078 [13] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-09 15:44:21,082 [13] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: 94fc88d7-a401-9188-0a42-59968eb2886c
+2015-07-09 15:44:21,085 [13] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-09 15:44:21,087 [13] AndroCloudWebApiExternal.Handlers.LogHandler - {
+  "Id": "Fabian-toppings-test001",
+  "CustomerOrderId": 10555159,
+  "Order": {
+    "NoteToRestaurant": null,
+    "ServiceType": "Delivery",
+    "PlacedDate": "2015-04-28T12:28:15.524+00:00",
+    "DueDate": "2015-04-28T13:15:00+00:00",
+	"DueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "InitialDueDate": "2015-04-28T13:15:00+00:00",
+	"InitialDueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "PromptAsap": true
+  },
+  "RestaurantInfo": {
+    "Id": "525",
+    "Name": "Just Pizzas",
+    "PhoneNumber": "01234567890",
+    "AddressLines": [
+      "15 Test Street"
+    ],
+    "City": "London",
+    "Postcode": "EC4M 7rf",
+    "DispatchMethod": "JEPosV1",
+    "EmailAddress": ""
+  },
+  "PaymentInfo": {
+    "PaymentLines": [
+      {
+        "Type": "Cash",
+        "CardFee": 0,
+        "Value": 18.35
+      }
+    ],
+    "Total": 18.35,
+    "TotalComplementary": 0,
+    "PaidDate": "2015-04-28T12:28:19.6268+00:00",
+    "CashOnDelivery": true
+  },
+  "CustomerInfo": {
+    "Id": "1957127",
+    "Email": "new.user@just-eat.com",
+    "Name": "asd",
+    "Address": "Test, Test",
+    "City": "Test",
+    "Postcode": "SE16 1DD",
+    "PhoneNumber": "1234567890",
+    "TimeZone": "GMT Standard Time",
+    "PreviousRestuarantOrderCount": 0
+  },
+  "BasketInfo": {
+    "BasketId": "Cq20lJYyIkOSDEB2LqBOKA",
+    "MenuId": 1649,
+    "Discounts": [
+      {
+        "Id": 31410,
+        "Discount": 20,
+        "DiscountType": "Percent",
+        "QualifyingValue": 30
+      }
+    ],
+    "SubTotal": 18.35,
+    "ToSpend": 0,
+    "MultiBuyDiscount": 0,
+    "Discount": 0,
+    "DeliveryCharge": 0,
+    "Total": 18.35,
+    "GroupedBasketItems": [
+      {
+        "BasketItem": {
+          "ProductId": 108522,
+          "ProductTypeId": 15,
+          "MenuCardNumber": "6",
+          "Name": "Meaty One",
+          "Synonym": "12\" Deep Pan",
+          "UnitPrice": 11.95,
+          "CombinedPrice": 18.35,
+          "MealParts": [],
+          "OptionalAccessories": [
+            {
+              "OptionalAccessoryId": 36,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Fresh Garlic"
+            },
+            {
+              "OptionalAccessoryId": 41,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Black Olives"
+            },
+            {
+              "OptionalAccessoryId": 48,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Beef"
+            },
+            {
+              "OptionalAccessoryId": 136,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Fresh tomatoes"
+            },
+            {
+              "OptionalAccessoryId": 138,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Egg"
+            },
+            {
+              "OptionalAccessoryId": 194,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Chicken"
+            }
+          ],
+          "RequiredAccessories": [],
+          "Discounts": [],
+          "MultiBuyDiscounts": []
+        },
+        "Quantity": 1,
+        "CombinedPrice": 18.35,
+        "OrderSubId": 0,
+        "MenuCardNumber": null
+      }
+    ]
+  },
+  "IsAMiniFistPumpOrder": false
+}
+2015-07-09 15:44:21,089 [13] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-09 15:44:21,779 [13] AndroCloudWebApiExternal.Handlers.LogHandler - ==Response===================================================
+2015-07-09 15:44:21,781 [13] AndroCloudWebApiExternal.Handlers.LogHandler - {"TimeStamp":"2015-07-09T14:44:21.766Z","Message":"Internal server error","Details":"1","OrderId":"Fabian-toppings-test001"}
+2015-07-09 15:44:21,784 [13] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Response============================================
+2015-07-09 15:44:48,265 [18] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-09 15:44:48,267 [18] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-09 15:44:48,274 [18] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-09 15:44:48,279 [18] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: f6c3c44e-485b-de37-8803-9c18f3045c09
+2015-07-09 15:44:48,282 [18] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-09 15:44:48,284 [18] AndroCloudWebApiExternal.Handlers.LogHandler - {
+  "Id": "Fabian-toppings-test001",
+  "CustomerOrderId": 10555159,
+  "Order": {
+    "NoteToRestaurant": null,
+    "ServiceType": "Delivery",
+    "PlacedDate": "2015-04-28T12:28:15.524+00:00",
+    "DueDate": "2015-04-28T13:15:00+00:00",
+	"DueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "InitialDueDate": "2015-04-28T13:15:00+00:00",
+	"InitialDueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "PromptAsap": true
+  },
+  "RestaurantInfo": {
+    "Id": "525",
+    "Name": "Just Pizzas",
+    "PhoneNumber": "01234567890",
+    "AddressLines": [
+      "15 Test Street"
+    ],
+    "City": "London",
+    "Postcode": "EC4M 7rf",
+    "DispatchMethod": "JEPosV1",
+    "EmailAddress": ""
+  },
+  "PaymentInfo": {
+    "PaymentLines": [
+      {
+        "Type": "Cash",
+        "CardFee": 0,
+        "Value": 18.35
+      }
+    ],
+    "Total": 18.35,
+    "TotalComplementary": 0,
+    "PaidDate": "2015-04-28T12:28:19.6268+00:00",
+    "CashOnDelivery": true
+  },
+  "CustomerInfo": {
+    "Id": "1957127",
+    "Email": "new.user@just-eat.com",
+    "Name": "asd",
+    "Address": "Test, Test",
+    "City": "Test",
+    "Postcode": "SE16 1DD",
+    "PhoneNumber": "1234567890",
+    "TimeZone": "GMT Standard Time",
+    "PreviousRestuarantOrderCount": 0
+  },
+  "BasketInfo": {
+    "BasketId": "Cq20lJYyIkOSDEB2LqBOKA",
+    "MenuId": 1649,
+    "Discounts": [
+      {
+        "Id": 31410,
+        "Discount": 20,
+        "DiscountType": "Percent",
+        "QualifyingValue": 30
+      }
+    ],
+    "SubTotal": 18.35,
+    "ToSpend": 0,
+    "MultiBuyDiscount": 0,
+    "Discount": 0,
+    "DeliveryCharge": 0,
+    "Total": 18.35,
+    "GroupedBasketItems": [
+      {
+        "BasketItem": {
+          "ProductId": 108522,
+          "ProductTypeId": 15,
+          "MenuCardNumber": "6",
+          "Name": "Meaty One",
+          "Synonym": "12\" Deep Pan",
+          "UnitPrice": 11.95,
+          "CombinedPrice": 18.35,
+          "MealParts": [],
+          "OptionalAccessories": [
+            {
+              "OptionalAccessoryId": 36,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Fresh Garlic"
+            },
+            {
+              "OptionalAccessoryId": 41,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Black Olives"
+            },
+            {
+              "OptionalAccessoryId": 48,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Beef"
+            },
+            {
+              "OptionalAccessoryId": 136,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Fresh tomatoes"
+            },
+            {
+              "OptionalAccessoryId": 138,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Egg"
+            },
+            {
+              "OptionalAccessoryId": 194,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Chicken"
+            }
+          ],
+          "RequiredAccessories": [],
+          "Discounts": [],
+          "MultiBuyDiscounts": []
+        },
+        "Quantity": 1,
+        "CombinedPrice": 18.35,
+        "OrderSubId": 0,
+        "MenuCardNumber": null
+      }
+    ]
+  },
+  "IsAMiniFistPumpOrder": false
+}
+2015-07-09 15:44:48,286 [18] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-09 15:45:13,967 [23] AndroCloudWebApiExternal.Handlers.LogHandler - ==Response===================================================
+2015-07-09 15:45:13,970 [23] AndroCloudWebApiExternal.Handlers.LogHandler - {"TimeStamp":"2015-07-09T14:44:58.628Z","Message":"Internal server error","Details":"1","OrderId":"Fabian-toppings-test001"}
+2015-07-09 15:45:13,975 [23] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Response============================================
+2015-07-09 15:45:33,568 [27] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-09 15:45:33,570 [27] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-09 15:45:33,573 [27] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-09 15:45:33,576 [27] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: 1a254b5d-6087-192a-49d4-cc58e9ed96c6
+2015-07-09 15:45:33,580 [27] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-09 15:45:33,584 [27] AndroCloudWebApiExternal.Handlers.LogHandler - {
+  "Id": "Fabian-toppings-test001",
+  "CustomerOrderId": 10555159,
+  "Order": {
+    "NoteToRestaurant": null,
+    "ServiceType": "Delivery",
+    "PlacedDate": "2015-04-28T12:28:15.524+00:00",
+    "DueDate": "2015-04-28T13:15:00+00:00",
+	"DueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "InitialDueDate": "2015-04-28T13:15:00+00:00",
+	"InitialDueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "PromptAsap": true
+  },
+  "RestaurantInfo": {
+    "Id": "525",
+    "Name": "Just Pizzas",
+    "PhoneNumber": "01234567890",
+    "AddressLines": [
+      "15 Test Street"
+    ],
+    "City": "London",
+    "Postcode": "EC4M 7rf",
+    "DispatchMethod": "JEPosV1",
+    "EmailAddress": ""
+  },
+  "PaymentInfo": {
+    "PaymentLines": [
+      {
+        "Type": "Cash",
+        "CardFee": 0,
+        "Value": 18.35
+      }
+    ],
+    "Total": 18.35,
+    "TotalComplementary": 0,
+    "PaidDate": "2015-04-28T12:28:19.6268+00:00",
+    "CashOnDelivery": true
+  },
+  "CustomerInfo": {
+    "Id": "1957127",
+    "Email": "new.user@just-eat.com",
+    "Name": "asd",
+    "Address": "Test, Test",
+    "City": "Test",
+    "Postcode": "SE16 1DD",
+    "PhoneNumber": "1234567890",
+    "TimeZone": "GMT Standard Time",
+    "PreviousRestuarantOrderCount": 0
+  },
+  "BasketInfo": {
+    "BasketId": "Cq20lJYyIkOSDEB2LqBOKA",
+    "MenuId": 1649,
+    "Discounts": [
+      {
+        "Id": 31410,
+        "Discount": 20,
+        "DiscountType": "Percent",
+        "QualifyingValue": 30
+      }
+    ],
+    "SubTotal": 18.35,
+    "ToSpend": 0,
+    "MultiBuyDiscount": 0,
+    "Discount": 0,
+    "DeliveryCharge": 0,
+    "Total": 18.35,
+    "GroupedBasketItems": [
+      {
+        "BasketItem": {
+          "ProductId": 108522,
+          "ProductTypeId": 15,
+          "MenuCardNumber": "6",
+          "Name": "Meaty One",
+          "Synonym": "12\" Deep Pan",
+          "UnitPrice": 11.95,
+          "CombinedPrice": 18.35,
+          "MealParts": [],
+          "OptionalAccessories": [
+            {
+              "OptionalAccessoryId": 36,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Fresh Garlic"
+            },
+            {
+              "OptionalAccessoryId": 41,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Black Olives"
+            },
+            {
+              "OptionalAccessoryId": 48,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Beef"
+            },
+            {
+              "OptionalAccessoryId": 136,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Fresh tomatoes"
+            },
+            {
+              "OptionalAccessoryId": 138,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Egg"
+            },
+            {
+              "OptionalAccessoryId": 194,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Chicken"
+            }
+          ],
+          "RequiredAccessories": [],
+          "Discounts": [],
+          "MultiBuyDiscounts": []
+        },
+        "Quantity": 1,
+        "CombinedPrice": 18.35,
+        "OrderSubId": 0,
+        "MenuCardNumber": null
+      }
+    ]
+  },
+  "IsAMiniFistPumpOrder": false
+}
+2015-07-09 15:45:33,586 [27] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-09 15:45:38,206 [27] AndroCloudWebApiExternal.Handlers.LogHandler - ==Response===================================================
+2015-07-09 15:45:38,211 [27] AndroCloudWebApiExternal.Handlers.LogHandler - {"TimeStamp":"2015-07-09T14:45:38.206Z","Message":"Internal server error","Details":"1","OrderId":"Fabian-toppings-test001"}
+2015-07-09 15:45:38,216 [27] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Response============================================
+2015-07-09 15:45:49,410 [17] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-09 15:45:49,413 [17] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-09 15:45:49,415 [17] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-09 15:45:49,419 [17] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: 7f9b7b70-f904-98ee-399c-42c09ad06b6c
+2015-07-09 15:45:49,422 [17] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-09 15:45:49,425 [17] AndroCloudWebApiExternal.Handlers.LogHandler - {
+  "Id": "Fabian-toppings-test001",
+  "CustomerOrderId": 10555159,
+  "Order": {
+    "NoteToRestaurant": null,
+    "ServiceType": "Delivery",
+    "PlacedDate": "2015-04-28T12:28:15.524+00:00",
+    "DueDate": "2015-04-28T13:15:00+00:00",
+	"DueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "InitialDueDate": "2015-04-28T13:15:00+00:00",
+	"InitialDueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "PromptAsap": true
+  },
+  "RestaurantInfo": {
+    "Id": "525",
+    "Name": "Just Pizzas",
+    "PhoneNumber": "01234567890",
+    "AddressLines": [
+      "15 Test Street"
+    ],
+    "City": "London",
+    "Postcode": "EC4M 7rf",
+    "DispatchMethod": "JEPosV1",
+    "EmailAddress": ""
+  },
+  "PaymentInfo": {
+    "PaymentLines": [
+      {
+        "Type": "Cash",
+        "CardFee": 0,
+        "Value": 18.35
+      }
+    ],
+    "Total": 18.35,
+    "TotalComplementary": 0,
+    "PaidDate": "2015-04-28T12:28:19.6268+00:00",
+    "CashOnDelivery": true
+  },
+  "CustomerInfo": {
+    "Id": "1957127",
+    "Email": "new.user@just-eat.com",
+    "Name": "asd",
+    "Address": "Test, Test",
+    "City": "Test",
+    "Postcode": "SE16 1DD",
+    "PhoneNumber": "1234567890",
+    "TimeZone": "GMT Standard Time",
+    "PreviousRestuarantOrderCount": 0
+  },
+  "BasketInfo": {
+    "BasketId": "Cq20lJYyIkOSDEB2LqBOKA",
+    "MenuId": 1649,
+    "Discounts": [
+      {
+        "Id": 31410,
+        "Discount": 20,
+        "DiscountType": "Percent",
+        "QualifyingValue": 30
+      }
+    ],
+    "SubTotal": 18.35,
+    "ToSpend": 0,
+    "MultiBuyDiscount": 0,
+    "Discount": 0,
+    "DeliveryCharge": 0,
+    "Total": 18.35,
+    "GroupedBasketItems": [
+      {
+        "BasketItem": {
+          "ProductId": 108522,
+          "ProductTypeId": 15,
+          "MenuCardNumber": "6",
+          "Name": "Meaty One",
+          "Synonym": "12\" Deep Pan",
+          "UnitPrice": 11.95,
+          "CombinedPrice": 18.35,
+          "MealParts": [],
+          "OptionalAccessories": [
+            {
+              "OptionalAccessoryId": 36,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Fresh Garlic"
+            },
+            {
+              "OptionalAccessoryId": 41,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Black Olives"
+            },
+            {
+              "OptionalAccessoryId": 48,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Beef"
+            },
+            {
+              "OptionalAccessoryId": 136,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Fresh tomatoes"
+            },
+            {
+              "OptionalAccessoryId": 138,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Egg"
+            },
+            {
+              "OptionalAccessoryId": 194,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Chicken"
+            }
+          ],
+          "RequiredAccessories": [],
+          "Discounts": [],
+          "MultiBuyDiscounts": []
+        },
+        "Quantity": 1,
+        "CombinedPrice": 18.35,
+        "OrderSubId": 0,
+        "MenuCardNumber": null
+      }
+    ]
+  },
+  "IsAMiniFistPumpOrder": false
+}
+2015-07-09 15:45:49,429 [17] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-09 15:46:44,500 [18] AndroCloudWebApiExternal.Handlers.LogHandler - ==Response===================================================
+2015-07-09 15:46:44,550 [18] AndroCloudWebApiExternal.Handlers.LogHandler - {"TimeStamp":"2015-07-09T14:45:53.529Z","Message":"Internal server error","Details":"1","OrderId":"Fabian-toppings-test001"}
+2015-07-09 15:46:44,553 [18] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Response============================================
+2015-07-09 15:46:47,974 [34] AndroCloudWebApiExternal.Handlers.LogHandler - Request URI: http://localhost:55579/api/justeat/order
+2015-07-09 15:46:47,976 [34] AndroCloudWebApiExternal.Handlers.LogHandler - UserHostAddress: 127.0.0.1
+2015-07-09 15:46:47,979 [34] AndroCloudWebApiExternal.Handlers.LogHandler - Endpoint hit: /api/justeat/order
+2015-07-09 15:46:47,982 [34] AndroCloudWebApiExternal.Handlers.LogHandler - Cache-Control: no-cache
+Connection: keep-alive
+Accept: */*
+Accept-Encoding: gzip,deflate
+Accept-Language: en-US,en; q=0.8
+Authorization: DPaLGFfhb33pszRTAXsg
+Host: localhost:55579
+User-Agent: Mozilla/5.0,(Windows NT 6.1; WOW64),AppleWebKit/537.36,(KHTML, like Gecko),Chrome/38.0.2125.111,Safari/537.36
+Origin: chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop
+Postman-Token: f57dee0a-3c3c-b91b-b106-f0e224fd7207
+2015-07-09 15:46:47,986 [34] AndroCloudWebApiExternal.Handlers.LogHandler - ==Request====================================================
+2015-07-09 15:46:47,994 [34] AndroCloudWebApiExternal.Handlers.LogHandler - {
+  "Id": "Fabian-toppings-test001",
+  "CustomerOrderId": 10555159,
+  "Order": {
+    "NoteToRestaurant": null,
+    "ServiceType": "Delivery",
+    "PlacedDate": "2015-04-28T12:28:15.524+00:00",
+    "DueDate": "2015-04-28T13:15:00+00:00",
+	"DueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "InitialDueDate": "2015-04-28T13:15:00+00:00",
+	"InitialDueDateWithUtcOffset": "2015-04-28T13:15:00+01:00",
+    "PromptAsap": true
+  },
+  "RestaurantInfo": {
+    "Id": "525",
+    "Name": "Just Pizzas",
+    "PhoneNumber": "01234567890",
+    "AddressLines": [
+      "15 Test Street"
+    ],
+    "City": "London",
+    "Postcode": "EC4M 7rf",
+    "DispatchMethod": "JEPosV1",
+    "EmailAddress": ""
+  },
+  "PaymentInfo": {
+    "PaymentLines": [
+      {
+        "Type": "Cash",
+        "CardFee": 0,
+        "Value": 18.35
+      }
+    ],
+    "Total": 18.35,
+    "TotalComplementary": 0,
+    "PaidDate": "2015-04-28T12:28:19.6268+00:00",
+    "CashOnDelivery": true
+  },
+  "CustomerInfo": {
+    "Id": "1957127",
+    "Email": "new.user@just-eat.com",
+    "Name": "asd",
+    "Address": "Test, Test",
+    "City": "Test",
+    "Postcode": "SE16 1DD",
+    "PhoneNumber": "1234567890",
+    "TimeZone": "GMT Standard Time",
+    "PreviousRestuarantOrderCount": 0
+  },
+  "BasketInfo": {
+    "BasketId": "Cq20lJYyIkOSDEB2LqBOKA",
+    "MenuId": 1649,
+    "Discounts": [
+      {
+        "Id": 31410,
+        "Discount": 20,
+        "DiscountType": "Percent",
+        "QualifyingValue": 30
+      }
+    ],
+    "SubTotal": 18.35,
+    "ToSpend": 0,
+    "MultiBuyDiscount": 0,
+    "Discount": 0,
+    "DeliveryCharge": 0,
+    "Total": 18.35,
+    "GroupedBasketItems": [
+      {
+        "BasketItem": {
+          "ProductId": 108522,
+          "ProductTypeId": 15,
+          "MenuCardNumber": "6",
+          "Name": "Meaty One",
+          "Synonym": "12\" Deep Pan",
+          "UnitPrice": 11.95,
+          "CombinedPrice": 18.35,
+          "MealParts": [],
+          "OptionalAccessories": [
+            {
+              "OptionalAccessoryId": 36,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Fresh Garlic"
+            },
+            {
+              "OptionalAccessoryId": 41,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Black Olives"
+            },
+            {
+              "OptionalAccessoryId": 48,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Beef"
+            },
+            {
+              "OptionalAccessoryId": 136,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Fresh tomatoes"
+            },
+            {
+              "OptionalAccessoryId": 138,
+              "Quantity": 2,
+              "UnitPrice": 0.8,
+              "Name": "Egg"
+            },
+            {
+              "OptionalAccessoryId": 194,
+              "Quantity": 1,
+              "UnitPrice": 0.8,
+              "Name": "Chicken"
+            }
+          ],
+          "RequiredAccessories": [],
+          "Discounts": [],
+          "MultiBuyDiscounts": []
+        },
+        "Quantity": 1,
+        "CombinedPrice": 18.35,
+        "OrderSubId": 0,
+        "MenuCardNumber": null
+      }
+    ]
+  },
+  "IsAMiniFistPumpOrder": false
+}
+2015-07-09 15:46:47,997 [34] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Request=============================================
+2015-07-09 15:48:14,338 [33] AndroCloudWebApiExternal.Handlers.LogHandler - ==Response===================================================
+2015-07-09 15:48:14,341 [33] AndroCloudWebApiExternal.Handlers.LogHandler - {"TimeStamp":"2015-07-09T14:47:58.979Z","Message":"Internal server error","Details":"1","OrderId":"Fabian-toppings-test001"}
+2015-07-09 15:48:14,344 [33] AndroCloudWebApiExternal.Handlers.LogHandler - ==End of Response============================================

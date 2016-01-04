@@ -1,0 +1,29 @@
+﻿<!-- UPSELL PAGE -->
+<script type="text/html" id="upsellView">
+
+    <div id="upsellContent" class="content">
+        <h1 data-bind="text: textStrings.checkUpsellingTitle"></h1>
+
+        <div id="upsellList">
+            <!-- ko foreach: AndroWeb.ViewModels.UpsellViewModel.upsellMenuSections -->
+            <div class="upsellLine">
+                <div class="upsellLineInner">
+                    <div class="upsellText" data-bind="text: text"></div>
+                    <div class="button upsellButton">
+                        <a data-bind="click: AndroWeb.ViewModels.UpsellViewModel.upsell, text: textStrings.checkUpsellButton" href="#">back</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div id="checkUpsellButtons">
+
+            <div class="checkoutSidebarActions button" id="checkNoThanks">
+                <a data-bind="click: AndroWeb.ViewModels.UpsellViewModel.noThanksClicked, html: textStrings.checkNoThanks" href="#"></a>
+            </div>
+        </div>
+
+    </div>
+
+</script>

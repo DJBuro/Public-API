@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin", "AndroAdmin.csproj", "{5E239C19-0FBD-4C35-94E8-16B53787A647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdminDataAccess", "..\..\DataAccess\AndroAdminDataAccess\AndroAdminDataAccess.csproj", "{3ECF6405-90D5-4C8B-ABCC-C0BAEDFDEEF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdminClientDomain", "..\..\..\Rameses Components\AndroAdminClient\AndroAdminClientDomain\AndroAdminClientDomain.csproj", "{9AEED45C-06A4-4E1A-9706-5EB7CF1E3A31}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://10.0.0.191:8080/tfs/tfs
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\..\\DataAccess\\AndroAdminDataAccess\\AndroAdminDataAccess.csproj
+		SccProjectName1 = ../../DataAccess/AndroAdminDataAccess
+		SccLocalPath1 = ..\\..\\DataAccess\\AndroAdminDataAccess
+		SccProjectUniqueName2 = AndroAdmin.csproj
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = ..\\..\\..\\Rameses\u0020Components\\AndroAdminClient\\AndroAdminClientDomain\\AndroAdminClientDomain.csproj
+		SccProjectName3 = ../../../Rameses\u0020Components/AndroAdminClient/AndroAdminClientDomain
+		SccLocalPath3 = ..\\..\\..\\Rameses\u0020Components\\AndroAdminClient\\AndroAdminClientDomain
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E239C19-0FBD-4C35-94E8-16B53787A647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E239C19-0FBD-4C35-94E8-16B53787A647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E239C19-0FBD-4C35-94E8-16B53787A647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E239C19-0FBD-4C35-94E8-16B53787A647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ECF6405-90D5-4C8B-ABCC-C0BAEDFDEEF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ECF6405-90D5-4C8B-ABCC-C0BAEDFDEEF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ECF6405-90D5-4C8B-ABCC-C0BAEDFDEEF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ECF6405-90D5-4C8B-ABCC-C0BAEDFDEEF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AEED45C-06A4-4E1A-9706-5EB7CF1E3A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AEED45C-06A4-4E1A-9706-5EB7CF1E3A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AEED45C-06A4-4E1A-9706-5EB7CF1E3A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AEED45C-06A4-4E1A-9706-5EB7CF1E3A31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

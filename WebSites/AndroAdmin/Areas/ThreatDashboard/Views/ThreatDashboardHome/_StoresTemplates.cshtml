@@ -1,0 +1,24 @@
+﻿
+<script type="text/template" id="StoreTemplate">
+    <div class="store">
+        <div class="description">
+            Offline since
+            #: kendo.toString(LastUpdatedAtUtc, "G") #
+        </div>
+        <div class="description-alt">
+            i want a connected count 
+        </div>
+        <h3><a href="@Url.Action("StoreDetails", "Store", new { id = "", Area="" })/#:Name#">#:Name#</a></h3>
+    </div>
+</script>
+
+<script type="text/template" id="StoreOverviewGood">
+    <div class="overview good">
+        <div class="description"></div>
+    </div>
+</script>
+<script type="text/template" id="StoreOverviewBad">
+    <div class="overview bad">
+        <div class="description"></div>
+    </div>
+</script>

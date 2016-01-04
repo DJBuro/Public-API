@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E767597-373B-4AA6-A47A-8F6201008301}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AndroCloudServices</RootNamespace>
+    <AssemblyName>AndroCloudServices</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Staging2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging2|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Staging2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\CustomerAccount.cs" />
+    <Compile Include="Domain\CustomerOrderDiscount.cs" />
+    <Compile Include="Domain\CustomerOrderDeal.cs" />
+    <Compile Include="Domain\CustomerDealLine.cs" />
+    <Compile Include="Domain\CustomerOrderDiscounts.cs" />
+    <Compile Include="Domain\CustomerOrderLineModifier.cs" />
+    <Compile Include="Domain\CustomerOrderLineModifiers.cs" />
+    <Compile Include="Domain\CustomerOrderDeals.cs" />
+    <Compile Include="Domain\Pricing.cs" />
+    <Compile Include="Domain\Vouchers.cs" />
+    <Compile Include="Domain\Voucher.cs" />
+    <Compile Include="Domain\Order.cs" />
+    <Compile Include="Domain\OrderHeaders.cs" />
+    <Compile Include="Domain\OrderHeader.cs" />
+    <Compile Include="Domain\CustomerOrderLines.cs" />
+    <Compile Include="Domain\CustomerOrders.cs" />
+    <Compile Include="Domain\CustomerOrderLine.cs" />
+    <Compile Include="Domain\CustomerOrder.cs" />
+    <Compile Include="Domain\CustomerOrderDetails.cs" />
+    <Compile Include="Domain\PasswordResetRequest.cs" />
+    <Compile Include="Domain\DeliveryZoneTowns.cs" />
+    <Compile Include="Domain\DeliveryZoneRoads.cs" />
+    <Compile Include="Domain\Site.cs" />
+    <Compile Include="Domain\HostsV2.cs" />
+    <Compile Include="Domain\DeliveryZones.cs" />
+    <Compile Include="Domain\PrivateHostsV2.cs" />
+    <Compile Include="Domain\SiteUpdate.cs" />
+    <Compile Include="Domain\PrivateHosts.cs" />
+    <Compile Include="Domain\DataVersion.cs" />
+    <Compile Include="Domain\Hosts.cs" />
+    <Compile Include="Domain\ACSHubResult.cs" />
+    <Compile Include="Helper\ErrorHelper.cs" />
+    <Compile Include="Helper\HttpHelper.cs" />
+    <Compile Include="Helper\TestHelper.cs" />
+    <Compile Include="Services\TelemetryService.cs" />
+    <Compile Include="Services\FeedbackService.cs" />
+    <Compile Include="Services\PasswordResetRequestService.cs" />
+    <Compile Include="Services\DeliveryZoneRoadService.cs" />
+    <Compile Include="Services\DeliveryZoneTownService.cs" />
+    <Compile Include="Services\CustomerService.cs" />
+    <Compile Include="Services\DeliveryZoneService.cs" />
+    <Compile Include="Services\SyncService.cs" />
+    <Compile Include="Services\HostService.cs" />
+    <Compile Include="Services\SiteDetailsService.cs" />
+    <Compile Include="Services\PriceCheckService.cs" />
+    <Compile Include="Domain\OrderStatusUpdate.cs" />
+    <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Domain\GenericResponse.cs" />
+    <Compile Include="Domain\ErrorResponse.cs" />
+    <Compile Include="Domain\Sites.cs" />
+    <Compile Include="Helper\SecurityHelper.cs" />
+    <Compile Include="Services\MenuService.cs" />
+    <Compile Include="Services\SiteService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CloudSync\CloudSync\CloudSync.csproj">
+      <Project>{3e34d787-0c46-4501-a774-cca5930ab20d}</Project>
+      <Name>CloudSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
+      <Project>{408FBA0E-E649-493E-B4D4-8A5328265450}</Project>
+      <Name>AndroCloudDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DataAccess\DataWarehouseDataAccess\DataWarehouseDataAccess.csproj">
+      <Project>{10ba737f-f9e7-4eed-b096-bbc47ce14338}</Project>
+      <Name>DataWarehouseDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AndroCloudWCFHelper\AndroCloudHelper.csproj">
+      <Project>{D9959D2F-2016-4355-BC22-061EA8A5E267}</Project>
+      <Name>AndroCloudHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

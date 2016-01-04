@@ -1,0 +1,16 @@
+﻿@model MyAndromeda.Data.DataWarehouse.Models.Customer
+<div>
+    @(Html.Kendo()
+        .Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.ContactViewModel>()
+        .Name("CustomerContacts")
+        .Columns(cols => { 
+            //cols.Bound(e=> e.Id);
+            cols.Bound(e=> e.ContactTypeName).Width(150);
+            cols.Bound(e=> e.Value);
+            cols.Bound(e=> e.MarketingLevelName).Width(150);
+        })
+        .DataSource(data => {
+            data.Ajax().Read(read => read.Action("ListMarketingOptions", "Customer", new { Id = Model.ID }));
+        })
+    )
+</div>

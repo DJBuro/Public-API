@@ -1,0 +1,28 @@
+﻿@model MyAndromeda.Web.Areas.Marketing.ViewModels.EditEmailCampaignViewModel
+@{
+    ViewBag.Title = "Edit Email Campaign";
+}
+
+<h2>Edit Template</h2>
+<div class="k-block k-info-colored">
+    <span class="k-icon k-i-clock"></span>
+    Created on: @Model.Created.ToString("F") | <span class="k-icon k-i-clock"></span>Last edited: @Model.Modified.ToString("F")</div> 
+
+@using(Html.BeginForm()){
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.LabelFor(e=> e.Reference, "Reference")
+        @Html.TextBoxFor(e => e.Reference, new { Placeholder = "A memorable reference for the email" })
+    </div>
+    <div>
+        @Html.LabelFor(e=> e.Subject, "Subject")
+        @Html.TextBoxFor(e => e.Subject, new { PlaceHolder = "Subject line of the email" })
+    </div>
+    <div class="k-reset">
+        @Html.LabelFor(e=> e.EmailTemplate, "Template")
+        @Html.Partial("KendoEmailEditor", this.Model)
+    </div>  
+    <div>
+        <input type="submit" value="submit" class="k-button" />
+    </div>
+}

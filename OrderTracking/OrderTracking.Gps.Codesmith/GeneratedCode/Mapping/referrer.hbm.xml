@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Referrer, OrderTracking.Gps.Dao" table="referrer">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="ref_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__referrer__BDA5A8694E53A1AA"/>
+			<generator class="native" />
+		</id>
+		<property name="Refurl" type="String">
+			<column name="ref_url" length="255" sql-type="varchar" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

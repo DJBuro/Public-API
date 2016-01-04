@@ -1,0 +1,107 @@
+﻿@model AndroAdmin.ViewModels.StoreType.StoreEditViewModel
+<!-- Tabs -->
+@Html.Partial("~/views/store/StoreDetailsTabsPartial.cshtml", new AndroAdmin.Model.StoreModel() { Store = new AndroAdminDataAccess.Domain.Store() { Id = Model.StoreId } }, new ViewDataDictionary { { "SelectedTab", "StoreDetails" } })
+
+<script type="text/javascript">
+    function storeDevicesDatabound() {
+        var grid = $('#StoreDevices');
+        grid.data("kendoGrid").expandRow(this.tbody.find("tr.k-master-row").first());
+        
+    }
+</script>
+
+<h2>Store Devices</h2>
+<div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="" aria-expanded="true" aria-hidden="false">
+    @(Html.Kendo()
+            .Grid<AndroAdmin.ViewModels.StoreType.StoreDeviceViewModel>()
+            .Name("StoreDevices")
+            .Events(ev =>
+            {
+                ev.DataBound("storeDevicesDatabound");
+            })
+            .ToolBar(tools => tools.Create())
+            .Columns(cols =>
+            {
+                cols.Bound(e => e.Device)
+                    .ClientTemplate("#= Device.Name #")
+                    .EditorTemplateName("DeviceSelectTemplate");
+                cols.Command(c => c.Edit()).Width(100);
+                cols.Command(c => c.Destroy()).Width(100);
+            })
+            .Pageable(p => p.Refresh(true))
+            .ClientDetailTemplateId("StoreDevicesDetailTemplate")
+            .DataSource(data =>
+            {
+                data.Ajax()
+                    .Model(model =>
+                    {
+                        model.Id(m => m.Id);
+                        model.Field(e => e.StoreId).DefaultValue(Model.StoreId);
+                        model.Field(e => e.Device).DefaultValue(new AndroAdmin.ViewModels.StoreType.DeviceViewModel() { Name = "None" });
+                    })
+                    .Events(ev => ev.Error("updateError").RequestStart("startRequest").RequestEnd("endRequest"))
+                    .Read(read => read.Action("Read", "StoreDevices", new { Id = Model.StoreId }))
+                    .Update(update => update.Action("Update", "StoreDevices", new { Id = Model.StoreId }))
+                    .Create(create => create.Action("Create", "StoreDevices", new { Id = Model.StoreId }))
+                    .Destroy(destroy => destroy.Action("Destroy", "StoreDevices", new { Id = Model.StoreId }));
+            })
+        )
+
+</div>
+<script type="text/javascript">
+    function updateError(e)
+    {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+    function startRequest(e)
+    {
+        kendo.ui.progress($("#StoreDevices"), true);
+    }
+    function endRequest(e)
+    {
+        kendo.ui.progress($("#StoreDevices"), false);
+    }
+</script>
+<script type="text/template" id="StoreDevicesDetailTemplate">
+    @(Html.Kendo()
+        .Grid<AndroAdmin.ViewModels.ApiCredentials.ApiCredentialKeyPairViewModel>()
+        .Name("ApiKeys#=Id#")
+        .Columns(cols =>
+        {
+            cols.Bound(e => e.Key).Width(200).Locked();
+            //cols.Bound(e => e.Placeholder);
+            cols.Bound(e => e.Value)
+                .ClientTemplate(@"\\# if(Value != null){ \\# <b>\\#= Value \\#</b> \\# } \\# \\# if(Placeholder && !Value){ \\# <i>(Inherited) \\#= Placeholder \\# </i> \\# } \\# \\# if(!Value && !Placeholder){ \\# <i style='color:red'>Not Set</i> \\#}\\#");
+
+            cols.Command(e => e.Edit()).Width(100);
+        })
+        .Pageable(paging => paging.Refresh(true))
+        .DataSource(data =>
+        {
+            data
+
+                .Ajax()
+                .Model(m =>
+            {
+                m.Id(id => id.Key);
+                m.Field(e => e.Placeholder).Editable(false);
+                m.Field(e => e.Key).Editable(false);
+            })
+            .Read(read => read.Action("ReadScheama", "StoreDevices", new { Id = "#=Id#" }))
+            .Update(update => update.Action("UpdateSchema", "StoreDevices", new { Id = "#=Id#" }));
+        }).ToClientTemplate()
+    )
+
+</script>
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Trackdatamod, OrderTracking.Gps.Dao" table="track_data_mod">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="track_data_mod_id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK__track_da__3A0158F150C5FA01"/>
+			<generator class="native" />
+		</id>
+		<property name="Longitude" type="Double">
+			<column name="longitude" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Latitude" type="Double">
+			<column name="latitude" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Altitude" type="Double">
+			<column name="altitude" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Heading" type="Double">
+			<column name="heading" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Groundspeed" type="Double">
+			<column name="ground_speed" length="8" sql-type="float" not-null="false"/>
+		</property>
+		<property name="Timestamp" type="DateTime">
+			<column name="time_stamp" length="8" sql-type="datetime" not-null="false"/>
+		</property>
+		<property name="Milliseconds" type="Int32">
+			<column name="milliseconds" length="4" sql-type="int" not-null="false"/>
+		</property>
+		<property name="Valid" type="Int16">
+			<column name="valid" length="2" sql-type="smallint" not-null="false"/>
+		</property>
+		<property name="Deleted" type="Int16">
+			<column name="deleted" length="2" sql-type="smallint" not-null="false"/>
+		</property>
+		<many-to-one name="Trackdata" class="OrderTracking.Gps.Dao.Domain.Trackdata, OrderTracking.Gps.Dao">
+			<column name="track_data_id" length="8" sql-type="bigint" not-null="false" index="Index_track_data_id"/>
+		</many-to-one>
+		<many-to-one name="Trackinfo" class="OrderTracking.Gps.Dao.Domain.Trackinfo, OrderTracking.Gps.Dao">
+			<column name="track_info_id" length="4" sql-type="int" not-null="true" index="Index_track_info_id"/>
+		</many-to-one>
+		<many-to-one name="Postprocessor" class="OrderTracking.Gps.Dao.Domain.Postprocessor, OrderTracking.Gps.Dao">
+			<column name="post_processor_id" length="4" sql-type="int" not-null="true" index="Index_post_processor_id"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

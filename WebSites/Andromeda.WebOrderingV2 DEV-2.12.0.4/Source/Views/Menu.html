@@ -1,0 +1,72 @@
+﻿    <script type="text/html" id="menuView">
+
+        <div class="menuPage">
+
+            <!-- Cart -->
+            <div id="rightColumnWrapper" data-bind="css: { 'fixedCartSidebar': guiHelper.isSidebarFixed, 'normalCartSidebar': !guiHelper.isSidebarFixed() }">
+                <div id="rightColumn">
+                    <div data-bind="template: { name: 'cartView' }"></div>
+                </div>
+            </div>
+
+            <!-- The menu -->
+            <!-- Section headers -->
+            <div id="sectionHeaders" data-bind="css: { 'fixedSectionHeaders': guiHelper.isSidebarFixed }">
+
+                <div id="sectionHeadersInner">
+                    <div id="sectionHeadersContainer">
+                        <div id="sectionHeadersTop">
+                            <h1 data-bind="text: textStrings.mMenuSections"></h1>
+                        </div>
+                        <!-- ko if: homePageHelper.SitePicked() -->
+
+                        <!-- Item section headers -->
+                        <div id="sectionHeadersContent">
+                            <!-- ko foreach: sections -->
+                            <div class="sectionHeader" data-bind="attr: { 'class': display.Name == $root.visibleSection() ? 'selectedSectionHeader' : 'sectionHeader' }">
+                                <a data-bind="text: display.Name, click: $root.changeSection, attr: { href: '/' + $root.selectedSite().name + '/Menu/' + display.Name + '/' }"></a>
+                            </div>
+                            <!-- /ko -->
+                        </div>
+
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sections -->
+            <div id="sectionsWrapper">
+                <div class="sectionTitle">
+                    <h1 data-bind="text: $root.selectedSection() != undefined ? $root.selectedSection().display.Name : ''"></h1>
+                </div>
+                <div id="sections">
+
+                    <!-- Only visible on mobile devices (css) -->
+                    <!-- ko if: guiHelper.isInnerMenuVisible -->
+                    <div id="mobileMenuSections">
+                        <span id="mobileMenuSectionsPrompt" data-bind="text: textStrings.mMenuSections"></span>
+                        <select id="mobileMenuSectionsSelect" data-bind="options: sections, value: $root.selectedSection, optionsText: function (item) { return item.display.Name; }, event: { change: $root.changeSection }"></select>
+                        
+                        <!--<ul data-bind="foreach: sections">
+                            <li data-bind="text: display.Name, event: { click: $root.changeSection }"></li>
+                        </ul>-->
+                    
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- Sections -->
+                    <div id="sectionsContainer"> <!-- data-bind="style: { height: $root.maxSectionHeight }"> -->
+                        <!-- ko if: settings.useMenuKnockoutBinding -->
+                        <!-- ko foreach: sections -->
+                            <!-- ko template: { name: menuHelper.getTemplateName } -->
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </script>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="Loyalty.Dao.Domain.AccountAddress, Loyalty.Dao" table="tbl_AccountAddress">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="id" length="4" sql-type="int" not-null="true" unique="true" index="PK_tbl_AccountAddress"/>
+			<generator class="native" />
+		</id>
+		<property name="AddressLineOne" type="String">
+			<column name="AddressLineOne" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="AddressLineTwo" type="String">
+			<column name="AddressLineTwo" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="AddressLineThree" type="String">
+			<column name="AddressLineThree" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="AddressLineFour" type="String">
+			<column name="AddressLineFour" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="TownCity" type="String">
+			<column name="TownCity" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="CountyProvince" type="String">
+			<column name="CountyProvince" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="PostCode" type="String">
+			<column name="PostCode" length="50" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<many-to-one name="LoyaltyAccountId" class="Loyalty.Dao.Domain.LoyaltyAccount, Loyalty.Dao">
+			<column name="LoyaltyAccountId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+		<many-to-one name="CountryId" class="Loyalty.Dao.Domain.Country, Loyalty.Dao">
+			<column name="CountryId" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

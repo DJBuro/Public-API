@@ -1,0 +1,355 @@
+﻿    <!-- Cart sidebar -->
+<script type="text/html" id="cartView">
+    <div id="yourOrderContainer">
+
+        <div id="cartTitle">
+            <h1 data-bind="html: textStrings.sMyOrder"></h1>
+        </div>
+
+        <!-- ko ifnot: cartHelper.isCheckoutMode -->
+        <!-- Delivery or collection -->
+        <!-- ko if: guiHelper.canChangeOrderType() -->
+        <div id="deliveryOrCollection">
+            <label id="forDelivery" for="delivery" data-bind="'attr': { 'class': $root.orderType() == 'delivery' ? 'ticked' : 'unticked' }, html: textStrings.sDeliverToDoor"></label>
+            <input id="delivery" name="orderTypeGroup" type="radio" value="delivery" data-bind="checked: $root.orderType, click: cartHelper.orderTypeChanged" />
+            <label id="forCollection" for="collection" data-bind="'attr': { 'class': $root.orderType() == 'collection' ? 'ticked' : 'unticked' }, html: textStrings.sCollectFromStore"></label>
+            <input id="collection" name="orderTypeGroup" type="radio" value="collection" data-bind="checked: $root.orderType, click: cartHelper.orderTypeChanged" />
+        </div>
+        <!-- /ko -->
+        <!-- ko if: !guiHelper.canChangeOrderType() -->
+        <div id="deliveryOrCollectionText">
+            <label class="ticked" data-bind="html: ($root.orderType() == 'collection' ? textStrings.sCollectFromStore : textStrings.sDeliverToDoor)"></label>
+        </div>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- Action buttons -->
+        <!-- ko if: $root.isTakingOrders() -->
+        <!-- Checkout actions -->
+        <!-- ko if: guiHelper.cartActions() == guiHelper.cartActionsCheckout -->
+        <!--<div id="checkoutSidebarActions">
+            <div class="button" style="width:150px;">
+                <a data-bind="click: checkoutHelper.modifyOrder, html: textStrings.sModifyOrder" href="#"></a>
+            </div>
+        </div>-->
+        <!-- /ko -->
+        <!-- Payment actions -->
+        <!-- ko if: guiHelper.cartActions() == guiHelper.cartActionsPayment -->
+        <!--<div id="paymentSidebarActions">
+            <div class="button" style="width:200px;">
+                <a data-bind="click: cartHelper.checkout, html: textStrings.sReturnToCheckout" href="#"></a>
+            </div>
+        </div>-->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: guiHelper.cartActions() == guiHelper.cartActionsMenu -->
+        <div id="cartSidebarActions" style="clear:both;">
+            <!-- ko if: cartHelper.cart().checkoutEnabled() -->
+            <div id="checkoutButton" class="highlightedButton">
+                <a data-bind="click: cartHelper.checkout, html: textStrings.sCheckout + ' (' + ko.utils.unwrapObservable(cartHelper.cart().displayTotalPrice) + ')'" href="#"></a>
+            </div>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <div id="cartItems">
+            <!-- Store offline -->
+            <!-- ko if: !$root.isTakingOrders() -->
+            <div>
+                <h2 data-bind="html: textStrings.sOffline"></h2>
+            </div>
+            <!-- /ko -->
+            <!-- Store online -->
+            <!-- ko if: $root.isTakingOrders() -->
+            <div>
+
+                <!-- Cart empty -->
+                <!-- ko if: cartHelper.cart().cartItems().length == 0 && cartHelper.cart().deals().length == 0 -->
+                <div id="emptyBasket">
+                    <h2 data-bind="html: textStrings.sEmpty1"></h2>
+                    <p data-bind="html: textStrings.sEmpty2"></p>
+                </div>
+                <!-- /ko -->
+                <!-- Cart -->
+                <!-- ko if: cartHelper.cart().cartItems().length != 0 || cartHelper.cart().deals().length != 0 -->
+                <div id="cartWrapper">
+
+                    <div id="orderItemsHeader">
+                        <h2>
+                            <span data-bind="html: textStrings.sItemCount1"></span>
+                            <span data-bind="html: cartHelper.cart().deals().length + cartHelper.cart().cartItems().length"></span>
+                            <span data-bind="html: textStrings.sItemCount2"></span>
+                        </h2>
+                    </div>
+                    <div id="cartLineItems">
+                        <div id="cartLineItemsHeader">
+                            <h2 id="cartLineItemsItemHeader">Item</h2>
+                            <h2 id="cartLineItemsPriceHeader">Price</h2>
+                            <h2 id="cartLineItemsQuantityHeader">Quantity</h2>
+                        </div>
+                        <!-- Deals -->
+                        <div id="cartDealItemsWrapper">
+                            <!-- ko foreach: cartHelper.cart().deals -->
+                            <!-- ko template: { name: cartHelper.getDealTemplate } -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+
+                        <!-- List items -->
+                        <div id="cartMenuItemsWrapper">
+                            <!-- ko foreach: cartHelper.cart().cartItems -->
+                            <!-- ko template: { name: cartHelper.getItemTemplate } -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </div>
+
+                    <!-- Vouchers -->
+                    <!-- Add voucher codes -->
+                    <!-- ko if: settings.voucherCodesEnabled && cartHelper.isCheckoutMode() && cartHelper.cart().vouchers().length == 0  -->
+                    <div id="checkoutSAddVoucherContainer">
+                        <div id="checkoutSAddVoucherTitle" data-bind="text: textStrings.checkSAddVoucherTitle"></div>
+
+                        <!--<label for="checkoutSVoucherCode" data-bind="'text': textStrings.checkSVoucherCode"></label>-->
+                        <input id="checkoutSVoucherCode" maxlength="32" type="text" data-bind="value: checkoutHelper.checkVoucherCode, attr: { placeholder:textStrings.checkSVoucherCode }" />
+
+                        <div class="button checkoutRedeemButton">
+                            <a data-bind="click: checkoutHelper.addVoucherCode, text: textStrings.checkSAddVoucherCode" href="#"></a>
+                        </div>
+                        <div class="checkoutError" data-bind="visible: checkoutHelper.voucherError() != undefined, text: checkoutHelper.voucherError"></div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko foreach: cartHelper.cart().vouchers -->
+                    <div class="cartRow">
+                        <span class="cartName" data-bind="html: VoucherCode"></span>
+                        <a href="#" class="cartRemoveVoucher" data-bind="click: checkoutHelper.removeVouchers"></a>
+
+                        <!-- ko if: EffectType.toLowerCase() == 'fixed' -->
+                        <span class="cartPrice" data-bind="html: discount == undefined ? '?' : ('-' +  helper.formatPrice(discount() * 100))"></span>
+                        <!-- /ko -->
+                        <!-- ko if: EffectType.toLowerCase() != 'fixed' -->
+                        <span class="cartPrice" data-bind="html: discount == undefined ? '?' : ('-' +  helper.formatPrice(discount()))"></span>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- Loyalty - the real section -->
+                    <!-- ko if: loyaltyHelper.IsEnabled() && cartHelper.isCheckoutMode() -->
+
+                    <div class="cartRow" style="clear:both">
+                        <div data-bind="text: textStrings.checkSAddLoyaltyTitle"></div>
+                        <div>
+                            Points currently available <span data-bind="text: loyaltyHelper.loyaltySession.displayPointsLeft()"></span>
+                        </div>
+                        <div>
+                            Value of points available <span data-bind="html:loyaltyHelper.loyaltySession.displayPointsValueLabel()"></span>
+                        </div>
+                        <!-- ko if: loyaltyHelper.loyaltySession.spentPoints() > 0 -->
+                        <div class="redeemed">
+                            Redeemed:
+                            <span data-bind="html:loyaltyHelper.loyaltySession.spentPointsValueLabel()"></span>
+                            <a data-bind="click: loyaltyBindingHelper.remove" href="#">Remove</a>
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko if: loyaltyHelper.loyaltySession.spentPoints() == 0 -->
+                        <div class="button checkoutRedeemButton">
+                            <a data-bind="click: loyaltyBindingHelper.redeem, text: textStrings.checkSAddLoyaltyAddButton" href="#"></a>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+
+                    <!-- /ko -->
+                    <!-- end of loyalty -->
+                    <!-- Order sub total -->
+                    <div id="cartSubTotalWrapper">
+                        <span class="cartTotal" data-bind="html: textStrings.sSubTotal"></span>
+                        <span class="cartTotalPrice" data-bind="html: cartHelper.cart().displaySubTotalPrice"></span>
+                    </div>
+
+                    <!-- ko if: cartHelper.cart().discountName != undefined && cartHelper.cart().discountName() != undefined && cartHelper.cart().discountName().length > 0 -->
+                    <!-- Order discount -->
+                    <div id="cartDiscountWrapper">
+                        <span class="cartTotal" data-bind="html: cartHelper.cart().discountName"></span>
+                        <span class="cartTotalPrice" data-bind="html: cartHelper.cart().displayDiscountAmount"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- Order totals -->
+                    <div id="cartTotalWrapper">
+                        <span class="cartTotal" data-bind="html: textStrings.sOrderTotal"></span>
+                        <span class="cartTotalPrice" data-bind="html: cartHelper.cart().displayTotalPrice"></span>
+                    </div>
+
+                    <!-- ko if: cartHelper.cart().totalPrice() < settings.minimumDeliveryOrder && $root.orderType() == 'delivery' -->
+                    <div class="cartAutoRemove">
+                        <span data-bind="html: textStrings.sMinimumDelivOrder"></span>
+                        <span data-bind="html: helper.formatPrice(settings.minimumDeliveryOrder)"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: cartHelper.cart().areDisabledItems -->
+                    <div class="cartAutoRemove" data-bind="html: textStrings.sInvalid"></div>
+                    <!-- /ko -->
+                    <!-- ko if: loyaltyHelper.IsEnabled() -->
+                    <div id="cartAwardLoyalty">
+                        <div>
+                            You will earn <span data-bind="text: loyaltyHelper.loyaltySession.canGainThesePoints()"></span>
+                            loyalty point when completing this transaction.
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- Menu actions -->
+                    <!-- ko if: guiHelper.cartActions() == guiHelper.cartActionsMenu -->
+                    <div id="cartSidebarActions" style="clear:both;">
+                        <!-- ko if: cartHelper.cart().hasItems() -->
+                        <!--<div id="clearOrderButton" class="button">
+                            <a data-bind="click: cartHelper.clearCart, html: textStrings.sClear" href="#"></a>
+                        </div>-->
+                        <!-- /ko -->
+                        <!-- ko if: cartHelper.cart().checkoutEnabled() -->
+                        <div id="checkoutButton" class="highlightedButton">
+                            <a data-bind="click: cartHelper.checkout, html: textStrings.sCheckout + ' (' + ko.utils.unwrapObservable(cartHelper.cart().displayTotalPrice) + ')'" href="#"></a>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko if: cartHelper.cart().cartItems().length != 0 && $root.menuViewName() == 'menuSectionsView' -->
+            <div id="cartHelp" data-bind="html: textStrings.sRemove"></div>
+            <!-- /ko -->
+        </div>
+
+    </div>
+</script>
+
+<!-- Cart item -->
+<script type="text/html" id="cartItem-template">
+    <div data-bind="'attr': { 'class': isEnabled() ? 'cartItem' : 'cartItemDisabled' }">
+        <div class="cartRow">
+            <a class="cartName" data-bind="html: displayName, click: cartHelper.editCartItem" href="#"></a>
+            <a href="#" class="cartRemove" data-bind="visible: isEnabled(), click: cartHelper.removeCartItem"></a>
+            <span class="cartQuantity" data-bind="html: quantity"></span>
+            <span data-bind="'attr': { 'class': isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: displayPrice"></span>
+        </div>
+        <!-- ko if: $root.orderType() == 'delivery' && (menuItem.DelPrice == undefined && menuItem.DeliveryPrice == undefined) -->
+        <div class="notAvailable" data-bind="html: textStrings.ciCollectOnly"></div>
+        <!-- /ko -->
+        <!-- ko if: $root.orderType() == 'collection' && (menuItem.ColPrice == undefined && menuItem.CollectionPrice == undefined) -->
+        <div class="notAvailable" data-bind="html: textStrings.ciDeliverOnly"></div>
+        <!-- /ko -->
+        <!-- ko foreach: displayToppings -->
+        <!-- ko template: { name: 'cartTopping-template' } -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</script>
+
+<!-- Disabled cart item -->
+<script type="text/html" id="disabledCartItem-template">
+    <div class="cartItem">
+        <div class="cartRow">
+            <span class="cartName" data-bind="html: displayName"></span>
+            <a href="#" class="cartRemove" data-bind="visible: isEnabled(), click: cartHelper.removeCartItem"></a>
+            <span class="cartQuantity" data-bind="html: quantity"></span>
+            <span data-bind="'attr': { 'class': isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: displayPrice"></span>
+        </div>
+        <!-- ko if: $root.orderType() == 'delivery' && (menuItem.DelPrice == undefined && menuItem.DeliveryPrice == undefined) -->
+        <div class="notAvailable" data-bind="html: textStrings.dciCollectOnly"></div>
+        <!-- /ko -->
+        <!-- ko if: $root.orderType() == 'collection' && (menuItem.ColPrice == undefined && menuItem.CollectionPrice == undefined) -->
+        <div class="notAvailable" data-bind="html: textStrings.dciDeliverOnly"></div>
+        <!-- /ko -->
+        <!-- ko foreach: displayToppings -->
+        <!-- ko template: { name: 'cartTopping-template' } -->
+        <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</script>
+
+<!-- Cart topping -->
+<script type="text/html" id="cartTopping-template">
+    <div class="cartRowItemTopping">
+        <span class="cartIndent1" data-bind="html: cartName"></span>
+        <span data-bind="'attr': { 'class': $parent.isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: cartPrice"></span>
+    </div>
+</script>
+
+<!-- Cart deal -->
+<script type="text/html" id="cartDeal-template">
+    <div data-bind="'attr': { 'class': isEnabled() ? 'cartItem' : 'cartItemDisabled' }">
+        <a data-bind="click: cartHelper.editCartDeal" href="#">
+            <div class="cartRow">
+                <span class="cartName" data-bind="html: name"></span>
+                <a href="#" class="cartRemove" data-bind="visible: isEnabled(), click: cartHelper.removeDealItem"></a>
+                <span data-bind="'attr': { 'class': isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: displayPrice()"></span>
+            </div>
+            <!-- ko foreach: cartDealLines -->
+            <!-- ko template: { name: 'cartDealLine-template' } -->
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: minimumOrderValueNotMet() -->
+            <div class="cartRow cartError">
+                <span data-bind="html: textStrings.cdMinSpend"></span>
+                <span data-bind="html: minimumOrderValue"></span>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'delivery' && !dealWrapper.deal.ForDelivery -->
+            <div class="notAvailable">This deal cannot be delivered to door</div>
+            <!-- /ko -->
+            <!-- ko if: $root.orderType() == 'collection' && !dealWrapper.deal.ForCollection -->
+            <div class="notAvailable">This deal cannot be collected from store</div>
+            <!-- /ko -->
+        </a>
+    </div>
+</script>
+
+<!-- Disabled cart deal -->
+<script type="text/html" id="disabledCartDeal-template">
+    <div data-bind="'attr': { 'class': isEnabled() ? 'cartItem' : 'cartItemDisabled' }">
+        <div class="cartRow">
+            <span class="cartName" data-bind="html: name"></span>
+            <a href="#" class="cartRemove" data-bind="visible: isEnabled(), click: cartHelper.removeDealItem"></a>
+            <span data-bind="'attr': { 'class': isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: displayPrice()"></span>
+        </div>
+        <!-- ko foreach: cartDealLines -->
+        <!-- ko template: { name: 'cartDealLine-template' } -->
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: minimumOrderValueNotMet() -->
+        <div class="cartRow cartError">
+            <span data-bind="html: textStrings.cddMinSpend"></span>
+            <span data-bind="html: minimumOrderValue"></span>
+        </div>
+        <!-- /ko -->
+    </div>
+</script>
+
+<!-- Cart deal line -->
+<script type="text/html" id="cartDealLine-template">
+    <div class="cartRowDealLine">
+        <span class="cartIndent1" data-bind="html: displayName"></span>
+        <span data-bind="'attr': { 'class': $parent.isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: displayPrice()">-</span>
+    </div>
+    <!-- ko if: categoryPremium() != undefined -->
+    <div class="cartRowDealLineTopping">
+        <span class="cartIndent1" data-bind="html: categoryPremiumName" style="margin-left:10px;"></span>
+        <span data-bind="'attr': { 'class': $parent.isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: categoryPremium"></span>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: itemPremium() != undefined -->
+    <div class="cartRowDealLineTopping">
+        <span class="cartIndent1" data-bind="html: itemPremiumName" style="margin-left:10px;"></span>
+        <span data-bind="'attr': { 'class': $parent.isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: itemPremium"></span>
+    </div>
+    <!-- /ko -->
+    <!-- ko foreach: cartItem().displayToppings -->
+    <!-- ko template: { name: 'cartDealLineTopping-template' } -->
+    <!-- /ko -->
+    <!-- /ko -->
+</script>
+
+<!-- Cart deal line topping -->
+<script type="text/html" id="cartDealLineTopping-template">
+    <div class="cartRowDealLineTopping">
+        <span class="cartIndent2" data-bind="html: cartName" style="margin-left:10px;"></span>
+        <span data-bind="'attr': { 'class': $parents[1].isEnabled() ? 'cartPrice' : 'cartPriceDisabled' }, html: cartPrice"></span>
+    </div>
+</script>

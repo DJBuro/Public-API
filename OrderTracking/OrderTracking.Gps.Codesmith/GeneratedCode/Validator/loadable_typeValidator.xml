@@ -1,0 +1,17 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="LoadabletypeValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="AssemblynameValidator" test="Assemblyname"><v:message id="error.Assemblyname.required" providers="AssemblynameErrors, ValidationSummary"/></v:required>
+	<v:required id="TypenameValidator" test="Typename"><v:message id="error.Typename.required" providers="TypenameErrors, ValidationSummary"/></v:required>
+	<v:required id="VersionValidator" test="Version"><v:message id="error.Version.required" providers="VersionErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

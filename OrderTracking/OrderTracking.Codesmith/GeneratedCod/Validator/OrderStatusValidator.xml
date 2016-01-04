@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="OrderStatusValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="TimeValidator" test="Time"><v:message id="error.Time.required" providers="TimeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

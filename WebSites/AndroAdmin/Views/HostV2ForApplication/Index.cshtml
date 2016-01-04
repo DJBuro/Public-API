@@ -1,0 +1,21 @@
+﻿@model AndroAdmin.ViewModels.HostV2.HostApplicationSelectionViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_WebOrderingLayout.cshtml";
+    var groups = Model.PossibleHosts;
+}
+
+<h2>Edit Application Hosts</h2>
+
+@(Html.Kendo().TabStrip().Name("ApplicationList").Items(items => {
+    items.Add().Text("Connections")
+        .Selected(true)
+        .Content(@<text>
+            @Html.Partial("PartialHostSelection", Model)
+        </text>);
+    items.Add().Text("Public ACS Links").Content(@<text>
+        @Html.Partial("PartialPublicServices", Model)
+    </text>);
+}))
+

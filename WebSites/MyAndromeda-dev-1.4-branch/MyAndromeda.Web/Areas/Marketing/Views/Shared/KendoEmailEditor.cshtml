@@ -1,0 +1,48 @@
+﻿@model  MyAndromeda.Web.Areas.Marketing.ViewModels.EditEmailCampaignViewModel
+@using System.Web.Helpers;
+<div>
+    <textarea  id="@Html.IdFor(e=>e.EmailTemplate)" name="@Html.NameFor(e=> e.EmailTemplate)" rows="10" cols="30">@Model.EmailTemplate</textarea>
+</div>
+
+
+@using (Html.BeginScripts()) { 
+    @*<script src="~/Scripts/app/EmailTools.js"></script>*@
+    <script type="text/javascript">
+        $(function () {
+            var service = new MyAndromeda.KendoExtensions.EditorTools.emailEditorService({
+                elementId: "#@Html.IdFor(e=> e.EmailTemplate)",
+                fieldsTemplateId: "#tokenToolTemplate",
+                editorOptions: {
+                    tools: [
+                        "bold", "italic", "underline",
+                        "justifyLeft", "justifyCenter", "justifyRight", "justifyFull",
+                        "insertUnorderedList", "insertOrderedList",
+                        "indent", "outdent",
+                        "createLink", "unlink",
+                        {
+                            name: "tokenTool",
+                            tooltip: "Add tokens",
+                            template: $("#tokenToolTemplate").html()
+                        }
+                    ],
+                    stylesheets: [
+                        "@Url.Content("~/Content/editor/editor.min.css")"
+                    ]
+                },
+                tokenOptions: @Html.ToJson(this.Model.Tokens)
+                //[
+                //    { text: "First Name", value: "<span>{firstName}</span>" },
+                //    { text: "Last Name", value: "<span>{lastName}</span>" }
+                //]
+            });
+
+            service.init();
+        });
+    </script>
+    
+    <script type="text/template" id="tokenToolTemplate">
+        <span class="token-label" for="ToolsInsertToken">Tokens:</span>
+        <input id="ToolsInsertToken"/>
+        <a href="\#" class="k-button k-insert-token-button k-group-end">Insert</a>
+    </script>
+}

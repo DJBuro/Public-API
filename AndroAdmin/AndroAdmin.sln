@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin", "AndroAdmin\AndroAdmin.csproj", "{6B3614FF-8E14-440A-B743-282F01BD61C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin.Mvc", "AndroAdmin.Mvc\AndroAdmin.Mvc.csproj", "{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin.Dao", "AndroAdmin.Dao\AndroAdmin.Dao.csproj", "{E98A5633-CB48-4228-B26E-A4F505628F27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin.Dao.NHibernate", "AndroAdmin.Dao.NHibernate\AndroAdmin.Dao.NHibernate.csproj", "{7F97121D-4890-4003-AF19-60887E8AC18A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B3614FF-8E14-440A-B743-282F01BD61C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B3614FF-8E14-440A-B743-282F01BD61C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B3614FF-8E14-440A-B743-282F01BD61C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B3614FF-8E14-440A-B743-282F01BD61C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E98A5633-CB48-4228-B26E-A4F505628F27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E98A5633-CB48-4228-B26E-A4F505628F27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E98A5633-CB48-4228-B26E-A4F505628F27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E98A5633-CB48-4228-B26E-A4F505628F27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F97121D-4890-4003-AF19-60887E8AC18A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F97121D-4890-4003-AF19-60887E8AC18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F97121D-4890-4003-AF19-60887E8AC18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F97121D-4890-4003-AF19-60887E8AC18A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

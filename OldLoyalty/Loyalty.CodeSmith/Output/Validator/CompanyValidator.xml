@@ -1,0 +1,20 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="CompanyValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="RamesesHeadOfficeIdValidator" test="RamesesHeadOfficeId"><v:message id="error.RamesesHeadOfficeId.required" providers="RamesesHeadOfficeIdErrors, ValidationSummary"/></v:required>
+	<v:required id="RamesesCompanyIdValidator" test="RamesesCompanyId"><v:message id="error.RamesesCompanyId.required" providers="RamesesCompanyIdErrors, ValidationSummary"/></v:required>
+	<v:required id="NameValidator" test="Name"><v:message id="error.Name.required" providers="NameErrors, ValidationSummary"/></v:required>
+	<v:required id="RedemptionRatioValidator" test="RedemptionRatio"><v:message id="error.RedemptionRatio.required" providers="RedemptionRatioErrors, ValidationSummary"/></v:required>
+	<v:required id="CompanyKeyValidator" test="CompanyKey"><v:message id="error.CompanyKey.required" providers="CompanyKeyErrors, ValidationSummary"/></v:required>
+	<v:required id="CompanyPasswordValidator" test="CompanyPassword"><v:message id="error.CompanyPassword.required" providers="CompanyPasswordErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

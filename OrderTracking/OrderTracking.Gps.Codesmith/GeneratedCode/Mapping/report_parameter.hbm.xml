@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Reportparameter, OrderTracking.Gps.Dao" table="report_parameter">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="report_parameter_id" length="4" sql-type="int" not-null="true" unique="true" index="PK__report_p__58EAC5846FD49106"/>
+			<generator class="native" />
+		</id>
+		<property name="Parametername" type="String">
+			<column name="parameter_name" length="45" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Parametertypename" type="String">
+			<column name="parameter_type_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Parameterassemblyname" type="String">
+			<column name="parameter_assembly_name" length="128" sql-type="varchar" not-null="true"/>
+		</property>
+		<property name="Parameterdata" type="String">
+			<column name="parameter_data" length="16" sql-type="text" not-null="true"/>
+		</property>
+		<many-to-one name="Report" class="OrderTracking.Gps.Dao.Domain.Report, OrderTracking.Gps.Dao">
+			<column name="report_id" length="4" sql-type="int" not-null="true"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

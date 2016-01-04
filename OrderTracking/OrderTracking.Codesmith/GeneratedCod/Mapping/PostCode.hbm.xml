@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Dao.Domain.PostCode, OrderTracking.Dao" table="tbl_PostCode">
+		<id name="Id" type="Int64" unsaved-value="null">
+			<column name="id" length="8" sql-type="bigint" not-null="true" unique="true" index="PK_tbl_PostCode"/>
+			<generator class="native" />
+		</id>
+		<property name="PostCode" type="String">
+			<column name="PostCode" length="12" sql-type="nvarchar" not-null="true"/>
+		</property>
+		<property name="Del1" type="Int64">
+			<column name="del1" length="8" sql-type="bigint" not-null="false"/>
+		</property>
+		<property name="Longitude" type="Double">
+			<column name="Longitude" length="8" sql-type="float" not-null="true"/>
+		</property>
+		<property name="Latitude" type="Double">
+			<column name="Latitude" length="8" sql-type="float" not-null="true"/>
+		</property>
+		<property name="Del2" type="String">
+			<column name="del2" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Del3" type="String">
+			<column name="del3" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Del4" type="String">
+			<column name="del4" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Del5" type="String">
+			<column name="del5" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Del6" type="String">
+			<column name="del6" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+		<property name="Del7" type="String">
+			<column name="del7" length="50" sql-type="nvarchar" not-null="false"/>
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+

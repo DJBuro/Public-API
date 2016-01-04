@@ -1,0 +1,22 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="GeofenceValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="GeofencenameValidator" test="Geofencename"><v:message id="error.Geofencename.required" providers="GeofencenameErrors, ValidationSummary"/></v:required>
+	<v:required id="MinlongitudeValidator" test="Minlongitude"><v:message id="error.Minlongitude.required" providers="MinlongitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="MaxlongitudeValidator" test="Maxlongitude"><v:message id="error.Maxlongitude.required" providers="MaxlongitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="MinlatitudeValidator" test="Minlatitude"><v:message id="error.Minlatitude.required" providers="MinlatitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="MaxlatitudeValidator" test="Maxlatitude"><v:message id="error.Maxlatitude.required" providers="MaxlatitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="MinaltitudeValidator" test="Minaltitude"><v:message id="error.Minaltitude.required" providers="MinaltitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="MaxaltitudeValidator" test="Maxaltitude"><v:message id="error.Maxaltitude.required" providers="MaxaltitudeErrors, ValidationSummary"/></v:required>
+	<v:required id="BotypeValidator" test="Botype"><v:message id="error.Botype.required" providers="BotypeErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

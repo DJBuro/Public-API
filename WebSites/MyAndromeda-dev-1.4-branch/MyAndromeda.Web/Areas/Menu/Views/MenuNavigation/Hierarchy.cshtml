@@ -1,0 +1,261 @@
+﻿@model MyAndromeda.Web.Areas.Menu.Models.MenuIndexViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+    var filterIds = new
+    {
+        DisplayCategory = "search-display-category",
+        Category1 = "search-categories",
+        Category2 = "search-categories2"
+    };
+}
+<style>
+    .k-window-action {
+        visibility: hidden;
+    }
+</style>
+
+
+<div class="menuWrapper">
+    <div class="header">
+        <h3>@translator.T("Online Menu Editor")</h3>
+        <button class="k-primary k-button" id="MenuPublishButton">@translator.T("Publish")</button>
+
+    </div>
+    <div class="menu-editor-Wrapper">
+        <div id="MenuFilterWrapper">
+
+            <div class="k-toolbar k-widget">
+                <div>
+                    <input id="@filterIds.DisplayCategory" style="width:200px"
+                           name="DisplayCategory"
+                           data-role="combobox"
+                           data-placeholder="@translator.T("Select a web section")"
+                           data-value-primitive="true"
+                           data-text-field="Name"
+                           data-value-field="Id"
+                           data-bind="source:DisplayCategory, value:SelectedDisplayCategory" />
+
+                    <div style="display: none;">
+                        <input id="@filterIds.Category1"
+                               name="Category1"
+                               data-role="combobox"
+                               data-cascade-from="@filterIds.DisplayCategory"
+                               data-cascade-from-field="ParentId"
+                               data-placeholder="@translator.T("Category 1")"
+                               data-bind="source:Category1, value:SelectedCategory1"
+                               data-text-field="Name"
+                               data-value-field="Id" />
+
+                        <input id="@filterIds.Category2"
+                               data-role="combobox"
+                               data-cascade-from="@filterIds.DisplayCategory"
+                               data-cascade-from-field="ParentId"
+                               data-placeholder="@translator.T("Category 2")"
+                               data-bind="source:Category2, value:SelectedCategory2"
+                               data-text-field="Name"
+                               data-value-field="Id" />
+                    </div>
+                    <button class="k-button k-filter-clear">@translator.T("Reset")</button>
+                </div>
+                <div>
+                    <label data-bind="visibleSoFadeIn:Filtered">Filtered by:</label>
+                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.DisplayCategory"></span>
+                    <span data-bind="visibleSoFadeIn:FilteredBy.DisplayCategory">|</span>
+                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.Category1"></span>
+                    <span data-bind="visibleSoFadeIn:FilteredBy.Category1">|</span>
+                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.Category2"></span>
+                    <span data-bind="visibleSoFadeIn:FilteredBy.Category2">|</span>
+                    <label data-bind="visibleSoFadeIn: Sorted">Sorted by:</label>
+                    <span data-bind="visibleSoFadeIn: Sorted, text: SortedBy"></span>
+                    &nbsp;
+                </div>
+            </div>
+
+            <div data-bind="visibleSoFadeIn:ShowGetStartedMessage" class="k-block k-info-colored" style="text-align: center">
+                <strong>@translator.T("To get started you need to choose a web section from the first drop-down.")</strong>
+            </div>
+
+        </div>
+
+        <div id="menuItemsListView" style="padding: 1em;">
+        </div>
+
+        <div id="positionWindowWrapper" style="display: none;">
+            <div id="positionWindow"
+                 data-role="window"
+                 data-title="Edit position"
+                 data-width="400"
+                 @*data-height="350"*@
+                 data-visible="false">
+                <div class="header">
+                    <div>
+                        <span data-bind="text:itemIndex"></span>.
+                        <span data-bind="text:itemName"></span>
+                    </div>
+                </div>
+                @*<label style="display:inline-block">*@
+                <div class="clearfix">
+                    <div style="float: left; width: 30%">
+                        <div>
+                            <button data-role="button" style="width: 70px"
+                                    title="Move item to top"
+                                    data-sprite-css-class="k-icon k-i-seek-n"
+                                    data-bind="events: { click: onMoveToFirst }"></button>
+                        </div>
+                        <div>
+                            <button data-role="button" style="width: 70px"
+                                    title="Move item up"
+                                    data-sprite-css-class="k-icon k-i-arrow-n"
+                                    data-bind="events: { click: onMoveItemUp }"></button>
+                        </div>
+                        <div style="margin: 1em 0">
+                            <input id="numericIndexSelector"
+                                   data-role="numerictextbox"
+                                   type="number"
+                                   name="position"
+                                   data-min="1"
+                                   data-max="10"
+                                   data-step="1"
+                                   data-format="#"
+                                   data-decimals="0"
+                                   data-bind="max: length, value: index, events:{ blur: onMoveToPositionClick, focus: onMoveToPositionClick, keyup: onMoveToPositionClick, change: onMoveToPositionClick, spin: onMoveToPositionClick }"
+                                   style="width: 70px" />
+                            of
+                            <span data-bind="text:length"></span>
+                        </div>
+                        <div>
+                            <button data-role="button" style="width: 70px"
+                                    title="Move item down"
+                                    data-sprite-css-class="k-icon k-i-arrow-s"
+                                    data-bind="events: { click: onMoveItemDown }"></button>
+                        </div>
+                        <div>
+                            <button data-role="button" style="width: 70px"
+                                    title="Move item to bottom"
+                                    data-sprite-css-class="k-icon k-i-seek-s"
+                                    data-bind="events: { click: onMoveToLast }"></button>
+                        </div>
+                    </div>
+                    <div style="float: left; width: 60%">
+                        Select a position from the controls left.
+                        <button class="k-button" data-bind="events: { click: saveChanges }"><i class="glyphicon glyphicon-ok-circle"></i> @translator.T("Save Changes")</button>
+                        <button class="k-button" data-bind="events: { click: cancelChanges }"><i class="glyphicon glyphicon-ban-circle"></i> @translator.T("Cancel")</button>
+                    </div>
+                </div>
+                @*</label>*@
+                @*<button data-role="button" data-bind="events: { click: onMoveToPositionClick }">Move</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("MoveItemTemplate")
+@Html.Partial("ItemEditTemplate")
+@Html.Partial("MenuPublishTemplate")
+
+
+@using (Html.BeginScripts("MyAndromeda.MenuServices", Area.Foot))
+{
+
+    if (false)
+    {
+        <script src="~/Scripts/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            var routeOptions = {
+                chainId: '@this.ViewContext.RouteData.Values["chainId"]',
+                externalSiteId: '@this.ViewContext.RouteData.Values["externalSiteId"]'
+            };
+
+            var menuItemRoutes = MyAndromeda.Menu.Settings.Routes.MenuItems;
+            menuItemRoutes.ListMenuItems = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "GetMenu", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
+            menuItemRoutes.SaveMenuItems = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "SaveMenuItemsBatch", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
+            
+            menuItemRoutes.SaveImageUrl = "@Url.Action("Upload", "MenuThumbs")";
+            menuItemRoutes.RemoveImageUrl = "@Url.Action("Remove", "MenuThumbs")";
+
+            var service = new MyAndromeda.Menu.Services.MenuOrderingControllerService({
+                ids: {
+                    listViewId: "#menuItemsListView",
+                    pagerId: "#pager"
+                },
+                listview: {
+                    template: $("#itemTemplate").html(),
+                    editTemplate: $("#itemEditTemplate").html()
+                },
+                filterIds: {
+                    toolBarId: "#MenuFilterWrapper",
+                    itemNameId: "#search-item-name",
+                    displayCategoryId: "#@filterIds.DisplayCategory",
+                    category1Id: "#@filterIds.Category1",
+                    category2Id: "#@filterIds.Category2",
+                    resetId: ".k-filter-clear"
+                },
+                publishPanel: {
+                    publishPanelId: "#publishPanel",
+                    mainButtonId : "#MenuPublishButton",
+                    publishUrlPath: "@Url.Action("Publish", "MenuSync")"
+                },
+                routeParameters: routeOptions
+                @*data: {
+                    endpoints: @(Html.Raw(Model.Endpoints.JsonNetToString()))
+                }*@
+            });
+            service.init();
+        });
+    </script>
+}
+
+@using (Html.BeginHelpSection("Getting Started", TabArea.Help, true))
+{
+    <div>
+        <div class="header">
+            <h3>@translator.T("Getting Started")</h3>
+        </div>
+        <p>There are two ways to move around the items:</p>
+        <ol>
+            <li>Change Position button</li>
+            <li>Drag and Drop items. Hold a item for 3 seconds and it will jump from the page. Drag it to the position required.</li>
+        </ol>
+    </div>
+}
+
+@using (Html.BeginHelpSection(translator.T("1. Change position"), TabArea.Help))
+{
+    <div>
+        <div class="header">
+            <h3>1. Change Position button</h3>
+        </div>
+        <p>
+            After clicking on the button a dialog will appear giving you three options to move the selected item in the list. The two most obvious buttons:
+        </p>
+        <ol>
+            <li>
+                Move to top
+                <p>This will </p>
+            </li>
+            <li>Move to bottom</li>
+        </ol>
+        <p>Followed by:</p>
+        <ul>
+            <li>Numeric field</li>
+        </ul>
+    </div>
+}
+
+@using (Html.BeginHelpSection(translator.T("2. Drag and drop"), TabArea.Help))
+{
+    <div>
+        <div class="header">
+            <h3>2. Drag and drop</h3>
+        </div>
+        <p>To drag and drop first click and hold on a menu item. When available it will make a little jump animation. Drag this item onto another item to insert it before the item.</p>
+        <ul>
+            <li>Cancel Drag</li>
+        </ul>
+        <p>To cancel drag the item off to the side or press the 'esc' key</p>
+    </div>
+}

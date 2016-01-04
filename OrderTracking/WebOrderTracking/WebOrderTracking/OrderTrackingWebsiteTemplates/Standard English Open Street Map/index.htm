@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-Equiv="Cache-Control" Content="no-cache">
+        <meta http-Equiv="Pragma" Content="no-cache">
+        <meta http-Equiv="Expires" Content="0">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <title><injectionPoint id="PageTitle" group="Page" prompt="Page Title" type="Text" default="Order tracking" /></title>
+        
+        <script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+        
+        <style type="text/css">
+            html {height: 100%; width:100%;}
+            p {padding:0; border:0; margin:0;}
+            body {
+                font-size:80%;
+                background-color: <injectionPoint id="BackgroundColour" group="Page" prompt="Background colour" type="Colour" default="#ffffff" />;
+                color: <injectionPoint id="ForegroundColour" group="Page" prompt="Foreground colour" type="Colour" default="#000000" />;
+                font-family: <injectionPoint id="DefaultFont" group="Page" prompt=" Default font" type="Font" default="Arial" />;
+                padding:0;
+                margin:0;
+            }
+            .page 
+            {
+                width:<injectionPoint id="PageWidth" group="Page" prompt="Page width (pixels)" type="Number" default="800" />px;
+                margin: 0 auto 0 auto;
+                background-color: <injectionPoint id="PageColour" group="Page" prompt="Page colour" type="Colour" default="#ffffff" />;
+            }
+            #logo {
+                background:url(<injectionPoint id="HeaderLogo" group="Header" prompt="Header logo (800x120)" type="Image" default="{siteroot}Logo.png" />) no-repeat left top;
+                background-color: <injectionPoint id="HeaderBackgroundColour" group="Header" prompt="Header background colour" type="Colour" default="#ffffff" />;
+                height:<injectionPoint id="HeaderHeight" group="Header" prompt="Header height (pixels)" type="Number" default="120" />px;
+                <injectionPoint id="HeaderBorder" group="Header" prompt="Header border (pixels)" type="Border" default="#ffffff 0 0 0 0" />
+                padding:0;
+                margin:0;
+            }
+            #findYourOrderBox 
+            {
+                background-color: <injectionPoint id="FindYourOrderBoxBackgroundColour" group="Find your order" prompt="Find your order box background colour" type="Colour" default="#ffffff" />;
+                <injectionPoint id="FindYourOrderBorder" group="Find your order" prompt="Find your order border (pixels)" type="Border" default="#ffffff 0 0 0 0" />
+            }
+            #findYourOrderBoxHeader {
+                padding: 5px 5px 5px 10px;
+                background-color: <injectionPoint id="FindYourOrderBoxHeaderBackgroundColour" group="Find your order" prompt="Find your order box header background colour" type="Colour" default="#ffffff" />;
+            }
+            #findYourOrderBoxContent {
+                padding-top: 25px;
+                text-align:center;
+            }
+            #findYourOrderBoxContentBottom {
+                padding-top: 10px;
+            }
+            #status {
+                padding-top: 10px;
+                text-align:center;
+            }
+            #orderStatusBox {
+                background-color: <injectionPoint id="OrderStatusBoxBackgroundColour" group="Order status" prompt="Order status box background colour" type="Colour" default="#ffffff" />;
+                <injectionPoint id="OrderStatusBorder" group="Order status" prompt="Order status border (pixels)" type="Border" default="#ffffff 0 0 0 0" />
+            }
+            #orderStatusBoxHeader {
+                padding: 5px 5px 5px 10px;
+                background-color: <injectionPoint id="OrderStatusBoxHeaderBackgroundColour" group="Order status" prompt="Order status box header background colour" type="Colour" default="#ffffff" />;
+            }
+            #orderStatusBoxContent {
+                padding: 10px;
+                height:200px;
+                background-color: <injectionPoint id="OrderStatusBoxContentBackgroundColour" group="Order status" prompt="Order status box content background colour" type="Colour" default="#ffffff" />;
+            }
+            #orderStatusText {
+                text-align:center;
+                margin: 20px 0 20px 0;
+            } 
+            #status1 {
+                width:80px; height:80px; float:left; margin-right:15px; margin-left:150px;
+                background:url(<injectionPoint id="OrderTakenImage" group="Order status" prompt="Order taken (80x80)" type="Image" default="{siteroot}OrderTaken.png" />) no-repeat left top;
+            }
+            #status2 {
+                width:80px; height:80px; float:left; margin-right:15px;
+                background:url(<injectionPoint id="InOvenImage" group="Order status" prompt="In oven (80x80)" type="Image" default="{siteroot}InOven.png" />) no-repeat left top;
+            }
+            #status3 {
+                width:80px; height:80px; float:left; margin-right:15px;
+                background:url(<injectionPoint id="OrderPreparedImage" group="Order status" prompt="Order prepared (80x80)" type="Image" default="{siteroot}OrderPrepared.png" />) no-repeat left top;
+            } 
+            #status4 {
+                width:80px; height:80px; float:left; margin-right:15px;
+                background:url(<injectionPoint id="OutForDeliveryImage" group="Order status" prompt="Out for delivery (80x80)" type="Image" default="{siteroot}OutForDelivery.png" />) no-repeat left top;
+            } 
+            #status5 {
+                width:80px; height:80px; float:left; margin-right:15px;
+                background:url(<injectionPoint id="DeliveredImage" group="Order status" prompt="Delivered (80x80)" type="Image" default="{siteroot}Delivered.png" />) no-repeat left top;
+            } 
+            #map_canvas {
+                width:<injectionPoint id="MapWidth" group="Page" prompt="Map width (pixels)" type="Number" default="1000" />px; 
+                height:<injectionPoint id="MapHeight" group="Page" prompt="Map height (pixels)" type="Number" default="600" />px; 
+            }
+            .trackAnotherOrder {
+                text-align:center;
+                margin: 10px 10px 0 5px;
+            }
+        </style>
+
+        <script type="text/javascript">
+            var orderServiceUrl = 'http://ordertracking.androtechnology.co.uk/TrackOrderService/WebOrderTrackingService.svc/TrackOrder';
+            var orderLocationServiceUrl = 'http://ordertracking.androtechnology.co.uk/TrackOrderService/WebOrderTrackingService.svc/TrackOrderLocation';
+            var map = null;
+            var storeMarker = null;
+            var customerMarker = null;
+            var driverMarker = null;
+            var mapInitialized = false;
+            var orderStatus;
+            var storeLat;
+            var storeLon;
+            var custLat;
+            var custLon;
+            var lat;
+            var lon;
+            var active;
+            var timer;
+            var unexpectedProblemText = "<injectionPoint id="UnexpectedProblemText" group="Page" prompt="Unexpected problem text" type="RichText" default="An unexpected problem occurred" />";
+            var noOrder = "<injectionPoint id="UnableToFindYourOrderText" group="Find your order" prompt="Unable to find order text" type="RichText" default="Sorry. We are unable to find your order." />";
+
+            $().ready(function () {
+                $.ajaxSetup({
+                    error: DisplayError
+                });
+
+                if (window.location.hash == "#debug") {
+                    $('#debug').css('display', 'block');
+                }
+            });
+            function DisplayError(x, e) {
+                $('#status').html(unexpectedProblemText);
+                $('#debugError').html(e);
+            }
+            function DisplayDebugMessage(e) {
+                $('#debugMessage').html(e);
+            }
+            function DisplayCommsError(x, e) {
+
+                var statusText = "";
+                if (x != null && x.Status != null) { statusText = 'HTTP status:' + x.Status; }
+
+                var eText = "";
+                if (e != null) {eText = ' e:' + e;}
+
+                DisplayError(null, statusText + eText);
+
+                $.ajaxSetup({error: DisplayError});
+            }
+            function Submit() {
+
+                try {
+                    $.ajaxSetup({error: DisplayCommsError});
+
+                    DisplayDebugMessage("Calling server");
+
+                    $('#status').html("<injectionPoint id="FindingYourOrder" group="Find your order" prompt="Finding your order text" type="RichText" default="Please wait ... finding your order" />");
+
+                    $.getJSON(
+                        orderServiceUrl,
+                        { clientKey: '<injectionPoint id="WebKey" type="WebKey" />', customerCredentials: document.getElementById('credentials').value },
+                        GotOrders)
+                        .error(function(jqXHR, textStatus, errorThrown) {
+                            DisplayError(null, "error: " + textStatus + ", incoming Text: " + jqXHR.responseText);
+                        }); 
+                }
+                catch (errorText)
+                {
+                    DisplayError(null, errorText);
+                }
+            }
+            function GotOrders(json) {
+
+                try {
+                    DisplayDebugMessage("Got response from server");
+
+                    $.ajaxSetup({error: DisplayError});
+
+                    RefreshLastUpdated();
+
+                    var gotOrder = false;
+
+                    if (json != null && json.error != null)
+                    {
+                        if (json.error.errorCode == "2")
+                        {
+                            $('#status').html(noOrder);
+                        }
+                        else
+                        {
+                            $('#status').html(unexpectedProblemText);
+                        }
+                    }
+                    else  if (json != null && json.orders != null && json.orders.length > 0) {
+
+                        var order = json.orders[0];
+
+                        $('#debugOrderStatus').text(GetOrderStatusText(order.status));
+                        $('#storeLat').text(order.storeLat);
+                        $('#storeLon').text(order.storeLon);
+                        $('#custLat').text(order.custLat);
+                        $('#custLon').text(order.custLon);
+                        $('#personProcessing').text(order.personProcessing);
+                        $('#driverLat').text(order.lat);
+                        $('#driverLon').text(order.lon);
+
+                        orderStatus = order.status;
+                        storeLat = order.storeLat;
+                        storeLon = order.storeLon;
+                        custLat = order.custLat;
+                        custLon = order.custLon;
+                        lat = order.lat;
+                        lon = order.lon;
+
+                        RefreshPage();
+
+                        gotOrder = true;
+
+                        $('#status').html("");
+                    }
+                    else if (json != null && json.error != null) {
+                        DisplayError(null, json.Message);
+                    }
+                    else {
+                        $('#status').html(noOrder);
+                    }
+
+                    if (gotOrder) {
+                        // Is the order still active (not completed)?
+                        if (orderStatus < 5)
+                        {
+                            timer = window.setTimeout(DoPoll, 4000);
+                        }
+                    }
+                }
+                catch (errorText)
+                {
+                    DisplayError(null, "GetOrders error: " + errorText);
+                }
+            }
+            function DoPoll() {
+                try
+                {
+                    DisplayDebugMessage("Calling server");
+
+                    $('#status').html("<injectionPoint id="GettingOrderStatus" group="Order status" prompt="Getting your order status text" type="RichText" default="Please wait ... getting the status of your order" />");
+
+                    $.getJSON(
+                        orderLocationServiceUrl,
+                        { clientKey: '<injectionPoint id="WebKey" type="WebKey" />', customerCredentials: document.getElementById('credentials').value },
+                        GotLocation)
+                        .error(function() { timer = window.setTimeout(DoPoll, 4000); // Keep polling 
+                        }); 
+                }
+                catch (errorText)
+                {
+                    DisplayError(null, "DoPoll error: " + errorText);
+                }
+            }
+            function GotLocation(json) {
+
+                try {
+                    DisplayDebugMessage("Got response from server");
+
+                    RefreshLastUpdated();
+
+                    if (json.orders.length > 0) {
+
+                        var order = json.orders[0];
+
+                        $('debugOrderStatus').html(GetOrderStatusText(order.status));
+                        $('personProcessing').text(order.personProcessing);
+                        $('driverLat').text(order.lat);
+                        $('driverLon').text(order.lon);
+
+                        orderStatus = order.status;
+                        lat = order.lat;
+                        lon = order.lon;
+                        active = order.active;
+
+                        RefreshPage();
+                    }
+
+                    $('#status').html("");
+                }
+                catch (errorText)
+                {
+                    DisplayError(null, "GotLocation error:" + errorText);
+                }
+
+                // Is the order still active (not completed)?
+                if (orderStatus < 5)
+                {
+                    timer = window.setTimeout(DoPoll, 4000);
+                }
+            }
+            function RefreshPage()
+            {
+                $('#findYourOrderBox').css('display', 'none');
+                $('#orderStatusBox').css('display', 'block');
+
+                $('#orderStatusText').html(GetOrderStatusText(orderStatus));
+                    
+                if (orderStatus == 1)
+                {
+                    $('#status1').css('opacity', 1);
+                    $('#status2').css('opacity', 0.1);
+                    $('#status3').css('opacity', 0.1);
+                    $('#status4').css('opacity', 0.1);
+                    $('#status5').css('opacity', 0.1);
+                }
+                else if (orderStatus == 2)
+                {
+                    $('#status1').css('opacity', 0.1);
+                    $('#status2').css('opacity', 1);
+                    $('#status3').css('opacity', 0.1);
+                    $('#status4').css('opacity', 0.1);
+                    $('#status5').css('opacity', 0.1);
+                }
+                else if (orderStatus == 3)
+                {
+                    $('#status1').css('opacity', 0.1);
+                    $('#status2').css('opacity', 0.1);
+                    $('#status3').css('opacity', 1);
+                    $('#status4').css('opacity', 0.1);
+                    $('#status5').css('opacity', 0.1);
+                }
+                else if (orderStatus == 4)
+                {
+                    $('#status1').css('opacity', 0.1);
+                    $('#status2').css('opacity', 0.1);
+                    $('#status3').css('opacity', 0.1);
+                    $('#status4').css('opacity', 1);
+                    $('#status5').css('opacity', 0.1);
+                }
+                else if (orderStatus == 5)
+                {
+                    $('#status1').css('opacity', 0.1);
+                    $('#status2').css('opacity', 0.1);
+                    $('#status3').css('opacity', 0.1);
+                    $('#status4').css('opacity', 0.1);
+                    $('#status5').css('opacity', 1);
+                }
+                
+                // Out for delivery and
+                // store location known and
+                // customer location known and
+                // driver has a tracker
+
+                // lat & lon will be undefined if no tracker
+                // lat & lon will be blank if the tracker is not reporting (no gps fix)
+                if (orderStatus == 4 &&
+                    storeLat.length > 0 && storeLon.length > 0 &&
+                    custLat.length > 0 && custLon.length > 0 &&
+                    lat != undefined && lon != undefined)
+                    //&&
+                    //lat != null && lat.length > 0 && lon != null && lon.length > 0) 
+                {
+
+                    $('#map_canvas').css('display', 'block');
+
+                    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+                    var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+
+                    var latLonBounds = new OpenLayers.Bounds();
+
+                    initializeMap();
+
+                    // Store marker
+                    var lonLat = new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection);
+                    if (storeMarker == null) 
+                    {
+                        var size = new OpenLayers.Size(32, 37);
+                        var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+                        var icon = new OpenLayers.Icon("<injectionPoint id="MapStoreIcon" group="GPS Map" prompt="Store icon (32x37)" type="Image" default="{siteroot}Logo.png" />", size, offset)
+                        storeMarker = new OpenLayers.Marker(lonLat, icon);
+
+                        markersLayer.addMarker(storeMarker);                        
+                    }
+                    else 
+                    {
+                        if (storeMarker.lonlat.lat != lonLat.lat ||
+                            storeMarker.lonlat.lon != lonLat.lon) 
+                        {
+                            storeMarker.lonlat = lonLat;
+                        }
+                    }
+
+                    latLonBounds.extend(new OpenLayers.LonLat(storeLon, storeLat).transform(fromProjection, toProjection));
+
+                    // Customer marker
+                    var lonLat = new OpenLayers.LonLat(custLon, custLat).transform(fromProjection, toProjection);
+                    if (customerMarker == null) 
+                    {
+                        var size = new OpenLayers.Size(32, 37);
+                        var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+                        var icon = new OpenLayers.Icon("<injectionPoint id="MapHomeIcon" group="GPS Map" prompt="Home icon (32x37)" type="Image" default="{siteroot}Home.png" />", size, offset)
+                        customerMarker = new OpenLayers.Marker(lonLat, icon);
+
+                        markersLayer.addMarker(customerMarker);  
+                    }
+                    else 
+                    {
+                        if (customerMarker.lonlat.lat != lonLat.lat ||
+                            customerMarker.lonlat.lon != lonLat.lon) 
+                        {
+                            customerMarker.lonlat = lonLat;
+                        }
+                    }
+
+                    latLonBounds.extend(new OpenLayers.LonLat(custLon, custLat).transform(fromProjection, toProjection));
+
+                    // Driver marker
+                    var driverIconUrl = "<injectionPoint id="MapDriverIcon" group="GPS Map" prompt="Driver icon (32x37)" type="Image" default="{siteroot}Driver.png" />";
+                    var driverIconNofixUrl = "<injectionPoint id="MapDriverNoFixIcon" group="GPS Map" prompt="Driver no fix icon (32x37)" type="Image" default="{siteroot}DriverNoFix.png" />";
+
+                    // We can't create or move the marker if we don't have tracker gps co-ordinates
+                    if (lat != null && lat.length > 0 && lon != null && lon.length > 0)
+                    {
+                        var lonLat = new OpenLayers.LonLat(lon, lat).transform(fromProjection, toProjection);
+                        if (driverMarker == null) 
+                        {
+                            var size = new OpenLayers.Size(32, 37);
+                            var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+                        
+                            var icon = new OpenLayers.Icon(driverIconUrl, size, offset)
+                            driverMarker = new OpenLayers.Marker(lonLat, icon);
+
+                            markersLayer.addMarker(driverMarker);  
+                        }
+                        else 
+                        {
+                            if (driverMarker.lonlat.lat != lonLat.lat ||
+                                driverMarker.lonlat.lon != lonLat.lon) 
+                            {
+                               // driverMarker.lonlat = lonLat;
+                                driverMarker.moveTo(map.getLayerPxFromLonLat(lonLat));
+                            }
+                        }
+                    }
+                        
+                    // Is there a driver marker?
+                    if (driverMarker != null) 
+                    {
+                        // If the tracker loses its gps fix or vice versa we need to change the marker icon
+
+                        // Is the tracker active?
+                        if (active != undefined && active)
+                        {
+                            // Are we showing the active icon?
+                            if (driverMarker.icon.url != driverIconUrl)
+                            {
+                                driverMarker.icon.url = driverIconUrl;
+                            }
+                        }
+                        else
+                        {
+                            // Are we showing the inactive icon?
+                            if (driverMarker.icon.url != driverIconNofixUrl)
+                            {
+                                driverMarker.icon.url = driverIconNofixUrl;
+                            }
+                        }
+                    
+                        latLonBounds.extend(new OpenLayers.LonLat(lon, lat).transform(fromProjection, toProjection));
+                    }
+
+                    // Set the zoom level and center position
+                    map.zoomToExtent(latLonBounds, false);
+                }
+                else {
+                    $('#map_canvas').css('display', 'none');
+                }
+            }
+            function initializeMap() 
+            {
+                if (!mapInitialized) 
+                {
+                    var options = {
+                        controls: []
+                    };
+
+                    map = new OpenLayers.Map("map_canvas", options);
+                    var mapnik = new OpenLayers.Layer.OSM();
+                    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+                    var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                    var position = new OpenLayers.LonLat(-0.15022, 51.36037).transform(fromProjection, toProjection);
+                    var zoom = 8;
+
+                    map.addLayer(mapnik);
+
+                    markersLayer = new OpenLayers.Layer.Markers("Markers", { 'calculateInRange': function () { return true; } });
+                    map.addLayer(markersLayer);
+                    map.setCenter(position, zoom);
+
+                    mapInitialized = true;
+                }
+            }
+
+            function RefreshLastUpdated() {
+                var now = new Date();
+                var hours = now.getHours();
+                var minutes = now.getMinutes();
+                var seconds = now.getSeconds();
+
+                $('span#lastUpdated').text(((hours < 10) ? "0" : "") + hours + ":" + ((minutes < 10) ? ":0" : ":") + minutes + ":" + ((seconds < 10) ? ":0" : ":") + seconds);
+            }
+            function GetOrderStatusText(orderStatus) {
+                var statusText;
+
+                switch (orderStatus) {
+                    case "1":                    
+                        statusText = "<injectionPoint id="OrderTakenText" group="Order status" prompt="Order taken text" type="RichText" default="<p><span style='font-size: large;'>Order taken</span></p>" />";
+                        break;
+                    case "2":
+                        statusText = "<injectionPoint id="OrderMadeText" group="Order status" prompt="Order made text" type="RichText" default="<p><span style='font-size: large;'>Order made</span></p>" />";                      
+                        break;
+                    case "3":
+                        statusText = "<injectionPoint id="ReadyForDispatchText" group="Order status" prompt="Ready for dispatch text" type="RichText" default="<p><span style='font-size: large;'>Ready for dispatch</span></p>" />";
+                        break;
+                    case "4":
+                        statusText = "<injectionPoint id="OutForDeliveryText" group="Order status" prompt="Out for delivery text" type="RichText" default="<p><span style='font-size: large;'>Out for delivery</span></p>" />";
+                        break;
+                    case "5":
+                        statusText = "<injectionPoint id="DeliveredText" group="Order status" prompt="Delivered text" type="RichText" default="<p><span style='font-size: large;'>Delivered</span></p>" />";
+                        break;
+                    default:
+                        statusText = DisplayError(null, "Unknown Status");
+                }
+
+                return statusText;
+            }
+            function TrackAnotherOrder() {
+                window.clearTimeout(timer);
+                $('#findYourOrderBox').css('display', 'block');
+                $('#orderStatusBox').css('display', 'none');
+                $('#map_canvas').css('display', 'none');
+            }
+        </script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    </head>
+
+    <body>
+        <div class="page">
+            <div id="logo">&nbsp;</div>
+            <div id="findYourOrderBox">
+                <div id="findYourOrderBoxHeader">
+                    <injectionPoint id="FindYourOrderBoxHeaderText" group="Find your order" prompt="Find your order box header Text" type="RichText" default="<p><span style='font-size: large;'>Find your order</span></p>" />
+                </div>
+                <div id="findYourOrderBoxContent">
+                    <div id="findYourOrderBoxContentTop">
+                        <label for="credentials"><injectionPoint id="CredentialsPrompt" group="Find your order" prompt="Credentials Prompt" type="RichText" default="Order tracking number (usually the phone number you ordered with)" /></label>
+                    </div>
+                    <div id="findYourOrderBoxContentBottom">
+                        <input type="text" id="credentials" />
+                        <input type="button" id="submitButton" onclick="Submit()" value="<injectionPoint id="SubmitButtonText" group="Find your order" prompt="Submit button text" type="Text" default="Find My Order" />" />
+                    </div>
+                </div>
+            </div>
+            <div id="orderStatusBox" style="display:none;">
+                <div id="orderStatusBoxHeader">
+                    <injectionPoint id="OrderStatusText" group="Order status" prompt="Order status Text" type="RichText" default="<p><span style='font-size: large;'>Order status</span></p>" />
+                </div>
+                <div id="orderStatusBoxContent">
+                    <div id="orderStatusText"></div>
+                    <div id="status1"></div>
+                    <div id="status2"></div>
+                    <div id="status3"></div>
+                    <div id="status4"></div>
+                    <div id="status5"></div>
+                </div>
+                <div id="map_canvas"></div>
+                <div class="trackAnotherOrder">
+                    <a href="" onclick="TrackAnotherOrder()"><injectionPoint id="TrackAnotherOrderText" group="Order status" prompt="Track another order Text" type="RichText" default="Track another order" /></a>
+                </div>
+            </div>
+
+            <div id="status"></div>
+
+            <div id="debug" style="margin-top:20px; background-color:Black; color:White; display:none; clear:both;">
+                <h3>DEBUGGING</h3>
+                Debug message:<span id="debugMessage"></span><br />
+                Last updated:<span id="lastUpdated"></span><br />
+                Status:<span id="debugOrderStatus"></span><br />
+                Store lat:<span id="storeLat"></span><br />
+                Store lon:<span id="storeLon"></span><br />
+                Customer lat:<span id="custLat"></span><br />
+                Customer lon:<span id="custLon"></span><br />
+                Person processing:<span id="personProcessing"></span><br />
+                Tracker lat:<span id="driverLat"></span><br />
+                Tracker lon:<span id="driverLon"></span><br />
+                Error:<span id="debugError"></span>
+            </div>
+        </div>
+    </body>
+</html>

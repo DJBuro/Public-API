@@ -1,0 +1,11 @@
+﻿@(Html.Kendo()
+    .Grid<MyAndromeda.Web.Areas.Users.ViewModels.RoleViewModel>()
+    .Name("userRoles_#=Id#")
+    .Columns(columns =>
+    {
+        columns.Bound(e => e.Name);
+    })
+    .DataSource(data => data.Ajax().Read(read => read.Action("Roles", "UserManagement", new { UserId = "#=Id#" })))
+    .Sortable()
+    .ToClientTemplate()
+)

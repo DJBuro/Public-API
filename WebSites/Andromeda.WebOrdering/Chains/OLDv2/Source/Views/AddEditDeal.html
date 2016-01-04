@@ -1,0 +1,153 @@
+﻿    <script type="text/html" id="dealsView">
+
+        <!-- Deal header -->
+        <div class="popupBoxHeaderContainer">
+
+            <!-- Deal name & description -->
+            <div class="popupItemDetails">
+                <h2>
+                    <span class="popupName" data-bind="html: dealHelper.selectedDeal.name"></span>
+                </h2>
+                <div class="popupDescription" data-bind="html: dealHelper.selectedDeal.description"></div>
+            </div>
+
+            <!-- Deal options -->
+            <div id="popupDealOptions">
+                        
+                <!-- Accept changes button -->
+                <!-- ko if: dealHelper.mode() == 'editDeal' -->
+                <div id="dealPopupUpdateCartButton" class="highlightedButton">
+                    <a data-bind="click: dealHelper.acceptChanges, text: textStrings.dptOk"></a>
+                </div>
+                <!-- /ko -->
+
+                <!-- Remove from cart button -->
+                <!-- ko if: dealHelper.mode() == 'editDeal' -->
+                <div id="dealPopupRemoveFromCartButton" class="button">
+                    <a data-bind="click: dealHelper.removeFromCart, text: textStrings.dptRemove"></a>
+                </div>
+                <!-- /ko -->
+
+                <!-- Add to cart button -->
+                <!-- ko if: dealHelper.mode() == 'addDeal' -->
+                <div id="dealPopupAddToCartButton" class="highlightedButton">
+                    <a data-bind="click: dealHelper.commitToCart, text: textStrings.dptAdd"></a>
+                </div>
+                <!-- /ko -->
+
+                <!-- Cancel button -->
+                <!-- ko if: dealHelper.mode() == 'addDeal' -->
+                <div id="dealPopupCancelButton" class="button">
+                    <a href="#" data-bind="click: dealHelper.dealPopupCancel, text: textStrings.dptCancel"></a>
+                </div>
+                <!-- /ko -->
+ 
+            </div>
+
+        </div>
+
+        <!-- Deal body -->
+        <div id="popupDealBoxBodyContainer">
+
+            <!-- ko if: dealHelper.mode() == 'addDeal' -->
+            <h1 data-bind="text: textStrings.dpPrompt"></h1>
+            <div style="overflow-y:auto;">
+                <!-- ko foreach: dealHelper.selectedDeal.bindableDealLines -->
+                    <!-- ko template: { name: dealHelper.getDealLineTemplateName } -->
+                    <!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if: dealHelper.hasError -->
+            <div class="checkoutError" data-bind="text: textStrings.dpMissing"></div>
+            <!-- /ko -->
+
+        </div>
+
+    </script>
+
+    <!-- Popup deal line -->
+    <script type="text/html" id="popupDealLine-template">
+        <div class="popupDealLine">
+            <span class="popupDealLineItem">
+                <span data-bind="text: textStrings.pdtItem"></span>
+                <span data-bind="text: dealLineWrapper.itemNo"></span>
+            </span> 
+        </div>
+    </script>
+
+    <!-- Popup deal line fixed -->
+    <script type="text/html" id="popupDealLineFixed-template">
+        <div class="popupDealLine">
+            
+            <!-- Customize button (PC/Tablet mode)-->
+            <div data-bind="visible: !guiHelper.isMobileMode()" class="popupDealCustomize">
+                <div class="popupDealCustomizeItemButton button">
+                    <a href="#" data-bind="click: dealHelper.customizeDealLine, text: textStrings.pdlCustomize"></a>
+                </div>
+            </div>
+
+            <div class="popupDealLineDetails">
+                <!-- Item number -->
+                <div class="dealPopupItemNo">
+                    <span class="popupDealLineItem">
+                        <span data-bind="text: textStrings.pdlItem"></span>
+                        <span data-bind="text: dealLineWrapper.itemNo"></span>
+                    </span> 
+                </div>
+
+                <!-- Item name -->
+                <div class="popupDealItemPicker" data-bind="text: selectedItemWrapper().name"></div>
+            
+                <!-- ko if: selectedMenuItem.FreeTops > 0 -->
+                <div class="popupDealFreeTopsReminder" data-bind="text: textStrings.pdlCustomizeFree"></div>
+                <!-- /ko -->
+            </div>
+
+            <!-- Customize button (Mobile mode)-->
+            <div data-bind="visible: guiHelper.isMobileMode()" class="popupDealCustomize">
+                <div class="popupDealCustomizeItemButton button">
+                    <a href="#" data-bind="click: dealHelper.customizeDealLine">Customize</a>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Popup deal line picker -->
+    <script type="text/html" id="popupDealLinePicker-template">
+        <div class="popupDealLine">
+            
+            <!-- Customize button (PC/Tablet mode)-->
+            <div data-bind="visible: !guiHelper.isMobileMode()" class="popupDealCustomize">
+                <!-- ko if: selectedItemWrapper() == undefined || selectedItemWrapper().name != textStrings.pleaseSelectAnItem -->
+                <div class="popupDealCustomizeItemButton button">
+                    <a href="#" data-bind="click: dealHelper.customizeDealLine, text: textStrings.pdlpCustomize"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+
+            <div class="popupDealLineDetails">
+                <div class="dealPopupItemNo">
+                    <span class="popupDealLineItem">
+                        <span data-bind="text: textStrings.pdtItem"></span>
+                        <span data-bind="text: dealLineWrapper.itemNo"></span>
+                    </span>
+                </div> 
+
+                <div class="popupDealItemPicker">
+                    <select data-bind="options: itemWrappers, optionsText: 'name', value: selectedItemWrapper, attr: { class: hasError() ? 'checkoutDataError' : '', id: dealLineWrapper.id }"></select>
+                </div>
+            </div>
+
+            <!-- Customize button (Mobile mode)-->
+            <div data-bind="visible: guiHelper.isMobileMode()" class="popupDealCustomize">
+                <!-- ko if: selectedItemWrapper() == undefined || selectedItemWrapper().name != textStrings.pleaseSelectAnItem -->
+                <div class="popupDealCustomizeItemButton button">
+                    <a href="#" data-bind="click: dealHelper.customizeDealLine, text: textStrings.pdlpCustomize"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+
+        </div>
+    </script>

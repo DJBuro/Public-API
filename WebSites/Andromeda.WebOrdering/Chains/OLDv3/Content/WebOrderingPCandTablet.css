@@ -1,0 +1,1825 @@
+﻿.highlightedButton a, .button a
+{
+    padding: 7px 0 7px 0;
+}
+
+header h1
+{
+    float:right;
+    font-size: 28pt;
+    padding-right: 20px
+}
+
+#headerRight
+{
+    float:right;
+}
+
+#headerLeft
+{
+    float:left;
+    margin: 20px 30px 0 20px;
+    height: 140px;
+}
+
+#headerLeft img
+{
+}
+
+#phone
+{
+    float:right;
+    color: gray; 
+    margin: 10px 10px 0 0;  
+    font-size: 16pt;
+}
+
+#socialMedia
+{
+    float:right;
+    font-size: 10pt;
+
+    margin:0;
+    padding: 6px 20px 6px 20px;
+
+    background-color: #FFFFFF;
+    /*background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b87a46), to(#b87a46));
+    background: -webkit-linear-gradient(top, #b87a46, #b87a46);
+    background: -moz-linear-gradient(top, #b87a46, #b87a46);
+    background: -ms-linear-gradient(top, #b87a46, #b87a46);
+    background: -o-linear-gradient(top, #b87a46, #b87a46);*/
+
+    -moz-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 10px; 
+    -khtml-border-bottom-left-radius: 10px; 
+
+    -moz-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 10px; 
+    -khtml-border-bottom-right-radius: 10px;
+}
+
+#socialMedia p
+{
+    float: left; 
+    padding: 3px 10px 0 0; 
+    margin: 0;
+    font-size: 14pt;
+    color:black;
+}
+
+#storeDetailsAddressWrapper
+{
+    clear:right; 
+    float:right;
+    height: 40px;
+}
+
+#storeDetailsAddress
+{
+    font-size: 12pt; 
+    padding: 10px 0 0 0;
+    margin:0;
+    color: gray;
+}
+
+#chooseStoreSelectContainer 
+{
+    overflow: auto;
+    width: 100%;
+}
+
+#chooseStoreSelectOuter
+{
+    float: right;
+    right: 50%;
+    position: relative;
+}
+
+#chooseStoreSelectInner
+{
+    float: right;
+    right: -50%;
+    position: relative;
+}
+
+#chooseStoreSelectInner select
+{
+    border: 1px solid #466011;
+}
+
+#mainMenu
+{
+    clear:right;
+    float:right;
+    overflow: hidden;
+    padding: 15px 0 4px 10px;
+}
+
+.mainMenuButton, .mainMenuButtonSelected, .mainMenuButtonHighlighted
+{
+    float: right;
+    margin-right: 8px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+    overflow:hidden;
+}
+
+.mainMenuButton a:link, .mainMenuButton a:visited, .mainMenuButton a:active,
+.mainMenuButtonHighlighted a:link, .mainMenuButtonHighlighted a:visited, .mainMenuButtonHighlighted a:active
+{
+    display:block;
+    
+    width:100%;
+    height:100%;
+
+    padding: 5px 7px 5px 7px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+
+    text-decoration: none;
+    font-size: 16pt;
+
+    color: #383838;
+}
+
+.mainMenuButtonSelected a:link, .mainMenuButtonSelected a:visited, .mainMenuButtonSelected a:active
+{
+    display:block;
+    
+    width:100%;
+    height:100%;
+
+    padding: 5px 7px 5px 7px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+
+    text-decoration: none;
+    font-size: 16pt;
+
+    color: #383838;
+}
+
+#mobileMenuSections
+{
+    display:none;
+}
+
+#postcodeCheckHeader
+{
+    display:none;
+}
+
+.chooseStorePrompt
+{
+    margin:20px 0 20px 0;
+}
+.sitesBox h2
+{
+    color: #493700;
+}
+.sitesBox select
+{
+    clear:both;
+    float: left;
+    display:block;
+    font-size:16pt;
+    padding: 5px;
+}
+.sitesBox a
+{
+    font-size:16pt;
+}
+
+.siteButton
+{
+    width:200px; 
+    height:125px; 
+    margin-right:10px;
+}
+
+.siteButton a
+{
+    padding-top: 15px;
+}
+
+.waitPrompt
+{
+}
+
+/* HOME VIEW */
+
+#homeCheckPostcodeButton
+{
+    display:none;
+}
+
+#homeAddress h1
+{
+    font-size: 16pt;
+    padding: 0;
+    margin:0 0 10px 0;
+    font-weight: normal;
+}
+
+#homeAddressLines
+{
+    display: block;
+}
+
+#homeAddressLinesMobile
+{
+    display: none;
+}
+
+#map
+{
+    width:100%;
+    height:100%;
+}
+
+.homeDeliveryTimesDay
+{
+    clear: both;
+    overflow: hidden;
+}
+
+.homeDeliveryTimesDayColumn1
+{
+    float:left; 
+    width: 100px;
+}
+
+.homeDeliveryTimesDayColumn2
+{
+    float:left;
+}
+
+#homeMenuSections h1
+{
+    font-size: 20pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 10px 0 10px 0;
+    color: #493700;
+}
+
+#homeMenuSections p
+{
+    font-size: 14pt;
+    font-weight: normal;
+    padding: 0;
+    margin: 0 0 10px 0;
+    color: #493700;
+}
+
+.homeMenuSection a:link, .homeMenuSection a:visited, .homeMenuSection a:active
+{
+    padding-top:10px;
+    font-size: 14pt;
+}
+
+#homeDeliveryMinimumOrder
+{
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+/* POSTCODE CHECK */
+#postcodeCheck
+{
+    background-color: #815126;
+    overflow: hidden;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background: #F4F2F2;
+
+    /* Safari 4-5, Chrome 1-9 */
+    /*background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#F4F2F2));*/
+    /* Safari 5.1, Chrome 10+ */
+    /*background: -webkit-linear-gradient(left, #C6955B, #F4F2F2);*/
+    /* Firefox 3.6+ */
+    /*background: -moz-linear-gradient(left, #C6955B, #815126);*/
+    /* IE 10 */
+    /*background: -ms-linear-gradient(left, #C6955B, #815126);*/
+    /* Opera 11.10+ */
+    /*background: -o-linear-gradient(left, #C6955B, #815126);*/
+}
+#postcodeCheckInner
+{
+    padding: 10px;
+}
+
+#postcodeCheckTop
+{
+    margin: 10px 0 0 0
+}
+
+#postcodeCheckTop input
+{
+    float:left; 
+    margin: 0 0 0 40px;
+    width: 100px; 
+    height: 30px; 
+    font-size: 16pt;
+    text-align: center;
+}
+
+#postcodeCheckButton
+{
+    float:left; 
+    margin: 0 0 0 15px;
+    width: 180px;
+}
+
+#postcodeCheckButton a
+{
+}
+
+#postcodeCheck h1
+{
+    color: #815126;
+    text-align: center;
+    font-weight: normal;
+    font-size: 15pt;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+
+#postcodeCheck p
+{
+    margin: 5px 0 0 0;
+    padding: 0;
+    text-align: center;
+}
+
+#postcodeCheckResult
+{
+    clear:both;
+    padding-top: 5px;
+}
+
+#postcodeCheckFail
+{
+    padding-top: 5px;
+    color: red;
+}
+
+#postcodeCheckOk
+{
+    padding-top: 5px;
+    color: #4CFF00;
+}
+
+#postcodeCheckChangeStoreButton
+{
+    position: absolute;
+    bottom: 10px;
+    width: 150px;
+    margin: 0 0 0 10px;
+}
+
+#postcodeCheckShowMenuButton
+{
+    position: absolute;
+    bottom: 10px;
+    width: 200px;
+    margin: 0 0 0 175px;
+}
+
+/* Login/register */
+#postcodeCheck
+{
+    background-color: #815126;
+    overflow: hidden;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background: #F4F2F2;
+
+    /* Safari 4-5, Chrome 1-9 */
+    /*background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#F4F2F2));*/
+    /* Safari 5.1, Chrome 10+ */
+    /*background: -webkit-linear-gradient(left, #C6955B, #F4F2F2);*/
+    /* Firefox 3.6+ */
+    /*background: -moz-linear-gradient(left, #C6955B, #815126);*/
+    /* IE 10 */
+    /*background: -ms-linear-gradient(left, #C6955B, #815126);*/
+    /* Opera 11.10+ */
+    /*background: -o-linear-gradient(left, #C6955B, #815126);*/
+}
+
+/* Terms and conditions */
+
+#tandcPopupBox
+{
+    background-color: #EAEAEA;
+    overflow: hidden;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+#tandcInner
+{
+    padding: 10px;
+}
+
+#tandcInner h1
+{
+    color: black;
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    text-align: center;
+}
+
+#tandcText
+{
+    margin: 10px 10px 0 10px;
+    width: 640px;
+    height: 250px;
+    overflow-y: scroll;
+    background-color: white;
+    border: solid 1px gray;
+    padding: 10px;
+}
+
+#tandcOkButton
+{
+    position: absolute;
+    bottom: 10px;
+    width: 75px;
+    margin: 10px 0 0 313px;
+}
+
+.menuPage
+{
+    margin: 0;
+    overflow: hidden;
+    position:relative;
+    height: 100%;
+    /*padding-top:40px;*/
+}
+
+#yourOrderContainer
+{        
+    overflow: hidden;
+}
+
+#orderItemsHeader
+{
+    margin-top: 5px;
+}
+
+#orderItemsHeader h2
+{
+    font-size:12pt;
+}
+
+#cartWrapper
+{
+    border-top: 1px solid #ffc000;
+    background: #EAEAEA;
+}
+
+#cartItems, #offlineCart
+{
+    padding: 0 0 15px 0;
+    overflow: hidden;
+}
+
+#emptyBasket
+{
+    padding: 5px;
+}
+
+#emptyBasket h2
+{
+    font-size:12pt;
+}
+
+#cartHelp
+{
+    text-align: center;
+    margin-top: 10px;
+}
+
+#deliveryOrCollectionText
+{
+    font-size:14pt;
+    margin-left: 20px;
+}
+
+#cartLineItems
+{ 
+    border-bottom: solid 1px #ffc000;
+    padding: 10px 5px 0 5px;
+}
+
+#deliveryOrCollection
+{
+    text-align:left;
+    font-size: 14pt;
+    margin:0 0 10px 20px;
+}
+
+#deliveryOrCollection input
+{
+    margin-right: 20px;
+}
+
+#cartTitle
+{
+    padding:10px;
+    text-align:center;
+}
+#cartTitle h1
+{
+    color: #36490D;
+    font-size:13pt;
+    margin:0;
+    padding:0;
+    font-weight: bold;
+}
+
+#optionsContainer
+{
+    margin: 12px 0 0 0;
+    min-height:50px;
+
+    border: solid 1px #E4E4E4;
+    background-color: #F4F2F2;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+
+#optionsTitle
+{
+    padding: 0 5px 0 5px;
+    background-color: #1E2F60;
+        
+    -moz-border-top-left-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    border-top-left-radius: 10px; 
+    -khtml-border-top-left-radius: 10px; 
+
+    -moz-border-top-right-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    border-top-right-radius: 10px; 
+    -khtml-border-top-right-radius: 10px; 
+
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#815126));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(left, #C6955B, #815126);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(left, #C6955B, #815126);
+    /* IE 10 */
+    background: -ms-linear-gradient(left, #C6955B, #815126);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(left, #C6955B, #815126);
+
+    color: white;
+    font-size:16pt;
+    padding:10px;
+    text-align:center;
+}
+
+#options
+{
+    font-size:10pt;
+}
+
+#clearOrderButton
+{
+    float: left;
+    width:100px;
+    margin-left: 10px;
+}
+
+#clearOrderButton a
+{
+    font-size: 11pt;
+}
+
+#checkoutButton
+{
+    float: left;
+    width:100px;
+    margin-left: 7px;
+}
+
+#checkoutButton a
+{
+    font-size: 11pt;
+}
+
+.checkoutPage
+{
+    height:auto;
+    position: absolute;
+    top: 155px;
+    margin: 0 0 0 -360px;
+    left: 50%;
+    width: 610px;
+    bottom: 30px;
+
+    border: solid 1px black;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    
+    background-color: #EAEAEA;
+}
+
+.checkoutPage section
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    width: 600px;
+}
+
+.checkoutPage h1
+{
+    text-align: center;
+    font-size: 16pt;
+    padding: 0;
+    margin:10px 0 10px 0;
+    font-weight: normal;
+}
+
+#checkoutSectionsContainer
+{
+    position: relative;
+    height: 550px;
+    overflow: hidden;
+}
+.checkoutSection
+{
+    padding: 10px 20px 10px 10px;
+    position: absolute;
+    overflow: hidden;
+    width: 560px;
+}
+.checkoutAddressColumn1 span
+{
+    font-size: 9pt;
+    color: gray;
+}
+
+#rememberAddressWrapper
+{
+    margin-top: 5px;
+}
+
+.checkoutButtons .button
+{
+}
+
+.backButton
+{
+    width:100px; 
+    float:left;
+}
+
+.nextButton
+{
+    width:100px; 
+    float:right;
+}
+
+#paymentPayLine
+{
+    width: 310px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+#paymentTandCCheckbox
+{
+    width: 375px;
+    margin: 0 auto;
+}
+
+#mercuryPaymentContainer
+{
+    text-align: center; 
+    width: 647px;
+    height: 500px; 
+}
+
+#mercuryPaymentIFrame
+{
+    width:647px;
+    height: 450px;
+    /*scrolling: auto;*/
+    text-align: center;
+    border: 0;
+}
+
+#dataCashPaymentContainer
+{
+    text-align: center; 
+    width: 647px;
+    height: 500px; 
+}
+
+#dataCashPaymentIFrame
+{
+    width:647px;
+    height: 700px;
+    text-align: center;
+    border: 0;
+}
+
+#storeDetailsContainer
+{
+    /*padding: 15px 20px 20px 20px;*/
+    margin: 12px 0 0 0;
+    min-height:50px;
+
+    border: solid 1px #E4E4E4;
+    background-color: #F4F2F2;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+
+#storeDetailsTitle
+{
+    padding: 0 5px 0 5px;
+    background-color: #1E2F60;
+        
+    -moz-border-top-left-radius: 10px;
+    -webkit-border-top-left-radius: 10px;
+    border-top-left-radius: 10px; 
+    -khtml-border-top-left-radius: 10px; 
+
+    -moz-border-top-right-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+    border-top-right-radius: 10px; 
+    -khtml-border-top-right-radius: 10px; 
+
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#815126));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(left, #C6955B, #815126);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(left, #C6955B, #815126);
+    /* IE 10 */
+    background: -ms-linear-gradient(left, #C6955B, #815126);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(left, #C6955B, #815126);
+
+    color: white;
+    font-size:18pt;
+    padding:10px;
+    text-align:center;
+}
+
+#storeDetails
+{
+    font-size:13pt;
+}
+
+.storeDetailsDayColumn1
+{
+    font-style: italic;
+}
+
+.menu
+{
+    margin: 12px 0 0 0;
+    border: solid 1px #E4E4E4;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+
+#menuSection
+{
+    height:100%;
+}
+
+#sectionHeaders
+{
+    /*-moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;*/ 
+}
+
+#sectionHeadersTop h1
+{
+    color: #36490D;
+    font-size: 12pt;
+    margin: 0;
+    padding: 10px 0 10px 5px;
+    font-weight: bold;
+}
+
+.sectionHeader
+{
+    margin:5px 0 5px 0;
+    clear: both;
+    overflow: hidden;
+    width: 125px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+     background-color: #ffc000;
+}
+.selectedSectionHeader
+{
+    margin:5px 0 5px 0;
+    clear: both;
+    overflow: hidden;
+    width: 125px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    -moz-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+    box-shadow: 0px 2px 7px rgba(0,0,0,0.25);
+
+     background-color: #ffc000;
+
+    /*border: solid 1px gray;*/
+}
+.sectionHeader a:link, .sectionHeader a:visited, .sectionHeader a:active
+{
+    display:block;
+    
+    width:100%;
+    height:100%;
+    color:#383838;
+    font-size:15pt;
+    text-decoration: none;
+
+    padding: 2px 7px 2px 7px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+}
+
+.selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+{
+    display:block;
+    
+    width:100%;
+    height:100%;
+    color:#E6001D;
+    font-size:15pt;
+    text-decoration: none;
+
+    padding: 2px 7px 2px 7px;
+
+    background: -webkit-gradient(linear, left top, left bottom, from(#FFC21C), to(#D39E00));
+    background: -webkit-linear-gradient(top, #FFC21C, #D39E00);
+    background: -moz-linear-gradient(top, #FFC21C, #D39E00);
+    background: -ms-linear-gradient(top, #FFC21C, #D39E00);
+    background: -o-linear-gradient(top, #FFC21C, #D39E00);
+}
+.sectionHeader h1
+{
+    background-color:transparent;
+    text-align:center;
+    padding: 0;
+    margin: 20px;
+}
+
+.section
+{
+    /*position: absolute;
+    top:0;*/
+}
+
+.checkoutPage h1
+{
+    color: #36490D;
+    font-size: 26pt;
+    margin: 0;
+    padding: 5px;
+    font-weight: normal;
+    text-align: center;
+}
+#checkoutPaymentContainer
+{
+    height: 150px;
+    padding: 0 20px 20px 20px;
+    overflow: hidden;
+}
+
+#orderAccepted
+{
+    overflow:hidden;
+}
+
+#orderAcceptedOptions
+{
+    clear:both;
+    width:924px;
+}
+
+#orderAcceptedOptions .button
+{
+    width:220px;
+    margin: 0 auto;
+}
+
+#orderAcceptedOptions .button a
+{
+    padding: 5px 0 5px 0;
+    width:220px;
+}
+
+#marketingSection
+{
+     margin-top:10px;
+}
+
+#marketingSection input
+{
+    clear: left; 
+    float:left; 
+    width: 20px; 
+    text-align: right; 
+    margin-top:5px;
+}
+
+#marketingSection label
+{
+    float:left; 
+}
+
+#rememberSection
+{
+}
+
+#rememberSection input
+{
+    clear: left; 
+    float:left; 
+    width: 20px; 
+    text-align: right; 
+    margin-top:5px;
+}
+
+#rememberAddressWrapper label
+{
+    font-size: 10pt;
+}
+
+.sectionItems
+{
+}
+
+.itemRow
+{
+    clear:both;
+    margin:10px 15px 10px 10px;
+    padding:10px;
+    overflow: hidden;
+
+    border: solid 1px #ffc000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    
+    background-color:#EAEAEA;
+}
+
+.itemRow select
+{
+    height:30px;
+    font-size:12pt; 
+}
+
+.nameDescriptionContainer
+{
+    float:left;
+    /*width: 300px;*/
+    color: black;
+    margin-right: 250px;
+}
+
+.itemName
+{
+    font-size:16pt;
+    color:#383838;
+    padding:0;
+    margin:0 ;
+    font-weight:bold;
+}
+
+.itemDescription
+{
+    font-size:12pt;
+}
+
+.notAvailable
+{
+    font-size:10pt;
+}
+
+.priceCategoryContainer
+{
+    float: right;
+    width: 230px;
+}
+
+.priceContainer
+{
+    float:right;
+    min-width:75px;
+}
+.price
+{
+    float:right;
+    margin:0 0 0 10px;
+    padding: 0;
+    font-weight:normal;
+    color:#0F2D69;
+    min-width: 80px;
+    text-align: right;
+    font-size: 20pt;
+}
+.menuOptions
+{
+    clear:both;
+    float:right;
+}
+    
+.categoryContainer
+{
+    float:right;
+    min-width: 50px;
+    margin:5px 0 0 0;
+}
+
+.category1
+{
+    float: right;
+}
+.category2
+{
+    float: right;
+}
+
+.addItemButton a
+{
+    padding: 7px 0 7px 0;
+}
+
+.dealItem
+{
+    border: solid 1px #ffc000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; 
+    -khtml-border-radius: 10px;
+    
+    margin:10px 35px 10px 10px;
+    padding:10px;
+    background-color:#EAEAEA;
+
+    color: black;
+}
+
+.dealOptions
+{
+    float:right;
+    margin: 5px 0 0 5px;
+}
+
+.dealOptions .highlightedButton
+{
+    width:135px;
+}
+
+#popupBody
+{
+    overflow-x: hidden; 
+    /*overflow-y: scroll;*/ 
+    padding-bottom: 20px;
+    height:100%;
+}
+
+.popupDealCustomize
+{
+    width:160px; 
+    float:left;
+    min-height:1px;
+}
+
+.popupDealLineDetails
+{
+    float:left;
+}
+
+.dealPopupItemNo
+{
+    float: left; 
+    font-weight:bold;
+}
+
+.popupDealLine
+{
+    font-size:16pt;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.popupDealLineItem
+{
+    padding-right: 20px;
+}
+
+.popupDealLine select
+{
+    height:35px;
+    font-size:16pt; 
+    padding:0;
+    margin:0;
+}
+
+#mobileMenu
+{
+    display:none;
+}
+
+#mobileCheckoutMenu
+{
+    display:none;
+}
+
+.popupBoxBackgroundVisible
+{
+    display: block;
+}
+
+.popupDealCustomizeItemButton
+{
+    width: 100px;
+}
+
+.popupDealCustomizeItemButton a
+{
+}
+
+.popupBoxBackgroundHidden
+{
+    display: none;
+}
+
+.popupBoxBackgroundHidden, .popupBoxBackgroundVisible
+{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background-color:rgba(255,255,255,0.5);
+}
+.popupItemDetails
+{
+    padding: 10px 20px 0 20px;
+    float:left;
+    color:white;
+}
+
+.dealPopupBoxBackgroundHidden
+{
+    display: none;
+}
+
+.dealPopupBoxBackgroundVisible
+{
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background-color:rgba(255,255,255,0.5);
+}
+
+.popupItemDetails h2
+{
+    padding: 0;
+    margin: 0;
+    color:#C7C6C4;
+    font-weight:bold;
+}
+
+#popupName
+{
+    font-size: 18pt;
+}
+
+.popupOptions
+{
+    float:right;
+    background-color: #849ACB;
+    padding: 0 0 0 10px;
+    position: relative;
+    padding-bottom:8000px; /* This little trick simulates height 100% */
+    margin-bottom:-8000px;
+}
+
+.popupBoxHeaderContainer
+{
+    padding-bottom: 10px;
+    overflow:hidden;
+    background-color: black;
+
+    /*background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#815126));
+    background: -webkit-linear-gradient(left, #C6955B, #815126);
+    background: -moz-linear-gradient(left, #C6955B, #815126);
+    background: -ms-linear-gradient(left, #C6955B, #815126);
+    background: -o-linear-gradient(left, #C6955B, #815126);*/
+}
+    
+.popupBoxHeaderContainer h2, .popupBoxHeaderContainer a
+{
+    font-weight: bold;
+}
+
+#popupOptionsLeft
+{
+    overflow: hidden;
+    text-align: center;
+    margin: 15px 0 0 0;
+}
+
+#popupOptionsTopQuantity
+{
+    float:right;
+}
+
+#popupQuantity
+{
+    font-weight:normal;
+}
+
+#popupQuantityHeader
+{
+    margin-bottom:5px;
+}
+
+#popupQuantity label
+{
+    color: white;
+}
+
+#popupQuantity select
+{
+    font-size: 16pt;
+}
+
+#popupOptionsTopPrice
+{
+    float:right;
+}
+
+#popupPriceHeader
+{
+    color:white;
+}
+
+#popupPrice
+{
+    clear:both;
+    float:right;
+    font-weight:normal;
+    font-size:26pt;
+    color: white;
+    text-align:right;
+    margin: 0 15px 10px 20px;
+    padding: 0;
+    line-height:26pt;
+}
+
+#popupCatContainer
+{ 
+    float:right;
+    margin: 0 20px 0 0;
+}
+
+#popupCatContainer span
+{ 
+    color: white;
+}
+
+#popupCatContainer select
+{
+    font-size:16pt;
+}
+
+#popupCatHeader
+{
+    float:right;
+    color: white;
+    padding:0;
+    margin:0;
+}
+
+#popupCategory1 
+{
+    clear:both;
+    float:right;
+    font-size:20pt;
+    line-height:35px;
+    font-weight:normal;
+}
+
+#popupCategory2
+{
+    clear:both;
+    float:right;
+    font-size:20pt;
+    line-height:35px;
+    font-weight:normal;
+}
+
+#popupCategory2 span
+{
+    color: white;
+}
+
+#popupOptionsRight
+{
+    float:right;
+    margin:0;
+}
+
+#popupCancelButton
+{
+    clear: both;
+    width:150px;
+    margin: 0 5px 0 0;
+}
+
+#popupDealOptions
+{
+    float:right;
+    background-color: black;
+    position: relative;
+    padding: 15px 0 8000px 10px; /* This little trick simulates height 100% */
+    margin:0 0 -8000px 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+#popupAddToCartButton
+{
+    clear: both;
+    width: 150px;
+    margin: 0 10px 5px 0;
+    padding:0;
+}
+
+#popupRemoveFromCartButton
+{
+    clear: both;
+    width: 190px;
+    margin: 0 5px 0 0;
+}
+
+#popupUpdateItemButton
+{
+    clear: both;
+    width: 190px;
+    margin: 0 15px 5px 0;
+}
+
+#popupAddToDealButton
+{
+    clear: both;
+    width: 125px;
+    margin: 0 15px 5px 5px;
+}
+
+#popupCancelDealButton
+{
+    clear: both;
+    width:125px;
+    margin: 0 15px 0 5px;
+}
+
+#dealPopupAddToCartButton
+{
+    clear: both;
+    width: 150px;
+    margin: 0 10px 0 0;
+}
+
+#dealPopupUpdateCartButton
+{
+    clear: both;
+    width: 190px;
+    margin: 0 10px 0 0;
+}
+
+#dealPopupRemoveFromCartButton
+{
+    clear: both;
+    width: 190px;
+    margin: 5px 10px 0 0;
+}
+
+#dealPopupCancelButton
+{
+    clear: both;
+    width:150px;
+    margin: 5px 10px 0 0;
+}
+
+.popupOptions select
+{
+    height:35px;
+    font-size:12pt; 
+    padding:0 0 0 5px;
+    margin:0;
+}
+
+#popupBody
+{
+    padding: 0 0 0 20px;
+}
+
+#popupBody h2
+{
+    padding: 5px 0 0 0;
+    margin: 10px 0 10px 0;
+    font-size: 16pt;
+    font-weight: normal;
+    color:#EFB300;
+}
+
+#popupFreeToppings
+{
+    text-align:center;
+    color: red;
+}
+
+.errorBox
+{
+    background-color: #815126;
+    overflow: hidden;
+    padding: 10px 50px 30px 50px;
+    margin: 20px 0 0 0;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#C6955B), to(#815126));
+    /* Safari 5.1, Chrome 10+ */
+    background: -webkit-linear-gradient(left, #C6955B, #815126);
+    /* Firefox 3.6+ */
+    background: -moz-linear-gradient(left, #C6955B, #815126);
+    /* IE 10 */
+    background: -ms-linear-gradient(left, #C6955B, #815126);
+    /* Opera 11.10+ */
+    background: -o-linear-gradient(left, #C6955B, #815126);
+}
+.errorBox a
+{
+    font-size:20pt;
+}
+.errorMessage
+{
+    text-align:center;
+    margin:20px 0 20px 0;
+    font-weight: normal;
+}
+.errorOptions
+{
+    width:160px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.errorBox h2
+{
+    color: white;
+}
+
+.menuSectionHasFocus, .menuSectionDoesntHaveFocus
+{
+    display:block;
+}
+
+.headFootNoPopup, .headFootPopup
+{
+    display: block;
+}
+
+#payAtDoorButton
+{
+    width:150px;
+    margin-right:5px;
+}
+
+#payNowButton
+{
+    width:150px;
+    margin-left:5px;
+}
+
+.sectionTitle h1
+{
+    color: #36490D;
+    font-size: 26pt;
+    margin: 0;
+    padding: 5px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/* Login/register popup */
+#loginRegister
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -400px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 260px;
+    width: 800px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+#loginRegisterInner
+{
+}
+
+#loginRegisterInner h1
+{
+    padding:0;
+    margin:0;
+    text-align: center;
+    padding-top: 10px;
+}
+
+#signIn
+{
+    padding: 0 10px 10px 10px;
+}
+
+#loginUsingFacebook
+{
+    float:left; 
+    width:380px; 
+    overflow:hidden;
+}
+
+#loginUsingFacebook p
+{
+    color: gray; 
+    text-align:center; 
+    padding:0 10px 0 10px;
+}
+
+#facebookLoginButtonOuter
+{
+    width:100%; 
+    margin-top: 20px; 
+    clear: left; 
+    text-align:center;
+}
+
+#facebookLoginButton
+{
+    float:none; 
+    width:200px; 
+    margin: 0 auto; 
+    border-radius: 5px;
+}
+
+#facebookLoginButton a
+{
+    color:white; 
+    background: -webkit-linear-gradient(top, #3D5C9F, #6A84C1);
+}
+
+#facebookLoginDivider
+{
+    float:left; 
+    overflow:hidden;
+}
+
+#facebookLoginDividerTop
+{
+    margin: 15px 0 5px 10px; 
+    border-left: 1px solid gray;
+    width:1px; 
+    height:55px;
+}
+
+#facebookLoginDividerBottom
+{
+    margin: 5px 0 10px 10px; 
+    border-left: 1px solid gray; 
+    width:1px; 
+    height:55px;
+}
+
+#loginSection
+{
+    float:left; 
+    width:349px; 
+    margin: 15px 0 0 20px; 
+    overflow:hidden;
+}
+
+#loginSectionInner
+{
+    overflow:hidden;
+}
+
+#loginSectionInner p 
+{
+    padding:0;
+    margin:0; 
+    color:gray; 
+    margin-bottom:10px; 
+    text-align:center;
+}
+
+.loginFormPrompt
+{
+    float:left; 
+    width: 150px; 
+    text-align: right; 
+    margin-right:10px;
+}
+
+.loginFormInput
+{
+    float:left;
+}
+
+#loginButtonContainer
+{
+    width:100%; 
+    margin-top: 10px; 
+    clear: left; 
+    text-align:center; 
+    position:relative;
+}
+
+#loginButton
+{
+    float:none; 
+    width:80px; 
+    margin: 0 auto;
+}
+
+#loginError
+{
+    position: absolute; 
+    color: red; 
+    width:120px; 
+    top:0; 
+    right:0; 
+    font-size:10pt;
+}
+
+#registerContainer
+{
+    clear:both; 
+    padding-top: 45px; 
+    overflow:hidden; 
+    background-color: #EFEFEF; 
+    height:218px;
+}
+
+#registerContainer h2
+{
+    margin:0 0 10px 0; 
+    overflow:hidden; 
+    text-align:center;
+}
+
+.registerSection
+{
+    overflow:hidden; 
+    width: 380px; 
+    float:left;
+}
+
+#registerMarketing
+{
+    clear: left; 
+    text-align:center; 
+    margin-top:8px;
+}
+
+#registerErrorMessage
+{
+    clear: left; 
+    text-align: center; 
+    color: red;
+}
+
+#loginRegisterButtons
+{
+    position:absolute; 
+    width: 170px; 
+    bottom: 10px; 
+    left: 50%; 
+    margin-left: -80px; 
+    z-index:10;
+}
+
+#signUpButton
+{
+    float:left; 
+    width:80px; 
+    margin-right:5px;
+}
+
+#closeLoginRegisterPopupButton
+{
+    float:left; 
+    width:80px; 
+    margin-left:5px;
+}
+
+.popupOverlay
+{
+    position: fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background-color:rgba(255,255,255,0.5);
+}
+
+
+

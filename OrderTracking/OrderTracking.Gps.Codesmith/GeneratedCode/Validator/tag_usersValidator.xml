@@ -1,0 +1,16 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="TaguserValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="ServertimestampValidator" test="Servertimestamp"><v:message id="error.Servertimestamp.required" providers="ServertimestampErrors, ValidationSummary"/></v:required>
+	<v:required id="ServertimestampmsValidator" test="Servertimestampms"><v:message id="error.Servertimestampms.required" providers="ServertimestampmsErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="MessagetemplateValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="TemplatetextValidator" test="Templatetext"><v:message id="error.Templatetext.required" providers="TemplatetextErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

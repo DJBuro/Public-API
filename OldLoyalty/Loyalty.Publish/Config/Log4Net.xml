@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<log4net debug="false">
+
+    <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
+        <file value="Logs/log.txt" />
+        <appendToFile value="true" />
+        <rollingStyle value="Size" />
+        <maxSizeRollBackups value="10" />
+        <maximumFileSize value="500KB" />
+        <staticLogFileName value="true" />
+        <layout type="log4net.Layout.PatternLayout">
+            <conversionPattern value="%date [%thread] %-5level - %message%newline" />
+        </layout>
+    </appender>
+
+    <appender name="ADONetAppender" type="log4net.Appender.ADONetAppender">
+        <bufferSize value="1" />
+        <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+        <!-- <connectionString value="data source=DEV4VM;initial catalog=Loyalty;integrated security=false;persist security info=True;User ID=LoyaltyCardPublicUser;Password=PublicPass" />-->
+       <connectionString value="data source=CLOUDTOWER\CLOUD;initial catalog=Loyalty;integrated security=false;persist security info=True;User ID=LoyaltyCardPublicUser;Password=PublicPass" />
+        <!--<connectionString value="data source=TESTSERVER2003\DEVSQL2005;initial catalog=Loyalty;integrated security=false;persist security info=True;User ID=LoyaltyCardPublicUser;Password=PublicPass" />
+        <connectionString value="data source=144616-RACK2\SQLEXPRESS;initial catalog=Loyalty;integrated security=false;persist security info=True;User ID=LoyaltyCardPublicUser;Password=PublicPass" />-->
+        
+        <commandText value="INSERT INTO tbl_LoyaltyLog ([SiteId],[Severity],[Message],[Method],[Variables],[Source]) VALUES (@siteId,@severity,@message,@method,@variables,@source)" />
+        <parameter>
+            <parameterName value="@siteId" />
+            <dbType value="String" />
+            <size value="50" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="%property{siteId}" />
+            </layout>
+        </parameter>
+        <parameter>
+            <parameterName value="@severity" />
+            <dbType value="String" />
+            <size value="50" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="%p" />
+            </layout>
+        </parameter>
+        <parameter>
+            <parameterName value="@message" />
+            <dbType value="String" />
+            <size value="500" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="%m" />
+            </layout>
+        </parameter>
+        <parameter>
+            <parameterName value="@method" />
+            <dbType value="String" />
+            <size value="200" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="%property{method}" />
+            </layout>
+        </parameter>
+        <parameter>
+            <parameterName value="@variables" />
+            <dbType value="String" />
+            <size value="100" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="%property{variables}" />
+            </layout>
+        </parameter>
+        <parameter>
+            <parameterName value="@source" />
+            <dbType value="String" />
+            <size value="50" />
+            <layout type="log4net.Layout.PatternLayout">
+                <conversionPattern value="${COMPUTERNAME}" />
+            </layout>
+        </parameter>
+     </appender>
+
+    <!-- Set default logging level to DEBUG -->
+    <!-- Possible values are ALL, DEBUG, INFO, WARN, ERROR, FATAL, OFF -->
+    <root>
+        <level value="ERROR" />
+        <!--<appender-ref ref="AspNetTraceAppender" />-->
+        <!--<appender-ref ref="TraceAppender" />
+        <appender-ref ref="RollingFileAppender" />-->
+        <appender-ref ref="ADONetAppender" />
+    </root>
+    <!--
+    In Spring.NET there is a 1-1 correspondence between the logger name and
+    the namespace of the class doing the logging...
+ 
+    <logger name="Spring">
+        <level value="DEBUG" />
+    </logger>
+    <logger name="NHibernate">
+        <level value="INFO" />
+    </logger> -->
+</log4net>

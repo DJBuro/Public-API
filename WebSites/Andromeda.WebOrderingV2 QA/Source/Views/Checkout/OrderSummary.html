@@ -1,0 +1,120 @@
+﻿    <!-- Order summary -->
+<script type="text/html" id="checkoutOrderSummary-template">
+    <div class="checkoutSection" data-bind="'attr': { 'id': id }">
+        <div id="checkoutOrderSummaryContainer">
+            <h3 data-bind="text: textStrings.checkSOrderSummary"></h3>
+
+            <div id="checkoutSOrderSummary">
+                <div id="checkoutSColumn1">
+
+                    <!-- Order items -->
+                    <div id="checkoutSOrderItems">
+                        <div data-bind="text: textStrings.checkSOrderItemsTitle"></div>
+                        <!-- ko foreach: cartHelper.cart().cartItems -->
+                        <div class="checkoutSOrderItem">
+                            <span class="checkoutSOrderItemName" data-bind="html: displayName"></span>
+                            <span class="checkoutSOrderItemPrice" data-bind="html: displayPrice"></span>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+
+                    <!-- Vouchers -->
+                    <!-- ko if: settings.voucherCodesEnabled && cartHelper.cart().vouchers().length > 0 -->
+                    <div id="checkoutSVouchers">
+                        <!-- ko foreach: cartHelper.cart().vouchers -->
+                        <div class="checkoutSOrderItem">
+                            <span class="checkoutSOrderItemName" data-bind="html: VoucherCode"></span>
+                            <a href="#" class="cartRemoveVoucher" data-bind="click: checkoutHelper.removeVouchers"></a>
+
+                            <!-- ko if: EffectType.toLowerCase() == 'fixed' -->
+                            <span class="checkoutSOrderItemPrice" data-bind="html: discount == undefined ? '?' : ('-' +  helper.formatPrice(discount() * 100))"></span>
+                            <!-- /ko -->
+                            <!-- ko if: EffectType.toLowerCase() != 'fixed' -->
+                            <span class="checkoutSOrderItemPrice" data-bind="html: '-' + helper.formatPrice(discount())"></span>
+                            <!-- /ko -->
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <!-- /ko -->
+                    <!-- Total -->
+                    <div id="checkoutSTotal">
+                        <div id="checkoutSTotalValue" data-bind="html: helper.formatPrice(cartHelper.cart().totalPrice())"></div>
+                        <div id="checkoutSTotalPrompt" data-bind="text: textStrings.checkSTotal"></div>
+                    </div>
+
+                    <!-- Add voucher codes -->
+                    <!-- ko if: settings.voucherCodesEnabled && cartHelper.cart().vouchers().length == 0  -->
+                    <div id="checkoutSAddVoucherContainer">
+                        <div id="checkoutSAddVoucherTitle" data-bind="text: textStrings.checkSAddVoucherTitle"></div>
+
+                        <label for="checkoutSVoucherCode" data-bind="'text': textStrings.checkSVoucherCode"></label>
+                        <input id="checkoutSVoucherCode" maxlength="32" type="text" data-bind="value: checkoutHelper.checkVoucherCode" />
+
+                        <div class="button checkoutRedeemButton">
+                            <a data-bind="click: checkoutHelper.addVoucherCode, text: textStrings.checkSAddVoucherCode" href="#"></a>
+                        </div>
+                        <div class="checkoutError" data-bind="visible: checkoutHelper.voucherError() != undefined, text: checkoutHelper.voucherError"></div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- Add loyalty -->
+                    <!-- ko if: loyaltyHelper.IsEnabled() -->
+                    <div id="checkoutSAddLoyaltyContainer">
+                        <div data-bind="text: textStrings.checkSAddLoyaltyTitle"></div>
+                        <div>Points currently available <span data-bind="text: loyaltyHelper.loyaltySession.availablePoints()"></span></div>
+                        <div>
+                            Value of points available <span data-bind="text:loyaltyHelper.loyaltySession.availablePoints()"></span>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+
+                <div id="checkoutSColumn2">
+
+                    <!-- Address -->
+                    <div id="checkoutSAddressContainer">
+                        <div id="checkoutSAddressTitle" data-bind="text: ($root.orderType() == 'collection' ? textStrings.checkSCollectionAddressTitle : textStrings.checkSDeliveryAddressTitle)"></div>
+                        <div id="checkoutSAddress" data-bind="html: $root.orderType() == 'collection' ? viewModel.displayAddressMultiLine() : checkoutHelper.displayAddressMultiLine"></div>
+                    </div>
+
+                    <!-- Wanted time -->
+                    <div id="checkoutSTime">
+                        <div data-bind="text: ($root.orderType() == 'collection' ? textStrings.checkSCollectionTimeTitle : textStrings.checkSDeliveryTimeTitle)"></div>
+                        <div data-bind="text: checkoutHelper.checkoutDetails.wantedTime().text"></div>
+                    </div>
+
+                    <!-- Payment selection -->
+                    <div id="checkoutSPaymentSelection">
+                        <div id="checkoutSPaymentTitle" data-bind="text: textStrings.checkSPaymentTitle"></div>
+
+                        <div id="checkoutSPayLaterSection">
+                            <input type="radio" id="checkoutSPayLater" name="checkoutPaymentType" data-bind="checkedValue: false, checked: checkoutHelper.checkoutDetails.payNow, click: checkoutHelper.payTypeChanged" />
+                            <label for="checkoutSPayLater" data-bind="'attr': { 'class': checkoutHelper.errors.payTypeHasError() ? 'checkoutDataError' : '' }, 'text': textStrings.checkSPayLater"></label>
+                        </div>
+
+                        <div id="checkoutSPayNowSection">
+                            <input type="radio" id="checkoutSPayNow" name="checkoutPaymentType" data-bind="checkedValue: true, checked: checkoutHelper.checkoutDetails.payNow, click: checkoutHelper.payTypeChanged" />
+                            <label for="checkoutSPayNow" data-bind="'attr': { 'class': checkoutHelper.errors.payTypeHasError() ? 'checkoutDataError' : '' }, 'text': textStrings.checkSPayNow"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkoutError" data-bind="visible: checkoutHelper.errors.orderSummaryHasError(), text: textStrings.checkMissing">
+            </div>
+
+            <!-- Next & back buttons -->
+            <div class="checkoutButtons">
+                <!-- Back -->
+                <div class="button backButton" data-bind="visible: checkoutHelper.backButton.visible">
+                    <a data-bind="click: checkoutHelper.backButtonClicked, text: checkoutHelper.backButton.displayText" href="#"></a>
+                </div>
+
+                <!-- Next -->
+                <div class="button nextButton" data-bind="css: { checkoutSendOrderToStoreButton: checkoutHelper.nextButton.isSendOrderButton }">
+                    <a data-bind="click: checkoutHelper.nextButtonClicked, text: checkoutHelper.nextButton.displayText" href="#">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

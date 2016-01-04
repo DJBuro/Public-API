@@ -1,0 +1,292 @@
+﻿.page, .pageWithPopup
+{
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+#pageHeader
+{
+    position: absolute;
+    width:1024px;
+    left:50%;
+    margin:0 0 20px -514px;
+    padding:0 10px 0 0;
+    /*background: transparent url('Images/DaddyDonkeyLogo.png') no-repeat;*/
+    /*background-position: 20px -7px;*/
+    height: 120px;
+}
+
+#logo
+{
+	float: left;
+	display: block;
+	width:271px;
+	height: 137px;
+	background: transparent url('Images/DaddyDonkeyLogo.png') no-repeat;
+	background-position: 40px -7px;
+	border: 0;
+	color: transparent;
+	font: 0/0 a;
+	text-shadow: none;*/
+}
+
+#logo:hover
+{
+	background: transparent url('Images/HomeLogo1.png') no-repeat;
+	background-position: 40px -7px;
+}
+
+header
+{
+    position: absolute;
+    width: 100%;
+    margin: 0;
+    left: 0;
+    border:0;
+    overflow: hidden;
+    height: 140px;
+    z-index: 999;
+    background-color: transparent;
+}
+
+body section
+{
+    width: 1024px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.sites
+{
+    float:left;
+    width: 984px; /* Minus padding */
+}
+
+/* HOME VIEW */
+.homeBox
+{
+    color: #AD2523;
+    padding: 0 25px 0 25px;
+
+    position: relative;
+    height: 100%;
+    width: 974px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-right: 7px;
+}
+
+#rightColumn
+{
+    position: absolute;
+    left: 50%;
+    top: 155px;
+    margin: 0 0 0 260px;
+    z-index:10;
+    height: auto;
+    bottom: 30px;
+}
+
+#rightColumn section
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width:250px;
+}
+
+#yourOrderContainer
+{
+    width:230px;
+    position:relative;
+
+    border: solid 1px #5B3D70;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: #5B3D70;
+}
+
+#menuContainer
+{
+    overflow: hidden;
+    position:relative;
+    height:100%;
+}
+
+#optionsContainer
+{
+    min-height:100px;
+}
+
+#storeDetailsContainer
+{
+    min-height:100px;
+}
+
+.postcodeCheckHidden, .postcodeCheckVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -115px 0 0 -200px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 230px;
+    width: 400px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+.tandcPopupHidden, .tandcPopupVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -350px;
+    background-color:white;
+    border: solid 1px gray;
+    height: 400px;
+    width: 700px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+    z-index: 1004;
+}
+
+/*.menu
+{
+    float:left;
+    width: 647px;
+}*/
+
+#sectionHeaders
+{
+    position: absolute;
+    left: 50%;
+    top: 155px;
+    margin: 0 0 0 -512px;
+    z-index:10;
+    height: auto;
+    bottom: 30px;
+    /*float:left;
+    width: 135px;
+    background-color: white;*/
+}
+
+#sectionHeaders section
+{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height:100%;
+    width: 135px;
+}
+
+#sectionHeadersContainer
+{
+    /*width:135px;*/
+    /*position:relative;*/
+    overflow-x: hidden;
+    border: solid 1px EF7000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -khtml-border-radius: 10px;
+
+    background-color: #EF7000;
+
+    padding: 0 5px 10px 5px;
+}
+
+#sections
+{
+    width: 612px;
+}
+
+.selectedSectionHeader a:link, .selectedSectionHeader a:visited, .selectedSectionHeader a:active
+{
+    padding: 2px 0 2px 7px;
+}
+
+.popupBoxHidden, .popupBoxVisible
+{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    margin: 20px 0 0 -450px;
+    background-color:white;
+    border: solid 1px gray;
+    min-height: 300px;
+    width: 900px;
+
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px; /* future proofing */
+    -khtml-border-radius: 10px; /* for old Konqueror browsers */
+
+    -moz-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    -webkit-box-shadow: 0 0 10px rgba(68,68,68,0.6);
+    box-shadow: 0 0 10px rgba(68,68,68,0.6);
+
+    overflow: hidden;
+}
+
+.popupChefComments
+{
+    width:410px; 
+    float:left;
+}
+
+.popupChefComments p
+{
+    font-size:10pt;
+	color: #FFFFFF;
+}
+
+.popupChefComments textarea
+{
+    width:410px; 
+    resize: none; 
+    height:75px;
+}
+
+.popupPerson
+{
+    width:410px; 
+    float:right;
+    margin-right:20px;
+}
+
+.popupPerson p
+{
+    font-size:10pt;
+	color: #FFFFFF;
+}
+
+.popupPerson input
+{
+    width:410px; 
+}

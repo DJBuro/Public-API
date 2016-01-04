@@ -1,0 +1,433 @@
+body {
+	font-size: small;
+	background: #08080A;
+	font-family: Lucida Sans, Sans-Serif;
+	margin: 20px;
+}
+/*be nice to Opera*/
+html>body{
+	font-size: small;
+	background: #08080A;
+	font-family: Lucida Sans, Sans-Serif;
+	margin: 20px;
+}
+
+#container {
+	margin: auto;
+	width: 927px;
+	background: #08080A url(imgs/bg.gif) repeat-y;
+}
+
+#footer{
+	clear: both;
+	margin: 0;
+	
+}
+#footer li{
+	list-style: none;
+	float: left;
+	padding: 5px 0 0 50px;
+	margin: 2px;
+}
+#footer li a{
+	color: #6C6C6E;
+}
+
+a{
+	text-decoration: none;
+	border: none;
+	/*cursor: auto;*/
+}
+a:hover
+{
+	/*cursor: auto;*/
+}
+img{
+	border: 0;
+}
+
+/*navigation*/
+#nav{
+	float: left;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 140%;
+	background: #D8CEB2;
+
+}
+
+#nav li{
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#nav a{
+	float: left;
+	/*display: block;*/
+	margin: 0 0 0 0;
+	padding: 5px 15px 5px 15px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+
+}
+
+#nav a:hover{
+	float: left;
+	/*display: block;*/
+	margin: 0;
+	padding: 5px 15px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+	background: #FEFCF6;
+}
+
+#cardNav{
+	float: right;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 100%;
+	background: #D8CEB2;
+clear:both;
+	display: inline;
+}
+
+#cardNav li{
+	float: left;
+	margin: 0;
+	padding: 0;
+
+}
+
+#cardNav a{
+	float: left;
+	/*display: block;*/
+	margin: 0 0 0 0;
+	padding: 7px 10px 7px 10px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+	font-weight: bold;
+}
+
+#cardNav a:hover{
+	float: left;
+	/*display: block;*/
+	margin: 0;
+	padding: 7px 10px;
+	color: #333;
+	border-left: 1px solid #ADA58F;
+	/*background:#FEFCF6  url(imgs/nav_on_bg.gif) repeat-x top left;*/
+		background: #FEFCF6;
+}
+
+/*default page upsells*/
+#upsells{
+
+}
+
+#upsells dl{
+	width: 225px;
+	margin: 15px 6px 10px 0;
+	float: left;
+	display: inline;/*  IE bug*/
+	background: #FFFFFF;
+	background-image: url(imgs/upsells/upsells_bg.gif);
+	background-repeat: repeat-x;
+}
+
+#upsells dt{
+	font-size: 120%;
+	padding: 2px 0 4px 4px;
+	letter-spacing: 1px;
+	font-weight: bold;
+	color: #6C6C6E;
+}
+
+#upsells dd{
+	margin:0;
+}
+
+#upsells a{
+	color: #000000;
+}
+
+#upsells dd p {
+	margin: 0 0 2px 0;
+	font-size: 110%;
+	font-weight: bold;
+	padding: 2px 0 15px 0;
+	text-align: center;
+}
+
+#upsells dd.upsellImage img{
+	float: left;/**/
+	padding: 0 0 15px 0;
+}
+
+/*default page content*/
+#pageContent{
+	/*clear: both;
+	border: 1px solid red;*/
+}
+
+#storeFinder{
+	float: left;
+	clear:left;
+	width: 240px;
+	margin: 0 0 10px 0;
+	padding: 6px 0 0 0;
+	background: #2B2A2F url(imgs/default/limeSlug.gif) repeat-x top;
+}
+
+#storeFinder dt{
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 6px;
+	color: #FFFFFF;
+}
+
+#storeFinder dd{
+	margin: 0 0 0 0;
+	padding: 4px 2px 2px 15px;
+	
+	color: #FFFFFF;
+}
+
+#storeFinder dd input{
+	border: 2px solid #AA9D91;
+	 padding-left: 5px
+}
+
+#storeFinder dd input:hover{
+	border: #B7D22C 2px solid;
+}
+
+#storeFinder dd a{
+	color: #FFFFFF;
+}
+
+#gifts{
+	float:left;
+	margin: 0 0 10px 0;
+	padding: 6px 0 0 0;
+	background:#2B2A2F url(imgs/default/orangeSlug.gif) repeat-x top;
+	width: 240px;
+	color: #FFFFFF;
+	clear:left;
+}
+
+#gifts dt{
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 6px;
+	color: #FFFFFF;
+}
+
+#gifts dd input{
+	border: 2px solid #AA9D91;
+	padding-left: 5px
+}
+
+#gifts dd input:hover{
+	border: #FFA800 2px solid;
+}
+
+#gifts dd{
+	margin: 0px;
+	padding: 4px 2px 0 15px;
+}
+
+#gifts dd a{
+	color: #FFFFFF;
+}
+
+#tracker{
+	float:left;
+    clear:left;
+	margin: 0 0 10px 0;
+	padding: 6px 0 0 0;
+	background:#2B2A2F url(imgs/default/yellowSlug.gif) repeat-x top;
+	width: 240px;
+	color: #FFFFFF;
+}
+
+#tracker dt{
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 6px;
+	color: #FFFFFF;
+}
+
+#tracker dd{
+	margin: 0px;
+	padding: 4px 2px 0 15px;
+}
+
+#tracker dd input{
+	border: 2px solid #AA9D91;
+	padding-left: 5px
+}
+
+#tracker dd input:hover{
+	border: #FFA800 2px solid;
+}
+
+#tracker dd a{
+	color: #FFFFFF;
+}
+
+
+#features
+{	clear:right;
+	float:right;
+	width:670px;
+	margin: 0;
+	background: #FFFFFF url(imgs/default/orangeSlug.gif) repeat-x top;
+}
+
+#features dl{
+	width: 666px;
+	/*background: grey;*/
+	float: left;
+	padding: 5px 0 6px 4px;
+	margin: 5px 0 2px 0;
+}
+
+#features dt{
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 8px;
+}
+
+#features dd.featuresImage img{
+	float: left;
+	margin: 0 8px 0 0;
+	padding: 4px;
+	border: 1px solid #C2B9B0;
+	border-bottom-color:#AA9D91;
+	border-right-color:#AA9D91;
+}
+
+#features dd{
+	font-size: 90%;
+	margin: 0px;
+	padding: 4px 2px 0 6px;
+}
+
+#features dd a{
+	font-size: 110%;
+	font-weight: bold;
+	margin: 0 0 0 10px;
+}
+#transactionHistory{
+
+}
+#transactionHistory dl{
+	display: inline;/*  IE bug*/
+	float: left;
+	border: 1px solid #C2B9B0;
+	margin: 0px;
+	clear: left;
+}
+
+#transactionHistory ul{
+	list-style: none;
+	float: left;
+	clear: left;
+	padding:0px;
+	margin: 2px;
+}
+
+.ramAddress{
+background-color: white;
+}
+
+/*Login Area*/
+#siteContent{
+	margin: 20px 25px;
+	float: right;
+	width: 645px;
+}
+
+#siteFeatures
+{
+	clear: right;
+	float: right;
+	width: 100%;
+	margin: 0;
+	display: inline;
+background: #FFFFFF  url(imgs/default/orangeSlug.gif) repeat-x top;
+}
+#siteFeatures dl{
+	width: 600px;
+	/*float: left;
+	clear:left;*/
+	padding: 5px 0 6px 4px;
+	margin: 5px 0 2px 0;
+}
+#siteFeatures dt{
+color: #6C6C6E;
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 6px;
+}
+#siteFeatures dd{
+	/*font-size: 90%;
+	clear: left;*/
+	margin: 0px;
+	padding: 4px 2px 0 15px;
+}
+#siteFeatures dd a{
+	font-size: 90%;
+	font-weight: bold;
+	margin: 0 0 0 10px;
+}
+#siteFeatures dd input{
+	border: 2px solid #AA9D91;
+	padding-left: 5px
+}
+
+#siteFeatures dd input:hover{
+	border: #FFA800 2px solid;
+}
+
+#features dd input{
+	border: 2px solid #AA9D91;
+	padding-left: 5px
+}
+#features dd input:hover{
+	border: #FFA800 2px solid;
+}
+
+
+/*Left Boxes*/
+#siteLeftBox{
+	float: left;
+	margin: 20px 0 2px 0;
+	padding: 2px 0 15px 0;
+	background: #2B2A2F url(imgs/default/yellowSlug.gif) repeat-x top;
+	width: 230px;
+	color: #FFFFFF;
+}
+
+#siteLeftBox dt{
+	font-size: 120%;
+	font-weight: bold;
+	padding: 0 0 0 6px;
+	color: #FFFFFF;
+}
+
+#siteLeftBox dd{
+	margin: 0px;
+	padding: 4px 2px 0 15px;
+}
+
+#siteLeftBox dd a{
+	color: #FFFFFF;
+}
+
+/*Loyalty Card Area*/

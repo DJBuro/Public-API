@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2CB57F5-A193-48CB-BAEA-81EB1EFAB493}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dashboard.Dao.NHibernate</RootNamespace>
+    <AssemblyName>Dashboard.Dao.NHibernate</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NHibernate, Version=2.1.2.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL" />
+    <Reference Include="Spring.Core, Version=1.3.0.20349, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL" />
+    <Reference Include="Spring.Data, Version=1.3.0.20349, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL" />
+    <Reference Include="Spring.Data.NHibernate21, Version=1.3.0.20349, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\Factory\AbstractHibernateDAOFactory.cs" />
+    <Compile Include="Dao\Factory\DashboardHibernateDAOFactory.cs" />
+    <Compile Include="Dao\Factory\DashboardHibernateDAOImpl.cs" />
+    <Compile Include="Dao\Factory\GenericNHibernateDAO.cs" />
+    <Compile Include="Dao\NHibernate\DashboardDataDao.cs" />
+    <Compile Include="Dao\NHibernate\HeadOfficeDao.cs" />
+    <Compile Include="Dao\NHibernate\IndicatorDefinitionDao.cs" />
+    <Compile Include="Dao\NHibernate\IndicatorTranslationDao.cs" />
+    <Compile Include="Dao\NHibernate\RegionDao.cs" />
+    <Compile Include="Dao\NHibernate\SiteDao.cs" />
+    <Compile Include="Dao\NHibernate\SitesRegionDao.cs" />
+    <Compile Include="Dao\NHibernate\UserDao.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\DashboardData.hbm.xml" />
+    <EmbeddedResource Include="Mappings\HeadOffice.hbm.xml" />
+    <EmbeddedResource Include="Mappings\IndicatorDefinitions.hbm.xml" />
+    <EmbeddedResource Include="Mappings\IndicatorTranslations.hbm.xml" />
+    <EmbeddedResource Include="Mappings\InterfaceText.hbm.xml" />
+    <EmbeddedResource Include="Mappings\InterfaceTextLangauge.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Language.hbm.xml" />
+    <EmbeddedResource Include="Mappings\PreviousDayDashboardData.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Regions.hbm.xml" />
+    <EmbeddedResource Include="Mappings\SiteMessages.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Sites.hbm.xml" />
+    <EmbeddedResource Include="Mappings\SitesRegions.hbm.xml" />
+    <EmbeddedResource Include="Mappings\TradingTimes.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dao\Dao.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\Permissions.hbm.xml" />
+    <EmbeddedResource Include="Mappings\Users.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Binaries\Spring.Data.NHibernate21.dll">
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Binaries\antlr.runtime.dll" />
+    <None Include="Binaries\Antlr3.Runtime.dll" />
+    <None Include="Binaries\Castle.Core.dll" />
+    <None Include="Binaries\Castle.DynamicProxy2.dll" />
+    <None Include="Binaries\Common.Logging.dll" />
+    <None Include="Binaries\Iesi.Collections.dll" />
+    <None Include="Binaries\log4net.dll" />
+    <None Include="Binaries\Spring.Aop.dll" />
+    <None Include="Binaries\Spring.Core.dll" />
+    <None Include="Binaries\Spring.Web.dll" />
+    <None Include="Binaries\NHibernate.dll" />
+    <None Include="Binaries\Spring.Data.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dashboard.Dao\Dashboard.Dao.csproj">
+      <Project>{FBAD84A5-2548-439C-8BB1-A0D218AB7D87}</Project>
+      <Name>Dashboard.Dao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dashboard.Web.Mvc\Dashboard.Web.Mvc.csproj">
+      <Project>{05118A9F-F9A6-4D29-964B-4E1CA8FFFF9D}</Project>
+      <Name>Dashboard.Web.Mvc</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,3724 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GpsGate.WebControls</name>
+    </assembly>
+    <members>
+        <member name="M:GpsGate.WebControls.AccordionItem.BindProperties">
+            <summary>
+            Binds errors to header template.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionItem.CreateChildControls">
+            <summary>
+            Creates Child Controls of this CompositeControl.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionItem.m_FindControls``1(System.Web.UI.Control)">
+            <summary>
+            Find a control of type T. Search childs.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="control"></param>
+            <returns></returns>
+        </member>
+        <member name="T:GpsGate.WebControls.AccordionItem.AccordionTemplateContainer">
+            <summary>
+            Markup class for accordion item template
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.AccordionWizard">
+            <summary>
+            Templateable Harmonica control. Could be used either in Wizard or Regular mode.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.MoveTo(GpsGate.WebControls.AccordionItem)">
+            <summary>
+            Used in FlowMode.Wizard
+             - All steps before the step to move will be collapsed and steps after will be disabled.
+            
+            Used in FlowMode.Accordion
+            - All before and after will be collapsed.
+            
+            Used in FlowMode.Unmanged
+            - The item will be expanded. Nothing will be done for any other items. 
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.ExpandItem(GpsGate.WebControls.AccordionItem)">
+            <summary>
+            Set item expanded.
+            </summary>
+            <param name="selectedItem"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.ExpandAll">
+            <summary>
+            Expands all.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.CollapseAll">
+            <summary>
+            Collapse all.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.CollapseItem(GpsGate.WebControls.AccordionItem)">
+            <summary>
+            Set item expanded.
+            </summary>
+            <param name="selectedItem"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.DisableItem(GpsGate.WebControls.AccordionItem)">
+            <summary>
+            Set the item disabled.
+            </summary>
+            <param name="disabledItem"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.EnableItem(GpsGate.WebControls.AccordionItem)">
+            <summary>
+            Set the item enabled.
+            </summary>
+            <param name="disabledItem"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.GetItem(System.String)">
+            <summary>
+            Get item by title
+            </summary>
+            <param name="strTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.CreateChildControls">
+            <summary>
+            Creates Child Controls of this CompositeControl.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.AccordionWizard.PrepareControlHierarchy">
+            <summary>
+            Called by Render to apply non-ViewStated Styling,etc., 
+            and possibly rearranges Elements.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.AccordionWizard.WizardHeaders">
+            <summary>
+            Header templates used in Wizard mode
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.AccordionWizard.AccordionHeaders">
+            <summary>
+            Header templates used in Accordion and Unmanged mode
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.AccordionWizard.Mode">
+            <summary>
+            Set the mode of the control
+            Accordion, Wizard or Unmanged
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.AccordionWizard.Header">
+            <summary>
+            Header control
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.AccordionWizard.Header.HeaderTemplateContainer">
+            <summary>
+            Markup class for navigation template.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.ChangePasswordControl">
+            <summary>
+            ChangePasswordControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.ConfirmLinkButtonControl">
+            <summary>
+            ConfirmLinkButtonControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.ConfirmLinkButtonControl.SetPreConfirmState(System.Boolean,System.Boolean)">
+            <summary>
+            Sets the pre confirm panel visible and the confirm panel hidden, or vice versa, depending on the provided value bPreConfirmPanelVisible.
+            Sets the Enabled property of the pre confirm button according to the provided bButtonEnabled
+            Sets the link button's client side javascript "onclick" action, using the panel controls' client id, with the purpose of hiding/showing panels when user clicks Delete or Cancel.
+            </summary>
+            <param name="bPreConfirmPanelVisible"></param>
+            <param name="bButtonEnabled"></param>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.PanelConfirmLinkButtonWrapper">
+            <summary>
+            PanelConfirmLinkButtonWrapper control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.PanelPreConfirm">
+            <summary>
+            PanelPreConfirm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.LinkButtonPreConfirm">
+            <summary>
+            LinkButtonPreConfirm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.PanelConfirm">
+            <summary>
+            PanelConfirm control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.LabelConfirmMessage">
+            <summary>
+            LabelConfirmMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.LinkButtonCancel">
+            <summary>
+            LinkButtonCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ConfirmLinkButtonControl.LinkButtonConfirmed">
+            <summary>
+            LinkButtonConfirmed control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.DeviceCommandControl">
+            <summary>
+            DeviceCommandControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceCommandControl.DeviceCommandStatusControl">
+            <summary>
+            DeviceCommandStatusControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.DeviceCommandStatusControl">
+            <summary>
+            DeviceCommandStatusControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.DeviceManagerControl">
+            <summary>
+            DeviceManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbDeviceName">
+            <summary>
+            tbDeviceName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbIMEI">
+            <summary>
+            tbIMEI control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbMSISDN">
+            <summary>
+            tbMSISDN control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbGRPSAPN">
+            <summary>
+            tbGRPSAPN control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbGPRSUsername">
+            <summary>
+            tbGPRSUsername control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.tbGRPSPwd">
+            <summary>
+            tbGRPSPwd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.ValidateMSISDN">
+            <summary>
+            ValidateMSISDN control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.btnUpdate">
+            <summary>
+            btnUpdate control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.btnAddNew">
+            <summary>
+            btnAddNew control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.btnCancel">
+            <summary>
+            btnCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.btnSendCommand">
+            <summary>
+            btnSendCommand control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.DeviceManagerControl.DeviceCommandStatusControl">
+            <summary>
+            DeviceCommandStatusControl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.DeviceMappingManagerControl">
+            <summary>
+            DeviceMappingManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.ErrorControl">
+            <summary>
+            ErrorControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ErrorControl.PlaceHolderError">
+            <summary>
+            PlaceHolderError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ErrorControl.ImageWarning">
+            <summary>
+            ImageWarning control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ErrorControl.divError">
+            <summary>
+            divError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ErrorControl.LiteralError">
+            <summary>
+            LiteralError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ErrorControl.LiteralHiddenErrors">
+            <summary>
+            LiteralHiddenErrors control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="P:GpsGate.WebControls.ErrorControl.ThirdPartScriptIncludes">
+            <summary>
+            Requires MochiKit
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.EventRuleSetupControl">
+            <summary>
+            EventRuleSetupControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            Override to init presenter
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.Translate">
+            <summary>
+            Translates the GUI
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListEventRules(System.Collections.Generic.Dictionary{GpsGate.Online.Event.EventExpressionEvaluator,System.Collections.Generic.IEnumerable{Franson.Validation.ValidationError}})">
+            <summary>
+            List event rules.
+            Binds the proveded rules to the GridViewRules control.
+            </summary>
+            <param name="rules"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListRuleTags(System.Collections.Generic.IEnumerable{GpsGate.Online.Directory.UserTag},System.Collections.Generic.List{System.Int32})">
+            <summary>
+            List <see cref="T:GpsGate.Online.Directory.UserTag">tags</see> to choose from when setup a rule.
+            The tags will be bound to CheckBoxListRuleTag control.
+            </summary>
+            <param name="tags">The tags to list.</param>
+            <param name="selected">List of tag IDs for which to be selected.</param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListPreConditions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EvaluatorPreCondition})">
+            <summary>
+            Binds the given set of pre conditions to View.
+            </summary>
+            <param name="expressions"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListPostConditions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EvaluatorPostCondition})">
+            <summary>
+            Binds the given set of post conditions to View.
+            </summary>
+            <param name="expressions"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListExpressions(System.Collections.Generic.IEnumerable{GpsGate.Online.Event.EventExpression})">
+            <summary>
+            Binds the given set of expressions to View.
+            </summary>
+            <param name="expressions"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListExpressionTypes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{GpsGate.Online.Event.EventExpression,Franson.Reflection.LoadableType}})">
+            <summary>
+            Binds the given expression types to drop down list of expression plugins.
+            </summary>
+            <param name="expressionTypes"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.RemoveExpression(GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            Removes the given expression from the view.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.RemoveEndExpression(GpsGate.Online.Event.EventExpression,System.String)">
+            <summary>
+            Removes the given end expression from the view.
+            </summary>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.RemoveExpression(GpsGate.Online.Event.EventExpression,System.String,System.Web.UI.WebControls.Panel)">
+            <summary>
+            
+            </summary>
+            <param name="expression"></param>
+            <param name="strCustomID"></param>
+            <param name="expPanel"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.AddExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Adds an expression to the view.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.AddEndExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Adds an end expression to the view.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.AddExpression(GpsGate.Online.Event.EventExpression,System.Web.UI.WebControls.Panel)">
+            <summary>
+            
+            </summary>
+            <param name="expression"></param>
+            <param name="expPanel"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListNotifiers(System.Collections.Generic.IEnumerable{GpsGate.Online.Notification.Notifier},Franson.Text.ITemplateResolver)">
+            <summary>
+            Binds the given set of <see cref="T:GpsGate.Online.Notification.Notifier">Notifiers</see> to the view.
+            </summary>
+            <param name="notifiers"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ListNotifierTypes(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{GpsGate.Online.Notification.Notifier,Franson.Reflection.LoadableType}})">
+            <summary>
+            Binds the given expression types to drop down list of expression plugins.
+            </summary>
+            <param name="expressionTypes"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.AddNotifier(GpsGate.Online.Notification.Notifier,Franson.Text.ITemplateResolver)">
+            <summary>
+            Adds a Notifier to the view.
+            </summary>
+            <param name="notifier"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.RemoveNotifier(GpsGate.Online.Notification.Notifier,System.String)">
+            <summary>
+            Removes the given notifier from the view.
+            </summary>
+            <param name="notifier"></param>
+            <param name="strCustomID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonSave_Clicked(System.Object,System.EventArgs)">
+            <summary>
+            Save the rule.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonCancel_Clicked(System.Object,System.EventArgs)">
+            <summary>
+            Cancel edit / add rule.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonDelete_Clicked(System.Object,System.EventArgs)">
+            <summary>
+            Delete rule.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ShowSaveWithErrorsDialogue(System.Collections.Generic.List{Franson.Validation.ValidationError})">
+            <summary>
+            Show dialouge when saving rule with errors.
+            </summary>
+            <param name="errors"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ShowSaveWithWarningsDialogue(System.Collections.Generic.List{Franson.Validation.ValidationError})">
+            <summary>
+            Show dialouge when saving rule with warnings.
+            </summary>
+            <param name="errors"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.CheckValid">
+            <summary>
+            Check all items and set errors.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.SetMode(System.String)">
+             <summary>
+             Sets the mode of the view.
+             The view setup the layout consider the given mode.
+            
+             Possible modes:
+             - ListRules
+             - CreateNewRule
+             - EditRule
+             </summary>
+             <param name="strMode">Mode to setup view after.</param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonAddNew_Clicked(System.Object,System.EventArgs)">
+            <summary>
+            Called when add new rule clicked.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.GridViewRules_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when a record in rule list is selected.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.DropDownListExpressionTypes_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when a expression type is selected from the DropDownListExpressionType
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.DropDownListEndExpressionTypes_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when a expression type is selected from the DropDownListEndExpressionType
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonExpressionCommand_Clicked(System.Object,System.Web.UI.WebControls.CommandEventArgs)">
+            <summary>
+            Called when remove button clicked for a expression plugin control 
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.DropDownListNotifierTypes_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when a notifier type is selected from the DropDownListNotifierType
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.ButtonNotifierCommand_Clicked(System.Object,System.Web.UI.WebControls.CommandEventArgs)">
+            <summary>
+            Called when remove button clicked for a notifier plugin control 
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_LoadControlPlugin(System.String)">
+            <summary>
+            Loads the control
+            </summary>
+            <param name="strVPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_AppendExpression(Franson.Web.UI.UserControlBase,System.String,System.Web.UI.WebControls.Panel)">
+            <summary>
+            Appends a UserControlBase derived control to the Control Tree.
+            NOTE!! To get view state to work properly a control must:
+            1. Have a UniqueID
+            2. Be recreated on each post back manually
+            3. All properties must be set after the control have been added to tree.
+            4. The Control must be added before base.LoadViewState()
+            
+            See Load/SaveViewState overrides for the solution
+            </summary>
+            <param name="expCtrl"></param>
+            <param name="ID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_SetupAddRemoveButtons(System.Web.UI.Control)">
+            <summary>
+            Enables the last "+" button in child controls of ctrl.
+            </summary>
+            <param name="ctrl"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_SetupAdvancedExpressionsPanel">
+            <summary>
+            Hide/display the advanced expressions panel.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_AppendNotifier(Franson.Web.UI.UserControlBase,System.String)">
+            <summary>
+            Appends a UserControlBase derived control to the Control Tree.
+            NOTE!! To get view state to work properly a control must:
+            1. Have a UniqueID
+            2. Be recreated on each post back manually
+            3. All properties must be set after the control have been added to tree.
+            4. The Control must be added before base.LoadViewState()
+            
+            See Load/SaveViewState overrides for the solution
+            </summary>
+            <param name="expCtrl"></param>
+            <param name="ID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_AppendPreCondition(Franson.Web.UI.UserControlBase,System.String)">
+            <summary>
+            Appends a UserControlBase derived control to the Control Tree.
+            NOTE!! To get view state to work properly a control must:
+            1. Have a UniqueID
+            2. Be recreated on each post back manually
+            3. All properties must be set after the control have been added to tree.
+            4. The Control must be added before base.LoadViewState()
+            
+            See Load/SaveViewState overrides for the solution
+            </summary>
+            <param name="expCtrl"></param>
+            <param name="ID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_AppendPostCondition(Franson.Web.UI.UserControlBase,System.String)">
+            <summary>
+            Appends a UserControlBase derived control to the Control Tree.
+            NOTE!! To get view state to work properly a control must:
+            1. Have a UniqueID
+            2. Be recreated on each post back manually
+            3. All properties must be set after the control have been added to tree.
+            4. The Control must be added before base.LoadViewState()
+            
+            See Load/SaveViewState overrides for the solution
+            </summary>
+            <param name="expCtrl"></param>
+            <param name="ID"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_FindContainerControl(System.Web.UI.Control)">
+            <summary>
+            Finds the panel holding the plugin GUI
+            </summary>
+            <param name="control"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.m_FindControls``1(System.Web.UI.Control)">
+            <summary>
+            Find a control of type T. Search childs.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="control"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.CreateChildControls">
+            <summary>
+            Create all dynamically added controls.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.SaveViewState">
+            <summary>
+            Saves the view state, so controls can be reloaded on post back
+            </summary>
+            <returns>new ViewState object</returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EventRuleSetupControl.LoadViewState(System.Object)">
+            <summary>
+            Loads the view state, including custom state information from the SaveViewState override
+            </summary>
+            <param name="savedState"></param>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderListRules">
+            <summary>
+            PlaceHolderListRules control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.GridViewRules">
+            <summary>
+            GridViewRules control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonAddNew">
+            <summary>
+            ButtonAddNew control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderEditRule">
+            <summary>
+            PlaceHolderEditRule control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Accordion">
+            <summary>
+            Accordion control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Step1">
+            <summary>
+            Step1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.TextBoxRuleName">
+            <summary>
+            TextBoxRuleName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.TextBoxRuleDescription">
+            <summary>
+            TextBoxRuleDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep1Next">
+            <summary>
+            ButtonStep1Next control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Step2">
+            <summary>
+            Step2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.RepeaterTags">
+            <summary>
+            RepeaterTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep2Prev">
+            <summary>
+            ButtonStep2Prev control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep2Next">
+            <summary>
+            ButtonStep2Next control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Step3">
+            <summary>
+            Step3 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelPreConditions">
+            <summary>
+            PanelPreConditions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Button1">
+            <summary>
+            Button1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Button2">
+            <summary>
+            Button2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Step4">
+            <summary>
+            Step4 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelExpressions">
+            <summary>
+            PanelExpressions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.DropDownListExpressionTypes">
+            <summary>
+            DropDownListExpressionTypes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderBooleanOperator">
+            <summary>
+            PlaceHolderBooleanOperator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.RadioButtonOr">
+            <summary>
+            RadioButtonOr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.RadioButtonAnd">
+            <summary>
+            RadioButtonAnd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.imgAdvClose">
+            <summary>
+            imgAdvClose control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.imgAdvOpen">
+            <summary>
+            imgAdvOpen control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelExpressionsAdvanced">
+            <summary>
+            PanelExpressionsAdvanced control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelEndExpressions">
+            <summary>
+            PanelEndExpressions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.DropDownListEndExpressionTypes">
+            <summary>
+            DropDownListEndExpressionTypes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderEndBooleanOperator">
+            <summary>
+            PlaceHolderEndBooleanOperator control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.RadioButtonEndOr">
+            <summary>
+            RadioButtonEndOr control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.RadioButtonEndAnd">
+            <summary>
+            RadioButtonEndAnd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelPostConditions">
+            <summary>
+            PanelPostConditions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep3Prev">
+            <summary>
+            ButtonStep3Prev control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep3Next">
+            <summary>
+            ButtonStep3Next control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.Step5">
+            <summary>
+            Step5 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PanelNotifiers">
+            <summary>
+            PanelNotifiers control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.DropDownListNotifierTypes">
+            <summary>
+            DropDownListNotifierTypes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep4Prev">
+            <summary>
+            ButtonStep4Prev control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonStep4Next">
+            <summary>
+            ButtonStep4Next control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderFinish">
+            <summary>
+            PlaceHolderFinish control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonSave">
+            <summary>
+            ButtonSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonCancel">
+            <summary>
+            ButtonCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.PlaceHolderDelete">
+            <summary>
+            PlaceHolderDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonDelete">
+            <summary>
+            ButtonDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.LabelUnhandledError">
+            <summary>
+            LabelUnhandledError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.DivSaveWithErrorsDialogue">
+            <summary>
+            DivSaveWithErrorsDialogue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.LabelSaveWithWarningTitle">
+            <summary>
+            LabelSaveWithWarningTitle control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonSaveIgnoreWarnings">
+            <summary>
+            ButtonSaveIgnoreWarnings control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventRuleSetupControl.ButtonCloseWarningDialouge">
+            <summary>
+            ButtonCloseWarningDialouge control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnRuleSelected">
+            <summary>
+            Rule selected
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnStepChange">
+            <summary>
+            View change step.
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnValidateStep">
+            <summary>
+            View validates step.
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnNewRule">
+            <summary>
+            New rule clicked
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnSaveRule">
+            <summary>
+            Save clicked.
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnCancelRule">
+            <summary>
+            Cancel clicked.
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnDeleteRule">
+            <summary>
+            Delete clicked.
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnRemoveExpression">
+            <summary>
+            Remove an expression
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnAddExpression">
+            <summary>
+            Adds an expression
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnRemoveEndExpression">
+            <summary>
+            Remove an end expression
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnAddEndExpression">
+            <summary>
+            Adds an end expression
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnAddNotifier">
+            <summary>
+            Adds a notifier
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnRemoveNotifier">
+            <summary>
+            Removes a notifier
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventRuleSetupControl.OnExpressionDirty">
+            <summary>
+            Calls when expression is flaged dirty.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.SelectedEventRuleID">
+            <summary>
+            Get the selected rule ID 
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.Name">
+            <summary>
+            Set and get the rule name.
+            
+            Reflects TextBoxRuleName.Text
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.Description">
+             <summary>
+             Set and get the rule description.
+            
+             Reflects TextBoxRuleName.Text
+             </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.Tags">
+            <summary>
+            Return the selected tags.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.PreConditions">
+            <summary>
+            Get current pre conditions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.PostConditions">
+            <summary>
+            Get current post conditions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.ExpressionOperatorMatchAll">
+            <summary>
+            Set the radion button "match all" "match any"
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.EndExpressionOperatorMatchAll">
+            <summary>
+            Set the radio button "match all" "match any"
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.Expressions">
+            <summary>
+            Get current expressions in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.Notifiers">
+            <summary>
+            Get current notifiers in view.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.ApplicationContext">
+            <summary>
+            Prides the application context.
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventRuleSetupControl.ThirdPartScriptIncludes">
+            <summary>
+            Depends on MochiKit
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.GeofenceManagerControl">
+            <summary>
+            GeofenceManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.GeofenceManagerControl.LiteralPolyInstructions">
+            <summary>
+            LiteralPolyInstructions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.GeofenceManagerControl.hidGFCAdminMode">
+            <summary>
+            hidGFCAdminMode control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="P:GpsGate.WebControls.GeofenceManagerControl.AllowEdit">
+            <summary>
+            Set to true to initiate Control in edit mode
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.JSSettingsControl">
+            <summary>
+            JSSettingsControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.LoadableUserControlPanel">
+            <summary>
+            Panel holding ILoadables implementing ILoadableASCX GUI component.
+            
+            Bind a source of ILoadables to the LoadableASCXPanel and call BindLoadableASCX();
+            
+            The Panel will then dynamic create an instance of the .ascx <see cref="T:System.Web.UI.UserControl"/> the <see cref="T:Franson.Reflection.Web.ILoadableASCX"/> defines.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.LoadableUserControlPanel.BindLoadable">
+            <summary>
+            Binds the controls in the source to the <see cref="!:LoadableASCXPanel"/>
+            </summary>
+            <exception cref="T:System.Web.HttpException"/>
+        </member>
+        <member name="E:GpsGate.WebControls.LoadableUserControlPanel.OnControlLoading">
+            <summary>
+            Event is called before the <see cref="T:System.Web.UI.UserControl"/> is created and added to the <see cref="!:LoadableASCXPanel"/>
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.LoadableUserControlPanel.OnControlLoaded">
+            <summary>
+            Event is called after the <see cref="T:System.Web.UI.UserControl"/> is created and has been added to the <see cref="!:LoadableASCXPanel"/>
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.LoadableUserControlPanel.Loadables">
+            <summary>
+            Source of ILoadables that will; if they are implemting <see cref="T:Franson.Reflection.Web.ILoadableASCX"/>, be added to the <see cref="!:LoadableASCXPanel"/> panel.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.LocalizationSettingsControl">
+            <summary>
+            LocalizationSettingsControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.MapManagerControl">
+            <summary>
+            MapManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.MapSettingsControl">
+            <summary>
+            MapSettingsControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.MessageListeners">
+            <summary>
+            MessageListeners class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageListeners.ExecuteCmd(Franson.Nmea.FRCMD)">
+            <summary>
+            Returns response, or throws exception on error.
+            </summary>
+            <param name="cmd"></param>
+            <returns></returns>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageListeners.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageListeners.GridViewListeners">
+            <summary>
+            GridViewListeners control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.MessageProviders">
+            <summary>
+            MessageProviders class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.DropDownListNewMessageProvider_OnSelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Fills the edit form with values for the selected message provider type.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.m_CancelEditMessageProvider(System.Object,System.EventArgs)">
+            <summary>
+            Clears and hides the edit form.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.m_UpdateMessageProvider(System.Object,System.EventArgs)">
+            <summary>
+            When validated without errors, updates an existing, or creates a new, provider.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.m_BagToEditForm(GpsGate.Online.Net.ProviderBag)">
+            <summary>
+            Transfers the data of the provider bag to the edit form.
+            </summary>
+            <param name="providerBag"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.m_EditFormToBag">
+            <summary>
+            Creates a provider bag from the edit form.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.ExecuteCmd(Franson.Nmea.FRCMD)">
+            <summary>
+            Returns response from the executed command, or throws exception on error.
+            </summary>
+            <param name="cmd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.MessageProviders.m_ParseBOType(System.String)">
+            <summary>
+            Gets the class name part of a bo type string.
+            </summary>
+            <param name="strBOType"></param>
+            <returns></returns>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.DropDownListNewMessageProvider">
+            <summary>
+            DropDownListNewMessageProvider control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.DivEditMessageProvider">
+            <summary>
+            DivEditMessageProvider control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.ActiveMessageProviderID">
+            <summary>
+            ActiveMessageProviderID control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.ActiveMessageProviderTypeID">
+            <summary>
+            ActiveMessageProviderTypeID control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.LabelEditMessageProviderHeader">
+            <summary>
+            LabelEditMessageProviderHeader control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderName">
+            <summary>
+            TextBoxProviderName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.RequiredFieldValidatorProviderName">
+            <summary>
+            RequiredFieldValidatorProviderName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.RegExpValidatorProviderName">
+            <summary>
+            RegExpValidatorProviderName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxBOType">
+            <summary>
+            TextBoxBOType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderUrl">
+            <summary>
+            TextBoxProviderUrl control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderUsername">
+            <summary>
+            TextBoxProviderUsername control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.RegularExpressionValidatorUsername">
+            <summary>
+            RegularExpressionValidatorUsername control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderPassword">
+            <summary>
+            TextBoxProviderPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.RegularExpressionValidatorPassword">
+            <summary>
+            RegularExpressionValidatorPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderPasswordCompare">
+            <summary>
+            TextBoxProviderPasswordCompare control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.CompareValidatorPassword">
+            <summary>
+            CompareValidatorPassword control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderCallInterval">
+            <summary>
+            TextBoxProviderCallInterval control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.CustomValidatorCallInterval">
+            <summary>
+            CustomValidatorCallInterval control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderCustomLong">
+            <summary>
+            TextBoxProviderCustomLong control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.CustomValidatorCustomLong">
+            <summary>
+            CustomValidatorCustomLong control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderCustomString">
+            <summary>
+            TextBoxProviderCustomString control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderCallTimeout">
+            <summary>
+            TextBoxProviderCallTimeout control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.CustomValidatorCallTimeout">
+            <summary>
+            CustomValidatorCallTimeout control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.TextBoxProviderRouteLabel">
+            <summary>
+            TextBoxProviderRouteLabel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.CheckBoxProviderDefaultProvider">
+            <summary>
+            CheckBoxProviderDefaultProvider control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.ButtonCancel">
+            <summary>
+            ButtonCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.ButtonSave">
+            <summary>
+            ButtonSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.MessageProviders.GridViewProviders">
+            <summary>
+            GridViewProviders control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.SmsProxyControl">
+            <summary>
+            SmsProxyControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.SmsProxyControl.btnSendTestSMS_ServerClick(System.Object,System.EventArgs)">
+            <summary>
+            Uses the (inactive) user _SmsTest and its device which uses the "GpsGate" protocol (or creates them if it 
+            does not exist). The device MSISDN will be temporarily set to the entered phone number and later removed.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.LinkGpsGateSMS">
+            <summary>
+            LinkGpsGateSMS control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbUsername">
+            <summary>
+            tbUsername control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.RegExpValidatorUsername">
+            <summary>
+            RegExpValidatorUsername control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbPwd1">
+            <summary>
+            tbPwd1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbPwd2">
+            <summary>
+            tbPwd2 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.RegExpValPwd">
+            <summary>
+            RegExpValPwd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.CompareValPwd">
+            <summary>
+            CompareValPwd control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbMSISDN">
+            <summary>
+            tbMSISDN control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.btnSave">
+            <summary>
+            btnSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbTestPhoneNumber">
+            <summary>
+            tbTestPhoneNumber control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.LabelTestPhoneNumberError">
+            <summary>
+            LabelTestPhoneNumberError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.tbTestMessage">
+            <summary>
+            tbTestMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.btnSendTestSMS">
+            <summary>
+            btnSendTestSMS control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.SmsProxyControl.spTestSendSMSServerMessage">
+            <summary>
+            spTestSendSMSServerMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.TagManagerControl">
+            <summary>
+            TagManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.TagManagerControl.BindControls">
+            <summary>
+            Bind all controls.
+            Use this to load the control
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.TagManagerControl.Translate">
+            <summary>
+            Translate Server side components
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.TagManagerControl.BindEditInsertTagView(GpsGate.Online.Directory.UserTag)">
+            <summary>
+            If tag null Set Insert else Edit
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TagManagerControl.BindCheckBoxListUsers(System.Collections.Generic.List{GpsGate.Online.Directory.GateUserBag},System.Collections.Generic.List{System.Int32},System.Boolean)">
+            <summary>
+            Binds sourceUsers to the check box list.
+            </summary>
+            <param name="listSelectedID">list of user ids to invert the DefaultCheced with</param>
+            <param name="bDefaultChecked">Set the initial state of the box. If true all will be checked except those found in the provided select list, and reversed when false</param>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.GridViewTags">
+            <summary>
+            GridViewTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.ButtonAddNew">
+            <summary>
+            ButtonAddNew control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.PlaceHolderTagEdit">
+            <summary>
+            PlaceHolderTagEdit control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.TextBoxTagName">
+            <summary>
+            TextBoxTagName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.TextBoxDescription">
+            <summary>
+            TextBoxDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.CheckBoxListUsers">
+            <summary>
+            CheckBoxListUsers control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.ButtonSave">
+            <summary>
+            ButtonSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.ButtonCancel">
+            <summary>
+            ButtonCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.ButtonDelete">
+            <summary>
+            ButtonDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TagManagerControl.RequiredName">
+            <summary>
+            RequiredName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.TemplateDeviceDefinition">
+            <summary>
+            TemplateDeviceDefinition class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.Page_Load(System.Object,System.EventArgs)">
+            <summary>
+            Page_Load override.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.ddlDeviceType_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Device Type has been changed. Reload device definitions.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.ddlDeviceDefinition_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Instance has been changed. Reload commands and message field dictionary.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.rptMsgFieldDict_ItemDataBound(System.Object,System.Web.UI.WebControls.RepeaterItemEventArgs)">
+            <summary>
+            Message field dictionary entry row binding.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.ddlOutput_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Output has been changed. Update row accordingly (set type, unit etc).
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnNew_Click(System.Object,System.EventArgs)">
+            <summary>
+            "New" button has been clicked. Create a new instance of the selected device type.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnDisplayDevicePanel_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Display Devices" button has been clicked.
+            Get the devices that are linked to the currently selected device definition.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnHideDevicePanel_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Close" button has been clicked. Hide devices view. Display details view if an instance has been selected.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.gvDevices_RowDataBound(System.Object,System.Web.UI.WebControls.GridViewRowEventArgs)">
+            <summary>
+            Device table data binding.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnDisplayImportPanel_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Import..." button has been clicked. Display import view.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnHideImportPanel_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Cancel" button has been clicked. Hide import view. Display details view if an instance has been selected.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnImport_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Import" button has been clicked. Imports settings from either a specified XML file or textbox text.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnExport_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Export" button has been clicked. Exports the current settings to an XML file.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnSave_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Save" button has been clicked. Update the current device definition.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnInitCopy_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Copy..." button has been clicked. First save the current device definition.
+            Then display a list of related device mappers so that they can be selected.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnDoCopy_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Copy" button has been clicked. Copy/overwrite the selected device mappers.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnCancelCopy_Click(System.Object,System.EventArgs)">
+            <summary>
+            "Cancel" button has been clicked. Reload details view.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.btnDelete_Click(System.Object,System.EventArgs)">
+            <summary>
+            Delete ("Yes") button has been clicked. Remove the current device definition from DB.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindDeviceTypes">
+            <summary>
+            Fills the device type drop-down. Gets loadable types of base type GpsGate.Online.Directory.DeviceDefinition.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindDeviceDefinitions(System.String)">
+            <summary>
+            Fills the device definition drop-down with definitions of the specified BOType.
+            </summary>
+            <param name="strBOType"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindCommands(GpsGate.Online.Directory.DeviceDefinition)">
+            <summary>
+            Fills the commands combobox list with the commands that are supported by the specified device definition.
+            </summary>
+            <param name="dd"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindMsgFieldDict(GpsGate.Online.Directory.DeviceDefinition)">
+            <summary>
+            Fills the message field dictionary repeater with the specified items.
+            </summary>
+            <param name="deviceFieldProperties"></param>
+            <param name="fieldEntries"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindOutput(System.Web.UI.WebControls.DropDownList,System.String)">
+            <summary>
+            Fills the specified output drop-down.
+            Uses message fields from the default namespace ("GpsGate") with the specified type.
+            </summary>
+            <param name="ddlOutput"></param>
+            <param name="strType"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.BindDevices">
+            <summary>
+            Get and bind the devices that are linked to the currently selected device definition.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.LoadDeviceDefinition(System.Int32)">
+            <summary>
+            Gets the currently selected device definition if one is selected.
+            Otherwise an empty device definition of the selected device type is returned.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.Save(System.Int32,System.String,System.String,System.Boolean,GpsGate.Online.Directory.MsgFieldDictEntryViewObject[],GpsGate.Online.Directory.CommandViewObject[])">
+            <summary>
+            Save current view.
+            </summary>
+            <param name="id">If non-zero, overwrite existing instance. Otherwise create a new instance.</param>
+            <param name="strName"></param>
+            <param name="strDescription"></param>
+            <param name="arrCommands"></param>
+            <param name="arrMsgFieldDict"></param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.SetStatus(System.String)">
+            <summary>
+            Displays the specified message in the status label.
+            </summary>
+            <param name="strStatus"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.SetStatus(System.String,System.Boolean)">
+            <summary>
+            Displays the specified message in the status label.
+            </summary>
+            <param name="strStatus"></param>
+            <param name="bError">If true the message will be presented in red color, indicating an error.</param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.ReloadDeviceType(System.String)">
+            <summary>
+            Reload the device type with either the current or the specified value.
+            </summary>
+            <param name="strDeviceType"></param>
+            <exception cref="T:System.ArgumentException">The specified type is not installed.</exception>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.ReloadDeviceDefinition(System.String)">
+            <summary>
+            Reload the device definition with either the current or the specified value.
+            </summary>
+            <param name="strDeviceDefinition"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.SetView(GpsGate.WebControls.TemplateDeviceDefinition.View)">
+            <summary>
+            Set which view that should be displayed.
+            </summary>
+            <param name="view"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetSelectedDeviceType">
+            <summary>
+            Gets the LoadableType string of the currently selected device type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetSelectedDeviceDefinitionID">
+            <summary>
+            Gets the ID of the currently selected device definition.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetAllCommands">
+            <summary>
+            Gets all commands in the form.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetSelectedCommands">
+            <summary>
+            Gets the selected commands.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetCommands(System.Boolean)">
+            <summary>
+            Get a list of commands.
+            </summary>
+            <param name="bAll">Set to true to get all commands, and set to false to only get the selected commands.</param>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetAllMsgFieldDict">
+            <summary>
+            Gets all message fields currently in the form.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetSelectedMsgFieldDict">
+            <summary>
+            Gets the message fields for which the "Enabled" checkbox has been checked.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.TemplateDeviceDefinition.GetMsgFieldDict(System.Boolean)">
+            <summary>
+            Get a list of message fields.
+            </summary>
+            <param name="bAll">Set to true to get all message fields, and set to false to only get the selected message fields.</param>
+            <returns></returns>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.lblStatus">
+            <summary>
+            lblStatus control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.ddlDeviceType">
+            <summary>
+            ddlDeviceType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.ddlDeviceDefinition">
+            <summary>
+            ddlDeviceDefinition control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnNew">
+            <summary>
+            btnNew control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDisplayImportPanel">
+            <summary>
+            btnDisplayImportPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDisplayDevicePanel">
+            <summary>
+            btnDisplayDevicePanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.pnlDetails">
+            <summary>
+            pnlDetails control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.tbName">
+            <summary>
+            tbName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.tbDescription">
+            <summary>
+            tbDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.cbUpgradable">
+            <summary>
+            cbUpgradable control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.cblCommands">
+            <summary>
+            cblCommands control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.rptMsgFieldDict">
+            <summary>
+            rptMsgFieldDict control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnSave">
+            <summary>
+            btnSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnInitCopy">
+            <summary>
+            btnInitCopy control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnExport">
+            <summary>
+            btnExport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDelete">
+            <summary>
+            btnDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDeleteYes">
+            <summary>
+            btnDeleteYes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDeleteNo">
+            <summary>
+            btnDeleteNo control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.pnlDevices">
+            <summary>
+            pnlDevices control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.gvDevices">
+            <summary>
+            gvDevices control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnHideDevicePanel">
+            <summary>
+            btnHideDevicePanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.pnlImport">
+            <summary>
+            pnlImport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.fuImport">
+            <summary>
+            fuImport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.tbImport">
+            <summary>
+            tbImport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.cbOverwrite">
+            <summary>
+            cbOverwrite control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnImport">
+            <summary>
+            btnImport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnHideImportPanel">
+            <summary>
+            btnHideImportPanel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.pnlCopy">
+            <summary>
+            pnlCopy control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.pnlToggler">
+            <summary>
+            pnlToggler control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.cblDeviceMappers">
+            <summary>
+            cblDeviceMappers control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.lblDeviceMappersEmpty">
+            <summary>
+            lblDeviceMappersEmpty control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnDoCopy">
+            <summary>
+            btnDoCopy control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.TemplateDeviceDefinition.btnCancelCopy">
+            <summary>
+            btnCancelCopy control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.TemplateDeviceDefinition.View">
+            <summary>
+            View enum.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.TrackExporterControl">
+            <summary>
+            TrackExporterControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.UserTagControl.BindCheckBoxListTags(System.Collections.Generic.List{GpsGate.Online.Directory.UserTag},System.Collections.Generic.List{System.Int32},System.Boolean)">
+            <summary>
+            Binds TagSource to the check box list.
+            </summary>
+            <param name="listSelectedID">list of user ids to invert the DefaultCheced with</param>
+            <param name="bDefaultChecked">Set the initial state of the box. If true all will be checked except those found in the provided select list, and reversed when false</param>
+        </member>
+        <member name="T:GpsGate.WebControls.ViewManagerControl">
+            <summary>
+            ViewManagerControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.GridViewViews">
+            <summary>
+            GridViewViews control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.ButtonAddNew">
+            <summary>
+            ButtonAddNew control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.PlaceHolderViewDetails">
+            <summary>
+            PlaceHolderViewDetails control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.TextBoxViewName">
+            <summary>
+            TextBoxViewName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.TextBoxViewDescription">
+            <summary>
+            TextBoxViewDescription control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.CheckBoxListStatus">
+            <summary>
+            CheckBoxListStatus control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.RadionButtonMatchAll">
+            <summary>
+            RadionButtonMatchAll control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.RadionButtonMatchAny">
+            <summary>
+            RadionButtonMatchAny control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.LabelNoTags">
+            <summary>
+            LabelNoTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.CheckBoxListTags">
+            <summary>
+            CheckBoxListTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.ButtonSave">
+            <summary>
+            ButtonSave control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.ButtonCancel">
+            <summary>
+            ButtonCancel control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.ButtonDelete">
+            <summary>
+            ButtonDelete control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.ViewManagerControl.ReqFieldName">
+            <summary>
+            ReqFieldName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EventExpressions.IEventExpressionControl">
+            <summary>
+            Defining an EventExpression GUI.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EventExpressions.IEventExpressionControl.ToEventExpression(System.Int32)">
+            <summary>
+            Return a EventExpression with values collected from GUI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EventExpressions.IEventExpressionControl.FromEventExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Populate the GUI from a EventExpression
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.IEventExpressionControl.ID">
+            <summary>
+            Reflects Control.ID
+            </summary>
+        </member>
+        <member name="E:GpsGate.WebControls.EventExpressions.IEventExpressionControl.OnIsDirty">
+            <summary>
+            Called when expression is dirty.
+            E.g. Can be used to notify other event rule entities that MessageField have been changed.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.EventExpressions.DigitalMessageExpressionControl">
+            <summary>
+            DigitalMessageExpressionControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.DigitalMessageExpressionControl.DropDownListMessageFields">
+            <summary>
+            DropDownListMessageFields control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.DigitalMessageExpressionControl.DropDownListRelOp">
+            <summary>
+            DropDownListRelOp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.DigitalMessageExpressionControl.DropDownListValue">
+            <summary>
+            DropDownListValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl">
+            <summary>
+            GUI Component for <see cref="T:GpsGate.Online.Event.GeofenceEventExpression"/>
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.m_ListTagSource">
+            <summary>
+            Internal list with GeofenceTags found in application.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.ToEventExpression(System.Int32)" -->
+        <member name="M:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.FromEventExpression(GpsGate.Online.Event.EventExpression)">
+            <summary>
+            Populate GUI Controls from the given expression.
+            </summary>
+            <param name="expression"></param>
+        </member>
+        <member name="M:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.BindDropDownListTag(System.Int32)">
+            <summary>
+            Binds TagSource to Geofence Tag drop down.
+            </summary>
+            <param name="iSelectedID"></param>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.CommonScriptIncludes">
+            <summary>
+            Returns CommonScriptIncludes.None
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.GpsGateScriptIncludes">
+            <summary>
+            Returns GpsGateScriptIncludes.None
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.ThirdPartScriptIncludes">
+            <summary>
+            Returns ThirdPartScriptIncludes.None
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.GMapScriptIncludes">
+            <summary>
+            Returns GMapScriptIncludes.None
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.ServiceIncludes">
+            <summary>
+            Returns ServiceIncludes.None
+            </summary>
+        </member>
+        <member name="P:GpsGate.WebControls.EventExpressions.GeofenceExpressionControl.TagSource">
+            <summary>
+            Returns all <see cref="T:GpsGate.Online.Directory.GeofenceTag"/> in application.
+            </summary>
+        </member>
+        <member name="T:GpsGate.WebControls.EventExpressions.IntegrityExpressionControl">
+            <summary>
+            GUI control for expression checking that specified data is continiously reported to the server.
+            </summary>
+            <summary>
+            IntegrityExpressionControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.IntegrityExpressionControl.DropDownListDelay">
+            <summary>
+            DropDownListDelay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EventExpressions.StringCompareExpressionControl">
+            <summary>
+            StringCompareExpressionControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="M:GpsGate.WebControls.EventExpressions.StringCompareExpressionControl.DropDownListMessageFields_SelectedIndexChanged(System.Object,System.EventArgs)">
+            <summary>
+            Called when message field have been changed.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.StringCompareExpressionControl.DropDownListMessageFields">
+            <summary>
+            DropDownListMessageFields control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.StringCompareExpressionControl.DropDownListRelOp">
+            <summary>
+            DropDownListRelOp control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EventExpressions.StringCompareExpressionControl.TextBoxCompareValue">
+            <summary>
+            TextBoxCompareValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.Notifiers.ChannelNotifierControl">
+            <summary>
+            ChannelNotifierControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.Notifiers.INotifierControl">
+            <summary>
+            Defining a Notifier GUI.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.Notifiers.INotifierControl.ToNotifier(System.Int32)">
+            <summary>
+            Return a Notifier with values collected from GUI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.Notifiers.INotifierControl.FromNotifier(GpsGate.Online.Notification.Notifier,Franson.Text.ITemplateResolver)">
+            <summary>
+            Populate the GUI from a Notifier
+            </summary>
+            <param name="notifier"></param>
+        </member>
+        <member name="P:GpsGate.WebControls.Notifiers.INotifierControl.ID">
+            <summary>
+            Reflects Control.ID
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.LabelNotifierType">
+            <summary>
+            LabelNotifierType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.RadioButtonListDisplayOptions">
+            <summary>
+            RadioButtonListDisplayOptions control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.RadioButtonReport">
+            <summary>
+            RadioButtonReport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.RadioButtonGUIAndReport">
+            <summary>
+            RadioButtonGUIAndReport control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.divChannelRadioButtons">
+            <summary>
+            divChannelRadioButtons control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.RadioButtonListChannels">
+            <summary>
+            RadioButtonListChannels control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.LiteralMessagePreview">
+            <summary>
+            LiteralMessagePreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.divMessageContent">
+            <summary>
+            divMessageContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.TextBoxMessage">
+            <summary>
+            TextBoxMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.DropDownListSupportedVariables">
+            <summary>
+            DropDownListSupportedVariables control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.ChannelNotifierControl.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.Notifiers.EmailNotifierControl">
+            <summary>
+            EmailNotifierControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.LabelNotifierType">
+            <summary>
+            LabelNotifierType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.divTagContent">
+            <summary>
+            divTagContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.PlaceHolderNoTags">
+            <summary>
+            PlaceHolderNoTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.CheckBoxListTags">
+            <summary>
+            CheckBoxListTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.LiteralSubjectPreview">
+            <summary>
+            LiteralSubjectPreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.divSubjectContent">
+            <summary>
+            divSubjectContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.TextBoxSubject">
+            <summary>
+            TextBoxSubject control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.DropDownListSubjectVariables">
+            <summary>
+            DropDownListSubjectVariables control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.LiteralMessagePreview">
+            <summary>
+            LiteralMessagePreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.divMessageContent">
+            <summary>
+            divMessageContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.TextBoxMessage">
+            <summary>
+            TextBoxMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.DropDownListSupportedVariables">
+            <summary>
+            DropDownListSupportedVariables control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.CheckBoxIsHtml">
+            <summary>
+            CheckBoxIsHtml control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.EmailNotifierControl.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.Notifiers.SmsNotifierControl">
+            <summary>
+            SmsNotifierControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.LabelNotifierType">
+            <summary>
+            LabelNotifierType control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.divTagContent">
+            <summary>
+            divTagContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.PlaceHolderNoTags">
+            <summary>
+            PlaceHolderNoTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.CheckBoxListTags">
+            <summary>
+            CheckBoxListTags control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.LiteralMessagePreview">
+            <summary>
+            LiteralMessagePreview control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.divMessageContent">
+            <summary>
+            divMessageContent control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.TextBoxMessage">
+            <summary>
+            TextBoxMessage control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.DropDownListSupportedVariables">
+            <summary>
+            DropDownListSupportedVariables control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.SmsNotifierControl.LabelError">
+            <summary>
+            LabelError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl">
+            <summary>
+            UserAttributeColumnIconNotifierControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.lblNotifierTypeName">
+            <summary>
+            lblNotifierTypeName control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.lblHeader">
+            <summary>
+            lblHeader control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.tbHeader">
+            <summary>
+            tbHeader control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.lblStartValue">
+            <summary>
+            lblStartValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.ddlStartValue">
+            <summary>
+            ddlStartValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.lblEndValue">
+            <summary>
+            lblEndValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.ddlEndValue">
+            <summary>
+            ddlEndValue control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.Notifiers.UserAttributeColumnIconNotifierControl.lblError">
+            <summary>
+            lblError control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl">
+            <summary>
+            DayOfWeekPeriodEvaluatorPreConditionControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPreConditionControl">
+            <summary>
+            Defining a EvaluatorPreCondition GUI.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPreConditionControl.ToEvaluatorPreCondition(System.Int32)">
+            <summary>
+            Return a EvaluatorPreCondition with values collected from GUI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPreConditionControl.FromEvaluatorPreCondition(GpsGate.Online.Event.EvaluatorPreCondition)">
+            <summary>
+            Populate the GUI from a EvaluatorPreCondition
+            </summary>
+            <param name="notifier"></param>
+        </member>
+        <member name="P:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPreConditionControl.ID">
+            <summary>
+            Reflects Control.ID
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonAlwaysActive">
+            <summary>
+            RadioButtonAlwaysActive control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonActiveOnCustomSchedule">
+            <summary>
+            RadioButtonActiveOnCustomSchedule control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.DivActiveOnCustomScedule">
+            <summary>
+            DivActiveOnCustomScedule control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.DropDownListActivateAtHours">
+            <summary>
+            DropDownListActivateAtHours control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.DropDownListActivateAtMinutes">
+            <summary>
+            DropDownListActivateAtMinutes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.DropDownListInactivateAtHours">
+            <summary>
+            DropDownListInactivateAtHours control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.DropDownListInactivateAtMinutes">
+            <summary>
+            DropDownListInactivateAtMinutes control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonMondayActivateInactivateAtTime">
+            <summary>
+            RadioButtonMondayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonTuesdayActivateInactivateAtTime">
+            <summary>
+            RadioButtonTuesdayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonWednesdayActivateInactivateAtTime">
+            <summary>
+            RadioButtonWednesdayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonThursdayActivateInactivateAtTime">
+            <summary>
+            RadioButtonThursdayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonFridayActivateInactivateAtTime">
+            <summary>
+            RadioButtonFridayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSaturdayActivateInactivateAtTime">
+            <summary>
+            RadioButtonSaturdayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSundayActivateInactivateAtTime">
+            <summary>
+            RadioButtonSundayActivateInactivateAtTime control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonMondayActiveAllDay">
+            <summary>
+            RadioButtonMondayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonTuesdayActiveAllDay">
+            <summary>
+            RadioButtonTuesdayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonWednesdayActiveAllDay">
+            <summary>
+            RadioButtonWednesdayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonThursdayActiveAllDay">
+            <summary>
+            RadioButtonThursdayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonFridayActiveAllDay">
+            <summary>
+            RadioButtonFridayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSaturdayActiveAllDay">
+            <summary>
+            RadioButtonSaturdayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSundayActiveAllDay">
+            <summary>
+            RadioButtonSundayActiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonMondayInactiveAllDay">
+            <summary>
+            RadioButtonMondayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonTuesdayInactiveAllDay">
+            <summary>
+            RadioButtonTuesdayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonWednesdayInactiveAllDay">
+            <summary>
+            RadioButtonWednesdayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonThursdayInactiveAllDay">
+            <summary>
+            RadioButtonThursdayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonFridayInactiveAllDay">
+            <summary>
+            RadioButtonFridayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSaturdayInactiveAllDay">
+            <summary>
+            RadioButtonSaturdayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.DayOfWeekPeriodEvaluatorPreConditionControl.RadioButtonSundayInactiveAllDay">
+            <summary>
+            RadioButtonSundayInactiveAllDay control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EvaluatorConditions.EventDurationEvaluatorPostConditionControl">
+            <summary>
+            EventDurationEvaluatorPostConditionControl class.
+            </summary>
+            <remarks>
+            Auto-generated class.
+            </remarks>
+        </member>
+        <member name="T:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPostConditionControl">
+            <summary>
+            Defining a EvaluatorPostCondition GUI.
+            </summary>
+        </member>
+        <member name="M:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPostConditionControl.ToEvaluatorPostCondition(System.Int32)">
+            <summary>
+            Return a EvaluatorPostCondition with values collected from GUI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPostConditionControl.FromEvaluatorPostCondition(GpsGate.Online.Event.EvaluatorPostCondition)">
+            <summary>
+            Populate the GUI from a EvaluatorPostCondition
+            </summary>
+            <param name="notifier"></param>
+        </member>
+        <member name="P:GpsGate.WebControls.EvaluatorConditions.IEvaluatorPostConditionControl.ID">
+            <summary>
+            Reflects Control.ID
+            </summary>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.EventDurationEvaluatorPostConditionControl.RadioButtonDefault">
+            <summary>
+            RadioButtonDefault control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.EventDurationEvaluatorPostConditionControl.RadioButtonSpecifyDuration">
+            <summary>
+            RadioButtonSpecifyDuration control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.EventDurationEvaluatorPostConditionControl.DivSpecifyDuration">
+            <summary>
+            DivSpecifyDuration control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:GpsGate.WebControls.EvaluatorConditions.EventDurationEvaluatorPostConditionControl.TextBoxMinimumDuration">
+            <summary>
+            TextBoxMinimumDuration control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+    </members>
+</doc>

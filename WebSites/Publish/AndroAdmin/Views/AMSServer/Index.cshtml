@@ -1,0 +1,57 @@
+﻿@model IEnumerable<AndroAdminDataAccess.Domain.AMSServer>
+
+@{
+    ViewBag.Title = "Manage AMS Servers";
+    Layout = "~/Views/Shared/_AMSLayout.cshtml";
+}
+
+<h2>Manage AMS Servers</h2>
+
+@if (ViewBag.Permissions.Contains("AddAMSServer"))
+{
+<div class="topLink">
+    @Html.ActionLink("Add a new AMS server", "Add")
+</div>
+}
+
+<table class="listTable" id="amsServers">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (AndroAdminDataAccess.Domain.AMSServer amsServer in Model)
+{ 
+        <tr>
+            <td>
+                @if (ViewBag.Permissions.Contains("EditAMSServer"))
+                {
+                    @Html.ActionLink(amsServer.Name, "Update", new { id = amsServer.Id.ToString() })
+                }
+                else
+                { 
+                    <span>@amsServer.Name</span>
+                }
+            </td>
+            <td>@Html.ActionLink("Diagnostics", "Diagnostics", new { id = amsServer.Id.ToString() })</td>
+            <td>@amsServer.Description</td>
+            <td>
+                @if (ViewBag.Permissions.Contains("DeleteAMSServer"))
+                {
+                <a href="#" onclick="showConfirmDialog(function() {window.location.href ='@Url.Action("Delete", new { id = amsServer.Id.ToString() })'}, confirmationMessage)">delete</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $('#amsServers').dataTable();
+
+    var confirmationMessage = 'Are you sure you want to delete the AMS server?<br />The AMS server will be permanently deleted.';
+</script>

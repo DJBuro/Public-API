@@ -1,0 +1,15 @@
+
+<objects xmlns="http://www.springframework.net">
+
+<v:group id="LogValidator" xmlns:v="http://www.springframework.net/validation">
+
+
+	<v:required id="CreatedValidator" test="Created"><v:message id="error.Created.required" providers="CreatedErrors, ValidationSummary"/></v:required>
+</v:group>
+
+</objects>
+
+
+
+
+			

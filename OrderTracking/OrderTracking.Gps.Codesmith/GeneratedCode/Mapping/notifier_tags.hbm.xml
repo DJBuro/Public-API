@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping default-lazy="false" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="OrderTracking.Gps.Dao.Domain.Notifiertag, OrderTracking.Gps.Dao" table="notifier_tags">
+		<id name="Id" type="Int32" unsaved-value="null">
+			<column name="notifier_id" length="4" sql-type="int" not-null="true" index="PK__notifier__9964361C2EC5E7B8"/>
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="PK__notifier__9964361C2EC5E7B8"/>
+			<generator class="native" />
+		</id>
+		<many-to-one name="Tag" class="OrderTracking.Gps.Dao.Domain.Tag, OrderTracking.Gps.Dao">
+			<column name="tag_id" length="4" sql-type="int" not-null="true" index="PK__notifier__9964361C2EC5E7B8"/>
+		</many-to-one>
+	</class>
+</hibernate-mapping>
+
+
+

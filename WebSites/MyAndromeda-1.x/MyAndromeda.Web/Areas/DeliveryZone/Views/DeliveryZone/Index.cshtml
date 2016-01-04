@@ -1,0 +1,78 @@
+﻿@model MyAndromeda.Web.Areas.DeliveryZone.Model.DeliveryAreaViewModel
+
+<div class="header">
+    <h3>Delivery Zone</h3>
+</div>
+ 
+
+@using (Html.BeginForm(Model))
+{
+    <div>
+       @Html.HiddenFor(model => model.SiteId)
+        <b>Postcodes:</b>
+        <textarea id="@Html.IdFor(e => e.DeliveryAreas)" name="@Html.NameFor(e => e.DeliveryAreas)"
+                  class="tooltip-info" cols="8" rows="12" wrap="hard" style="vertical-align:top">
+            @if (Model != null)
+            {
+                if (string.IsNullOrEmpty(Model.DeliveryAreas))
+                {
+                }
+                else
+                {
+                    @Model.DeliveryAreas.Trim();
+                }
+            }
+        </textarea>
+        <div>
+            <button class="k-button k-primary" id="btnSubmit" type="submit">Save</button>
+        </div>       
+    </div>
+    
+    <div>
+         
+    </div>
+    
+}
+
+<script>
+    var areaCodeCheck = ["^[a-zA-Z]{2}[0-9]{2} [0-9]$",
+        "^[a-zA-Z]{2}[0-9] [0-9]$",
+        "^[a-zA-Z]{2}[0-9] [0-9][a-zA-Z]$",
+        "^[a-zA-Z]{2}[0-9] [0-9][a-zA-Z]{2}$",
+        "^[a-zA-z][0-9] [0-9][a-zA-Z]{2}$",
+        "^[a-zA-z][0-9]{2} [0-9][a-zA-Z]{2}$",
+        "^[a-zA-z]{2}[0-9]{2} [0-9][a-zA-Z]{2}$",
+        "^[a-zA-z][0-9][a-zA-Z] [0-9][a-zA-Z]{2}$",
+        "^[a-zA-z]{2}[0-9][a-zA-Z] [0-9][a-zA-Z]{2}$",
+        "^[a-zA-Z]{2}[0-9]$", "^[a-zA-z][0-9]$",
+        "^[a-zA-z][0-9]{2}$", "^[a-zA-z]{2}[0-9]{2}$",
+        "^[a-zA-z][0-9][a-zA-Z]$",
+        "^[a-zA-z]{2}[0-9][a-zA-Z]$"];
+
+    function validate(e){
+        var val = document.getElementById('DeliveryAreas').value;
+        var lines = val.split('\n');
+        var isValid = false;
+        var regex = new RegExp();
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].trim() != "") {
+                for (var j = 0; j < areaCodeCheck.length; j++) {
+                    if (!isValid) {
+                        var regex = new RegExp(areaCodeCheck[j]);
+                        if (regex.test(lines[i].trim())) {
+                            isValid = true;
+                        }
+                    }
+                }
+                if (!isValid) {
+                    alert('Invalid input: ' + lines[i].trim() + '. Please enter valid delivery zone');
+                    return false;
+                }
+                isValid = false;
+            }
+        }
+        return true;
+    }
+
+     
+</script>

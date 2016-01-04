@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Tests</title>
+        <link rel="stylesheet" href="resources/qunit.css">
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        
+        <!--<script src="../../Content/Scripts.js"></script>-->
+
+        <script src="../ResourceStrings/en-GB.js" type="text/javascript"></script>
+        <script src="../ResourceStrings/fr-FR.js" type="text/javascript"></script>
+
+        <!-- 3RD PARTY SCRIPTS GO HERE -->
+        <script src="../Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="../Scripts/jreject.js" type="text/javascript"></script>
+        <script src="../Scripts/amplify.min.js" type="text/javascript"></script>
+        <script src="../Scripts/knockout-3.0.0.js" type="text/javascript"></script>
+        <script src="../Scripts/knockout.validation.min.js" type="text/javascript"></script>
+        <script src="../Scripts/modernizr.min.js" type="text/javascript"></script>
+        <script src="../Scripts/OpenLayers.js" type="text/javascript"></script>
+        <script src="../Scripts/jssor.core.js" type="text/javascript"></script>
+        <script src="../Scripts/jssor.utils.js" type="text/javascript"></script>
+        <script src="../Scripts/jssor.slider.js" type="text/javascript"></script>
+        <script src="../Scripts/Animation.js" type="text/javascript"></script>
+
+        <script src="../Helpers/Settings.js" type="text/javascript"></script>
+        <script src="../Helpers/ACSAPI.js" type="text/javascript"></script>
+
+        <!-- MODELS GO HERE -->
+        <script src="../Models/Address.js" type="text/javascript"></script>
+        <script src="../Models/CartDeal.js" type="text/javascript"></script>
+        <script src="../Models/CartDealLine.js" type="text/javascript"></script>
+        <script src="../Models/CartItem.js" type="text/javascript"></script>
+        <script src="../Models/CartItemTopping.js" type="text/javascript"></script>
+        <script src="../Models/Customer.js" type="text/javascript"></script>
+        <script src="../Models/MenuItemWrapper.js" type="text/javascript"></script>
+
+        <!-- HELPERS GO HERE -->
+        <script src="../Helpers/customerHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/addressHelper.js" type="text/javascript"></script>
+
+        <script src="../Helpers/accountHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/cacheHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/cartHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/checkoutHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/checkoutMenuHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/cookieHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/dealHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/dealPopupHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/deliveryZoneHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/guiHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/helper.js" type="text/javascript"></script>
+        <script src="../Helpers/imageHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/informationHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/LoyaltyHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/Logger.js" type="text/javascript"></script>
+        <script src="../Helpers/mapHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/menuHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/myOrdersHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/openingTimesHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/pageManager.js" type="text/javascript"></script>
+        <script src="../Helpers/popupHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/telemetryHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/toppingsPopupHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/queryStringHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/viewHelper.js" type="text/javascript"></script>
+
+        <!-- CHECKOUT VIEW MODELS GO HERE -->
+        <script src="../ViewModels/Checkout/CheckoutViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/DataCashPaymentViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/MercanetPaymentViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/MercuryPaymentViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/OrderAcceptedViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/PaymentViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/Checkout/PayPalPaymentViewModel.js" type="text/javascript"></script>
+
+        <!-- VIEW MODELS GO HERE -->
+        <script src="../ViewModels/AddressViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/BaseViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/CartViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/DealViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/DefaultViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/ErrorViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/FeedbackViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/HeaderViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/HomeViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/InformationViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/LoginViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/MenuViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/MobileMenuViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/MyProfileViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/MyOrdersViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/PleaseWaitViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/PasswordResetRequestViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/PasswordResetViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/PopupViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/RepeatOrderViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/StoreDetailsViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/ToppingsWrapperViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/ToppingsViewModel.js" type="text/javascript"></script>
+        <script src="../ViewModels/viewModel.js" type="text/javascript"></script>
+
+        <script src="../Helpers/LoyaltyHelper.js" type="text/javascript"></script>
+        <script src="../Helpers/homePageHelper.js" type="text/javascript"></script>
+
+        <script src="resources/qunit.js"></script>
+        
+        <script src="TestHelper.js"></script>
+
+        <!-- TESTS -->
+        <script src="checkoutHelper/removeUnavailableDeliverySlots.js"></script>
+        <script src="menuHelper/getAvailableTimes.js"></script>
+        <script src="toppingViewModel/popupToppingChanged.js"></script>
+
+        <!--<script src="MenuHelperTests.js"></script>
+        <script src="CartHelperTests.js"></script>
+        <script src="DealHelperTests.js"></script>
+        <script src="CheckoutHelperTests.js"></script>-->
+
+    </body>
+</html>

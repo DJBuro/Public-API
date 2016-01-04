@@ -1,0 +1,53 @@
+﻿@{
+    var workcontext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+
+@helper CreateColorEditorRow(string label, string kendoBinding, string liveColor)
+{
+    var translator = Html.GetTranslator();
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+
+            <label class="control-label col-md-4">
+                @translator.T(label)
+            </label>
+            <div class="col-md-3">
+                <input data-role="colorpicker" style="width: 180px"
+                       data-bind="value: @kendoBinding" />&nbsp;
+                <span data-bind="text: @kendoBinding"></span>
+            </div>           
+            <div class="col-md-3">                
+                <div class="col-md-2 colourPreview" style="float:left;" data-bind="style: { backgroundColor: @liveColor}">&nbsp;</div>
+                &nbsp;<span style="margin-top:10px;" class="col-md-1" data-bind="text: @liveColor"></span>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-4"></div>
+        <div class="col-md-3"><label>Selected colour</label></div>        
+        <div class="col-md-3"><label>Current colour</label> </div>
+    </div>
+</div>
+<div class="row">
+    <style scoped="scoped">
+        .colourPreview {
+            border: 1px solid #000;
+            border-radius: 4px;
+            height: 40px;
+            width: 40px;
+        }
+    </style>
+    @CreateColorEditorRow("Email Template Header colour", "HeaderColour", "LiveHeaderColour")
+    @CreateColorEditorRow("Email Template Footer colour", "FooterColour", "LiveFooterColour")    
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <button type="button" class="k-button k-primary" ng-click="SaveChanges()">Save</button>
+        <button type="button" class="k-button k-primary" ng-click="ResetColors()">Reset</button>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+2015-12-14 18:39:26.9700 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!CEDD9916-B9D8-4FA1-AF08-9823D9C88F3A

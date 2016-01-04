@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://OrderTracking.Androtechnology.co.uk" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://OrderTracking.Androtechnology.co.uk" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://OrderTracking.Androtechnology.co.uk">
+      <s:element name="GetClientOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="credentials" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClientOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClientOrderResult" type="tns:ClientMapData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ClientMapData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Customer" type="tns:DeliveryCustomer" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryOrder" type="tns:DeliveryOrder" />
+          <s:element minOccurs="0" maxOccurs="1" name="Premises" type="tns:DeliveryPremises" />
+          <s:element minOccurs="0" maxOccurs="1" name="DeliveryDriver" type="tns:DeliveryDriver" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatusTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderProcessor" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DeliveryCustomer">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Credentials" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DeliveryOrder">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ProximityDelivered" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Items" type="tns:ArrayOfString" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DeliveryPremises">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalStoreId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DeliveryDriver">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="HasFix" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetClientOrderByCredentials">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="credentials" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClientOrderByCredentialsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClientOrderByCredentialsResult" type="tns:ClientMapData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPremisesData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPremisesDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPremisesDataResult" type="tns:StoreMapData" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="StoreMapData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PremisesDrivers" type="tns:ArrayOfPremisesDriver" />
+          <s:element minOccurs="0" maxOccurs="1" name="OutStandingDeliveries" type="tns:ArrayOfDelivery" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPremisesDriver">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PremisesDriver" nillable="true" type="tns:PremisesDriver" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PremisesDriver">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="HasFix" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="BatteryLevel" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Deliveries" type="tns:ArrayOfDelivery" />
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfDelivery">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Delivery" nillable="true" type="tns:Delivery" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Delivery">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="ProximityDelivered" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StatusId" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetStore">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetStoreResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetStoreResult" type="tns:Store" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Store">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Drivers" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Orders" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="Trackers" type="tns:ArrayOfAnyType" />
+              <s:element minOccurs="0" maxOccurs="1" name="ExternalStoreId" type="s:string" />
+              <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+              <s:element minOccurs="1" maxOccurs="1" name="DeliveryRadius" type="s:short" />
+              <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:Coordinates" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Entity" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:long" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Coordinates">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Entity">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:float" />
+              <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:float" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfAnyType">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="anyType" nillable="true" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ClientMapData" nillable="true" type="tns:ClientMapData" />
+      <s:element name="StoreMapData" nillable="true" type="tns:StoreMapData" />
+      <s:element name="Store" nillable="true" type="tns:Store" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetClientOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClientOrder" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClientOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClientOrderByCredentials" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClientOrderByCredentialsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPremisesData" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPremisesDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreSoapIn">
+    <wsdl:part name="parameters" element="tns:GetStore" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreSoapOut">
+    <wsdl:part name="parameters" element="tns:GetStoreResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="credentials" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderHttpGetOut">
+    <wsdl:part name="Body" element="tns:ClientMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsHttpGetIn">
+    <wsdl:part name="credentials" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsHttpGetOut">
+    <wsdl:part name="Body" element="tns:ClientMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataHttpGetOut">
+    <wsdl:part name="Body" element="tns:StoreMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreHttpGetIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreHttpGetOut">
+    <wsdl:part name="Body" element="tns:Store" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+    <wsdl:part name="credentials" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderHttpPostOut">
+    <wsdl:part name="Body" element="tns:ClientMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsHttpPostIn">
+    <wsdl:part name="credentials" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetClientOrderByCredentialsHttpPostOut">
+    <wsdl:part name="Body" element="tns:ClientMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetPremisesDataHttpPostOut">
+    <wsdl:part name="Body" element="tns:StoreMapData" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreHttpPostIn">
+    <wsdl:part name="userName" type="s:string" />
+    <wsdl:part name="password" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetStoreHttpPostOut">
+    <wsdl:part name="Body" element="tns:Store" />
+  </wsdl:message>
+  <wsdl:portType name="ExternalMapTrackingSoap">
+    <wsdl:operation name="GetClientOrder">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order, specific to a store, using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderSoapIn" />
+      <wsdl:output message="tns:GetClientOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderByCredentialsSoapIn" />
+      <wsdl:output message="tns:GetClientOrderByCredentialsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used only for an internal Navteq Map application, but can be consumed for customised tracking applications.  If a driver has no tracker assigned, the coords are set to the store location</wsdl:documentation>
+      <wsdl:input message="tns:GetPremisesDataSoapIn" />
+      <wsdl:output message="tns:GetPremisesDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of a store. Name, coordinates, etc.</wsdl:documentation>
+      <wsdl:input message="tns:GetStoreSoapIn" />
+      <wsdl:output message="tns:GetStoreSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ExternalMapTrackingHttpGet">
+    <wsdl:operation name="GetClientOrder">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order, specific to a store, using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderHttpGetIn" />
+      <wsdl:output message="tns:GetClientOrderHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderByCredentialsHttpGetIn" />
+      <wsdl:output message="tns:GetClientOrderByCredentialsHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used only for an internal Navteq Map application, but can be consumed for customised tracking applications.  If a driver has no tracker assigned, the coords are set to the store location</wsdl:documentation>
+      <wsdl:input message="tns:GetPremisesDataHttpGetIn" />
+      <wsdl:output message="tns:GetPremisesDataHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of a store. Name, coordinates, etc.</wsdl:documentation>
+      <wsdl:input message="tns:GetStoreHttpGetIn" />
+      <wsdl:output message="tns:GetStoreHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ExternalMapTrackingHttpPost">
+    <wsdl:operation name="GetClientOrder">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order, specific to a store, using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderHttpPostIn" />
+      <wsdl:output message="tns:GetClientOrderHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of an order using a clients credentials, generally used for external map tracking, eg GoogleMaps</wsdl:documentation>
+      <wsdl:input message="tns:GetClientOrderByCredentialsHttpPostIn" />
+      <wsdl:output message="tns:GetClientOrderByCredentialsHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Used only for an internal Navteq Map application, but can be consumed for customised tracking applications.  If a driver has no tracker assigned, the coords are set to the store location</wsdl:documentation>
+      <wsdl:input message="tns:GetPremisesDataHttpPostIn" />
+      <wsdl:output message="tns:GetPremisesDataHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Gets details of a store. Name, coordinates, etc.</wsdl:documentation>
+      <wsdl:input message="tns:GetStoreHttpPostIn" />
+      <wsdl:output message="tns:GetStoreHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ExternalMapTrackingSoap" type="tns:ExternalMapTrackingSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetClientOrder">
+      <soap:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetClientOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <soap:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetClientOrderByCredentials" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <soap:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetPremisesData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <soap:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetStore" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExternalMapTrackingSoap12" type="tns:ExternalMapTrackingSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetClientOrder">
+      <soap12:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetClientOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <soap12:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetClientOrderByCredentials" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <soap12:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetPremisesData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <soap12:operation soapAction="http://OrderTracking.Androtechnology.co.uk/GetStore" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExternalMapTrackingHttpGet" type="tns:ExternalMapTrackingHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="GetClientOrder">
+      <http:operation location="/GetClientOrder" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <http:operation location="/GetClientOrderByCredentials" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <http:operation location="/GetPremisesData" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <http:operation location="/GetStore" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ExternalMapTrackingHttpPost" type="tns:ExternalMapTrackingHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="GetClientOrder">
+      <http:operation location="/GetClientOrder" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClientOrderByCredentials">
+      <http:operation location="/GetClientOrderByCredentials" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPremisesData">
+      <http:operation location="/GetPremisesData" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStore">
+      <http:operation location="/GetStore" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ExternalMapTracking">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
+    <wsdl:port name="ExternalMapTrackingSoap" binding="tns:ExternalMapTrackingSoap">
+      <soap:address location="http://ordertracking.androtechnology.co.uk/Services/ExternalMapTracking.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExternalMapTrackingSoap12" binding="tns:ExternalMapTrackingSoap12">
+      <soap12:address location="http://ordertracking.androtechnology.co.uk/Services/ExternalMapTracking.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExternalMapTrackingHttpGet" binding="tns:ExternalMapTrackingHttpGet">
+      <http:address location="http://ordertracking.androtechnology.co.uk/Services/ExternalMapTracking.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ExternalMapTrackingHttpPost" binding="tns:ExternalMapTrackingHttpPost">
+      <http:address location="http://ordertracking.androtechnology.co.uk/Services/ExternalMapTracking.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
