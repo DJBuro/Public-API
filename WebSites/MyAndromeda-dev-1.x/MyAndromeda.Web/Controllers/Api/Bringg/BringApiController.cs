@@ -136,7 +136,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return sendModel;
         }
 
-        private async Task<BringOutgoingWebHook> GetOrderHeader(BringWebhook model) 
+        private async Task<OutgoingWebHookBring> GetOrderHeader(BringWebhook model) 
         {
             logger.Debug("Creating new outward notification based on the Bringg webhook.");
 
@@ -157,7 +157,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 throw new Exception(message);
             }
 
-            BringOutgoingWebHook sendModel = new BringOutgoingWebHook()
+            OutgoingWebHookBring sendModel = new OutgoingWebHookBring()
             {
                 AndromedaSiteId = store.AndromedaSiteId,
                 ExternalSiteId = store.ExternalSiteId,
@@ -426,7 +426,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return result;
         }
 
-        private async Task<bool> CreateBringgWebhookRequest(BringOutgoingWebHook bringWebook)
+        private async Task<bool> CreateBringgWebhookRequest(OutgoingWebHookBring bringWebook)
         {
             bool result = false;
 

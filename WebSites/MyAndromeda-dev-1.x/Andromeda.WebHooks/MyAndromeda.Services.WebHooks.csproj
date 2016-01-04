@@ -65,13 +65,13 @@
     <Compile Include="Handlers\OrderChangedEventHandler.cs" />
     <Compile Include="Models\IHook.cs" />
     <Compile Include="Models\ISpecificHook.cs" />
-    <Compile Include="Models\MenuChange.cs" />
-    <Compile Include="Models\OrderStatusChange.cs" />
+    <Compile Include="Models\OutgoingWebHookMenuItemsChanged.cs" />
+    <Compile Include="Models\OutgoingWebHookOrderStatusChange.cs" />
     <Compile Include="Models\Settings\RequestHeaders.cs" />
     <Compile Include="Models\Settings\WebHookEnrolement.cs" />
     <Compile Include="Models\Settings\WebhookSettings.cs" />
-    <Compile Include="Models\StoreOnlineStatus.cs" />
-    <Compile Include="Models\UpdateDeliveryTime.cs" />
+    <Compile Include="Models\OutgoingWebHookStoreOnlineStatus.cs" />
+    <Compile Include="Models\OutgoingWebHookUpdateDeliveryTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

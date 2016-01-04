@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MyAndromeda.Services.WebHooks.Models
 {
-    public class MenuChange : IHook 
+    public class OutgoingWebHookMenuChange : IHook 
     {
         /// <summary>
         /// Gets or sets the andromeda site id.
@@ -30,7 +30,7 @@ namespace MyAndromeda.Services.WebHooks.Models
         public string Source { get; set; }
     }
 
-    public class MenuItemsChanged : IHook 
+    public class OutgoingWebHookMenuItemsChanged : IHook 
     {
         /// <summary>
         /// Gets or sets the andromeda site id.

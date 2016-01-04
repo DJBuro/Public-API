@@ -309,7 +309,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/bringg/update")]
-        public async Task<HttpResponseMessage> BringMessage([FromBody]BringOutgoingWebHook model) 
+        public async Task<HttpResponseMessage> BringMessage([FromBody]OutgoingWebHookBring model) 
         {
             this.Flavor = WebHookType.BringgUpdate;
 

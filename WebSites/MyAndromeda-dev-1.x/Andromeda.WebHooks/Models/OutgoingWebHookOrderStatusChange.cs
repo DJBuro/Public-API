@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MyAndromeda.Services.WebHooks.Models
 {
-    public class OrderStatusChange : IHook, ISpecificHook
+    public class OutgoingWebHookOrderStatusChange : IHook, ISpecificHook
     {
         /// <summary>
         /// Gets or sets the andromeda site id.

@@ -2,7 +2,7 @@ using System;
 
 namespace MyAndromeda.Services.WebHooks.Models
 {
-    public class StoreOnlineStatus : IHook
+    public class OutgoingWebHookStoreOnlineStatus : IHook
     {
         /// <summary>
         /// Gets or sets the andromeda site id.

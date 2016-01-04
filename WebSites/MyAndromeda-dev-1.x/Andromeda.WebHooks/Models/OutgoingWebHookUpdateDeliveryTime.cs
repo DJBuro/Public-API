@@ -2,7 +2,7 @@ using System;
 
 namespace MyAndromeda.Services.WebHooks.Models
 {
-    public class UpdateDeliveryTime : IHook 
+    public class OutgoingWebHookUpdateDeliveryTime : IHook 
     {
         /// <summary>
         /// Gets or sets the andromeda site id.
@@ -17,7 +17,7 @@ namespace MyAndromeda.Services.WebHooks.Models
         public string ExternalSiteId { get; set; }
 
         /// <summary>
-        /// Gets or sets the edt.
+        /// Gets or sets the estimated delivery time.
         /// </summary>
         /// <value>The edt.</value>
         public int Edt { get; set; }

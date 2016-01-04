@@ -7,7 +7,7 @@ using MyAndromeda.Services.WebHooks.Models;
 
 namespace MyAndromeda.Services.Bringg.Outgoing
 {
-    public class BringOutgoingWebHook : IHook
+    public class OutgoingWebHookBring : IHook
     {
         /// <summary>
         /// Gets or sets the id.
@@ -57,6 +57,10 @@ namespace MyAndromeda.Services.Bringg.Outgoing
         /// <value>The external order id.</value>
         public string ExternalId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the andromeda order status id.
+        /// </summary>
+        /// <value>The andromeda order status id.</value>
         public int AndromedaOrderStatusId { get; set; }
     }
 }
