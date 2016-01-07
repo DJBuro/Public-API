@@ -201,10 +201,6 @@
     </script>
     <script type="text/javascript">
         $(function () {
-            var filter = {
-                from: kendo.parseDate(""),
-                to: kendo.parseDate("")
-            };
 
             var query = $.ajax({
                 url: "@route",
@@ -292,7 +288,8 @@
 
                     viewModel.set("visible", true);
                     $("#kendo-window-@modelId").data("kendoWindow").center().open();
-                }
+                }, 
+                avgSpend : ""
             });
 
 
@@ -303,22 +300,33 @@
                 var dataSource = viewModel.get("dataSource"),
                     values = dataSource.aggregates();
 
+                viewModel.set("avgSpend", function () {
+                    console.log("set avg spend");
+                    console.log(values);
+                    if ($.isEmptyObject(values)) {
+                        return kendo.toString(0, "c");
+                    }
+
+                    var a = values;
+                    if (a && a["Combined.AvgSale"]) {
+                        //var value = a["Combined.AvgSale"].average;
+                        //return kendo.toString(value / 100, "c");
+                        var salesTotal = values["Combined.Sales"].sum;
+                        var orderCount = values["Combined.OrderCount"].sum;
+
+                        if (salesTotal == 0) { return kendo.toString(0, "c") }
+
+                        var avg = salesTotal / orderCount;
+                        return kendo.toString(avg / 100, "c");
+                    }
+                    return "";
+                });
+
                 if (!$.isEmptyObject(values)) {
 
                     viewModel.set("sumSales", kendo.toString(values["Combined.Sales"].sum / 100, "c"));
                     viewModel.set("avgSales", kendo.toString(values["Combined.Sales"].average / 100, "c"));
-                    viewModel.set("avgSpend", function () {
-                        var a = values;
-                        if (a && a["Combined.AvgSale"]) {
-                            //var value = a["Combined.AvgSale"].average;
-                            //return kendo.toString(value / 100, "c");
-                            var salesTotal = values["Combined.Sales"].sum;
-                            var orderCount = values["Combined.OrderCount"].sum;
-                            var avg = salesTotal / orderCount;
-                            return kendo.toString(avg / 100, "c")
-                        }
-                        return "";
-                    });
+                    
                     viewModel.set("sumOrders", values["Combined.OrderCount"].sum);
                     viewModel.set("avgOrders", values["Combined.OrderCount"].average);
 
@@ -329,7 +337,6 @@
                 }
 
                 kendo.bind("#window-@modelId", viewModel);
-
             });
 
         })
