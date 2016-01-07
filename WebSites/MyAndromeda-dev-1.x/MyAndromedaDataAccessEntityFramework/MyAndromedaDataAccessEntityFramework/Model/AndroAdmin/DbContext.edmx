@@ -1667,8 +1667,8 @@
           <NavigationProperty Name="Store" Relationship="AndroAdminModel.FK__Chain__MasterMen__671F4F74" FromRole="Chain" ToRole="Store" />
           <NavigationProperty Name="AMSServerChains" Relationship="AndroAdminModel.FK_AMSServerChain_Chain" FromRole="Chain" ToRole="AMSServerChain" />
           <NavigationProperty Name="AndroWebOrderingWebsites" Relationship="AndroAdminModel.FK_AndroWebOrderingWebsite_Chain" FromRole="Chain" ToRole="AndroWebOrderingWebsite" />
-          <NavigationProperty Name="Children" Relationship="AndroAdminModel.FK_ChainChain_Chain" FromRole="Chain" ToRole="ChainChain" />
-          <NavigationProperty Name="Parents" Relationship="AndroAdminModel.FK_ChainChain_Chain1" FromRole="Chain" ToRole="ChainChain" />
+          <NavigationProperty Name="Parents" Relationship="AndroAdminModel.FK_ChainChain_Chain" FromRole="Chain" ToRole="ChainChain" />
+          <NavigationProperty Name="Children" Relationship="AndroAdminModel.FK_ChainChain_Chain1" FromRole="Chain" ToRole="ChainChain" />
           <NavigationProperty Name="FTPSiteChains" Relationship="AndroAdminModel.FK_FTPSiteChain_Chain" FromRole="Chain" ToRole="FTPSiteChain" />
         </EntityType>
         <EntityType Name="Store">

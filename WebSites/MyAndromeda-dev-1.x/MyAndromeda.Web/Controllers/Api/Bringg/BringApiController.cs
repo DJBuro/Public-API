@@ -116,12 +116,12 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return null;
         }
 
-        private async Task<OrderStatusChange> GetOrderStatusModel(BringWebhook model, UsefulOrderStatus orderStatus) 
+        private async Task<OutgoingWebHookOrderStatusChange> GetOrderStatusModel(BringWebhook model, UsefulOrderStatus orderStatus) 
         {
             var order = await this.GetOrderIdsAsync(model);
             var store = await this.GetStoreIdsAsync(order);
 
-            var sendModel = new OrderStatusChange()
+            var sendModel = new OutgoingWebHookOrderStatusChange()
             {
                 AndromedaSiteId = store.AndromedaSiteId,
                 ExternalSiteId = store.ExternalSiteId,
@@ -136,7 +136,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return sendModel;
         }
 
-        private async Task<OutgoingWebHookBring> GetOrderHeader(BringWebhook model) 
+        private async Task<OutgoingWebHookBringg> GetOrderHeader(BringWebhook model) 
         {
             logger.Debug("Creating new outward notification based on the Bringg webhook.");
 
@@ -157,7 +157,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 throw new Exception(message);
             }
 
-            OutgoingWebHookBring sendModel = new OutgoingWebHookBring()
+            OutgoingWebHookBringg sendModel = new OutgoingWebHookBringg()
             {
                 AndromedaSiteId = store.AndromedaSiteId,
                 ExternalSiteId = store.ExternalSiteId,
@@ -426,7 +426,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return result;
         }
 
-        private async Task<bool> CreateBringgWebhookRequest(OutgoingWebHookBring bringWebook)
+        private async Task<bool> CreateBringgWebhookRequest(OutgoingWebHookBringg bringWebook)
         {
             bool result = false;
 

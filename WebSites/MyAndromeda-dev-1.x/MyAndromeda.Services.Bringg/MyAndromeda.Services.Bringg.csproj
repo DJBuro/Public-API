@@ -82,7 +82,7 @@
     <Compile Include="IncomingWebHooks\BringgWebhookWayPointUpdate.cs" />
     <Compile Include="IncomingWebHooks\BringWebhook.cs" />
     <Compile Include="Outgoing\BringOutgoingEtaWebHook.cs" />
-    <Compile Include="Outgoing\OutgoingWebHookBring.cs" />
+    <Compile Include="Outgoing\OutgoingWebHookBringg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateDriverResult.cs" />
   </ItemGroup>

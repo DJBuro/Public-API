@@ -247,6 +247,7 @@ var MyAndromeda;
                 }
                 ChartOptions.prototype.DataWareHouseOccasionChart = function () {
                     var options = {
+                        theme: "bootstrap",
                         legend: {
                             position: "top"
                         },
@@ -256,19 +257,14 @@ var MyAndromeda;
                                 position: "outsideEnd",
                                 visible: true,
                                 background: "transparent"
-                            }
+                            },
+                            type: "pie"
                         },
                         series: [
                             {
-                                name: "Count", categoryField: "OrderType", field: "Count", type: "donut",
+                                name: "Count", categoryField: "OrderType", field: "Count",
                                 labels: {
-                                    template: "#=category# - #= dataItem.Count# orders"
-                                }
-                            },
-                            {
-                                name: "Sales", categoryField: "OrderType", field: "Sum", type: "donut",
-                                labels: {
-                                    template: "#= category # #= kendo.toString(dataItem.Sum, 'c') #"
+                                    template: "#=category# - #= dataItem.Count# orders\n#= kendo.toString(dataItem.Sum, 'c') #"
                                 }
                             }
                         ]
@@ -277,6 +273,7 @@ var MyAndromeda;
                 };
                 ChartOptions.prototype.DataWareHouseAcsApplicationChart = function () {
                     var options = {
+                        theme: "bootstrap",
                         legend: {
                             position: "top"
                         },
@@ -295,17 +292,16 @@ var MyAndromeda;
                                     template: "#= kendo.toString(value, 'c') #"
                                 }
                             },
-                            { title: "Orders", name: "Orders" }
                         ],
                         series: [
                             { name: "Sales", field: "FinalPrice", type: "column", axis: "Sales", aggregate: "sum", stack: { group: "Sales" } },
-                            { name: "Orders", field: "OrderType", type: "column", axis: "Orders", aggregate: "count", stack: { group: "Orders" } },
                         ]
                     };
                     return options;
                 };
                 ChartOptions.prototype.WeekChart = function () {
                     var options = {
+                        theme: "bootstrap",
                         legend: {
                             position: "top"
                         },
@@ -338,6 +334,7 @@ var MyAndromeda;
                 };
                 ChartOptions.prototype.DayChart = function (baseUnit) {
                     var options = {
+                        theme: "bootstrap",
                         legend: {
                             position: "top"
                         },

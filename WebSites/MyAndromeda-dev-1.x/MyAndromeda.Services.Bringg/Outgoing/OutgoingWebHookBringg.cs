@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MyAndromeda.Services.WebHooks.Models;
 
 namespace MyAndromeda.Services.Bringg.Outgoing
 {
-    public class OutgoingWebHookBring : IHook
+    public class OutgoingWebHookBringg : IHook
     {
         /// <summary>
         /// Gets or sets the id.

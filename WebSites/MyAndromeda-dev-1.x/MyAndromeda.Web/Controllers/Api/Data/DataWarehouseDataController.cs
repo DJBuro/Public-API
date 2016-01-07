@@ -58,6 +58,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 { 
                      AndromedaSiteId = e.AndromedaSiteId,
                      ExternalSiteName = e.ExternalSiteName,
+                     Name = e.Name,
                      ExternalSiteId = e.ExternalId
                 })
                 .ToArrayAsync();
@@ -87,6 +88,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
             
             result.Stores = stores.Select(e => new Models.DataWareHouseStore()
             {
+                Name = e.Name,
                 AndromedaSiteId = e.AndromedaSiteId,
                 ExternalSiteId = e.ExternalSiteId,
                 ExternalSiteName = e.ExternalSiteName,

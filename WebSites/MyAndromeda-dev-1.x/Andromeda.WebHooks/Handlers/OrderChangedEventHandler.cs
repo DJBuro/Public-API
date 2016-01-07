@@ -52,7 +52,7 @@ namespace MyAndromeda.Services.WebHooks.Handlers
                 client.AddJson();
                 client.AddAuth();
 
-                var model = new Models.OrderStatusChange() 
+                var model = new Models.OutgoingWebHookOrderStatusChange() 
                 {
                     AcsApplicationId = orderHeader.ApplicationID,
                     AndromedaSiteId = andromedaSiteId,

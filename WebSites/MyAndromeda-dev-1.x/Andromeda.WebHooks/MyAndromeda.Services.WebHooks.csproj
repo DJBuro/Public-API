@@ -65,7 +65,7 @@
     <Compile Include="Handlers\OrderChangedEventHandler.cs" />
     <Compile Include="Models\IHook.cs" />
     <Compile Include="Models\ISpecificHook.cs" />
-    <Compile Include="Models\OutgoingWebHookMenuItemsChanged.cs" />
+    <Compile Include="Models\OutgoingWebHookMenuChange.cs" />
     <Compile Include="Models\OutgoingWebHookOrderStatusChange.cs" />
     <Compile Include="Models\Settings\RequestHeaders.cs" />
     <Compile Include="Models\Settings\WebHookEnrolement.cs" />

@@ -303,6 +303,7 @@
 
         public DataWareHouseOccasionChart(): kendo.dataviz.ui.ChartOptions {
             var options: kendo.dataviz.ui.ChartOptions = {
+                theme: "bootstrap",
                 legend: {
                     position: "top"
                 },
@@ -312,21 +313,22 @@
                         position: "outsideEnd",
                         visible: true,
                         background: "transparent"
-                    }
+                    },
+                    type: "pie"
                 },
                 series: [
                     {
-                        name: "Count", categoryField: "OrderType", field: "Count", type: "donut",
+                        name: "Count", categoryField: "OrderType", field: "Count",
                         labels: {
-                            template: "#=category# - #= dataItem.Count# orders"
-                        }
-                    },
-                    {
-                        name: "Sales", categoryField: "OrderType", field: "Sum", type: "donut",
-                        labels: {
-                            template: "#= category # #= kendo.toString(dataItem.Sum, 'c') #"
+                            template: "#=category# - #= dataItem.Count# order(s)\n#= kendo.toString(dataItem.Sum, 'c') #"
                         }
                     }
+                    //{
+                    //    name: "Sales", categoryField: "OrderType", field: "Sum", type: "donut",
+                    //    labels: {
+                    //        template: "#= category # #= kendo.toString(dataItem.Sum, 'c') #"
+                    //    }
+                    //}
                 ]
             }
 
@@ -335,6 +337,7 @@
 
         public DataWareHouseAcsApplicationChart(): kendo.dataviz.ui.ChartOptions {
             var options: kendo.dataviz.ui.ChartOptions = {
+                theme: "bootstrap",
                 legend: {
                     position: "top"
                 },
@@ -354,11 +357,11 @@
                         },
 
                     },
-                    { title: "Orders", name: "Orders" }
+                    //{ title: "Orders", name: "Orders" }
                 ],
                 series: [
                     { name: "Sales", field: "FinalPrice", type: "column", axis: "Sales", aggregate: "sum", stack: { group: "Sales" } },
-                    { name: "Orders", field: "OrderType", type: "column", axis: "Orders", aggregate: "count", stack: { group: "Orders" } },
+                    //{ name: "Orders", field: "OrderType", type: "column", axis: "Orders", aggregate: "count", stack: { group: "Orders" } },
                     //{
                     //    name: "Collection", field: "OrderType", type: "column", stack: true, aggregate: (values, series, dataItems, category) => {
                     //        var items: Models.IDataWarehouseOrder[] = dataItems;
@@ -384,6 +387,7 @@
         public WeekChart(): kendo.dataviz.ui.ChartOptions {
 
             var options: kendo.dataviz.ui.ChartOptions = {
+                theme: "bootstrap",
                 legend: {
                     position: "top"
                 },
@@ -421,6 +425,7 @@
         public DayChart(baseUnit: string): kendo.dataviz.ui.ChartOptions {
 
             var options: kendo.dataviz.ui.ChartOptions = {
+                theme: "bootstrap",
                 legend: {
                     position: "top"
                 },

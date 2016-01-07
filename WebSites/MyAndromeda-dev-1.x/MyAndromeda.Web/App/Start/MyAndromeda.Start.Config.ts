@@ -40,11 +40,13 @@
         $stateProvider.state("start-chains", appChainList);
         $stateProvider.state("start-chain-store", appChainsStoreList);
 
-        $urlRouterProvider.otherwise("/start-chains");
+        $urlRouterProvider.otherwise("/chains");
     });
 
 
     app.run(($templateCache: ng.ITemplateCacheService) => {
+        Logger.Notify("Started config");
+
         angular
             .element('script[type="text/ng-template"]')
             .each((i, element: HTMLElement) => {

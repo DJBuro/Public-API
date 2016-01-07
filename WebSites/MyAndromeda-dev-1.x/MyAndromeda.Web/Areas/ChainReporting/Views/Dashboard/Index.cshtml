@@ -2,19 +2,8 @@
     <dashboard-app-filter></dashboard-app-filter>
 
     <div class="pdfRegion">
-
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="well" ui-view="summary"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="well" ui-view="detail"></div>
-            </div>
-        </div>
-
+        <div class="summary-region" ui-view="summary"></div>
+        <div class="detail-region" ui-view="detail"></div>
     </div>
 </div>
 
@@ -39,32 +28,41 @@
 
 
     <script id="dashboard-app-filter.html" type="text/ng-template">
-        <div class="well">
-            <div class="row">
-                <div class="col-sm-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Tools</div>
+            <div class="panel-body">
 
-                    <label>From: </label>
-                    <input kendo-date-picker
-                           ng-model="query.FromLabel"
-                           k-ng-model="query.FromObj" />
+                <div class="row">
+                    <div class="col-sm-3">
 
-                </div>
-                <div class="col-sm-3">
-                    <label>To: </label>
-                    <input kendo-date-picker
-                           ng-model="query.ToLabel"
-                           k-ng-model="query.ToObj" />
-                </div>
-                <div class="col-sm-3">
-                    <a class="k-button" ng-click="today()">Today</a>
-                </div>
-                <div class="col-sm-3">
-                    <div class="pull-right text-right">
-                        <a class="k-button" ng-click="createPdf()">Pdf</a>
+                        <label>From: </label>
+                        <input kendo-date-picker
+                               ng-model="query.FromLabel"
+                               k-ng-model="query.FromObj" />
+
+                    </div>
+                    <div class="col-sm-3">
+                        <label>To: </label>
+                        <input kendo-date-picker
+                               ng-model="query.ToLabel"
+                               k-ng-model="query.ToObj" />
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="btn-group">
+                            <a class="btn btn-default" ng-click="today()">Today</a>
+                            <a class="btn btn-default disabled">Week</a>
+                            <a class="btn btn-default disabled">Month</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="pull-right text-right">
+                            <a class="btn btn-primary" ng-click="createPdf()">Pdf</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </script>
 
     <script id="chain-sales-dashboard-summary.html" type="text/ng-template">
@@ -269,15 +267,104 @@
 
     <script id="store-sales-day-dashboard-detail.html" type="text/ng-template">
 
-        <div ng-repeat="summary in summaries" class="animate-repeat">
+        <div ng-repeat="summary in summaries | orderBy:'Total':true" class="animate-repeat">
 
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="header">
-                        {{summary.Name}}
-                        @*<a class="k-button" ui-sref="chain-sales-dashboard">More</a>*@
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{summary.Name}}</div>
+                        <div class="panel-body">
+
+                            <div class="col-sm-4">
+                                <div class="header">Total Orders</div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="header">Total</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="header">Completed</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="header">Cancelled</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {{summary.Total}}
+                                        <br />{{currency(summary.TotalValue)}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{summary.Completed}}
+                                        <br />{{currency(summary.CompletedValue)}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{summary.Cancelled}}
+                                        <br />{{currency(summary.CancelledValue)}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="header">Active Orders</div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="header">Received</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Oven</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Ready to dispatch</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Out for delivery</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        {{summary.Received}}
+                                        <br />{{currency(summary.ReceivedValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.Oven}}
+                                        <br />{{currency(summary.OvenValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.ReadyToDispatch}}
+                                        <br />{{currency(summary.ReadyToDispatchValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.OutForDelivery}}
+                                        <br />{{currency(summary.OutForDeliveryValue)}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">&nbsp;</div>
+            </div>
+        </div>
+
+    </script>
+
+
+
+    <script id="store-sales-day-dashboard-summary.html" type="text/ng-template">
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                {{summary.Name}} - Summary
+                <a class="btn btn-default" ui-sref="chain-sales-dashboard">Back</a>
+            </div>
+            <div class="panel-body">
                 <div class="col-sm-4">
                     <div class="header">Total Orders</div>
                     <div class="row">
@@ -341,125 +428,58 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-sm-12">&nbsp;</div>
-            </div>
-        </div>
-
-    </script>
-    
-    
-    
-    <script id="store-sales-day-dashboard-summary.html" type="text/ng-template">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="header">
-                    {{summary.Name}}
-                    <a class="k-button" ui-sref="chain-sales-dashboard">Back</a>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="header">Total Orders</div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="header">Total</div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="header">Completed</div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="header">Cancelled</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        {{summary.Total}}
-                        <br />{{currency(summary.TotalValue)}}
-                    </div>
-                    <div class="col-sm-4">
-                        {{summary.Completed}}
-                        <br />{{currency(summary.CompletedValue)}}
-                    </div>
-                    <div class="col-sm-4">
-                        {{summary.Cancelled}}
-                        <br />{{currency(summary.CancelledValue)}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="header">Active Orders</div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="header">Received</div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="header">Oven</div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="header">Ready to dispatch</div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="header">Out for delivery</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        {{summary.Received}}
-                        <br />{{currency(summary.ReceivedValue)}}
-                    </div>
-                    <div class="col-sm-3">
-                        {{summary.Oven}}
-                        <br />{{currency(summary.OvenValue)}}
-                    </div>
-                    <div class="col-sm-3">
-                        {{summary.ReadyToDispatch}}
-                        <br />{{currency(summary.ReadyToDispatchValue)}}
-                    </div>
-                    <div class="col-sm-3">
-                        {{summary.OutForDelivery}}
-                        <br />{{currency(summary.OutForDeliveryValue)}}
-                    </div>
-                </div>
             </div>
 
         </div>
+
+
 
         <div class="row">
             &nbsp;
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <div class="header">
-                    chart by acs application
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div kendo-chart
-                             k-legend="{ position: 'bottom' }"
-                             k-options="acsChartOptions"
-                             k-data-source="summary.AcsApplicationData"
-                             style="height: 400px;">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Sources of revenue</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div kendo-chart
+                                     k-legend="{ position: 'bottom' }"
+                                     k-options="acsChartOptions"
+                                     k-data-source="summary.AcsApplicationData"
+                                     style="height: 400px;">
+                                </div>
+                            </div>
                         </div>
+
                     </div>
+
+
                 </div>
+
+
             </div>
             <div class="col-sm-6">
-                <div class="header">
-                    order type 
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div kendo-chart
-                             k-legend="{ position: 'bottom' }"
-                             k-options="occasionChartOptions"
-                             k-data-source="summary.OccasionData"
-                             style="height: 400px;">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Order Types</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div kendo-chart
+                                     k-legend="{ position: 'bottom' }"
+                                     k-options="occasionChartOptions"
+                                     k-data-source="summary.OccasionData"
+                                     style="height: 400px;">
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    
                 </div>
             </div>
         </div>

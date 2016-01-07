@@ -20,8 +20,8 @@ namespace MyAndromeda.Data.Model.AndroAdmin
             this.Stores = new HashSet<Store>();
             this.AMSServerChains = new HashSet<AMSServerChain>();
             this.AndroWebOrderingWebsites = new HashSet<AndroWebOrderingWebsite>();
-            this.Children = new HashSet<ChainChain>();
             this.Parents = new HashSet<ChainChain>();
+            this.Children = new HashSet<ChainChain>();
             this.FTPSiteChains = new HashSet<FTPSiteChain>();
         }
     
@@ -39,9 +39,9 @@ namespace MyAndromeda.Data.Model.AndroAdmin
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AndroWebOrderingWebsite> AndroWebOrderingWebsites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ChainChain> Children { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChainChain> Parents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ChainChain> Children { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FTPSiteChain> FTPSiteChains { get; set; }
     }

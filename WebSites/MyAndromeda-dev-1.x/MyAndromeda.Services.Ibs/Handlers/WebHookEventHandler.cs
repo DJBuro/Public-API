@@ -64,12 +64,12 @@ namespace MyAndromeda.Services.Ibs.Handlers
         public async Task AfterDistributionAsync<TModel>(int andromedaStoreId, TModel model)
             where TModel : IHook
         {
-            if (!(model is OrderStatusChange))
+            if (!(model is OutgoingWebHookOrderStatusChange))
             {
                 return;
             }
 
-            var change = model as OrderStatusChange;
+            var change = model as OutgoingWebHookOrderStatusChange;
 
             //check if the order in oven. 
             if (change.Status != 2)

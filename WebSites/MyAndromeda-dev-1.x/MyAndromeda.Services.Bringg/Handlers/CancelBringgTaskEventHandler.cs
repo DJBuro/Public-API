@@ -53,14 +53,14 @@ namespace MyAndromeda.Services.Bringg.Handlers
 
         public async Task BeforeDistributionAsync<TModel>(int andromedaSiteId, TModel model) where TModel : IHook
         {
-            bool correctType = (model is OrderStatusChange);
+            bool correctType = (model is OutgoingWebHookOrderStatusChange);
 
             if (!correctType)
             {
                 return;
             }
 
-            var update = model as OrderStatusChange;
+            var update = model as OutgoingWebHookOrderStatusChange;
 
             //canceled 
             bool cancelled = update.Status == 6;

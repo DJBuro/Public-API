@@ -71,5 +71,6 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
         /// </summary>
         /// <value>The orders.</value>
         public List<DataWarehouseOrder> Orders { get; set; }
+        public string Name { get; set; }
     }
 }

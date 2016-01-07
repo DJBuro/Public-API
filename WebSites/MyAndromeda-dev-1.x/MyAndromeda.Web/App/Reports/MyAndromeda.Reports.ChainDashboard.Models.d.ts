@@ -40,6 +40,7 @@
     export interface IDataWareHouseStore
     {
         AndromedaSiteId: number;
+        Name: string;
         ExternalSiteId: string;
         ExternalSiteName: string;
         Orders: IDataWarehouseOrder[];

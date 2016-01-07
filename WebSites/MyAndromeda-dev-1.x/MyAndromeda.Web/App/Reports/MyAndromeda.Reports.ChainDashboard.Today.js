@@ -38,7 +38,7 @@ var MyAndromeda;
                     var stores = Rx.Observable.from(data.Stores);
                     stores.subscribe(function (store) {
                         var allOrders = Rx.Observable.from(store.Orders);
-                        var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.ExternalSiteName, allOrders);
+                        var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.Name, allOrders);
                         summaries.push(r);
                     });
                     $timeout(function () {

@@ -4,8 +4,11 @@
         export interface IChain {
             Id: number;
             Name: string;
-            Stores: number;
+            StoreCount: number;
             ParentId: number;
+            
+            ChildChainCount?: number;
+            ChildStoreCount?: number;
         }
 
         export interface IStore
@@ -21,12 +24,14 @@
 
     export class UserChainDataService
     {
-        constructor(private $http: angular.IHttpService) {
+        constructor(private $http: angular.IHttpService)
+        {
         }
 
-        public List() : ng.IHttpPromise<Models.IChain>
+        public List() : ng.IHttpPromise<Models.IChain[]>
         {
             var getChains = this.$http.get("/user/chains");
+
             return getChains;
         }
     }
@@ -44,7 +49,7 @@
             return getStores;
         }
 
-        public ListStoresByChainId(chainId: number): ng.IHttpPromise<Models.IStore>
+        public ListStoresByChainId(chainId: number): ng.IHttpPromise<Models.IStore[]>
         {
             var route = kendo.format("/user/chains/{0}", chainId);
             var getChains = this.$http.get(route);

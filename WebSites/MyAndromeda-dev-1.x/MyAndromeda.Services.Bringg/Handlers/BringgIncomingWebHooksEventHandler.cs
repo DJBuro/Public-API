@@ -44,7 +44,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 this.logger.Debug("Bring 'Eta' WebHook is ready to send");
                 this.logger.Debug(o);
             }
-            else if (model is OutgoingWebHookBring) 
+            else if (model is OutgoingWebHookBringg) 
             {
                 this.logger.Debug("Bring WebHook is ready to send");
                 this.logger.Debug(o);

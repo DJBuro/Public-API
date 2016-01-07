@@ -31,7 +31,7 @@ namespace MyAndromeda.Services.WebHooks.Handlers
         public async Task UpdatedMenuItemsAsync(EditMenuItemsContext context)
         {
             //to-do - notify webhook notification of updated menu items. 
-            MenuItemsChanged model = new MenuItemsChanged()
+            OutgoingWebHookMenuItemsChanged model = new OutgoingWebHookMenuItemsChanged()
             {
                 AndromedaSiteId = context.Site.AndromediaSiteId,
                 ExternalSiteId = context.Site.ExternalSiteId,
@@ -54,7 +54,7 @@ namespace MyAndromeda.Services.WebHooks.Handlers
             return;
         }
 
-        private async Task CreateRequestAsync(MenuItemsChanged model) 
+        private async Task CreateRequestAsync(OutgoingWebHookMenuItemsChanged model) 
         {
             try
             {

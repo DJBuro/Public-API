@@ -55,7 +55,6 @@
             .LoadChain(5, null)
             .where(e => e !== null);
 
-
         observable.subscribe((data) => {
             var summaries = [];
             //var allOrders = Rx.Observable.from(data.Stores).selectMany((store) => Rx.Observable.from(store.Orders));
@@ -64,11 +63,10 @@
             stores.subscribe((store) => {
 
                 var allOrders = Rx.Observable.from(store.Orders);
-                var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.ExternalSiteName, allOrders);
+                var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.Name, allOrders);
                 
                 summaries.push(r);
             });
-
 
             $timeout(() => {
                 $scope.summaries = summaries;

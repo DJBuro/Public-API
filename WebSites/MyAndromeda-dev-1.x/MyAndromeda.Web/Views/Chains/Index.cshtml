@@ -1,23 +1,29 @@
 ﻿@using MyAndromeda.Authorization
 @model MyAndromeda.Web.ViewModels.ChainListViewModel
 
+@{
+    var translator = Html.GetTranslator();
+}
+
+<div id="StartApp">
+    <div ui-view="main"></div>
+</div>
 
 
-<div id="StartApp"></div>
 @*@(Html.Kendo().TabStrip()
-    .Name("FindChain")
-    .Items(items => {
-        items.Add().Text("Tree view")
-            .Selected(false)
-            .Enabled(false)
-            .Content(@<text>@Html.Partial("ChainTreeView", Model)</text>);
-        items.Add().Text("List view")
-            .Selected(true)
-            .Content(@<text>
-                @Html.Partial("GridTreeView")
-            </text>);
-    })
-)*@
+        .Name("FindChain")
+        .Items(items => {
+            items.Add().Text("Tree view")
+                .Selected(false)
+                .Enabled(false)
+                .Content(@<text>@Html.Partial("ChainTreeView", Model)</text>);
+            items.Add().Text("List view")
+                .Selected(true)
+                .Content(@<text>
+                    @Html.Partial("GridTreeView")
+                </text>);
+        })
+    )*@
 
 @*@Html.Partial("GridTreeView")*@
 
@@ -25,9 +31,21 @@
 
 @using (Html.BeginScripts())
 {
-    if (false) { 
-    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
+    <script type="text/template" id="chain-actions-template">
+        <a class="k-button" href="/ChainReporting/{{dataItem.Id}}/Reports">
+            <i class="fa fa-bar-chart-o"></i>
+            Reports
+        </a>
+    </script>
+    <script type="text/template" id="chain-template">
+
+        <chain-grid chain="dataItem">
+        </chain-grid>
+    </script>
     <script>
         $(function () {
             MyAndromeda.Start.setupStart("StartApp");
@@ -46,15 +64,83 @@
     </kendo-tree-list>
 </script>
 
+<script type="text/template" id="store-list-template">
+    @*<div>
+            {{dataItem.Name}}
+        </div>*@
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Admin</div>
+                    <div class="panel-body">
+                        <a class="k-button" href="/OrderManagement/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Orders">
+                            @translator.T("Orders")
+                        </a>
+                        <a class="k-button" href="/AndroWebOrdering/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/AndroWebOrdering/List">
+                            @translator.T("Websites")
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Store
+                    </div>
+                    <div class="panel-body">
+                        <a class="k-button" href="/Chain/{{chain.Id}}/Store/{{dataItem.ExternalSiteId}}">
+                            @translator.T("Detail")
+                        </a>
+
+                        <a class="k-button" href="/Menus/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/MenuNavigation">
+                            @translator.T("Menu")
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-4">
+                <div class="panel  panel-default">
+                    <div class="panel-heading">Reporting</div>
+                    <div class="panel-body">
+                        <a class="k-button" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Store">
+                            @translator.T("Web")
+                        </a>
+
+                        <a ng-if="dataItem.HasRameses"
+                           class="k-button" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
+                            @translator.T("Rameses")
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</script>
 <script type="text/ng-template" id="store-list.html">
-    <!-- $scope.chainId -->
-    <!-- $scope.chainName -->
-    <div class="header">
-        <h3>{{chain.Name}}</h3>
-        <a class="k-button" ui-sref="start-chains">Back</a>
+    {{chain.Name}}
+    <span style="white-space:normal">
+        <span class="btn-group pull-right" ng-show="hasStores">
+            <a class="btn btn-info btn-xs" href="/ChainReporting/{{chain.Id}}/Reports">Chain Reports</a>
+            <a class="btn btn-danger btn-xs" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">Beta Reports</a>
+        </span>
+        <span class="btn-group pull-right" ng-show="hasStores">
+            <a class="btn btn-danger btn-xs" ng-hide="hideStores" ng-click="hideStores = true">Hide stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
+            <a class="btn btn-primary btn-xs" ng-show="hideStores" ng-click="hideStores = false">Show Stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
+        </span>
+    </span>
+    <div ng-show="hasStores">
+        <div ng-hide="hideStores">
+            <kendo-grid k-options="storeListOptions">
+            </kendo-grid>
+        </div>
     </div>
 
-    <kendo-grid k-options="storeListOptionss">
-
-    </kendo-grid>
 </script>
+

@@ -23,10 +23,12 @@ namespace MyAndromeda.Services.WebHooks.Models
         /// </summary>
         /// <value>The online.</value>
         public bool Online { get; set; }
-        //public string ReportedBy { get; set; }
+        
+        
         /// <summary>
         /// Gets or sets who reported the store as online. Hub1, Hub2 etc.
         /// </summary>
         /// <value>The reported by.</value>
+        /// public string ReportedBy { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace MyAndromeda.Services.WebHooks.Handlers
                     client.AddJson();
                     client.AddAuth();
 
-                    var model = new Models.MenuChange()
+                    var model = new Models.OutgoingWebHookMenuChange()
                     {
                         Source = "MyAndromeda.Services.WebHooks.Handlers.OrderChangedEventHandler",
                         AndromedaSiteId = context.AndromedaSiteId,

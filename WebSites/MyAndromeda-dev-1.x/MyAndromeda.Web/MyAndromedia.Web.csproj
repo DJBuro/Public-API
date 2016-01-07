@@ -1491,6 +1491,7 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <Content Include="Scripts\kendoExtensions\kendoExtensions.js" />
     <Content Include="Scripts\kendo\2015.3.1111\angular.min.js" />
     <Content Include="Scripts\kendo\2015.3.1111\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="Scripts\kendo\2015.3.1111\cultures\kendo.culture.af.min.js" />
@@ -2109,7 +2110,6 @@
     <Content Include="Scripts\kendo\2015.3.1111\messages\kendo.messages.zh-HK.min.js" />
     <Content Include="Scripts\kendo\2015.3.1111\messages\kendo.messages.zh-TW.min.js" />
     <Content Include="Scripts\kendo\2015.3.1111\pako_deflate.min.js" />
-    <Content Include="Scripts\kendo\kendoExtensions.js" />
     <Content Include="Scripts\sweetalert-dev.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\typings\rx\rx-lite.d.ts" />

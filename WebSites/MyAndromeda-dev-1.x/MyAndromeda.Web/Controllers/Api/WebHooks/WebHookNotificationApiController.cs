@@ -156,7 +156,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/store/update-status")]
-        public async Task<HttpResponseMessage> OnlineState(StoreOnlineStatus model)
+        public async Task<HttpResponseMessage> OnlineState(OutgoingWebHookStoreOnlineStatus model)
         {
             this.Flavor = WebHookType.StoreStaus;
 
@@ -175,7 +175,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
  
         [HttpPost, HttpPut]
         [Route("web-hooks/store/update-estimated-delivery-time")]
-        public async Task<HttpResponseMessage> UpdateDeliveryTime(UpdateDeliveryTime model)
+        public async Task<HttpResponseMessage> UpdateDeliveryTime(OutgoingWebHookUpdateDeliveryTime model)
         {
             this.Flavor = WebHookType.OrderEta;
 
@@ -194,7 +194,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/store/update-menu")]
-        public async Task<HttpResponseMessage> MenuChange(MenuChange model)
+        public async Task<HttpResponseMessage> MenuChange(OutgoingWebHookMenuChange model)
         {
             this.Flavor = WebHookType.MenuChange;
 
@@ -213,7 +213,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/store/update-menu-items")]
-        public async Task<HttpResponseMessage> MenuItemsChanged(MenuItemsChanged model) 
+        public async Task<HttpResponseMessage> MenuItemsChanged(OutgoingWebHookMenuItemsChanged model) 
         {
             this.Flavor = WebHookType.MenuItemChange | WebHookType.MenuChange;
 
@@ -232,7 +232,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/store/orders/update-order-status")]
-        public async Task<HttpResponseMessage> OrderStatusChange(OrderStatusChange model)
+        public async Task<HttpResponseMessage> OrderStatusChange(OutgoingWebHookOrderStatusChange model)
         {
             this.Flavor = WebHookType.OrderStatus;
 
@@ -309,7 +309,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
         [HttpPost, HttpPut]
         [Route("web-hooks/bringg/update")]
-        public async Task<HttpResponseMessage> BringMessage([FromBody]OutgoingWebHookBring model) 
+        public async Task<HttpResponseMessage> BringMessage([FromBody]OutgoingWebHookBringg model) 
         {
             this.Flavor = WebHookType.BringgUpdate;
 

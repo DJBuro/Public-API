@@ -65,11 +65,11 @@ namespace MyAndromeda.Services.Bringg.Handlers
 
         public async Task AfterDistributionAsync<TModel>(int andromedaSiteId, TModel model) where TModel : IHook
         {
-            bool valid = model is OrderStatusChange;
+            bool valid = model is OutgoingWebHookOrderStatusChange;
 
             if (!valid) { return; }
 
-            var modelType = model as OrderStatusChange;
+            var modelType = model as OutgoingWebHookOrderStatusChange;
             var status = MyAndromeda.Data.DataWarehouse.OrderStatusExtensions.GetState(modelType.Status);
 
             if (status != UsefulOrderStatus.OrderIsOutForDelivery)
@@ -77,7 +77,6 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 return;
             }
             
-
 
             try
             {
