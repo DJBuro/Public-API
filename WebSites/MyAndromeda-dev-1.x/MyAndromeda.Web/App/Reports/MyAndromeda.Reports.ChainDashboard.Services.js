@@ -264,7 +264,7 @@ var MyAndromeda;
                             {
                                 name: "Count", categoryField: "OrderType", field: "Count",
                                 labels: {
-                                    template: "#=category# - #= dataItem.Count# orders\n#= kendo.toString(dataItem.Sum, 'c') #"
+                                    template: "#=category# - #= dataItem.Count# order(s)\n#= kendo.toString(dataItem.Sum, 'c') #"
                                 }
                             }
                         ]

@@ -13,7 +13,9 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
         /// </summary>
         /// <param name="acsOrderId">The acs order id.</param>
         /// <returns></returns>
-        IEnumerable<OrderLine> GetOrderedItems(Guid acsOrderId);
+        //IEnumerable<OrderLine> GetOrderedItems(Guid acsOrderId);
+
+        IQueryable<OrderLine> Query();
     }
 
     public static class OrderLineExtensions 

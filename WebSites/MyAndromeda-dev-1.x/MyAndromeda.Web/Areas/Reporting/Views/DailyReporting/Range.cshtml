@@ -314,7 +314,7 @@
                         var salesTotal = values["Combined.Sales"].sum;
                         var orderCount = values["Combined.OrderCount"].sum;
 
-                        if (salesTotal == 0) { return kendo.toString(0, "c") }
+                        if (salesTotal === 0) { return kendo.toString(0, "c") }
 
                         var avg = salesTotal / orderCount;
                         return kendo.toString(avg / 100, "c");

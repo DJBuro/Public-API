@@ -46,100 +46,101 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             this.orderLineDataService = orderLineDataService;
         }
 
-        public ActionResult FindOrder(Guid acsOrderId) 
-        {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
-            {
-                this.notifier.Notify(translator.T(Messages.NotAuthorizedView));
+        //public ActionResult FindOrder(Guid acsOrderId) 
+        //{
+        //    if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+        //    {
+        //        this.notifier.Notify(translator.T(Messages.NotAuthorizedView));
 
-                return new HttpUnauthorizedResult();
-            }
+        //        return new HttpUnauthorizedResult();
+        //    }
 
-            var orderHeader = this.orderHeaderDataService.GetByOrderId(acsOrderId);
-            var orderLineItems = orderLineDataService.GetOrderedItems(acsOrderId);
+        //    var orderHeader = this.orderHeaderDataService.GetByOrderId(acsOrderId);
+        //    var orderLineItems = 
+        //        //orderLineDataService.GetOrderedItems(acsOrderId);
 
 
-            var customer = customerDataService.GetCustomerByAcsOrderId(acsOrderId);
-            var storeAddress = this.siteAddressDataService.GetSiteAddress(this.currentSite.SiteId);
+        //    var customer = customerDataService.GetCustomerByAcsOrderId(acsOrderId);
+        //    var storeAddress = this.siteAddressDataService.GetSiteAddress(this.currentSite.SiteId);
 
-            Func<string> getStoreName = () => {
-                if(!string.IsNullOrWhiteSpace(this.currentSite.Site.ExternalName))
-                    return this.currentSite.Site.ExternalName;
+        //    Func<string> getStoreName = () => {
+        //        if(!string.IsNullOrWhiteSpace(this.currentSite.Site.ExternalName))
+        //            return this.currentSite.Site.ExternalName;
 
-                if(!string.IsNullOrWhiteSpace(this.currentSite.Site.ClientSiteName))
-                    return this.currentSite.Site.ClientSiteName;
+        //        if(!string.IsNullOrWhiteSpace(this.currentSite.Site.ClientSiteName))
+        //            return this.currentSite.Site.ClientSiteName;
 
-                return string.Empty;
-            };
+        //        return string.Empty;
+        //    };
 
-            var dateServices = this.workContext.DateServicesFactory();
+        //    var dateServices = this.workContext.DateServicesFactory();
 
-            var result = new
-            {
-                Header = new
-                {
-                    Name = getStoreName(),
-                    Address = new
-                    {
-                        storeAddress.RoadNum,
-                        storeAddress.RoadName,
-                        City = storeAddress.Town,
-                        storeAddress.State,
-                        ZipCode = storeAddress.Postcode,
-                        Country = storeAddress.Country.CountryName
-                    }
-                },
-                OrderedItems = orderLineItems.Where(e => !e.DealID.HasValue).Select(e => new
-                {
-                    e.Description,
-                    e.Price,
-                    e.Qty,
-                    e.IsDeal,
-                    Children = orderLineItems.Where(item=> item.DealID == e.ID).OrderBy(item=> item.DealSequence).Select(item => new { 
-                        item.Description,
-                        item.Price,
-                        item.Qty
-                    })
-                }),
-                OrderLineAggregate = new
-                {
-                    Sum = orderLineItems.Sum(e => e.Price),
-                    orderHeader.TotalTax,
-                    orderHeader.DeliveryCharge,
-                    orderHeader.FinalPrice
-                },
-                Customer = new
-                {
-                    customer.FirstName,
-                    customer.LastName,
-                    //customer.Mobile,
-                    //customer.Email,
-                    Addresses = customer.CustomerAddresses.Select(e => new
-                    {
-                        e.RoadNum,
-                        e.RoadName,
-                        e.City,
-                        e.State,
-                        e.ZipCode,
-                        e.Country
-                    })
-                },
-                Delivery = new
-                {
-                    orderHeader.OrderType,
-                    orderHeader.OrderPlacedTime,
-                    OrderPlacedTimeLocalString = dateServices.ConvertToLocalString(orderHeader.OrderPlacedTime.GetValueOrDefault()),
-                    orderHeader.OrderWantedTime,
-                    OrderWantedTimeLocalString = dateServices.ConvertToLocalString(orderHeader.OrderWantedTime.GetValueOrDefault(orderHeader.OrderPlacedTime.GetValueOrDefault()))
-                },
-                ReferenceIds = new
-                {
-                    orderHeader.RamesesOrderNum,
-                    orderHeader.ExternalOrderRef
-                }
-            };
+        //    var result = new
+        //    {
+        //        Header = new
+        //        {
+        //            Name = getStoreName(),
+        //            Address = new
+        //            {
+        //                storeAddress.RoadNum,
+        //                storeAddress.RoadName,
+        //                City = storeAddress.Town,
+        //                storeAddress.State,
+        //                ZipCode = storeAddress.Postcode,
+        //                Country = storeAddress.Country.CountryName
+        //            }
+        //        },
+        //        OrderedItems = orderLineItems.Where(e => !e.DealID.HasValue).Select(e => new
+        //        {
+        //            e.Description,
+        //            e.Price,
+        //            e.Qty,
+        //            e.IsDeal,
+        //            Children = orderLineItems.Where(item=> item.DealID == e.ID).OrderBy(item=> item.DealSequence).Select(item => new { 
+        //                item.Description,
+        //                item.Price,
+        //                item.Qty
+        //            })
+        //        }),
+        //        OrderLineAggregate = new
+        //        {
+        //            Sum = orderLineItems.Sum(e => e.Price),
+        //            orderHeader.TotalTax,
+        //            orderHeader.DeliveryCharge,
+        //            orderHeader.FinalPrice
+        //        },
+        //        Customer = new
+        //        {
+        //            customer.FirstName,
+        //            customer.LastName,
+        //            //customer.Mobile,
+        //            //customer.Email,
+        //            Addresses = customer.CustomerAddresses.Select(e => new
+        //            {
+        //                e.RoadNum,
+        //                e.RoadName,
+        //                e.City,
+        //                e.State,
+        //                e.ZipCode,
+        //                e.Country
+        //            })
+        //        },
+        //        Delivery = new
+        //        {
+        //            orderHeader.OrderType,
+        //            orderHeader.OrderPlacedTime,
+        //            OrderPlacedTimeLocalString = dateServices.ConvertToLocalString(orderHeader.OrderPlacedTime.GetValueOrDefault()),
+        //            orderHeader.OrderWantedTime,
+        //            OrderWantedTimeLocalString = dateServices.ConvertToLocalString(orderHeader.OrderWantedTime.GetValueOrDefault(orderHeader.OrderPlacedTime.GetValueOrDefault()))
+        //        },
+        //        ReferenceIds = new
+        //        {
+        //            orderHeader.RamesesOrderNum,
+        //            orderHeader.ExternalOrderRef
+        //        }
+        //    };
 
-            return Json(result);
-        }
+        //    return Json(result);
+        //}
     }
 }

@@ -18,6 +18,8 @@ using MyAndromeda.Framework.Dates;
 using System.Collections.Generic;
 using Kendo.Mvc.Extensions;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.Entity;
 
 namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
 {
@@ -122,7 +124,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
         }
 
         [HttpPost]
-        public ActionResult FindOrder(Guid id)
+        public async Task<ActionResult> FindOrder(Guid id)
         {
             if (!this.authorizer.Authorize(UserPermissions.ViewOrderDetail))
             {
@@ -132,8 +134,19 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
 
             var dbItem = orderMonitoringService.GetOrderById(id);
             //var orderLines = dbItem.ToViewModel(this.dateServices).OrderLines;
-            var orderLineItems = orderLineDataService.GetOrderedItems(dbItem.ACSOrderId)
-                .ToArray();
+            //var orderLineItems = orderLineDataService.GetOrderedItems(dbItem.ACSOrderId)
+            //    .ToArray();
+            var orderLineItems = orderLineDataService.Query().Where(e => e.OrderHeaderID == id).ToList();
+
+            if (orderLineItems.Count == 0) 
+            {
+                orderLineItems.Add(new Data.DataWarehouse.Models.OrderLine() { 
+                    Description = "Rameses Order",
+                    Price = 0,
+                    Qty = 0
+                });
+            }
+
             var storeAddress = this.siteAddressDataService.GetSiteAddressByExternalSiteId(dbItem.ExternalSiteID);
 
             if (dbItem.CustomerAddress == null)
@@ -163,7 +176,9 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
 
             //lets ignore order discounts as they are not used. 
             //var saved = dbItem.FinalPrice - loyaltyItems.Sum(e=> e.redeemedPointsValue.GetValueOrDefault() / 100);
-            var itemsTotal = dbItem.OrderLines.Sum(orderLine => orderLine.Price.GetValueOrDefault() + orderLine.modifiers.Sum(topping => topping.Price).GetValueOrDefault());
+            var itemsTotal = dbItem.OrderLines
+                .Sum(orderLine => orderLine.Price.GetValueOrDefault() + orderLine.modifiers.Sum(topping => topping.Price).GetValueOrDefault());
+            
             var discountRowsVouchers = voucherItems.Select(e=> new DiscountRow{
                 Description = string.Format("{0} {1}", e.VoucherCode, e.DiscountType.Equals("Percentage", StringComparison.InvariantCultureIgnoreCase) 
                     ? string.Format("({0:0}%)", 100 - e.DiscountValue) 
