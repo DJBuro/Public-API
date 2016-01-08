@@ -136,7 +136,9 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
             //var orderLines = dbItem.ToViewModel(this.dateServices).OrderLines;
             //var orderLineItems = orderLineDataService.GetOrderedItems(dbItem.ACSOrderId)
             //    .ToArray();
-            var orderLineItems = orderLineDataService.Query().Where(e => e.OrderHeaderID == id).ToList();
+            var orderLineItems = await orderLineDataService.Query()
+                .Where(e => e.OrderHeaderID == id)
+                .ToListAsync();
 
             if (orderLineItems.Count == 0) 
             {
@@ -226,7 +228,9 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
                         modifier.Qty,
                         modifier.Removed
                     }),
-                    Children = orderLineItems.Where(item => item.DealID == e.ID).OrderBy(item => item.DealSequence).Select(item => new { 
+                    Children = orderLineItems.Where(item => item.DealID == e.ID)
+                                             .OrderBy(item => item.DealSequence)
+                                             .Select(item => new { 
                         item.Cat1,
                         item.Cat2,
                         item.Description,

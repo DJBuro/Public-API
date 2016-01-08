@@ -13,8 +13,8 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
     {
         IDbSet<OrderHeader> OrderHeaders { get; }
         IDbSet<OrderStatusHistory> OrderStatusHistory { get; }
-
-        OrderHeader GetByOrderId(Guid acsOrderId);
+        
+        OrderHeader GetByOrderHeaderId(Guid orderId);
 
         Task<int> SaveChangesAsync();
     }

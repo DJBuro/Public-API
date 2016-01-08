@@ -1,40 +1,42 @@
 ﻿
-<div class="ticketColumn row" style="margin-right:50px;">
-    <div class="ticket">
-        <div class="store-header" data-template="StoreTemplate" data-bind="source: Header">
+<div class="masterTicket">
+    <div class="ticketColumn row" style="margin-right:50px;">
+        <div class="ticket">
+            <div class="store-header" data-template="StoreTemplate" data-bind="source: Header">
+            </div>
+            <div class="customer">
+                <div data-template="CustomerTemplate" data-bind="source: Customer"></div>
+                <div data-template="AddressTemplate" data-bind="source: Customer"></div>
+            </div>
+            <table class="order-line-grid main">
+                <colgroup>
+                    <col style="width: 40px" />
+                    <col class="item-description" />
+                    <col style="width: 80px; text-align: right" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <td><b>Qty</b></td>
+                        <td><b>Description</b></td>
+                        <td>
+                            <b>Price</b>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody data-template="OrderLineItem" data-bind="source: LineItems"></tbody>
+                <tbody data-template="SubTotalTemplate" data-bind="source: OrderLineAggregate"></tbody>
+                <tbody data-template="DiscoutLineItem" data-bind="source: DiscoutLineItems"></tbody>
+                <tfoot data-template="OrderLineAggregate" data-bind="source: OrderLineAggregate"></tfoot>
+            </table>
         </div>
-        <div class="customer">
-            <div data-template="CustomerTemplate" data-bind="source: Customer"></div>
-            <div data-template="AddressTemplate" data-bind="source: Customer"></div>
-        </div>
-        <table class="order-line-grid main">
-            <colgroup>
-                <col style="width: 40px" />
-                <col class="item-description" />
-                <col style="width: 80px; text-align: right" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <td><b>Qty</b></td>
-                    <td><b>Description</b></td>
-                    <td>
-                        <b>Price</b>
-                    </td>
-                </tr>
-            </thead>
-            <tbody data-template="OrderLineItem" data-bind="source: LineItems"></tbody>
-            <tbody data-template="SubTotalTemplate" data-bind="source: OrderLineAggregate"></tbody>
-            <tbody data-template="DiscoutLineItem" data-bind="source: DiscoutLineItems"></tbody>
-            <tfoot data-template="OrderLineAggregate" data-bind="source: OrderLineAggregate"></tfoot>
-        </table>
     </div>
-</div>
-<div class="ticketColumn row">
-    <div class="ticket">
-        <div data-template="DeliveryTemplate" data-bind="source: Delivery"></div>
-        <div data-template="LoyaltyTemplate" data-bind="source: Loyalty"></div>
-        <div data-template="ReferenceIdTemplate" data-bind="source: ReferenceIds"></div>
+    <div class="ticketColumn row">
+        <div class="ticket">
+            <div data-template="DeliveryTemplate" data-bind="source: Delivery"></div>
+            <div data-template="LoyaltyTemplate" data-bind="source: Loyalty"></div>
+            <div data-template="ReferenceIdTemplate" data-bind="source: ReferenceIds"></div>
 
-        @*<div data-template="VoucherTemplate" data-bind="source: Vouchers"></div>*@
+            @*<div data-template="VoucherTemplate" data-bind="source: Vouchers"></div>*@
+        </div>
     </div>
 </div>

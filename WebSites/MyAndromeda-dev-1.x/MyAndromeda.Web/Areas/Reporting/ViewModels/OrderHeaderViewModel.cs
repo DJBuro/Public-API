@@ -9,8 +9,8 @@ namespace MyAndromeda.Web.Areas.Reporting.ViewModels
     public class OrderHeaderViewModel
     {
 
-        public Guid ID { get; set; }
-        public Guid ACSOrderId { get; set; }
+        public Guid Id { get; set; }
+        //public Guid ACSOrderId { get; set; }
 
         private DateTime timeStamp;
         
@@ -112,8 +112,8 @@ namespace MyAndromeda.Web.Areas.Reporting.ViewModels
             OrderHeaderViewModel orderHeader =  new OrderHeaderViewModel()
             {
                 CustomerId = header.CustomerID,
-                ID = header.ID,
-                ACSOrderId = header.ACSOrderId,
+                Id = header.ID,
+                //ACSOrderId = header.ACSOrderId,
                 DeliveryCharge = header.DeliveryCharge,
                 FinalPrice = header.FinalPrice + header.DeliveryCharge,
                 PayType = header.paytype,

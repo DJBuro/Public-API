@@ -1,5 +1,4 @@
-﻿<div class="row masterTicket">
-    <a class="k-button">Pdf</a>
+﻿<div class="row">
     @Html.Partial("~/Areas/Reporting/Views/Orders/_ticket_template.cshtml")
 </div>
 
@@ -7,14 +6,14 @@
 {
     <script type="text/javascript">
         function manageDetailInit(e) {
+            console.log("manage detail row");
+
             var detailRow = e.detailRow;
             var detailData = e.data;
 
-
-
             var request = $.ajax({
                 url: "@Url.Action("FindOrder", "Orders", new { Area = "OrderManagement" })",
-                data: { Id: detailData.ID },
+                data: { Id: detailData.Id },
                 type: "POST",
                 dataType: "json"
             });

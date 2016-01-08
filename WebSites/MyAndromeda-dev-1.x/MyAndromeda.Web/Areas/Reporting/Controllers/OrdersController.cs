@@ -115,7 +115,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             return View(filter);
         }
 
-        public ActionResult ReadCustomerHistory([DataSourceRequest] DataSourceRequest request, Guid? customerId, Guid? acsOrderId) 
+        public ActionResult ReadCustomerHistory([DataSourceRequest] DataSourceRequest request, Guid? customerId, Guid? orderHeaderId) 
         {
             if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
             {
@@ -128,8 +128,11 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
             if (!customerId.HasValue)
             {
-                var customer = this.acsCustomerDataService.GetCustomerByAcsOrderId(acsOrderId.GetValueOrDefault());
-                
+                //var customer = this.acsCustomerDataService.GetCustomerByAcsOrderId(orderHeaderId.GetValueOrDefault());
+                var customer = this.acsCustomerDataService.Query()
+                    .Where(e => e.OrderHeaders.Any(orderHeader => orderHeader.ID == orderHeaderId))
+                    .SingleOrDefault();
+
                 data = this.customerOrderService.List()
                     .Where(e => e.CustomerID == customer.ID && e.ExternalSiteID == this.currentSite.ExternalSiteId);
             }

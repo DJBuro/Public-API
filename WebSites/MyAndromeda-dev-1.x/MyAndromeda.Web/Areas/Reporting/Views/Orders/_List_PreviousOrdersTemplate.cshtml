@@ -3,7 +3,7 @@
 }
 
 @(Html.Kendo().Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.OrderHeaderViewModel>()
-    .Name("CustomerGrid#=ACSOrderId#")
+    .Name("CustomerGrid#=Id#")
     .ToolBar(tools => {
         tools.Template(@<text>
             <a class="k-button" href="@Url.ActionClientTemplate("CustomerDetail", "Customer", new { Id = "#=CustomerId#" })">Customer Page</a>
@@ -32,7 +32,7 @@
     .DataSource(data =>
         data.Ajax()
         .Events(e => e.Change("gridChanged"))
-        .Read("ReadCustomerHistory", "Orders", new { AcsOrderId = "#=ACSOrderId#" })
+                        .Read("ReadCustomerHistory", "Orders", new { orderHeaderId = "#=Id#" })
         .ServerOperation(false)
         .PageSize(10)
         .Aggregates(aggs =>

@@ -46,9 +46,9 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
 
         public IDbSet<OrderStatusHistory> OrderStatusHistory { get; private set; }
 
-        public OrderHeader GetByOrderId(Guid acsOrderId)
+        public OrderHeader GetByOrderHeaderId(Guid id)
         {
-            return TableQuery.SingleOrDefault(e => e.ACSOrderId == acsOrderId);
+            return TableQuery.SingleOrDefault(e => e.ID == id);
         }
 
         public async Task<int> SaveChangesAsync()
@@ -56,10 +56,10 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
             return await this.dbContext.SaveChangesAsync();
         }
 
-        public OrderHeader Get(Guid acsOrderId)
-        {
-            return TableQuery.SingleOrDefault(e => e.ACSOrderId == acsOrderId);
-        }
+        //public OrderHeader Get(Guid acsOrderId)
+        //{
+        //    return TableQuery.SingleOrDefault(e => e.ACSOrderId == acsOrderId);
+        //}
 
         public void Update(OrderHeader orderHeader)
         {

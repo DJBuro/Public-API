@@ -11,7 +11,9 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Customers
 {
     public interface IAcsCustomerDataService : IDependency
     {
-        Customer GetCustomerByAcsOrderId(Guid acsOrderId);
+        IQueryable<Customer> Query();
+
+        //Customer GetCustomerByAcsOrderId(Guid acsOrderId);
     }
 
     public class AcsCustomerDataService : IAcsCustomerDataService 
@@ -23,13 +25,12 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Customers
             this.sharedDbContext = sharedDbContext;
         }
 
-        public Customer GetCustomerByAcsOrderId(Guid acsOrderId)
-        {
-            var table = this.sharedDbContext.Customers;
-            var query = table.Where(e=> e.OrderHeaders.Any(order => order.ACSOrderId == acsOrderId));
-            var result = query.SingleOrDefault();
 
-            return result;
+        public IQueryable<Customer> Query()
+        {
+            var table =  this.sharedDbContext.Set<Customer>();
+
+            return table;
         }
     }
 }

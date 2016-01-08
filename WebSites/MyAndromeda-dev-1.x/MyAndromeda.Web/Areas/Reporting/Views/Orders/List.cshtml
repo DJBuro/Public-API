@@ -161,7 +161,7 @@
 @using (Html.BeginScripts("List_grid_child_templates"))
 {
     <script type="text/html" id="OrderHeaderTabstripTemplate">
-        @(Html.Kendo().TabStrip().Name("orderheadertabs_#=ACSOrderId#").Items(items =>
+        @(Html.Kendo().TabStrip().Name("orderheadertabs_#=Id#").Items(items =>
         {
             items.Add()
                 .Text("Order")
