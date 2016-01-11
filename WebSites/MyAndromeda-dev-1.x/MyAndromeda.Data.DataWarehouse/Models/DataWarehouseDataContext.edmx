@@ -146,6 +146,8 @@
           </Key>
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CustomerKey" Type="uniqueidentifier" />
+          <Property Name="Premise" Type="nvarchar" MaxLength="70" />
+          <Property Name="House" Type="nvarchar" MaxLength="70" />
           <Property Name="RoadNum" Type="nvarchar" MaxLength="16" />
           <Property Name="RoadName" Type="nvarchar" MaxLength="64" />
           <Property Name="City" Type="nvarchar" MaxLength="32" />
@@ -226,6 +228,20 @@
           <Property Name="OrderHeaderId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CustomerId" Type="bigint" />
           <Property Name="CreatedAtUtc" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DataWarehouse.dbo.IbsPaymentTypeTranslation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="IbsPaymentTypeTranslation">
+          <Key>
+            <PropertyRef Name="IbsCompanyId" />
+            <PropertyRef Name="OrderPaymentTypeName" />
+            <PropertyRef Name="MediaNumber" />
+            <PropertyRef Name="MediaType" />
+          </Key>
+          <Property Name="IbsCompanyId" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="OrderPaymentTypeName" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="MediaNumber" Type="int" Nullable="false" />
+          <Property Name="MediaType" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -915,6 +931,14 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsedVoucher" EntityType="Self.UsedVoucher" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Voucher" EntityType="Self.Voucher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IbsPaymentTypeTranslation" EntityType="Self.IbsPaymentTypeTranslation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[IbsPaymentTypeTranslation].[IbsCompanyId] AS [IbsCompanyId], 
+[IbsPaymentTypeTranslation].[OrderPaymentTypeName] AS [OrderPaymentTypeName], 
+[IbsPaymentTypeTranslation].[MediaNumber] AS [MediaNumber], 
+[IbsPaymentTypeTranslation].[MediaType] AS [MediaType]
+FROM [dbo].[IbsPaymentTypeTranslation] AS [IbsPaymentTypeTranslation]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="IbsRamesesTranslation" EntityType="Self.IbsRamesesTranslation" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [IbsRamesesTranslation].[IbsCompanyId] AS [IbsCompanyId], 
@@ -1229,6 +1253,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             <End Role="OrderHeader" EntitySet="OrderHeaders" />
             <End Role="IbsOrder" EntitySet="IbsOrders" />
           </AssociationSet>
+          <EntitySet Name="IbsPaymentTypeTranslations" EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" />
           </EntityContainer>
         <EntityType Name="AccountType">
           <Key>
@@ -1358,6 +1383,8 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="Longitude" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="Latitude" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OrderHeaders" Relationship="DataWarehouseModel.FK_OrderAddress" FromRole="CustomerAddress" ToRole="OrderHeader" />
+          <Property Name="Premise" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="House" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MarketingLevel">
           <Key>
@@ -2163,6 +2190,18 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="IbsPaymentTypeTranslation">
+          <Key>
+            <PropertyRef Name="IbsCompanyId" />
+            <PropertyRef Name="OrderPaymentTypeName" />
+            <PropertyRef Name="MediaNumber" />
+            <PropertyRef Name="MediaType" />
+          </Key>
+          <Property Name="IbsCompanyId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OrderPaymentTypeName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="MediaNumber" Type="Int32" Nullable="false" />
+          <Property Name="MediaType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2270,6 +2309,8 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <EntitySetMapping Name="CustomerAddresses">
             <EntityTypeMapping TypeName="DataWarehouseModel.CustomerAddress">
               <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="House" ColumnName="House" />
+                <ScalarProperty Name="Premise" ColumnName="Premise" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
@@ -2644,6 +2685,16 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
               <MappingFragment StoreEntitySet="IbsRamesesTranslation">
                 <ScalarProperty Name="RamesesMenuItemId" ColumnName="RamesesMenuItemId" />
                 <ScalarProperty Name="PluNumber" ColumnName="PluNumber" />
+                <ScalarProperty Name="IbsCompanyId" ColumnName="IbsCompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IbsPaymentTypeTranslations">
+            <EntityTypeMapping TypeName="DataWarehouseModel.IbsPaymentTypeTranslation">
+              <MappingFragment StoreEntitySet="IbsPaymentTypeTranslation">
+                <ScalarProperty Name="MediaType" ColumnName="MediaType" />
+                <ScalarProperty Name="MediaNumber" ColumnName="MediaNumber" />
+                <ScalarProperty Name="OrderPaymentTypeName" ColumnName="OrderPaymentTypeName" />
                 <ScalarProperty Name="IbsCompanyId" ColumnName="IbsCompanyId" />
               </MappingFragment>
             </EntityTypeMapping>

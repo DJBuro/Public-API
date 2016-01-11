@@ -16,6 +16,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
         private readonly IDateServices dateServices;
         private readonly IIbsStoreDevice ibsStoreDevice;
 
+
         public CreateOrderService(IIbsOrderEvents[] events, IDateServices dateServices, DataWarehouseDbContext dataWarehouseDbContext, IIbsStoreDevice ibsStoreDevice)
         {
             this.ibsStoreDevice = ibsStoreDevice;
@@ -23,9 +24,11 @@ namespace MyAndromeda.Services.Ibs.Implementation
             this.events = events;
 
             this.TranslationTable = dataWarehouseDbContext.IbsRamesesTranslations;
+            this.PaymentTypeTranslationTable = dataWarehouseDbContext.IbsPaymentTypeTranslations;
         }
 
         public IDbSet<IbsRamesesTranslation> TranslationTable { get; private set; }
+        public IDbSet<IbsPaymentTypeTranslation> PaymentTypeTranslationTable { get; private set; }
 
         public async Task<AddOrderRequest> CreateOrderRequestModelAsync(int andromedaSiteId, OrderHeader orderHeader, CustomerResultModel customer)
         {
@@ -63,7 +66,11 @@ namespace MyAndromeda.Services.Ibs.Implementation
                 throw ex;
             }
 
-            var model = orderHeader.Transform(dateServices);
+            var paymentTypes = await this.PaymentTypeTranslationTable
+                .Where(e => e.IbsCompanyId == device.CompanyCode)
+                .ToListAsync();
+
+            var model = orderHeader.Transform(paymentTypes, dateServices);
 
             //convert id to offset.
             foreach (var item in model.Items.Where(e => e.m_eLineType == IbsWebOrderApi.eWebOrderLineType.ePLU))

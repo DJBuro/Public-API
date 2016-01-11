@@ -31,6 +31,8 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public System.Data.Entity.Spatial.DbGeography Location { get; set; }
         public string Longitude { get; set; }
         public string Latitude { get; set; }
+        public string Premise { get; set; }
+        public string House { get; set; }
     
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

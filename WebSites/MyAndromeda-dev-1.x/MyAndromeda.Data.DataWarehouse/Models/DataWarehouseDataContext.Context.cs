@@ -62,5 +62,6 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public virtual DbSet<OrderHeader> OrderHeaders { get; set; }
         public virtual DbSet<IbsOrder> IbsOrders { get; set; }
         public virtual DbSet<IbsRamesesTranslation> IbsRamesesTranslations { get; set; }
+        public virtual DbSet<IbsPaymentTypeTranslation> IbsPaymentTypeTranslations { get; set; }
     }
 }

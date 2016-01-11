@@ -164,6 +164,9 @@
     <Compile Include="Models\IbsOrder.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IbsPaymentTypeTranslation.cs">
+      <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IbsRamesesTranslation.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>

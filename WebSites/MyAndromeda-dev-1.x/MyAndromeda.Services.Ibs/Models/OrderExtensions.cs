@@ -8,13 +8,13 @@ using MyAndromeda.Services.Ibs.IbsWebOrderApi;
 
 namespace MyAndromeda.Services.Ibs.Models
 {
-    public static class OrderExtensions 
+    public static class OrderExtensions
     {
-        public static AddOrderRequest Transform(this OrderHeader orderHeader, IDateServices dateServices) 
+        public static AddOrderRequest Transform(this OrderHeader orderHeader, List<IbsPaymentTypeTranslation> ibsPaymentTranslation, IDateServices dateServices)
         {
             var placedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderPlacedTime).GetValueOrDefault();
             var wantedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderWantedTime).GetValueOrDefault();
-            
+
             if (wantedTime < DateTime.Now)
             {
                 var future = DateTime.Now.AddMinutes(5);
@@ -26,7 +26,7 @@ namespace MyAndromeda.Services.Ibs.Models
                 //model.WantedOrderYear = future.Year;
             }
 
-            
+
             var timeSlot = string.Format("{0:00}{1:00}", wantedTime.Hour, wantedTime.Minute);
 
             var model = new AddOrderRequest()
@@ -34,19 +34,19 @@ namespace MyAndromeda.Services.Ibs.Models
                 //Commit = true,
                 OrderType = eOrderType.eDelivery,
                 //TableNumber = 1,
-                    //eOrderType.eDelivery,
-                    //orderHeader.OrderType.Equals("DELIVERY", StringComparison.InvariantCultureIgnoreCase)
-                    //    ? eOrderType.eDelivery
-                    //    : eOrderType.eCollection,
+                //eOrderType.eDelivery,
+                //orderHeader.OrderType.Equals("DELIVERY", StringComparison.InvariantCultureIgnoreCase)
+                //    ? eOrderType.eDelivery
+                //    : eOrderType.eCollection,
                 //ConfirmOnPos = false,
                 CustomerNo = 0,
-                CustomerDetails = 
+                CustomerDetails =
                     orderHeader.TransformCustomerAddress(),
-                DeliveryInstructions = 
+                DeliveryInstructions =
                     orderHeader.Customer.Address == null
-                    ? "Unknown" 
+                    ? "Unknown"
                     : orderHeader.Customer.Address.Directions,
-                UserReference = orderHeader.ExternalOrderRef, 
+                UserReference = orderHeader.ExternalOrderRef,
 
                 //Items = orderHeader.OrderLines.Select(e=> e.Transform()).ToArray(),
                 OrderPlacedDay = placedTime.Day,
@@ -65,28 +65,24 @@ namespace MyAndromeda.Services.Ibs.Models
             var items = new List<cWebTransItem>();
             int counter = 1;
 
-            foreach (var item in orderHeader.OrderLines) 
+            foreach (var item in orderHeader.OrderLines)
             {
-                items.Add(item.Transform(counter));
+                items.Add(item.TransformOrderLines(counter));
                 counter++;
             }
 
-            bool isCash = orderHeader.paytype.ToUpper().Equals("PAYLATER") || orderHeader.paytype.ToUpper().Equals("CASH"); 
+            foreach (var item in orderHeader.OrderDiscounts)
+            {
+                items.Add(item.TransformDiscounts(counter));
+                counter++;
+            }
 
-            items.Add(new cWebTransItem() { 
-                m_dGrossValue = orderHeader.FinalPrice,
-                m_eLineType = eWebOrderLineType.ePayment,
-                m_dStockQty = 1, 
-                m_iLineNum = counter,
-                m_lOffset = isCash ? 1 : 2,
-                m_szDescription = isCash ? "Cash" : "Card"
-            });
+            bool isCash = orderHeader.paytype.ToUpper().Equals("PAYLATER") || orderHeader.paytype.ToUpper().Equals("CASH");
 
             bool hasDeliveryCharge = orderHeader.DeliveryCharge > 0;
 
             if (hasDeliveryCharge)
             {
-                counter++;
                 items.Add(new cWebTransItem()
                 {
                     m_dGrossValue = orderHeader.DeliveryCharge,
@@ -96,30 +92,104 @@ namespace MyAndromeda.Services.Ibs.Models
                     m_szDescription = "Delivery Charge",
                     m_lOffset = 15073
                 });
-
+                counter++;
             }
 
-            model.Items = items.ToArray();
+            decimal tipValue = 0;
+            bool hasTip = 0 > 0;
 
+            if (hasTip)
+            {
+                items.Add(new cWebTransItem()
+                {
+                    m_dGrossValue = tipValue,
+                    m_eLineType = eWebOrderLineType.eTip,
+                    m_iLineNum = counter,
+                    m_iQty = 1,
+                    m_szDescription = "Tip Added",
+                    m_lOffset = 1
+                });
+
+                counter++;
+            }
+
+            foreach(var payment in orderHeader.OrderPayments)
+            {
+                items.Add(payment.TransformPaymentLine(ibsPaymentTranslation, counter));
+                counter++;
+            }
+
+            items.Add(new cWebTransItem()
+            {
+                m_dGrossValue = orderHeader.FinalPrice,
+                m_eLineType = eWebOrderLineType.ePayment,
+                m_dStockQty = 1,
+                m_iLineNum = counter,
+                m_lOffset = isCash ? 1 : 2,
+                m_szDescription = isCash ? "Cash" : "Card"
+            });
+
+            model.Items = items.ToArray();
+            
             return model;
         }
 
-        public static cWebTransItem TransformDiscounts(this OrderDiscount orderDiscount, int lineCount) 
+        public static cWebTransItem TransformPaymentLine(this OrderPayment payment, List<IbsPaymentTypeTranslation> paymentTypeMappings, int lineCount) 
         {
-            decimal value =  Convert.ToDecimal(orderDiscount.DiscountTypeAmount);
+            decimal value = payment.Value;
+
+            string paymentType = string.IsNullOrWhiteSpace(payment.PayTypeName) ? payment.PaymentType : payment.PayTypeName;
+            //paymenttype - cash / paylater 
+            //paytypename - visa / internet / 
+
+            int offset = 1; //cash 
+
+            bool isCash = paymentType.Equals("PAYLATER") || paymentType.Equals("CASH");
+
+            if (!isCash)
+            {
+                var mapping = paymentTypeMappings.FirstOrDefault(e => e.OrderPaymentTypeName.Equals(paymentType, StringComparison.CurrentCultureIgnoreCase));
+
+                if (mapping == null)
+                {
+                    //who knows 
+                    offset = 2; //card 
+                }
+                else 
+                {
+                    //cash = 1, card = 2, account = 3, amex = 10 etc ... 
+                    offset = mapping.MediaNumber;
+                    paymentType = mapping.MediaType; //switch to whatever they have written down.
+                }
+            }
+
+            return new cWebTransItem()
+            {
+                m_dGrossValue = value / 100,
+                m_eLineType = eWebOrderLineType.ePayment,
+                m_dStockQty = 1,
+                m_iLineNum = lineCount,
+                m_lOffset = offset,
+                m_szDescription = payment.PayTypeName
+            };
+        }
+
+        public static cWebTransItem TransformDiscounts(this OrderDiscount orderDiscount, int lineCount)
+        {
+            decimal value = Convert.ToDecimal(orderDiscount.DiscountTypeAmount);
 
             return new cWebTransItem()
             {
                 m_eLineType = eWebOrderLineType.eAdjustment,
                 m_dGrossValue = value / 100,
                 m_szDescription = orderDiscount.InitialDiscountReason,
-                m_szCode = orderDiscount.InitialDiscountReason
+                m_szCode = orderDiscount.InitialDiscountReason,
+                m_lOffset = 1
             };
         }
 
-        public static cWebTransItem Transform(this OrderLine orderline, int lineCount) 
+        public static cWebTransItem TransformOrderLines(this OrderLine orderline, int lineCount)
         {
-
             var value = orderline.Price.GetValueOrDefault();
             var value2 = Convert.ToDecimal(value);
 
@@ -137,11 +207,13 @@ namespace MyAndromeda.Services.Ibs.Models
             };
         }
 
-        public static cOrderCustomerDetails TransformCustomerAddress(this OrderHeader orderHeader) 
+
+        public static cOrderCustomerDetails TransformCustomerAddress(this OrderHeader orderHeader)
         {
             var customerAddress = orderHeader.CustomerAddress;
 
-            if (customerAddress == null) {
+            if (customerAddress == null)
+            {
                 customerAddress = new CustomerAddress()
                 {
                     RoadNum = "",
@@ -165,16 +237,16 @@ namespace MyAndromeda.Services.Ibs.Models
                 m_szPostcode = customerAddress.ZipCode,
                 m_szForename = orderHeader.Customer.FirstName,
                 m_szSurname = orderHeader.Customer.LastName,
-                m_szPhone = 
+                m_szPhone =
                     phone == null ? "0123456789"
                     : phone.Value,
-                m_szEMail = 
-                    email == null ? "unknown@andromeda.com" 
+                m_szEMail =
+                    email == null ? "unknown@andromeda.com"
                     : email.Value
             };
         }
 
-        public static void ValidateModel(AddOrderRequest request) 
+        public static void ValidateModel(AddOrderRequest request)
         {
             request.WantedOrderDay.Check(e => e > 0, e => new ArgumentException("Wanted 'day' is not set"));
             request.WantedOrderMonth.Check(e => e > 0, e => new ArgumentException("Wanted 'month' is not set"));

@@ -75,6 +75,7 @@
         <EntityTypeShape EntityType="DataWarehouseModel.IbsOrder" Width="1.5" PointX="12.625" PointY="23.25" />
         <EntityTypeShape EntityType="DataWarehouseModel.IbsRamesesTranslation" Width="1.5" PointX="0.75" PointY="10.75" />
         <AssociationConnector Association="DataWarehouseModel.FK_IbsOrder_OrderHeader" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" Width="1.5" PointX="11.375" PointY="0.75" />
         </Diagram>
       <Diagram DiagramId="f52ba0265e624f60bcad0656354fba09" Name="Orders" ZoomLevel="73" >
         <EntityTypeShape EntityType="DataWarehouseModel.OrderLine" Width="1.5" PointX="3.125" PointY="0.875" />
