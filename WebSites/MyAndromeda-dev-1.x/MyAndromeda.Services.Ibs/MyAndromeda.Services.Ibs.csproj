@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Acs\AcsOrdersForIbsService.cs" />
     <Compile Include="Acs\IAcsOrdersForIbsService.cs" />
+    <Compile Include="Implementation\CreateOrderService.cs" />
     <Compile Include="Handlers\NotifierEventHandler.cs" />
     <Compile Include="Implementation\IbsStoreDevice.cs" />
     <Compile Include="ICreateOrderServie.cs" />

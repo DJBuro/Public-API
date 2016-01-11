@@ -71,7 +71,6 @@ namespace MyAndromeda.Services.Ibs.Models
             {
                 items.Add(item.Transform(counter));
                 counter++;
-                
             }
 
             bool isCash = orderHeader.paytype.ToUpper().Equals("PAYLATER") || orderHeader.paytype.ToUpper().Equals("CASH"); 
@@ -84,6 +83,22 @@ namespace MyAndromeda.Services.Ibs.Models
                 m_lOffset = isCash ? 1 : 2,
                 m_szDescription = isCash ? "Cash" : "Card"
             });
+
+            bool hasDeliveryCharge = orderHeader.DeliveryCharge > 0;
+
+            if (hasDeliveryCharge)
+            {
+                counter++;
+                items.Add(new cWebTransItem()
+                {
+                    m_dGrossValue = orderHeader.DeliveryCharge,
+                    m_eLineType = eWebOrderLineType.ePLU,
+                    m_iLineNum = counter,
+                    m_iQty = 1,
+                    m_szDescription = "Delivery Charge",
+                    m_lOffset = 15073
+                });
+            }
 
             model.Items = items.ToArray();
 
@@ -156,7 +171,9 @@ namespace MyAndromeda.Services.Ibs.Models
             request.TimeSlotTo.Check(e => e > 0, e => new ArgumentException("'TimeSlotTo' not set"));
 
             request.CustomerNo.Check(e => e > 0, e => new ArgumentException("'Customer id is not set'"));
+
             request.Items.CheckNull("Items");
+
             request.Items.Check(e => e.Length > 0, e => new ArgumentException("'There are no items in the order'"));
 
             request.OrderPlacedDay.Check(e => e > 0, e => new ArgumentException("Placed 'day' is not set"));

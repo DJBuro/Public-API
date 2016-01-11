@@ -260,7 +260,7 @@ namespace MyAndromeda.Services.Bringg
 
             if (orderHeader.TicketNumber.GetValueOrDefault() > 0)
             {
-                model.Note += "Ticket Number: " + orderHeader.TicketNumber.Value;
+                model.Note += "Ticket Number: " + orderHeader.TicketNumber.Value + "; ";
             }
 
             if (orderHeader.Bags.HasValue)
@@ -270,16 +270,22 @@ namespace MyAndromeda.Services.Bringg
                     model.Note += "; ";
                 }
 
-                model.Note += "Number of Bags: " + orderHeader.Bags.Value.ToString();
+                model.Note += "Number of Bags: " + orderHeader.Bags.Value.ToString() + "; ";
             }
 
-            if (orderHeader.Customer.Address != null) 
-            { 
-                if (string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions)) 
-                {
-                    model.Note += "; ";
-                    model.Note += orderHeader.Customer.Address.Directions;
+            model.Note += "Directions: ";
+
+            if (orderHeader.Customer.Address != null)
+            {
+                if (string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions))
+                { 
+                    model.Note += orderHeader.Customer.Address.Directions + ";";
                 }
+            }
+            //else if (orderHeader.CustomerAddress.dir)
+            else 
+            {
+                model.Note = "none;"; 
             }
 
             return model;
