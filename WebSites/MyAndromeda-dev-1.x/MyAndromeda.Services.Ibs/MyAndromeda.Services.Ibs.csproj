@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Acs\AcsOrdersForIbsService.cs" />
     <Compile Include="Acs\IAcsOrdersForIbsService.cs" />
+    <Compile Include="IGetPaymentTypes.cs" />
     <Compile Include="Implementation\CreateOrderService.cs" />
     <Compile Include="Handlers\NotifierEventHandler.cs" />
     <Compile Include="Implementation\IbsStoreDevice.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="ILoginService.cs" />
     <Compile Include="IMenuService.cs" />
     <Compile Include="ICustomerService.cs" />
+    <Compile Include="Implementation\IPaymentProviders.cs" />
     <Compile Include="IOrderService.cs" />
     <Compile Include="Implementation\LocationService.cs" />
     <Compile Include="Implementation\MenuService.cs" />
@@ -124,6 +126,7 @@
     <Compile Include="Models\IbsStoreSettings.cs" />
     <Compile Include="Models\MenuRequestModel.cs" />
     <Compile Include="Models\OrderExtensions.cs" />
+    <Compile Include="Models\PaymentTypeModel.cs" />
     <Compile Include="Models\TokenResult.cs" />
     <Compile Include="Implementation\OrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -62,8 +62,6 @@ namespace MyAndromeda.Services.Ibs.Models
                 WantedOrderYear = wantedTime.Year,
             };
 
-            
-
             var items = new List<cWebTransItem>();
             int counter = 1;
 
@@ -98,6 +96,7 @@ namespace MyAndromeda.Services.Ibs.Models
                     m_szDescription = "Delivery Charge",
                     m_lOffset = 15073
                 });
+
             }
 
             model.Items = items.ToArray();
@@ -105,8 +104,22 @@ namespace MyAndromeda.Services.Ibs.Models
             return model;
         }
 
+        public static cWebTransItem TransformDiscounts(this OrderDiscount orderDiscount, int lineCount) 
+        {
+            decimal value =  Convert.ToDecimal(orderDiscount.DiscountTypeAmount);
+
+            return new cWebTransItem()
+            {
+                m_eLineType = eWebOrderLineType.eAdjustment,
+                m_dGrossValue = value / 100,
+                m_szDescription = orderDiscount.InitialDiscountReason,
+                m_szCode = orderDiscount.InitialDiscountReason
+            };
+        }
+
         public static cWebTransItem Transform(this OrderLine orderline, int lineCount) 
         {
+
             var value = orderline.Price.GetValueOrDefault();
             var value2 = Convert.ToDecimal(value);
 

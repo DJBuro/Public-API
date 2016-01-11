@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyAndromeda.Core;
 using MyAndromeda.Data.DataWarehouse.Models;
@@ -53,5 +54,12 @@ namespace MyAndromeda.Services.Ibs
         /// <param name="andromedaSiteId">The andromeda site id.</param>
         /// <returns></returns>
         Task<Locations> GetLocations(int andromedaSiteId);
+
+        /// <summary>
+        /// Gets the payment types.
+        /// </summary>
+        /// <param name="andromedaSiteId">The andromeda site id.</param>
+        /// <returns></returns>
+        Task<IEnumerable<PaymentTypeModel>> GetPaymentTypes(int andromedaSiteId);
     }
 }

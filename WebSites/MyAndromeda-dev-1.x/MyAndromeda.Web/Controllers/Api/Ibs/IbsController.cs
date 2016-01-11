@@ -9,6 +9,7 @@ using MyAndromeda.Services.Ibs;
 using MyAndromeda.Services.Ibs.Acs;
 using MyAndromeda.Services.Ibs.Models;
 using MyAndromeda.Framework.Contexts;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Web.Controllers.Api.Ibs
 {
@@ -130,6 +131,17 @@ namespace MyAndromeda.Web.Controllers.Api.Ibs
 
             return result;
         }
+
+        [Route("ibs/{andromedaSiteId}/getPaymentTypes")]
+        [HttpGet]
+        public async Task<IEnumerable<PaymentTypeModel>> GetPaymentTypes(
+            [FromUri]int andromedaSiteId) 
+        {
+            var result = await this.ibsService.GetPaymentTypes(andromedaSiteId);
+
+            return result;
+        }
+
 
         //[Route("ibs/stores")]
         //[HttpGet]

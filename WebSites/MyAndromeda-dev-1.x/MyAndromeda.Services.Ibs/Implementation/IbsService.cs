@@ -5,6 +5,7 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Logging;
 using MyAndromeda.Services.Ibs.Acs;
 using MyAndromeda.Services.Ibs.Models;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Services.Ibs.Implementation
 {
@@ -21,6 +22,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
         private readonly IMenuService menuService;
         private readonly IAcsOrdersForIbsService acsOrdersForIbsService;
         private readonly IIbsStoreDevice ibsStoreDevice;
+        private readonly IGetPaymentTypes getPaymentTypes;
 
         public IbsService(IIbsCacheSettings settings,
             ILoginService loginService,
@@ -31,8 +33,10 @@ namespace MyAndromeda.Services.Ibs.Implementation
             IAcsOrdersForIbsService acsOrdersForIbsService,
             ICreateOrderService createOrderService,
             IIbsStoreDevice ibsStoreDevice,
-            IMyAndromedaLogger logger)
+            IMyAndromedaLogger logger,
+            IGetPaymentTypes getPaymentTypes)
         {
+            this.getPaymentTypes = getPaymentTypes;
             this.logger = logger;
             this.ibsStoreDevice = ibsStoreDevice;
             this.createOrderService = createOrderService;
@@ -143,6 +147,27 @@ namespace MyAndromeda.Services.Ibs.Implementation
             this.logger.Debug("IBS Order Created - {0}", orderResult.Id);
 
             return orderResult;
+        }
+
+        public async Task<IEnumerable<PaymentTypeModel>> GetPaymentTypes(int andromedaSiteId) 
+        {
+            var token = await this.GetTokenResult(andromedaSiteId);
+
+            var location = await this.GetLocationResult(andromedaSiteId);
+
+            IEnumerable<PaymentTypeModel> result = Enumerable.Empty<PaymentTypeModel>();
+
+            try
+            {
+                result = await this.getPaymentTypes.List(andromedaSiteId, token, location);
+            }
+            catch (Exception e)
+            {
+                this.logger.Error(e);
+                throw;
+            }
+
+            return result;
         }
 
     }
