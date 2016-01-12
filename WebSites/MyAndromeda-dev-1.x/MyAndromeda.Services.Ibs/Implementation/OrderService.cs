@@ -58,7 +58,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
                     request.UserReference,
                     request.CostCentre,
                     request.Covers,
-                    request.Items,
+                    request.Items.ToArray(),
                     request.PhotoBytes,
                     request.TableNumber,
                     request.TransactionId,

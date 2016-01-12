@@ -10,7 +10,7 @@ namespace MyAndromeda.Services.Ibs.Models
 {
     public static class OrderExtensions
     {
-        public static AddOrderRequest Transform(this OrderHeader orderHeader, List<IbsPaymentTypeTranslation> ibsPaymentTranslation, IDateServices dateServices)
+        public static AddOrderRequest TransformDraft(this OrderHeader orderHeader, IDateServices dateServices)
         {
             var placedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderPlacedTime).GetValueOrDefault();
             var wantedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderWantedTime).GetValueOrDefault();
@@ -65,17 +65,9 @@ namespace MyAndromeda.Services.Ibs.Models
             var items = new List<cWebTransItem>();
             int counter = 1;
 
-            foreach (var item in orderHeader.OrderLines)
-            {
-                items.Add(item.TransformOrderLines(counter));
-                counter++;
-            }
+            
 
-            foreach (var item in orderHeader.OrderDiscounts)
-            {
-                items.Add(item.TransformDiscounts(counter));
-                counter++;
-            }
+            
 
             bool isCash = orderHeader.paytype.ToUpper().Equals("PAYLATER") || orderHeader.paytype.ToUpper().Equals("CASH");
 
@@ -95,12 +87,99 @@ namespace MyAndromeda.Services.Ibs.Models
                 counter++;
             }
 
+            
+
+            //too detailed. 
+            
+
+            //old payment
+            //items.Add(new cWebTransItem()
+            //{
+            //    m_dGrossValue = orderHeader.FinalPrice,
+            //    m_eLineType = eWebOrderLineType.ePayment,
+            //    m_dStockQty = 1,
+            //    m_iLineNum = counter,
+            //    m_lOffset = isCash ? 1 : 2,
+            //    m_szDescription = isCash ? "Cash" : "Card"
+            //});
+
+            model.Items = items;
+            
+            return model;
+        }
+
+        public static int[] CheckForMatchingFoodIds(this IEnumerable<OrderLine> orderItems, IbsRamesesTranslation[] translationItems) 
+        {
+            var someFoodItemsDontMatch = orderItems
+                                          .Where(e => !translationItems.Any(k => k.RamesesMenuItemId == e.ProductID))
+                                          .Select(e => e.ProductID.GetValueOrDefault())
+                                          .ToArray();
+
+            return someFoodItemsDontMatch;
+        }
+
+        public static AddOrderRequest AddFoodItems(this AddOrderRequest orderRequest, OrderHeader orderHeader, IbsRamesesTranslation[] translationItems) 
+        {
+            var counter = orderRequest.Items.Count;
+
+            foreach (var item in orderHeader.OrderLines)
+            {
+                var ibsItem = item.TransformOrderLines(counter);
+
+                var pluNumber = translationItems
+                                                .Where(e => e.RamesesMenuItemId == ibsItem.m_lOffset)
+                                                .Select(e => e.PluNumber)
+                                                .FirstOrDefault();
+
+                if (pluNumber == null) { throw new NullReferenceException("plu number missing");  }
+
+                ibsItem.m_lOffset = pluNumber;
+
+                orderRequest.Items.Add(ibsItem);
+                
+                counter++;
+            }
+
+            return
+                orderRequest;
+        }
+
+        public static AddOrderRequest AddPaymentLines(this AddOrderRequest orderRequest, OrderHeader orderHeader, List<IbsPaymentTypeTranslation> ibsPaymentTranslation) 
+        {
+            var counter = orderRequest.Items.Count;
+
+            foreach (var payment in orderHeader.OrderPayments)
+            {
+                orderRequest.Items.Add(payment.TransformPaymentLine(ibsPaymentTranslation, counter));
+                counter++;
+            }
+
+            return orderRequest;
+        }
+
+        public static AddOrderRequest AddDiscounts(this AddOrderRequest orderRequest, OrderHeader orderHeader)
+        {
+            var counter = orderRequest.Items.Count;
+
+            foreach (var item in orderHeader.OrderDiscounts)
+            {
+                orderRequest.Items.Add(item.TransformDiscounts(counter));
+                counter++;
+            }
+
+            return orderRequest;
+        }
+
+        public static AddOrderRequest AddTip(this AddOrderRequest orderRequest, OrderHeader orderHeader) 
+        {
+            var counter = orderRequest.Items.Count;
+
             decimal tipValue = 0;
             bool hasTip = 0 > 0;
 
             if (hasTip)
             {
-                items.Add(new cWebTransItem()
+                orderRequest.Items.Add(new cWebTransItem()
                 {
                     m_dGrossValue = tipValue,
                     m_eLineType = eWebOrderLineType.eTip,
@@ -109,29 +188,9 @@ namespace MyAndromeda.Services.Ibs.Models
                     m_szDescription = "Tip Added",
                     m_lOffset = 1
                 });
-
-                counter++;
             }
 
-            foreach(var payment in orderHeader.OrderPayments)
-            {
-                items.Add(payment.TransformPaymentLine(ibsPaymentTranslation, counter));
-                counter++;
-            }
-
-            items.Add(new cWebTransItem()
-            {
-                m_dGrossValue = orderHeader.FinalPrice,
-                m_eLineType = eWebOrderLineType.ePayment,
-                m_dStockQty = 1,
-                m_iLineNum = counter,
-                m_lOffset = isCash ? 1 : 2,
-                m_szDescription = isCash ? "Cash" : "Card"
-            });
-
-            model.Items = items.ToArray();
-            
-            return model;
+            return orderRequest;
         }
 
         public static cWebTransItem TransformPaymentLine(this OrderPayment payment, List<IbsPaymentTypeTranslation> paymentTypeMappings, int lineCount) 
@@ -259,7 +318,8 @@ namespace MyAndromeda.Services.Ibs.Models
 
             request.Items.CheckNull("Items");
 
-            request.Items.Check(e => e.Length > 0, e => new ArgumentException("'There are no items in the order'"));
+            request.Items.Check(e => e.Any(r => r.m_eLineType == eWebOrderLineType.ePLU), e => new ArgumentException("'There are no food items in the order'"));
+            request.Items.Check(e => e.Any(r => r.m_eLineType == eWebOrderLineType.ePayment), e => new ArgumentException("'There are no payment items in the order'"));
 
             request.OrderPlacedDay.Check(e => e > 0, e => new ArgumentException("Placed 'day' is not set"));
             request.OrderPlacedMonth.Check(e => e > 0, e => new ArgumentException("Placed 'month' is not set"));

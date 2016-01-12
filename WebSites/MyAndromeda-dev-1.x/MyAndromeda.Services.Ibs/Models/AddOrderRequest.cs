@@ -1,6 +1,7 @@
 using System;
 using MyAndromeda.Services.Ibs.IbsWebOrderApi;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Services.Ibs.Models
 {
@@ -95,7 +96,7 @@ namespace MyAndromeda.Services.Ibs.Models
         /// Gets or sets the items.
         /// </summary>
         /// <value>The items.</value>
-        public cWebTransItem[] Items { get; set; }
+        public List<cWebTransItem> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the photo bytes.

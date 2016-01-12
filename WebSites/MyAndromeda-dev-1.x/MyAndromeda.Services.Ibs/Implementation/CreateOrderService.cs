@@ -12,7 +12,9 @@ namespace MyAndromeda.Services.Ibs.Implementation
 {
     public class CreateOrderService : ICreateOrderService
     {
+        //notifiers / logging events mostyl.
         private readonly IIbsOrderEvents[] events;
+
         private readonly IDateServices dateServices;
         private readonly IIbsStoreDevice ibsStoreDevice;
 
@@ -37,24 +39,56 @@ namespace MyAndromeda.Services.Ibs.Implementation
                 await ev.OrderCreatingAsync(orderHeader, customer);
             });
 
+            //ibs device settings. 
             var device = await ibsStoreDevice.GetIbsStoreDeviceAsync(andromedaSiteId);
+
+            //ibs <-> rameses menu ids
             var translationItems = await this.TranslationTable
                                              .Where(e => e.IbsCompanyId == device.CompanyCode)
-                                             .Select(e => new { e.PluNumber, e.RamesesMenuItemId })
+                                             //.Select(e => new { e.PluNumber, e.RamesesMenuItemId })
                                              .ToArrayAsync();
 
-            var orderItems = orderHeader.OrderLines.ToArray();
+            this.ValidateItemsAreAllThere(orderHeader, translationItems, customer);
 
-            var someDontMatch = orderItems
-                                          .Where(e => !translationItems.Any(k => k.RamesesMenuItemId == e.ProductID))
-                                          .Select(e => e.ProductID)
-                                          .ToArray();
+            //create a semi complete model
+            var model = orderHeader.TransformDraft(dateServices);
 
-            if (someDontMatch.Length > 0)
+            //customer number returned from create / get customer
+            model.CustomerNo = customer.CustomerNumber;
+
+            //add food + match ibs to rameses
+            model.AddFoodItems(orderHeader, translationItems);
+
+            //add discounts
+            model.AddDiscounts(orderHeader);
+
+            //add tip 
+            model.AddTip(orderHeader);
+
+            //add payment lines + match them to payment table. 
+            var paymentTypes = await this.PaymentTypeTranslationTable
+                .Where(e => e.IbsCompanyId == device.CompanyCode)
+                .ToListAsync();
+
+            model.AddPaymentLines(orderHeader, paymentTypes);
+
+            await this.events.ForEachAsync(async (ev) =>
             {
-                string ids = string.Join(",", someDontMatch);
+                await ev.OrderRequestCreatedAsync(orderHeader, customer, model);
+            });
 
-                string message = string.Format("{0}- These ids cant be found in RamesesIbsTranslation: {1}", orderHeader.ExternalOrderRef, ids);
+            return model;
+        }
+
+
+        private async void ValidateItemsAreAllThere(OrderHeader orderHeader, IbsRamesesTranslation[] translationItems, CustomerResultModel customer) 
+        {
+            var someFoodItemsDontMatch = orderHeader.OrderLines.CheckForMatchingFoodIds(translationItems);
+
+            if (someFoodItemsDontMatch.Any())
+            {
+                string ids = string.Join(",", someFoodItemsDontMatch);
+                string message = string.Format("{0} - These ids cant be found in RamesesIbsTranslation: {1}", orderHeader.ExternalOrderRef, ids);
 
                 var ex = new Exception(message);
 
@@ -65,33 +99,6 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
                 throw ex;
             }
-
-            var paymentTypes = await this.PaymentTypeTranslationTable
-                .Where(e => e.IbsCompanyId == device.CompanyCode)
-                .ToListAsync();
-
-            var model = orderHeader.Transform(paymentTypes, dateServices);
-
-            //convert id to offset.
-            foreach (var item in model.Items.Where(e => e.m_eLineType == IbsWebOrderApi.eWebOrderLineType.ePLU))
-            {
-                //m_lOffset is currently the product id
-                var pluNumber = translationItems
-                                                .Where(e => e.RamesesMenuItemId == item.m_lOffset)
-                                                .Select(e => e.PluNumber)
-                                                .First();
-
-                item.m_lOffset = pluNumber;
-            }
-
-            model.CustomerNo = customer.CustomerNumber;
-
-            await this.events.ForEachAsync(async (ev) =>
-            {
-                await ev.OrderRequestCreatedAsync(orderHeader, customer, model);
-            });
-
-            return model;
         }
     }
 }
