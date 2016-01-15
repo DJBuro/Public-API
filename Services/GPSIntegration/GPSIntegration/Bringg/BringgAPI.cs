@@ -368,7 +368,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
             string queryString = BringgHelper.ConvertToQueryString(bringgGetDriverSigned);
 
-            string url = bringgConfig.apiUrl + "/users/external_id/" + WebUtility.UrlEncode(driver.Phone) + "?" + queryString;
+            string url = bringgConfig.apiUrl + "/users/external_id/" + Uri.EscapeDataString(driver.Phone) + "?" + queryString;
             HttpHelper.Call(
                 "GET", url, "APPLICATION/JSON", "APPLICATION/JSON", null, null, false, out httpStatusCode, out responseData);
 
@@ -490,7 +490,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
             string queryString = BringgHelper.ConvertToQueryString(bringgGetSigned);
 
-            string url = bringgConfig.apiUrl + "/tasks/" + WebUtility.UrlEncode(bringTaskId) + "?" + queryString;
+            string url = bringgConfig.apiUrl + "/tasks/" + Uri.EscapeDataString(bringTaskId) + "?" + queryString;
             HttpStatusCode httpStatusCode;
             HttpHelper.Call(
                 "GET", url, "APPLICATION/JSON", "APPLICATION/JSON", null, null, false, out httpStatusCode, out responseData);

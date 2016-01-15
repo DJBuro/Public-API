@@ -105,7 +105,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
                 if (propertyValue != null)
                 {
-                    string propertyValueText = WebUtility.UrlEncode(propertyValue.ToString());
+                    string propertyValueText = Uri.EscapeDataString(propertyValue.ToString());
 
                     if (index != 0)
                     {
