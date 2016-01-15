@@ -151,12 +151,18 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 .Where(e => e.ExternalSiteID == this.currentSite.ExternalSiteId)
                 .Include(e => e.OrderStatu)
                 .Include(e => e.Customer)
+                
                 .OrderByDescending(e => e.OrderPlacedTime)
                 .Take(100)
                 .Select(e => new OrderViewModel()
                 {
                     Id = e.ID,
                     ItemCount = e.OrderLines.Count(),
+                    Items = e.OrderLines.Select(item => new OrderItem() {
+                        Id = item.ID,
+                        Name = item.Description
+                    }),
+                    StatusDescription = e.OrderStatu.Description,
                     FinalPrice = e.FinalPrice,
                     OrderPlacedTime = e.OrderPlacedTime,
                     OrderWantedTime = e.OrderWantedTime,
@@ -174,14 +180,17 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                     {
                         Postcode = e.CustomerAddress.ZipCode,
                         Latitude = e.CustomerAddress.Latitude,
-                        Longitude = e.CustomerAddress.Longitude
+                        Longitude = e.CustomerAddress.Longitude,
+                        RoadNum = e.CustomerAddress.RoadNum,
+                        RoadName = e.CustomerAddress.RoadName,
                     },
                     Driver = new DriverViewModel()
                     {
                         Name = e.DriverName,
                         Phone = e.DriverPhoneNumber
                     },
-                    BringgId = e.BringgTaskId
+                    BringgId = e.BringgTaskId,
+                    IbsOrderId = e.IbsOrders.OrderByDescending(d => d.CreatedAtUtc).Select(r=> r.IbsOrderId).FirstOrDefault()
                 });
 
                 var orders = await ordersQuery.ToArrayAsync();
@@ -298,6 +307,19 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         
         public int? BringgId { get; set; }
         public OrderAddressViewModel OrderAddress { get; set; }
+
+        public IEnumerable<OrderItem> Items { get; set; }
+        public string StatusDescription { get; set; }
+
+        public long IbsOrderId { get; set; }
+    }
+
+    public class OrderItem 
+    {
+
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
     }
 
     public class OrderAddressViewModel 
@@ -305,6 +327,9 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public string Postcode { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+
+        public string RoadNum { get; set; }
+        public string RoadName { get; set; }
     }
 
     public class CustomerViewModel 

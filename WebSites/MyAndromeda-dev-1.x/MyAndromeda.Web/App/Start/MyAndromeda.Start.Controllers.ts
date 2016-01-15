@@ -1,7 +1,7 @@
 ﻿module MyAndromeda.Start
 {
     var controllers = angular.module("MyAndromeda.Start.Controllers",
-        ["MyAndromeda.Start.Services", "kendo.directives"]);
+        ["MyAndromeda.Start.Services", "MyAndromeda.Start.Directives", "kendo.directives"]);
 
     controllers.controller("chainListController", ($scope, userChainDataService: Services.UserChainDataService) => {
 
@@ -95,7 +95,9 @@
         var storeListDataSource = new kendo.data.DataSource({
             transport: {
                 read: (options) => {
+
                     var promise = userStoreDataService.ListStoresByChainId(chain.Id);
+
                     promise.then((callback) => {
                         options.success(callback.data);
 

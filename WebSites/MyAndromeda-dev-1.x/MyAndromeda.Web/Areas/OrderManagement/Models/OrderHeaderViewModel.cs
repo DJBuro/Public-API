@@ -8,7 +8,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
 {
     public class OrderHeaderViewModel
     {
-        public System.Guid ID { get; set; }
+        public System.Guid Id { get; set; }
         public System.DateTime TimeStamp { get; set; }
         public Nullable<System.Guid> CustomerID { get; set; }
         public string OrderCurrency { get; set; }
@@ -165,7 +165,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
     {
         public static void UpdateFromViewModel(this Data.DataWarehouse.Models.OrderHeader orderHeader, OrderHeaderViewModel viewModel)
         {
-            orderHeader.ID = viewModel.ID;
+            orderHeader.ID = viewModel.Id;
             orderHeader.TimeStamp = viewModel.TimeStamp;
             orderHeader.CustomerID = viewModel.CustomerID;
             orderHeader.OrderCurrency = viewModel.OrderCurrency;
@@ -204,7 +204,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
         public static OrderHeaderViewModel ToViewModel(this Data.DataWarehouse.Models.OrderHeader oh, IDateServices dateServices)
         {
             OrderHeaderViewModel viewModel = new OrderHeaderViewModel();
-            viewModel.ID = oh.ID;
+            viewModel.Id = oh.ID;
             viewModel.TimeStamp = oh.TimeStamp;
             viewModel.CustomerID = oh.CustomerID;
             viewModel.OrderCurrency = oh.OrderCurrency;

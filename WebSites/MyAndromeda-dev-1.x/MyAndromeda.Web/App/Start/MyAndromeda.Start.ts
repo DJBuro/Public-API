@@ -1,7 +1,11 @@
 ﻿module MyAndromeda.Start
 {
     var start = angular.module("MyAndromeda.Start",
-        ["MyAndromeda.Start.Controllers", "MyAndromeda.Start.Config"]);
+        [
+            
+            "MyAndromeda.Start.Config",
+            "MyAndromeda.Hr"
+        ]);
 
 
     export function setupStart(id: string) {

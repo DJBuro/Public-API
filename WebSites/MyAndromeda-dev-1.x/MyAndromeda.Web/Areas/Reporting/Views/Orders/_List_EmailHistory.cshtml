@@ -21,7 +21,7 @@
                 //"api/{andromedaSiteId}/email-history/order/{orderId}";
                 "/api/{0}/email-history/order/{1}";
 
-            route = kendo.format(route, '@workContext.CurrentSite.AndromediaSiteId', detailData.ID);
+            route = kendo.format(route, '@workContext.CurrentSite.AndromediaSiteId', detailData.Id);
 
             var request = $.ajax({
                 url: route,

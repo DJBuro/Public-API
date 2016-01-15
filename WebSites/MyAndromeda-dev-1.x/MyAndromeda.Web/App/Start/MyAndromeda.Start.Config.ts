@@ -1,46 +1,49 @@
 ﻿module MyAndromeda.Start
 {
     var app = angular.module("MyAndromeda.Start.Config", [
+        "MyAndromeda.Start.Controllers",
         "ui.router",
         "ngAnimate"
     ]);
 
     app.config(($stateProvider: ng.ui.IStateProvider, $urlRouterProvider) => {
 
-        //var app = {
-        //    abstract: true,
-        //    url: "/",
-        //    templateUrl: "start-app-template.html"
-        //};
+        Logger.Notify("set start config");
+
+        var app = {
+            abstract: true,
+            url: "/chain",
+            template: '<div ui-view="main"></div>'
+        };
 
         var appChainList: ng.ui.IState = {
-
-            url: "/chains",
+            url: "/list",
             views: {
                 "main": {
                     templateUrl: "chain-list.html",
                     controller: "chainListController"
                 },
             },
-            cache: true
-        };
-
-        var appChainsStoreList: ng.ui.IState = {
-            url: "/:chainId",
-            views: {
-                "main": {
-                    templateUrl: "store-list.html",
-                    controller: "storeListController"
-                }
-            },
             cache: false
         };
 
-        //$stateProvider.state("app", app);
-        $stateProvider.state("start-chains", appChainList);
-        $stateProvider.state("start-chain-store", appChainsStoreList);
+        //var appChainsStoreList: ng.ui.IState = {
+        //    url: "/:chainId",
+        //    views: {
+        //        "main": {
+        //            templateUrl: "store-list.html",
+        //            controller: "storeListController"
+        //        }
+        //    },
+        //    cache: false
+        //};
 
-        $urlRouterProvider.otherwise("/chains");
+        $stateProvider.state("chain", app);
+        $stateProvider.state("chain.list", appChainList);
+        //$stateProvider.state("start-chain-store", appChainsStoreList);
+
+        
+        $urlRouterProvider.otherwise("/chain/list");
     });
 
 

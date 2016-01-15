@@ -319,7 +319,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var dbItem = orderMonitoringService.GetOrderById(model.ID);
+            var dbItem = orderMonitoringService.GetOrderById(model.Id);
             var oldStatus = dbItem.OrderStatu;
 
             dbItem.Status = model.Status;

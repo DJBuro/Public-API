@@ -10,6 +10,10 @@
 
             var detailRow = e.detailRow;
             var detailData = e.data;
+            
+            console.log("detailData");
+            console.log(detailData);
+
 
             var request = $.ajax({
                 url: "@Url.Action("FindOrder", "Orders", new { Area = "OrderManagement" })",

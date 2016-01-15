@@ -78,6 +78,8 @@ namespace MyAndromeda.Web.Areas.Reporting.ViewModels
         public OrderStatus OrderStatus { get; set; }
 
 
+
+        public int? BringgId { get; set; }
     }
 
     public class OrderStatus
@@ -126,6 +128,7 @@ namespace MyAndromeda.Web.Areas.Reporting.ViewModels
                 FirstName = header.Customer.FirstName,
                 LastName = header.Customer.LastName,                
                 OrderType = header.OrderType,
+                BringgId = header.BringgTaskId,
                 Status = header.Status                
             };
             if (header.OrderStatu != null) {

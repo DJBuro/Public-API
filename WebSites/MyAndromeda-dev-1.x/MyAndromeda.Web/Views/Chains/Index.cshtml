@@ -6,7 +6,7 @@
 }
 
 <div id="StartApp">
-    <div ui-view="main"></div>
+    <div ui-view></div>
 </div>
 
 
@@ -75,12 +75,18 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Admin</div>
                     <div class="panel-body">
-                        <a class="k-button" href="/OrderManagement/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Orders">
-                            @translator.T("Orders")
-                        </a>
-                        <a class="k-button" href="/AndroWebOrdering/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/AndroWebOrdering/List">
-                            @translator.T("Websites")
-                        </a>
+                        <div class="btn-group">
+                            <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Orders">
+                                @translator.T("Orders")
+                            </a>
+                            <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/AndroWebOrdering/List">
+                                @translator.T("Websites")
+                            </a>
+                            <a class="btn btn-default btn-sm" ui-sref="hr.store-list({ chainId : chain.Id, andromedaSiteId: dataItem.AndromedaSiteId})">
+                                @translator.T("Employees")
+                            </a>
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -91,13 +97,15 @@
                         Store
                     </div>
                     <div class="panel-body">
-                        <a class="k-button" href="/Chain/{{chain.Id}}/Store/{{dataItem.ExternalSiteId}}">
-                            @translator.T("Detail")
-                        </a>
+                        <div class="btn-group">
+                            <a class="btn btn-default btn-sm" href="/Chain/{{chain.Id}}/Store/{{dataItem.ExternalSiteId}}">
+                                @translator.T("Detail")
+                            </a>
 
-                        <a class="k-button" href="/Menus/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/MenuNavigation">
-                            @translator.T("Menu")
-                        </a>
+                            <a class="btn btn-default btn-sm" href="/Menus/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/MenuNavigation">
+                                @translator.T("Menu")
+                            </a>
+                        </div>
                     </div>
                 </div>
 
@@ -107,14 +115,19 @@
                 <div class="panel  panel-default">
                     <div class="panel-heading">Reporting</div>
                     <div class="panel-body">
-                        <a class="k-button" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Store">
-                            @translator.T("Web")
-                        </a>
+                        <div class="btn-group">
 
-                        <a ng-if="dataItem.HasRameses"
-                           class="k-button" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
-                            @translator.T("Rameses")
-                        </a>
+                            <a class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Store">
+                                @translator.T("Web")
+                            </a>
+
+                            <a ng-if="dataItem.HasRameses"
+                               class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
+                                @translator.T("Rameses")
+                            </a>
+
+                        </div>
+                        
                     </div>
                 </div>
 
@@ -144,3 +157,4 @@
 
 </script>
 
+@Html.Partial("~/areas/HumanResources/views/employee/index.cshtml")

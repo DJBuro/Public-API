@@ -1,0 +1,180 @@
+﻿<!-- Views -->
+<script type="text/ng-template" id="employee-list.html">
+
+    <div class="header">
+        <h3>Employees</h3>
+        <a class="btn btn-primary" ui-sref="chain.list">Back</a>
+    </div>
+
+    <kendo-grid options="employeeGridOptions"></kendo-grid>
+
+</script>
+
+<script type="text/ng-template" id="employee-edit.html">
+
+    <div class="header">
+        <h3>Edit Employee</h3>
+        <a class="btn btn-primary" ui-sref="hr.store-list">Back</a>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{employee.Name}}
+                    <span class="label label-success">On shift</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" style="width:40px"><i class="fa fa-phone"></i></span>
+                                        <input type="text" class="form-control" ng-model="employee.Phone">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-envelope-o"></i>
+                                        </span>
+                                        <input type="text" class="form-control" ng-model="employee.Email">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <div class="employee-photo-large" style="background-image:url(/Content/profile-picture.jpg)">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <input name="files"
+                                           type="file"
+                                           kendo-upload
+                                           k-async="{ saveUrl: 'save', removeUrl: 'remove', autoUpload: true }" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Details</div>
+                <div class="panel-body">
+                    <div class="form-horizontal form-widgets col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">
+                                Name
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="employee.Name" class="k-textbox" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="birthday">Birthday</label>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="gender">Gender</label>
+                            <div class="col-sm-8">
+                                <select id="gender" kendo-drop-down-list k-ng-model="employee.Gender">
+                                    <option selected>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Primary Role</label>
+                            <div class="col-sm-8">
+                                <select id="PrimaryRole" kendo-drop-down-list k-ng-model="employee.PrimaryRole"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Skills</label>
+                            <div class="col-sm-8">
+                                <select id="PrimaryRole" kendo-multi-select k-ng-model="employee.PrimaryRole"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Driving License</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="k-textbox" ng-model="employee.DrivingLicense" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Payroll Number</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="k-textbox" ng-model="employee.PayrollNumber" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">National Insurance</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="k-textbox" ng-model="employee.NationalInsurance" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active"><a href="#">Documents <span class="badge">5</span></a></li>
+                <li role="presentation"><a href="#">Employment History <span class="badge">3</span></a></li>
+                <li role="presentation"><a href="#">Schedule</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Documents</div>
+                <div class="panel-body">
+                    None
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</script>
+
+<!-- end of views -->
+<!-- directives -->
+<script type="text/ng-template" id="employee-pic.html">
+    <div class="employee-photo"
+         ng-style="profilePicture(dataItem.ProfilePic)">
+    </div>
+    <div class="employee-name">{{dataItem.Name}} <span class="label label-success">On shift</span></div>
+</script>
+
+<script type="text/html" id="employee-list-row-template">
+    <a class="k-button k-primary-button" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">Edit</a>
+</script>

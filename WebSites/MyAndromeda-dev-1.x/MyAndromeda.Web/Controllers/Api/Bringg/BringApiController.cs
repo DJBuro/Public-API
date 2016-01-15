@@ -3,7 +3,9 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using MyAndromeda.Logging;
 using MyAndromeda.Services.Bringg.IncomingWebHooks;
+using MyAndromeda.Services.Bringg.Models;
 using MyAndromeda.Services.Bringg.Outgoing;
+using MyAndromeda.Services.Bringg.Services;
 using MyAndromeda.Services.WebHooks;
 using MyAndromeda.Services.WebHooks.Models;
 using MyAndromeda.WebApiClient;
@@ -26,6 +28,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         {
             public string ExternalSiteId { get; set; }
             public int AndromedaSiteId { get; set; }
+            public int AndroAdminStoreId { get; set; }
         }
 
         private readonly IWebApiClientContext webApiClientContext;
@@ -33,9 +36,14 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         private readonly IOrderHeaderDataService orderHeaderService;
         private readonly IStoreDataService storeDataService;
         private readonly WebhookEndpointManger webhookEndpointManger;
+        private readonly IBringgSettingsService settingsService;
+        private readonly IBringgGetTaskService getTaskService;
 
-        public BringApiController(IWebApiClientContext webApiClientContext, IMyAndromedaLogger logger, IOrderHeaderDataService orderHeaderService, IStoreDataService storeDataService, WebhookEndpointManger webhookEndpointManger) 
+
+        public BringApiController(IWebApiClientContext webApiClientContext, IMyAndromedaLogger logger, IOrderHeaderDataService orderHeaderService, IStoreDataService storeDataService, WebhookEndpointManger webhookEndpointManger, IBringgSettingsService settingsService, IBringgGetTaskService getTaskService) 
         {
+            this.getTaskService = getTaskService;
+            this.settingsService = settingsService;
             this.webhookEndpointManger = webhookEndpointManger;
             this.storeDataService = storeDataService;
             this.orderHeaderService = orderHeaderService;
@@ -43,11 +51,11 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.webApiClientContext = webApiClientContext;
         }
 
-        private async Task<OrderHeader> GetOrderIdsAsync(BringWebhook model)
+        private async Task<OrderHeader> GetOrderIdsAsync(int bringgTaskId)
         {
             try
             {
-                if (model.Id == 0)
+                if (bringgTaskId == 0)
                 {
                     var message = "The Bringg task id is missing!";
                     this.logger.Error(message);
@@ -55,18 +63,18 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 }
 
                 var order = await this.orderHeaderService.OrderHeaders
-                    .Where(e => e.BringgTaskId == model.Id)
+                    .Where(e => e.BringgTaskId == bringgTaskId)
                     .ToArrayAsync();
                 //.SingleOrDefaultAsync();
 
                 if (order.Length == 0)
                 {
-                    this.logger.Error("There is no order with the bringg id : " + model.Id);
+                    this.logger.Error("There is no order with the bringg id : " + bringgTaskId);
                     throw new NullReferenceException("order");
                 }
                 else if (order.Length > 1)
                 {
-                    this.logger.Error("There are too many orders with the Bringg id: {0}", model.Id);
+                    this.logger.Error("There are too many orders with the Bringg id: {0}", bringgTaskId);
                 }
 
                 return order.Single();
@@ -84,7 +92,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             {
                 var query = this.storeDataService.Table
                     .Where(e => e.ExternalId == model.ExternalSiteID && e.ACSApplicationSites.Any(s => s.ACSApplicationId == model.ApplicationID))
-                    .Select(e => new { e.ExternalId, e.AndromedaSiteId });//.ToArrayAsync();
+                    .Select(e => new { e.ExternalId, e.AndromedaSiteId, e.Id });//.ToArrayAsync();
 
                 var queryResult = await query.ToArrayAsync();
 
@@ -101,7 +109,8 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                                 .Select(e => new StoreDetails
                                 {
                                     ExternalSiteId = e.ExternalId,
-                                    AndromedaSiteId = e.AndromedaSiteId
+                                    AndromedaSiteId = e.AndromedaSiteId,
+                                    AndroAdminStoreId = e.Id
                                 }
                                 )
                                 .SingleOrDefault();
@@ -118,7 +127,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
         private async Task<OutgoingWebHookOrderStatusChange> GetOrderStatusModel(BringWebhook model, UsefulOrderStatus orderStatus) 
         {
-            var order = await this.GetOrderIdsAsync(model);
+            var order = await this.GetOrderIdsAsync(model.Id);
             var store = await this.GetStoreIdsAsync(order);
 
             var sendModel = new OutgoingWebHookOrderStatusChange()
@@ -140,7 +149,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         {
             logger.Debug("Creating new outward notification based on the Bringg webhook.");
 
-            var order = await this.GetOrderIdsAsync(model);
+            var order = await this.GetOrderIdsAsync(model.Id);
             var store = await this.GetStoreIdsAsync(order);
 
             if (order == null) 
@@ -171,6 +180,19 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             };
 
             return sendModel;
+        }
+
+        [HttpGet]
+        [Route("bringg/get/{taskId}")]
+        public async Task<BringgTaskModel> Get([FromUri]int taskId) 
+        {
+            var order = await this.GetOrderIdsAsync(taskId);
+            var store = await this.GetStoreIdsAsync(order);
+
+            var settings = this.settingsService.Get(store.AndroAdminStoreId);
+            var task = await this.getTaskService.Get(settings, taskId);
+
+            return task;
         }
 
         [HttpPost]

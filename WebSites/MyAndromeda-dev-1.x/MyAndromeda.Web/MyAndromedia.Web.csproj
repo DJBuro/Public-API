@@ -344,6 +344,11 @@
     <TypeScriptCompile Include="App\General\Logger.ts" />
     <TypeScriptCompile Include="App\General\ProgressService.ts" />
     <TypeScriptCompile Include="App\General\ResizeModule.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Config.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Controllers.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Models.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Services.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.ts" />
     <TypeScriptCompile Include="App\Marketing\MyAndromeda.Marketing.Controllers.ts" />
     <TypeScriptCompile Include="App\Marketing\MyAndromeda.Marketing.Models.ts" />
     <TypeScriptCompile Include="App\Marketing\MyAndromeda.Marketing.Directives.ts" />
@@ -356,6 +361,7 @@
     <TypeScriptCompile Include="App\Reports\MyAndromeda.Reports.ChainDashboard.Today.ts" />
     <TypeScriptCompile Include="App\Reports\MyAndromeda.Reports.ChainDashboard.ts" />
     <TypeScriptCompile Include="App\Reports\MyAndromeda.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Directive.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Services.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Config.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Controllers.ts" />
@@ -714,6 +720,7 @@
     <Content Include="Content\kendo\2015.3.1111\Uniform\sprite_2x.png" />
     <Content Include="Content\kendo\2015.3.1111\Uniform\sprite_kpi.png" />
     <Content Include="Content\kendo\2015.3.1111\Uniform\sprite_kpi_2x.png" />
+    <Content Include="Content\profile-picture.jpg" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1939,6 +1946,9 @@
     <Content Include="Config\Log - Copy.Staging-MyAndromeda - Web Deploy.config">
       <DependentUpon>NLog.config</DependentUpon>
     </Content>
+    <Content Include="Areas\Reporting\Views\Orders\_bringg.cshtml" />
+    <Content Include="Areas\HumanResources\Views\web.config" />
+    <Content Include="Areas\HumanResources\Views\Employee\index.cshtml" />
     <None Include="Config\Log.Staging-MyAndromeda - Web Deploy.config">
       <DependentUpon>Log.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -2220,6 +2230,10 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Areas\HumanResources\Controllers\HrApi.cs" />
+    <Compile Include="Areas\HumanResources\Controllers\StoreController.cs" />
+    <Compile Include="Areas\HumanResources\HumanResourcesAreaRegistration.cs" />
+    <Compile Include="Areas\HumanResources\UserPermissions.cs" />
     <Compile Include="Areas\Loyalty\Controllers\StoreLoyaltyController.cs" />
     <Compile Include="Areas\Loyalty\StoreEnrolementPermissions.cs" />
     <Compile Include="Areas\Loyalty\LoyaltyUserPermissions.cs" />
@@ -3959,6 +3973,8 @@
     <Folder Include="Areas\ChainReporting\Views\Shared\" />
     <Folder Include="Areas\DeliveryZone\ViewModels\" />
     <Folder Include="Areas\DeliveryZone\Views\Shared\" />
+    <Folder Include="Areas\HumanResources\Models\" />
+    <Folder Include="Areas\HumanResources\Views\Shared\" />
     <Folder Include="Areas\Loyalty\Views\Shared\" />
     <Folder Include="Areas\Marketing\Scripts\" />
     <Folder Include="Areas\Menu\Handlers\" />
@@ -3968,6 +3984,7 @@
     <Folder Include="Areas\Voucher\Views\Shared\" />
     <Folder Include="Content\Stores\" />
     <Folder Include="Controllers\Api\WebHooks\Models\" />
+    <Folder Include="html\hr\employees\" />
     <Folder Include="lib\kendo\" />
     <Folder Include="Models\Jobs\" />
     <Folder Include="Providers\" />

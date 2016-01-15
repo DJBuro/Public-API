@@ -24,7 +24,7 @@
     .Name("OrdersGrid")
     .Columns(cols =>
     {
-        cols.Bound(e => e.ID).Hidden();
+        cols.Bound(e => e.Id).Hidden();
         cols.Bound(e => e.RamesesOrderNum).Title("Order").Width(80);
         cols.Bound(e => e.Customer.FullName).Title("Name")
             .ClientTemplate("#:Customer.FirstName # #:Customer.LastName#").Width(100);
@@ -63,8 +63,8 @@
             .Destroy(d => d.Action("Destroy", "Orders"))
             .Model(model =>
             {
-                model.Id(e => e.ID);
-                model.Field(e => e.ID).Editable(false);
+                model.Id(e => e.Id);
+                model.Field(e => e.Id).Editable(false);
                 model.Field(e => e.RamesesOrderNum).Editable(false);
                 model.Field(e => e.Customer.FullName).Editable(false);
                 model.Field(e => e.OrderPlacedTime).Editable(false);
@@ -85,15 +85,15 @@
 <script type="text/html" id="OrdersGridTemplate">
     @(Html.Kendo()
     .TabStrip()
-    .Name("OrdersGridTabs_#=ID#")
+    .Name("OrdersGridTabs_#=Id#")
     .Items(tabs =>
     {
         tabs.Add()
             .Text("Order Details")
             .Content(@<text>
-                <div>
-                    <a href="\\#" class="k-button k-print-button" data-order-id="#=ID#">Print</a>
-                </div>
+                @*<div>
+                    <a href="\\#" class="k-button k-print-button" data-order-id="#=Id#">Print</a>
+                </div>*@
                 @Html.Partial("~/Areas/Reporting/Views/Orders/_List_TicketTemplates.cshtml")
             </text>)
             .Selected(true);

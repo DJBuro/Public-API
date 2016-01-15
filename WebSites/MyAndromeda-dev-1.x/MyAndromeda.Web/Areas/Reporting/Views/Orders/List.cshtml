@@ -5,17 +5,6 @@
     var translator = Html.GetTranslator();
     var authorizer = Html.GetAuthorizer();
     var workContext = Html.GetWorkContext();
-    //var test = Url.HttpRouteUrl(routeName: "OrderHistoryList", routeValues: new
-    //{
-    //    chainId = workContext.CurrentSite.ChainId,
-    //    externalSiteId = workContext.CurrentSite.ExternalSiteId,
-    //    fromYear = Model.FilterFrom.Value.Year,
-    //    fromMonth = Model.FilterFrom.Value.Month,
-    //    fromDay = Model.FilterFrom.Value.Day,
-    //    toYear = Model.FilterTo.Value.Year,
-    //    toMonth = Model.FilterTo.Value.Month,
-    //    toDay = Model.FilterTo.Value.Day
-    //});
 }
 
 <div class="header">
@@ -58,6 +47,7 @@
     .Resizable(r => r.Columns(true))
     .Scrollable(s => s.Height(500))
     .Sortable()
+    .Filterable()
     .Groupable()
     .ColumnMenu(e => e.Filterable(true).Sortable(true))
     .Columns(cols =>
@@ -175,9 +165,16 @@
             items.Add()
                 .Text("Emails")
                 .Content(@<text>
-                    
+
                     @Html.Partial("_List_EmailHistory")
-        
+
+                </text>);
+
+            items.Add()
+                .Text("Bringg")
+ 
+                .Content(@<text>
+                    @Html.Partial("_bringg")
                 </text>);
 
 
@@ -197,7 +194,6 @@
     <script type="text/javascript">
         $(function () {
             var k = $("#OrderList").data("kendoGrid");
-
 
             k.bind("detailInit", function (e) {
                 initilizeEmailTempalte(e);

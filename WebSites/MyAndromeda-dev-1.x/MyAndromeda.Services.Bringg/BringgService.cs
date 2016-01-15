@@ -265,24 +265,16 @@ namespace MyAndromeda.Services.Bringg
 
             if (orderHeader.Bags.HasValue)
             {
-                if (!string.IsNullOrWhiteSpace(model.Note))
-                {
-                    model.Note += "; ";
-                }
-
                 model.Note += "Number of Bags: " + orderHeader.Bags.Value.ToString() + "; ";
             }
 
             model.Note += "Directions: ";
 
-            if (orderHeader.Customer.Address != null)
+            var hasDirections = orderHeader.Customer.Address != null && string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
+            if (hasDirections)
             {
-                if (string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions))
-                { 
-                    model.Note += orderHeader.Customer.Address.Directions + ";";
-                }
+                model.Note += orderHeader.Customer.Address.Directions + ";";
             }
-            //else if (orderHeader.CustomerAddress.dir)
             else 
             {
                 model.Note = "none;"; 
