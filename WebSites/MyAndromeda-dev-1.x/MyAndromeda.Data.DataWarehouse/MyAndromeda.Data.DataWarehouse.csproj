@@ -161,6 +161,9 @@
     <Compile Include="Models\EmailHistory.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeRecord.cs">
+      <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IbsOrder.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>

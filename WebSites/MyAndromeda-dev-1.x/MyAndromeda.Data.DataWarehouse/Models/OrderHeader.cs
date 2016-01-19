@@ -62,6 +62,7 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public Nullable<bool> GroupOrder { get; set; }
         public Nullable<int> BringgTaskId { get; set; }
         public Nullable<int> Bags { get; set; }
+        public Nullable<int> Tips { get; set; }
     
         public virtual ACSErrorCode ACSErrorCode1 { get; set; }
         public virtual Customer Customer { get; set; }

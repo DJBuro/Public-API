@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bec400deee1b4ec08ba87e350cbe7b71" Name="Diagram1" ZoomLevel="21">
+      <Diagram DiagramId="bec400deee1b4ec08ba87e350cbe7b71" Name="Diagram1" ZoomLevel="77">
         <EntityTypeShape EntityType="DataWarehouseModel.AccountType" Width="1.5" PointX="1.5" PointY="35.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DataWarehouseModel.Address" Width="1.5" PointX="1.5" PointY="21" IsExpanded="true" />
         <EntityTypeShape EntityType="DataWarehouseModel.Contact" Width="1.5" PointX="4" PointY="2.625" IsExpanded="true" />
@@ -76,6 +76,7 @@
         <EntityTypeShape EntityType="DataWarehouseModel.IbsRamesesTranslation" Width="1.5" PointX="0.75" PointY="10.75" />
         <AssociationConnector Association="DataWarehouseModel.FK_IbsOrder_OrderHeader" />
         <EntityTypeShape EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeRecord" Width="1.5" PointX="10.625" PointY="11.75" />
         </Diagram>
       <Diagram DiagramId="f52ba0265e624f60bcad0656354fba09" Name="Orders" ZoomLevel="73" >
         <EntityTypeShape EntityType="DataWarehouseModel.OrderLine" Width="1.5" PointX="3.125" PointY="0.875" />

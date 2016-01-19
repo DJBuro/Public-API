@@ -219,6 +219,19 @@
           <Property Name="EventType" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Message" Type="varchar(max)" Nullable="false" />
         </EntityType>
+        <EntityType Name="EmployeeRecord">
+          <Key>
+            <PropertyRef Name="AndromedaSiteId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="AndromedaSiteId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedUtc" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdatedUtc" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="IbsOrder">
           <Key>
             <PropertyRef Name="IbsOrderId" />
@@ -334,6 +347,7 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
           <Property Name="GroupOrder" Type="bit" />
           <Property Name="BringgTaskId" Type="int" />
           <Property Name="Bags" Type="int" />
+          <Property Name="Tips" Type="int" />
         </EntityType>
         <EntityType Name="OrderLines">
           <Key>
@@ -913,6 +927,7 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
           <EntitySet Name="Email" EntityType="Self.Email" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailCategories" EntityType="Self.EmailCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailHistory" EntityType="Self.EmailHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeRecord" EntityType="Self.EmployeeRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IbsOrder" EntityType="Self.IbsOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketingLevel" EntityType="Self.MarketingLevel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="modifiers" EntityType="Self.modifiers" Schema="dbo" store:Type="Tables" />
@@ -1254,6 +1269,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             <End Role="IbsOrder" EntitySet="IbsOrders" />
           </AssociationSet>
           <EntitySet Name="IbsPaymentTypeTranslations" EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" />
+          <EntitySet Name="EmployeeRecords" EntityType="DataWarehouseModel.EmployeeRecord" />
           </EntityContainer>
         <EntityType Name="AccountType">
           <Key>
@@ -2038,6 +2054,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <NavigationProperty Name="UsedVouchers" Relationship="DataWarehouseModel.FK_UsedVoucher_OrderHeader" FromRole="OrderHeader" ToRole="UsedVoucher" />
           <Property Name="Bags" Type="Int32" />
           <NavigationProperty Name="IbsOrders" Relationship="DataWarehouseModel.FK_IbsOrder_OrderHeader" FromRole="OrderHeader" ToRole="IbsOrder" />
+          <Property Name="Tips" Type="Int32" />
         </EntityType>
         <Association Name="FK_OrderHeader_ACSErrorCode">
           <End Type="DataWarehouseModel.ACSErrorCode" Role="ACSErrorCode" Multiplicity="1" />
@@ -2201,6 +2218,19 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="OrderPaymentTypeName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="MediaNumber" Type="Int32" Nullable="false" />
           <Property Name="MediaType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="EmployeeRecord">
+          <Key>
+            <PropertyRef Name="AndromedaSiteId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="AndromedaSiteId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdatedUtc" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -2630,6 +2660,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <EntitySetMapping Name="OrderHeaders">
             <EntityTypeMapping TypeName="DataWarehouseModel.OrderHeader">
               <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="Tips" ColumnName="Tips" />
                 <ScalarProperty Name="Bags" ColumnName="Bags" />
                 <ScalarProperty Name="BringgTaskId" ColumnName="BringgTaskId" />
                 <ScalarProperty Name="GroupOrder" ColumnName="GroupOrder" />
@@ -2696,6 +2727,19 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
                 <ScalarProperty Name="MediaNumber" ColumnName="MediaNumber" />
                 <ScalarProperty Name="OrderPaymentTypeName" ColumnName="OrderPaymentTypeName" />
                 <ScalarProperty Name="IbsCompanyId" ColumnName="IbsCompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeRecords">
+            <EntityTypeMapping TypeName="DataWarehouseModel.EmployeeRecord">
+              <MappingFragment StoreEntitySet="EmployeeRecord">
+                <ScalarProperty Name="LastUpdatedUtc" ColumnName="LastUpdatedUtc" />
+                <ScalarProperty Name="CreatedUtc" ColumnName="CreatedUtc" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

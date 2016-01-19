@@ -174,14 +174,15 @@ namespace MyAndromeda.Services.Ibs.Models
         {
             var counter = orderRequest.Items.Count;
 
-            decimal tipValue = 0;
-            bool hasTip = 0 > 0;
+            decimal tipValue = orderHeader.Tips.GetValueOrDefault();
+            bool hasTip = tipValue > 0;
 
             if (hasTip)
             {
+                decimal tipValue2 = tipValue / 100;
                 orderRequest.Items.Add(new cWebTransItem()
                 {
-                    m_dGrossValue = tipValue,
+                    m_dGrossValue = tipValue2,
                     m_eLineType = eWebOrderLineType.eTip,
                     m_iLineNum = counter,
                     m_iQty = 1,
