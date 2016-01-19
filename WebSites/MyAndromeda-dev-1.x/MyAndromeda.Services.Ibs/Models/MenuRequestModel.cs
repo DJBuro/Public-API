@@ -33,6 +33,8 @@ namespace MyAndromeda.Services.Ibs.Models
 
         public string Description { get; set; }
 
+        public string KpDescription { get; set; }
+
         public string Details { get; set; }
 
         public List<PriceModel> Prices { get; set; }

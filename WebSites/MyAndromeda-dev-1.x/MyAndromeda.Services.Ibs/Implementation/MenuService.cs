@@ -50,7 +50,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
                                     
                                     PluNumber = m.m_lPluNo,
                                     PluType = m.m_lPluType,
-                                    
+                                    KpDescription = m.m_szKPDescription,
                                     Description = m.m_szDescription,
                                     Details = m.m_szDetails,
                                     InUse = m.m_bInUse,

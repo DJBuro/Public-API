@@ -50,6 +50,13 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         [System.ServiceModel.OperationContractAttribute(Action="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersStatus", ReplyAction="*")]
         System.Threading.Tasks.Task<MyAndromeda.Services.Ibs.IbsWebOrderApi.cUpdateTotalsResult> UpdateWebOrdersStatusAsync(string szToken, string sLocation, int iTerminalNo, long lOrderNo, MyAndromeda.Services.Ibs.IbsWebOrderApi.eOrderStatus eNewOrderStatus);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://ibs-systems.co.uk/WebOrdersAPI/FixLocationSales", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void FixLocationSales(string szToken, string szLocation, int iDay, int iMonth, int iYear);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://ibs-systems.co.uk/WebOrdersAPI/FixLocationSales", ReplyAction="*")]
+        System.Threading.Tasks.Task FixLocationSalesAsync(string szToken, string szLocation, int iDay, int iMonth, int iYear);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://ibs-systems.co.uk/WebOrdersAPI/UpdateAtStoreStatus", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         MyAndromeda.Services.Ibs.IbsWebOrderApi.cUpdateAtStoreStatusResult UpdateAtStoreStatus(string szToken, string sLocation, int iTerminalNo, long lOrderNo, MyAndromeda.Services.Ibs.IbsWebOrderApi.cWebTransItem[] arrItems, MyAndromeda.Services.Ibs.IbsWebOrderApi.eAtStoreStatus eStatus, double dPayTotal);
@@ -221,7 +228,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -267,7 +274,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -327,7 +334,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -373,7 +380,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -433,7 +440,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -997,7 +1004,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eProductionStage {
@@ -1019,7 +1026,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum ePaidBy {
@@ -1038,7 +1045,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eOrderType {
@@ -1057,7 +1064,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eOrderStatus {
@@ -1085,7 +1092,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eRecordSource {
@@ -1098,7 +1105,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1312,7 +1319,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1372,7 +1379,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1432,7 +1439,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum ePrintOrderStatus {
@@ -1451,7 +1458,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eNumAcceptStatus {
@@ -1470,7 +1477,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1530,7 +1537,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1562,7 +1569,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1608,7 +1615,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1640,7 +1647,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1686,7 +1693,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1802,7 +1809,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -1876,7 +1883,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2076,7 +2083,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eVoucherOffsetType {
@@ -2095,7 +2102,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eVoucherRedemptionAllowedType {
@@ -2108,7 +2115,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2238,7 +2245,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2284,7 +2291,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2358,7 +2365,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2712,7 +2719,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2884,7 +2891,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -2930,7 +2937,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3172,7 +3179,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3260,7 +3267,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eEditMode {
@@ -3276,7 +3283,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3616,7 +3623,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eAccountStatus {
@@ -3632,7 +3639,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3678,7 +3685,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3724,7 +3731,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eCustomerField {
@@ -3872,7 +3879,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -3974,7 +3981,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4398,7 +4405,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4472,7 +4479,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4518,7 +4525,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4536,7 +4543,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4554,7 +4561,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4614,7 +4621,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4660,7 +4667,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4762,7 +4769,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -4774,6 +4781,10 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         private long m_lSalesGroupField;
         
         private string m_szDescriptionField;
+        
+        private string m_szKPDescriptionField;
+        
+        private string m_szReceiptDescriptionField;
         
         private string m_szDetailsField;
         
@@ -4847,6 +4858,30 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string m_szKPDescription {
+            get {
+                return this.m_szKPDescriptionField;
+            }
+            set {
+                this.m_szKPDescriptionField = value;
+                this.RaisePropertyChanged("m_szKPDescription");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string m_szReceiptDescription {
+            get {
+                return this.m_szReceiptDescriptionField;
+            }
+            set {
+                this.m_szReceiptDescriptionField = value;
+                this.RaisePropertyChanged("m_szReceiptDescription");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
         public string m_szDetails {
             get {
                 return this.m_szDetailsField;
@@ -4858,7 +4893,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
         public string m_szThumbURL {
             get {
                 return this.m_szThumbURLField;
@@ -4870,7 +4905,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
         public string m_szNewImgURL {
             get {
                 return this.m_szNewImgURLField;
@@ -4882,7 +4917,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
         public double m_dMaxOrderQty {
             get {
                 return this.m_dMaxOrderQtyField;
@@ -4894,7 +4929,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
         public bool m_bInUse {
             get {
                 return this.m_bInUseField;
@@ -4906,7 +4941,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public bool m_bIgnoreDietReq {
             get {
                 return this.m_bIgnoreDietReqField;
@@ -4918,7 +4953,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public bool m_bIsPlatterPLU {
             get {
                 return this.m_bIsPlatterPLUField;
@@ -4930,7 +4965,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public bool m_bCompulsoryCondiments {
             get {
                 return this.m_bCompulsoryCondimentsField;
@@ -4942,7 +4977,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public bool m_bWebShoppingCondimentsOverride {
             get {
                 return this.m_bWebShoppingCondimentsOverrideField;
@@ -4954,7 +4989,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=12)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=14)]
         public cPriceRec[] m_arrPrices {
             get {
                 return this.m_arrPricesField;
@@ -4966,7 +5001,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public double m_dCookingTimeMins {
             get {
                 return this.m_dCookingTimeMinsField;
@@ -4978,7 +5013,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=16)]
         public long m_lTaxNo {
             get {
                 return this.m_lTaxNoField;
@@ -4990,7 +5025,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=17)]
         public long m_lPluType {
             get {
                 return this.m_lPluTypeField;
@@ -5002,7 +5037,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=16)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=18)]
         public cCondimentRec[] m_arrCondLists {
             get {
                 return this.m_arrCondListsField;
@@ -5014,7 +5049,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=17)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=19)]
         public cNutritionRec[] m_arrNutrition {
             get {
                 return this.m_arrNutritionField;
@@ -5026,7 +5061,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=18)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=20)]
         public cDietaryRequirementsRec[] m_arrDietaryRequirements {
             get {
                 return this.m_arrDietaryRequirementsField;
@@ -5038,7 +5073,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Order=19)]
+        [System.Xml.Serialization.XmlArrayAttribute(Order=21)]
         public long[] m_arrTimeCats {
             get {
                 return this.m_arrTimeCatsField;
@@ -5060,7 +5095,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5120,7 +5155,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5180,7 +5215,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5226,7 +5261,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5286,7 +5321,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5346,7 +5381,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5420,7 +5455,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5536,7 +5571,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5596,7 +5631,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5642,7 +5677,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5702,7 +5737,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5776,7 +5811,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5864,7 +5899,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eMediaType {
@@ -5925,7 +5960,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -5971,7 +6006,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6073,7 +6108,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6133,7 +6168,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6711,7 +6746,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eChargeRule {
@@ -6730,7 +6765,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6776,7 +6811,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -6850,7 +6885,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7008,7 +7043,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eWebOrderLineType {
@@ -7036,7 +7071,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7096,7 +7131,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7170,7 +7205,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7258,7 +7293,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -7374,7 +7409,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum enumAPIFunction {
@@ -7483,7 +7518,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eAtStoreStatus {
@@ -7502,7 +7537,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eInuse {
@@ -7521,7 +7556,7 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.79.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1038.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://ibs-systems.co.uk/WebOrdersAPI/")]
     public enum eProductionType {
@@ -7799,6 +7834,14 @@ namespace MyAndromeda.Services.Ibs.IbsWebOrderApi {
         
         public System.Threading.Tasks.Task<MyAndromeda.Services.Ibs.IbsWebOrderApi.cUpdateTotalsResult> UpdateWebOrdersStatusAsync(string szToken, string sLocation, int iTerminalNo, long lOrderNo, MyAndromeda.Services.Ibs.IbsWebOrderApi.eOrderStatus eNewOrderStatus) {
             return base.Channel.UpdateWebOrdersStatusAsync(szToken, sLocation, iTerminalNo, lOrderNo, eNewOrderStatus);
+        }
+        
+        public void FixLocationSales(string szToken, string szLocation, int iDay, int iMonth, int iYear) {
+            base.Channel.FixLocationSales(szToken, szLocation, iDay, iMonth, iYear);
+        }
+        
+        public System.Threading.Tasks.Task FixLocationSalesAsync(string szToken, string szLocation, int iDay, int iMonth, int iYear) {
+            return base.Channel.FixLocationSalesAsync(szToken, szLocation, iDay, iMonth, iYear);
         }
         
         public MyAndromeda.Services.Ibs.IbsWebOrderApi.cUpdateAtStoreStatusResult UpdateAtStoreStatus(string szToken, string sLocation, int iTerminalNo, long lOrderNo, MyAndromeda.Services.Ibs.IbsWebOrderApi.cWebTransItem[] arrItems, MyAndromeda.Services.Ibs.IbsWebOrderApi.eAtStoreStatus eStatus, double dPayTotal) {

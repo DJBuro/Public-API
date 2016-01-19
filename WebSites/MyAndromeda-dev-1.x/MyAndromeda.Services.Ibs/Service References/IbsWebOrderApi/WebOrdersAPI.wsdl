@@ -197,6 +197,20 @@
           <s:enumeration value="eAccepted" />
         </s:restriction>
       </s:simpleType>
+      <s:element name="FixLocationSales">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="szToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="szLocation" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="iDay" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iMonth" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="iYear" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FixLocationSalesResponse">
+        <s:complexType />
+      </s:element>
       <s:element name="UpdateAtStoreStatus">
         <s:complexType>
           <s:sequence>
@@ -678,6 +692,8 @@
           <s:element minOccurs="1" maxOccurs="1" name="m_lPluNo" type="s:long" />
           <s:element minOccurs="1" maxOccurs="1" name="m_lSalesGroup" type="s:long" />
           <s:element minOccurs="0" maxOccurs="1" name="m_szDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szKPDescription" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="m_szReceiptDescription" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="m_szDetails" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="m_szThumbURL" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="m_szNewImgURL" type="s:string" />
@@ -1645,6 +1661,12 @@
   <wsdl:message name="UpdateWebOrdersStatusSoapOut">
     <wsdl:part name="parameters" element="tns:UpdateWebOrdersStatusResponse" />
   </wsdl:message>
+  <wsdl:message name="FixLocationSalesSoapIn">
+    <wsdl:part name="parameters" element="tns:FixLocationSales" />
+  </wsdl:message>
+  <wsdl:message name="FixLocationSalesSoapOut">
+    <wsdl:part name="parameters" element="tns:FixLocationSalesResponse" />
+  </wsdl:message>
   <wsdl:message name="UpdateAtStoreStatusSoapIn">
     <wsdl:part name="parameters" element="tns:UpdateAtStoreStatus" />
   </wsdl:message>
@@ -1834,6 +1856,14 @@
   <wsdl:message name="UpdateWebOrdersStatusHttpGetOut">
     <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
   </wsdl:message>
+  <wsdl:message name="FixLocationSalesHttpGetIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="FixLocationSalesHttpGetOut" />
   <wsdl:message name="UpdateReceiptPrintedStatusHttpGetIn">
     <wsdl:part name="szToken" type="s:string" />
     <wsdl:part name="sLocation" type="s:string" />
@@ -2042,6 +2072,14 @@
   <wsdl:message name="UpdateWebOrdersStatusHttpPostOut">
     <wsdl:part name="Body" element="tns:cUpdateTotalsResult" />
   </wsdl:message>
+  <wsdl:message name="FixLocationSalesHttpPostIn">
+    <wsdl:part name="szToken" type="s:string" />
+    <wsdl:part name="szLocation" type="s:string" />
+    <wsdl:part name="iDay" type="s:string" />
+    <wsdl:part name="iMonth" type="s:string" />
+    <wsdl:part name="iYear" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="FixLocationSalesHttpPostOut" />
   <wsdl:message name="UpdateReceiptPrintedStatusHttpPostIn">
     <wsdl:part name="szToken" type="s:string" />
     <wsdl:part name="sLocation" type="s:string" />
@@ -2226,6 +2264,10 @@
       <wsdl:input message="tns:UpdateWebOrdersStatusSoapIn" />
       <wsdl:output message="tns:UpdateWebOrdersStatusSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <wsdl:input message="tns:FixLocationSalesSoapIn" />
+      <wsdl:output message="tns:FixLocationSalesSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateAtStoreStatus">
       <wsdl:input message="tns:UpdateAtStoreStatusSoapIn" />
       <wsdl:output message="tns:UpdateAtStoreStatusSoapOut" />
@@ -2344,6 +2386,10 @@
       <wsdl:input message="tns:UpdateWebOrdersStatusHttpGetIn" />
       <wsdl:output message="tns:UpdateWebOrdersStatusHttpGetOut" />
     </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <wsdl:input message="tns:FixLocationSalesHttpGetIn" />
+      <wsdl:output message="tns:FixLocationSalesHttpGetOut" />
+    </wsdl:operation>
     <wsdl:operation name="UpdateReceiptPrintedStatus">
       <wsdl:input message="tns:UpdateReceiptPrintedStatusHttpGetIn" />
       <wsdl:output message="tns:UpdateReceiptPrintedStatusHttpGetOut" />
@@ -2433,6 +2479,10 @@
     <wsdl:operation name="UpdateWebOrdersStatus">
       <wsdl:input message="tns:UpdateWebOrdersStatusHttpPostIn" />
       <wsdl:output message="tns:UpdateWebOrdersStatusHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <wsdl:input message="tns:FixLocationSalesHttpPostIn" />
+      <wsdl:output message="tns:FixLocationSalesHttpPostOut" />
     </wsdl:operation>
     <wsdl:operation name="UpdateReceiptPrintedStatus">
       <wsdl:input message="tns:UpdateReceiptPrintedStatusHttpPostIn" />
@@ -2543,6 +2593,15 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateWebOrdersStatus">
       <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateWebOrdersStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <soap:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/FixLocationSales" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -2814,6 +2873,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/FixLocationSales" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="UpdateAtStoreStatus">
       <soap12:operation soapAction="http://ibs-systems.co.uk/WebOrdersAPI/UpdateAtStoreStatus" style="document" />
       <wsdl:input>
@@ -3078,6 +3146,13 @@
         <mime:mimeXml part="Body" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <http:operation location="/FixLocationSales" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output />
+    </wsdl:operation>
     <wsdl:operation name="UpdateReceiptPrintedStatus">
       <http:operation location="/UpdateReceiptPrintedStatus" />
       <wsdl:input>
@@ -3278,6 +3353,13 @@
       <wsdl:output>
         <mime:mimeXml part="Body" />
       </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FixLocationSales">
+      <http:operation location="/FixLocationSales" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output />
     </wsdl:operation>
     <wsdl:operation name="UpdateReceiptPrintedStatus">
       <http:operation location="/UpdateReceiptPrintedStatus" />
