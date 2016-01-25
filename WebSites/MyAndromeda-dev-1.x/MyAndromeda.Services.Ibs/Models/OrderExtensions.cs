@@ -120,20 +120,35 @@ namespace MyAndromeda.Services.Ibs.Models
 
         public static AddOrderRequest AddFoodItems(this AddOrderRequest orderRequest, OrderHeader orderHeader, IbsRamesesTranslation[] translationItems) 
         {
-            var counter = orderRequest.Items.Count;
+            var counter = orderRequest.Items.Count + 1;
 
-            foreach (var item in orderHeader.OrderLines)
+            var matchedItems = orderHeader.OrderLines.Select(e=> new {  
+                Item = e,
+                Plu = translationItems.Where(t => t.RamesesMenuItemId == e.ProductID)
+                                    .Select(t => t.PluNumber)
+                                    .FirstOrDefault()
+            });
+
+            var groupedItems = matchedItems.GroupBy(e => e.Plu);
+
+            foreach (var group in groupedItems)
             {
-                var ibsItem = item.TransformOrderLines(counter);
+                var translation = group.First();
+                var item = translation.Item;
+                var pluNumber = translation.Plu;
 
-                var pluNumber = translationItems
-                                                .Where(e => e.RamesesMenuItemId == ibsItem.m_lOffset)
-                                                .Select(e => e.PluNumber)
-                                                .FirstOrDefault();
+                var ibsItem = item.TransformOrderLines(counter);
 
                 if (pluNumber == null) { throw new NullReferenceException("plu number missing");  }
 
                 ibsItem.m_lOffset = pluNumber;
+                ibsItem.m_dStockQty = group.Count();
+
+
+                int groupPrice = group.Sum(e => e.Item.Price.GetValueOrDefault());
+                decimal a = groupPrice;
+                
+                ibsItem.m_dGrossValue = a / 100;
 
                 orderRequest.Items.Add(ibsItem);
                 
@@ -146,7 +161,7 @@ namespace MyAndromeda.Services.Ibs.Models
 
         public static AddOrderRequest AddPaymentLines(this AddOrderRequest orderRequest, OrderHeader orderHeader, List<IbsPaymentTypeTranslation> ibsPaymentTranslation) 
         {
-            var counter = orderRequest.Items.Count;
+            var counter = orderRequest.Items.Count + 1;
 
             foreach (var payment in orderHeader.OrderPayments)
             {
@@ -159,7 +174,7 @@ namespace MyAndromeda.Services.Ibs.Models
 
         public static AddOrderRequest AddDiscounts(this AddOrderRequest orderRequest, OrderHeader orderHeader)
         {
-            var counter = orderRequest.Items.Count;
+            var counter = orderRequest.Items.Count + 1;
 
             foreach (var item in orderHeader.OrderDiscounts)
             {
@@ -172,7 +187,7 @@ namespace MyAndromeda.Services.Ibs.Models
 
         public static AddOrderRequest AddTip(this AddOrderRequest orderRequest, OrderHeader orderHeader) 
         {
-            var counter = orderRequest.Items.Count;
+            var counter = orderRequest.Items.Count + 1;
 
             decimal tipValue = orderHeader.Tips.GetValueOrDefault();
             bool hasTip = tipValue > 0;

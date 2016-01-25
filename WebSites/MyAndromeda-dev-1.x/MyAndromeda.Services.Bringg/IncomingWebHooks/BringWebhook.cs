@@ -30,6 +30,9 @@ namespace MyAndromeda.Services.Bringg.IncomingWebHooks
         [JsonProperty("id")]
         public int Id { get; set; }
 
+        [JsonProperty("task_id")]
+        public int TaskId { get; set; }
+
         [JsonProperty("title")]
         public string Title { get; set; }
 

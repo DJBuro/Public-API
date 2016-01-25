@@ -233,11 +233,6 @@ namespace MyAndromeda.Services.Bringg
         {
             var model = new Andromeda.GPSIntegration.Model.Order();
 
-            //model.AndromedaOrderId = (orderHeader.TicketNumber.HasValue ? 
-            //    orderHeader.TicketNumber.Value.ToString() : orderHeader.ExternalOrderRef) 
-            //    + " - " + orderHeader.SiteName ;
-            //orderHeader.ID.ToString();
-
             if (orderHeader.BringgTaskId.HasValue)
             {
                 model.BringgTaskId = orderHeader.BringgTaskId.Value.ToString();
@@ -270,7 +265,7 @@ namespace MyAndromeda.Services.Bringg
 
             model.Note += "Directions: ";
 
-            var hasDirections = orderHeader.Customer.Address != null && string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
+            var hasDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
             if (hasDirections)
             {
                 model.Note += orderHeader.Customer.Address.Directions + ";";

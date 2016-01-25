@@ -145,11 +145,11 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return sendModel;
         }
 
-        private async Task<OutgoingWebHookBringg> GetOrderHeader(BringWebhook model) 
+        private async Task<OutgoingWebHookBringg> GetOrderHeader(int taskId, BringWebhook model) 
         {
             logger.Debug("Creating new outward notification based on the Bringg webhook.");
 
-            var order = await this.GetOrderIdsAsync(model.Id);
+            var order = await this.GetOrderIdsAsync(taskId);
             var store = await this.GetStoreIdsAsync(order);
 
             if (order == null) 
@@ -202,7 +202,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.logger.Debug("notifyTaskCreatedUrl: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
                 await this.CreateBringgWebhookRequest(sendModel);
             }
             catch (Exception ex)
@@ -222,7 +222,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
                 await this.CreateBringgWebhookRequest(sendModel);
             }
             catch (Exception ex)
@@ -242,7 +242,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
                 await this.UpdateOrderSatatus(model, UsefulOrderStatus.OrderIsOutForDelivery);
@@ -264,7 +264,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }
@@ -285,7 +285,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }
@@ -305,7 +305,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.logger.Debug("bringg - NotifyTaskDone: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
                 await this.UpdateOrderSatatus(model, UsefulOrderStatus.OrderHasBeenCompleted);
@@ -328,7 +328,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.logger.Debug("bringg - NotifyTaskAccepted: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }
@@ -348,7 +348,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.logger.Debug("bringg - NotifyTaskCancelled: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }
@@ -368,7 +368,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             this.logger.Debug("bringg - NotifyTaskRejected: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }
@@ -383,12 +383,12 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 
         [HttpPost]
         [Route("bringg/notifyLateUrl/{taskId}")]
-        public async Task<OkResult> NotifyLate([FromUri]string taskId, [FromBody]BringWebhook model) 
+        public async Task<OkResult> NotifyLate([FromUri]int taskId, [FromBody]BringWebhook model) 
         {
             this.logger.Debug("bringg - NotifyLate: " + taskId);
             try
             {
-                var sendModel = await this.GetOrderHeader(model);
+                var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
             }

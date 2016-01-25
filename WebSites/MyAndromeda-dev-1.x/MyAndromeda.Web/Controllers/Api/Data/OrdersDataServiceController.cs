@@ -151,16 +151,27 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 .Where(e => e.ExternalSiteID == this.currentSite.ExternalSiteId)
                 .Include(e => e.OrderStatu)
                 .Include(e => e.Customer)
-                
+               
                 .OrderByDescending(e => e.OrderPlacedTime)
                 .Take(100)
                 .Select(e => new OrderViewModel()
                 {
                     Id = e.ID,
                     ItemCount = e.OrderLines.Count(),
+                    DeliveryCharge = e.DeliveryCharge,
+                    Tips = e.Tips,
                     Items = e.OrderLines.Select(item => new OrderItem() {
                         Id = item.ID,
-                        Name = item.Description
+                        Name = item.Description,
+                        Qty = item.Qty,
+                        Price = item.Price,
+                        Person = item.Person
+                    }),
+                    PaymentLines = e.OrderPayments.Select(item => new PaymentLine(){
+                        Id = item.ID,
+                        PayTypeName = item.PayTypeName,
+                        PaymentType = item.PaymentType,
+                        Value = item.Value
                     }),
                     StatusDescription = e.OrderStatu.Description,
                     FinalPrice = e.FinalPrice,
@@ -282,6 +293,18 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         } 
     }
 
+    public class PaymentLine 
+    {
+
+        public Guid Id { get; set; }
+
+        public string PayTypeName { get; set; }
+
+        public int Value { get; set; }
+
+        public string PaymentType { get; set; }
+    }
+
     public class ChangeOrderStatusViewModel
     {
         public int StatusId { get; set; }     
@@ -309,9 +332,18 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public OrderAddressViewModel OrderAddress { get; set; }
 
         public IEnumerable<OrderItem> Items { get; set; }
+
+
         public string StatusDescription { get; set; }
 
         public long IbsOrderId { get; set; }
+
+        public IEnumerable<PaymentLine> PaymentLines { get; set; }
+
+
+        public int? Tips { get; set; }
+
+        public decimal DeliveryCharge { get; set; }
     }
 
     public class OrderItem 
@@ -320,6 +352,12 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public int? Qty { get; set; }
+
+        public int? Price { get; set; }
+
+        public string Person { get; set; }
     }
 
     public class OrderAddressViewModel 
