@@ -162,6 +162,10 @@
       <Project>{30CA51DD-932F-4559-955C-2C4E1829F589}</Project>
       <Name>MyAndromeda.Services.Gprs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.Services.StoreDevices\MyAndromeda.Services.StoreDevices.csproj">
+      <Project>{5F8E6874-791B-4E45-8B32-32BBC554C691}</Project>
+      <Name>MyAndromeda.Services.StoreDevices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyAndromeda.Services.WebOrdering\MyAndromeda.Services.WebOrdering.csproj">
       <Project>{d01e68b3-8c3b-49ae-a493-02452d2d3fce}</Project>
       <Name>MyAndromeda.Services.WebOrdering</Name>

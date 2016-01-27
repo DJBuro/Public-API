@@ -3287,11 +3287,11 @@ var MyAndromeda;
         app.config(function ($stateProvider, $urlRouterProvider) {
             var hr = {
                 abstract: true,
-                url: '/hr',
+                url: '/hr/:chainId',
                 template: '<div ui-view="main"></div>'
             };
             var hrStoreList = {
-                url: "/list/:chainId/store/:andromedaSiteId",
+                url: "/list/store/:andromedaSiteId",
                 views: {
                     "main": {
                         templateUrl: "employee-list.html",
@@ -3317,11 +3317,26 @@ var MyAndromeda;
                 },
                 cache: false
             };
+            var hrStoreEmployeeCreate = {
+                url: "/create/",
+                views: {
+                    //use the 'main' view area of the 'hr' state. 
+                    "main@hr": {
+                        templateUrl: "employee-edit.html",
+                        controller: "employeeEditController"
+                    }
+                },
+                onEnter: function () {
+                    MyAndromeda.Logger.Notify("Entering employee edit");
+                },
+                cache: false
+            };
             MyAndromeda.Logger.Notify("set hr states");
             // route: /hr-store
             $stateProvider.state("hr", hr);
             $stateProvider.state("hr.store-list", hrStoreList);
             $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
+            $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
         });
         app.run(function ($rootScope) {
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -3342,17 +3357,36 @@ var MyAndromeda;
     (function (Hr) {
         var Controllers;
         (function (Controllers) {
-            var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives"]);
-            app.controller("employeeListController", function ($scope, $stateParams, employeeService) {
-                MyAndromeda.Logger.Notify("Route params: ");
+            var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
+            app.controller("employeeListController", function ($scope, $stateParams, SweetAlert, employeeService, employeeServiceState) {
+                MyAndromeda.Logger.Notify("stateParams");
                 MyAndromeda.Logger.Notify($stateParams);
-                var employeeGridDataSource = employeeService.EmployeeDataSource;
+                employeeServiceState.ChainId.onNext($stateParams.chainId);
+                employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
+                employeeService.Loading.subscribe(function (isLoading) {
+                    if (isLoading) {
+                        var message = SweetAlert.swal({
+                            title: "Loading",
+                        });
+                    }
+                    else {
+                        SweetAlert.hide();
+                    }
+                });
+                employeeService.Saved.subscribe(function (saved) {
+                    if (saved) {
+                        SweetAlert.swal("Saved!", "", "success");
+                    }
+                });
+                var employeeGridDataSource = employeeService.StoreEmployeeDataSource;
+                var headerTemplate = $("#employee-list-header-template").html();
                 var actionsTemplate = $("#employee-list-row-template").html();
                 var employeeGridOptions = {
                     dataSource: employeeGridDataSource,
-                    autoBind: true,
+                    autoBind: false,
                     filterable: true,
                     sortable: true,
+                    toolbar: kendo.template(headerTemplate),
                     columns: [
                         { field: "Store", title: "Store", width: 100, filterable: { checkAll: true, multi: false } },
                         //{ field: "Code", title: "Code", width: 100 },
@@ -3379,12 +3413,37 @@ var MyAndromeda;
                 };
                 $scope.employeeGridOptions = employeeGridOptions;
             });
-            app.controller("employeeEditController", function ($scope, $stateParams, employeeService) {
-                var employeeId = $stateParams.id;
-                var employee = employeeService.EmployeeDataSource.get(employeeId);
-                MyAndromeda.Logger.Notify("employee id:" + employeeId);
+            app.controller("employeeEditController", function ($scope, $stateParams, employeeService, employeeServiceState) {
+                MyAndromeda.Logger.Notify("stateParams");
+                MyAndromeda.Logger.Notify($stateParams);
+                employeeServiceState.ChainId.onNext($stateParams.chainId);
+                employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
+                var getEmployee = function () {
+                    var employeeId = $stateParams.id;
+                    if (!employeeId) {
+                        //create new employee
+                        return {
+                            Name: "",
+                            PrimaryRole: "",
+                            Roles: [],
+                            ShiftStatus: {}
+                        };
+                    }
+                    MyAndromeda.Logger.Notify("employee id:" + employeeId);
+                    var employee = employeeService.StoreEmployeeDataSource.get(employeeId);
+                    return employee;
+                };
+                var employee = getEmployee();
+                var save = function (employee) {
+                    if (!employee.Id) {
+                        employeeService.StoreEmployeeDataSource.add(employee);
+                    }
+                    //else { }
+                    employeeService.StoreEmployeeDataSource.sync();
+                };
                 MyAndromeda.Logger.Notify(employee);
                 $scope.employee = employee;
+                $scope.save = save;
             });
         })(Controllers = Hr.Controllers || (Hr.Controllers = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
@@ -3429,10 +3488,30 @@ var MyAndromeda;
         var Services;
         (function (Services) {
             var app = angular.module("MyAndromeda.Hr.Services", []);
+            var EmployeeServiceState = (function () {
+                function EmployeeServiceState() {
+                    this.ChainId = new Rx.BehaviorSubject(null);
+                    this.AndromedaSiteId = new Rx.BehaviorSubject(null);
+                }
+                return EmployeeServiceState;
+            })();
+            Services.EmployeeServiceState = EmployeeServiceState;
             var EmployeeService = (function () {
-                function EmployeeService($http) {
+                function EmployeeService($http, employeeServiceState) {
+                    var _this = this;
                     this.$http = $http;
-                    this.EmployeeDataSource = new kendo.data.DataSource({
+                    this.employeeServiceState = employeeServiceState;
+                    this.Loading = new Rx.Subject();
+                    this.Saved = new Rx.Subject();
+                    this.Error = new Rx.Subject();
+                    this.ChainEmployeeDataSource = new kendo.data.DataSource({
+                        schema: {
+                            model: {
+                                id: "Id"
+                            }
+                        }
+                    });
+                    this.StoreEmployeeDataSource = new kendo.data.DataSource({
                         schema: {
                             model: {
                                 id: "Id"
@@ -3440,43 +3519,97 @@ var MyAndromeda;
                         },
                         transport: {
                             read: function (options) {
-                                var testPerson = {
-                                    Id: "1",
-                                    Store: "Somewhere",
-                                    Code: "0001",
-                                    Name: "Bob the happy one",
-                                    ProfilePic: null,
-                                    Email: "bob@someplace.com",
-                                    Phone: "012345678",
-                                    PrimaryRole: "Driver",
-                                    Roles: ["1", "2"],
-                                    ShiftStatus: {
-                                        OnShift: true,
-                                        OnCall: false,
-                                        Available: false
-                                    }
-                                };
-                                var testPerson2 = {
-                                    Id: 2,
-                                    Store: "Somewhere else",
-                                    Code: "0001",
-                                    Name: "Sadness",
-                                    ProfilePic: null,
-                                    Email: "notbob@someplace.com",
-                                    Phone: "012345678",
-                                    PrimaryRole: "Driver",
-                                    Roles: ["1", "2"],
-                                    ShiftStatus: {
-                                        OnShift: false,
-                                        OnCall: false,
-                                        Available: false
-                                    }
-                                };
-                                options.success([testPerson, testPerson2]);
+                                //var testPerson: Models.IEmployee = {
+                                //    Id: "1",
+                                //    Store: "Somewhere",
+                                //    Code: "0001",
+                                //    Name: "Bob the happy one",
+                                //    ProfilePic: null,
+                                //    Email: "bob@someplace.com",
+                                //    Phone: "012345678",
+                                //    PrimaryRole: "Driver",
+                                //    Roles: ["1", "2"],
+                                //    ShiftStatus: {
+                                //        OnShift: true,
+                                //        OnCall: false,
+                                //        Available : false
+                                //    }
+                                //};
+                                //var testPerson2 = {
+                                //    Id: 2,
+                                //    Store: "Somewhere else", 
+                                //    Code: "0001",
+                                //    Name: "Sadness",
+                                //    ProfilePic: null,
+                                //    Email: "notbob@someplace.com",
+                                //    Phone: "012345678",
+                                //    PrimaryRole: "Driver",
+                                //    Roles: ["1", "2"],
+                                //    ShiftStatus: {
+                                //        OnShift: false,
+                                //        OnCall: false,
+                                //        Available: false
+                                //    }
+                                //}; 
+                                //options.success([testPerson, testPerson2]);
+                                var route = "hr/{0}/employees/{1}/list";
+                                route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
+                                var promise = _this.$http.get(route);
+                                _this.Loading.onNext(true);
+                                Rx.Observable.fromPromise(promise).subscribe(function (callback) {
+                                    options.success(callback.data);
+                                    _this.Loading.onNext(false);
+                                });
+                            },
+                            update: function (e) {
+                                MyAndromeda.Logger.Notify("Update employee records");
+                                var data = e.data;
+                                var route = "hr/{0}/employees/{1}/update";
+                                route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
+                                var promise = _this.$http.post(route, data);
+                                _this.Saved.onNext(false);
+                                Rx.Observable.fromPromise(promise).subscribe(function (callback) {
+                                    var callBackData = callback.data;
+                                    MyAndromeda.Logger.Notify("result: ");
+                                    MyAndromeda.Logger.Notify(callBackData);
+                                    e.success();
+                                    _this.Saved.onNext(true);
+                                }, function (error) {
+                                    MyAndromeda.Logger.Error(error);
+                                    _this.Error.onNext("Updating Failed");
+                                });
+                            },
+                            create: function (e) {
+                                MyAndromeda.Logger.Notify("Create employee record");
+                                var data = e.data;
+                                var route = "hr/{0}/employees/{1}/create";
+                                route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
+                                var promise = _this.$http.post(route, data);
+                                _this.Saved.onNext(false);
+                                Rx.Observable.fromPromise(promise).subscribe(function (callback) {
+                                    var callBackData = callback.data;
+                                    MyAndromeda.Logger.Notify("result: ");
+                                    MyAndromeda.Logger.Notify(callBackData);
+                                    e.success(callback.data);
+                                    _this.Saved.onNext(true);
+                                }, function (error) {
+                                    MyAndromeda.Logger.Error(error);
+                                    _this.Error.onNext("Creating Failed");
+                                });
                             }
-                        }
+                        },
+                        batch: false
                     });
-                    this.EmployeeDataSource.read();
+                    this.employeeServiceState.AndromedaSiteId.where(function (e) { return e !== null; }).subscribe(function (id) {
+                        MyAndromeda.Logger.Notify("new andromeda site id : " + id);
+                        _this.andromedaSiteId = id;
+                        _this.StoreEmployeeDataSource.read();
+                    });
+                    this.employeeServiceState.ChainId.where(function (e) { return e !== null; }).subscribe(function (id) {
+                        MyAndromeda.Logger.Notify("new chain id : " + id);
+                        _this.chainId = id;
+                        _this.ChainEmployeeDataSource.read();
+                    });
                 }
                 EmployeeService.prototype.List = function (chainId, andromedaSiteId) {
                     var route = "";
@@ -3487,6 +3620,7 @@ var MyAndromeda;
             })();
             Services.EmployeeService = EmployeeService;
             app.service("employeeService", EmployeeService);
+            app.service("employeeServiceState", EmployeeServiceState);
         })(Services = Hr.Services || (Hr.Services = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));

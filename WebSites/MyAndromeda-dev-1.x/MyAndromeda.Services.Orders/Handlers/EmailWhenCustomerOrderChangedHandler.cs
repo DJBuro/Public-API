@@ -6,6 +6,7 @@ using MyAndromeda.Framework.Translation;
 using MyAndromeda.Logging;
 using MyAndromeda.SendGridService;
 using MyAndromeda.Services.Orders.Events;
+using MyAndromeda.Services.StoreDevices.Rameses;
 
 namespace MyAndromeda.Services.Orders.Handlers
 {
@@ -22,14 +23,17 @@ namespace MyAndromeda.Services.Orders.Handlers
         private readonly IMyAndromedaTransactionalEmailService myAndromedaEmailService;
 
         private readonly ICurrentSite currentSite;
+        private readonly IRamesesDeviceService ramesesDeviceService;
 
-        public EmailWhenCustomerOrderChangedHandler(
-            ITranslator translator, 
+        public EmailWhenCustomerOrderChangedHandler(ITranslator translator,
             IMyAndromedaLogger logger,
-            ICurrentSite currentSite, 
+            ICurrentSite currentSite,
             IOrderEmailingService orderService,
-            IMyAndromedaTransactionalEmailService myAndromedaEmailService) 
+            IMyAndromedaTransactionalEmailService myAndromedaEmailService,
+            IRamesesDeviceService ramesesDeviceService
+            ) 
         {
+            this.ramesesDeviceService = ramesesDeviceService;
             this.translator = translator;
             this.logger = logger;
             this.orderService = orderService;
@@ -48,6 +52,19 @@ namespace MyAndromeda.Services.Orders.Handlers
         public async Task<WorkLevel> OrderStatusChangedAsync(int andromedaSiteId, OrderHeader orderHeader, OrderStatu oldStatus)
         {
             if (!this.currentSite.Available) { this.logger.Debug("Order status changed, but this handler cannot deal with the request."); }
+
+            //new store device settings - to enable / disable emails
+            bool isRameses = await ramesesDeviceService.IsRamesesSetup(andromedaSiteId);
+            
+            if (isRameses) 
+            {
+                var settings = await ramesesDeviceService.GetRamesesDeviceAsync(andromedaSiteId);
+                if (!settings.AllowEmails.GetValueOrDefault(true))
+                {
+                    this.logger.Debug("Email not needed for Store. So says the store device settings.");
+                    return WorkLevel.NoWork;
+                }
+            }
 
             if (orderHeader.Status == 6 || orderHeader.Status > 1000) 
             {

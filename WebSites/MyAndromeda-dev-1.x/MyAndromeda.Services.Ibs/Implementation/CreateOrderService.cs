@@ -59,11 +59,11 @@ namespace MyAndromeda.Services.Ibs.Implementation
             //add food + match ibs to rameses
             model.AddFoodItems(orderHeader, translationItems);
 
+            //add tip 
+            model.AddOrGuessTip(orderHeader);
+
             //add discounts
             model.AddDiscounts(orderHeader);
-
-            //add tip 
-            model.AddTip(orderHeader);
 
             //add payment lines + match them to payment table. 
             var paymentTypes = await this.PaymentTypeTranslationTable

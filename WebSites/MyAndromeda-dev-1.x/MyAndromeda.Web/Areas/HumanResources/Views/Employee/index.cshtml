@@ -22,7 +22,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{employee.Name}}
-                    <span class="label label-success">On shift</span>
+
+                    <span ng-if="employee.ShiftStatus" class="label label-success">On shift</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -31,7 +32,7 @@
                                 <div class="col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon" style="width:40px"><i class="fa fa-phone"></i></span>
-                                        <input type="text" class="form-control" ng-model="employee.Phone">
+                                        <input type="text" class="form-control" ng-model="employee.Phone" id="employee.Phone" name="employee.Phone">
                                     </div>
                                 </div>
 
@@ -42,19 +43,19 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-envelope-o"></i>
                                         </span>
-                                        <input type="text" class="form-control" ng-model="employee.Email">
+                                        <input type="text" class="form-control" ng-model="employee.Email" id="employee.Email" name="employee.Email">
+
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="row form-group">
                                 <div class="col-sm-12">
                                     <div class="employee-photo-large" style="background-image:url(/Content/profile-picture.jpg)">
                                     </div>
                                 </div>
                             </div>
-                            
-                            
+
                             <div class="row form-group">
                                 <div class="col-sm-12">
                                     <input name="files"
@@ -72,7 +73,10 @@
         </div>
         <div class="col-sm-9">
             <div class="panel panel-default">
-                <div class="panel-heading">Details</div>
+                <div class="panel-heading">
+                    Details
+                    <a class="btn btn-primary" ng-click="save(employee)">Save</a>
+                </div>
                 <div class="panel-body">
                     <div class="form-horizontal form-widgets col-sm-12">
                         <div class="form-group">
@@ -80,23 +84,23 @@
                                 Name
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" ng-model="employee.Name" class="k-textbox" />
+                                <input type="text" ng-model="employee.Name" class="k-textbox" id="employee.Name" name="employee.Name" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="birthday">Birthday</label>
                             <div class="col-sm-8 col-md-6">
-                                <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" />
+                                <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" id="employee.DOB" name="employee.DOB" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="gender">Gender</label>
                             <div class="col-sm-8">
-                                <select id="gender" kendo-drop-down-list k-ng-model="employee.Gender">
-                                    <option selected>Male</option>
-                                    <option>Female</option>
+                                <select kendo-drop-down-list k-ng-model="employee.Gender" id="employee.Gender" name="employee.Gender">
+                                    <option value="Male" selected>Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                         </div>
@@ -104,34 +108,34 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">Primary Role</label>
                             <div class="col-sm-8">
-                                <select id="PrimaryRole" kendo-drop-down-list k-ng-model="employee.PrimaryRole"></select>
+                                <select kendo-combo-box k-ng-model="employee.PrimaryRole" id="employee.PrimaryRole" name="employee.PrimaryRole"></select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3">Skills</label>
                             <div class="col-sm-8">
-                                <select id="PrimaryRole" kendo-multi-select k-ng-model="employee.PrimaryRole"></select>
+                                <select kendo-multi-select k-ng-model="employee.Skills" id="employee.Skills" name="employee.Skills"></select>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3">Driving License</label>
                             <div class="col-sm-8">
-                                <input type="text" class="k-textbox" ng-model="employee.DrivingLicense" />
+                                <input type="text" class="k-textbox" ng-model="employee.DrivingLicense" id="employee.DrivingLicense" name="employee.DrivingLicense" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3">Payroll Number</label>
                             <div class="col-sm-8">
-                                <input type="text" class="k-textbox" ng-model="employee.PayrollNumber" />
+                                <input type="text" class="k-textbox" ng-model="employee.PayrollNumber" id="employee.PayrollNumber" name="employee.PayrollNumber" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-3">National Insurance</label>
                             <div class="col-sm-8">
-                                <input type="text" class="k-textbox" ng-model="employee.NationalInsurance" />
+                                <input type="text" class="k-textbox" ng-model="employee.NationalInsurance" id="employee.NationalInsurance" name="employee.NationalInsurance" />
                             </div>
                         </div>
                     </div>
@@ -176,5 +180,8 @@
 </script>
 
 <script type="text/html" id="employee-list-row-template">
-    <a class="k-button k-primary-button" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">Edit</a>
+    <a class="k-button k-primary-button" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">Edit {{dataItem.Id}}</a>
+</script>
+<script type="text/html" id="employee-list-header-template">
+    <a class="k-button k-primary-button" ui-sref="hr.store-list.create-employee">Create</a>
 </script>

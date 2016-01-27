@@ -125,7 +125,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return null;
         }
 
-        private async Task<OutgoingWebHookOrderStatusChange> GetOrderStatusModel(BringWebhook model, UsefulOrderStatus orderStatus) 
+        private async Task<OutgoingWebHookOrderStatusChange> GetOrderStatusModel(int taskId, BringWebhook model, UsefulOrderStatus orderStatus) 
         {
             var order = await this.GetOrderIdsAsync(model.Id);
             var store = await this.GetStoreIdsAsync(order);
@@ -245,7 +245,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
-                await this.UpdateOrderSatatus(model, UsefulOrderStatus.OrderIsOutForDelivery);
+                await this.UpdateOrderSatatus(taskId, model, UsefulOrderStatus.OrderIsOutForDelivery);
             }
             catch (Exception ex)
             {
@@ -308,7 +308,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 var sendModel = await this.GetOrderHeader(taskId, model);
 
                 await this.CreateBringgWebhookRequest(sendModel);
-                await this.UpdateOrderSatatus(model, UsefulOrderStatus.OrderHasBeenCompleted);
+                await this.UpdateOrderSatatus(taskId, model, UsefulOrderStatus.OrderHasBeenCompleted);
             }
             catch (Exception ex)
             {
@@ -411,11 +411,11 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         //    return Ok();
         //}
 
-        private async Task<bool> UpdateOrderSatatus(BringWebhook model, UsefulOrderStatus orderStatus) 
+        private async Task<bool> UpdateOrderSatatus(int taskId, BringWebhook model, UsefulOrderStatus orderStatus) 
         {
             bool result = false;
 
-            var sendModel = this.GetOrderStatusModel(model, orderStatus);
+            var sendModel = this.GetOrderStatusModel(taskId, model, orderStatus);
 
             try
             {

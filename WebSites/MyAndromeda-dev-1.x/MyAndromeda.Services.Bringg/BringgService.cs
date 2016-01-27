@@ -12,6 +12,7 @@ using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Framework.Dates;
 using MyAndromeda.Services.Gprs;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using Newtonsoft.Json;
 
 namespace MyAndromeda.Services.Bringg
 {
@@ -41,11 +42,20 @@ namespace MyAndromeda.Services.Bringg
 
         public async Task<bool> IsBringgConfigured(int andromedaSiteId)
         {
-            var any = await this.gpsSettingsDataService
+            var settings = await this.gpsSettingsDataService
                 .Settings
-                .AnyAsync(e => e.Store.AndromedaSiteId == andromedaSiteId);
+                .FirstOrDefaultAsync(e => e.Store.AndromedaSiteId == andromedaSiteId);
 
-            return any;
+            if (settings == null) { return false; }
+
+            //dynamic o = JsonConvert.DeserializeObject(settings.PartnerConfig);
+            
+            //if (o.isEnabled) 
+            //{
+            //    return true;
+            //}
+
+            return true;
         }
 
         public async Task<bool> ShallWeSendOrder(int andromedaSiteId, UsefulOrderStatus currentState)

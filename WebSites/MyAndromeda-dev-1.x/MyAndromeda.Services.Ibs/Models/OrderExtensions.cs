@@ -56,7 +56,8 @@ namespace MyAndromeda.Services.Ibs.Models
                 OrderPlacedMin = placedTime.Minute,
                 TimeSlotFrom = Convert.ToInt32(timeSlot),
                 TimeSlotTo = Convert.ToInt32(timeSlot),
-                PayOnCollectionOrDelivery = orderHeader.paytype.Equals("PAYLATER"),
+                PayOnCollectionOrDelivery = 
+                    orderHeader.paytype.Equals("PAYLATER", StringComparison.InvariantCultureIgnoreCase) || orderHeader.paytype.Equals("CASH", StringComparison.InvariantCultureIgnoreCase),
                 WantedOrderDay = wantedTime.Day,
                 WantedOrderMonth = wantedTime.Month,
                 WantedOrderYear = wantedTime.Year,
@@ -64,13 +65,7 @@ namespace MyAndromeda.Services.Ibs.Models
 
             var items = new List<cWebTransItem>();
             int counter = 1;
-
             
-
-            
-
-            bool isCash = orderHeader.paytype.ToUpper().Equals("PAYLATER") || orderHeader.paytype.ToUpper().Equals("CASH");
-
             bool hasDeliveryCharge = orderHeader.DeliveryCharge > 0;
 
             if (hasDeliveryCharge)
@@ -86,22 +81,7 @@ namespace MyAndromeda.Services.Ibs.Models
                 });
                 counter++;
             }
-
-            
-
-            //too detailed. 
-            
-
-            //old payment
-            //items.Add(new cWebTransItem()
-            //{
-            //    m_dGrossValue = orderHeader.FinalPrice,
-            //    m_eLineType = eWebOrderLineType.ePayment,
-            //    m_dStockQty = 1,
-            //    m_iLineNum = counter,
-            //    m_lOffset = isCash ? 1 : 2,
-            //    m_szDescription = isCash ? "Cash" : "Card"
-            //});
+            //items added in different extension. 
 
             model.Items = items;
             
@@ -143,7 +123,7 @@ namespace MyAndromeda.Services.Ibs.Models
 
                 ibsItem.m_lOffset = pluNumber;
                 ibsItem.m_dStockQty = group.Count();
-
+                ibsItem.m_iQty = group.Count();
 
                 int groupPrice = group.Sum(e => e.Item.Price.GetValueOrDefault());
                 decimal a = groupPrice;
@@ -185,16 +165,27 @@ namespace MyAndromeda.Services.Ibs.Models
             return orderRequest;
         }
 
-        public static AddOrderRequest AddTip(this AddOrderRequest orderRequest, OrderHeader orderHeader) 
+        public static AddOrderRequest AddOrGuessTip(this AddOrderRequest orderRequest, OrderHeader orderHeader) 
         {
             var counter = orderRequest.Items.Count + 1;
 
             decimal tipValue = orderHeader.Tips.GetValueOrDefault();
             bool hasTip = tipValue > 0;
 
-            if (hasTip)
+            var orderPaid = orderHeader.OrderPayments.Sum(e => e.Value);
+            //cost of items + delivery; 
+            var orderValue = orderRequest.Items.Sum(e => e.m_dGrossValue) * 100;
+
+            bool orderValueLessThanPaid = orderPaid > orderValue;
+
+            if (hasTip || orderValueLessThanPaid)
             {
                 decimal tipValue2 = tipValue / 100;
+                if(tipValue2 == 0)
+                {
+                    tipValue2 = ((decimal)orderPaid - orderValue) / 100;
+                }
+                
                 orderRequest.Items.Add(new cWebTransItem()
                 {
                     m_dGrossValue = tipValue2,

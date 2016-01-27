@@ -8,13 +8,13 @@
 
         var hr: ng.ui.IState = {
             abstract: true,
-            url: '/hr',
+            url: '/hr/:chainId',
             template: '<div ui-view="main"></div>'
         };
 
         var hrStoreList: ng.ui.IState = {
  
-            url: "/list/:chainId/store/:andromedaSiteId",
+            url: "/list/store/:andromedaSiteId",
             views: {
                 "main": {
                     templateUrl: "employee-list.html",
@@ -40,7 +40,22 @@
                 Logger.Notify("Entering employee edit");
             },
             cache: false
-        }
+        };
+
+        var hrStoreEmployeeCreate: ng.ui.IState = {
+            url: "/create/",
+            views: {
+                //use the 'main' view area of the 'hr' state. 
+                "main@hr": {
+                    templateUrl: "employee-edit.html",
+                    controller: "employeeEditController"
+                }
+            },
+            onEnter: () => {
+                Logger.Notify("Entering employee edit");
+            },
+            cache: false
+        };
 
         Logger.Notify("set hr states");
 
@@ -48,6 +63,7 @@
         $stateProvider.state("hr", hr)
         $stateProvider.state("hr.store-list", hrStoreList);
         $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
+        $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
     });
 
     app.run(($rootScope) => {

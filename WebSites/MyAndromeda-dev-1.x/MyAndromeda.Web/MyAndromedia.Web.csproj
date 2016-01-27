@@ -724,6 +724,7 @@
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="lib\autofill\autofill-event.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
@@ -2230,7 +2231,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Areas\HumanResources\Controllers\HrApi.cs" />
     <Compile Include="Areas\HumanResources\Controllers\StoreController.cs" />
     <Compile Include="Areas\HumanResources\HumanResourcesAreaRegistration.cs" />
     <Compile Include="Areas\HumanResources\UserPermissions.cs" />
@@ -2356,6 +2356,7 @@
     <Compile Include="Controllers\Api\Data\Models\DataWareHouseStore.cs" />
     <Compile Include="Controllers\Api\Data\OrdersDataServiceController.cs" />
     <Compile Include="Controllers\Api\DeliveryZonesByRadiusController.cs" />
+    <Compile Include="Controllers\Api\Hr\EmployeeFileController.cs" />
     <Compile Include="Controllers\Api\Files\FileApiController.cs" />
     <Compile Include="Controllers\Api\Files\FileModel.cs" />
     <Compile Include="Controllers\Api\Files\ImageApiController.cs" />
