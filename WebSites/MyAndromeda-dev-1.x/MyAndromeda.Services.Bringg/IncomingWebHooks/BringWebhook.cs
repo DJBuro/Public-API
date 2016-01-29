@@ -51,23 +51,23 @@ namespace MyAndromeda.Services.Bringg.IncomingWebHooks
         [JsonProperty("company_id")]
         public string CompanyId { get; set; }
 
-        [JsonProperty("active_way_point_id")]
-        public string ActiveWayPointId { get; set; }
+        //[JsonProperty("active_way_point_id")]
+        //public string ActiveWayPointId { get; set; }
 
-        [JsonProperty("extras")]
-        public string Extras { get; set; }
+        //[JsonProperty("extras")]
+        //public string Extras { get; set; }
 
-        [JsonProperty("way_points")]
-        public string WayPoints { get; set; }
+        //[JsonProperty("way_points")]
+        //public string WayPoints { get; set; }
 
-        [JsonProperty("customer")]
-        public string Customer { get; set; }
+        //[JsonProperty("customer")]
+        //public string Customer { get; set; }
 
-        [JsonProperty("user")]
-        public string User { get; set; }
+        //[JsonProperty("user")]
+        //public string User { get; set; }
 
-        [JsonProperty("late")]
-        public string Late { get; set; }
+        //[JsonProperty("late")]
+        //public string Late { get; set; }
 
         [JsonProperty("external_id")]
         public string ExternalId { get; set; }

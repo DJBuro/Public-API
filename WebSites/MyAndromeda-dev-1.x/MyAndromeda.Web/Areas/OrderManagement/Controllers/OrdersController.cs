@@ -8,7 +8,6 @@ using MyAndromeda.Services.Orders.OrderMonitoring.Services;
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using Kendo.Mvc.Extensions;
 using MyAndromeda.Web.Areas.OrderManagement.Models;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Data.DataWarehouse.Services;
@@ -18,7 +17,6 @@ using MyAndromeda.Framework.Dates;
 using System.Collections.Generic;
 using Kendo.Mvc.Extensions;
 using System.Threading.Tasks;
-using System.Data;
 using System.Data.Entity;
 
 namespace MyAndromeda.Web.Areas.OrderManagement.Controllers

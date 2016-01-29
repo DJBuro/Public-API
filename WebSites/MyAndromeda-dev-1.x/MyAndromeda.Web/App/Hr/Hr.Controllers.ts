@@ -13,15 +13,16 @@
         employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
 
         employeeService.Loading.subscribe((isLoading) => {
-            if (isLoading) {
-                var message =
-                    SweetAlert.swal({
-                        title: "Loading",
-                    });
+            //var message = null;
+            //if (isLoading) {
+            //    message =
+            //        SweetAlert.swal({
+            //            title: "Loading",
+            //        });
 
-            } else {
-                SweetAlert.hide();
-            }
+            //} else {
+            //    message.hide();
+            //}
         });
 
         employeeService.Saved.subscribe((saved) => {
@@ -43,11 +44,12 @@
             autoBind: false,
             filterable: true,
             sortable: true,
+            groupable: true,
             toolbar: kendo.template(headerTemplate),
             columns: [
                 { field: "Store", title: "Store", width: 100, filterable: {checkAll: true, multi: false} },
                 //{ field: "Code", title: "Code", width: 100 },
-                { field: "PrimaryRole", title: "Primary Role", width: 100 },
+                { field: "Department", title: "Department", width: 100 },
                 {
                     title: "Contact",
                     columns: [
@@ -83,13 +85,14 @@
         employeeServiceState.ChainId.onNext($stateParams.chainId);
         employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
 
-        var getEmployee = (): Models.IEmployee => {
+        let getEmployee = (): Models.IEmployee => {
             let employeeId: string = $stateParams.id;
             if (!employeeId)
             {
                 //create new employee
                 return {
                     Name: "",
+                    
                     PrimaryRole: "",
                     Roles: [],
                     ShiftStatus: {}
@@ -103,13 +106,24 @@
             return employee;
         };
 
-        
         let employee = getEmployee();
         let save = (employee: Models.IEmployee) => {
+            Logger.Notify("saved called");
+            let validator : kendo.ui.Validator = $scope.validator; 
+            let valid = validator.validate();
+
+            if (!valid) {
+                Logger.Notify("validation failed.");
+                return;
+                
+            }
+
             if (!employee.Id) {
                 employeeService.StoreEmployeeDataSource.add(employee);
             }
-            //else { }
+
+            Logger.Notify("sync");
+            //Logger.Notify("update?" employee.di);
             employeeService.StoreEmployeeDataSource.sync();
         };
 

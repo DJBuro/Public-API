@@ -26,7 +26,6 @@ namespace MyAndromeda.Services.Ibs.Models
                 //model.WantedOrderYear = future.Year;
             }
 
-
             var timeSlot = string.Format("{0:00}{1:00}", wantedTime.Hour, wantedTime.Minute);
 
             var model = new AddOrderRequest()

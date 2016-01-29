@@ -52,7 +52,7 @@
                 }
             },
             onEnter: () => {
-                Logger.Notify("Entering employee edit");
+                Logger.Notify("Entering employee create");
             },
             cache: false
         };

@@ -63,6 +63,7 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public virtual DbSet<IbsOrder> IbsOrders { get; set; }
         public virtual DbSet<IbsRamesesTranslation> IbsRamesesTranslations { get; set; }
         public virtual DbSet<IbsPaymentTypeTranslation> IbsPaymentTypeTranslations { get; set; }
+        public virtual DbSet<EmployeeStoreLinkRecord> EmployeeStoreLinkRecords { get; set; }
         public virtual DbSet<EmployeeRecord> EmployeeRecords { get; set; }
     }
 }

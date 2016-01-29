@@ -3327,7 +3327,7 @@ var MyAndromeda;
                     }
                 },
                 onEnter: function () {
-                    MyAndromeda.Logger.Notify("Entering employee edit");
+                    MyAndromeda.Logger.Notify("Entering employee create");
                 },
                 cache: false
             };
@@ -3364,14 +3364,15 @@ var MyAndromeda;
                 employeeServiceState.ChainId.onNext($stateParams.chainId);
                 employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
                 employeeService.Loading.subscribe(function (isLoading) {
-                    if (isLoading) {
-                        var message = SweetAlert.swal({
-                            title: "Loading",
-                        });
-                    }
-                    else {
-                        SweetAlert.hide();
-                    }
+                    //var message = null;
+                    //if (isLoading) {
+                    //    message =
+                    //        SweetAlert.swal({
+                    //            title: "Loading",
+                    //        });
+                    //} else {
+                    //    message.hide();
+                    //}
                 });
                 employeeService.Saved.subscribe(function (saved) {
                     if (saved) {
@@ -3386,11 +3387,12 @@ var MyAndromeda;
                     autoBind: false,
                     filterable: true,
                     sortable: true,
+                    groupable: true,
                     toolbar: kendo.template(headerTemplate),
                     columns: [
                         { field: "Store", title: "Store", width: 100, filterable: { checkAll: true, multi: false } },
                         //{ field: "Code", title: "Code", width: 100 },
-                        { field: "PrimaryRole", title: "Primary Role", width: 100 },
+                        { field: "Department", title: "Department", width: 100 },
                         {
                             title: "Contact",
                             columns: [
@@ -3435,10 +3437,18 @@ var MyAndromeda;
                 };
                 var employee = getEmployee();
                 var save = function (employee) {
+                    MyAndromeda.Logger.Notify("saved called");
+                    var validator = $scope.validator;
+                    var valid = validator.validate();
+                    if (!valid) {
+                        MyAndromeda.Logger.Notify("validation failed.");
+                        return;
+                    }
                     if (!employee.Id) {
                         employeeService.StoreEmployeeDataSource.add(employee);
                     }
-                    //else { }
+                    MyAndromeda.Logger.Notify("sync");
+                    //Logger.Notify("update?" employee.di);
                     employeeService.StoreEmployeeDataSource.sync();
                 };
                 MyAndromeda.Logger.Notify(employee);

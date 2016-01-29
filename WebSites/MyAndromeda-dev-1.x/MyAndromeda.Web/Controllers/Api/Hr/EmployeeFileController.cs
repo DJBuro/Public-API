@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Logging;
-using MyAndromeda.Web.Controllers.Api.Hr;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
@@ -34,25 +31,36 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         [HttpGet]
         [Route("list")]
-        public async Task<HttpResponseMessage> List([FromUri]int andromedaSiteId) 
+        public async Task<List<EmployeeRecordModel>> List([FromUri]int andromedaSiteId) 
         {
-            var query = this.employeeTable.Where(e => e.AndromedaSiteId == andromedaSiteId);
+            var query = this.employeeTable
+                .Where(e => e.EmployeeStoreLinkRecords.Any(r => r.AdromedaSiteId == andromedaSiteId));
 
             var records = await query.ToListAsync();
 
             var models = records
-                .Select((record) => record.ToViewModel() as dynamic)
+                .Select((record) => record.ToViewModel())
                 .ToList();
 
-            var models2 = models.Select((r) => r as dynamic);
+            //var models2 = models.Select((r) => r as dynamic);
 
 
-            var k = JsonConvert.SerializeObject(models);
-            var k2 = JsonConvert.SerializeObject(models2);
+            //var k = JsonConvert.SerializeObject(models);
+            //var k2 = JsonConvert.SerializeObject(models2);
 
-            var response = Request.CreateResponse(HttpStatusCode.OK, k2, Configuration.Formatters.JsonFormatter);
+            //var converters = new List<Newtonsoft.Json.JsonConverter>();
 
-            return response;
+            //var k3 = JsonConvert.SerializeObject(models2, new JsonSerializerSettings() { 
+            //    CheckAdditionalContent=true,
+            //    Converters = converters
+            //});
+
+
+            //var response = Request.CreateResponse(HttpStatusCode.OK, k2, Configuration.Formatters.JsonFormatter);
+
+            return models; 
+
+            //return response;
         }
 
         [HttpGet]
@@ -61,7 +69,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                                                    int andromedaSiteId, [FromUri]
                                                    Guid id) 
         {
-            var query = this.employeeTable.Where(e => e.AndromedaSiteId == andromedaSiteId && e.Id == id);
+            var query = this.employeeTable.Where(e => e.EmployeeStoreLinkRecords.Any(k => k.AdromedaSiteId == andromedaSiteId));
 
             var record = await query.FirstOrDefaultAsync();
 
@@ -78,7 +86,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         {
 
             var query = this.employeeTable
-                            .Where(e => e.AndromedaSiteId == andromedaSiteId)
+                            .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AdromedaSiteId == andromedaSiteId))
                             .Where(e => e.Id == model.Id);
 
             var dbItem = await query.FirstOrDefaultAsync();
@@ -95,14 +103,28 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [HttpPost]
         [Route("create")]
         public async Task<EmployeeRecordModel> Create(
-            [FromUri] int andromedaSiteId,
-            [FromBody] EmployeeRecordModel model)
+            [FromUri] int andromedaSiteId)
         {
-            var dbRecord = this.employeeTable.CreateDbItem(model, andromedaSiteId, true);
-            
-            await this.dbContext.SaveChangesAsync();
-            
-            return dbRecord.ToViewModel();
+            var content = await this.Request.Content.ReadAsStringAsync();
+            EmployeeRecordModel result = null;
+            try
+            {
+                var model = JsonConvert.DeserializeObject<EmployeeRecordModel>(content);
+
+                var dbRecord = this.employeeTable.CreateDbItem(model, andromedaSiteId, true);
+
+                await this.dbContext.SaveChangesAsync();
+
+                result = dbRecord.ToViewModel();
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error("failed to create EmployeeRecordModel");
+                this.logger.Error(ex);   
+                throw ex;
+            }
+
+            return result;
         }
     }
 
@@ -120,6 +142,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                 var converter = new ExpandoObjectConverter();    
 
                 var model = JsonConvert.DeserializeObject<EmployeeRecordModel>(dbItem.Data, converter);
+                
                 model.Id = dbItem.Id;
                 model.Name = dbItem.Name;
 
@@ -153,7 +176,9 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             record.Id = Guid.NewGuid();
             record.CreatedUtc = DateTime.UtcNow;
-            record.AndromedaSiteId = andromedaSiteId;
+            record.EmployeeStoreLinkRecords.Add(new EmployeeStoreLinkRecord(){
+                AdromedaSiteId = andromedaSiteId
+            });
 
             // the rest should be in update properties
             record.UpdateProperties(model);
@@ -167,104 +192,105 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         }
     }
 
-    public class EmployeeRecordModel : DynamicObject
+    public class EmployeeRecordModel
     {
         public Guid Id { get; set; }
-
         public bool Deleted { get; set; }
 
+        public string Code { get; set; }
+        public string ShortName { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string PHone { get; set; }
+        public string Phone { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
-
-        public string ShortName { get; set; }
         public string Gender { get; set; }
+
+        public string Department { get; set; }
         public string PrimaryRole { get; set; }
+        //public string[] Roles { get; set; }
+        //public string[] Skills { get; set; }
 
         public string DrivingLicense { get; set; }
         public string PayrollNumber { get; set; }
         public string NationalInsurance { get; set; }
 
-        public string[] Skills { get; set; }
-
         public List<EmployeeDocumentModel> Documents { get; set; }
 
-        readonly Dictionary<string, object> properties = new Dictionary<string, object>();
+        //readonly Dictionary<string, object> properties = new Dictionary<string, object>();
 
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
-        {
-            if (properties.ContainsKey(binder.Name))
-            {
-                result = properties[binder.Name];
-                return true;
-            }
-            else
-            {
-                result = "Invalid Property!";
-                return false;
-            }
-        }
+        //public override bool TryGetMember(GetMemberBinder binder, out object result)
+        //{
+        //    if (properties.ContainsKey(binder.Name))
+        //    {
+        //        result = properties[binder.Name];
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        result = "Invalid Property!";
+        //        return false;
+        //    }
+        //}
 
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            properties[binder.Name] = value;
-            return true;
-        }
+        //public override bool TrySetMember(SetMemberBinder binder, object value)
+        //{
+        //    properties[binder.Name] = value;
+        //    return true;
+        //}
 
-        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
-        {
-            dynamic method = properties[binder.Name];
-            result = method(args[0].ToString(), args[1].ToString());
-            return true;
-        }
+        //public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        //{
+        //    dynamic method = properties[binder.Name];
+        //    result = method(args[0].ToString(), args[1].ToString());
+        //    return true;
+        //}
 
-        public override IEnumerable<string> GetDynamicMemberNames()
-        {
-            return this.properties.Keys;
-        }
+        //public override IEnumerable<string> GetDynamicMemberNames()
+        //{
+        //    return this.properties.Keys;
+        //}
     }
 
-    public class EmployeeDocumentModel : DynamicObject
+    public class EmployeeDocumentModel 
     {
         public string Name { get; set; }
         public string DocumentUrl { get; set; }
 
-        readonly Dictionary<string, object> properties = new Dictionary<string, object>();
+        //readonly Dictionary<string, object> properties = new Dictionary<string, object>();
 
-        public override bool TryGetMember(GetMemberBinder binder, out object result)
-        {
-            if (properties.ContainsKey(binder.Name))
-            {
-                result = properties[binder.Name];
-                return true;
-            }
-            else
-            {
-                result = "Invalid Property!";
-                return false;
-            }
-        }
+        //public override bool TryGetMember(GetMemberBinder binder, out object result)
+        //{
+        //    if (properties.ContainsKey(binder.Name))
+        //    {
+        //        result = properties[binder.Name];
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        result = "Invalid Property!";
+        //        return false;
+        //    }
+        //}
 
-        public override bool TrySetMember(SetMemberBinder binder, object value)
-        {
-            properties[binder.Name] = value;
-            return true;
-        }
+        //public override bool TrySetMember(SetMemberBinder binder, object value)
+        //{
+        //    properties[binder.Name] = value;
+        //    return true;
+        //}
 
-        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
-        {
-            dynamic method = properties[binder.Name];
-            result = method(args[0].ToString(), args[1].ToString());
-            return true;
-        }
+        //public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        //{
+        //    dynamic method = properties[binder.Name];
+        //    result = method(args[0].ToString(), args[1].ToString());
+        //    return true;
+        //}
 
-        public override IEnumerable<string> GetDynamicMemberNames()
-        {
-            return this.properties.Keys;
-        }
+        //public override IEnumerable<string> GetDynamicMemberNames()
+        //{
+        //    return this.properties.Keys;
+        //}
     }
 
 }

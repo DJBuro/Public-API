@@ -16,6 +16,10 @@
     <h3>Order Management</h3>
 </div>
 
+<div class="alert alert-info" role="alert">
+    Orders will be listed <strong>24 hours into the future</strong> and up to <strong>36 hours into the past</strong>.
+</div>
+
 <div id="OrderManagementSection">
     <div class="row">
         <div class="col-xs-12">
@@ -52,7 +56,7 @@
     .ColumnMenu()
     .Pageable(paging => paging.Refresh(true))
             .HtmlAttributes(new { @class = "OrdersGrid" })
-                //.Mobile(MobileMode.Auto)
+                    //.Mobile(MobileMode.Auto)
     .DataSource(dataSource =>
     {
         dataSource.Ajax()
@@ -92,8 +96,8 @@
             .Text("Order Details")
             .Content(@<text>
                 @*<div>
-                    <a href="\\#" class="k-button k-print-button" data-order-id="#=Id#">Print</a>
-                </div>*@
+                        <a href="\\#" class="k-button k-print-button" data-order-id="#=Id#">Print</a>
+                    </div>*@
                 @Html.Partial("~/Areas/Reporting/Views/Orders/_List_TicketTemplates.cshtml")
             </text>)
             .Selected(true);

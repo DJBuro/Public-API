@@ -1,18 +1,35 @@
 ﻿module MyAndromeda.Hr.Models {
     export interface IEmployee
     {
-        Store?: string;
+        //Store?: string;
 
         Id?: string;
+        Deleted?: boolean;
+
         Code?: string;
+        ShortName?: string;
         Name?: string;
-        PrimaryRole?: string;
-        Roles: string[];
-        ProfilePic?: string; //end url.
         Email?: string;
         Phone?: string;
 
-        ShiftStatus: IEmployeeShiftStatus;
+        Gender?: string;
+        DateOfBirth?: string;
+        PrimaryRole?: string;
+        Roles: string[];
+        ProfilePic?: string; //end url.
+        
+        Skills?: string[];
+        DrivingLicense?: string;
+        PayrollNumber?: string;
+        NationalInsurance?: string; 
+
+        ShiftStatus?: IEmployeeShiftStatus;
+    }
+
+    export interface IEmployeeDocument
+    {
+        Name?: string;
+        DocumentUrl?: string;
     }
 
     export interface IEmployeeShiftStatus
