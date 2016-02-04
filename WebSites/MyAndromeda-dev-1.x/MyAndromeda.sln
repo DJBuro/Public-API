@@ -169,9 +169,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.WebJobs.EventMa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebJobs", "WebJobs", "{1A9CDB92-B421-4A82-9681-A1F6C973F890}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.Services.Media", "MyAndromeda.Services.Media\MyAndromeda.Services.Media.csproj", "{BE364A92-A94E-48D5-ADFE-63970F2E220F}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 50
+		SccNumberOfProjects = 51
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://andromedapos.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -371,6 +373,10 @@ Global
 		SccProjectTopLevelParentUniqueName49 = MyAndromeda.sln
 		SccProjectName49 = MyAndromeda.WebJobsApplication
 		SccLocalPath49 = MyAndromeda.WebJobsApplication
+		SccProjectUniqueName50 = MyAndromeda.Services.Media\\MyAndromeda.Services.Media.csproj
+		SccProjectTopLevelParentUniqueName50 = MyAndromeda.sln
+		SccProjectName50 = MyAndromeda.Services.Media
+		SccLocalPath50 = MyAndromeda.Services.Media
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1796,6 +1802,34 @@ Global
 		{4C26EBE3-05D6-40F8-AB0E-E6C780DFA39E}.test1|Any CPU.Build.0 = Release|Any CPU
 		{4C26EBE3-05D6-40F8-AB0E-E6C780DFA39E}.test1|x64.ActiveCfg = Release|Any CPU
 		{4C26EBE3-05D6-40F8-AB0E-E6C780DFA39E}.test1|x86.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Dev|x64.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Dev|x86.ActiveCfg = Debug|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.GPRS-Live|Any CPU.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.GPRS-Live|Any CPU.Build.0 = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.GPRS-Live|x64.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.GPRS-Live|x86.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Live|Any CPU.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Live|Any CPU.Build.0 = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Live|x64.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Live|x86.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Staging2|Any CPU.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Staging2|Any CPU.Build.0 = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Staging2|x64.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.Staging2|x86.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.test1|Any CPU.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.test1|Any CPU.Build.0 = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.test1|x64.ActiveCfg = Release|Any CPU
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F}.test1|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1856,6 +1890,7 @@ Global
 		{7EE8BC7D-2512-48EA-A8B6-74CA9BC3D93C} = {748C3D46-AE30-4756-A438-A0A920B03B21}
 		{4C26EBE3-05D6-40F8-AB0E-E6C780DFA39E} = {1A9CDB92-B421-4A82-9681-A1F6C973F890}
 		{1A9CDB92-B421-4A82-9681-A1F6C973F890} = {B7D0482E-B088-432C-AA68-1235C2D66D08}
+		{BE364A92-A94E-48D5-ADFE-63970F2E220F} = {748C3D46-AE30-4756-A438-A0A920B03B21}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

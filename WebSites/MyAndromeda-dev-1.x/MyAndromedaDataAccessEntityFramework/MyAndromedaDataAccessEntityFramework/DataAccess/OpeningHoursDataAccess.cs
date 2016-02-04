@@ -81,15 +81,6 @@ namespace MyAndromeda.Data.DataAccess
         {
             using (var entitiesContext = new AndroAdminDbContext())
             {
-                // We have to be careful to join on site here.  We've already verified that the user is allowed to access the site but
-                // the openingHoursId could be forged to access the opening hours of another store.  By joining on the store id we
-                // ensure that the day row belongs to the store that the user has permission to access.
-                //var query = from oh in entitiesContext.OpeningHours
-                //                       join s in entitiesContext.Stores
-                //                         on oh.SiteId equals s.Id
-                //                       where s.Id == siteId
-                //                         && oh.Day.Description == day
-                //                       select oh;
                 var query = entitiesContext.OpeningHours
                                            .Where(openHour => openHour.SiteId == siteId)
                                            .Where(openHour => openHour.Day.Description == day);
@@ -103,12 +94,6 @@ namespace MyAndromeda.Data.DataAccess
                 }
 
                 entitiesContext.SaveChanges();
-                //MyAndromedaDataAccessEntityFramework.Model.OpeningHour entity = query.FirstOrDefault();
-                //if (entity != null)
-                //{
-                //    entitiesContext.OpeningHours.Remove(entity);
-                //    entitiesContext.SaveChanges();
-                //}
             }
 
             return "";
@@ -136,7 +121,7 @@ namespace MyAndromeda.Data.DataAccess
                     return "Unknown store";
                 }
 
-                storeEntity.DataVersion = Data.Model.DataVersionHelper.GetNextDataVersion(entitiesContext);
+                //storeEntity.DataVersion = Data.Model.DataVersionHelper.GetNextDataVersion(entitiesContext);
                 // Get the day
                 var daysQuery = from d in entitiesContext.Days
                                 where d.Description == timeSpanBlock.Day

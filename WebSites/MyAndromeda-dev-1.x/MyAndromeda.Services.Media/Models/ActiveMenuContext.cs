@@ -5,9 +5,8 @@ using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Storage;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
 
-namespace MyAndromeda.Menus.Context.Thumbnails
+namespace MyAndromeda.Services.Media.Models
 {
     public class ActiveMenuContext : IActiveMenuContext
     {

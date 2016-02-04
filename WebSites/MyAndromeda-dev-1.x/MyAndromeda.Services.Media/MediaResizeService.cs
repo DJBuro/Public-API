@@ -1,25 +1,16 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Monads;
-using ImageResizer;
-using MyAndromeda.Core;
+using MyAndromeda.Services.Media.Models;
 using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromeda.Menus.Context.Thumbnails;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
+using ImageResizer;
 
-namespace MyAndromeda.Menus.Services.Media
+namespace MyAndromeda.Services.Media
 {
-    public interface IMediaResizeService : IDependency
-    {
-        IEnumerable<ResizeSizeTaskContext> ResizeImage(int andromedaSiteId, MemoryStream stream);
-        IEnumerable<ResizeSizeTaskContext> ResizeLogoImage(MemoryStream stream, List<MyAndromeda.Menus.Services.Media.AzureMediaLibraryService.LogoConfigurations> sizeList);
-    }
-
     public class MediaResizeService : IMediaResizeService 
     {
         private readonly IMyAndromedaSiteMenuDataService siteMenuDataAccess;
@@ -33,11 +24,11 @@ namespace MyAndromeda.Menus.Services.Media
             this.menuItemDataAccess = menuDataAccess;
         }
 
-        public IEnumerable<ResizeSizeTaskContext> ResizeLogoImage(MemoryStream stream, List<MyAndromeda.Menus.Services.Media.AzureMediaLibraryService.LogoConfigurations> sizeList)
+        public IEnumerable<ResizeSizeTaskContext> ResizeLogoImage(MemoryStream stream, List<LogoConfiguration> sizeList)
         {
             Func<MemoryStream> copyStream = () =>
             {
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 stream.CopyTo(ms);
                 stream.Seek(0, SeekOrigin.Begin);
                 ms.Seek(0, SeekOrigin.Begin);
@@ -47,10 +38,29 @@ namespace MyAndromeda.Menus.Services.Media
 
             foreach (var resizeSettings in this.GetLogoResizeSettings(sizeList))
             {
-                var activityStrem = copyStream();
+                MemoryStream activityStrem = copyStream();
+             
                 yield return this.DoTheResizeWork(activityStrem, resizeSettings);
             }
+
             yield break;
+        }
+
+        public ResizeSizeTaskContext ResizeImage(MemoryStream stream, LogoConfiguration configuration)
+        {
+            Func<MemoryStream> copyStream = () =>
+            {
+                var ms = new MemoryStream();
+                stream.CopyTo(ms);
+                stream.Seek(0, SeekOrigin.Begin);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                return ms;
+            };
+
+            var settings = this.GetResizeSetting(configuration);
+
+            return this.DoTheResizeWork(copyStream(), settings);
         }
 
         public IEnumerable<ResizeSizeTaskContext> ResizeImage(int andromediaSiteId, MemoryStream stream)
@@ -58,7 +68,7 @@ namespace MyAndromeda.Menus.Services.Media
             var menu = this.siteMenuDataAccess.GetMenu(andromediaSiteId);
             Func<MemoryStream> copyStream = () =>
             {
-                MemoryStream ms = new MemoryStream();
+                var ms = new MemoryStream();
                 stream.CopyTo(ms);
                 stream.Seek(0, SeekOrigin.Begin);
                 ms.Seek(0, SeekOrigin.Begin);
@@ -68,7 +78,7 @@ namespace MyAndromeda.Menus.Services.Media
 
             foreach (var resizeSettings in this.GetResizeSettings(menu))
             {
-                var activityStrem = copyStream();
+                MemoryStream activityStrem = copyStream();
 
                 yield return this.DoTheResizeWork(activityStrem, resizeSettings);
             }
@@ -119,37 +129,37 @@ namespace MyAndromeda.Menus.Services.Media
             return FitMode.Crop;
         }
 
-        private ContentAlignment GetAlignement(string alignment) 
+        private ContentAlignment GetAlignement(string alignment)
         {
             switch (alignment.ToLower())
             {
                 case "topleft":
-                    return ContentAlignment.TopLeft; 
+                    return ContentAlignment.TopLeft;
                 case "topcenter":
-                    return ContentAlignment.TopCenter; 
+                    return ContentAlignment.TopCenter;
                 case "topright":
-                    return ContentAlignment.TopRight; 
+                    return ContentAlignment.TopRight;
                 case "middleleft":
-                    return ContentAlignment.MiddleLeft; 
+                    return ContentAlignment.MiddleLeft;
                 case "middlecenter":
-                    return ContentAlignment.MiddleCenter; 
+                    return ContentAlignment.MiddleCenter;
                 case "middleright":
-                    return ContentAlignment.MiddleRight; 
+                    return ContentAlignment.MiddleRight;
                 case "bottomleft":
-                    return ContentAlignment.BottomLeft; 
+                    return ContentAlignment.BottomLeft;
                 case "bottomcenter":
-                    return ContentAlignment.BottomCenter; 
+                    return ContentAlignment.BottomCenter;
                 case "bottomright":
-                    return ContentAlignment.BottomRight; 
+                    return ContentAlignment.BottomRight;
             }
 
             return ContentAlignment.MiddleCenter;
         }
 
-        private ResizeSettings[] GetLogoResizeSettings(List<MyAndromeda.Menus.Services.Media.AzureMediaLibraryService.LogoConfigurations> sizeList)
+        private ResizeSettings[] GetLogoResizeSettings(List<LogoConfiguration> sizeList)
         {
-            List<ResizeSettings> retList = new List<ResizeSettings>();
-            foreach (AzureMediaLibraryService.LogoConfigurations size in sizeList)
+            var retList = new List<ResizeSettings>();
+            foreach (LogoConfiguration size in sizeList)
             {
                 ResizeSettings LogoResizeSettings = new ResizeSettings(size.Width, size.Height, FitMode.Pad, "png")
                 {
@@ -162,6 +172,17 @@ namespace MyAndromeda.Menus.Services.Media
             return retList.ToArray();
         }
 
+        private ResizeSettings GetResizeSetting(LogoConfiguration configuration)
+        {
+            ResizeSettings settings = new ResizeSettings(configuration.Width, configuration.Height, FitMode.Pad, "png")
+            {
+                Anchor = configuration.Alignment,
+                PaddingColor = ColorTranslator.FromHtml("#FFFFFF"),
+                Scale = ScaleMode.Both
+            };
+
+            return settings;
+        }
 
         private ResizeSettings[] GetResizeSettings(SiteMenu menu) 
         {
@@ -176,7 +197,6 @@ namespace MyAndromeda.Menus.Services.Media
                     Height = e.Height,
                     Width = e.Width
                 }).ToList()
-                //this.DefaultFallbackSizes()
             };
 
             //grab from profile / default ones above
@@ -184,7 +204,7 @@ namespace MyAndromeda.Menus.Services.Media
                 profile.SiteMenuMediaProfileSizes.CheckWithDefault(e => e != null && e.Count > 0, this.DefaultFallbackSizes());
             
             //create all profiles to resize with
-            var fitMode =  this.GetFitMode(profile.Mode);
+            var fitMode = this.GetFitMode(profile.Mode);
 
             IEnumerable<ResizeSettings> resizeSettings = resizeSettingProfiles.Select(e => new ResizeSettings(e.Width, e.Height, fitMode, "png")
             {
@@ -212,8 +232,9 @@ namespace MyAndromeda.Menus.Services.Media
             resizeSettings.Format = "png";
             ImageBuilder.Current.Build(inputStream, result, resizeSettings);
 
-            Bitmap b = new Bitmap(result);
+            var b = new Bitmap(result);
             result.Seek(0, SeekOrigin.Begin);
+
             return new ResizeSizeTaskContext()
             {
                 Result = result,

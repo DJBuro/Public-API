@@ -4,10 +4,15 @@
     export class EmployeeServiceState
     {
         public ChainId : Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
+
         public AndromedaSiteId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
 
-        constructor() {
+        public CurrentChainId: number;
+        public CurrentAndromedaSiteId: number;
 
+        constructor() {
+            this.ChainId.subscribe((e) => { this.CurrentChainId = e; });
+            this.AndromedaSiteId.subscribe((e) => { this.CurrentAndromedaSiteId = e; });
         }
     }
 
@@ -20,138 +25,77 @@
         private andromedaSiteId: number; 
 
         public Loading: Rx.Subject<boolean> = new Rx.Subject<boolean>();
+        public IsLoading: boolean = false;
         public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>(); 
         public Error: Rx.Subject<string> = new Rx.Subject<string>();
 
-        constructor(private $http: ng.IHttpService, private employeeServiceState: EmployeeServiceState)
+        constructor(private $http: ng.IHttpService, private employeeServiceState: EmployeeServiceState, private uuidService: UUIDService)
         {
             this.ChainEmployeeDataSource = new kendo.data.DataSource({
                 schema: {
-                    model: {
-                        id: "Id"
-                    }
+                    model: Models.employeeDataSourceSchema
                 }
             });
 
             this.StoreEmployeeDataSource = new kendo.data.DataSource({
-                
+                batch: false,
                 schema: {
-                    model: {
-                        id: "Id"
-                    }
+                    model: Models.employeeDataSourceSchema,
                 },
                 transport: {
                     read: (options) => {
-                        //var testPerson: Models.IEmployee = {
-                        //    Id: "1",
-
-                        //    Store: "Somewhere",
-                        //    Code: "0001",
-                        //    Name: "Bob the happy one",
-                        //    ProfilePic: null,
-                        //    Email: "bob@someplace.com",
-                        //    Phone: "012345678",
-                        //    PrimaryRole: "Driver",
-                        //    Roles: ["1", "2"],
-
-                        //    ShiftStatus: {
-                        //        OnShift: true,
-                        //        OnCall: false,
-                        //        Available : false
-                        //    }
-                        //};
-
-                        //var testPerson2 = {
-                        //    Id: 2,
-                        //    Store: "Somewhere else", 
-                        //    Code: "0001",
-                        //    Name: "Sadness",
-                        //    ProfilePic: null,
-                        //    Email: "notbob@someplace.com",
-                        //    Phone: "012345678",
-                        //    PrimaryRole: "Driver",
-                        //    Roles: ["1", "2"],
-
-                        //    ShiftStatus: {
-                        //        OnShift: false,
-                        //        OnCall: false,
-                        //        Available: false
-                        //    }
-                        //}; 
-
-                        //options.success([testPerson, testPerson2]);
-
                         let route = "hr/{0}/employees/{1}/list";
                         route = kendo.format(route, this.chainId, this.andromedaSiteId);
 
                         let promise = this.$http.get(route);
 
                         this.Loading.onNext(true);
+
                         Rx.Observable.fromPromise(promise).subscribe((callback) => {
                             options.success(callback.data);
+
                             this.Loading.onNext(false);
                         });
                     },
                     update: (e) => {
                         Logger.Notify("Update employee records");
 
-                        let data = e.data;
-                        let route = "hr/{0}/employees/{1}/update"; 
-                        route = kendo.format(route, this.chainId, this.andromedaSiteId);
-
-                        let promise = this.$http.post(route, data);
-                        this.Saved.onNext(false);
-                        Rx.Observable.fromPromise(promise).subscribe((callback) => {
-                            var callBackData = callback.data;
-                            Logger.Notify("result: ");
-                            Logger.Notify(callBackData);
-
-                            e.success();
-                            this.Saved.onNext(true);
-                        }, (error) => {
-                            Logger.Error(error);
-                            this.Error.onNext("Updating Failed");
+                        let model = e.data;
+                        this.Update(model, (data) => {
+                            Logger.Notify("call datasource success");
+                            e.success(data);
+                        }, (data) => {
+                            e.error(data);
                         });
                     },
                     create: (e) => {
                         Logger.Notify("Create employee record");
                         let data = e.data;
                         
-                        let route = "hr/{0}/employees/{1}/create";
-                        route = kendo.format(route, this.chainId, this.andromedaSiteId);
-
-                        var promise = this.$http.post(route, data); 
-
-                        this.Saved.onNext(false);
-
-                        Rx.Observable.fromPromise(promise).subscribe((callback) => {
-                            var callBackData = callback.data;
-                            Logger.Notify("result: ");
-                            Logger.Notify(callBackData);
-
-                            e.success(callback.data);
-                            this.Saved.onNext(true);
-                        }, (error) => {
-                            Logger.Error(error);
-                            this.Error.onNext("Creating Failed");
+                        this.Create(data, (model) => {
+                            e.success(model);
+                        }, (data) => {
+                            e.error(data);
                         });
+                        
                     }
-                },
-                batch: false
-                //data: [
-                //    testPerson
-                //]
+                }
             }); 
 
-            this.employeeServiceState.AndromedaSiteId.where(e=> e !== null).subscribe((id) => {
-                Logger.Notify("new andromeda site id : " + id);
+            this.employeeServiceState.AndromedaSiteId.where(e=> e !== null).distinctUntilChanged(e=> e).subscribe((id) => {
+                Logger.Notify("new Andromeda site id : " + id);
                 this.andromedaSiteId = id;
                 this.StoreEmployeeDataSource.read();
             });
-            this.employeeServiceState.ChainId.where(e=> e !== null).subscribe((id) => {
+
+            this.employeeServiceState.ChainId.where(e=> e !== null).distinctUntilChanged(e=> e).subscribe((id) => {
                 Logger.Notify("new chain id : " + id);
                 this.chainId = id;
                 this.ChainEmployeeDataSource.read();
+            });
+
+            this.Loading.subscribe((e) => {
+                this.IsLoading = e;
             });
         }
 
@@ -164,12 +108,124 @@
             return pomise;
         }
 
-        //public Update(employee: Models.IEmployee): ng.IHttpPromise<Models.IEmployee>
-        //{
-            
-        //}
+        public Update(model, onSuccess: (data) => void, onError: (data) => void)
+        {
+            let route = "hr/{0}/employees/{1}/update";
+            route = kendo.format(route, this.chainId, this.andromedaSiteId);
+
+            let promise = this.$http.post(route, model);
+
+            this.Saved.onNext(false);
+
+            Rx.Observable.fromPromise(promise).subscribe((callback) => {
+                var callBackData = callback.data;
+
+                Logger.Notify("result: ");
+                Logger.Notify(callBackData);
+
+                onSuccess(callBackData);
+
+                this.Saved.onNext(true);
+            }, (error) => {
+                Logger.Error(error);
+                this.Error.onNext("Updating Failed");
+            });
+        }
+
+        public Create(model, onSuccess: (data) => void, onError : (data) => void)
+        {
+            let route = "hr/{0}/employees/{1}/create";
+            route = kendo.format(route, this.chainId, this.andromedaSiteId);
+
+            var promise = this.$http.post(route, model);
+
+            this.Saved.onNext(false);
+
+            Rx.Observable.fromPromise(promise).subscribe((callback) => {
+                var callBackData = callback.data;
+
+                Logger.Notify("result: ");
+                Logger.Notify(callBackData);
+
+                onSuccess(model);
+
+                this.Saved.onNext(true);
+            }, (error) => {
+                Logger.Error(error);
+
+                this.Error.onNext("Creating Failed");
+                onError(error);
+            });
+        }
+
+        public GetEmployeePictureUrl(chainId: number, andromedaSiteId: number, employeeId: string) : string
+        {
+            //"hr/{{$stateParams.chainId}}/employees/{{$stateParams.andromedaSiteId}}/resources/{{employee.Id}}"
+            let path = "hr/{0}/employees/{1}/resources/{2}/profile-pic";
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+
+            //let r = this.uuidService.GenerateUUID();
+
+            //path = path + "?r=" + r;
+
+            return path;
+        }
+
+        public GetUploadRouteUrl(chainId: number, andromedaSiteId: number, employeeId: string) : string
+        {
+            let path = "hr/{0}/employees/{1}/resources/{2}/update-profile-pic";
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+
+            return path; 
+        }
+
+        public GetDocumentUploadRoute(chainId: number, andromedaSiteId, employeeId: string, documentId: string): string
+        {
+            let path = "hr/{0}/employees/{1}/resources/{2}/update-document/{3}";
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId);
+
+            return path;  
+        }
+
+        public GetDocumentRouteUrl(chainId: number, andromedaSiteId, employeeId: string, documentId: string, fileName: string): string {
+            let path = "hr/{0}/employees/{1}/resources/{2}/document/{3}/{4}";
+
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId, fileName);
+
+            return path;
+        }
+
+        public GetDocumentDownloadRouteUrl(chainId: number, andromedaSiteId, employeeId: string, documentId: string, fileName: string): string {
+            let path = "hr/{0}/employees/{1}/resources/{2}/document/{3}/download/{4}";
+
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId, fileName);
+
+            return path;
+        }
+
+    }
+
+    export class UUIDService {
+        constructor() {
+
+        }
+
+        public GenerateUUID() {
+            var d = new Date().getTime();
+            if (window.performance && typeof window.performance.now === "function") {
+                d += performance.now(); //use high-precision timer if available
+            }
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+
+        }
     }
 
     app.service("employeeService", EmployeeService);
     app.service("employeeServiceState", EmployeeServiceState);
+    app.service("uuidService", UUIDService);
 }

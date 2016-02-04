@@ -378,6 +378,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\rx-angular\rx.angular.d.ts" />
+    <Content Include="Content\No_image_available.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -2356,12 +2357,16 @@
     <Compile Include="Controllers\Api\Data\Models\DataWareHouseStore.cs" />
     <Compile Include="Controllers\Api\Data\OrdersDataServiceController.cs" />
     <Compile Include="Controllers\Api\DeliveryZonesByRadiusController.cs" />
+    <Compile Include="Controllers\Api\Hr\EmployeePicController.cs" />
+    <Compile Include="Controllers\Api\Hr\Models\EmployeeDocumentModel.cs" />
     <Compile Include="Controllers\Api\Hr\EmployeeFileController.cs" />
     <Compile Include="Controllers\Api\Files\FileApiController.cs" />
     <Compile Include="Controllers\Api\Files\FileModel.cs" />
     <Compile Include="Controllers\Api\Files\ImageApiController.cs" />
     <Compile Include="Controllers\Api\FtpController.cs" />
     <Compile Include="Controllers\Api\GprsGateway\ListingController.cs" />
+    <Compile Include="Controllers\Api\Hr\Models\EmployeeRecordModel.cs" />
+    <Compile Include="Controllers\Api\Hr\Models\EmployeeRecordModelExtensions.cs" />
     <Compile Include="Controllers\Api\Ibs\IbsController.cs" />
     <Compile Include="Controllers\Api\LoyaltyController.cs" />
     <Compile Include="Controllers\Api\NotificationController.cs" />
@@ -4108,6 +4113,10 @@
     <ProjectReference Include="..\MyAndromeda.Services.Marketing\MyAndromeda.Services.Marketing.csproj">
       <Project>{7EE8BC7D-2512-48EA-A8B6-74CA9BC3D93C}</Project>
       <Name>MyAndromeda.Services.Marketing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.Services.Media\MyAndromeda.Services.Media.csproj">
+      <Project>{BE364A92-A94E-48D5-ADFE-63970F2E220F}</Project>
+      <Name>MyAndromeda.Services.Media</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyAndromeda.Services.Orders\MyAndromeda.Services.Orders.csproj">
       <Project>{A4287BCC-F29A-414D-9CB0-25B7ADCD0D3F}</Project>

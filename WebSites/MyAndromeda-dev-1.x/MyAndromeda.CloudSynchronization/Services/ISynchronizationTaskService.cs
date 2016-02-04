@@ -26,5 +26,7 @@ namespace MyAndromeda.CloudSynchronization.Services
         /// </summary>
         /// <param name="task">The task.</param>
         void CreateTask(CloudSynchronizationTask task);
+
+        void CauseStoreToUpdate(int andromedaSiteId);
     }
 }

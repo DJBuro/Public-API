@@ -41,7 +41,8 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
                 result =
                     orderDataService.GetTotalOrdersByDay(
                         e =>
-                            (e.OrderType != "Delivery" && e.OrderType != "Collection") &&
+                            //(e.OrderType != "Delivery" && e.OrderType != "Collection") &&
+                            e.ApplicationName == "Rameses" &&
                             e.ExternalSiteID == reportingContext.ExternalSiteId &&
                             filter.FilterTo > e.TimeStamp &&
                             filter.FilterFrom < e.TimeStamp);
@@ -52,7 +53,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
             result =
                 orderDataService.GetTotalOrdersByDay(
                     e =>
-                        (e.OrderType == "Delivery" || e.OrderType == "Collection") &&
+                        e.ApplicationName != "Rameses" &&
                         e.ExternalSiteID == reportingContext.ExternalSiteId &&
                         filter.FilterTo > e.TimeStamp &&
                         filter.FilterFrom < e.TimeStamp);
@@ -77,7 +78,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
             {
                 var onlineOrders = orderDataService.GetOrders(
                         e =>
-                            (e.OrderType != "Delivery" && e.OrderType != "Collection") &&
+                            e.ApplicationName == "Rameses" &&
                             e.ExternalSiteID == reportingContext.ExternalSiteId &&
                             filter.FilterTo > e.TimeStamp &&
                             filter.FilterFrom < e.TimeStamp);
@@ -87,7 +88,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
 
             var orders = orderDataService.GetOrders(
                 e =>
-                    (e.OrderType == "Delivery" || e.OrderType == "Collection") &&
+                    e.ApplicationName != "Rameses" &&
                     e.ExternalSiteID == reportingContext.ExternalSiteId &&
                     filter.FilterTo > e.TimeStamp &&
                     filter.FilterFrom < e.TimeStamp);

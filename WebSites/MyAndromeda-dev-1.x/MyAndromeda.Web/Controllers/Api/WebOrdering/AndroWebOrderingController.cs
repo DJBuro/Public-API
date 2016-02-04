@@ -11,10 +11,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using MyAndromeda.Menus.Services.Media;
 using System.Drawing;
 using System.Web.Configuration;
 using Newtonsoft.Json;
+using MyAndromeda.Services.Media;
+using MyAndromeda.Services.Media.Models;
 
 namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 {
@@ -476,7 +477,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
         private ThumbnailFileResult UploadCarouselImages(Stream stream, string folderPath, string fileName, string carouslName)
         {
-            var sizeList = new List<AzureMediaLibraryService.LogoConfigurations>();
+            var sizeList = new List<LogoConfiguration>();
 
             sizeList = GetCarouselLogoSettings();
 
@@ -493,7 +494,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
         private ThumbnailFileResult UploadSiteImages(Stream stream, string folderPath, string fileName, bool isWebsiteLogo)
         {
-            List<AzureMediaLibraryService.LogoConfigurations> sizeList = new List<AzureMediaLibraryService.LogoConfigurations>();
+            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
 
             sizeList = GetSiteLogoSettings(isWebsiteLogo);
 
@@ -520,9 +521,9 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
             return filesReposonses;
         }
 
-        private List<AzureMediaLibraryService.LogoConfigurations> GetCarouselLogoSettings()
+        private List<LogoConfiguration> GetCarouselLogoSettings()
         {
-            List<AzureMediaLibraryService.LogoConfigurations> sizeList = new List<AzureMediaLibraryService.LogoConfigurations>();
+            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
             //string webSiteLogoSettings = "450x150xMiddleLeft;320x320xMiddleCenter;130x130xMiddleCenter";
 
             //this will have to be popped out of the theme meta data eventually.
@@ -537,7 +538,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 List<string> settings = carouselLogoSettings.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 foreach (string setting in settings)
                 {
-                    sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(
+                    sizeList.Add(new LogoConfiguration(
                         Convert.ToInt32(setting.Split(new char[] { 'x' })[0]),
                         Convert.ToInt32(setting.Split(new char[] { 'x' })[1]),
                         ParseEnum<ContentAlignment>(setting.Split(new char[] { 'x' })[2])));
@@ -546,13 +547,13 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 return sizeList;
             }
 
-            sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(970, 270, ContentAlignment.MiddleLeft));
+            sizeList.Add(new LogoConfiguration(970, 270, ContentAlignment.MiddleLeft));
             return sizeList;
         }
 
-        private List<AzureMediaLibraryService.LogoConfigurations> GetSiteLogoSettings(bool isWebSiteLogo)
+        private List<LogoConfiguration> GetSiteLogoSettings(bool isWebSiteLogo)
         {
-            List<AzureMediaLibraryService.LogoConfigurations> sizeList = new List<AzureMediaLibraryService.LogoConfigurations>();
+            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
             string logoSettings = string.Empty;
 
             if (isWebSiteLogo)
@@ -571,7 +572,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 List<string> settings = logoSettings.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
                 foreach (string setting in settings)
                 {
-                    sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(
+                    sizeList.Add(new LogoConfiguration(
                         Convert.ToInt32(setting.Split(new char[] { 'x' })[0]),
                         Convert.ToInt32(setting.Split(new char[] { 'x' })[1]),
                         ParseEnum<ContentAlignment>(setting.Split(new char[] { 'x' })[2])));
@@ -579,9 +580,9 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 return sizeList;
             }
 
-            sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(450, 150, ContentAlignment.MiddleLeft));
-            sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(320, 320, ContentAlignment.MiddleCenter));
-            sizeList.Add(new AzureMediaLibraryService.LogoConfigurations(130, 130, ContentAlignment.MiddleCenter));
+            sizeList.Add(new LogoConfiguration(450, 150, ContentAlignment.MiddleLeft));
+            sizeList.Add(new LogoConfiguration(320, 320, ContentAlignment.MiddleCenter));
+            sizeList.Add(new LogoConfiguration(130, 130, ContentAlignment.MiddleCenter));
 
             return sizeList;
         }

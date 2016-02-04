@@ -108,7 +108,7 @@ namespace MyAndromeda.Web.Services
         public void DeleteAllTimesForDay(string day)
         {
             this.openingHoursDataAccess.DeleteBySiteIdDay(this.currentSite.SiteId, day);
-            this.Sync("Deleted all opening times.");
+            this.Sync("Deleted opening times for the day.");
         }
 
         public void AddOpeningTime(TimeSpanBlock timeSpanBlock)
@@ -117,8 +117,12 @@ namespace MyAndromeda.Web.Services
             this.Sync("Added a opening time.");
         }
 
-        private void Sync(string action) 
+        private void Sync(string action)
         {
+            //increment the store data version 
+            //for opening time to get to ACS they need 
+            this.acsSynchronizationTaskService.CauseStoreToUpdate(this.currentSite.AndromediaSiteId);
+
             this.acsSynchronizationTaskService.CreateTask(new CloudSynchronizationTask()
             {
                 Completed = false,

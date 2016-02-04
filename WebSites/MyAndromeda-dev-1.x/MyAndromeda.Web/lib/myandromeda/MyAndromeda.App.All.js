@@ -3359,8 +3359,7 @@ var MyAndromeda;
         (function (Controllers) {
             var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
             app.controller("employeeListController", function ($scope, $stateParams, SweetAlert, employeeService, employeeServiceState) {
-                MyAndromeda.Logger.Notify("stateParams");
-                MyAndromeda.Logger.Notify($stateParams);
+                $scope.$stateParams = $stateParams;
                 employeeServiceState.ChainId.onNext($stateParams.chainId);
                 employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
                 employeeService.Loading.subscribe(function (isLoading) {
@@ -3382,16 +3381,18 @@ var MyAndromeda;
                 var employeeGridDataSource = employeeService.StoreEmployeeDataSource;
                 var headerTemplate = $("#employee-list-header-template").html();
                 var actionsTemplate = $("#employee-list-row-template").html();
+                var chainId = $stateParams.chainId;
+                var andromedaSiteId = $stateParams.andromedaSiteId;
+                var employeePicTemplate = "<employee-pic employee='dataItem'></employee-pic>";
+                employeePicTemplate = kendo.format(employeePicTemplate, chainId, andromedaSiteId);
                 var employeeGridOptions = {
                     dataSource: employeeGridDataSource,
-                    autoBind: false,
+                    autoBind: true,
                     filterable: true,
                     sortable: true,
                     groupable: true,
                     toolbar: kendo.template(headerTemplate),
                     columns: [
-                        { field: "Store", title: "Store", width: 100, filterable: { checkAll: true, multi: false } },
-                        //{ field: "Code", title: "Code", width: 100 },
                         { field: "Department", title: "Department", width: 100 },
                         {
                             title: "Contact",
@@ -3400,7 +3401,7 @@ var MyAndromeda;
                                     field: "Name",
                                     title: "Name",
                                     //width: 200,
-                                    template: "<employee-pic employee='dataItem'></employee-pic>"
+                                    template: employeePicTemplate
                                 },
                                 { field: "Phone", title: "Phone", width: 100 },
                                 { field: "Email", title: "Email", width: 200 }
@@ -3415,45 +3416,133 @@ var MyAndromeda;
                 };
                 $scope.employeeGridOptions = employeeGridOptions;
             });
-            app.controller("employeeEditController", function ($scope, $stateParams, employeeService, employeeServiceState) {
+            app.controller("employeeEditController", function ($scope, $stateParams, $timeout, SweetAlert, employeeService, employeeServiceState, uuidService) {
                 MyAndromeda.Logger.Notify("stateParams");
                 MyAndromeda.Logger.Notify($stateParams);
-                employeeServiceState.ChainId.onNext($stateParams.chainId);
-                employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
-                var getEmployee = function () {
+                var chainId = $stateParams.chainId;
+                var andromedaSiteId = $stateParams.andromedaSiteId;
+                employeeServiceState.ChainId.onNext(chainId);
+                employeeServiceState.AndromedaSiteId.onNext(andromedaSiteId);
+                var status = {
+                    uploading: false,
+                    random: uuidService.GenerateUUID()
+                };
+                var getOrCreateEmployee = function () {
                     var employeeId = $stateParams.id;
                     if (!employeeId) {
-                        //create new employee
-                        return {
+                        var modelCreator = kendo.data.Model.define(Hr.Models.employeeDataSourceSchema);
+                        var newEmployee = new modelCreator({
                             Name: "",
                             PrimaryRole: "",
                             Roles: [],
                             ShiftStatus: {}
-                        };
+                        });
+                        //create new employee
+                        return newEmployee;
                     }
                     MyAndromeda.Logger.Notify("employee id:" + employeeId);
                     var employee = employeeService.StoreEmployeeDataSource.get(employeeId);
+                    MyAndromeda.Logger.Notify(employee);
+                    MyAndromeda.Logger.Notify("uid: " + employee.uid);
                     return employee;
                 };
-                var employee = getEmployee();
+                var dataSource = employeeService.StoreEmployeeDataSource;
+                MyAndromeda.Logger.Notify("data-source length: " + dataSource.data().length);
+                var noData = dataSource.data().length === 0;
+                var setEmployee = function () {
+                    var employee = getOrCreateEmployee();
+                    MyAndromeda.Logger.Notify(employee);
+                    $scope.employee = employee;
+                };
+                if (noData && !employeeService.IsLoading) {
+                    MyAndromeda.Logger.Notify("Load employees");
+                    var promise = employeeService.StoreEmployeeDataSource.read();
+                    promise.then(function () {
+                        setEmployee();
+                    });
+                }
+                else if (noData && employeeService.IsLoading) {
+                    var loadingSubscription = employeeService.Loading.where(function (e) { return !e; }).subscribe(function () {
+                        setEmployee();
+                        loadingSubscription.dispose();
+                    });
+                }
+                else {
+                    setEmployee();
+                }
                 var save = function (employee) {
                     MyAndromeda.Logger.Notify("saved called");
+                    var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.id);
+                    //do i need these anymore? 
+                    //employee.dirty = true;
+                    employee.set("DirtyHack", true);
                     var validator = $scope.validator;
                     var valid = validator.validate();
+                    var id = employee.get("Id");
                     if (!valid) {
                         MyAndromeda.Logger.Notify("validation failed.");
                         return;
                     }
-                    if (!employee.Id) {
+                    if (!id) {
                         employeeService.StoreEmployeeDataSource.add(employee);
                     }
+                    else {
+                        MyAndromeda.Logger.Notify("Edit view uid: " + employee.uid);
+                        MyAndromeda.Logger.Notify("Grid view uid: " + gridEmployee.uid);
+                    }
                     MyAndromeda.Logger.Notify("sync");
-                    //Logger.Notify("update?" employee.di);
-                    employeeService.StoreEmployeeDataSource.sync();
+                    var sync = employeeService.StoreEmployeeDataSource.sync();
+                    sync.then(function () {
+                        MyAndromeda.Logger.Notify("Sync done");
+                        var name = employee.get("ShortName");
+                        SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                    });
                 };
-                MyAndromeda.Logger.Notify(employee);
-                $scope.employee = employee;
+                var getProfilePic = function (employee) {
+                    var route = "/content/profile-picture.jpg";
+                    if (employee) {
+                        route = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
+                        route += "?r=" + status.random;
+                    }
+                    return route;
+                };
+                $scope.status = status;
+                $scope.saveRoute = function (employee) {
+                    MyAndromeda.Logger.Notify("save route");
+                    var id = "";
+                    if (employee) {
+                        id = employee.Id;
+                    }
+                    var route = employeeService.GetUploadRouteUrl($stateParams.chainId, $stateParams.andromedaSiteId, $scope.employee.Id);
+                    return route;
+                };
+                //$scope.onUploadComplete = (args) => {
+                //    Logger.Notify("upload complete");
+                //    Logger.Notify(args);
+                //    let employee: Models.IEmployee = $scope.employee;
+                //    employee.ProfilePic = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
+                //};
+                //#k - upload="onUploading"
+                //k - success="onUploadSuccess"
+                $scope.onUploading = function () {
+                    MyAndromeda.Logger.Notify("uploading profile pic");
+                    status.uploading = true;
+                    status.random = undefined;
+                };
+                $scope.onUploadSuccess = function (e) {
+                    MyAndromeda.Logger.Notify("uploaded profile pic");
+                    $timeout(function () {
+                        status.uploading = false;
+                        status.random = uuidService.GenerateUUID();
+                    });
+                };
+                $scope.onSelect = function (e) {
+                    var message = $.map(e.files, function (file) { return file.name; }).join(", ");
+                    console.log(message);
+                };
+                //uploadSettings
                 $scope.save = save;
+                $scope.profilePicture = getProfilePic;
             });
         })(Controllers = Hr.Controllers || (Hr.Controllers = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
@@ -3465,30 +3554,260 @@ var MyAndromeda;
         var Directives;
         (function (Directives) {
             var app = angular.module("MyAndromeda.Start.Directives", []);
+            app.directive("employeeDocs", function () {
+                return {
+                    name: "employeeDocs",
+                    templateUrl: "employee-documents.html",
+                    restrict: "EA",
+                    scope: {
+                        dataItem: '=employee',
+                        save: "=save"
+                    },
+                    controller: function ($scope, $timeout, SweetAlert, employeeService, employeeServiceState, uuidService) {
+                        var dataItem = $scope.dataItem;
+                        var save = function () {
+                            MyAndromeda.Logger.Notify("save - from docs");
+                            var employee = $scope.dataItem;
+                            var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.Id);
+                            gridEmployee.set("DirtyHack", true);
+                            var promise = employeeService.StoreEmployeeDataSource.sync();
+                            promise.then(function () {
+                                SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                            });
+                        };
+                        $scope.save = save;
+                        MyAndromeda.Logger.Notify("dataItem: " + dataItem);
+                        MyAndromeda.Logger.Notify($scope);
+                        var status = {
+                            uploading: false,
+                            random: uuidService.GenerateUUID()
+                        };
+                        if (!dataItem.Documents) {
+                            dataItem.Documents = [];
+                        }
+                        else {
+                            dataItem.Documents = dataItem.Documents.filter(function () { return true; });
+                        }
+                        $scope.status = status;
+                        $scope.uploadRoute = function () {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId, document = $scope.document;
+                            var route = employeeService.GetDocumentUploadRoute(chainId, andromedaSiteId, dataItem.Id, document.Id);
+                            return route;
+                        };
+                        $scope.onUploading = function (e) {
+                            MyAndromeda.Logger.Notify("upload started");
+                            status.uploading = true;
+                            status.random = undefined;
+                        };
+                        $scope.onUploadSuccess = function (e) {
+                            MyAndromeda.Logger.Notify("upload success");
+                            MyAndromeda.Logger.Notify(e);
+                            var document = $scope.document;
+                            e.files.forEach(function (item) {
+                                document.Files.push({
+                                    FileName: item.name
+                                });
+                            });
+                            //save();
+                            $timeout(function () {
+                                status.uploading = false;
+                                status.random = uuidService.GenerateUUID();
+                            });
+                        };
+                        $scope.onUploadComplete = function (e) {
+                            MyAndromeda.Logger.Notify("upload complete:");
+                            MyAndromeda.Logger.Notify(e);
+                            $timeout(function () {
+                                status.uploading = false;
+                                status.random = uuidService.GenerateUUID();
+                            });
+                        };
+                        $scope.removeAll = function () {
+                            var r = function () {
+                                dataItem.Documents = [];
+                                save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover these files!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    r();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.new = function () {
+                            var doc = {
+                                Id: uuidService.GenerateUUID(),
+                                Name: null,
+                                Files: []
+                            };
+                            MyAndromeda.Logger.Notify("Add to documents");
+                            dataItem.Documents.push(doc);
+                            MyAndromeda.Logger.Notify("set $scope.document");
+                            $scope.document = doc;
+                        };
+                        $scope.select = function (doc) {
+                            MyAndromeda.Logger.Notify(doc);
+                            if (!doc.Files) {
+                                doc.Files = [];
+                            }
+                            $timeout(function () {
+                                $scope.document = undefined;
+                            }).then(function () {
+                                $timeout(function () {
+                                    $scope.document = doc;
+                                }, 100);
+                            });
+                        };
+                        $scope.clear = function () {
+                            $scope.document = undefined;
+                        };
+                        $scope.remove = function (document) {
+                            var removeItem = function () {
+                                var editing = $scope.document;
+                                if (editing && editing.Id == document.Id) {
+                                    $scope.document = undefined;
+                                }
+                                dataItem.Documents = dataItem.Documents.filter(function (item) {
+                                    return item.Id !== document.Id;
+                                });
+                                //save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover this file!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    removeItem();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.removeFile = function (document, file) {
+                            var removeItem = function () {
+                                document.Files = document.Files.filter(function (item) { return item.FileName !== file.FileName; });
+                                //save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover this file!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    removeItem();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.getEmployeeDocumentImage = function (document, file) {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetDocumentRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
+                            route = route + "?r=" + status.random;
+                            return route;
+                        };
+                        $scope.downloadDocumentFile = function (document, file) {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetDocumentDownloadRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
+                            return route;
+                        };
+                        $scope.dataItem = dataItem;
+                    }
+                };
+            });
             app.directive("employeePic", function () {
                 return {
                     name: "employeePic",
                     templateUrl: "employee-pic.html",
                     restrict: "EA",
                     scope: {
-                        employee: '='
+                        employee: '=employee'
                     },
-                    controller: function ($scope) {
+                    controller: function ($scope, employeeService, employeeServiceState, uuidService) {
+                        //Logger.Notify("employee-pic $scope");
+                        //Logger.Notify($scope);
                         var dataItem = $scope.employee;
-                        $scope.profilePicture = function (img) {
-                            var profilePicture = "/content/profile-picture.jpg";
-                            if (img) {
-                                profilePicture = img;
-                            }
+                        $scope.profilePicture = function () {
+                            //var profilePicture = "/content/profile-picture.jpg";
+                            var chainId = employeeServiceState.CurrentChainId;
+                            var andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
                             return {
-                                'background-image': 'url(' + profilePicture + ')'
+                                'background-image': 'url(' + route + ')'
                             };
                         };
-                        $scope.dataItem = dataItem;
                     }
                 };
             });
         })(Directives = Hr.Directives || (Hr.Directives = {}));
+    })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hr;
+    (function (Hr) {
+        var Models;
+        (function (Models) {
+            Models.employeeDataSourceSchema = {
+                id: "Id",
+                fields: {
+                    Id: {
+                        type: "string",
+                        nullable: true
+                    },
+                    Deleted: {
+                        type: "boolean",
+                        defaultValue: false,
+                        nullable: false
+                    },
+                    ShortName: {
+                        type: "string",
+                        nullable: false
+                    },
+                    Phone: {
+                        type: "string",
+                        nullable: false
+                    },
+                    DirtyHack: {
+                        type: "string",
+                        nullable: true
+                    }
+                }
+            };
+        })(Models = Hr.Models || (Hr.Models = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
@@ -3500,68 +3819,37 @@ var MyAndromeda;
             var app = angular.module("MyAndromeda.Hr.Services", []);
             var EmployeeServiceState = (function () {
                 function EmployeeServiceState() {
+                    var _this = this;
                     this.ChainId = new Rx.BehaviorSubject(null);
                     this.AndromedaSiteId = new Rx.BehaviorSubject(null);
+                    this.ChainId.subscribe(function (e) { _this.CurrentChainId = e; });
+                    this.AndromedaSiteId.subscribe(function (e) { _this.CurrentAndromedaSiteId = e; });
                 }
                 return EmployeeServiceState;
             })();
             Services.EmployeeServiceState = EmployeeServiceState;
             var EmployeeService = (function () {
-                function EmployeeService($http, employeeServiceState) {
+                function EmployeeService($http, employeeServiceState, uuidService) {
                     var _this = this;
                     this.$http = $http;
                     this.employeeServiceState = employeeServiceState;
+                    this.uuidService = uuidService;
                     this.Loading = new Rx.Subject();
+                    this.IsLoading = false;
                     this.Saved = new Rx.Subject();
                     this.Error = new Rx.Subject();
                     this.ChainEmployeeDataSource = new kendo.data.DataSource({
                         schema: {
-                            model: {
-                                id: "Id"
-                            }
+                            model: Hr.Models.employeeDataSourceSchema
                         }
                     });
                     this.StoreEmployeeDataSource = new kendo.data.DataSource({
+                        batch: false,
                         schema: {
-                            model: {
-                                id: "Id"
-                            }
+                            model: Hr.Models.employeeDataSourceSchema,
                         },
                         transport: {
                             read: function (options) {
-                                //var testPerson: Models.IEmployee = {
-                                //    Id: "1",
-                                //    Store: "Somewhere",
-                                //    Code: "0001",
-                                //    Name: "Bob the happy one",
-                                //    ProfilePic: null,
-                                //    Email: "bob@someplace.com",
-                                //    Phone: "012345678",
-                                //    PrimaryRole: "Driver",
-                                //    Roles: ["1", "2"],
-                                //    ShiftStatus: {
-                                //        OnShift: true,
-                                //        OnCall: false,
-                                //        Available : false
-                                //    }
-                                //};
-                                //var testPerson2 = {
-                                //    Id: 2,
-                                //    Store: "Somewhere else", 
-                                //    Code: "0001",
-                                //    Name: "Sadness",
-                                //    ProfilePic: null,
-                                //    Email: "notbob@someplace.com",
-                                //    Phone: "012345678",
-                                //    PrimaryRole: "Driver",
-                                //    Roles: ["1", "2"],
-                                //    ShiftStatus: {
-                                //        OnShift: false,
-                                //        OnCall: false,
-                                //        Available: false
-                                //    }
-                                //}; 
-                                //options.success([testPerson, testPerson2]);
                                 var route = "hr/{0}/employees/{1}/list";
                                 route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
                                 var promise = _this.$http.get(route);
@@ -3573,52 +3861,37 @@ var MyAndromeda;
                             },
                             update: function (e) {
                                 MyAndromeda.Logger.Notify("Update employee records");
-                                var data = e.data;
-                                var route = "hr/{0}/employees/{1}/update";
-                                route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
-                                var promise = _this.$http.post(route, data);
-                                _this.Saved.onNext(false);
-                                Rx.Observable.fromPromise(promise).subscribe(function (callback) {
-                                    var callBackData = callback.data;
-                                    MyAndromeda.Logger.Notify("result: ");
-                                    MyAndromeda.Logger.Notify(callBackData);
-                                    e.success();
-                                    _this.Saved.onNext(true);
-                                }, function (error) {
-                                    MyAndromeda.Logger.Error(error);
-                                    _this.Error.onNext("Updating Failed");
+                                var model = e.data;
+                                _this.Update(model, function (data) {
+                                    MyAndromeda.Logger.Notify("call datasource success");
+                                    e.success(data);
+                                }, function (data) {
+                                    e.error(data);
                                 });
                             },
                             create: function (e) {
                                 MyAndromeda.Logger.Notify("Create employee record");
                                 var data = e.data;
-                                var route = "hr/{0}/employees/{1}/create";
-                                route = kendo.format(route, _this.chainId, _this.andromedaSiteId);
-                                var promise = _this.$http.post(route, data);
-                                _this.Saved.onNext(false);
-                                Rx.Observable.fromPromise(promise).subscribe(function (callback) {
-                                    var callBackData = callback.data;
-                                    MyAndromeda.Logger.Notify("result: ");
-                                    MyAndromeda.Logger.Notify(callBackData);
-                                    e.success(callback.data);
-                                    _this.Saved.onNext(true);
-                                }, function (error) {
-                                    MyAndromeda.Logger.Error(error);
-                                    _this.Error.onNext("Creating Failed");
+                                _this.Create(data, function (model) {
+                                    e.success(model);
+                                }, function (data) {
+                                    e.error(data);
                                 });
                             }
-                        },
-                        batch: false
+                        }
                     });
-                    this.employeeServiceState.AndromedaSiteId.where(function (e) { return e !== null; }).subscribe(function (id) {
-                        MyAndromeda.Logger.Notify("new andromeda site id : " + id);
+                    this.employeeServiceState.AndromedaSiteId.where(function (e) { return e !== null; }).distinctUntilChanged(function (e) { return e; }).subscribe(function (id) {
+                        MyAndromeda.Logger.Notify("new Andromeda site id : " + id);
                         _this.andromedaSiteId = id;
                         _this.StoreEmployeeDataSource.read();
                     });
-                    this.employeeServiceState.ChainId.where(function (e) { return e !== null; }).subscribe(function (id) {
+                    this.employeeServiceState.ChainId.where(function (e) { return e !== null; }).distinctUntilChanged(function (e) { return e; }).subscribe(function (id) {
                         MyAndromeda.Logger.Notify("new chain id : " + id);
                         _this.chainId = id;
                         _this.ChainEmployeeDataSource.read();
+                    });
+                    this.Loading.subscribe(function (e) {
+                        _this.IsLoading = e;
                     });
                 }
                 EmployeeService.prototype.List = function (chainId, andromedaSiteId) {
@@ -3626,11 +3899,93 @@ var MyAndromeda;
                     var pomise = this.$http.get(route);
                     return pomise;
                 };
+                EmployeeService.prototype.Update = function (model, onSuccess, onError) {
+                    var _this = this;
+                    var route = "hr/{0}/employees/{1}/update";
+                    route = kendo.format(route, this.chainId, this.andromedaSiteId);
+                    var promise = this.$http.post(route, model);
+                    this.Saved.onNext(false);
+                    Rx.Observable.fromPromise(promise).subscribe(function (callback) {
+                        var callBackData = callback.data;
+                        MyAndromeda.Logger.Notify("result: ");
+                        MyAndromeda.Logger.Notify(callBackData);
+                        onSuccess(callBackData);
+                        _this.Saved.onNext(true);
+                    }, function (error) {
+                        MyAndromeda.Logger.Error(error);
+                        _this.Error.onNext("Updating Failed");
+                    });
+                };
+                EmployeeService.prototype.Create = function (model, onSuccess, onError) {
+                    var _this = this;
+                    var route = "hr/{0}/employees/{1}/create";
+                    route = kendo.format(route, this.chainId, this.andromedaSiteId);
+                    var promise = this.$http.post(route, model);
+                    this.Saved.onNext(false);
+                    Rx.Observable.fromPromise(promise).subscribe(function (callback) {
+                        var callBackData = callback.data;
+                        MyAndromeda.Logger.Notify("result: ");
+                        MyAndromeda.Logger.Notify(callBackData);
+                        onSuccess(model);
+                        _this.Saved.onNext(true);
+                    }, function (error) {
+                        MyAndromeda.Logger.Error(error);
+                        _this.Error.onNext("Creating Failed");
+                        onError(error);
+                    });
+                };
+                EmployeeService.prototype.GetEmployeePictureUrl = function (chainId, andromedaSiteId, employeeId) {
+                    //"hr/{{$stateParams.chainId}}/employees/{{$stateParams.andromedaSiteId}}/resources/{{employee.Id}}"
+                    var path = "hr/{0}/employees/{1}/resources/{2}/profile-pic";
+                    path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+                    //let r = this.uuidService.GenerateUUID();
+                    //path = path + "?r=" + r;
+                    return path;
+                };
+                EmployeeService.prototype.GetUploadRouteUrl = function (chainId, andromedaSiteId, employeeId) {
+                    var path = "hr/{0}/employees/{1}/resources/{2}/update-profile-pic";
+                    path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+                    return path;
+                };
+                EmployeeService.prototype.GetDocumentUploadRoute = function (chainId, andromedaSiteId, employeeId, documentId) {
+                    var path = "hr/{0}/employees/{1}/resources/{2}/update-document/{3}";
+                    path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId);
+                    return path;
+                };
+                EmployeeService.prototype.GetDocumentRouteUrl = function (chainId, andromedaSiteId, employeeId, documentId, fileName) {
+                    var path = "hr/{0}/employees/{1}/resources/{2}/document/{3}/{4}";
+                    path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId, fileName);
+                    return path;
+                };
+                EmployeeService.prototype.GetDocumentDownloadRouteUrl = function (chainId, andromedaSiteId, employeeId, documentId, fileName) {
+                    var path = "hr/{0}/employees/{1}/resources/{2}/document/{3}/download/{4}";
+                    path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId, fileName);
+                    return path;
+                };
                 return EmployeeService;
             })();
             Services.EmployeeService = EmployeeService;
+            var UUIDService = (function () {
+                function UUIDService() {
+                }
+                UUIDService.prototype.GenerateUUID = function () {
+                    var d = new Date().getTime();
+                    if (window.performance && typeof window.performance.now === "function") {
+                        d += performance.now(); //use high-precision timer if available
+                    }
+                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                        var r = (d + Math.random() * 16) % 16 | 0;
+                        d = Math.floor(d / 16);
+                        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                    });
+                    return uuid;
+                };
+                return UUIDService;
+            })();
+            Services.UUIDService = UUIDService;
             app.service("employeeService", EmployeeService);
             app.service("employeeServiceState", EmployeeServiceState);
+            app.service("uuidService", UUIDService);
         })(Services = Hr.Services || (Hr.Services = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));

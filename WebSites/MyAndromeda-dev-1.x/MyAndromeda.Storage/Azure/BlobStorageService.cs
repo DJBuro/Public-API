@@ -34,6 +34,8 @@ namespace MyAndromeda.Storage.Azure
             throw new NotImplementedException();
         }
 
+        
+
         public CloudBlobContainer GetOrCreateContainer(string name) 
         {
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -85,6 +87,22 @@ namespace MyAndromeda.Storage.Azure
             }
 
             return; 
+        }
+
+        public async Task<Stream> DownloadBlob(string location)
+        {
+            location = location.ToLowerInvariant();
+
+            var container = this.GetOrCreateContainer(containerName);
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(location);
+
+            if (!blockBlob.Exists()) { return null; }
+
+            MemoryStream ms = new MemoryStream();
+             
+            await blockBlob.DownloadToStreamAsync(ms);
+
+            return ms;
         }
 
         public List<FileModel> List(string location)

@@ -1,13 +1,13 @@
 ﻿module MyAndromeda.Hr.Controllers {
     var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
-
+    
     app.controller("employeeListController", ($scope, $stateParams: Models.IEmployeeStoreListState,
         SweetAlert: any,
         employeeService: Services.EmployeeService,
         employeeServiceState: Services.EmployeeServiceState) => {
 
-        Logger.Notify("stateParams");
-        Logger.Notify($stateParams);
+        $scope.$stateParams = $stateParams;
+        
 
         employeeServiceState.ChainId.onNext($stateParams.chainId);
         employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
@@ -37,18 +37,20 @@
         var headerTemplate = $("#employee-list-header-template").html();
         var actionsTemplate = $("#employee-list-row-template").html();
 
+        var chainId = $stateParams.chainId;
+        var andromedaSiteId = $stateParams.andromedaSiteId;
 
+        var employeePicTemplate = "<employee-pic employee='dataItem'></employee-pic>";
+        employeePicTemplate = kendo.format(employeePicTemplate, chainId, andromedaSiteId);
 
-        var employeeGridOptions = { //kendo.ui.GridOptions = {
+        var employeeGridOptions = {
             dataSource: employeeGridDataSource,
-            autoBind: false,
+            autoBind: true,
             filterable: true,
             sortable: true,
             groupable: true,
             toolbar: kendo.template(headerTemplate),
             columns: [
-                { field: "Store", title: "Store", width: 100, filterable: {checkAll: true, multi: false} },
-                //{ field: "Code", title: "Code", width: 100 },
                 { field: "Department", title: "Department", width: 100 },
                 {
                     title: "Contact",
@@ -57,7 +59,7 @@
                             field: "Name",
                             title: "Name",
                             //width: 200,
-                            template: "<employee-pic employee='dataItem'></employee-pic>"
+                            template: employeePicTemplate
                         },
                         { field: "Phone", title: "Phone", width: 100 },
                         { field: "Email", title: "Email", width: 200 }
@@ -68,8 +70,6 @@
                     width: 100,
                     template: actionsTemplate,
                 }
-        
-                
                 //{ title: "Contact Details", minScreenWidth: 400, template: "<employee-contact-details></employee-contact-details>" }
             ]
         };
@@ -78,58 +78,177 @@
 
     });
 
-    app.controller("employeeEditController", ($scope, $stateParams, employeeService: Services.EmployeeService, employeeServiceState: Services.EmployeeServiceState) => {
+    app.controller("employeeEditController", (
+        $scope, $stateParams, $timeout,
+        SweetAlert,
+        employeeService: Services.EmployeeService,
+        employeeServiceState: Services.EmployeeServiceState,
+        uuidService: Services.UUIDService) => {
+
         Logger.Notify("stateParams");
         Logger.Notify($stateParams);
 
-        employeeServiceState.ChainId.onNext($stateParams.chainId);
-        employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
+        let chainId: number = $stateParams.chainId;
+        let andromedaSiteId: number = $stateParams.andromedaSiteId;
 
-        let getEmployee = (): Models.IEmployee => {
+        employeeServiceState.ChainId.onNext(chainId);
+        employeeServiceState.AndromedaSiteId.onNext(andromedaSiteId);
+
+        var status = {
+            uploading: false,
+            random: uuidService.GenerateUUID()
+        };
+
+        let getOrCreateEmployee = (): any => {
             let employeeId: string = $stateParams.id;
             if (!employeeId)
             {
-                //create new employee
-                return {
+                let modelCreator = kendo.data.Model.define(Models.employeeDataSourceSchema);
+
+                let newEmployee = new modelCreator({
                     Name: "",
-                    
+
                     PrimaryRole: "",
                     Roles: [],
                     ShiftStatus: {}
-                };
+                });
+                //create new employee
+
+                return newEmployee;
             }
 
             Logger.Notify("employee id:" + employeeId);
 
-            let employee: Models.IEmployee = <any>employeeService.StoreEmployeeDataSource.get(employeeId);
+            let employee = employeeService.StoreEmployeeDataSource.get(employeeId);
+
+            Logger.Notify(employee);
+            Logger.Notify("uid: " + employee.uid); 
 
             return employee;
         };
 
-        let employee = getEmployee();
-        let save = (employee: Models.IEmployee) => {
+        let dataSource = employeeService.StoreEmployeeDataSource;
+
+        Logger.Notify("data-source length: " + dataSource.data().length);
+
+        let noData = dataSource.data().length === 0;
+
+        var setEmployee = () => {
+            let employee = getOrCreateEmployee();
+            Logger.Notify(employee);
+            $scope.employee = employee;
+        };
+
+        if (noData && !employeeService.IsLoading) {
+            Logger.Notify("Load employees");
+            let promise = employeeService.StoreEmployeeDataSource.read();
+
+            promise.then(() => {
+                setEmployee();
+            });
+        }
+        else if (noData && employeeService.IsLoading)
+        {
+            var loadingSubscription = employeeService.Loading.where(e=> !e).subscribe(() => {
+                setEmployee();
+                loadingSubscription.dispose();
+            });
+        }
+        else
+        {
+            setEmployee();
+        }
+
+        let save = (employee: kendo.data.Model) => {
             Logger.Notify("saved called");
+            
+            var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.id);
+
+            //do i need these anymore? 
+            //employee.dirty = true;
+            employee.set("DirtyHack", true);
+
             let validator : kendo.ui.Validator = $scope.validator; 
             let valid = validator.validate();
+            let id = employee.get("Id"); 
 
             if (!valid) {
                 Logger.Notify("validation failed.");
                 return;
-                
             }
 
-            if (!employee.Id) {
+            if (!id) {
                 employeeService.StoreEmployeeDataSource.add(employee);
+            } else {
+                Logger.Notify("Edit view uid: " + employee.uid);
+                Logger.Notify("Grid view uid: " + gridEmployee.uid);
             }
 
             Logger.Notify("sync");
-            //Logger.Notify("update?" employee.di);
-            employeeService.StoreEmployeeDataSource.sync();
+           
+            let sync = employeeService.StoreEmployeeDataSource.sync();
+
+            sync.then(() => {
+                Logger.Notify("Sync done");
+                var name = employee.get("ShortName");
+                SweetAlert.swal("Saved!", name + " has been saved.", "success");
+            });
+        };
+        let getProfilePic = (employee: Models.IEmployee) => {
+            let route = "/content/profile-picture.jpg";
+
+            if (employee) {
+                route = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
+                route += "?r=" + status.random;
+            }
+
+            return route;
         };
 
-        Logger.Notify(employee);
+        $scope.status = status;
+        $scope.saveRoute = (employee: Models.IEmployee) => {
+            Logger.Notify("save route");
+            let id = ""; 
+            if (employee) {
+                id = employee.Id;
+            }
 
-        $scope.employee = employee;
+            let route = employeeService.GetUploadRouteUrl($stateParams.chainId, $stateParams.andromedaSiteId, $scope.employee.Id);
+            return route; 
+        };
+        //$scope.onUploadComplete = (args) => {
+        //    Logger.Notify("upload complete");
+        //    Logger.Notify(args);
+
+        //    let employee: Models.IEmployee = $scope.employee;
+        //    employee.ProfilePic = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
+        //};
+        //#k - upload="onUploading"
+        //k - success="onUploadSuccess"
+                                   
+        $scope.onUploading = () => {
+            Logger.Notify("uploading profile pic");
+            status.uploading = true;
+            status.random = undefined;
+        };
+
+        $scope.onUploadSuccess = (e) => {
+            Logger.Notify("uploaded profile pic");
+            
+            $timeout(() => {
+                status.uploading = false;
+                status.random = uuidService.GenerateUUID();
+            });
+        };
+
+
+        $scope.onSelect = function (e) {
+            var message = $.map(e.files, function (file) { return file.name; }).join(", ");
+            console.log(message);
+        };
+        //uploadSettings
+
         $scope.save = save;
+        $scope.profilePicture = getProfilePic;
     });
 }

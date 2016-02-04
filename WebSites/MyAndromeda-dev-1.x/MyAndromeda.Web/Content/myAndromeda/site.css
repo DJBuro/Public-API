@@ -340,16 +340,6 @@ blockquote p {
   color: #579dcf;
   margin-top: 5px;
 }
-.pull-left {
-  float: left;
-  width: 255px;
-  margin-right: 20px;
-}
-.pull-right {
-  float: right;
-  width: 255px;
-  margin-left: 20px;
-}
 /*====DROPCAPS
 =======================================================*/
 .dropcap-1 {
@@ -5427,12 +5417,6 @@ a.badge:hover {
   line-height: 27px;
   color: inherit;
 }
-.pull-right {
-  float: right;
-}
-.pull-left {
-  float: left;
-}
 .hide {
   display: none;
 }
@@ -5781,7 +5765,9 @@ table {
   height: 32px;
   border-radius: 50%;
   background-size: 32px 35px;
+  background-size: cover;
   background-position: center center;
+  background-repeat: no-repeat;
   vertical-align: middle;
   line-height: 32px;
   box-shadow: inset 0 0 1px #999999, inset 0 0 10px rgba(0, 0, 0, 0.2);
@@ -5789,6 +5775,9 @@ table {
 }
 .employee-photo-large {
   display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 200px;
   border-radius: 5px;
   background-size: 200px 200px;

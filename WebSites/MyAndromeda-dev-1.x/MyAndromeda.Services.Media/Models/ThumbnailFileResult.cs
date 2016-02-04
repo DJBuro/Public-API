@@ -7,7 +7,6 @@ namespace MyAndromeda.Menus.Data
     {
         public ThumbnailFileResult(string fileName, string url) : this(fileName, url, string.Empty, string.Empty)
         {
-            
         }
         
         public ThumbnailFileResult(string fileName, string url, string height, string width)

@@ -171,10 +171,7 @@
       <Link>Properties\Version.cs</Link>
     </Compile>
     <Compile Include="Context\Ftp\UploadMenuContext.cs" />
-    <Compile Include="Context\Thumbnails\ActiveMenuContext.cs" />
     <Compile Include="Context\Ftp\DownloadMenuContext.cs" />
-    <Compile Include="Data\ThumbnailFileResult.cs" />
-    <Compile Include="Context\Thumbnails\ResizeSizeTaskContext.cs" />
     <Compile Include="Events\DatabaseUpdatedContext.cs" />
     <Compile Include="Events\EditMenuItemsContext.cs" />
     <Compile Include="Events\EditToppingItemsContext.cs" />
@@ -214,11 +211,6 @@
     <Compile Include="Services\Export\AcsMenuXmlJsonSyncDataService.cs" />
     <Compile Include="Services\Export\IAcsMenuXmlJsonSyncDataService.cs" />
     <Compile Include="Services\Export\IMenuThumbnailSyncService.cs" />
-    <Compile Include="Services\Media\IAzureMediaLibraryService.cs" />
-    <Compile Include="Services\Media\IFileMediaLibraryService.cs" />
-    <Compile Include="Services\Media\IMediaLibraryService.cs" />
-    <Compile Include="Services\Media\IMediaLibraryServiceProvider.cs" />
-    <Compile Include="Services\Media\IMediaResize.cs" />
     <Compile Include="Services\Menu\IFtpMenuManagerService.cs" />
     <Compile Include="Services\Menu\IMenuStatusService.cs" />
     <Compile Include="Services\Menu\IPublishingMenuService.cs" />
@@ -256,6 +248,10 @@
       <Project>{865B78BD-51B5-4B1D-9BC7-CFB814EBE1EE}</Project>
       <Name>MyAndromeda.Logging</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.Services.Media\MyAndromeda.Services.Media.csproj">
+      <Project>{be364a92-a94e-48d5-adfe-63970f2e220f}</Project>
+      <Name>MyAndromeda.Services.Media</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyAndromeda.Storage\MyAndromeda.Storage.csproj">
       <Project>{2F4679FC-4B16-4B28-BA25-2223C597DF32}</Project>
       <Name>MyAndromeda.Storage</Name>
@@ -270,7 +266,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Context\Thumbnails\" />
+    <Folder Include="Data\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Services\Media\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

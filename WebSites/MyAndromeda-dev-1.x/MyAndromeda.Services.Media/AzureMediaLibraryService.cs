@@ -1,22 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using MyAndromeda.Framework.Contexts;
-using MyAndromeda.Menus.Context.Thumbnails;
 using MyAndromeda.Menus.Data;
+using MyAndromeda.Services.Media.Models;
 using MyAndromeda.Storage.Azure;
 using MyAndromeda.Storage.Models;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
-using System.Drawing;
+using MyAndromeda.Data.DataAccess.Menu;
 
-namespace MyAndromeda.Menus.Services.Media
+namespace MyAndromeda.Services.Media
 {
-    public interface IAzureMediaLibraryService : IMediaLibraryService
-    {
-
-    }
-
     public class AzureMediaLibraryService : IAzureMediaLibraryService
     {
         private readonly IBlobStorageService storageService;
@@ -36,7 +29,6 @@ namespace MyAndromeda.Menus.Services.Media
             this.currentSite = currentSite;
             this.storageService = storageService;
         }
-
 
         public string Name
         {
@@ -59,27 +51,36 @@ namespace MyAndromeda.Menus.Services.Media
 
         public IEnumerable<ThumbnailFileResult> ImportMedia(MemoryStream post, string folderPath, string fileName, int andromedaSiteId)
         {
-            foreach (var profile in this.resizeService.ResizeImage(andromedaSiteId, post))
+            foreach (var resizeProfile in this.resizeService.ResizeImage(andromedaSiteId, post))
             {
-                yield return this.ProviderResult(profile, folderPath, fileName);
+                yield return this.ProviderResult(resizeProfile, folderPath, fileName);
             }
 
             yield break;
         }
 
-        public IEnumerable<ThumbnailFileResult> ImportLogo(MemoryStream post, string folderPath, string fileName, List<MyAndromeda.Menus.Services.Media.AzureMediaLibraryService.LogoConfigurations> sizeList)
+        public IEnumerable<ThumbnailFileResult> ImportMedia(MemoryStream post, string folderPath, string fileName, List<LogoConfiguration> sizeList)
         {
-            foreach (var profile in this.resizeService.ResizeLogoImage(post, sizeList))
+            foreach (var resizeProfile in this.resizeService.ResizeLogoImage(post, sizeList))
             {
-                yield return this.ProviderResult(profile, folderPath, fileName);
+                yield return this.ProviderResult(resizeProfile, folderPath, fileName);
             }
 
             yield break;
+        }
+
+        public ThumbnailFileResult ImportMedia(MemoryStream post, string folderPath, string fileName, LogoConfiguration configuration)
+        {
+            var resizeProfile = this.resizeService.ResizeImage(post, configuration);
+            var result = this.ProviderResult(resizeProfile, folderPath, fileName);
+
+            return result;
+            //this.resizeService.ResizeImage(post, configuration);
         }
 
         public ThumbnailFileResult ImportImage(MemoryStream post, string folderPath, string fileName, string newExtension)
         {
-            var result = this.ProviderResult(post, folderPath, fileName, newExtension);
+            ThumbnailFileResult result = this.ProviderResult(post, folderPath, fileName, newExtension);
             return result;
         }
 
@@ -91,7 +92,6 @@ namespace MyAndromeda.Menus.Services.Media
             this.storageService.CreateDirectory(path, name);
         }
 
-
         public bool DeleteFile(string filePath)
         {
             //var host = this.siteMediaSevice.GetMediaServerWithDefault(this.currentSite.AndromediaSiteId).Address;
@@ -100,7 +100,7 @@ namespace MyAndromeda.Menus.Services.Media
         }
 
         private ThumbnailFileResult ProviderResult(MemoryStream stream, string folderPath, string fileName, string newExtension)
-        {            
+        {
             var name = Path.GetFileName(fileName).Replace(Path.GetExtension(fileName), string.Empty);
             //include profile name
             //var newFileName = string.Format("{0}{1}", name, profile.Name);
@@ -139,18 +139,5 @@ namespace MyAndromeda.Menus.Services.Media
             return new ThumbnailFileResult(complexName.ToLower(), remoteFullPath.ToLower(), profile.Height.ToString(), profile.Width.ToString());
         }
 
-        public class LogoConfigurations
-        {
-            public int Width { get; set; }
-            public int Height { get; set; }
-            public ContentAlignment Alignment { get; set; }
-
-            public LogoConfigurations(int width, int height, ContentAlignment alignment)
-            {
-                this.Width = width;
-                this.Height = height;
-                this.Alignment = alignment;
-            }
-        }
     }
 }

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using MyAndromeda.Framework.Contexts;
-using MyAndromeda.Menus.Services.Media;
 using MyAndromeda.Storage;
 using MyAndromeda.Storage.Models;
 

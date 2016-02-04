@@ -4,20 +4,26 @@ using System.IO;
 using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Menus.Data;
+using MyAndromeda.Services.Media.Models;
 using MyAndromeda.Storage.Models;
 
-namespace MyAndromeda.Menus.Services.Media
+namespace MyAndromeda.Services.Media
 {
     public interface IMediaLibraryService : IDependency
     {
-        void CreateDirectory(string path, string name);
-
         /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
         
+        /// <summary>
+        /// Creates the directory.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="name">The name.</param>
+        void CreateDirectory(string path, string name);
+
         /// <summary>
         /// Removes the media.
         /// </summary>
@@ -29,7 +35,7 @@ namespace MyAndromeda.Menus.Services.Media
         /// Lists the specified folder path.
         /// </summary>
         /// <param name="folderPath">The folder path.</param>
-        /// <param name="andromedaSiteId">The andromeda site id.</param>
+        /// <param name="andromedaSiteId">The Andromeda site id.</param>
         /// <returns></returns>
         IEnumerable<FileModel> List(string folderPath, int andromedaSiteId);
 
@@ -44,15 +50,25 @@ namespace MyAndromeda.Menus.Services.Media
         IEnumerable<ThumbnailFileResult> ImportMedia(MemoryStream post, string folderPath, string fileName, int andromedaSiteId);
 
         /// <summary>
-        /// Import Logo
+        /// Imports the media.
         /// </summary>
-        /// <param name="post"></param>
-        /// <param name="folderPath"></param>
-        /// <param name="fileName"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="post">The post.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="sizeList">The size list.</param>
         /// <returns></returns>
-        IEnumerable<ThumbnailFileResult> ImportLogo(MemoryStream post, string folderPath, string fileName, List<MyAndromeda.Menus.Services.Media.AzureMediaLibraryService.LogoConfigurations> sizeList);
+        IEnumerable<ThumbnailFileResult> ImportMedia(MemoryStream post, string folderPath, string fileName,
+            List<LogoConfiguration> sizeList);
+
+        /// <summary>
+        /// Imports the media.
+        /// </summary>
+        /// <param name="post">The post.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
+        ThumbnailFileResult ImportMedia(MemoryStream post, string folderPath, string fileName, LogoConfiguration configuration);
 
         /// <summary>
         /// Imports the image.
@@ -65,6 +81,5 @@ namespace MyAndromeda.Menus.Services.Media
         ThumbnailFileResult ImportImage(MemoryStream post, string folderPath, string fileName, string newExtension);
 
         bool DeleteFile(string filePath);
-        
     }
 }

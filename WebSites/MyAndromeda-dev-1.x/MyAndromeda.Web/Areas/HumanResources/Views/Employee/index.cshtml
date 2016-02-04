@@ -15,7 +15,11 @@
 
     <div class="header">
         <h3>Edit Employee</h3>
-        <a class="btn btn-primary" ui-sref="hr.store-list">Back</a>
+
+        <span class="btn-group pull-right text-right">
+            <a class="btn btn-primary btn-sm" ng-click="save(employee)">Save</a>
+            <a class="btn btn-default" ui-sref="hr.store-list">Back</a>
+        </span>
     </div>
 
     <form kendo-validator="validator">
@@ -53,6 +57,7 @@
                                     </div>
 
                                 </div>
+
                                 <div class="row form-group">
                                     <div class="col-sm-12">
                                         <div class="input-group">
@@ -66,20 +71,30 @@
                                     </div>
                                 </div>
 
-                                <div class="row form-group">
+                                <div ng-if="employee.Id"
+                                     class="row form-group">
                                     <div class="col-sm-12">
-                                        <div class="employee-photo-large" style="background-image:url(/Content/profile-picture.jpg)">
+                                        <div class="employee-photo-large" style="display:flex;justify-content:center;align-items:center;">
+                                            <div style="padding:5px;" ng-if="!status.uploading">
+                                                <img style="max-height:180px;max-width:100%" ng-src="{{profilePicture(employee)}}" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row form-group">
-                                    <div class="col-sm-12">
-                                        <input name="files"
-                                               type="file"
-                                               kendo-upload
-                                               k-async="{ saveUrl: 'save', removeUrl: 'remove', autoUpload: true }" />
+                                <div ng-if="employee.Id">
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            <input name="files"
+                                                   kendo-upload
+                                                   type="file"
+                                                   k-upload="onUploading"
+                                                   k-success="onUploadSuccess"
+                                                   k-async="{ saveUrl: saveRoute(), autoUpload: true }" />
+                                        </div>
                                     </div>
+                                </div>
+                                <div ng-if="!employee.Id">
+                                    <div class="alert alert-info">Save the record first before adding a image.</div>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +107,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Details
-                        <a class="btn btn-primary" ng-click="save(employee)">Save</a>
+
                     </div>
                     <div class="panel-body">
                         <div class="form-horizontal form-widgets col-sm-12">
@@ -125,23 +140,9 @@
                                 </div>
                             </div>
 
-                            
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="gender">Gender</label>
-                                <div class="col-sm-8">
-                                    <select kendo-drop-down-list
-                                            ng-model="employee.Gender" id="employee.Gender" name="employee.Gender">
-                                        <option value="Male" selected>Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="employee.Department">Department</label>
                                 <div class="col-sm-8">
-                                    {{employee.Department}}
                                     <select kendo-drop-down-list
                                             ng-model="employee.Department" id="employee.Department" name="employee.Department">
                                         <option value="Front of house" selected>Front of house</option>
@@ -155,7 +156,8 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Primary Role</label>
                                 <div class="col-sm-8">
-                                    <select kendo-combo-box k-ng-model="employee.PrimaryRole" id="employee.PrimaryRole" name="employee.PrimaryRole">
+                                    @*{{employee.PrimaryRole}}*@
+                                    <select kendo-combo-box ng-model="employee.PrimaryRole" id="employee.PrimaryRole" name="employee.PrimaryRole">
                                         <optgroup label="Front of house">
                                             <option value="Receptionist" selected>Receptionist</option>
                                             <option value="Order taker">Order taker</option>
@@ -178,13 +180,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            @*<div class="form-group">
-                                <label class="control-label col-sm-3">Skills</label>
-                                <div class="col-sm-8">
-                                    <select kendo-multi-select k-ng-model="employee.Skills" id="employee.Skills" name="employee.Skills"></select>
-                                </div>
-                            </div>*@
 
                             <div class="form-group">
                                 <label class="control-label col-sm-3">Driving License</label>
@@ -212,25 +207,24 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-sm-12">
                 <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="active"><a href="#">Documents <span class="badge">5</span></a></li>
+                    <li role="presentation" class="active"><a href="#">Documents <span class="badge">{{employee.Documents.length}}</span></a></li>
                     <li role="presentation"><a href="#">Employment History <span class="badge">3</span></a></li>
                     <li role="presentation"><a href="#">Schedule</a></li>
                 </ul>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-if="employee">
             <div class="col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Documents</div>
-
-                </div>
+                <employee-docs employee="employee">
+                </employee-docs>
             </div>
         </div>
+
+
 
 
 
@@ -238,9 +232,124 @@
 </script>
 
 <script type="text/ng-template" id="employee-documents.html">
-    <div class="panel-body">
-        <div class="panel-heading">Documents</div>
-        None
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Documents</h3>
+
+        </div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <a class="btn btn-info" ng-click="new()">New document</a>
+                                    <a class="btn btn-danger" ng-click="removeAll()">Remove all</a>
+                                    <a class="btn btn-success" ng-click="save()">Save</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-repeat="doc in dataItem.Documents">
+
+                            <div class="panel" ng-class="{ 'panel-default': (doc.Id !== document.Id), 'panel-info': (doc.Id === document.Id)  }">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{doc.Name ? doc.Name : "Enter a name..."}}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <span class="btn-group">
+                                        <a class="btn btn-info" ng-click="select(doc)">View <span class="badge badge-success">{{doc.Files.length}}</span></a>
+                                        <a class="btn btn-danger" ng-click="remove(doc)">Delete</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8" ng-if="!document">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Getting started</h3>
+                        </div>
+                        <div class="panel-body">
+                            To get started create, or view a document.
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-8" ng-if="document">
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Edit Document</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row form-group" data-id="{{document.Id}}">
+
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-file-archive-o"></i></span>
+                                        <input type="text" 
+                                               class="form-control" ng-model="document.Name" id="document.Name" name="document.Name"
+                                               placeholder="document name" required>
+                                    </div>
+                                    <span class="k-invalid-msg" data-for="document.name"></span>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @*{{document.FileType}}
+                                    <a class="btn btn-default"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+                                    <a class="btn btn-default"><i class="fa fa-file-word-o"></i> Download Document</a>
+                                    <a class="btn btn-default"><i class="fa fa-file-text-o"></i> Download</a>*@
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <input name="files"
+                                           kendo-upload
+                                           type="file"
+                                           k-upload="onUploading"
+                                           k-success="onUploadSuccess"
+                                           k-async="{ saveUrl: uploadRoute(), autoUpload: true }" />
+                                </div>
+                            </div>
+
+                            <div class="row" ng-if="!status.uploading">
+                                <div class="col-lg-6" ng-repeat="file in document.Files">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            {{file.FileName}}
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="employee-photo-large">
+                                                <img style="max-height:190px; max-width:100%" ng-src="{{getEmployeeDocumentImage(document, file)}}" />
+                                            </div>
+
+                                        </div>
+                                        <div class="panel-footer">
+                                            <span class="btn-group">
+                                                <a class="btn btn-info" href="{{downloadDocumentFile(document, file)}}">Download</a>
+                                                <a class="btn btn-danger" ng-click="removeFile(document, file)">Remove</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     </div>
 </script>
 
@@ -251,21 +360,21 @@
     </div>
 </script>
 
-
 <!-- end of views -->
 <!-- directives -->
 <script type="text/ng-template" id="employee-pic.html">
     <div class="employee-photo"
-         ng-style="profilePicture(dataItem.ProfilePic)">
+         ng-style="profilePicture(employee)">
     </div>
-    <div class="employee-name">{{dataItem.Name}} <span class="label label-success">On shift</span></div>
+    <div class="employee-name">{{employee.ShortName}} ({{employee.Name}}) <span class="label label-success">On shift</span></div>
 </script>
 
 <script type="text/html" id="employee-list-row-template">
-    <a class="k-button k-primary-button" data-id="dataItem.Id" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">
-        Edit
+    <a class="btn btn-info" data-id="dataItem.Id" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">
+        View
     </a>
 </script>
+
 <script type="text/html" id="employee-list-header-template">
-    <a class="k-button k-primary-button" ui-sref="hr.store-list.create-employee">Create</a>
+    <a class="btn btn-primary" ui-sref="hr.store-list.create-employee">Create</a>
 </script>

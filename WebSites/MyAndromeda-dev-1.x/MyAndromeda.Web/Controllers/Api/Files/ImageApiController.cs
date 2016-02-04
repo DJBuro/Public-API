@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using MyAndromeda.Framework.Contexts;
-using MyAndromeda.Menus.Services.Media;
+using MyAndromeda.Services.Media;
 using MyAndromeda.Storage.Models;
 
 namespace MyAndromeda.Web.Controllers.Api.Files

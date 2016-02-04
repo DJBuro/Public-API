@@ -3,7 +3,7 @@ using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Menu
+namespace MyAndromeda.Data.DataAccess.Menu
 {
     public interface IMyAndromedaMediaProfilesDataService : IDependency 
     {

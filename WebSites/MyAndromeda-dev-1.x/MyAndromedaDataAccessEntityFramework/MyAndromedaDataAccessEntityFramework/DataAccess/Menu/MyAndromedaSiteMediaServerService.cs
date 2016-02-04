@@ -2,7 +2,6 @@ using MyAndromeda.Data.Model.MyAndromeda;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
 
 namespace MyAndromeda.Data.DataAccess.Menu
 {

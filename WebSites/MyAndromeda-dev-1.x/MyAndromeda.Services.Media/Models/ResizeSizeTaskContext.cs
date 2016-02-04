@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace MyAndromeda.Menus.Context.Thumbnails
+namespace MyAndromeda.Services.Media.Models
 {
     public class ResizeSizeTaskContext : IDisposable
     {

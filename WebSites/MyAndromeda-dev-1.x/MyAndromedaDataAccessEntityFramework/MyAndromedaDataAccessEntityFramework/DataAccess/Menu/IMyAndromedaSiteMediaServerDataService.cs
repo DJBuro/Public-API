@@ -2,9 +2,8 @@
 using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Menu
+namespace MyAndromeda.Data.DataAccess.Menu
 {
     public interface IMyAndromedaSiteMediaServerDataService : IDependency
     {

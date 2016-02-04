@@ -23,13 +23,49 @@
         PayrollNumber?: string;
         NationalInsurance?: string; 
 
+        Documents: Models.IEmployeeDocument[];
+
         ShiftStatus?: IEmployeeShiftStatus;
     }
 
+    export var employeeDataSourceSchema: kendo.data.DataSourceSchemaModelWithFieldsObject = {
+        id: "Id",
+        fields: {
+            Id: {
+                type: "string",
+                nullable: true
+            },
+            Deleted: {
+                type: "boolean",
+                defaultValue: false,
+                nullable: false
+            },
+            ShortName: {
+                type: "string",
+                nullable: false
+            },
+            Phone: {
+                type: "string",
+                nullable: false
+            },
+            DirtyHack: {
+                type: "string",
+                nullable: true
+            }
+        }
+    };
+
     export interface IEmployeeDocument
     {
+        Id: string;
         Name?: string;
-        DocumentUrl?: string;
+        //DocumentUrl?: string;
+        Files: IFile[]
+    }
+
+    export interface IFile
+    {
+        FileName?: string
     }
 
     export interface IEmployeeShiftStatus
