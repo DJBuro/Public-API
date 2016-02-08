@@ -2,7 +2,8 @@
 {
     var app = angular.module("MyAndromeda.Hr.Config", [
         "MyAndromeda.Hr.Controllers",
-        "MyAndromeda.Hr.Services"]);
+        "MyAndromeda.Hr.Services",
+        "MyAndromeda.Hr.Directives"]);
 
     app.config(($stateProvider: ng.ui.IStateProvider, $urlRouterProvider) => {
 

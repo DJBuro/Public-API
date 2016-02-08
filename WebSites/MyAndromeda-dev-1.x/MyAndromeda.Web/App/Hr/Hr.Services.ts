@@ -10,6 +10,8 @@
         public CurrentChainId: number;
         public CurrentAndromedaSiteId: number;
 
+        public EmployeeUpdated: Rx.Subject<Models.IEmployee> = new Rx.Subject<Models.IEmployee>();
+
         constructor() {
             this.ChainId.subscribe((e) => { this.CurrentChainId = e; });
             this.AndromedaSiteId.subscribe((e) => { this.CurrentAndromedaSiteId = e; });
@@ -79,7 +81,8 @@
                         });
                         
                     }
-                }
+                },
+                sort: { field: "ShortName", dir: "desc" }
             }); 
 
             this.employeeServiceState.AndromedaSiteId.where(e=> e !== null).distinctUntilChanged(e=> e).subscribe((id) => {
@@ -108,7 +111,26 @@
             return pomise;
         }
 
-        public Update(model, onSuccess: (data) => void, onError: (data) => void)
+        public Save(employee): JQueryPromise<any> {
+            employee.set("DirtyHack", true);
+
+            let exists = this.StoreEmployeeDataSource.data().filter((item: Models.IEmployee) => {
+                return item.Id == employee.id;
+            });
+
+            if (exists.length == 0) {
+                Logger.Notify("Add employee");
+                this.StoreEmployeeDataSource.add(employee);
+            }
+
+            Logger.Notify("sync");
+
+            let sync = this.StoreEmployeeDataSource.sync();
+
+            return sync;
+        }
+
+        private Update(model, onSuccess: (data) => void, onError: (data) => void)
         {
             let route = "hr/{0}/employees/{1}/update";
             route = kendo.format(route, this.chainId, this.andromedaSiteId);
@@ -132,7 +154,7 @@
             });
         }
 
-        public Create(model, onSuccess: (data) => void, onError : (data) => void)
+        private Create(model, onSuccess: (data) => void, onError : (data) => void)
         {
             let route = "hr/{0}/employees/{1}/create";
             route = kendo.format(route, this.chainId, this.andromedaSiteId);

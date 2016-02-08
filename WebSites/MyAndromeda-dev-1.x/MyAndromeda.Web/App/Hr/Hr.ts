@@ -2,6 +2,8 @@
 {
     var app = angular.module("MyAndromeda.Hr", [
         "MyAndromeda.Hr.Config",
+        "MyAndromeda.Resize",
+        "MyAndromeda.Progress"
     ]);
 
     app.run(() => {

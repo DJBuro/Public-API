@@ -85,15 +85,24 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             [FromBody]
             EmployeeRecordModel model) 
         {
-
             var query = this.employeeTable
                             .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AdromedaSiteId == andromedaSiteId))
                             .Where(e => e.Id == model.Id);
 
             var dbItem = await query.FirstOrDefaultAsync();
 
-            dbItem.UpdateProperties(model);
+            //create
+            if (dbItem == null)
+            {
+                dbItem = this.employeeTable.CreateDbItem(model, andromedaSiteId, true);
+                await this.dbContext.SaveChangesAsync();
+            }
+            else //update
+            {
+                dbItem.UpdateProperties(model);
+            }
 
+            
             var vm = dbItem.ToViewModel();
 
             await this.dbContext.SaveChangesAsync();

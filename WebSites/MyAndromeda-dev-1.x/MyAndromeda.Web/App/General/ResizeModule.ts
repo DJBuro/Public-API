@@ -24,6 +24,7 @@
     }
 
     m.service("resizeService", ResizeService);
+
     m.run((resizeService: ResizeService) => {
         resizeService.ResizeObservable.subscribe((e) => {
             Logger.Notify(kendo.format("Resize: {0}x{1}", e.width, e.height));

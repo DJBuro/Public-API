@@ -63,6 +63,7 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public Nullable<int> BringgTaskId { get; set; }
         public Nullable<int> Bags { get; set; }
         public Nullable<int> Tips { get; set; }
+        public string OrderNotes { get; set; }
     
         public virtual ACSErrorCode ACSErrorCode1 { get; set; }
         public virtual Customer Customer { get; set; }

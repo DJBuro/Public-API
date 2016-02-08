@@ -18,7 +18,7 @@
 
         <span class="btn-group pull-right text-right">
             <a class="btn btn-primary btn-sm" ng-click="save(employee)">Save</a>
-            <a class="btn btn-default" ui-sref="hr.store-list">Back</a>
+            <a class="btn btn-default btn-sm" ui-sref="hr.store-list">Back</a>
         </span>
     </div>
 
@@ -291,7 +291,7 @@
                                 <div class="col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-file-archive-o"></i></span>
-                                        <input type="text" 
+                                        <input type="text"
                                                class="form-control" ng-model="document.Name" id="document.Name" name="document.Name"
                                                placeholder="document name" required>
                                     </div>
@@ -303,9 +303,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     @*{{document.FileType}}
-                                    <a class="btn btn-default"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
-                                    <a class="btn btn-default"><i class="fa fa-file-word-o"></i> Download Document</a>
-                                    <a class="btn btn-default"><i class="fa fa-file-text-o"></i> Download</a>*@
+                                        <a class="btn btn-default"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+                                        <a class="btn btn-default"><i class="fa fa-file-word-o"></i> Download Document</a>
+                                        <a class="btn btn-default"><i class="fa fa-file-text-o"></i> Download</a>*@
                                 </div>
                             </div>
 
@@ -366,7 +366,10 @@
     <div class="employee-photo"
          ng-style="profilePicture(employee)">
     </div>
-    <div class="employee-name">{{employee.ShortName}} ({{employee.Name}}) <span class="label label-success">On shift</span></div>
+    <div class="employee-name">
+        {{employee.ShortName}} ({{employee.Name}}) <span class="label label-success">On shift</span>
+    </div>
+    <div></div>
 </script>
 
 <script type="text/html" id="employee-list-row-template">

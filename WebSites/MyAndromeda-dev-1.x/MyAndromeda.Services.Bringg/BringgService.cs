@@ -275,14 +275,19 @@ namespace MyAndromeda.Services.Bringg
 
             model.Note += "Directions: ";
 
-            var hasDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
-            if (hasDirections)
+            var hasCustomerDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
+            var hasOrderDirections = orderHeader.CustomerAddress != null && !string.IsNullOrWhiteSpace(orderHeader.CustomerAddress.Directions);
+
+            if (hasOrderDirections || hasCustomerDirections)
             {
-                model.Note += orderHeader.Customer.Address.Directions + ";";
+                model.Note += hasOrderDirections
+                    ? orderHeader.CustomerAddress.Directions
+                    : orderHeader.Customer.Address.Directions;
+                model.Note += ";";
             }
             else 
             {
-                model.Note = "none;"; 
+                model.Note += "none;"; 
             }
 
             return model;

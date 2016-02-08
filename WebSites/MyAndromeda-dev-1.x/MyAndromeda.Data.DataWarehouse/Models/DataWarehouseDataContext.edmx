@@ -157,6 +157,7 @@
           <Property Name="Location" Type="geography" />
           <Property Name="Longitude" Type="nvarchar" MaxLength="15" />
           <Property Name="Latitude" Type="nvarchar" MaxLength="15" />
+          <Property Name="Directions" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="CustomerFeedback">
           <Key>
@@ -354,6 +355,7 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
           <Property Name="BringgTaskId" Type="int" />
           <Property Name="Bags" Type="int" />
           <Property Name="Tips" Type="int" />
+          <Property Name="OrderNotes" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="OrderLines">
           <Key>
@@ -1431,6 +1433,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <NavigationProperty Name="OrderHeaders" Relationship="DataWarehouseModel.FK_OrderAddress" FromRole="CustomerAddress" ToRole="OrderHeader" />
           <Property Name="Premise" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="House" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Directions" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MarketingLevel">
           <Key>
@@ -2085,6 +2088,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="Bags" Type="Int32" />
           <NavigationProperty Name="IbsOrders" Relationship="DataWarehouseModel.FK_IbsOrder_OrderHeader" FromRole="OrderHeader" ToRole="IbsOrder" />
           <Property Name="Tips" Type="Int32" />
+          <Property Name="OrderNotes" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_OrderHeader_ACSErrorCode">
           <End Type="DataWarehouseModel.ACSErrorCode" Role="ACSErrorCode" Multiplicity="1" />
@@ -2391,6 +2395,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <EntitySetMapping Name="CustomerAddresses">
             <EntityTypeMapping TypeName="DataWarehouseModel.CustomerAddress">
               <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="Directions" ColumnName="Directions" />
                 <ScalarProperty Name="House" ColumnName="House" />
                 <ScalarProperty Name="Premise" ColumnName="Premise" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
@@ -2712,6 +2717,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <EntitySetMapping Name="OrderHeaders">
             <EntityTypeMapping TypeName="DataWarehouseModel.OrderHeader">
               <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="OrderNotes" ColumnName="OrderNotes" />
                 <ScalarProperty Name="Tips" ColumnName="Tips" />
                 <ScalarProperty Name="Bags" ColumnName="Bags" />
                 <ScalarProperty Name="BringgTaskId" ColumnName="BringgTaskId" />

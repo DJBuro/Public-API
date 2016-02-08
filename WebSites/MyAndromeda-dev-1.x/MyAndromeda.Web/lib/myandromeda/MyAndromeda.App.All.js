@@ -3283,7 +3283,8 @@ var MyAndromeda;
     (function (Hr) {
         var app = angular.module("MyAndromeda.Hr.Config", [
             "MyAndromeda.Hr.Controllers",
-            "MyAndromeda.Hr.Services"]);
+            "MyAndromeda.Hr.Services",
+            "MyAndromeda.Hr.Directives"]);
         app.config(function ($stateProvider, $urlRouterProvider) {
             var hr = {
                 abstract: true,
@@ -3391,20 +3392,21 @@ var MyAndromeda;
                     filterable: true,
                     sortable: true,
                     groupable: true,
+                    resizable: true,
                     toolbar: kendo.template(headerTemplate),
                     columns: [
-                        { field: "Department", title: "Department", width: 100 },
+                        { field: "Department", title: "Department", width: 100, minScreenWidth: 400 },
                         {
                             title: "Contact",
                             columns: [
                                 {
                                     field: "Name",
                                     title: "Name",
-                                    //width: 200,
+                                    width: 400,
                                     template: employeePicTemplate
                                 },
                                 { field: "Phone", title: "Phone", width: 100 },
-                                { field: "Email", title: "Email", width: 200 }
+                                { field: "Email", title: "Email", width: 200, minScreenWidth: 400 }
                             ]
                         },
                         {
@@ -3416,7 +3418,7 @@ var MyAndromeda;
                 };
                 $scope.employeeGridOptions = employeeGridOptions;
             });
-            app.controller("employeeEditController", function ($scope, $stateParams, $timeout, SweetAlert, employeeService, employeeServiceState, uuidService) {
+            app.controller("employeeEditController", function ($element, $scope, $stateParams, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
                 MyAndromeda.Logger.Notify("stateParams");
                 MyAndromeda.Logger.Notify($stateParams);
                 var chainId = $stateParams.chainId;
@@ -3432,12 +3434,12 @@ var MyAndromeda;
                     if (!employeeId) {
                         var modelCreator = kendo.data.Model.define(Hr.Models.employeeDataSourceSchema);
                         var newEmployee = new modelCreator({
+                            Id: uuidService.GenerateUUID(),
                             Name: "",
                             PrimaryRole: "",
                             Roles: [],
                             ShiftStatus: {}
                         });
-                        //create new employee
                         return newEmployee;
                     }
                     MyAndromeda.Logger.Notify("employee id:" + employeeId);
@@ -3472,30 +3474,23 @@ var MyAndromeda;
                 }
                 var save = function (employee) {
                     MyAndromeda.Logger.Notify("saved called");
-                    var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.id);
                     //do i need these anymore? 
                     //employee.dirty = true;
                     employee.set("DirtyHack", true);
                     var validator = $scope.validator;
                     var valid = validator.validate();
-                    var id = employee.get("Id");
                     if (!valid) {
                         MyAndromeda.Logger.Notify("validation failed.");
                         return;
                     }
-                    if (!id) {
-                        employeeService.StoreEmployeeDataSource.add(employee);
-                    }
-                    else {
-                        MyAndromeda.Logger.Notify("Edit view uid: " + employee.uid);
-                        MyAndromeda.Logger.Notify("Grid view uid: " + gridEmployee.uid);
-                    }
-                    MyAndromeda.Logger.Notify("sync");
-                    var sync = employeeService.StoreEmployeeDataSource.sync();
+                    progressService.ShowProgress($element);
+                    var sync = employeeService.Save(employee);
                     sync.then(function () {
+                        progressService.HideProgress($element);
                         MyAndromeda.Logger.Notify("Sync done");
                         var name = employee.get("ShortName");
                         SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                        employeeServiceState.EmployeeUpdated.onNext(employee);
                     });
                 };
                 var getProfilePic = function (employee) {
@@ -3553,7 +3548,7 @@ var MyAndromeda;
     (function (Hr) {
         var Directives;
         (function (Directives) {
-            var app = angular.module("MyAndromeda.Start.Directives", []);
+            var app = angular.module("MyAndromeda.Hr.Directives", []);
             app.directive("employeeDocs", function () {
                 return {
                     name: "employeeDocs",
@@ -3563,16 +3558,16 @@ var MyAndromeda;
                         dataItem: '=employee',
                         save: "=save"
                     },
-                    controller: function ($scope, $timeout, SweetAlert, employeeService, employeeServiceState, uuidService) {
+                    controller: function ($element, $scope, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
                         var dataItem = $scope.dataItem;
                         var save = function () {
                             MyAndromeda.Logger.Notify("save - from docs");
                             var employee = $scope.dataItem;
-                            var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.Id);
-                            gridEmployee.set("DirtyHack", true);
-                            var promise = employeeService.StoreEmployeeDataSource.sync();
+                            var promise = employeeService.Save(employee);
+                            progressService.ShowProgress($element);
                             promise.then(function () {
                                 SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                                progressService.HideProgress($element);
                             });
                         };
                         $scope.save = save;
@@ -3756,19 +3751,35 @@ var MyAndromeda;
                     scope: {
                         employee: '=employee'
                     },
-                    controller: function ($scope, employeeService, employeeServiceState, uuidService) {
+                    controller: function ($scope, $timeout, employeeService, employeeServiceState, uuidService) {
                         //Logger.Notify("employee-pic $scope");
                         //Logger.Notify($scope);
                         var dataItem = $scope.employee;
+                        var state = {
+                            random: uuidService.GenerateUUID()
+                        };
+                        var updates = employeeServiceState.EmployeeUpdated.where(function (e) { return e.Id == dataItem.Id; }).subscribe(function (change) {
+                            $timeout(function () {
+                                MyAndromeda.Logger.Notify(dataItem.ShortName + " updated");
+                                //just run ... not nothing to do. 
+                                state.random = uuidService.GenerateUUID();
+                            });
+                        });
+                        ;
+                        $scope.state = state;
                         $scope.profilePicture = function () {
                             //var profilePicture = "/content/profile-picture.jpg";
                             var chainId = employeeServiceState.CurrentChainId;
                             var andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
                             var route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
+                            route = route + "?r=" + state.random;
                             return {
                                 'background-image': 'url(' + route + ')'
                             };
                         };
+                        $scope.$on('$destroy', function () {
+                            updates.dispose();
+                        });
                     }
                 };
             });
@@ -3822,6 +3833,7 @@ var MyAndromeda;
                     var _this = this;
                     this.ChainId = new Rx.BehaviorSubject(null);
                     this.AndromedaSiteId = new Rx.BehaviorSubject(null);
+                    this.EmployeeUpdated = new Rx.Subject();
                     this.ChainId.subscribe(function (e) { _this.CurrentChainId = e; });
                     this.AndromedaSiteId.subscribe(function (e) { _this.CurrentAndromedaSiteId = e; });
                 }
@@ -3878,7 +3890,8 @@ var MyAndromeda;
                                     e.error(data);
                                 });
                             }
-                        }
+                        },
+                        sort: { field: "ShortName", dir: "desc" }
                     });
                     this.employeeServiceState.AndromedaSiteId.where(function (e) { return e !== null; }).distinctUntilChanged(function (e) { return e; }).subscribe(function (id) {
                         MyAndromeda.Logger.Notify("new Andromeda site id : " + id);
@@ -3898,6 +3911,19 @@ var MyAndromeda;
                     var route = "";
                     var pomise = this.$http.get(route);
                     return pomise;
+                };
+                EmployeeService.prototype.Save = function (employee) {
+                    employee.set("DirtyHack", true);
+                    var exists = this.StoreEmployeeDataSource.data().filter(function (item) {
+                        return item.Id == employee.id;
+                    });
+                    if (exists.length == 0) {
+                        MyAndromeda.Logger.Notify("Add employee");
+                        this.StoreEmployeeDataSource.add(employee);
+                    }
+                    MyAndromeda.Logger.Notify("sync");
+                    var sync = this.StoreEmployeeDataSource.sync();
+                    return sync;
                 };
                 EmployeeService.prototype.Update = function (model, onSuccess, onError) {
                     var _this = this;
@@ -3995,6 +4021,8 @@ var MyAndromeda;
     (function (Hr) {
         var app = angular.module("MyAndromeda.Hr", [
             "MyAndromeda.Hr.Config",
+            "MyAndromeda.Resize",
+            "MyAndromeda.Progress"
         ]);
         app.run(function () {
             MyAndromeda.Logger.Notify("HR module is running");
@@ -8808,7 +8836,7 @@ var MyAndromeda;
 (function (MyAndromeda) {
     var Start;
     (function (Start) {
-        var controllers = angular.module("MyAndromeda.Start.Controllers", ["MyAndromeda.Start.Services", "MyAndromeda.Start.Directives", "kendo.directives"]);
+        var controllers = angular.module("MyAndromeda.Start.Controllers", ["MyAndromeda.Start.Services", "kendo.directives"]);
         controllers.controller("chainListController", function ($scope, userChainDataService) {
             var chainActionTemplate = $("#chain-actions-template").html();
             var storeTemplate = $("#chain-template").html();

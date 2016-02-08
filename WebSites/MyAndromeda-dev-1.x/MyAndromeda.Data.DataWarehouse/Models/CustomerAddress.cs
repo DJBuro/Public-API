@@ -33,6 +33,7 @@ namespace MyAndromeda.Data.DataWarehouse.Models
         public string Latitude { get; set; }
         public string Premise { get; set; }
         public string House { get; set; }
+        public string Directions { get; set; }
     
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

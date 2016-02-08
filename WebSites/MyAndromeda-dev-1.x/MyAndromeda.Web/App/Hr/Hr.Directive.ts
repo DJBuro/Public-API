@@ -1,5 +1,5 @@
 ﻿module MyAndromeda.Hr.Directives {
-    var app = angular.module("MyAndromeda.Start.Directives", []);
+    var app = angular.module("MyAndromeda.Hr.Directives", []);
 
     app.directive("employeeDocs", () => {
         return {
@@ -10,9 +10,12 @@
                 dataItem: '=employee',
                 save: "=save"
             },
-            controller: ($scope,
+            controller: (
+                $element,
+                $scope,
                 $timeout,
                 SweetAlert,
+                progressService: MyAndromeda.Services.ProgressService,
                 employeeService: Services.EmployeeService,
                 employeeServiceState: Services.EmployeeServiceState,
                 uuidService: Services.UUIDService) => {
@@ -22,13 +25,12 @@
                     Logger.Notify("save - from docs");
                     let employee: Models.IEmployee = $scope.dataItem;
 
-                    var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.Id);
-                    gridEmployee.set("DirtyHack", true);
-
-                    var promise = employeeService.StoreEmployeeDataSource.sync();
+                    var promise = employeeService.Save(employee);
+                    progressService.ShowProgress($element);
 
                     promise.then(() => {
                         SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                        progressService.HideProgress($element);
                     });
                 };
                 $scope.save = save;
@@ -257,7 +259,7 @@
             scope: {
                 employee: '=employee'
             },
-            controller: ($scope,
+            controller: ($scope, $timeout, 
                 employeeService: Services.EmployeeService,
                 employeeServiceState: Services.EmployeeServiceState,
                 uuidService: Services.UUIDService) => {
@@ -266,18 +268,36 @@
                 //Logger.Notify($scope);
 
                 var dataItem: Models.IEmployee = $scope.employee;
+                var state = {
+                    random : uuidService.GenerateUUID()
+                };
 
+                let updates = employeeServiceState.EmployeeUpdated.where(e=> e.Id == dataItem.Id).subscribe((change) => {
+                    $timeout(() => {
+                        Logger.Notify(dataItem.ShortName + " updated");
+                        //just run ... not nothing to do. 
+                        state.random = uuidService.GenerateUUID();
+                    });
+                });;
+                
+
+                $scope.state = state;
                 $scope.profilePicture = () => {
                     //var profilePicture = "/content/profile-picture.jpg";
                     let chainId = employeeServiceState.CurrentChainId;
                     let andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
 
                     let route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
+                    route = route + "?r=" + state.random;
 
                     return {
                         'background-image': 'url(' + route + ')'
                     };
                 };
+
+                $scope.$on('$destroy', () => {
+                    updates.dispose();
+                });
 
 
             }

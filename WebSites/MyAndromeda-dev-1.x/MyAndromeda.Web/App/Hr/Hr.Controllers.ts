@@ -49,20 +49,21 @@
             filterable: true,
             sortable: true,
             groupable: true,
+            resizable: true,
             toolbar: kendo.template(headerTemplate),
             columns: [
-                { field: "Department", title: "Department", width: 100 },
+                { field: "Department", title: "Department", width: 100, minScreenWidth: 400 },
                 {
                     title: "Contact",
                     columns: [
                         {
                             field: "Name",
                             title: "Name",
-                            //width: 200,
+                            width: 400,
                             template: employeePicTemplate
                         },
                         { field: "Phone", title: "Phone", width: 100 },
-                        { field: "Email", title: "Email", width: 200 }
+                        { field: "Email", title: "Email", width: 200, minScreenWidth: 400 }
                     ]
                 },
                 {
@@ -79,8 +80,10 @@
     });
 
     app.controller("employeeEditController", (
+        $element,
         $scope, $stateParams, $timeout,
         SweetAlert,
+        progressService: MyAndromeda.Services.ProgressService,
         employeeService: Services.EmployeeService,
         employeeServiceState: Services.EmployeeServiceState,
         uuidService: Services.UUIDService) => {
@@ -106,13 +109,12 @@
                 let modelCreator = kendo.data.Model.define(Models.employeeDataSourceSchema);
 
                 let newEmployee = new modelCreator({
+                    Id: uuidService.GenerateUUID(),
                     Name: "",
-
                     PrimaryRole: "",
                     Roles: [],
                     ShiftStatus: {}
                 });
-                //create new employee
 
                 return newEmployee;
             }
@@ -161,8 +163,6 @@
 
         let save = (employee: kendo.data.Model) => {
             Logger.Notify("saved called");
-            
-            var gridEmployee = employeeService.StoreEmployeeDataSource.get(employee.id);
 
             //do i need these anymore? 
             //employee.dirty = true;
@@ -170,28 +170,25 @@
 
             let validator : kendo.ui.Validator = $scope.validator; 
             let valid = validator.validate();
-            let id = employee.get("Id"); 
-
+            
+            
             if (!valid) {
                 Logger.Notify("validation failed.");
                 return;
             }
 
-            if (!id) {
-                employeeService.StoreEmployeeDataSource.add(employee);
-            } else {
-                Logger.Notify("Edit view uid: " + employee.uid);
-                Logger.Notify("Grid view uid: " + gridEmployee.uid);
-            }
+            progressService.ShowProgress($element);
 
-            Logger.Notify("sync");
-           
-            let sync = employeeService.StoreEmployeeDataSource.sync();
-
+            var sync = employeeService.Save(employee);
+            
             sync.then(() => {
+                progressService.HideProgress($element);
+
                 Logger.Notify("Sync done");
                 var name = employee.get("ShortName");
                 SweetAlert.swal("Saved!", name + " has been saved.", "success");
+
+                employeeServiceState.EmployeeUpdated.onNext(<any>employee);
             });
         };
         let getProfilePic = (employee: Models.IEmployee) => {

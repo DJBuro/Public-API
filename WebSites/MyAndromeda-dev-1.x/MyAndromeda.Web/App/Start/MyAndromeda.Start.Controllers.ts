@@ -1,7 +1,7 @@
 ﻿module MyAndromeda.Start
 {
     var controllers = angular.module("MyAndromeda.Start.Controllers",
-        ["MyAndromeda.Start.Services", "MyAndromeda.Start.Directives", "kendo.directives"]);
+        ["MyAndromeda.Start.Services", "kendo.directives"]);
 
     controllers.controller("chainListController", ($scope, userChainDataService: Services.UserChainDataService) => {
 
