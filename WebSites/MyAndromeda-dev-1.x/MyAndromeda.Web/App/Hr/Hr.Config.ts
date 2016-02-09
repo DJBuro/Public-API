@@ -10,7 +10,7 @@
         var hr: ng.ui.IState = {
             abstract: true,
             url: '/hr/:chainId',
-            template: '<div ui-view="main"></div>'
+            template: '<div id="masterUI" ui-view="main"></div>'
         };
 
         var hrStoreList: ng.ui.IState = {
@@ -43,6 +43,31 @@
             cache: false
         };
 
+        var hrStoreEmployeEditDetails: ng.ui.IState = {
+            url: "/details",
+            views: {
+                "editor-main": {
+                    templateUrl: "employee-edit-details.html",
+                    
+                }
+            },
+            cache: false
+        };
+
+        var hrStoreEmployeeEditScheduler: ng.ui.IState = {
+            url: "/schedule",
+            views: {
+                "editor-main": {
+                    templateUrl: "employee-edit-schedule.html",
+                    controller: "employeeEditSchedulerController"
+                }
+            }, 
+            onEnter: () => {
+                Logger.Notify("Edit person's schedule.");
+            },
+            cache: false
+        }
+
         var hrStoreEmployeeCreate: ng.ui.IState = {
             url: "/create/",
             views: {
@@ -64,7 +89,12 @@
         $stateProvider.state("hr", hr)
         $stateProvider.state("hr.store-list", hrStoreList);
         $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
+        $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
+        $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
         $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+
+
+        
     });
 
     app.run(($rootScope) => {

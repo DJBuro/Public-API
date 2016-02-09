@@ -10,6 +10,7 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Framework.Dates;
+using MyAndromeda.Logging;
 using MyAndromeda.Services.Gprs;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
@@ -18,6 +19,7 @@ namespace MyAndromeda.Services.Bringg
 {
     public class BringgService : IBringgService
     {
+        private readonly IMyAndromedaLogger logger;
         private readonly IDateServices dateServices;
         private readonly IStoreDataService storeDataService;
         private readonly IOrderHeaderDataService orderHeaderDataService;
@@ -30,8 +32,10 @@ namespace MyAndromeda.Services.Bringg
             IDateServices dateServices,
             IStoreDataService storeDataService,
             IBringgSettingsDataService gpsSettingsDataService,
-            IGprsService gprsDeviceService)
+            IGprsService gprsDeviceService,
+            IMyAndromedaLogger logger)
         {
+            this.logger = logger;
             this.gprsDeviceService = gprsDeviceService;
             this.gpsSettingsDataService = gpsSettingsDataService;
             this.storeDataService = storeDataService;
@@ -105,8 +109,33 @@ namespace MyAndromeda.Services.Bringg
             var bringgOrder = this.CreateOrder(order, customerAddress);
 
             var store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
-            var result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder);
 
+            bool success = false;
+            bool triedWithoutPhone = false;
+
+            ResultEnum result = ResultEnum.UnknownError;
+            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder);
+
+            //try again
+            if(!success)
+            {                    
+                this.logger.Error("Sending Bringg task failed with the phone number... switch to email only");
+
+                triedWithoutPhone = true;
+                customer.Phone = null;
+
+                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder);
+            }
+
+            if (result == ResultEnum.OK)
+            {
+                success = true;
+            }
+
+            if (!success) 
+            {
+                this.logger.Error("Failed with phone and email");
+            }
 
             switch (result)
             {
@@ -274,7 +303,7 @@ namespace MyAndromeda.Services.Bringg
             }
 
             model.Note += "Directions: ";
-
+            
             var hasCustomerDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
             var hasOrderDirections = orderHeader.CustomerAddress != null && !string.IsNullOrWhiteSpace(orderHeader.CustomerAddress.Directions);
 
@@ -288,6 +317,11 @@ namespace MyAndromeda.Services.Bringg
             else 
             {
                 model.Note += "none;"; 
+            }
+
+            if (!string.IsNullOrWhiteSpace(orderHeader.CookingInstructions)) 
+            {
+                model.Note += " Cooking instructions: " + orderHeader.CookingInstructions;
             }
 
             return model;

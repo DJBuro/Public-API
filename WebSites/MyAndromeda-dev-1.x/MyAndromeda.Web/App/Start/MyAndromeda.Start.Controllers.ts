@@ -89,8 +89,14 @@
     });
 
     controllers.controller("storeListController", ($scope, $timeout, userStoreDataService: Services.UserStoreDataService) => {
-        $scope.hideStores = true;
         var chain: Services.Models.IChain = $scope.chain;
+
+        var status = {
+            hasStores: false,
+            hideStores: true
+        };
+
+        $scope.status = status;
 
         var storeListDataSource = new kendo.data.DataSource({
             transport: {
@@ -103,7 +109,7 @@
 
                         if (callback.data.length > 0) {
                             $timeout(() => {
-                                $scope.hasStores = true;
+                                status.hasStores = true;
                             });
                         }
                     });
@@ -123,7 +129,7 @@
         
 
         var storeListOptions: kendo.ui.GridOptions = {
-            autoBind: false,
+            autoBind: true,
             sortable: true,
             dataSource: storeListDataSource,
             filterable: {

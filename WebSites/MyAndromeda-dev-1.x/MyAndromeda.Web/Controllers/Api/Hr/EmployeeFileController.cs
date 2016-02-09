@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json.Converters;
+using MyAndromeda.Data.Model.AndroAdmin;
 
 
 namespace MyAndromeda.Web.Controllers.Api.Hr
@@ -19,16 +20,28 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
     public class EmployeeFileController : ApiController
     {
         private readonly IMyAndromedaLogger logger;
+        private readonly MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext;
+
         private readonly DataWarehouseDbContext dbContext;
         private readonly DbSet<EmployeeRecord> employeeTable;
+        private readonly DbSet<EmployeeStoreLinkRecord> linkRecords; 
 
-        public EmployeeFileController(IMyAndromedaLogger logger, DataWarehouseDbContext dbContext) 
+        private readonly DbSet<Store> storeRecords;
+
+        public EmployeeFileController(IMyAndromedaLogger logger,
+            MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext,
+            DataWarehouseDbContext dbContext) 
         {
+            this.androAdminDbContext = androAdminDbContext;
             this.dbContext = dbContext;
             this.employeeTable = this.dbContext.Set<EmployeeRecord>();
-            this.logger = logger;
-        }
+            this.linkRecords = this.dbContext.Set<EmployeeStoreLinkRecord>();
+            this.storeRecords = this.androAdminDbContext.Set<Store>();
 
+            this.logger = logger;
+            
+            
+        }
 
         [HttpGet]
         [Route("list")]
@@ -137,7 +150,25 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             return result;
         }
 
-        
+
+        //hr/{0}/employees/{1}/list-stores/{2}
+        [HttpGet]
+        [Route("list-stores/{employeeId}")]
+        public async Task<IEnumerable<object>> ListEmployeeStores([FromUri]Guid employeeId) 
+        {
+            var ids = await this.linkRecords.Where(e => e.EmployeeRecordId == employeeId).Select(e=> e.AdromedaSiteId).ToListAsync();
+
+            var stores = await this.storeRecords
+                .Where(e => ids.Contains(e.AndromedaSiteId))
+                .Select(e=> new {
+                    AndromedaSiteId = e.AndromedaSiteId,
+                    ChainId = e.ChainId,
+                    Name = e.Name
+                })
+                .ToListAsync();
+
+            return stores.Select(e=> e as object);
+        }
     }
 
 }

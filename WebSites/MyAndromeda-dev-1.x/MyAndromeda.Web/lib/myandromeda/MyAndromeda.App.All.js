@@ -2241,20 +2241,61 @@ var MyAndromeda;
                     var dataSource = new kendo.data.DataSource({
                         transport: {
                             read: function (options) {
-                                var promise = _this.$http.post(read, options.data);
+                                MyAndromeda.Logger.Notify("read: options");
+                                MyAndromeda.Logger.Notify(options);
+                                var data = options.data;
+                                var a = {
+                                    aggregate: data.aggregate,
+                                    filter: data.filter,
+                                    filters: data.filter,
+                                    group: data.group,
+                                    groups: data.group,
+                                    models: data.models,
+                                    page: data.page,
+                                    pageSize: data.pageSize,
+                                    skip: data.skip,
+                                    sort: data.sort,
+                                    sorts: data.sort,
+                                    take: data.take
+                                };
+                                var promise = _this.$http.post(read, a);
                                 Rx.Observable
                                     .fromPromise(promise)
-                                    .subscribe(function (r) { options.success(r.data); }, function (ex) { });
+                                    .subscribe(function (r) {
+                                    options.success(r.data);
+                                }, function (ex) { });
+                            },
+                            parameterMap: function (data, type) {
+                                //return kendo.stringify(data);
+                                var a = {
+                                    aggregate: data.aggregate,
+                                    filter: data.filter,
+                                    filters: data.filter,
+                                    group: data.group,
+                                    groups: data.group,
+                                    models: data.models,
+                                    page: data.page,
+                                    pageSize: data.pageSize,
+                                    skip: data.skip,
+                                    sort: data.sort,
+                                    sorts: data.sort,
+                                    take: data.take
+                                };
+                                MyAndromeda.Logger.Notify("param map");
+                                MyAndromeda.Logger.Notify(a);
+                                return kendo.stringify(a);
                             }
                         },
                         //data: "Data",
-                        //pageSize: 10,
-                        //page: 1,
+                        pageSize: 10,
+                        page: 1,
                         serverPaging: true,
                         serverSorting: true,
                         schema: {
-                            //data: "Data",
-                            //total: "Total",
+                            data: "Data",
+                            total: function (response) {
+                                return response.Total;
+                            },
                             model: {
                                 id: "Id",
                                 fields: {
@@ -2273,6 +2314,7 @@ var MyAndromeda;
                                 },
                             }
                         },
+                        sort: sort
                     });
                     return dataSource;
                 };
@@ -2477,8 +2519,12 @@ var MyAndromeda;
                         sortable: true,
                         filterable: true,
                         pageable: {
-                            pageSize: 10,
-                            refresh: true
+                            numeric: true,
+                            refresh: true,
+                            pageSizes: [10, 25, 50],
+                            previousNext: true,
+                            input: false,
+                            info: false
                         },
                         columns: [
                             { title: "Id", field: "Id", template: gridTempaltes.orderId },
@@ -3289,7 +3335,7 @@ var MyAndromeda;
             var hr = {
                 abstract: true,
                 url: '/hr/:chainId',
-                template: '<div ui-view="main"></div>'
+                template: '<div id="masterUI" ui-view="main"></div>'
             };
             var hrStoreList = {
                 url: "/list/store/:andromedaSiteId",
@@ -3318,6 +3364,28 @@ var MyAndromeda;
                 },
                 cache: false
             };
+            var hrStoreEmployeEditDetails = {
+                url: "/details",
+                views: {
+                    "editor-main": {
+                        templateUrl: "employee-edit-details.html",
+                    }
+                },
+                cache: false
+            };
+            var hrStoreEmployeeEditScheduler = {
+                url: "/schedule",
+                views: {
+                    "editor-main": {
+                        templateUrl: "employee-edit-schedule.html",
+                        controller: "employeeEditSchedulerController"
+                    }
+                },
+                onEnter: function () {
+                    MyAndromeda.Logger.Notify("Edit person's schedule.");
+                },
+                cache: false
+            };
             var hrStoreEmployeeCreate = {
                 url: "/create/",
                 views: {
@@ -3337,6 +3405,8 @@ var MyAndromeda;
             $stateProvider.state("hr", hr);
             $stateProvider.state("hr.store-list", hrStoreList);
             $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
+            $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
+            $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
             $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
         });
         app.run(function ($rootScope) {
@@ -3455,6 +3525,7 @@ var MyAndromeda;
                     var employee = getOrCreateEmployee();
                     MyAndromeda.Logger.Notify(employee);
                     $scope.employee = employee;
+                    employeeServiceState.EditEmployee.onNext(employee);
                 };
                 if (noData && !employeeService.IsLoading) {
                     MyAndromeda.Logger.Notify("Load employees");
@@ -3538,6 +3609,55 @@ var MyAndromeda;
                 //uploadSettings
                 $scope.save = save;
                 $scope.profilePicture = getProfilePic;
+            });
+            app.controller("employeeEditSchedulerController", function ($element, $scope, $timeout, employeeService, employeeServiceState) {
+                var loadRelatedStoresObservable = employeeServiceState.EditEmployee.map(function (employee) {
+                    var loadObservable = employeeService.GetStoreListByEmployee(employeeServiceState.CurrentChainId, employeeServiceState.CurrentAndromedaSiteId, employee.Id);
+                    return loadObservable;
+                });
+                var editEmployeeObservable = employeeServiceState.EditEmployee;
+                var merged = Rx.Observable.combineLatest(loadRelatedStoresObservable, editEmployeeObservable, function (stores, employee) {
+                    return {
+                        stores: stores,
+                        employee: employee
+                    };
+                });
+                var editSubscription = merged.subscribe(function (data) {
+                    var schedulerOptions = {
+                        date: new Date(),
+                        height: 600,
+                        timezone: "Etc/UTC",
+                        editable: true,
+                        resources: [
+                            {
+                                field: "Employee",
+                                dataTextField: "ShortName",
+                                dataValueField: "Id",
+                                dataSource: [
+                                    data.employee
+                                ]
+                            },
+                            {
+                                field: "Store",
+                                dataSource: data.stores,
+                                dataValueField: "AndromedaSiteId",
+                                dataTextField: "Name"
+                            }
+                        ],
+                        views: [
+                            "day",
+                            "week",
+                            "month",
+                            "timeline"
+                        ]
+                    };
+                    $timeout(function () {
+                        $scope.schedulerOptions = schedulerOptions;
+                    });
+                });
+                $scope.$on('$destroy', function () {
+                    editSubscription.dispose();
+                });
             });
         })(Controllers = Hr.Controllers || (Hr.Controllers = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
@@ -3833,6 +3953,7 @@ var MyAndromeda;
                     var _this = this;
                     this.ChainId = new Rx.BehaviorSubject(null);
                     this.AndromedaSiteId = new Rx.BehaviorSubject(null);
+                    this.EditEmployee = new Rx.BehaviorSubject(null);
                     this.EmployeeUpdated = new Rx.Subject();
                     this.ChainId.subscribe(function (e) { _this.CurrentChainId = e; });
                     this.AndromedaSiteId.subscribe(function (e) { _this.CurrentAndromedaSiteId = e; });
@@ -3960,6 +4081,13 @@ var MyAndromeda;
                         onError(error);
                     });
                 };
+                EmployeeService.prototype.GetStoreListByEmployee = function (chainId, andromedaSiteId, employeeId) {
+                    var route = "hr/{0}/employees/{1}/list-stores/{2}";
+                    route = kendo.format(route, chainId, andromedaSiteId, employeeId);
+                    var promise = this.$http.get(route);
+                    var map = Rx.Observable.fromPromise(promise).map(function (s) { return s.data; });
+                    return map;
+                };
                 EmployeeService.prototype.GetEmployeePictureUrl = function (chainId, andromedaSiteId, employeeId) {
                     //"hr/{{$stateParams.chainId}}/employees/{{$stateParams.andromedaSiteId}}/resources/{{employee.Id}}"
                     var path = "hr/{0}/employees/{1}/resources/{2}/profile-pic";
@@ -4022,7 +4150,8 @@ var MyAndromeda;
         var app = angular.module("MyAndromeda.Hr", [
             "MyAndromeda.Hr.Config",
             "MyAndromeda.Resize",
-            "MyAndromeda.Progress"
+            "MyAndromeda.Progress",
+            "ngAnimate"
         ]);
         app.run(function () {
             MyAndromeda.Logger.Notify("HR module is running");
@@ -8908,8 +9037,12 @@ var MyAndromeda;
             };
         });
         controllers.controller("storeListController", function ($scope, $timeout, userStoreDataService) {
-            $scope.hideStores = true;
             var chain = $scope.chain;
+            var status = {
+                hasStores: false,
+                hideStores: true
+            };
+            $scope.status = status;
             var storeListDataSource = new kendo.data.DataSource({
                 transport: {
                     read: function (options) {
@@ -8918,7 +9051,7 @@ var MyAndromeda;
                             options.success(callback.data);
                             if (callback.data.length > 0) {
                                 $timeout(function () {
-                                    $scope.hasStores = true;
+                                    status.hasStores = true;
                                 });
                             }
                         });
@@ -8934,7 +9067,7 @@ var MyAndromeda;
             storeListDataSource.read();
             var storeTemplate = $("#store-list-template").html();
             var storeListOptions = {
-                autoBind: false,
+                autoBind: true,
                 sortable: true,
                 dataSource: storeListDataSource,
                 filterable: {
@@ -8994,6 +9127,7 @@ var MyAndromeda;
     var Start;
     (function (Start) {
         var start = angular.module("MyAndromeda.Start", [
+            "ngAnimate",
             "MyAndromeda.Start.Config",
             "MyAndromeda.Hr"
         ]);

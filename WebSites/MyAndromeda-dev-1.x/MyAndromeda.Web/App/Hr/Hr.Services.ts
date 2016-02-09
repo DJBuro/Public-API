@@ -10,6 +10,7 @@
         public CurrentChainId: number;
         public CurrentAndromedaSiteId: number;
 
+        public EditEmployee: Rx.BehaviorSubject<Models.IEmployee> = new Rx.BehaviorSubject<Models.IEmployee>(null);
         public EmployeeUpdated: Rx.Subject<Models.IEmployee> = new Rx.Subject<Models.IEmployee>();
 
         constructor() {
@@ -178,6 +179,17 @@
                 this.Error.onNext("Creating Failed");
                 onError(error);
             });
+        }
+
+        public GetStoreListByEmployee(chainId: number, andromedaSiteId: number, employeeId: string): Rx.Observable<Models.IStore[]> {
+            let route = "hr/{0}/employees/{1}/list-stores/{2}"; 
+
+            route = kendo.format(route, chainId, andromedaSiteId, employeeId);
+            let promise = this.$http.get(route);
+
+            let map = Rx.Observable.fromPromise(promise).map(s => <Models.IStore[]>s.data);
+
+            return map;
         }
 
         public GetEmployeePictureUrl(chainId: number, andromedaSiteId: number, employeeId: string) : string

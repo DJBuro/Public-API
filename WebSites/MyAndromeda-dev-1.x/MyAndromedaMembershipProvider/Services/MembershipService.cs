@@ -120,6 +120,7 @@ namespace MyAndromedaMembershipProvider.Services
         {
             var user = this.userDataService
                 .Query(entity => entity.Username == userNameOrEmail)
+                .Where(e=> e.IsEnabled)
                 .SingleOrDefault(); 
             
             if (user == null)

@@ -2,7 +2,7 @@
 {
     var start = angular.module("MyAndromeda.Start",
         [
-            
+            "ngAnimate",
             "MyAndromeda.Start.Config",
             "MyAndromeda.Hr"
         ]);

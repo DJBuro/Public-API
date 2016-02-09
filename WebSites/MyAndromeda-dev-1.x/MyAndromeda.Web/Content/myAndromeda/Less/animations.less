@@ -1,56 +1,72 @@
-﻿
-.show-animation {
-    opacity: 1;
-    -moz-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-    -o-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-    -webkit-transition: visibility 0s linear 0.5s,opacity 0.5s linear;
-    transition: visibility 0s linear 0.5s,opacity 0.5s linear;
+﻿@import 'animate.less';
+
+//MIXINS
+.transition(@transition) {
+  -webkit-transition: @transition;
+     -moz-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+.backface {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-.fade.ng-enter, .fade.ng-leave {
-    position: absolute;
-    -webkit-animation-duration: 1s;
-    -moz-animation-duration: 1s;
-    -o-animation-duration: 1s;
-    animation-duration: 1s;
+.translate3d(@x, @y, @z) {
+    .backface;
+    -webkit-transform: translate3d(@x, @y, @z);
+    -moz-transform: translate3d(@x, @y, @z);
+    -o-transform: translate3d(@x, @y, @z);
+    -ms-transform: translate3d(@x, @y, @z);
+    transform: translate3d(@x, @y, @z);
 }
 
-.fade.ng-enter {
-    -webkit-animation-name: fadeInDown;
-    -moz-animation-name: fadeInDown;
-    -o-animation-name: fadeInDown;
-    animation-name: fadeInDown;
-}
+.tempAbs {
+  //mixin to temporarily make this position absolute  
+  //so it doesn't conflict with other divs
 
-.fade.ng-leave {
-    -webkit-animation-name: fadeOutDown;
-    -moz-animation-name: fadeOutDown;
-    -o-animation-name: fadeOutDown;
-    animation-name: fadeOutDown;
+  position:absolute;
+  z-index: 10;
 }
 
 
-.bounce.ng-enter, .bounce.ng-leave {
-    position: absolute;
-    -webkit-animation-duration: 1s;
-    -moz-animation-duration: 1s;
-    -o-animation-duration: 1s;
-    animation-duration: 1s;
+//GLOBAL TRANSITION CLASS
+#masterUI {
+	.transition(all 1s); 
+    position:relative;
+    //if using child transition animations, #
+    //they should all be under this time value, keyframe animations are different
 }
 
-.bounce.ng-enter {
-    -webkit-animation-name: bounceInDown;
-    -moz-animation-name: bounceInDown;
-    -o-animation-name: bounceInDown;
-    animation-name: bounceInDown;
+.list-page {
+    .animated;
+}
+.edit-page {
+    .animated;
 }
 
-.bounce.ng-leave {
-    -webkit-animation-name: bounceOutDown;
-    -moz-animation-name: bounceOutDown;
-    -o-animation-name: bounceOutDown;
-    animation-name: bounceOutDown;
+#masterUI.ng-enter {
+    .list-page {
+  		.fadeInRight;
+        .tempAbs;
+
+  	}
+    .edit-page{
+        .fadeInRight;
+        .tempAbs;
+    }
 }
 
+#masterUI.ng-leave {
+  	.list-page {
+  		.fadeOutLeft;
+        .tempAbs;
+  	}
+    .edit-page{
+        .fadeOutLeft;
+        .tempAbs;
+    }
+}
 
 

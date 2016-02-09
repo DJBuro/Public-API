@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Kendo.Mvc.Extensions;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
@@ -12,6 +13,9 @@ using MyAndromeda.Logging;
 using MyAndromeda.Services.Orders.Events;
 using MyAndromeda.Framework.Helpers;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using Kendo.Mvc.UI;
+using System.Web.Http.ModelBinding;
+using Newtonsoft.Json;
 
 namespace MyAndromeda.Web.Controllers.Api.Data
 {
@@ -138,10 +142,15 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         [HttpPost]
         [Route("data/{andromedaSiteId}/debug-orders")]
-        public async Task<IEnumerable<OrderViewModel>> List(
-            //[ModelBinder(typeof(WebApiDataSourceRequestModelBinder))]DataSourceRequest request
-            ) 
+        public async Task<DataSourceResult> List() 
         {
+            //{"take":10,"skip":0,"page":1,"pageSize":10}
+            string body = await this.Request.Content.ReadAsStringAsync();
+
+            var request = JsonConvert.DeserializeObject<DataSourceRequest>(body);
+            var query = JsonConvert.DeserializeObject<DataQuery>(body);
+
+            request.Sorts = query.Sort.Select(e => new Kendo.Mvc.SortDescriptor(e.Field, e.Dir.Equals("desc") ? System.ComponentModel.ListSortDirection.Descending : System.ComponentModel.ListSortDirection.Ascending)).ToList();
 
             try
             {
@@ -151,12 +160,12 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 .Where(e => e.ExternalSiteID == this.currentSite.ExternalSiteId)
                 .Include(e => e.OrderStatu)
                 .Include(e => e.Customer)
-               
-                .OrderByDescending(e => e.OrderPlacedTime)
-                .Take(100)
                 .Select(e => new OrderViewModel()
                 {
                     Id = e.ID,
+                    ExternalOrderRef = e.ExternalOrderRef,
+                    CookingInstructions = e.CookingInstructions,
+                    OrderNotes = e.OrderNotes,
                     ItemCount = e.OrderLines.Count(),
                     DeliveryCharge = e.DeliveryCharge,
                     Tips = e.Tips,
@@ -185,7 +194,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                         Phone = e.Customer.Contacts.Where(c => c.ContactTypeId == 1).Select(c => c.Value).FirstOrDefault(),
                         Latitude = e.Customer.Address.Lat,
                         Longitude = e.Customer.Address.Long,
-                        Postcode = e.Customer.Address.PostCode
+                        Postcode = e.Customer.Address.PostCode,
+                        Directions = e.Customer.Address.Directions
                     },
                     OrderAddress = new OrderAddressViewModel()
                     {
@@ -194,6 +204,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                         Longitude = e.CustomerAddress.Longitude,
                         RoadNum = e.CustomerAddress.RoadNum,
                         RoadName = e.CustomerAddress.RoadName,
+                        Directions = e.CustomerAddress.Directions
                     },
                     Driver = new DriverViewModel()
                     {
@@ -204,7 +215,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                     IbsOrderId = e.IbsOrders.OrderByDescending(d => d.CreatedAtUtc).Select(r=> r.IbsOrderId).FirstOrDefault()
                 });
 
-                var orders = await ordersQuery.ToArrayAsync();
+                var orders = ordersQuery.ToDataSourceResult(request); //request. //await ordersQuery.ToArrayAsync();
+
                 return orders;
             }
             catch (Exception ex)
@@ -293,6 +305,17 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         } 
     }
 
+    public class DataQuery 
+    {
+        public Sort[] Sort { get; set; }
+    }
+
+    public class Sort 
+    {
+        public string Dir { get; set; }
+        public string Field { get; set; }
+    }
+
     public class PaymentLine 
     {
 
@@ -344,6 +367,12 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public int? Tips { get; set; }
 
         public decimal DeliveryCharge { get; set; }
+
+        public string CookingInstructions { get; set; }
+
+        public string OrderNotes { get; set; }
+
+        public string ExternalOrderRef { get; set; }
     }
 
     public class OrderItem 
@@ -368,6 +397,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         public string RoadNum { get; set; }
         public string RoadName { get; set; }
+        public string Directions { get; set; }
     }
 
     public class CustomerViewModel 
@@ -400,6 +430,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public string Longitude { get; set; }
 
         public string Postcode { get; set; }
+
+        public string Directions { get; set; }
 
         public decimal[] GeoLocation 
         {

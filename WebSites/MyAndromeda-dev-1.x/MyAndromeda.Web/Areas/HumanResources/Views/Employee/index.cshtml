@@ -1,234 +1,146 @@
 ﻿<!-- Views -->
 <script type="text/ng-template" id="employee-list.html">
+    <div class="list-page">
+        <div class="header">
+            <h3>Employees</h3>
+            <a class="btn btn-primary" ui-sref="chain.list">Back</a>
+        </div>
 
-    <div class="header">
-        <h3>Employees</h3>
-        <a class="btn btn-primary" ui-sref="chain.list">Back</a>
+        <!-- List of employees  -->
+        <kendo-grid options="employeeGridOptions"></kendo-grid>
     </div>
-
-    <!-- List of employees  -->
-    <kendo-grid options="employeeGridOptions"></kendo-grid>
-
 </script>
 
 <script type="text/ng-template" id="employee-edit.html">
+    <div class="edit-page">
+        <div class="header">
+            <h3>Edit Employee</h3>
 
-    <div class="header">
-        <h3>Edit Employee</h3>
+            <span class="btn-group pull-right text-right">
+                <a class="btn btn-primary btn-sm" ng-click="save(employee)">Save</a>
+                <a class="btn btn-default btn-sm" ui-sref="hr.store-list">Back</a>
+            </span>
+        </div>
 
-        <span class="btn-group pull-right text-right">
-            <a class="btn btn-primary btn-sm" ng-click="save(employee)">Save</a>
-            <a class="btn btn-default btn-sm" ui-sref="hr.store-list">Back</a>
-        </span>
-    </div>
+        <form kendo-validator="validator">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{employee.ShortName}}
 
-    <form kendo-validator="validator">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {{employee.ShortName}}
-
-                        <span ng-if="employee.ShiftStatus" class="label label-success">On shift</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="row form-group">
-                                    <div class="col-sm-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" style="width:40px"><i class="fa fa-child"></i></span>
-                                            <input type="text" class="form-control" ng-model="employee.ShortName" id="employee.ShortName" name="employee.ShortName"
-                                                   placeholder="Short-Name" required>
+                            <span ng-if="employee.ShiftStatus" class="label label-success">On shift</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="width:40px"><i class="fa fa-child"></i></span>
+                                                <input type="text" class="form-control" ng-model="employee.ShortName" id="employee.ShortName" name="employee.ShortName"
+                                                       placeholder="Short-Name" required>
+                                            </div>
+                                            <span class="k-invalid-msg" data-for="employee.ShortName"></span>
                                         </div>
-                                        <span class="k-invalid-msg" data-for="employee.ShortName"></span>
+
                                     </div>
 
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col-sm-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon" style="width:40px"><i class="fa fa-phone"></i></span>
-                                            <input type="text" class="form-control" ng-model="employee.Phone" id="employee.Phone" name="employee.Phone"
-                                                   placeholder="land/mobile number" required>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="width:40px"><i class="fa fa-phone"></i></span>
+                                                <input type="text" class="form-control" ng-model="employee.Phone" id="employee.Phone" name="employee.Phone"
+                                                       placeholder="land/mobile number" required>
+                                            </div>
+                                            <span class="col-sm-12 k-invalid-msg" data-for="employee.Phone"></span>
                                         </div>
-                                        <span class="col-sm-12 k-invalid-msg" data-for="employee.Phone"></span>
+
                                     </div>
 
-                                </div>
-
-                                <div class="row form-group">
-                                    <div class="col-sm-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-envelope-o"></i>
-                                            </span>
-                                            <input type="email" class="form-control" ng-model="employee.Email" id="employee.Email" name="employee.Email"
-                                                   placeholder="e.g. myname@example.net" required>
+                                    <div class="row form-group">
+                                        <div class="col-sm-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-envelope-o"></i>
+                                                </span>
+                                                <input type="email" class="form-control" ng-model="employee.Email" id="employee.Email" name="employee.Email"
+                                                       placeholder="e.g. myname@example.net" required>
+                                            </div>
+                                            <span class="k-invalid-msg" data-for="employee.Email"></span>
                                         </div>
-                                        <span class="k-invalid-msg" data-for="employee.Email"></span>
                                     </div>
-                                </div>
 
-                                <div ng-if="employee.Id"
-                                     class="row form-group">
-                                    <div class="col-sm-12">
-                                        <div class="employee-photo-large" style="display:flex;justify-content:center;align-items:center;">
-                                            <div style="padding:5px;" ng-if="!status.uploading">
-                                                <img style="max-height:180px;max-width:100%" ng-src="{{profilePicture(employee)}}" />
+                                    <div ng-if="employee.Id"
+                                         class="row form-group">
+                                        <div class="col-sm-12">
+                                            <div class="employee-photo-large" style="display:flex;justify-content:center;align-items:center;">
+                                                <div style="padding:5px;" ng-if="!status.uploading">
+                                                    <img style="max-height:180px;max-width:100%" ng-src="{{profilePicture(employee)}}" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div ng-if="employee.Id">
-                                    <div class="row form-group">
-                                        <div class="col-sm-12">
-                                            <input name="files"
-                                                   kendo-upload
-                                                   type="file"
-                                                   k-upload="onUploading"
-                                                   k-success="onUploadSuccess"
-                                                   k-async="{ saveUrl: saveRoute(), autoUpload: true }" />
+                                    <div ng-if="employee.Id">
+                                        <div class="row form-group">
+                                            <div class="col-sm-12">
+                                                <input name="files"
+                                                       kendo-upload
+                                                       type="file"
+                                                       k-upload="onUploading"
+                                                       k-success="onUploadSuccess"
+                                                       k-async="{ saveUrl: saveRoute(), autoUpload: true }" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div ng-if="!employee.Id">
-                                    <div class="alert alert-info">Save the record first before adding a image.</div>
+                                    <div ng-if="!employee.Id">
+                                        <div class="alert alert-info">Save the record first before adding a image.</div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
+                </div>
+                <div class="col-sm-9">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <a class="btn btn-default" ui-sref="hr.store-list.edit-employee.details">Details</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-default" ui-sref="hr.store-list.edit-employee.schedule">Schedule</a>
+                        </li>
+                    </ul>
+
+                    <div ui-view="editor-main"></div>
 
                 </div>
             </div>
-            <div class="col-sm-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Details
 
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-horizontal form-widgets col-sm-12">
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">
-                                    Name
-                                </label>
-                                <div class="col-sm-8">
-                                    <input type="text" ng-model="employee.Name" class="k-textbox" id="employee.Name" name="employee.Name"
-                                           placeholder="Enter full employee name" required />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="birthday">Birthday</label>
-                                <div class="col-sm-8 col-md-6">
-                                    <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" id="employee.DateOfBirth" name="employee.DateOfBirth"
-                                           placeholder="Select a date of birth" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="gender">Gender</label>
-                                <div class="col-sm-8">
-                                    <select kendo-drop-down-list
-                                            ng-model="employee.Gender" id="employee.Gender" name="employee.Gender">
-                                        <option value="Male" selected>Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="employee.Department">Department</label>
-                                <div class="col-sm-8">
-                                    <select kendo-drop-down-list
-                                            ng-model="employee.Department" id="employee.Department" name="employee.Department">
-                                        <option value="Front of house" selected>Front of house</option>
-                                        <option value="Kitchen">Kitchen</option>
-                                        <option value="Management">Management</option>
-                                        <option value="Delivery">Delivery</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">Primary Role</label>
-                                <div class="col-sm-8">
-                                    @*{{employee.PrimaryRole}}*@
-                                    <select kendo-combo-box ng-model="employee.PrimaryRole" id="employee.PrimaryRole" name="employee.PrimaryRole">
-                                        <optgroup label="Front of house">
-                                            <option value="Receptionist" selected>Receptionist</option>
-                                            <option value="Order taker">Order taker</option>
-                                        </optgroup>
-                                        <optgroup label="Kitchen">
-                                            <option value="Head Chef">Head Chef</option>
-                                            <option value="Chef">Chef</option>
-                                            <option value="Kitchen Porter">Kitchen Porter</option>
-                                        </optgroup>
-                                        <optgroup label="Management">
-                                            <option value="Regional Manager">Regional Manager</option>
-                                            <option value="General Manager">General Manager</option>
-                                            <option value="Manager">Manager</option>
-                                            <option value="Assistent Manager">Assistant Manager</option>
-                                            <option value="Supervisor">Supervisor</option>
-                                        </optgroup>
-                                        <optgroup label="Delivery">
-                                            <option value="Driver">Driver</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">Driving License</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="k-textbox" ng-model="employee.DrivingLicense" id="employee.DrivingLicense" name="employee.DrivingLicense" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">Payroll Number</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="k-textbox" ng-model="employee.PayrollNumber" id="employee.PayrollNumber" name="employee.PayrollNumber" />
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">National Insurance</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="k-textbox" ng-model="employee.NationalInsurance" id="employee.NationalInsurance" name="employee.NationalInsurance" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="nav nav-pills" role="tablist">
+                        <li role="presentation" class="active"><a href="#">Documents <span class="badge">{{employee.Documents.length}}</span></a></li>
+                        <li role="presentation"><a href="#">Employment History <span class="badge">3</span></a></li>
+                        <li role="presentation"><a href="#">Schedule</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <ul class="nav nav-pills" role="tablist">
-                    <li role="presentation" class="active"><a href="#">Documents <span class="badge">{{employee.Documents.length}}</span></a></li>
-                    <li role="presentation"><a href="#">Employment History <span class="badge">3</span></a></li>
-                    <li role="presentation"><a href="#">Schedule</a></li>
-                </ul>
+            <div class="row" ng-if="employee">
+                <div class="col-sm-12">
+                    <employee-docs employee="employee">
+                    </employee-docs>
+                </div>
             </div>
-        </div>
-
-        <div class="row" ng-if="employee">
-            <div class="col-sm-12">
-                <employee-docs employee="employee">
-                </employee-docs>
-            </div>
-        </div>
 
 
 
 
 
-    </form>
+        </form>
+    </div>
 </script>
 
 <script type="text/ng-template" id="employee-documents.html">
@@ -373,11 +285,123 @@
 </script>
 
 <script type="text/html" id="employee-list-row-template">
-    <a class="btn btn-info" data-id="dataItem.Id" ui-sref="hr.store-list.edit-employee({id: dataItem.Id})">
+    <a class="btn btn-info" data-id="dataItem.Id" ui-sref="hr.store-list.edit-employee.details({id: dataItem.Id})">
         View
     </a>
 </script>
 
 <script type="text/html" id="employee-list-header-template">
     <a class="btn btn-primary" ui-sref="hr.store-list.create-employee">Create</a>
+</script>
+
+<script type="text/ng-template" id="employee-edit-schedule.html">
+
+    <div ng-if="schedulerOptions">
+        <div kendo-scheduler k-options="schedulerOptions">
+            <span k-event-template class='custom-event'>{{dataItem.title}}</span>
+            <div k-all-day-event-template class='custom-all-day-event'>{{dataItem.title}}</div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="employee-edit-details.html">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Details
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal form-widgets col-sm-12">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">
+                        Name
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="employee.Name" class="k-textbox" id="employee.Name" name="employee.Name"
+                               placeholder="Enter full employee name" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="birthday">Birthday</label>
+                    <div class="col-sm-8 col-md-6">
+                        <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" id="employee.DateOfBirth" name="employee.DateOfBirth"
+                               placeholder="Select a date of birth" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="gender">Gender</label>
+                    <div class="col-sm-8">
+                        <select kendo-drop-down-list
+                                ng-model="employee.Gender" id="employee.Gender" name="employee.Gender">
+                            <option value="Male" selected>Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="employee.Department">Department</label>
+                    <div class="col-sm-8">
+                        <select kendo-drop-down-list
+                                ng-model="employee.Department" id="employee.Department" name="employee.Department">
+                            <option value="Front of house" selected>Front of house</option>
+                            <option value="Kitchen">Kitchen</option>
+                            <option value="Management">Management</option>
+                            <option value="Delivery">Delivery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Primary Role</label>
+                    <div class="col-sm-8">
+                        @*{{employee.PrimaryRole}}*@
+                        <select kendo-combo-box ng-model="employee.PrimaryRole" id="employee.PrimaryRole" name="employee.PrimaryRole">
+                            <optgroup label="Front of house">
+                                <option value="Receptionist" selected>Receptionist</option>
+                                <option value="Order taker">Order taker</option>
+                            </optgroup>
+                            <optgroup label="Kitchen">
+                                <option value="Head Chef">Head Chef</option>
+                                <option value="Chef">Chef</option>
+                                <option value="Kitchen Porter">Kitchen Porter</option>
+                            </optgroup>
+                            <optgroup label="Management">
+                                <option value="Regional Manager">Regional Manager</option>
+                                <option value="General Manager">General Manager</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Assistent Manager">Assistant Manager</option>
+                                <option value="Supervisor">Supervisor</option>
+                            </optgroup>
+                            <optgroup label="Delivery">
+                                <option value="Driver">Driver</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Driving License</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="k-textbox" ng-model="employee.DrivingLicense" id="employee.DrivingLicense" name="employee.DrivingLicense" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Payroll Number</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="k-textbox" ng-model="employee.PayrollNumber" id="employee.PayrollNumber" name="employee.PayrollNumber" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">National Insurance</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="k-textbox" ng-model="employee.NationalInsurance" id="employee.NationalInsurance" name="employee.NationalInsurance" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>

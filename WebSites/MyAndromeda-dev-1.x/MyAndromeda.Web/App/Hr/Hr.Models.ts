@@ -1,4 +1,10 @@
 ﻿module MyAndromeda.Hr.Models {
+    export interface IStore {
+        ChainId: number;
+        AndromedaSiteId: number;
+        Name: string;
+    }
+
     export interface IEmployee
     {
         //Store?: string;

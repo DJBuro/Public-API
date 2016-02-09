@@ -3,7 +3,8 @@
     var app = angular.module("MyAndromeda.Hr", [
         "MyAndromeda.Hr.Config",
         "MyAndromeda.Resize",
-        "MyAndromeda.Progress"
+        "MyAndromeda.Progress",
+        "ngAnimate"
     ]);
 
     app.run(() => {

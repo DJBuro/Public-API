@@ -78,20 +78,61 @@ var MyAndromeda;
                     var dataSource = new kendo.data.DataSource({
                         transport: {
                             read: function (options) {
-                                var promise = _this.$http.post(read, options.data);
+                                MyAndromeda.Logger.Notify("read: options");
+                                MyAndromeda.Logger.Notify(options);
+                                var data = options.data;
+                                var a = {
+                                    aggregate: data.aggregate,
+                                    filter: data.filter,
+                                    filters: data.filter,
+                                    group: data.group,
+                                    groups: data.group,
+                                    models: data.models,
+                                    page: data.page,
+                                    pageSize: data.pageSize,
+                                    skip: data.skip,
+                                    sort: data.sort,
+                                    sorts: data.sort,
+                                    take: data.take
+                                };
+                                var promise = _this.$http.post(read, a);
                                 Rx.Observable
                                     .fromPromise(promise)
-                                    .subscribe(function (r) { options.success(r.data); }, function (ex) { });
+                                    .subscribe(function (r) {
+                                    options.success(r.data);
+                                }, function (ex) { });
+                            },
+                            parameterMap: function (data, type) {
+                                //return kendo.stringify(data);
+                                var a = {
+                                    aggregate: data.aggregate,
+                                    filter: data.filter,
+                                    filters: data.filter,
+                                    group: data.group,
+                                    groups: data.group,
+                                    models: data.models,
+                                    page: data.page,
+                                    pageSize: data.pageSize,
+                                    skip: data.skip,
+                                    sort: data.sort,
+                                    sorts: data.sort,
+                                    take: data.take
+                                };
+                                MyAndromeda.Logger.Notify("param map");
+                                MyAndromeda.Logger.Notify(a);
+                                return kendo.stringify(a);
                             }
                         },
                         //data: "Data",
-                        //pageSize: 10,
-                        //page: 1,
+                        pageSize: 10,
+                        page: 1,
                         serverPaging: true,
                         serverSorting: true,
                         schema: {
-                            //data: "Data",
-                            //total: "Total",
+                            data: "Data",
+                            total: function (response) {
+                                return response.Total;
+                            },
                             model: {
                                 id: "Id",
                                 fields: {
@@ -109,7 +150,8 @@ var MyAndromeda;
                                     }
                                 }
                             }
-                        }
+                        },
+                        sort: sort
                     });
                     return dataSource;
                 };

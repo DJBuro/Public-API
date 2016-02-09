@@ -139,6 +139,8 @@
             let employee = getOrCreateEmployee();
             Logger.Notify(employee);
             $scope.employee = employee;
+
+            employeeServiceState.EditEmployee.onNext(employee);
         };
 
         if (noData && !employeeService.IsLoading) {
@@ -247,5 +249,70 @@
 
         $scope.save = save;
         $scope.profilePicture = getProfilePic;
+    });
+
+    app.controller("employeeEditSchedulerController", (
+        $element,
+        $scope,
+        $timeout,
+        employeeService: Services.EmployeeService,
+        employeeServiceState: Services.EmployeeServiceState) => {
+
+        let loadRelatedStoresObservable = employeeServiceState.EditEmployee.map((employee) => {
+
+            var loadObservable = employeeService.GetStoreListByEmployee(employeeServiceState.CurrentChainId, employeeServiceState.CurrentAndromedaSiteId, employee.Id);
+            return loadObservable;
+        });
+        
+        let editEmployeeObservable = employeeServiceState.EditEmployee;
+        
+        let merged = Rx.Observable.combineLatest(loadRelatedStoresObservable, editEmployeeObservable, (stores, employee) => {
+            return {
+                stores: stores,
+                employee: employee
+            };
+        });
+
+        let editSubscription = merged.subscribe((data) => {
+
+            var schedulerOptions: kendo.ui.SchedulerOptions = {
+                date: new Date(),
+                height: 600,
+                timezone: "Etc/UTC",
+                editable: true,
+                resources: [
+                    {
+                        field: "Employee",
+                        dataTextField: "ShortName",
+                        dataValueField: "Id",
+                        dataSource: [
+                            data.employee
+                        ]
+                    },
+                    {
+                        field: "Store",
+                        dataSource: data.stores,
+                        dataValueField: "AndromedaSiteId",
+                        dataTextField: "Name"
+                    }
+                ],
+                views: [
+                    "day",
+                    "week",
+                    "month",
+                    "timeline"
+                ]
+            }
+
+            $timeout(() => {
+                $scope.schedulerOptions = schedulerOptions;
+            });
+            
+        });
+
+        $scope.$on('$destroy', function () {
+            editSubscription.dispose();
+        });
+
     });
 }

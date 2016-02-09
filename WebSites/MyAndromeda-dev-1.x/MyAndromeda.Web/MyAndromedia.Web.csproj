@@ -378,6 +378,18 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\rx-angular\rx.angular.d.ts" />
+    <Content Include="Content\myAndromeda\Less\animate.css">
+      <DependentUpon>animate.less</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\animate.min.css">
+      <DependentUpon>animate.css</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\router-animate.css">
+      <DependentUpon>router-animate.less</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\router-animate.min.css">
+      <DependentUpon>router-animate.css</DependentUpon>
+    </Content>
     <Content Include="Content\No_image_available.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -1961,6 +1973,14 @@
     </Content>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\router-animate.less" />
+    <Content Include="Content\myAndromeda\Less\router-animate.css.map">
+      <DependentUpon>router-animate.css</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\animate.less" />
+    <Content Include="Content\myAndromeda\Less\animate.css.map">
+      <DependentUpon>animate.css</DependentUpon>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
