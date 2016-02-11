@@ -4,7 +4,8 @@
         "MyAndromeda.Hr.Config",
         "MyAndromeda.Resize",
         "MyAndromeda.Progress",
-        "ngAnimate"
+        "ngAnimate",
+        "ui.bootstrap"
     ]);
 
     app.run(() => {

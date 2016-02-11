@@ -8,11 +8,7 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Logging;
 using MyAndromeda.Web.Controllers.Api.Hr.Models;
 using Newtonsoft.Json;
-using System.Net;
-using System.Net.Http;
-using Newtonsoft.Json.Converters;
 using MyAndromeda.Data.Model.AndroAdmin;
-
 
 namespace MyAndromeda.Web.Controllers.Api.Hr
 {
@@ -39,8 +35,6 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             this.storeRecords = this.androAdminDbContext.Set<Store>();
 
             this.logger = logger;
-            
-            
         }
 
         [HttpGet]
@@ -170,5 +164,4 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             return stores.Select(e=> e as object);
         }
     }
-
 }

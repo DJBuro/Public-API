@@ -61,6 +61,24 @@
         }
     };
 
+    export interface IEmployeeTask
+    {
+        Id: string;
+        Title: string;
+        Start: string;
+        End: string;
+        StartTimezone: string;
+        EndTimezone: string;
+        Description: string;
+        RecurrenceId: string;
+        RecurrenceRule: string;
+        RecurrenceException: string;
+        IsAllDay: boolean;
+        EmployeeId: string;
+        AndromedaSiteId: number;
+        TaskType: string;
+    }
+
     export interface IEmployeeDocument
     {
         Id: string;

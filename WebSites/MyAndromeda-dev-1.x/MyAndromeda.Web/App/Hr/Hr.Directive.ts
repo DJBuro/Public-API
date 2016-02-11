@@ -257,15 +257,14 @@
             templateUrl: "employee-pic.html",
             restrict: "EA",
             scope: {
-                employee: '=employee'
+                employee: '=employee',
+                hideFullName: "=hideFullName"
+
             },
             controller: ($scope, $timeout, 
                 employeeService: Services.EmployeeService,
                 employeeServiceState: Services.EmployeeServiceState,
                 uuidService: Services.UUIDService) => {
-
-                //Logger.Notify("employee-pic $scope");
-                //Logger.Notify($scope);
 
                 var dataItem: Models.IEmployee = $scope.employee;
                 var state = {
@@ -300,6 +299,29 @@
                 });
 
 
+            }
+        };
+    });
+
+    app.directive("employeeTask", () => {
+        return {
+            name: "employeeTask",
+            templateUrl: "employee-task.html",
+            scope: {
+                task: "=task",
+                //employee: "=employee"
+            },
+            controller: ($element, $scope, employeeService: Services.EmployeeService) => {
+                //todo - find employee 
+                var top = $($element).closest(".k-event");
+                var task: Models.IEmployeeTask = $scope.task;
+                
+                var employee = employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
+                if (employee === null) { Logger.Notify("cant find the person"); }
+
+                $scope.employee = employee;
+
+                
             }
         };
     });

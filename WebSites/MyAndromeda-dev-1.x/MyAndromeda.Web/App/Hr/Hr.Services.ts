@@ -14,8 +14,15 @@
         public EmployeeUpdated: Rx.Subject<Models.IEmployee> = new Rx.Subject<Models.IEmployee>();
 
         constructor() {
-            this.ChainId.subscribe((e) => { this.CurrentChainId = e; });
-            this.AndromedaSiteId.subscribe((e) => { this.CurrentAndromedaSiteId = e; });
+            this.ChainId.where(e=> e !== null).subscribe((e) => {
+                Logger.Notify("new chain id: " + e);
+                this.CurrentChainId = e;
+
+            });
+            this.AndromedaSiteId.where(e=> e !== null).subscribe((e) => {
+                Logger.Notify("new andromeda site id: " + e);
+                this.CurrentAndromedaSiteId = e;
+            });
         }
     }
 
@@ -185,8 +192,8 @@
             let route = "hr/{0}/employees/{1}/list-stores/{2}"; 
 
             route = kendo.format(route, chainId, andromedaSiteId, employeeId);
-            let promise = this.$http.get(route);
 
+            let promise = this.$http.get(route);
             let map = Rx.Observable.fromPromise(promise).map(s => <Models.IStore[]>s.data);
 
             return map;
@@ -237,6 +244,124 @@
             return path;
         }
 
+        public GetDataSourceForEmployeeScheduler(chainId: number, andromedaSiteId: number, employeeId: string) {
+            let schema: kendo.data.DataSourceSchema = {
+                data: "Data",
+                total: "Total",
+                model: <kendo.data.DataSourceSchemaModel>{
+                    id: "Id",
+                    fields: {
+                        Id: <kendo.data.DataSourceSchemaModelField>{
+                            type: "string",
+                            nullable: true
+                        },
+                        title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                        start: { type: "date", from: "Start" },
+                        end: { type: "date", from: "End" },
+                        startTimezone: { from: "StartTimezone" },
+                        endTimezone: { from: "EndTimezone" },
+                        description: { from: "Description" },
+                        recurrenceId: { from: "RecurrenceId" },
+                        recurrenceRule: { from: "RecurrenceRule" },
+                        recurrenceException: { from: "RecurrenceException" },
+                        isAllDay: { type: "boolean", from: "IsAllDay" },
+                        EmployeeId: <kendo.data.DataSourceSchemaModelField>{
+                            type: "string",
+                            defaultValue: employeeId,
+                            nullable: false,
+                            validation: {
+                                required: true
+                            }
+                        },
+                        AndromedaSiteId: <kendo.data.DataSourceSchemaModelField>{
+                            type: "number",
+                            defaultValue: andromedaSiteId,
+                            nullable: false,
+                            validation: {
+                                required: true
+                            }
+                        },
+                        TaskType: <kendo.data.DataSourceSchemaModelField>{
+                            type: "string",
+                            defaultValue: "Shift",
+                            nullable: false,
+                            validation: {
+                                required: true
+                            }
+                        },
+                    }
+                }
+            };
+
+            let dataSource = new kendo.data.SchedulerDataSource({
+                batch: false,
+                transport: {
+                    read: (options: kendo.data.DataSourceTransportReadOptions) => {
+                        let route = this.GetEmployeeSchedulerReadRoute(chainId, andromedaSiteId, employeeId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            options.success(callback.data);
+                        });
+                    },
+                    update: (options: kendo.data.DataSourceTransportOptions) => {
+                        Logger.Notify("Scheduler update");
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            options.success();
+                        });
+                    },
+                    create: (options: kendo.data.DataSourceTransportOptions) => {
+                        Logger.Notify("Scheduler create");
+                        Logger.Notify(options.data);
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            Logger.Notify("Create response:");
+                            Logger.Notify(callback.data);
+                            options.success(callback.data);
+                        });
+                    },
+                    destroy: (options: kendo.data.DataSourceTransportOptions) => {
+                        throw "Matt- not implemented - scheduler destroy";
+                    }
+                },
+                schema: schema
+            });
+
+            return dataSource;
+
+        }
+
+        private GetEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId, employeeId: string)
+        {
+            let path = "/hr/{0}/employees/{1}/schedule/{2}/list";
+
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+
+            return path;
+        }
+
+        private GetEmployeeSchedulerUpdateRoute(chainId: number, andromedaSiteId, employeeId: string)
+        {
+            let path = "/hr/{0}/employees/{1}/schedule/{2}/update";
+
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+
+            return path;
+        }
+
+        private GetEmployeeSchedulerDestroyRoute(chainId: number, andromedaSiteId, employeeId: string)
+        {
+            let path = "/hr/{0}/employees/{1}/schedule/{2}/destroy";
+
+            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+
+            return path;
+        }
     }
 
     export class UUIDService {

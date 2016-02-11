@@ -258,56 +258,128 @@
         employeeService: Services.EmployeeService,
         employeeServiceState: Services.EmployeeServiceState) => {
 
-        let loadRelatedStoresObservable = employeeServiceState.EditEmployee.map((employee) => {
+        let loadRelatedStoresObservable = employeeServiceState.EditEmployee
+            .where(e=> e !== null)
+            .map((employee) => {
+                var loadObservable = employeeService.GetStoreListByEmployee(employeeServiceState.CurrentChainId, employeeServiceState.CurrentAndromedaSiteId, employee.Id);
 
-            var loadObservable = employeeService.GetStoreListByEmployee(employeeServiceState.CurrentChainId, employeeServiceState.CurrentAndromedaSiteId, employee.Id);
-            return loadObservable;
-        });
+                return loadObservable;
+            }).flatMap(e=> e);
         
-        let editEmployeeObservable = employeeServiceState.EditEmployee;
+        let editEmployeeObservable = employeeServiceState.EditEmployee
+            .where(e=> e !== null);
         
         let merged = Rx.Observable.combineLatest(loadRelatedStoresObservable, editEmployeeObservable, (stores, employee) => {
+            Logger.Notify("Stores: ");
+            Logger.Notify(stores);
+            Logger.Notify("Employee: " + employee.ShortName);
+
             return {
                 stores: stores,
                 employee: employee
             };
         });
 
-        let editSubscription = merged.subscribe((data) => {
 
-            var schedulerOptions: kendo.ui.SchedulerOptions = {
+
+        let editSubscription = merged.subscribe((data) => {
+            Logger.Notify("stores+ employees available");
+            let start = new Date();
+            let end = new Date();
+            
+            start.setHours(0);
+            end.setHours(24);            
+
+            let chainId = employeeServiceState.CurrentChainId,
+                andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId,
+                employeeId = data.employee.Id;
+
+            let dataSource = employeeService.GetDataSourceForEmployeeScheduler(chainId, andromedaSiteId, employeeId);
+            let schedulerOptions: kendo.ui.SchedulerOptions = {
                 date: new Date(),
-                height: 600,
-                timezone: "Etc/UTC",
+                workDayStart: start,
+                workDayEnd: end,
+                majorTick: 120,
+                minorTickCount: 1,
+                workWeekStart: 0,
+                workWeekEnd: 6,
+                allDaySlot: true,
+                
+                dataSource: dataSource,
+                //height: 600,
+                timezone: "Europe/London",
+                currentTimeMarker: {
+                    useLocalTimezone: false
+                },
                 editable: true,
+                pdf: {
+                    fileName: data.employee.ShortName + " schedule",
+                    title: "Schedule"
+                },
+                eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                toolbar: ["pdf"],
+                showWorkHours: false,
                 resources: [
                     {
-                        field: "Employee",
+                        title: "Task",
+                        field: "TaskType",
+                        dataSource: [
+                            {
+                                text: "Normal Shift",
+                                value: "Shift",
+                                color: "#337ab7"
+                            },
+                            {
+                                text: "Need cover",
+                                value: "Need cover",
+                                color: "#d9534f"
+                            },
+                            {
+                                text: "Covering Shift",
+                                value: "Covering Shift",
+                                color: "#d9edf7"
+                            },
+                            {
+                                text: "Unplanned leave",
+                                value: "Unplanned",
+                                color: "#f2dede"
+                            },
+                            {
+                                text: "Planned leave",
+                                value: "Planned leave",
+                                color: "#fcf8e3"
+                            }
+                        ]
+                    },
+                    {
+                        field: "EmployeeId",
                         dataTextField: "ShortName",
                         dataValueField: "Id",
+                        title: "Employee",
                         dataSource: [
                             data.employee
                         ]
                     },
                     {
-                        field: "Store",
+                        title: "Store",
+                        field: "AndromedaSiteId",
                         dataSource: data.stores,
                         dataValueField: "AndromedaSiteId",
                         dataTextField: "Name"
                     }
+                    
                 ],
                 views: [
-                    "day",
-                    "week",
-                    "month",
-                    "timeline"
+                    { type: "day", showWorkHours: false },
+                    { type: "week", selected: true, showWorkHours: false },
+                    { type: "month", showWorkHours: false },
+                    { type: "timeline", showWorkHours: false }
                 ]
             }
 
             $timeout(() => {
                 $scope.schedulerOptions = schedulerOptions;
             });
-            
         });
 
         $scope.$on('$destroy', function () {

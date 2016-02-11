@@ -10,7 +10,9 @@ namespace MyAndromeda.Web.AppStart
         public static void Register(HttpConfiguration config)
         {
             GlobalConfiguration.Configuration.MessageHandlers.Add(new Handlers.LogHandler());
+
             config.MapHttpAttributeRoutes();
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
