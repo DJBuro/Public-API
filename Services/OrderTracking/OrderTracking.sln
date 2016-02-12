@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTracking", "OrderTracking\OrderTracking.csproj", "{31405121-628C-4F41-B32F-F7D7E73363FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTracking.Tests", "OrderTracking.Tests\OrderTracking.Tests.csproj", "{610B9024-BEFD-4779-999A-C54155622517}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Dev|Any CPU = Dev|Any CPU
+		Dev|x86 = Dev|x86
+		GPRS-Live|Any CPU = GPRS-Live|Any CPU
+		GPRS-Live|x86 = GPRS-Live|x86
+		Live|Any CPU = Live|Any CPU
+		Live|x86 = Live|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+		Staging2|Any CPU = Staging2|Any CPU
+		Staging2|x86 = Staging2|x86
+		test1|Any CPU = test1|Any CPU
+		test1|x86 = test1|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Dev|x86.ActiveCfg = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Dev|x86.Build.0 = Debug|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.GPRS-Live|Any CPU.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.GPRS-Live|Any CPU.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.GPRS-Live|x86.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.GPRS-Live|x86.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Live|Any CPU.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Live|Any CPU.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Live|x86.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Live|x86.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Release|x86.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Staging2|Any CPU.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Staging2|Any CPU.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Staging2|x86.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.Staging2|x86.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.test1|Any CPU.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.test1|Any CPU.Build.0 = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.test1|x86.ActiveCfg = Release|Any CPU
+		{31405121-628C-4F41-B32F-F7D7E73363FD}.test1|x86.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Debug|x86.Build.0 = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Dev|x86.ActiveCfg = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Dev|x86.Build.0 = Debug|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.GPRS-Live|Any CPU.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.GPRS-Live|Any CPU.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.GPRS-Live|x86.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.GPRS-Live|x86.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Live|Any CPU.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Live|Any CPU.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Live|x86.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Live|x86.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Release|Any CPU.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Release|x86.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Release|x86.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Staging2|Any CPU.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Staging2|Any CPU.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Staging2|x86.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.Staging2|x86.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.test1|Any CPU.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.test1|Any CPU.Build.0 = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.test1|x86.ActiveCfg = Release|Any CPU
+		{610B9024-BEFD-4779-999A-C54155622517}.test1|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://andromedapos.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OrderTracking.Tests\\OrderTracking.Tests.csproj
+		SccProjectName1 = OrderTracking.Tests
+		SccLocalPath1 = OrderTracking.Tests
+		SccProjectUniqueName2 = OrderTracking\\OrderTracking.csproj
+		SccProjectName2 = OrderTracking
+		SccLocalPath2 = OrderTracking
+	EndGlobalSection
+EndGlobal
