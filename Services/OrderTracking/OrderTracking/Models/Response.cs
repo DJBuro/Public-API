@@ -10,7 +10,7 @@ namespace OrderTracking.Models
         NoError = 0,
         InternalError = 1,
         InvalidApplicationId = 10,
-        CustomerHasNoOrders = 15,
+        InvalidCustomerOrCustomerHasNoOrders = 15,
         InvalidSessionId = 20,
         UnknownCustomer = 25
     }
@@ -38,12 +38,12 @@ namespace OrderTracking.Models
                     this.ResponseJSON += "Invalid application id";
                     this.httpStatusCode = System.Net.HttpStatusCode.BadRequest;
                     break;
-                case ResponseErrorCodes.CustomerHasNoOrders:
-                    this.ResponseJSON += "Customer has no orders";
+                case ResponseErrorCodes.InvalidCustomerOrCustomerHasNoOrders:
+                    this.ResponseJSON += "Invalid customer or customer has no orders";
                     this.httpStatusCode = System.Net.HttpStatusCode.BadRequest;
                     break;
                 case ResponseErrorCodes.InvalidSessionId:
-                    this.ResponseJSON += "Invalid session Idode.BadRequest";
+                    this.ResponseJSON += "Invalid session id";
                     this.httpStatusCode = System.Net.HttpStatusCode.BadRequest;
                     break;
                 case ResponseErrorCodes.UnknownCustomer:

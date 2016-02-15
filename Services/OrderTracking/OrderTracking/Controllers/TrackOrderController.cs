@@ -21,10 +21,10 @@ namespace OrderTracking.Controllers
         }
 
         [HttpGet]
-        [ActionName("TrackOrder")]
-        public async Task<HttpResponseMessage> TrackOrder(string sessionId)
+        [ActionName("Order")]
+        public async Task<HttpResponseMessage> Order(string id)
         {
-            Response response = await WebOrderTrackingServices.TrackOrder(sessionId);
+            Response response = await WebOrderTrackingServices.TrackOrder(id);
 
             HttpResponseMessage httpResponseMessage = this.Request.CreateResponse(response.HttpStatusCode);
             httpResponseMessage.Content = new StringContent(response.ResponseJSON, Encoding.UTF8, "application/json");
@@ -32,10 +32,10 @@ namespace OrderTracking.Controllers
         }
 
         [HttpGet]
-        [ActionName("TrackOrderLocation")]
-        public async Task<HttpResponseMessage> TrackOrderLocation(string sessionId)
+        [ActionName("OrderLocation")]
+        public async Task<HttpResponseMessage> OrderLocation(string id)
         {
-            Response response = await WebOrderTrackingServices.TrackOrderLocation(sessionId);
+            Response response = await WebOrderTrackingServices.TrackOrderLocation(id);
 
             HttpResponseMessage httpResponseMessage = this.Request.CreateResponse(response.HttpStatusCode);
             httpResponseMessage.Content = new StringContent(response.ResponseJSON, Encoding.UTF8, "application/json");

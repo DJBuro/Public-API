@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace OrderTracking.Services
 {
@@ -13,7 +14,6 @@ namespace OrderTracking.Services
         {
             Response response = new Response();
 
-            StringBuilder json = new StringBuilder();
             try
             {
                 // Check that the applicationId is correct and there is an one or more order for the customer credentials
@@ -33,7 +33,7 @@ namespace OrderTracking.Services
                     if (orders == null || orders.Count == 0)
                     {
                         // There are no orders for this customer (for this applicationId)
-                        response.SetError(ResponseErrorCodes.CustomerHasNoOrders);
+                        response.SetError(ResponseErrorCodes.InvalidCustomerOrCustomerHasNoOrders);
                     }
                 }
 
@@ -49,10 +49,9 @@ namespace OrderTracking.Services
                     };
                     CacheManager.OrderTrackingSessionLookup.Add(sessionId, orderTrackingSession);
 
-                    json = new StringBuilder();
-                    json.Append("{\"sessionId\":\"");
-                    json.Append(sessionId);
-                    json.Append("\"}");
+                    string trackingUrl = ConfigurationManager.AppSettings["trackingUrl"];
+
+                    response.ResponseJSON = "{\"sessionId\":\"" + sessionId + "\",\"trackingUrl\":\"" + trackingUrl + "?sessionId=" + sessionId + "\"}";
                 }
             }
             catch (Exception exception)
@@ -108,21 +107,24 @@ namespace OrderTracking.Services
                             }
 
                             json.Append("{");
-                            json.Append("\"status\":\"");
+                            json.Append("\"id\":");
+                            json.Append(order.OrderId.ToString());
+                            json.Append(", ");
+                            json.Append("\"status\":");
                             json.Append(order.Status.ToString());
-                            json.Append("\", ");
-                            json.Append("\"storeLat\":\"");
+                            json.Append(", ");
+                            json.Append("\"storeLat\":");
                             json.Append(order.StoreLatitude.ToString());
-                            json.Append("\", ");
-                            json.Append("\"storeLon\":\"");
+                            json.Append(", ");
+                            json.Append("\"storeLon\":");
                             json.Append(order.StoreLongitude.ToString());
-                            json.Append("\", ");
-                            json.Append("\"custLat\":\"");
+                            json.Append(", ");
+                            json.Append("\"custLat\":");
                             json.Append(order.CustomerLatitude.ToString());
-                            json.Append("\", ");
-                            json.Append("\"custLon\":\"");
+                            json.Append(", ");
+                            json.Append("\"custLon\":");
                             json.Append(order.CustomerLongitude.ToString());
-                            json.Append("\", ");
+                            json.Append(", ");
                             json.Append("\"personProcessing\":\"");
                             json.Append(order.PersonProcessing);
                             json.Append("\" ");
@@ -219,7 +221,9 @@ namespace OrderTracking.Services
                             }
 
                             json.Append("{");
-                            json.Append("\"status\":\"");
+                            json.Append("\"id\":");
+                            json.Append(cachedOrder.OrderId.ToString());
+                            json.Append(",\"status\":\"");
                             json.Append(cachedOrder.OrderStatusId.ToString());
                             json.Append("\"");
 
@@ -228,19 +232,19 @@ namespace OrderTracking.Services
                             {
                                 // Output any tracker information that we have
                                 json.Append(", ");
-                                json.Append("\"lat\":\"");
+                                json.Append("\"lat\":");
                                 if (cachedOrder.Tracker.Latitude.HasValue)
                                 {
                                     json.Append(cachedOrder.Tracker.Latitude.ToString());
                                 }
-                                json.Append("\", ");
-                                json.Append("\"lon\":\"");
+                                json.Append(", ");
+                                json.Append("\"lon\":");
                                 if (cachedOrder.Tracker.Longitude.HasValue)
                                 {
                                     json.Append(cachedOrder.Tracker.Longitude.ToString());
                                 }
-                                json.Append("\", ");
-                                json.Append("\"active\":\"");
+                                json.Append(", ");
+                                json.Append("\"active\":");
                                 if (cachedOrder.Tracker.LastUpdated.Ticks > oldOrderCutoff.Ticks)
                                 {
                                     json.Append("true");
@@ -249,7 +253,7 @@ namespace OrderTracking.Services
                                 {
                                     json.Append("false");
                                 }
-                                json.Append("\"");
+                                json.Append("");
                             }
 
                             json.Append("}");
@@ -375,7 +379,7 @@ namespace OrderTracking.Services
             }
             else
             {
-                response.SetError(ResponseErrorCodes.CustomerHasNoOrders); // "No orders found for the customer credentials";
+                response.SetError(ResponseErrorCodes.InvalidCustomerOrCustomerHasNoOrders); // "No orders found for the customer credentials";
 
                 // TODO log error
 
@@ -471,7 +475,7 @@ namespace OrderTracking.Services
                         //    Return error
                         if (pollOrders.Count == 0)
                         {
-                            response.SetError(ResponseErrorCodes.CustomerHasNoOrders); // "Customer orders not found";
+                            response.SetError(ResponseErrorCodes.InvalidCustomerOrCustomerHasNoOrders); // "Customer orders not found";
                         }
 
                         if (response.ErrorCode == ResponseErrorCodes.NoError)

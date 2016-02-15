@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTracking", "OrderTrack
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTracking.Tests", "OrderTracking.Tests\OrderTracking.Tests.csproj", "{610B9024-BEFD-4779-999A-C54155622517}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderTrackingWebsite", "..\..\WebSites\OrderTrackingWebsite\OrderTrackingWebsite.csproj", "{D6CD1051-76B6-4CBE-9793-D476DABDEE66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,12 +83,40 @@ Global
 		{610B9024-BEFD-4779-999A-C54155622517}.test1|Any CPU.Build.0 = Release|Any CPU
 		{610B9024-BEFD-4779-999A-C54155622517}.test1|x86.ActiveCfg = Release|Any CPU
 		{610B9024-BEFD-4779-999A-C54155622517}.test1|x86.Build.0 = Release|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Dev|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Dev|x86.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.GPRS-Live|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.GPRS-Live|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.GPRS-Live|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.GPRS-Live|x86.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Live|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Live|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Live|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Live|x86.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Release|x86.Build.0 = Release|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Staging2|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Staging2|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Staging2|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.Staging2|x86.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.test1|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.test1|Any CPU.Build.0 = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.test1|x86.ActiveCfg = Debug|Any CPU
+		{D6CD1051-76B6-4CBE-9793-D476DABDEE66}.test1|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://andromedapos.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -96,5 +126,8 @@ Global
 		SccProjectUniqueName2 = OrderTracking\\OrderTracking.csproj
 		SccProjectName2 = OrderTracking
 		SccLocalPath2 = OrderTracking
+		SccProjectUniqueName3 = ..\\..\\WebSites\\OrderTrackingWebsite\\OrderTrackingWebsite.csproj
+		SccProjectName3 = ../../WebSites/OrderTrackingWebsite
+		SccLocalPath3 = ..\\..\\WebSites\\OrderTrackingWebsite
 	EndGlobalSection
 EndGlobal
