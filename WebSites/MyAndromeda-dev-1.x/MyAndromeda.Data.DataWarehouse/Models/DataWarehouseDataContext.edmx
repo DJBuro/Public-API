@@ -43,8 +43,8 @@
           <Property Name="State" Type="nvarchar" MaxLength="64" />
           <Property Name="PostCode" Type="nvarchar" MaxLength="16" />
           <Property Name="DPS" Type="nvarchar" MaxLength="4" />
-          <Property Name="Lat" Type="nvarchar" MaxLength="15" />
-          <Property Name="Long" Type="nvarchar" MaxLength="15" />
+          <Property Name="Lat" Type="nvarchar" MaxLength="30" />
+          <Property Name="Long" Type="nvarchar" MaxLength="30" />
           <Property Name="Location" Type="geography" />
           <Property Name="DataVersion" Type="int" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
@@ -155,8 +155,8 @@
           <Property Name="ZipCode" Type="nvarchar" MaxLength="32" />
           <Property Name="Country" Type="nvarchar" MaxLength="32" />
           <Property Name="Location" Type="geography" />
-          <Property Name="Longitude" Type="nvarchar" MaxLength="15" />
-          <Property Name="Latitude" Type="nvarchar" MaxLength="15" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="30" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="30" />
           <Property Name="Directions" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="CustomerFeedback">
@@ -231,12 +231,30 @@
           <Property Name="CreatedUtc" Type="datetime" Nullable="false" />
           <Property Name="LastUpdatedUtc" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="EmployeeSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AndromedaSiteId" Type="int" Nullable="false" />
+          <Property Name="EmployeeRecordId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EndUtc" Type="datetime" Nullable="false" />
+          <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAllDay" Type="bit" Nullable="false" />
+          <Property Name="RecurrenceException" Type="varchar(max)" />
+          <Property Name="RecurrenceRule" Type="varchar(max)" />
+          <Property Name="StartUtc" Type="datetime" Nullable="false" />
+          <Property Name="StartTimezone" Type="varchar" MaxLength="50" />
+          <Property Name="TaskType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="EmployeeStoreLinkRecord">
           <Key>
-            <PropertyRef Name="AdromedaSiteId" />
+            <PropertyRef Name="AndromedaSiteId" />
             <PropertyRef Name="EmployeeRecordId" />
           </Key>
-          <Property Name="AdromedaSiteId" Type="int" Nullable="false" />
+          <Property Name="AndromedaSiteId" Type="int" Nullable="false" />
           <Property Name="EmployeeRecordId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="IbsOrder">
@@ -680,6 +698,18 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EmployeeSchedule_EmployeeRecord">
+          <End Role="EmployeeRecord" Type="Self.EmployeeRecord" Multiplicity="1" />
+          <End Role="EmployeeSchedule" Type="Self.EmployeeSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeRecord">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeSchedule">
+              <PropertyRef Name="EmployeeRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EmployeeStoreLinkRecord_EmployeeRecord">
           <End Role="EmployeeRecord" Type="Self.EmployeeRecord" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -950,6 +980,7 @@ warning 6002: The table/view 'DataWarehouse.dbo.IbsRamesesTranslation' does not 
           <EntitySet Name="EmailCategories" EntityType="Self.EmailCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailHistory" EntityType="Self.EmailHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeRecord" EntityType="Self.EmployeeRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeSchedule" EntityType="Self.EmployeeSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeStoreLinkRecord" EntityType="Self.EmployeeStoreLinkRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IbsOrder" EntityType="Self.IbsOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MarketingLevel" EntityType="Self.MarketingLevel" Schema="dbo" store:Type="Tables" />
@@ -1043,6 +1074,10 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <AssociationSet Name="FK_EmailHistory_Email" Association="Self.FK_EmailHistory_Email">
             <End Role="Email" EntitySet="Email" />
             <End Role="EmailHistory" EntitySet="EmailHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeSchedule_EmployeeRecord" Association="Self.FK_EmployeeSchedule_EmployeeRecord">
+            <End Role="EmployeeRecord" EntitySet="EmployeeRecord" />
+            <End Role="EmployeeSchedule" EntitySet="EmployeeSchedule" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployeeStoreLinkRecord_EmployeeRecord" Association="Self.FK_EmployeeStoreLinkRecord_EmployeeRecord">
             <End Role="EmployeeRecord" EntitySet="EmployeeRecord" />
@@ -1296,11 +1331,16 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             <End Role="IbsOrder" EntitySet="IbsOrders" />
           </AssociationSet>
           <EntitySet Name="IbsPaymentTypeTranslations" EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" />
-          <EntitySet Name="EmployeeStoreLinkRecords" EntityType="DataWarehouseModel.EmployeeStoreLinkRecord" />
           <EntitySet Name="EmployeeRecords" EntityType="DataWarehouseModel.EmployeeRecord" />
+          <EntitySet Name="EmployeeStoreLinkRecords" EntityType="DataWarehouseModel.EmployeeStoreLinkRecord" />
           <AssociationSet Name="FK_EmployeeStoreLinkRecord_EmployeeRecord" Association="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord">
             <End Role="EmployeeRecord" EntitySet="EmployeeRecords" />
             <End Role="EmployeeStoreLinkRecord" EntitySet="EmployeeStoreLinkRecords" />
+          </AssociationSet>
+          <EntitySet Name="EmployeeSchedules" EntityType="DataWarehouseModel.EmployeeSchedule" />
+          <AssociationSet Name="FK_EmployeeSchedule_EmployeeRecord" Association="DataWarehouseModel.FK_EmployeeSchedule_EmployeeRecord">
+            <End Role="EmployeeRecord" EntitySet="EmployeeRecords" />
+            <End Role="EmployeeSchedule" EntitySet="EmployeeSchedules" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AccountType">
@@ -1334,8 +1374,8 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="State" Type="String" MaxLength="64" Unicode="true" FixedLength="false" />
           <Property Name="PostCode" Type="String" MaxLength="16" Unicode="true" FixedLength="false" />
           <Property Name="DPS" Type="String" MaxLength="4" Unicode="true" FixedLength="false" />
-          <Property Name="Lat" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
-          <Property Name="Long" Type="String" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="Lat" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="Long" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
           <Property Name="Location" Type="Geography" />
           <Property Name="DataVersion" Type="Int32" Nullable="false" />
           <Property Name="CountryId" Type="Int32" Nullable="false" />
@@ -1428,8 +1468,8 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="Country" Type="String" MaxLength="32" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Customer" Relationship="DataWarehouseModel.FK_CustomerAddress_Customer" FromRole="CustomerAddress" ToRole="Customer" />
           <Property Name="Location" Type="Geography" />
-          <Property Name="Longitude" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="Latitude" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="OrderHeaders" Relationship="DataWarehouseModel.FK_OrderAddress" FromRole="CustomerAddress" ToRole="OrderHeader" />
           <Property Name="Premise" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="House" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
@@ -2253,15 +2293,6 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="MediaNumber" Type="Int32" Nullable="false" />
           <Property Name="MediaType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="EmployeeStoreLinkRecord">
-          <Key>
-            <PropertyRef Name="AdromedaSiteId" />
-            <PropertyRef Name="EmployeeRecordId" />
-          </Key>
-          <Property Name="AdromedaSiteId" Type="Int32" Nullable="false" />
-          <Property Name="EmployeeRecordId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="EmployeeRecord" Relationship="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord" FromRole="EmployeeStoreLinkRecord" ToRole="EmployeeRecord" />
-        </EntityType>
         <EntityType Name="EmployeeRecord">
           <Key>
             <PropertyRef Name="Id" />
@@ -2273,6 +2304,16 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Name="CreatedUtc" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastUpdatedUtc" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="EmployeeStoreLinkRecords" Relationship="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord" FromRole="EmployeeRecord" ToRole="EmployeeStoreLinkRecord" />
+          <NavigationProperty Name="EmployeeSchedules" Relationship="DataWarehouseModel.FK_EmployeeSchedule_EmployeeRecord" FromRole="EmployeeRecord" ToRole="EmployeeSchedule" />
+        </EntityType>
+        <EntityType Name="EmployeeStoreLinkRecord">
+          <Key>
+            <PropertyRef Name="AndromedaSiteId" />
+            <PropertyRef Name="EmployeeRecordId" />
+          </Key>
+          <Property Name="AndromedaSiteId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeRecordId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="EmployeeRecord" Relationship="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord" FromRole="EmployeeStoreLinkRecord" ToRole="EmployeeRecord" />
         </EntityType>
         <Association Name="FK_EmployeeStoreLinkRecord_EmployeeRecord">
           <End Type="DataWarehouseModel.EmployeeRecord" Role="EmployeeRecord" Multiplicity="1">
@@ -2284,6 +2325,37 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="EmployeeStoreLinkRecord">
+              <PropertyRef Name="EmployeeRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmployeeSchedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="AndromedaSiteId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeRecordId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTimezone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAllDay" Type="Boolean" Nullable="false" />
+          <Property Name="RecurrenceException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RecurrenceRule" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TaskType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EmployeeRecord" Relationship="DataWarehouseModel.FK_EmployeeSchedule_EmployeeRecord" FromRole="EmployeeSchedule" ToRole="EmployeeRecord" />
+        </EntityType>
+        <Association Name="FK_EmployeeSchedule_EmployeeRecord">
+          <End Type="DataWarehouseModel.EmployeeRecord" Role="EmployeeRecord" Multiplicity="1" />
+          <End Type="DataWarehouseModel.EmployeeSchedule" Role="EmployeeSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeRecord">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EmployeeSchedule">
               <PropertyRef Name="EmployeeRecordId" />
             </Dependent>
           </ReferentialConstraint>
@@ -2788,14 +2860,6 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EmployeeStoreLinkRecords">
-            <EntityTypeMapping TypeName="DataWarehouseModel.EmployeeStoreLinkRecord">
-              <MappingFragment StoreEntitySet="EmployeeStoreLinkRecord">
-                <ScalarProperty Name="EmployeeRecordId" ColumnName="EmployeeRecordId" />
-                <ScalarProperty Name="AdromedaSiteId" ColumnName="AdromedaSiteId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EmployeeRecords">
             <EntityTypeMapping TypeName="DataWarehouseModel.EmployeeRecord">
               <MappingFragment StoreEntitySet="EmployeeRecord">
@@ -2804,6 +2868,33 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeStoreLinkRecords">
+            <EntityTypeMapping TypeName="DataWarehouseModel.EmployeeStoreLinkRecord">
+              <MappingFragment StoreEntitySet="EmployeeStoreLinkRecord">
+                <ScalarProperty Name="EmployeeRecordId" ColumnName="EmployeeRecordId" />
+                <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeSchedules">
+            <EntityTypeMapping TypeName="DataWarehouseModel.EmployeeSchedule">
+              <MappingFragment StoreEntitySet="EmployeeSchedule">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+                <ScalarProperty Name="StartTimezone" ColumnName="StartTimezone" />
+                <ScalarProperty Name="StartUtc" ColumnName="StartUtc" />
+                <ScalarProperty Name="RecurrenceRule" ColumnName="RecurrenceRule" />
+                <ScalarProperty Name="RecurrenceException" ColumnName="RecurrenceException" />
+                <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
+                <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
+                <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EmployeeRecordId" ColumnName="EmployeeRecordId" />
+                <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

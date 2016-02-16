@@ -71,8 +71,9 @@ namespace MyAndromeda.Services.Ibs.Handlers
 
             var change = model as OutgoingWebHookOrderStatusChange;
 
-            //check if the order in oven. 
-            if (change.Status != 2)
+            //check if the order in oven... but oven is skipped sometime :-/ 
+            //2,3,4,5
+            if (change.Status < 2 || change.Status > 5)
             {
                 return;
             }

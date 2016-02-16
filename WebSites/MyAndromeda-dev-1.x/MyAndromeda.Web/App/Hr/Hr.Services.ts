@@ -3,9 +3,10 @@
 
     export class EmployeeServiceState
     {
+        public AndromedaSiteId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
         public ChainId : Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
 
-        public AndromedaSiteId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
+        
 
         public CurrentChainId: number;
         public CurrentAndromedaSiteId: number;
@@ -20,7 +21,7 @@
 
             });
             this.AndromedaSiteId.where(e=> e !== null).subscribe((e) => {
-                Logger.Notify("new andromeda site id: " + e);
+                Logger.Notify("new Andromeda site id: " + e);
                 this.CurrentAndromedaSiteId = e;
             });
         }
@@ -39,7 +40,7 @@
         public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>(); 
         public Error: Rx.Subject<string> = new Rx.Subject<string>();
 
-        constructor(private $http: ng.IHttpService, private employeeServiceState: EmployeeServiceState, private uuidService: UUIDService)
+        constructor(private $http: ng.IHttpService, private employeeServiceState: EmployeeServiceState, private uuidService: MyAndromeda.Services.UUIdService)
         {
             this.ChainEmployeeDataSource = new kendo.data.DataSource({
                 schema: {
@@ -188,6 +189,19 @@
             });
         }
 
+
+        public GetStore(chainId: number, andromedaSiteId: number): Rx.Observable<Models.IStore[]> {
+            let route = "hr/{0}/employees/{1}/get-store";
+
+            route = kendo.format(route, chainId, andromedaSiteId);
+
+            let promise = this.$http.get(route);
+            let map = Rx.Observable.fromPromise(promise).map(s => <Models.IStore[]>s.data);
+
+            return map;
+        }
+
+
         public GetStoreListByEmployee(chainId: number, andromedaSiteId: number, employeeId: string): Rx.Observable<Models.IStore[]> {
             let route = "hr/{0}/employees/{1}/list-stores/{2}"; 
 
@@ -244,53 +258,61 @@
             return path;
         }
 
+        public GetDataSourceForStoreScheduler(chainId: number, andromedaSiteId: number)
+        {
+            let schema: kendo.data.DataSourceSchema = {
+                data: "Data",
+                total: "Total",
+                model: Models.getSchedulerDataSourceSchema(andromedaSiteId)
+            };
+
+            let dataSource = new kendo.data.SchedulerDataSource({
+                batch: false,
+                transport: {
+                    read: (options: kendo.data.DataSourceTransportReadOptions) => {
+                        let route = this.GetStoreEmployeeSchedulerReadRoute(chainId, andromedaSiteId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            options.success(callback.data);
+                        });
+                    },
+                    update: (options: kendo.data.DataSourceTransportOptions) => {
+                        Logger.Notify("Scheduler update");
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            options.success();
+                        });
+                    },
+                    create: (options: kendo.data.DataSourceTransportOptions) => {
+                        Logger.Notify("Scheduler create");
+                        Logger.Notify(options.data);
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            Logger.Notify("Create response:");
+                            Logger.Notify(callback.data);
+                            options.success(callback.data);
+                        });
+                    },
+                    destroy: (options: kendo.data.DataSourceTransportOptions) => {
+                        throw "Matt- not implemented - scheduler -store destroy";
+                    }
+                },
+                schema: schema
+            });
+
+            return dataSource;
+        }
+
         public GetDataSourceForEmployeeScheduler(chainId: number, andromedaSiteId: number, employeeId: string) {
             let schema: kendo.data.DataSourceSchema = {
                 data: "Data",
                 total: "Total",
-                model: <kendo.data.DataSourceSchemaModel>{
-                    id: "Id",
-                    fields: {
-                        Id: <kendo.data.DataSourceSchemaModelField>{
-                            type: "string",
-                            nullable: true
-                        },
-                        title: { from: "Title", defaultValue: "No title", validation: { required: true } },
-                        start: { type: "date", from: "Start" },
-                        end: { type: "date", from: "End" },
-                        startTimezone: { from: "StartTimezone" },
-                        endTimezone: { from: "EndTimezone" },
-                        description: { from: "Description" },
-                        recurrenceId: { from: "RecurrenceId" },
-                        recurrenceRule: { from: "RecurrenceRule" },
-                        recurrenceException: { from: "RecurrenceException" },
-                        isAllDay: { type: "boolean", from: "IsAllDay" },
-                        EmployeeId: <kendo.data.DataSourceSchemaModelField>{
-                            type: "string",
-                            defaultValue: employeeId,
-                            nullable: false,
-                            validation: {
-                                required: true
-                            }
-                        },
-                        AndromedaSiteId: <kendo.data.DataSourceSchemaModelField>{
-                            type: "number",
-                            defaultValue: andromedaSiteId,
-                            nullable: false,
-                            validation: {
-                                required: true
-                            }
-                        },
-                        TaskType: <kendo.data.DataSourceSchemaModelField>{
-                            type: "string",
-                            defaultValue: "Shift",
-                            nullable: false,
-                            validation: {
-                                required: true
-                            }
-                        },
-                    }
-                }
+                model: Models.getSchedulerDataSourceSchema(andromedaSiteId, employeeId)
             };
 
             let dataSource = new kendo.data.SchedulerDataSource({
@@ -306,7 +328,7 @@
                     },
                     update: (options: kendo.data.DataSourceTransportOptions) => {
                         Logger.Notify("Scheduler update");
-                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                         let promise = this.$http.post(route, options.data);
 
                         promise.then((callback) => {
@@ -316,7 +338,7 @@
                     create: (options: kendo.data.DataSourceTransportOptions) => {
                         Logger.Notify("Scheduler create");
                         Logger.Notify(options.data);
-                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                        let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                         let promise = this.$http.post(route, options.data);
 
                         promise.then((callback) => {
@@ -336,55 +358,233 @@
 
         }
 
+        private GetStoreEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId: number)
+        {
+            let path = "/hr/{0}/employees/{1}/schedule/store-list";
+
+            path = kendo.format(path, chainId, andromedaSiteId);
+
+            return path;
+        }
+
         private GetEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId, employeeId: string)
         {
-            let path = "/hr/{0}/employees/{1}/schedule/{2}/list";
+            let path = "/hr/{0}/employees/{1}/schedule/list/{2}";
 
             path = kendo.format(path, chainId, andromedaSiteId, employeeId);
 
             return path;
         }
 
-        private GetEmployeeSchedulerUpdateRoute(chainId: number, andromedaSiteId, employeeId: string)
+        private GetEmployeeSchedulerUpdateRoute(chainId: number, andromedaSiteId)
         {
-            let path = "/hr/{0}/employees/{1}/schedule/{2}/update";
+            let path = "/hr/{0}/employees/{1}/schedule/update";
 
-            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+            path = kendo.format(path, chainId, andromedaSiteId);
 
             return path;
         }
 
-        private GetEmployeeSchedulerDestroyRoute(chainId: number, andromedaSiteId, employeeId: string)
+        private GetEmployeeSchedulerDestroyRoute(chainId: number, andromedaSiteId)
         {
-            let path = "/hr/{0}/employees/{1}/schedule/{2}/destroy";
+            let path = "/hr/{0}/employees/{1}/schedule/destroy";
 
-            path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+            path = kendo.format(path, chainId, andromedaSiteId);
 
             return path;
         }
     }
 
-    export class UUIDService {
-        constructor() {
+    export class EmployeeSchedulerService {
+
+        constructor(private employeeServiceState: EmployeeServiceState, private employeeService: Services.EmployeeService)
+        {
 
         }
 
-        public GenerateUUID() {
-            var d = new Date().getTime();
-            if (window.performance && typeof window.performance.now === "function") {
-                d += performance.now(); //use high-precision timer if available
+        private GetResources(stores: Models.IStore[], employee? :Models.IEmployee): Array<{}>
+        {
+            let employeePart = () => {
+                var part = {
+                    field: "EmployeeId",
+                    dataTextField: "ShortName",
+                    dataValueField: "Id",
+                    title: "Employee",
+                    dataSource: <any>[]
+                }
+
+                if (employee)
+                {
+                    part.dataSource = [employee];
+                    return part;
+                }
+
+                let employees = this.employeeService.StoreEmployeeDataSource;
+                part.dataSource = employees;
+
+                return part;
+            };
+
+            let resources = [
+                {
+                    title: "Task",
+                    field: "TaskType",
+                    dataSource: [
+                        {
+                            text: "Normal Shift",
+                            value: "Shift",
+                            color: "#337ab7"
+                        },
+                        {
+                            text: "Need cover",
+                            value: "Need cover",
+                            color: "#d9534f"
+                        },
+                        {
+                            text: "Covering Shift",
+                            value: "Covering Shift",
+                            color: "#d9edf7"
+                        },
+                        {
+                            text: "Unplanned leave",
+                            value: "Unplanned",
+                            color: "#f2dede"
+                        },
+                        {
+                            text: "Planned leave",
+                            value: "Planned leave",
+                            color: "#fcf8e3"
+                        }
+                    ]
+                },
+                employeePart(),
+                {
+                    title: "Store",
+                    field: "AndromedaSiteId",
+                    dataSource: stores,
+                    dataValueField: "AndromedaSiteId",
+                    dataTextField: "Name"
+                }
+
+            ]
+
+            return resources;
+        }
+
+        public GetStoreEmployeeScheduler(stores: Array<Models.IStore>)
+        {
+            let start = new Date();
+            let end = new Date();
+
+            start.setHours(0);
+            end.setHours(24);
+
+            let chainId = this.employeeServiceState.CurrentChainId,
+                andromedaSiteId = this.employeeServiceState.CurrentAndromedaSiteId,
+                currentStore = stores[0],
+                dataSource = this.employeeService.GetDataSourceForStoreScheduler(chainId, andromedaSiteId);
+
+            let schedulerOptions: kendo.ui.SchedulerOptions = {
+                date: new Date(),
+                workDayStart: start,
+                workDayEnd: end,
+                majorTick: 60,
+                minorTickCount: 1,
+                workWeekStart: 0,
+                workWeekEnd: 6,
+                allDaySlot: true,
+                dataSource: dataSource,
+                timezone: "Europe/London",
+                currentTimeMarker: {
+                    useLocalTimezone: false
+                },
+                editable: true,
+                pdf: {
+                    fileName: currentStore.Name + " schedule",
+                    title: "Schedule"
+                },
+                eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                toolbar: ["pdf"],
+                showWorkHours: false,
+                resources: this.GetResources(stores),
+                views: [
+                    { type: "day", showWorkHours: false },
+                    { type: "week", selected: true, showWorkHours: false },
+                    { type: "month", showWorkHours: false },
+                    { type: "timeline", showWorkHours: false }
+                ],
+                resize: (e) => { Logger.Notify("resize"); Logger.Notify(e); },
+                resizeEnd: (e) => { Logger.Notify("resize-end"); Logger.Notify(e); },
+                move: (e) => { Logger.Notify("move"); Logger.Notify(e); },
+                moveEnd: (e) => { Logger.Notify("move-end"); Logger.Notify(e); },
+                add: (e) => { Logger.Notify("add"); Logger.Notify(e); },
+                save: (e) => { Logger.Notify("save"); Logger.Notify(e); }
+
             }
-            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                var r = (d + Math.random() * 16) % 16 | 0;
-                d = Math.floor(d / 16);
-                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
-            return uuid;
+
+            return schedulerOptions;
+        }
+
+        public GetSingleEmployeeScheduler(stores: Array<Models.IStore>, employee: Models.IEmployee)
+        {
+            let start = new Date();
+            let end = new Date();
+
+            start.setHours(0);
+            end.setHours(24);      
+
+            let chainId = this.employeeServiceState.CurrentChainId,
+                andromedaSiteId = this.employeeServiceState.CurrentAndromedaSiteId,
+                dataSource = this.employeeService.GetDataSourceForEmployeeScheduler(chainId, andromedaSiteId, employee.Id);
+            
+            let schedulerOptions: kendo.ui.SchedulerOptions = {
+                date: new Date(),
+                workDayStart: start,
+                workDayEnd: end,
+                majorTick: 60,
+                minorTickCount: 1,
+                workWeekStart: 0,
+                workWeekEnd: 6,
+                allDaySlot: true,
+
+                dataSource: dataSource,
+                timezone: "Europe/London",
+                currentTimeMarker: {
+                    useLocalTimezone: false
+                },
+                editable: true,
+                pdf: {
+                    fileName: employee.ShortName + " schedule",
+                    title: "Schedule"
+                },
+                eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                toolbar: ["pdf"],
+                showWorkHours: false,
+                resources: this.GetResources(stores, employee),
+                views: [
+                    { type: "day", showWorkHours: false },
+                    { type: "week", selected: true, showWorkHours: false },
+                    { type: "month", showWorkHours: false },
+                    { type: "timeline", showWorkHours: false }
+                ]
+            }
+
+            return schedulerOptions;
+        }
+
+        public IsEmployeeFree()
+        {
+            //var occurrences = occurrencesInRangeByResource(start, end, "attendee", event, resources);
+        }
+
+        public OccurrencesInRangeByResource()
+        {
 
         }
+
     }
 
     app.service("employeeService", EmployeeService);
     app.service("employeeServiceState", EmployeeServiceState);
-    app.service("uuidService", UUIDService);
+    app.service("employeeSchedulerService", EmployeeSchedulerService);
 }

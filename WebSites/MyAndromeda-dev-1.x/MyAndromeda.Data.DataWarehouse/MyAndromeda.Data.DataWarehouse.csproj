@@ -164,6 +164,9 @@
     <Compile Include="Models\EmployeeRecord.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeSchedule.cs">
+      <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmployeeStoreLinkRecord.cs">
       <DependentUpon>DataWarehouseDataContext.tt</DependentUpon>
     </Compile>

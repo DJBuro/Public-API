@@ -3138,6 +3138,32 @@ var MyAndromeda;
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
+    var Services;
+    (function (Services) {
+        var services = angular.module("MyAndromeda.Core", []);
+        var UUIdService = (function () {
+            function UUIdService() {
+            }
+            UUIdService.prototype.GenerateUUID = function () {
+                var d = new Date().getTime();
+                if (window.performance && typeof window.performance.now === "function") {
+                    d += performance.now(); //use high-precision timer if available
+                }
+                var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = (d + Math.random() * 16) % 16 | 0;
+                    d = Math.floor(d / 16);
+                    return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+                });
+                return uuid;
+            };
+            return UUIdService;
+        })();
+        Services.UUIdService = UUIdService;
+        services.service("uuidService", UUIdService);
+    })(Services = MyAndromeda.Services || (MyAndromeda.Services = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
     "use strict";
     var Logger = (function () {
         function Logger() {
@@ -3350,6 +3376,22 @@ var MyAndromeda;
                 },
                 cache: false
             };
+            var hrEmployeeList = {
+                url: "/employees",
+                views: {
+                    "store-employee-view": {
+                        templateUrl: "store-employee-list.html"
+                    }
+                }
+            };
+            var hrStoreScheduler = {
+                url: "/schedule",
+                views: {
+                    "store-employee-view": {
+                        templateUrl: "store-employee-scheduler.html"
+                    }
+                }
+            };
             var hrStoreEmployeeEdit = {
                 url: "/edit/:id",
                 views: {
@@ -3412,6 +3454,8 @@ var MyAndromeda;
             // route: /hr-store
             $stateProvider.state("hr", hr);
             $stateProvider.state("hr.store-list", hrStoreList);
+            $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
+            $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
             $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
             $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
             $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
@@ -3438,7 +3482,7 @@ var MyAndromeda;
         var Controllers;
         (function (Controllers) {
             var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
-            app.controller("employeeListController", function ($scope, $stateParams, SweetAlert, employeeService, employeeServiceState) {
+            app.controller("employeeListController", function ($scope, $timeout, $stateParams, SweetAlert, employeeService, employeeServiceState, employeeSchedulerService) {
                 $scope.$stateParams = $stateParams;
                 employeeServiceState.ChainId.onNext($stateParams.chainId);
                 employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
@@ -3495,6 +3539,18 @@ var MyAndromeda;
                         }
                     ]
                 };
+                var storeIdChanged = employeeServiceState.AndromedaSiteId.where(function (e) { return e !== null; }).map(function (e) {
+                    var r = employeeService.GetStore(chainId, e);
+                    return r;
+                }).flatMap(function (e) { return e; });
+                storeIdChanged.subscribe(function (stores) {
+                    MyAndromeda.Logger.Notify("stores: ");
+                    MyAndromeda.Logger.Notify(stores);
+                    $timeout(function () {
+                        var schedulerOptions = employeeSchedulerService.GetStoreEmployeeScheduler(stores);
+                        $scope.schedulerOptions = schedulerOptions;
+                    });
+                });
                 $scope.employeeGridOptions = employeeGridOptions;
             });
             app.controller("employeeEditController", function ($element, $scope, $stateParams, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
@@ -3619,7 +3675,7 @@ var MyAndromeda;
                 $scope.save = save;
                 $scope.profilePicture = getProfilePic;
             });
-            app.controller("employeeEditSchedulerController", function ($element, $scope, $timeout, employeeService, employeeServiceState) {
+            app.controller("employeeEditSchedulerController", function ($element, $scope, $timeout, employeeService, employeeServiceState, employeeSchedulerService) {
                 var loadRelatedStoresObservable = employeeServiceState.EditEmployee
                     .where(function (e) { return e !== null; })
                     .map(function (employee) {
@@ -3639,92 +3695,8 @@ var MyAndromeda;
                 });
                 var editSubscription = merged.subscribe(function (data) {
                     MyAndromeda.Logger.Notify("stores+ employees available");
-                    var start = new Date();
-                    var end = new Date();
-                    start.setHours(0);
-                    end.setHours(24);
-                    var chainId = employeeServiceState.CurrentChainId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId, employeeId = data.employee.Id;
-                    var dataSource = employeeService.GetDataSourceForEmployeeScheduler(chainId, andromedaSiteId, employeeId);
-                    var schedulerOptions = {
-                        date: new Date(),
-                        workDayStart: start,
-                        workDayEnd: end,
-                        majorTick: 120,
-                        minorTickCount: 1,
-                        workWeekStart: 0,
-                        workWeekEnd: 6,
-                        allDaySlot: true,
-                        dataSource: dataSource,
-                        //height: 600,
-                        timezone: "Europe/London",
-                        currentTimeMarker: {
-                            useLocalTimezone: false
-                        },
-                        editable: true,
-                        pdf: {
-                            fileName: data.employee.ShortName + " schedule",
-                            title: "Schedule"
-                        },
-                        eventTemplate: "<employee-task task='dataItem'></employee-task>",
-                        toolbar: ["pdf"],
-                        showWorkHours: false,
-                        resources: [
-                            {
-                                title: "Task",
-                                field: "TaskType",
-                                dataSource: [
-                                    {
-                                        text: "Normal Shift",
-                                        value: "Shift",
-                                        color: "#337ab7"
-                                    },
-                                    {
-                                        text: "Need cover",
-                                        value: "Need cover",
-                                        color: "#d9534f"
-                                    },
-                                    {
-                                        text: "Covering Shift",
-                                        value: "Covering Shift",
-                                        color: "#d9edf7"
-                                    },
-                                    {
-                                        text: "Unplanned leave",
-                                        value: "Unplanned",
-                                        color: "#f2dede"
-                                    },
-                                    {
-                                        text: "Planned leave",
-                                        value: "Planned leave",
-                                        color: "#fcf8e3"
-                                    }
-                                ]
-                            },
-                            {
-                                field: "EmployeeId",
-                                dataTextField: "ShortName",
-                                dataValueField: "Id",
-                                title: "Employee",
-                                dataSource: [
-                                    data.employee
-                                ]
-                            },
-                            {
-                                title: "Store",
-                                field: "AndromedaSiteId",
-                                dataSource: data.stores,
-                                dataValueField: "AndromedaSiteId",
-                                dataTextField: "Name"
-                            }
-                        ],
-                        views: [
-                            { type: "day", showWorkHours: false },
-                            { type: "week", selected: true, showWorkHours: false },
-                            { type: "month", showWorkHours: false },
-                            { type: "timeline", showWorkHours: false }
-                        ]
-                    };
                     $timeout(function () {
+                        var schedulerOptions = employeeSchedulerService.GetSingleEmployeeScheduler(data.stores, data.employee);
                         $scope.schedulerOptions = schedulerOptions;
                     });
                 });
@@ -3941,15 +3913,47 @@ var MyAndromeda;
                     name: "employeePic",
                     templateUrl: "employee-pic.html",
                     restrict: "EA",
+                    transclude: true,
                     scope: {
                         employee: '=employee',
-                        hideFullName: "=hideFullName"
+                        showShortName: "=showShortName",
+                        showFullName: "=showFullName",
+                        showWorkStatus: "=showWorkStatus"
                     },
                     controller: function ($scope, $timeout, employeeService, employeeServiceState, uuidService) {
                         var dataItem = $scope.employee;
+                        var getValueOrDefault = function (source, defaultValue) {
+                            var v = source;
+                            var k = typeof (v);
+                            if (k == "undefined") {
+                                return defaultValue;
+                            }
+                            return v;
+                        };
+                        var options = {
+                            showShortName: getValueOrDefault($scope.showShortName, false),
+                            //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
+                            showFullName: getValueOrDefault($scope.showFullName, false),
+                            //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
+                            showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
+                        };
+                        MyAndromeda.Logger.Notify(options);
+                        $scope.options = options;
                         var state = {
                             random: uuidService.GenerateUUID()
                         };
+                        $scope.$watch('showShortName', function (newValue, old) {
+                            MyAndromeda.Logger.Notify("showShortName: " + newValue);
+                            $timeout(function () { options.showShortName = getValueOrDefault(newValue, true); });
+                        });
+                        $scope.$watch('showFullName', function (newValue, oldValue) {
+                            MyAndromeda.Logger.Notify("showFullName: " + newValue);
+                            $timeout(function () { options.showFullName = getValueOrDefault(newValue, true); });
+                        });
+                        $scope.$watch('showWorkStatus', function (newValue, oldValue) {
+                            MyAndromeda.Logger.Notify("showWorkStatus: " + newValue);
+                            $timeout(function () { options.showWorkStatus = getValueOrDefault(newValue, true); });
+                        });
                         var updates = employeeServiceState.EmployeeUpdated.where(function (e) { return e.Id == dataItem.Id; }).subscribe(function (change) {
                             $timeout(function () {
                                 MyAndromeda.Logger.Notify(dataItem.ShortName + " updated");
@@ -3984,13 +3988,60 @@ var MyAndromeda;
                     },
                     controller: function ($element, $scope, employeeService) {
                         //todo - find employee 
+                        MyAndromeda.Logger.Notify("setup employee task");
                         var top = $($element).closest(".k-event");
+                        var status = {
+                            clone: null
+                        };
+                        top.hover(function (e) {
+                            MyAndromeda.Logger.Notify("hover");
+                            var $e = $(this);
+                            var clone = $e.clone().appendTo("body");
+                            var yoffset = $(window).scrollTop();
+                            clone.addClass("hover-task");
+                            clone.css({
+                                "z-index": 1000,
+                                "opacity": 0.9,
+                                "position": "absolute",
+                                "top": yoffset + 10 + "px",
+                                "right": "210px"
+                            });
+                            clone.animate({
+                                width: "200px",
+                                "min-height": "200px",
+                                "max-height": "200px"
+                            });
+                            status.clone = clone;
+                        }, function (e) {
+                            MyAndromeda.Logger.Notify("lose hover :(");
+                            var $e = $(status.clone);
+                            $e.css({
+                                "z-index": 999,
+                            });
+                            $e.animate({
+                                opacity: 0
+                            }, 1000, function () {
+                                MyAndromeda.Logger.Notify("remove?");
+                                $e.remove();
+                            });
+                        });
+                        MyAndromeda.Logger.Notify("top");
+                        MyAndromeda.Logger.Notify(top);
+                        top.on("hover", function (e) {
+                            MyAndromeda.Logger.Notify("animate .k-event");
+                        });
                         var task = $scope.task;
                         var employee = employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
                         if (employee === null) {
                             MyAndromeda.Logger.Notify("cant find the person");
                         }
                         $scope.employee = employee;
+                        var extra = {
+                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                            startTime: kendo.toString(task.start, "HH:mm"),
+                            endTime: kendo.toString(task.end, "HH:mm")
+                        };
+                        $scope.extra = extra;
                     }
                 };
             });
@@ -4003,6 +4054,59 @@ var MyAndromeda;
     (function (Hr) {
         var Models;
         (function (Models) {
+            Models.getSchedulerDataSourceSchema = function (andromedaSiteId, employeeId) {
+                var employeePart = function () {
+                    var employee = {
+                        type: "string",
+                        //defaultValue: employeeId,
+                        nullable: false,
+                        validation: {
+                            required: true
+                        }
+                    };
+                    if (employeeId) {
+                        employee.defaultValue = employeeId;
+                    }
+                    return employee;
+                };
+                var model = {
+                    id: "Id",
+                    fields: {
+                        Id: {
+                            type: "string",
+                            nullable: true
+                        },
+                        title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                        start: { type: "date", from: "Start" },
+                        end: { type: "date", from: "End" },
+                        startTimezone: { from: "StartTimezone" },
+                        endTimezone: { from: "EndTimezone" },
+                        description: { from: "Description" },
+                        recurrenceId: { from: "RecurrenceId" },
+                        recurrenceRule: { from: "RecurrenceRule" },
+                        recurrenceException: { from: "RecurrenceException" },
+                        isAllDay: { type: "boolean", from: "IsAllDay" },
+                        EmployeeId: employeePart(),
+                        AndromedaSiteId: {
+                            type: "number",
+                            defaultValue: andromedaSiteId,
+                            nullable: false,
+                            validation: {
+                                required: true
+                            }
+                        },
+                        TaskType: {
+                            type: "string",
+                            defaultValue: "Shift",
+                            nullable: false,
+                            validation: {
+                                required: true
+                            }
+                        }
+                    }
+                };
+                return model;
+            };
             Models.employeeDataSourceSchema = {
                 id: "Id",
                 fields: {
@@ -4042,8 +4146,8 @@ var MyAndromeda;
             var EmployeeServiceState = (function () {
                 function EmployeeServiceState() {
                     var _this = this;
-                    this.ChainId = new Rx.BehaviorSubject(null);
                     this.AndromedaSiteId = new Rx.BehaviorSubject(null);
+                    this.ChainId = new Rx.BehaviorSubject(null);
                     this.EditEmployee = new Rx.BehaviorSubject(null);
                     this.EmployeeUpdated = new Rx.Subject();
                     this.ChainId.where(function (e) { return e !== null; }).subscribe(function (e) {
@@ -4051,7 +4155,7 @@ var MyAndromeda;
                         _this.CurrentChainId = e;
                     });
                     this.AndromedaSiteId.where(function (e) { return e !== null; }).subscribe(function (e) {
-                        MyAndromeda.Logger.Notify("new andromeda site id: " + e);
+                        MyAndromeda.Logger.Notify("new Andromeda site id: " + e);
                         _this.CurrentAndromedaSiteId = e;
                     });
                 }
@@ -4178,6 +4282,13 @@ var MyAndromeda;
                         onError(error);
                     });
                 };
+                EmployeeService.prototype.GetStore = function (chainId, andromedaSiteId) {
+                    var route = "hr/{0}/employees/{1}/get-store";
+                    route = kendo.format(route, chainId, andromedaSiteId);
+                    var promise = this.$http.get(route);
+                    var map = Rx.Observable.fromPromise(promise).map(function (s) { return s.data; });
+                    return map;
+                };
                 EmployeeService.prototype.GetStoreListByEmployee = function (chainId, andromedaSiteId, employeeId) {
                     var route = "hr/{0}/employees/{1}/list-stores/{2}";
                     route = kendo.format(route, chainId, andromedaSiteId, employeeId);
@@ -4213,54 +4324,56 @@ var MyAndromeda;
                     path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId, fileName);
                     return path;
                 };
+                EmployeeService.prototype.GetDataSourceForStoreScheduler = function (chainId, andromedaSiteId) {
+                    var _this = this;
+                    var schema = {
+                        data: "Data",
+                        total: "Total",
+                        model: Hr.Models.getSchedulerDataSourceSchema(andromedaSiteId)
+                    };
+                    var dataSource = new kendo.data.SchedulerDataSource({
+                        batch: false,
+                        transport: {
+                            read: function (options) {
+                                var route = _this.GetStoreEmployeeSchedulerReadRoute(chainId, andromedaSiteId);
+                                var promise = _this.$http.post(route, options.data);
+                                promise.then(function (callback) {
+                                    options.success(callback.data);
+                                });
+                            },
+                            update: function (options) {
+                                MyAndromeda.Logger.Notify("Scheduler update");
+                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
+                                var promise = _this.$http.post(route, options.data);
+                                promise.then(function (callback) {
+                                    options.success();
+                                });
+                            },
+                            create: function (options) {
+                                MyAndromeda.Logger.Notify("Scheduler create");
+                                MyAndromeda.Logger.Notify(options.data);
+                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
+                                var promise = _this.$http.post(route, options.data);
+                                promise.then(function (callback) {
+                                    MyAndromeda.Logger.Notify("Create response:");
+                                    MyAndromeda.Logger.Notify(callback.data);
+                                    options.success(callback.data);
+                                });
+                            },
+                            destroy: function (options) {
+                                throw "Matt- not implemented - scheduler -store destroy";
+                            }
+                        },
+                        schema: schema
+                    });
+                    return dataSource;
+                };
                 EmployeeService.prototype.GetDataSourceForEmployeeScheduler = function (chainId, andromedaSiteId, employeeId) {
                     var _this = this;
                     var schema = {
                         data: "Data",
                         total: "Total",
-                        model: {
-                            id: "Id",
-                            fields: {
-                                Id: {
-                                    type: "string",
-                                    nullable: true
-                                },
-                                title: { from: "Title", defaultValue: "No title", validation: { required: true } },
-                                start: { type: "date", from: "Start" },
-                                end: { type: "date", from: "End" },
-                                startTimezone: { from: "StartTimezone" },
-                                endTimezone: { from: "EndTimezone" },
-                                description: { from: "Description" },
-                                recurrenceId: { from: "RecurrenceId" },
-                                recurrenceRule: { from: "RecurrenceRule" },
-                                recurrenceException: { from: "RecurrenceException" },
-                                isAllDay: { type: "boolean", from: "IsAllDay" },
-                                EmployeeId: {
-                                    type: "string",
-                                    defaultValue: employeeId,
-                                    nullable: false,
-                                    validation: {
-                                        required: true
-                                    }
-                                },
-                                AndromedaSiteId: {
-                                    type: "number",
-                                    defaultValue: andromedaSiteId,
-                                    nullable: false,
-                                    validation: {
-                                        required: true
-                                    }
-                                },
-                                TaskType: {
-                                    type: "string",
-                                    defaultValue: "Shift",
-                                    nullable: false,
-                                    validation: {
-                                        required: true
-                                    }
-                                },
-                            }
-                        }
+                        model: Hr.Models.getSchedulerDataSourceSchema(andromedaSiteId, employeeId)
                     };
                     var dataSource = new kendo.data.SchedulerDataSource({
                         batch: false,
@@ -4274,7 +4387,7 @@ var MyAndromeda;
                             },
                             update: function (options) {
                                 MyAndromeda.Logger.Notify("Scheduler update");
-                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                                 var promise = _this.$http.post(route, options.data);
                                 promise.then(function (callback) {
                                     options.success();
@@ -4283,7 +4396,7 @@ var MyAndromeda;
                             create: function (options) {
                                 MyAndromeda.Logger.Notify("Scheduler create");
                                 MyAndromeda.Logger.Notify(options.data);
-                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId, employeeId);
+                                var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                                 var promise = _this.$http.post(route, options.data);
                                 promise.then(function (callback) {
                                     MyAndromeda.Logger.Notify("Create response:");
@@ -4299,45 +4412,188 @@ var MyAndromeda;
                     });
                     return dataSource;
                 };
+                EmployeeService.prototype.GetStoreEmployeeSchedulerReadRoute = function (chainId, andromedaSiteId) {
+                    var path = "/hr/{0}/employees/{1}/schedule/store-list";
+                    path = kendo.format(path, chainId, andromedaSiteId);
+                    return path;
+                };
                 EmployeeService.prototype.GetEmployeeSchedulerReadRoute = function (chainId, andromedaSiteId, employeeId) {
-                    var path = "/hr/{0}/employees/{1}/schedule/{2}/list";
+                    var path = "/hr/{0}/employees/{1}/schedule/list/{2}";
                     path = kendo.format(path, chainId, andromedaSiteId, employeeId);
                     return path;
                 };
-                EmployeeService.prototype.GetEmployeeSchedulerUpdateRoute = function (chainId, andromedaSiteId, employeeId) {
-                    var path = "/hr/{0}/employees/{1}/schedule/{2}/update";
-                    path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+                EmployeeService.prototype.GetEmployeeSchedulerUpdateRoute = function (chainId, andromedaSiteId) {
+                    var path = "/hr/{0}/employees/{1}/schedule/update";
+                    path = kendo.format(path, chainId, andromedaSiteId);
                     return path;
                 };
-                EmployeeService.prototype.GetEmployeeSchedulerDestroyRoute = function (chainId, andromedaSiteId, employeeId) {
-                    var path = "/hr/{0}/employees/{1}/schedule/{2}/destroy";
-                    path = kendo.format(path, chainId, andromedaSiteId, employeeId);
+                EmployeeService.prototype.GetEmployeeSchedulerDestroyRoute = function (chainId, andromedaSiteId) {
+                    var path = "/hr/{0}/employees/{1}/schedule/destroy";
+                    path = kendo.format(path, chainId, andromedaSiteId);
                     return path;
                 };
                 return EmployeeService;
             })();
             Services.EmployeeService = EmployeeService;
-            var UUIDService = (function () {
-                function UUIDService() {
+            var EmployeeSchedulerService = (function () {
+                function EmployeeSchedulerService(employeeServiceState, employeeService) {
+                    this.employeeServiceState = employeeServiceState;
+                    this.employeeService = employeeService;
                 }
-                UUIDService.prototype.GenerateUUID = function () {
-                    var d = new Date().getTime();
-                    if (window.performance && typeof window.performance.now === "function") {
-                        d += performance.now(); //use high-precision timer if available
-                    }
-                    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                        var r = (d + Math.random() * 16) % 16 | 0;
-                        d = Math.floor(d / 16);
-                        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                    });
-                    return uuid;
+                EmployeeSchedulerService.prototype.GetResources = function (stores, employee) {
+                    var _this = this;
+                    var employeePart = function () {
+                        var part = {
+                            field: "EmployeeId",
+                            dataTextField: "ShortName",
+                            dataValueField: "Id",
+                            title: "Employee",
+                            dataSource: []
+                        };
+                        if (employee) {
+                            part.dataSource = [employee];
+                            return part;
+                        }
+                        var employees = _this.employeeService.StoreEmployeeDataSource;
+                        part.dataSource = employees;
+                        return part;
+                    };
+                    var resources = [
+                        {
+                            title: "Task",
+                            field: "TaskType",
+                            dataSource: [
+                                {
+                                    text: "Normal Shift",
+                                    value: "Shift",
+                                    color: "#337ab7"
+                                },
+                                {
+                                    text: "Need cover",
+                                    value: "Need cover",
+                                    color: "#d9534f"
+                                },
+                                {
+                                    text: "Covering Shift",
+                                    value: "Covering Shift",
+                                    color: "#d9edf7"
+                                },
+                                {
+                                    text: "Unplanned leave",
+                                    value: "Unplanned",
+                                    color: "#f2dede"
+                                },
+                                {
+                                    text: "Planned leave",
+                                    value: "Planned leave",
+                                    color: "#fcf8e3"
+                                }
+                            ]
+                        },
+                        employeePart(),
+                        {
+                            title: "Store",
+                            field: "AndromedaSiteId",
+                            dataSource: stores,
+                            dataValueField: "AndromedaSiteId",
+                            dataTextField: "Name"
+                        }
+                    ];
+                    return resources;
                 };
-                return UUIDService;
+                EmployeeSchedulerService.prototype.GetStoreEmployeeScheduler = function (stores) {
+                    var start = new Date();
+                    var end = new Date();
+                    start.setHours(0);
+                    end.setHours(24);
+                    var chainId = this.employeeServiceState.CurrentChainId, andromedaSiteId = this.employeeServiceState.CurrentAndromedaSiteId, currentStore = stores[0], dataSource = this.employeeService.GetDataSourceForStoreScheduler(chainId, andromedaSiteId);
+                    var schedulerOptions = {
+                        date: new Date(),
+                        workDayStart: start,
+                        workDayEnd: end,
+                        majorTick: 60,
+                        minorTickCount: 1,
+                        workWeekStart: 0,
+                        workWeekEnd: 6,
+                        allDaySlot: true,
+                        dataSource: dataSource,
+                        timezone: "Europe/London",
+                        currentTimeMarker: {
+                            useLocalTimezone: false
+                        },
+                        editable: true,
+                        pdf: {
+                            fileName: currentStore.Name + " schedule",
+                            title: "Schedule"
+                        },
+                        eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                        toolbar: ["pdf"],
+                        showWorkHours: false,
+                        resources: this.GetResources(stores),
+                        views: [
+                            { type: "day", showWorkHours: false },
+                            { type: "week", selected: true, showWorkHours: false },
+                            { type: "month", showWorkHours: false },
+                            { type: "timeline", showWorkHours: false }
+                        ],
+                        resize: function (e) { MyAndromeda.Logger.Notify("resize"); MyAndromeda.Logger.Notify(e); },
+                        resizeEnd: function (e) { MyAndromeda.Logger.Notify("resize-end"); MyAndromeda.Logger.Notify(e); },
+                        move: function (e) { MyAndromeda.Logger.Notify("move"); MyAndromeda.Logger.Notify(e); },
+                        moveEnd: function (e) { MyAndromeda.Logger.Notify("move-end"); MyAndromeda.Logger.Notify(e); },
+                        add: function (e) { MyAndromeda.Logger.Notify("add"); MyAndromeda.Logger.Notify(e); },
+                        save: function (e) { MyAndromeda.Logger.Notify("save"); MyAndromeda.Logger.Notify(e); }
+                    };
+                    return schedulerOptions;
+                };
+                EmployeeSchedulerService.prototype.GetSingleEmployeeScheduler = function (stores, employee) {
+                    var start = new Date();
+                    var end = new Date();
+                    start.setHours(0);
+                    end.setHours(24);
+                    var chainId = this.employeeServiceState.CurrentChainId, andromedaSiteId = this.employeeServiceState.CurrentAndromedaSiteId, dataSource = this.employeeService.GetDataSourceForEmployeeScheduler(chainId, andromedaSiteId, employee.Id);
+                    var schedulerOptions = {
+                        date: new Date(),
+                        workDayStart: start,
+                        workDayEnd: end,
+                        majorTick: 60,
+                        minorTickCount: 1,
+                        workWeekStart: 0,
+                        workWeekEnd: 6,
+                        allDaySlot: true,
+                        dataSource: dataSource,
+                        timezone: "Europe/London",
+                        currentTimeMarker: {
+                            useLocalTimezone: false
+                        },
+                        editable: true,
+                        pdf: {
+                            fileName: employee.ShortName + " schedule",
+                            title: "Schedule"
+                        },
+                        eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                        toolbar: ["pdf"],
+                        showWorkHours: false,
+                        resources: this.GetResources(stores, employee),
+                        views: [
+                            { type: "day", showWorkHours: false },
+                            { type: "week", selected: true, showWorkHours: false },
+                            { type: "month", showWorkHours: false },
+                            { type: "timeline", showWorkHours: false }
+                        ]
+                    };
+                    return schedulerOptions;
+                };
+                EmployeeSchedulerService.prototype.IsEmployeeFree = function () {
+                    //var occurrences = occurrencesInRangeByResource(start, end, "attendee", event, resources);
+                };
+                EmployeeSchedulerService.prototype.OccurrencesInRangeByResource = function () {
+                };
+                return EmployeeSchedulerService;
             })();
-            Services.UUIDService = UUIDService;
+            Services.EmployeeSchedulerService = EmployeeSchedulerService;
             app.service("employeeService", EmployeeService);
             app.service("employeeServiceState", EmployeeServiceState);
-            app.service("uuidService", UUIDService);
+            app.service("employeeSchedulerService", EmployeeSchedulerService);
         })(Services = Hr.Services || (Hr.Services = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -4346,6 +4602,7 @@ var MyAndromeda;
     var Hr;
     (function (Hr) {
         var app = angular.module("MyAndromeda.Hr", [
+            "MyAndromeda.Core",
             "MyAndromeda.Hr.Config",
             "MyAndromeda.Resize",
             "MyAndromeda.Progress",

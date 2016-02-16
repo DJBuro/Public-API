@@ -1,10 +1,14 @@
 ﻿module MyAndromeda.Hr.Controllers {
     var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
     
-    app.controller("employeeListController", ($scope, $stateParams: Models.IEmployeeStoreListState,
+    app.controller("employeeListController", (
+        $scope,
+        $timeout,
+        $stateParams: Models.IEmployeeStoreListState,
         SweetAlert: any,
         employeeService: Services.EmployeeService,
-        employeeServiceState: Services.EmployeeServiceState) => {
+        employeeServiceState: Services.EmployeeServiceState,
+        employeeSchedulerService: Services.EmployeeSchedulerService) => {
 
         $scope.$stateParams = $stateParams;
         
@@ -32,18 +36,18 @@
             }
         });
 
-        var employeeGridDataSource = employeeService.StoreEmployeeDataSource;
+        let employeeGridDataSource = employeeService.StoreEmployeeDataSource;
 
-        var headerTemplate = $("#employee-list-header-template").html();
-        var actionsTemplate = $("#employee-list-row-template").html();
+        let headerTemplate = $("#employee-list-header-template").html();
+        let actionsTemplate = $("#employee-list-row-template").html();
 
-        var chainId = $stateParams.chainId;
-        var andromedaSiteId = $stateParams.andromedaSiteId;
+        let chainId = $stateParams.chainId;
+        let andromedaSiteId = $stateParams.andromedaSiteId;
 
-        var employeePicTemplate = "<employee-pic employee='dataItem'></employee-pic>";
+        let employeePicTemplate = "<employee-pic employee='dataItem'></employee-pic>";
         employeePicTemplate = kendo.format(employeePicTemplate, chainId, andromedaSiteId);
 
-        var employeeGridOptions = {
+        let employeeGridOptions = {
             dataSource: employeeGridDataSource,
             autoBind: true,
             filterable: true,
@@ -75,8 +79,22 @@
             ]
         };
 
-        $scope.employeeGridOptions = employeeGridOptions;
+        var storeIdChanged = employeeServiceState.AndromedaSiteId.where(e=> e !== null).map(e => {
+            let r = employeeService.GetStore(chainId, e);
+            return r;
+        }).flatMap(e => e);
 
+        storeIdChanged.subscribe((stores) => {
+            Logger.Notify("stores: ");
+            Logger.Notify(stores);
+
+            $timeout(() => {
+                let schedulerOptions = employeeSchedulerService.GetStoreEmployeeScheduler(stores);
+                $scope.schedulerOptions = schedulerOptions;
+            });
+            
+        });
+        $scope.employeeGridOptions = employeeGridOptions;
     });
 
     app.controller("employeeEditController", (
@@ -86,7 +104,7 @@
         progressService: MyAndromeda.Services.ProgressService,
         employeeService: Services.EmployeeService,
         employeeServiceState: Services.EmployeeServiceState,
-        uuidService: Services.UUIDService) => {
+        uuidService: MyAndromeda.Services.UUIdService) => {
 
         Logger.Notify("stateParams");
         Logger.Notify($stateParams);
@@ -256,7 +274,8 @@
         $scope,
         $timeout,
         employeeService: Services.EmployeeService,
-        employeeServiceState: Services.EmployeeServiceState) => {
+        employeeServiceState: Services.EmployeeServiceState,
+        employeeSchedulerService: Services.EmployeeSchedulerService) => {
 
         let loadRelatedStoresObservable = employeeServiceState.EditEmployee
             .where(e=> e !== null)
@@ -280,104 +299,11 @@
             };
         });
 
-
-
         let editSubscription = merged.subscribe((data) => {
             Logger.Notify("stores+ employees available");
-            let start = new Date();
-            let end = new Date();
-            
-            start.setHours(0);
-            end.setHours(24);            
-
-            let chainId = employeeServiceState.CurrentChainId,
-                andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId,
-                employeeId = data.employee.Id;
-
-            let dataSource = employeeService.GetDataSourceForEmployeeScheduler(chainId, andromedaSiteId, employeeId);
-            let schedulerOptions: kendo.ui.SchedulerOptions = {
-                date: new Date(),
-                workDayStart: start,
-                workDayEnd: end,
-                majorTick: 120,
-                minorTickCount: 1,
-                workWeekStart: 0,
-                workWeekEnd: 6,
-                allDaySlot: true,
-                
-                dataSource: dataSource,
-                //height: 600,
-                timezone: "Europe/London",
-                currentTimeMarker: {
-                    useLocalTimezone: false
-                },
-                editable: true,
-                pdf: {
-                    fileName: data.employee.ShortName + " schedule",
-                    title: "Schedule"
-                },
-                eventTemplate: "<employee-task task='dataItem'></employee-task>",
-                toolbar: ["pdf"],
-                showWorkHours: false,
-                resources: [
-                    {
-                        title: "Task",
-                        field: "TaskType",
-                        dataSource: [
-                            {
-                                text: "Normal Shift",
-                                value: "Shift",
-                                color: "#337ab7"
-                            },
-                            {
-                                text: "Need cover",
-                                value: "Need cover",
-                                color: "#d9534f"
-                            },
-                            {
-                                text: "Covering Shift",
-                                value: "Covering Shift",
-                                color: "#d9edf7"
-                            },
-                            {
-                                text: "Unplanned leave",
-                                value: "Unplanned",
-                                color: "#f2dede"
-                            },
-                            {
-                                text: "Planned leave",
-                                value: "Planned leave",
-                                color: "#fcf8e3"
-                            }
-                        ]
-                    },
-                    {
-                        field: "EmployeeId",
-                        dataTextField: "ShortName",
-                        dataValueField: "Id",
-                        title: "Employee",
-                        dataSource: [
-                            data.employee
-                        ]
-                    },
-                    {
-                        title: "Store",
-                        field: "AndromedaSiteId",
-                        dataSource: data.stores,
-                        dataValueField: "AndromedaSiteId",
-                        dataTextField: "Name"
-                    }
-                    
-                ],
-                views: [
-                    { type: "day", showWorkHours: false },
-                    { type: "week", selected: true, showWorkHours: false },
-                    { type: "month", showWorkHours: false },
-                    { type: "timeline", showWorkHours: false }
-                ]
-            }
 
             $timeout(() => {
+                let schedulerOptions = employeeSchedulerService.GetSingleEmployeeScheduler(data.stores, data.employee);
                 $scope.schedulerOptions = schedulerOptions;
             });
         });

@@ -1,13 +1,42 @@
 ﻿<!-- Views -->
 <script type="text/ng-template" id="employee-list.html">
     <div class="list-page">
-        <div class="header">
-            <h3>Employees</h3>
-            <a class="btn btn-primary" ui-sref="chain.list">Back</a>
-        </div>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li ui-sref-active="active">
+                            <a ui-sref="hr.store-list.employee-list">Employees Files</a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="hr.store-list.scheduler">Schedule</a>
+                        </li>
+                    </ul>
+                    <div class="nav navbar-nav navbar-right">
+                        <div class="navbar-form form-group">
+                            <a class="btn btn-default" ui-sref="chain.list">Back to list</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-        <!-- List of employees  -->
-        <kendo-grid options="employeeGridOptions"></kendo-grid>
+        <!-- store-employee-list.html -->
+        <!-- store-employee-scheduler.html -->
+        <div ui-view="store-employee-view"></div>
+       
+        
+    </div>
+</script>
+
+<script type="text/ng-template" id="store-employee-list.html">
+    <kendo-grid options="employeeGridOptions"></kendo-grid>
+</script>
+
+<script type="text/ng-template" id="store-employee-scheduler.html">
+    <div ng-if="schedulerOptions">
+        <div kendo-scheduler k-options="schedulerOptions" k-height="800">
+        </div>
     </div>
 </script>
 
@@ -177,16 +206,22 @@
 <!-- end of views -->
 <!-- directives -->
 <script type="text/ng-template" id="employee-pic.html">
+
     <div class="employee-photo"
          ng-style="profilePicture(employee)">
     </div>
     <div class="employee-name">
-        {{employee.ShortName}}
-        <span ng-if="!hide-full-name">({{employee.Name}})</span>
-        
-        <span class="label label-success">On shift</span>
+        <span class="short-name" style="-ms-text-overflow: ellipsis; -o-text-overflow: ellipsis; text-overflow: ellipsis;" ng-if="options.showShortName">
+            {{employee.ShortName}}
+        </span>
+        <span class="full-name" ng-if="options.showFullName">({{employee.Name}})</span>
+        <span class="label label-success" ng-if="options.showWorkStatus">On shift</span>
     </div>
-    <div></div>
+    @*<div>
+        showFullName: {{options.showFullName}}<br />
+        showShortName: {{options.showShortName}}<br />
+        showWorkStatus: {{options.showWorkStatus}}
+    </div>*@
 </script>
 
 <script type="text/html" id="employee-list-row-template">
@@ -196,7 +231,7 @@
 </script>
 
 <script type="text/html" id="employee-list-header-template">
-    <a class="btn btn-primary" ui-sref="hr.store-list.create-employee">Create</a>
+    <a class="btn btn-primary" ui-sref="hr.store-list.create-employee">Add Employee</a>
 </script>
 
 <script type="text/ng-template" id="employee-edit-schedule.html">
@@ -209,7 +244,16 @@
 </script>
 
 <script type="text/ng-template" id="employee-task.html">
-    <employee-pic employee='employee' hide-full-name="true"></employee-pic>
+    <employee-pic employee='employee' show-full-name="false" show-work-status="false"></employee-pic>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h6>{{extra.startTime}} - {{extra.endTime}} <span class="label label-success">{{extra.hours}} hr</span></h6>
+            </div>
+        </div>
+    </div>
+
 </script>
 
 <script type="text/ng-template" id="employee-edit-details.html">
@@ -404,5 +448,6 @@
             <employee-docs employee="employee">
             </employee-docs>
         </div>
+
     </div>
 </script>

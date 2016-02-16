@@ -42,7 +42,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         public async Task<List<EmployeeRecordModel>> List([FromUri]int andromedaSiteId) 
         {
             var query = this.employeeTable
-                .Where(e => e.EmployeeStoreLinkRecords.Any(r => r.AdromedaSiteId == andromedaSiteId));
+                .Where(e => e.EmployeeStoreLinkRecords.Any(r => r.AndromedaSiteId == andromedaSiteId));
 
             var records = await query.ToListAsync();
 
@@ -77,7 +77,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                                                    int andromedaSiteId, [FromUri]
                                                    Guid id) 
         {
-            var query = this.employeeTable.Where(e => e.EmployeeStoreLinkRecords.Any(k => k.AdromedaSiteId == andromedaSiteId));
+            var query = this.employeeTable.Where(e => e.EmployeeStoreLinkRecords.Any(k => k.AndromedaSiteId == andromedaSiteId));
 
             var record = await query.FirstOrDefaultAsync();
 
@@ -93,7 +93,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             EmployeeRecordModel model) 
         {
             var query = this.employeeTable
-                            .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AdromedaSiteId == andromedaSiteId))
+                            .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AndromedaSiteId == andromedaSiteId))
                             .Where(e => e.Id == model.Id);
 
             var dbItem = await query.FirstOrDefaultAsync();
@@ -144,13 +144,36 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             return result;
         }
 
+        //hr/{0}/employees/{1}/get-store
+        [HttpGet]
+        [Route("get-store")]
+        public async Task<IEnumerable<object>> ListStores([FromUri]int andromedaSiteId)
+        {
+            //get all stores related to any employee 
+            //var employees = await this.linkRecords
+            //    .Where(e=> e.EmployeeRecord.EmployeeStoreLinkRecords.Any(k => k.AdromedaSiteId == andromedaSiteId))
+            //    .Select(e=> e.AdromedaSiteId).Distinct().ToArrayAsync();
+
+            var stores = await this.storeRecords
+                .Where(e => e.AndromedaSiteId == andromedaSiteId)
+                .Select(e => new
+                {
+                    AndromedaSiteId = e.AndromedaSiteId,
+                    ChainId = e.ChainId,
+                    Name = e.Name
+                })
+                .ToListAsync();
+
+            return stores.Select(e => e as object);
+        }
+
 
         //hr/{0}/employees/{1}/list-stores/{2}
         [HttpGet]
         [Route("list-stores/{employeeId}")]
         public async Task<IEnumerable<object>> ListEmployeeStores([FromUri]Guid employeeId) 
         {
-            var ids = await this.linkRecords.Where(e => e.EmployeeRecordId == employeeId).Select(e=> e.AdromedaSiteId).ToListAsync();
+            var ids = await this.linkRecords.Where(e => e.EmployeeRecordId == employeeId).Select(e=> e.AndromedaSiteId).ToListAsync();
 
             var stores = await this.storeRecords
                 .Where(e => ids.Contains(e.AndromedaSiteId))

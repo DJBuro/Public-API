@@ -34,6 +34,68 @@
         ShiftStatus?: IEmployeeShiftStatus;
     }
 
+    
+
+    export var getSchedulerDataSourceSchema = (andromedaSiteId: number, employeeId?: string) => {
+        let employeePart = () => {
+            var employee = <kendo.data.DataSourceSchemaModelField>{
+                type: "string",
+                //defaultValue: employeeId,
+                nullable: false,
+                validation: {
+                    required: true
+                }
+            }
+
+            if (employeeId)
+            {
+                employee.defaultValue = employeeId;
+            }
+
+            return employee;
+        };
+
+        let model = <kendo.data.DataSourceSchemaModel>{
+                id: "Id",
+                fields: {
+                    Id: <kendo.data.DataSourceSchemaModelField>{
+                        type: "string",
+                        nullable: true
+                    },
+                    title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                    start: { type: "date", from: "Start" },
+                    end: { type: "date", from: "End" },
+                    startTimezone: { from: "StartTimezone" },
+                    endTimezone: { from: "EndTimezone" },
+                    description: { from: "Description" },
+                    recurrenceId: { from: "RecurrenceId" },
+                    recurrenceRule: { from: "RecurrenceRule" },
+                    recurrenceException: { from: "RecurrenceException" },
+                    isAllDay: { type: "boolean", from: "IsAllDay" },
+                    EmployeeId: employeePart(),
+                    AndromedaSiteId: <kendo.data.DataSourceSchemaModelField>{
+                        type: "number",
+                        defaultValue: andromedaSiteId,
+                        nullable: false,
+                        validation: {
+                            required: true
+                        }
+                    },
+                    TaskType: <kendo.data.DataSourceSchemaModelField>{
+                        type: "string",
+                        defaultValue: "Shift",
+                        nullable: false,
+                        validation: {
+                            required: true
+                        }
+                    }
+                }
+        }
+
+        return model;
+    };
+
+    
     export var employeeDataSourceSchema: kendo.data.DataSourceSchemaModelWithFieldsObject = {
         id: "Id",
         fields: {
@@ -65,6 +127,8 @@
     {
         Id: string;
         Title: string;
+        start: Date;
+        end: Date;
         Start: string;
         End: string;
         StartTimezone: string;

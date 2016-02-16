@@ -18,7 +18,7 @@
                 progressService: MyAndromeda.Services.ProgressService,
                 employeeService: Services.EmployeeService,
                 employeeServiceState: Services.EmployeeServiceState,
-                uuidService: Services.UUIDService) => {
+                uuidService: MyAndromeda.Services.UUIdService) => {
 
                 var dataItem: Models.IEmployee = $scope.dataItem;
                 var save: () => void = () => {
@@ -256,20 +256,64 @@
             name: "employeePic",
             templateUrl: "employee-pic.html",
             restrict: "EA",
+            transclude: true,
             scope: {
                 employee: '=employee',
-                hideFullName: "=hideFullName"
+                showShortName: "=showShortName",
+                showFullName: "=showFullName",
+                showWorkStatus: "=showWorkStatus"
 
             },
             controller: ($scope, $timeout, 
                 employeeService: Services.EmployeeService,
                 employeeServiceState: Services.EmployeeServiceState,
-                uuidService: Services.UUIDService) => {
+                uuidService: MyAndromeda.Services.UUIdService) => {
+                
+                let dataItem: Models.IEmployee = $scope.employee;
+                let getValueOrDefault = (source: any, defaultValue: any) => {
+                    let v = source;
+                    let k = typeof (v);
+                    
+                    if (k == "undefined") {
+                        return defaultValue;
+                    }
+                    return v;
+                };
 
-                var dataItem: Models.IEmployee = $scope.employee;
-                var state = {
+
+                let options = {
+                    showShortName: getValueOrDefault($scope.showShortName, false),
+                    //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
+                    showFullName: getValueOrDefault($scope.showFullName, false),
+                    //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
+                    showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
+                    //typeof ($scope.showWorkStatus) == "undefined" ? true : $scope.showWorkStatus
+                };
+                Logger.Notify(options);
+
+                $scope.options = options;
+
+
+                let state = {
                     random : uuidService.GenerateUUID()
                 };
+
+                $scope.$watch('showShortName', (newValue, old) => {
+                    Logger.Notify("showShortName: " + newValue);
+
+                    $timeout(() => { options.showShortName = getValueOrDefault(newValue, true); });
+                });
+                $scope.$watch('showFullName', (newValue, oldValue) => {
+                    Logger.Notify("showFullName: " + newValue);
+
+                    $timeout(() => { options.showFullName = getValueOrDefault(newValue, true); });
+                });
+                $scope.$watch('showWorkStatus', (newValue, oldValue) => {
+                    Logger.Notify("showWorkStatus: " + newValue);
+                    
+                    $timeout(() => { options.showWorkStatus = getValueOrDefault(newValue, true); });
+                });
+               
 
                 let updates = employeeServiceState.EmployeeUpdated.where(e=> e.Id == dataItem.Id).subscribe((change) => {
                     $timeout(() => {
@@ -313,7 +357,55 @@
             },
             controller: ($element, $scope, employeeService: Services.EmployeeService) => {
                 //todo - find employee 
+
+                Logger.Notify("setup employee task");
                 var top = $($element).closest(".k-event");
+                var status = {
+                    clone : null 
+                };
+
+                top.hover(function (e) {
+                    Logger.Notify("hover");
+                    let $e = $(this);
+                    let clone = $e.clone().appendTo("body");
+                    let yoffset = $(window).scrollTop();
+
+                    clone.addClass("hover-task");
+
+                    clone.css({
+                        "z-index": 1000,
+                        "opacity": 0.9,
+                        "position": "absolute",
+                        "top": yoffset + 10 + "px",
+                        "right": "210px" 
+                    });
+                    clone.animate({
+                        width: "200px",
+                        "min-height": "200px",
+                        "max-height": "200px"
+                    });
+                    status.clone = clone;
+                }, function (e) {
+                    Logger.Notify("lose hover :(");
+                    let $e = $(status.clone);
+                    $e.css({
+                        "z-index": 999,
+                    });
+                    $e.animate({
+                        opacity: 0
+                    }, 1000, () => {
+                        Logger.Notify("remove?");
+                        $e.remove();
+                    });
+                });
+
+                Logger.Notify("top");
+                Logger.Notify(top);
+                top.on("hover", function (e) {
+                    Logger.Notify("animate .k-event");
+                    
+                });
+
                 var task: Models.IEmployeeTask = $scope.task;
                 
                 var employee = employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
@@ -321,7 +413,13 @@
 
                 $scope.employee = employee;
 
+                var extra = {
+                    hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                    startTime: kendo.toString(task.start, "HH:mm"),
+                    endTime: kendo.toString(task.end, "HH:mm")
+                };  
                 
+                $scope.extra = extra; 
             }
         };
     });

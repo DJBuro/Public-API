@@ -35,17 +35,17 @@
         <AssociationConnector Association="DataWarehouseModel.FK_SiteVoucher_Voucher" />
         <AssociationConnector Association="DataWarehouseModel.FK_UsedVoucher_Voucher" />
         <EntityTypeShape EntityType="DataWarehouseModel.ACSErrorCode" Width="1.5" PointX="0.75" PointY="16.75" />
-        <EntityTypeShape EntityType="DataWarehouseModel.Audit" Width="1.5" PointX="10.75" PointY="9.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Audit" Width="1.5" PointX="10.75" PointY="13.75" />
         <EntityTypeShape EntityType="DataWarehouseModel.PasswordResetRequest" Width="1.5" PointX="3" PointY="6.625" />
-        <EntityTypeShape EntityType="DataWarehouseModel.Site" Width="1.5" PointX="12.75" PointY="9.75" />
-        <EntityTypeShape EntityType="DataWarehouseModel.sysdiagram" Width="1.5" PointX="10.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Site" Width="1.5" PointX="6.75" PointY="1.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.sysdiagram" Width="1.5" PointX="12.75" PointY="13.75" />
         <AssociationConnector Association="DataWarehouseModel.fk_passwordresetrequest_customer" />
         <EntityTypeShape EntityType="DataWarehouseModel.CustomerLoyalty" Width="1.5" PointX="3" PointY="24.375" />
         <AssociationConnector Association="DataWarehouseModel.FK_CustomerLoyalty_Customer" />
         <EntityTypeShape EntityType="DataWarehouseModel.AndroWebTelemetry" Width="1.5" PointX="5.25" PointY="48.25" />
         <EntityTypeShape EntityType="DataWarehouseModel.AndroWebTelemetrySession" Width="1.5" PointX="3" PointY="48.125" />
-        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedback" Width="1.5" PointX="12" PointY="6" />
-        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedbackCategory" Width="1.5" PointX="9.75" PointY="6.625" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedback" Width="1.5" PointX="13" PointY="10" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedbackCategory" Width="1.5" PointX="10.75" PointY="10.625" />
         <EntityTypeShape EntityType="DataWarehouseModel.OrderDiscount" Width="1.5" PointX="8.25" PointY="13.375" />
         <EntityTypeShape EntityType="DataWarehouseModel.OrderDiscountType" Width="1.5" PointX="6" PointY="5" />
         <AssociationConnector Association="DataWarehouseModel.FK_AndroWebSessionItem_AndroWebSession" />
@@ -73,12 +73,14 @@
         <AssociationConnector Association="DataWarehouseModel.FK_OrderPayments_OrderHeader" />
         <AssociationConnector Association="DataWarehouseModel.FK_UsedVoucher_OrderHeader" />
         <EntityTypeShape EntityType="DataWarehouseModel.IbsOrder" Width="1.5" PointX="5.25" PointY="26.25" />
-        <EntityTypeShape EntityType="DataWarehouseModel.IbsRamesesTranslation" Width="1.5" PointX="12.75" PointY="12.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsRamesesTranslation" Width="1.5" PointX="14.75" PointY="1.75" />
         <AssociationConnector Association="DataWarehouseModel.FK_IbsOrder_OrderHeader" />
-        <EntityTypeShape EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" Width="1.5" PointX="13.75" PointY="1.75" />
-        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeStoreLinkRecord" Width="1.5" PointX="11" PointY="2.375" />
-        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeRecord" Width="1.5" PointX="8.75" PointY="2" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeRecord" Width="1.5" PointX="9.75" PointY="3.875" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeStoreLinkRecord" Width="1.5" PointX="12" PointY="2.125" />
         <AssociationConnector Association="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeSchedule" Width="1.5" PointX="12" PointY="4.5" />
+        <AssociationConnector Association="DataWarehouseModel.FK_EmployeeSchedule_EmployeeRecord" />
         </Diagram>
       <Diagram DiagramId="f52ba0265e624f60bcad0656354fba09" Name="Orders" ZoomLevel="73" >
         <EntityTypeShape EntityType="DataWarehouseModel.OrderLine" Width="1.5" PointX="3.125" PointY="0.875" />

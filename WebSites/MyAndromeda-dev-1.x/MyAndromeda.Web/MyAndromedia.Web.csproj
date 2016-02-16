@@ -341,6 +341,7 @@
     <TypeScriptCompile Include="App\Api\DriversApi.ts" />
     <TypeScriptCompile Include="App\Api\OrdersApi.ts" />
     <TypeScriptCompile Include="App\Debug\OrdersApp.ts" />
+    <TypeScriptCompile Include="App\General\Core.ts" />
     <TypeScriptCompile Include="App\General\Logger.ts" />
     <TypeScriptCompile Include="App\General\ProgressService.ts" />
     <TypeScriptCompile Include="App\General\ResizeModule.ts" />

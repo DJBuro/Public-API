@@ -56,7 +56,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
             record.CreatedUtc = DateTime.UtcNow;
             record.EmployeeStoreLinkRecords.Add(new EmployeeStoreLinkRecord()
             {
-                AdromedaSiteId = andromedaSiteId
+                AndromedaSiteId = andromedaSiteId
             });
 
             // the rest should be in update properties

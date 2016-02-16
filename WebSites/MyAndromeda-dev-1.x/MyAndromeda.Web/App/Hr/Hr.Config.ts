@@ -28,6 +28,24 @@
             cache: false
         };
 
+        var hrEmployeeList: ng.ui.IState = {
+            url: "/employees",
+            views: {
+                "store-employee-view": {
+                    templateUrl: "store-employee-list.html"
+                }
+            }
+        };
+        var hrStoreScheduler: ng.ui.IState = {
+            url: "/schedule",
+            views: {
+                "store-employee-view": {
+                    templateUrl: "store-employee-scheduler.html"
+                }
+            }
+        };
+
+
         var hrStoreEmployeeEdit: ng.ui.IState = {
             url: "/edit/:id",
             views: {
@@ -96,6 +114,10 @@
         // route: /hr-store
         $stateProvider.state("hr", hr)
         $stateProvider.state("hr.store-list", hrStoreList);
+        $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
+        $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
+
+
         $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
         $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
         $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);

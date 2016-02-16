@@ -12,10 +12,21 @@ namespace MyAndromeda.Data.DataWarehouse.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmployeeStoreLinkRecord
+    public partial class EmployeeSchedule
     {
+        public System.Guid Id { get; set; }
         public int AndromedaSiteId { get; set; }
         public System.Guid EmployeeRecordId { get; set; }
+        public string Description { get; set; }
+        public System.DateTime EndUtc { get; set; }
+        public string EndTimezone { get; set; }
+        public bool IsAllDay { get; set; }
+        public string RecurrenceException { get; set; }
+        public string RecurrenceRule { get; set; }
+        public System.DateTime StartUtc { get; set; }
+        public string StartTimezone { get; set; }
+        public string TaskType { get; set; }
+        public string Title { get; set; }
     
         public virtual EmployeeRecord EmployeeRecord { get; set; }
     }
