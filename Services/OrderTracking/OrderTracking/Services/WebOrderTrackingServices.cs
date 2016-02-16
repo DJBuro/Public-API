@@ -127,7 +127,7 @@ namespace OrderTracking.Services
                             json.Append(", ");
                             json.Append("\"personProcessing\":\"");
                             json.Append(order.PersonProcessing);
-                            json.Append("\" ");
+                            json.Append("\"");
 
                             // Get tracker details
                             Tracker tracker = CacheManager.GetTrackerFromCache(orderTrackingSession.ApplicationId, orderTrackingSession.CustomerCredentials, order.TrackerName);
@@ -136,20 +136,28 @@ namespace OrderTracking.Services
                             if (tracker != null)
                             {
                                 // Output any tracker information that we have
-                                json.Append(", ");
-                                json.Append("\"lat\":\"");
+                                json.Append(",");
+                                json.Append("\"lat\":");
                                 if (tracker.Latitude.HasValue)
                                 {
                                     json.Append(tracker.Latitude.ToString());
                                 }
-                                json.Append("\", ");
-                                json.Append("\"lon\":\"");
+                                else
+                                {
+                                    json.Append("0");
+                                }
+                                json.Append(",");
+                                json.Append("\"lon\":");
                                 if (tracker.Longitude.HasValue)
                                 {
                                     json.Append(tracker.Longitude.ToString());
                                 }
-                                json.Append("\", ");
-                                json.Append("\"active\":\"");
+                                else
+                                {
+                                    json.Append("0");
+                                }
+                                json.Append(",");
+                                json.Append("\"active\":");
                                 if (tracker.LastUpdated.Ticks > oldOrderCutoff.Ticks)
                                 {
                                     json.Append("true");
@@ -158,7 +166,6 @@ namespace OrderTracking.Services
                                 {
                                     json.Append("false");
                                 }
-                                json.Append("\"");
                             }
 
                             json.Append("}");
@@ -223,27 +230,35 @@ namespace OrderTracking.Services
                             json.Append("{");
                             json.Append("\"id\":");
                             json.Append(cachedOrder.OrderId.ToString());
-                            json.Append(",\"status\":\"");
+                            json.Append(",\"status\":");
                             json.Append(cachedOrder.OrderStatusId.ToString());
-                            json.Append("\"");
+                            json.Append("");
 
                             // Has a tracker been assigned to the driver?
                             if (cachedOrder.Tracker != null)
                             {
                                 // Output any tracker information that we have
-                                json.Append(", ");
+                                json.Append(",");
                                 json.Append("\"lat\":");
                                 if (cachedOrder.Tracker.Latitude.HasValue)
                                 {
                                     json.Append(cachedOrder.Tracker.Latitude.ToString());
                                 }
-                                json.Append(", ");
+                                else
+                                {
+                                    json.Append("0");
+                                }
+                                json.Append(",");
                                 json.Append("\"lon\":");
                                 if (cachedOrder.Tracker.Longitude.HasValue)
                                 {
                                     json.Append(cachedOrder.Tracker.Longitude.ToString());
                                 }
-                                json.Append(", ");
+                                else
+                                {
+                                    json.Append("0");
+                                }
+                                json.Append(",");
                                 json.Append("\"active\":");
                                 if (cachedOrder.Tracker.LastUpdated.Ticks > oldOrderCutoff.Ticks)
                                 {
@@ -253,7 +268,6 @@ namespace OrderTracking.Services
                                 {
                                     json.Append("false");
                                 }
-                                json.Append("");
                             }
 
                             json.Append("}");

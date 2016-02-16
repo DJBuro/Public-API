@@ -208,7 +208,7 @@ namespace OrderTracking.DataAccess
                 // Get the test order
                 Order order = CacheManager.GetOTTestOrder();
 
-                PollOrder pollOrder = new PollOrder(order.OrderId, order.Status, order.CompletedDateTime, "");
+                PollOrder pollOrder = new PollOrder(order.OrderId, order.Status, order.CompletedDateTime, "Test Driver");
                 pollOrders.Add(pollOrder);
 
                 return true;

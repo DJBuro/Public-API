@@ -63,6 +63,7 @@ namespace OrderTracking.Services
             CacheManager.OTTestOrderLocation.Add(7, new KeyValuePair<float, float>(51.368f, -0.15022f));
             CacheManager.OTTestOrderLocation.Add(8, new KeyValuePair<float, float>(51.369f, -0.15022f));
             CacheManager.OTTestOrderLocation.Add(9, new KeyValuePair<float, float>(51.370f, -0.15022f));
+
         }
 
         internal static Order GetOTTestOrder()
@@ -99,8 +100,11 @@ namespace OrderTracking.Services
                 }
                 else if (CacheManager.OTTestOrder.Status == 4)
                 {
-                    CacheManager.OTTestOrder.Status = 5;
-                    CacheManager.OTTestOrder.CompletedDateTime = DateTime.Now;
+                    if (CacheManager.OTTestOrderLocationIndex == CacheManager.OTTestOrderLocation.Count - 1)
+                    {
+                        CacheManager.OTTestOrder.Status = 5;
+                        CacheManager.OTTestOrder.CompletedDateTime = DateTime.Now;
+                    }
                 }
                 else if (CacheManager.OTTestOrder.Status == 5)
                 {
@@ -108,6 +112,7 @@ namespace OrderTracking.Services
                     CacheManager.OTTestOrder.OrderTakenDateTime = DateTime.Now;
                     CacheManager.OTTestOrder.OutForDeliveryDateTime = null;
                     CacheManager.OTTestOrder.CompletedDateTime = null;
+                    CacheManager.OTTestOrderLocationIndex = 0;
                 }
             }
 
