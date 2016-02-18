@@ -377,6 +377,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\rx-angular\rx.angular.d.ts" />
     <Content Include="Content\kendo\2016.1.112\Black\editor.png" />
@@ -725,6 +726,12 @@
     </Content>
     <Content Include="Content\myAndromeda\Less\router-animate.min.css">
       <DependentUpon>router-animate.css</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\scheduling.css">
+      <DependentUpon>scheduling.less</DependentUpon>
+    </Content>
+    <Content Include="Content\myAndromeda\Less\scheduling.min.css">
+      <DependentUpon>scheduling.css</DependentUpon>
     </Content>
     <Content Include="Content\No_image_available.png" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -1636,6 +1643,10 @@
     <Content Include="Content\kendo\2016.1.112\kendo.silver.mobile.min.css.map" />
     <Content Include="Content\kendo\2016.1.112\kendo.uniform.min.css.map" />
     <Content Include="Content\kendo\2016.1.112\kendo.uniform.mobile.min.css.map" />
+    <Content Include="Content\myAndromeda\Less\scheduling.less" />
+    <Content Include="Content\myAndromeda\Less\scheduling.css.map">
+      <DependentUpon>scheduling.css</DependentUpon>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

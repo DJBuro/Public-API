@@ -3707,6 +3707,7 @@ var MyAndromeda;
         })(Controllers = Hr.Controllers || (Hr.Controllers = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/bootstrap/bootstrap.d.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
     var Hr;
@@ -3987,55 +3988,49 @@ var MyAndromeda;
                         task: "=task",
                     },
                     controller: function ($element, $scope, employeeService) {
-                        //todo - find employee 
-                        MyAndromeda.Logger.Notify("setup employee task");
-                        var top = $($element).closest(".k-event");
-                        var status = {
-                            clone: null
-                        };
-                        top.hover(function (e) {
-                            MyAndromeda.Logger.Notify("hover");
-                            var $e = $(this);
-                            var clone = $e.clone().appendTo("body");
-                            var yoffset = $(window).scrollTop();
-                            clone.addClass("hover-task");
-                            clone.css({
-                                "z-index": 1000,
-                                "opacity": 0.9,
-                                "position": "absolute",
-                                "top": yoffset + 10 + "px",
-                                "right": "210px"
-                            });
-                            clone.animate({
-                                width: "200px",
-                                "min-height": "200px",
-                                "max-height": "200px"
-                            });
-                            status.clone = clone;
-                        }, function (e) {
-                            MyAndromeda.Logger.Notify("lose hover :(");
-                            var $e = $(status.clone);
-                            $e.css({
-                                "z-index": 999,
-                            });
-                            $e.animate({
-                                opacity: 0
-                            }, 1000, function () {
-                                MyAndromeda.Logger.Notify("remove?");
-                                $e.remove();
-                            });
-                        });
-                        MyAndromeda.Logger.Notify("top");
-                        MyAndromeda.Logger.Notify(top);
-                        top.on("hover", function (e) {
-                            MyAndromeda.Logger.Notify("animate .k-event");
-                        });
                         var task = $scope.task;
                         var employee = employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
                         if (employee === null) {
                             MyAndromeda.Logger.Notify("cant find the person");
                         }
                         $scope.employee = employee;
+                        MyAndromeda.Logger.Notify("setup employee task");
+                        var top = $($element).closest(".k-event");
+                        var borderStyle = "";
+                        switch (employee.Department) {
+                            case "Front of house":
+                                borderStyle = 'task-front-of-house';
+                                break;
+                            case "Kitchen":
+                                borderStyle = 'task-kitchen';
+                                break;
+                            case "Management":
+                                borderStyle = 'task-management';
+                                break;
+                            case "Delivery":
+                                borderStyle = 'task-delivery';
+                                break;
+                        }
+                        top.addClass("task-border");
+                        top.addClass(borderStyle);
+                        var status = {
+                            clone: null
+                        };
+                        var popover = top.popover({
+                            title: "Task preview",
+                            placement: "auto",
+                            html: true,
+                            content: "please wait",
+                            trigger: "hover"
+                        }).on("show.bs.popover", function () {
+                            var html = top.html();
+                            popover.attr('data-content', html);
+                        });
+                        MyAndromeda.Logger.Notify("top");
+                        MyAndromeda.Logger.Notify(top);
+                        top.on("hover", function (e) {
+                            MyAndromeda.Logger.Notify("animate .k-event");
+                        });
                         var extra = {
                             hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                             startTime: kendo.toString(task.start, "HH:mm"),
@@ -4466,7 +4461,7 @@ var MyAndromeda;
                                 {
                                     text: "Normal Shift",
                                     value: "Shift",
-                                    color: "#337ab7"
+                                    color: "#ffffff"
                                 },
                                 {
                                     text: "Need cover",

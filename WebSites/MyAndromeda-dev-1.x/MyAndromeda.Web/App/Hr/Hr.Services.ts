@@ -433,7 +433,7 @@
                         {
                             text: "Normal Shift",
                             value: "Shift",
-                            color: "#337ab7"
+                            color: "#ffffff"
                         },
                         {
                             text: "Need cover",

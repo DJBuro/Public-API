@@ -1342,6 +1342,10 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             <End Role="EmployeeRecord" EntitySet="EmployeeRecords" />
             <End Role="EmployeeSchedule" EntitySet="EmployeeSchedules" />
           </AssociationSet>
+          <AssociationSet Name="OrderHeaderOrderStatusHistory" Association="DataWarehouseModel.OrderHeaderOrderStatusHistory">
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+            <End Role="OrderStatusHistory" EntitySet="OrderStatusHistories" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="AccountType">
           <Key>
@@ -1618,6 +1622,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <Property Type="Int32" Name="Status" Nullable="false" />
           <Property Type="DateTime" Name="ChangedDateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="OrderStatu" Relationship="DataWarehouseModel.FK_OrderStatusHistory_OrderStatus" FromRole="OrderStatusHistory" ToRole="OrderStatu" />
+          <NavigationProperty Name="OrderHeader" Relationship="DataWarehouseModel.OrderHeaderOrderStatusHistory" FromRole="OrderStatusHistory" ToRole="OrderHeader" />
         </EntityType>
         <Association Name="FK_OrderStatusHistory_OrderStatus">
           <End Type="DataWarehouseModel.OrderStatu" Role="OrderStatu" Multiplicity="1" />
@@ -2129,6 +2134,7 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
           <NavigationProperty Name="IbsOrders" Relationship="DataWarehouseModel.FK_IbsOrder_OrderHeader" FromRole="OrderHeader" ToRole="IbsOrder" />
           <Property Name="Tips" Type="Int32" />
           <Property Name="OrderNotes" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderStatusHistories" Relationship="DataWarehouseModel.OrderHeaderOrderStatusHistory" FromRole="OrderHeader" ToRole="OrderStatusHistory" />
         </EntityType>
         <Association Name="FK_OrderHeader_ACSErrorCode">
           <End Type="DataWarehouseModel.ACSErrorCode" Role="ACSErrorCode" Multiplicity="1" />
@@ -2357,6 +2363,18 @@ FROM [dbo].[IbsRamesesTranslation] AS [IbsRamesesTranslation]</DefiningQuery>
             </Principal>
             <Dependent Role="EmployeeSchedule">
               <PropertyRef Name="EmployeeRecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrderHeaderOrderStatusHistory">
+          <End Type="DataWarehouseModel.OrderHeader" Role="OrderHeader" Multiplicity="1" />
+          <End Type="DataWarehouseModel.OrderStatusHistory" Role="OrderStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHeader">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderStatusHistory">
+              <PropertyRef Name="OrderHeaderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

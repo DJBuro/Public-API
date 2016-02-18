@@ -530,10 +530,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 this.logger.Debug("Calling: " + webApiClientContext.BaseAddress + this.webhookEndpointManger.BringgEndpoint);
                 using (var client = new HttpClient())
                 {
-                    // New code:
                     client.BaseAddress = new Uri(webApiClientContext.BaseAddress);
-                    //client.DefaultRequestHeaders.Accept.Clear();
-                    //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     HttpResponseMessage response = await client.PostAsJsonAsync(this.webhookEndpointManger.BringgEndpoint, bringWebook);
 

@@ -132,9 +132,10 @@ namespace MyAndromeda.Services.WebHooks
                     {
                         await ev.BeforeDistributionAsync(model.AndromedaSiteId, model);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         this.logger.Error(ev.Name + " exception");
+                        this.logger.Error(ex);
                         //throw;
                     }
                 });

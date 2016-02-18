@@ -113,6 +113,9 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 this.logger.Debug("Try to use Bringg: " + andromedaSiteId);
 
                 await this.bringgSerivce.AddOrderAsync(andromedaSiteId, orderHeader.ID);
+
+
+
             }
             catch (Exception e)
             {

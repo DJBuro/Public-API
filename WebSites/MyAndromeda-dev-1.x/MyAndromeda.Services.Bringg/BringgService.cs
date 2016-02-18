@@ -11,9 +11,14 @@ using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Framework.Dates;
 using MyAndromeda.Logging;
+using MyAndromeda.Services.Bringg.Outgoing;
 using MyAndromeda.Services.Gprs;
+using MyAndromeda.Services.WebHooks;
+using MyAndromeda.WebApiClient;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net;
 
 namespace MyAndromeda.Services.Bringg
 {
@@ -28,13 +33,20 @@ namespace MyAndromeda.Services.Bringg
         private readonly IBringgSettingsDataService gpsSettingsDataService;
         private readonly IGprsService gprsDeviceService;
 
+        private readonly WebhookEndpointManger webhookEndpointManger;
+        private readonly IWebApiClientContext webApiClientContext;
+
         public BringgService(IOrderHeaderDataService orderHeaderDataService,
             IDateServices dateServices,
             IStoreDataService storeDataService,
             IBringgSettingsDataService gpsSettingsDataService,
             IGprsService gprsDeviceService,
-            IMyAndromedaLogger logger)
+            IMyAndromedaLogger logger,
+            WebhookEndpointManger webhookEndpointManger,
+            IWebApiClientContext webApiClientContext)
         {
+            this.webApiClientContext = webApiClientContext;
+            this.webhookEndpointManger = webhookEndpointManger;
             this.logger = logger;
             this.gprsDeviceService = gprsDeviceService;
             this.gpsSettingsDataService = gpsSettingsDataService;
@@ -158,6 +170,9 @@ namespace MyAndromeda.Services.Bringg
                         {
                             order.BringgTaskId = Convert.ToInt32(bringgOrder.BringgTaskId);
                             await this.orderHeaderDataService.SaveChangesAsync();
+
+                            await this.FluffAbout(andromedaSiteId, order, customer);
+                            
                         }
                         break;
                     }
@@ -166,6 +181,58 @@ namespace MyAndromeda.Services.Bringg
                         break;
                     }
             }
+        }
+
+        
+
+        private async Task FluffAbout(int andromedaSiteId, OrderHeader order, Andromeda.GPSIntegration.Model.Customer customer) 
+        {
+            try
+            {
+                OutgoingWebHookBringg outgoingMessage = new OutgoingWebHookBringg() 
+                {
+                    AndromedaSiteId = andromedaSiteId,
+                    ExternalSiteId = order.ExternalSiteID,
+                    AndromedaOrderId = order.ID.ToString(),
+                    ExternalId = order.ExternalOrderRef,
+                    Id = order.BringgTaskId.GetValueOrDefault(),
+                    Source = "Create Bringg Task", 
+                    Status = "0",
+                    AndromedaOrderStatusId = order.Status,
+                    UserId = customer.PartnerId
+                };
+
+                //await this.sendWebHooksService.CallEndpoints(outgoingMessage, e => e.BringUpdates);
+
+                try
+                {
+                    this.logger.Debug("Calling: " + webApiClientContext.BaseAddress + this.webhookEndpointManger.BringgEndpoint);
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(webApiClientContext.BaseAddress);
+
+                        HttpResponseMessage response = await client.PostAsJsonAsync(this.webhookEndpointManger.BringgEndpoint, outgoingMessage);
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            string message = string.Format("Could not call : {0}", this.webhookEndpointManger.BringgEndpoint);
+                            string responseMessage = await response.Content.ReadAsStringAsync();
+
+                            throw new WebException(message, new Exception(responseMessage));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    this.logger.Error(e);
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.logger.Error("I couldn't notify myself about bringg being created for some reason. :)");
+                this.logger.Error(e);
+            }   
         }
 
         public async Task<UpdateDriverResult> UpdateDriverAsync(

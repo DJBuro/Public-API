@@ -164,11 +164,13 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 {
                     Id = e.ID,
                     ExternalOrderRef = e.ExternalOrderRef,
+                    TicketNumber = e.TicketNumber,
                     CookingInstructions = e.CookingInstructions,
                     OrderNotes = e.OrderNotes,
                     ItemCount = e.OrderLines.Count(),
                     DeliveryCharge = e.DeliveryCharge,
                     Tips = e.Tips,
+                    CardCharges = e.OrderPayments.Sum(k=> k.PaymentCharge),
                     Items = e.OrderLines.Select(item => new OrderItem() {
                         Id = item.ID,
                         Name = item.Description,
@@ -180,7 +182,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                         Id = item.ID,
                         PayTypeName = item.PayTypeName,
                         PaymentType = item.PaymentType,
-                        Value = item.Value
+                        Value = item.Value,
+                        Charge = item.PaymentCharge
                     }),
                     StatusDescription = e.OrderStatu.Description,
                     FinalPrice = e.FinalPrice,
@@ -211,6 +214,14 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                         Name = e.DriverName,
                         Phone = e.DriverPhoneNumber
                     },
+                    OrderStatusHistory = e.OrderStatusHistories.Select(s=> new OrderStatus(){
+                        Id = s.Status,
+                        Description = s.OrderStatu.Description,
+                        ChangeDateTime = s.ChangedDateTime
+                    })
+                    .OrderByDescending(s=> s.ChangeDateTime)
+                    .ToList(),
+
                     BringgId = e.BringgTaskId,
                     IbsOrderId = e.IbsOrders.OrderByDescending(d => d.CreatedAtUtc).Select(r=> r.IbsOrderId).FirstOrDefault()
                 });
@@ -305,6 +316,14 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         } 
     }
 
+    public class OrderStatus 
+    {
+        public int Id { get; set; }
+
+        public string Description { get; set; }
+        public DateTime ChangeDateTime { get; set; }
+    }
+
     public class DataQuery 
     {
         public Sort[] Sort { get; set; }
@@ -318,7 +337,6 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
     public class PaymentLine 
     {
-
         public Guid Id { get; set; }
 
         public string PayTypeName { get; set; }
@@ -326,6 +344,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public int Value { get; set; }
 
         public string PaymentType { get; set; }
+        public int? Charge { get; set; }
     }
 
     public class ChangeOrderStatusViewModel
@@ -356,13 +375,11 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         public IEnumerable<OrderItem> Items { get; set; }
 
-
         public string StatusDescription { get; set; }
 
         public long IbsOrderId { get; set; }
 
         public IEnumerable<PaymentLine> PaymentLines { get; set; }
-
 
         public int? Tips { get; set; }
 
@@ -373,6 +390,11 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         public string OrderNotes { get; set; }
 
         public string ExternalOrderRef { get; set; }
+        public int? TicketNumber { get; set; }
+
+        public List<OrderStatus> OrderStatusHistory { get; set; }
+
+        public int? CardCharges { get; set; }
     }
 
     public class OrderItem 

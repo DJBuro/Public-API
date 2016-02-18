@@ -20,6 +20,7 @@
 
         Gender?: string;
         DateOfBirth?: string;
+        Department?: string;
         PrimaryRole?: string;
         Roles: string[];
         ProfilePic?: string; //end url.

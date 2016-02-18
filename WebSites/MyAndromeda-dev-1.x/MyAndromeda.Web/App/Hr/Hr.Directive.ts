@@ -1,4 +1,5 @@
-﻿module MyAndromeda.Hr.Directives {
+﻿/// <reference path="../../scripts/typings/bootstrap/bootstrap.d.ts" />
+module MyAndromeda.Hr.Directives {
     var app = angular.module("MyAndromeda.Hr.Directives", []);
 
     app.directive("employeeDocs", () => {
@@ -66,6 +67,7 @@
                     status.uploading = true;
                     status.random = undefined;
                 };
+
                 $scope.onUploadSuccess = (e) => {
                     Logger.Notify("upload success");
                     Logger.Notify(e);
@@ -356,62 +358,50 @@
                 //employee: "=employee"
             },
             controller: ($element, $scope, employeeService: Services.EmployeeService) => {
-                //todo - find employee 
+                var task: Models.IEmployeeTask = $scope.task;
+                var employee: Models.IEmployee = <any>employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
+                if (employee === null) { Logger.Notify("cant find the person"); }
+
+                $scope.employee = employee;
 
                 Logger.Notify("setup employee task");
-                var top = $($element).closest(".k-event");
+
+                let top = $($element).closest(".k-event");
+                let borderStyle = ""
+
+                switch (employee.Department) {
+                    case "Front of house": borderStyle = 'task-front-of-house'; break;
+                    case "Kitchen": borderStyle = 'task-kitchen'; break; 
+                    case "Management": borderStyle = 'task-management'; break;
+                    case "Delivery": borderStyle = 'task-delivery'; break;
+                }
+
+                top.addClass("task-border");
+                top.addClass(borderStyle);
+
                 var status = {
                     clone : null 
                 };
 
-                top.hover(function (e) {
-                    Logger.Notify("hover");
-                    let $e = $(this);
-                    let clone = $e.clone().appendTo("body");
-                    let yoffset = $(window).scrollTop();
-
-                    clone.addClass("hover-task");
-
-                    clone.css({
-                        "z-index": 1000,
-                        "opacity": 0.9,
-                        "position": "absolute",
-                        "top": yoffset + 10 + "px",
-                        "right": "210px" 
-                    });
-                    clone.animate({
-                        width: "200px",
-                        "min-height": "200px",
-                        "max-height": "200px"
-                    });
-                    status.clone = clone;
-                }, function (e) {
-                    Logger.Notify("lose hover :(");
-                    let $e = $(status.clone);
-                    $e.css({
-                        "z-index": 999,
-                    });
-                    $e.animate({
-                        opacity: 0
-                    }, 1000, () => {
-                        Logger.Notify("remove?");
-                        $e.remove();
-                    });
+                var popover = top.popover({
+                    title: "Task preview",
+                    placement: "auto",
+                    html: true,
+                    content: "please wait",
+                    trigger: "hover"
+                }).on("show.bs.popover", () => {
+                    let html = top.html();
+                    popover.attr('data-content', html);
                 });
 
                 Logger.Notify("top");
                 Logger.Notify(top);
                 top.on("hover", function (e) {
                     Logger.Notify("animate .k-event");
-                    
                 });
 
-                var task: Models.IEmployeeTask = $scope.task;
                 
-                var employee = employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
-                if (employee === null) { Logger.Notify("cant find the person"); }
-
-                $scope.employee = employee;
+                
 
                 var extra = {
                     hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,

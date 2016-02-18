@@ -1,31 +1,40 @@
 ﻿<!-- Views -->
 <script type="text/ng-template" id="employee-list.html">
     <div class="list-page">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li ui-sref-active="active">
-                            <a ui-sref="hr.store-list.employee-list">Employees Files</a>
-                        </li>
-                        <li ui-sref-active="active">
-                            <a ui-sref="hr.store-list.scheduler">Schedule</a>
-                        </li>
-                    </ul>
-                    <div class="nav navbar-nav navbar-right">
-                        <div class="navbar-form form-group">
-                            <a class="btn btn-default" ui-sref="chain.list">Back to list</a>
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="navbar navbar-default">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li ui-sref-active="active">
+                                <a ui-sref="hr.store-list.employee-list">
+                                    <i class="fa fa-file-o"></i>
+                                    Employees Files
+                                </a>
+                            </li>
+                            <li ui-sref-active="active">
+                                <a ui-sref="hr.store-list.scheduler">
+                                    <i class="fa fa-calendar-o"></i>
+                                    Schedule
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="nav navbar-nav navbar-right">
+                            <div class="navbar-form form-group">
+                                <a class="btn btn-default" ui-sref="chain.list">Back to list</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </nav>
             </div>
-        </nav>
+        </div>
+
 
         <!-- store-employee-list.html -->
         <!-- store-employee-scheduler.html -->
         <div ui-view="store-employee-view"></div>
-       
-        
+
+
     </div>
 </script>
 
@@ -35,7 +44,7 @@
 
 <script type="text/ng-template" id="store-employee-scheduler.html">
     <div ng-if="schedulerOptions">
-        <div kendo-scheduler k-options="schedulerOptions" k-height="800">
+        <div kendo-scheduler k-options="schedulerOptions">
         </div>
     </div>
 </script>
@@ -218,10 +227,10 @@
         <span class="label label-success" ng-if="options.showWorkStatus">On shift</span>
     </div>
     @*<div>
-        showFullName: {{options.showFullName}}<br />
-        showShortName: {{options.showShortName}}<br />
-        showWorkStatus: {{options.showWorkStatus}}
-    </div>*@
+            showFullName: {{options.showFullName}}<br />
+            showShortName: {{options.showShortName}}<br />
+            showWorkStatus: {{options.showWorkStatus}}
+        </div>*@
 </script>
 
 <script type="text/html" id="employee-list-row-template">
@@ -244,16 +253,31 @@
 </script>
 
 <script type="text/ng-template" id="employee-task.html">
-    <employee-pic employee='employee' show-full-name="false" show-work-status="false"></employee-pic>
-    <div class="container-fluid">
+    <style>
 
-        <div class="row">
-            <div class="col-sm-12">
-                <h6>{{extra.startTime}} - {{extra.endTime}} <span class="label label-success">{{extra.hours}} hr</span></h6>
+        
+    </style>
+    <div class="task" ng-class="{
+            'task-front-of-house' : employee.Department == 'Front of house',
+            'task-kitchen' : employee.Department == 'Kitchen',
+            'task-management' : employee.Department == 'Management',
+            'task-delivery' : employee.Delivery == 'Delivery'
+          }">
+        <employee-pic employee='employee' show-full-name="false" show-work-status="false"></employee-pic>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <span class="label label-info">{{employee.PrimaryRole}}</span>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h6>{{extra.startTime}} - {{extra.endTime}} <span class="label label-success">{{extra.hours}} hr</span></h6>
+                </div>
+            </div>
+
         </div>
     </div>
-
 </script>
 
 <script type="text/ng-template" id="employee-edit-details.html">

@@ -135,6 +135,10 @@
       <Project>{A4287BCC-F29A-414D-9CB0-25B7ADCD0D3F}</Project>
       <Name>MyAndromeda.Services.Orders</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.WebApiClient\MyAndromeda.WebApiClient.csproj">
+      <Project>{E7A8C9C4-B922-4F83-97B0-1D7467BFF93D}</Project>
+      <Name>MyAndromeda.WebApiClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyAndromedaDataAccessEntityFramework\MyAndromedaDataAccessEntityFramework\MyAndromeda.Data.csproj">
       <Project>{6B7D4B89-6FA5-4A65-A611-94F26DE92361}</Project>
       <Name>MyAndromeda.Data</Name>
