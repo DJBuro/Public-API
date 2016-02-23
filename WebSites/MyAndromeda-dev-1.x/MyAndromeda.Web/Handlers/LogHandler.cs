@@ -22,7 +22,7 @@ namespace MyAndromeda.Web.Handlers
             var logger = DependencyResolver.Current.GetService<IMyAndromedaLogger>();
             var httpContext = DependencyResolver.Current.GetService<HttpContextWrapper>();
 
-            var body = 
+            var body =  
                 await request.Content.ReadAsStringAsync();
 
             logger.Debug("Request URI: {0}; UserHostAddress: {1}", 

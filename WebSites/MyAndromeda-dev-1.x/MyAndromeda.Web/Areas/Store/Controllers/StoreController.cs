@@ -574,7 +574,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
         }
 
         [HttpPost, ActionName("ChangeEct")]
-        public ActionResult ChangeEctPost(int ect)
+        public ActionResult ChangeEctPost(int? ect)
         {
             if (!this.authorizer.AuthorizeAny(StoreUserPermissions.EditEdtTime))
             {
