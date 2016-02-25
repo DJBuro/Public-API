@@ -49,7 +49,7 @@ namespace Andromeda.GPSIntegration
         /// <param name="customer">Details of the customer that placed the order</param>
         /// <param name="newOrder">The order that was placed</param>
         /// <returns></returns>
-        ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder);
+        ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, Action<string, DebugLevel> log);
 
         /// <summary>
         /// Assigns a driver to an existing order in the third party provider
@@ -58,7 +58,7 @@ namespace Andromeda.GPSIntegration
         /// <param name="externalOrderId">The order id returned by the third party provider when the order was originally created</param>
         /// <param name="driver">The driver that should be assigned to the order</param>
         /// <returns></returns>
-        ResultEnum AssignDriverToOrder(int andromedaStoreId, string externalOrderId, int? bags, Model.Driver driver);
+        ResultEnum AssignDriverToOrder(int andromedaStoreId, string externalOrderId, int? bags, Model.Driver driver, Action<string, DebugLevel> log);
 
         /// <summary>
         /// Cancels an order in the third party provider
@@ -66,5 +66,11 @@ namespace Andromeda.GPSIntegration
         /// <param name="externalOrderId">The order id returned by the third party provider when the order was originally created</param>
         /// <returns></returns>
         ResultEnum CancelOrder(int andromedaStoreId, string bringgTaskId);
+    }
+
+    public enum DebugLevel 
+    {
+        Notify,
+        Error
     }
 }

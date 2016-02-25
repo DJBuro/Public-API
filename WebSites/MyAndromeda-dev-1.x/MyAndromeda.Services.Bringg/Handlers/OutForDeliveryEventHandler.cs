@@ -95,7 +95,8 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 }
 
                 this.logger.Debug("Try to assign driver to bring task id:" + orderHeader.BringgTaskId.Value);
-
+                this.logger.Debug("Bags" + orderHeader.Bags.GetValueOrDefault());
+                
                 var store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
                 var result = await this.bringgService.UpdateDriverAsync(store.Id, modelType.InternalOrderId, modelType.ExternalOrderId);
 

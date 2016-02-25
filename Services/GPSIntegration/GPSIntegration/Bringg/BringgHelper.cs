@@ -56,8 +56,11 @@ namespace Andromeda.GPSIntegration.Bringg
             {
                 NullValueHandling = NullValueHandling.Ignore // Don't create attributes for null values
             };
+            
             JObject requestJson = JObject.FromObject(requestObject, jsonSerializer);
+            
             requestJson.Add("signature", signature);
+            
             return requestJson.ToString(Formatting.None);
         }
 

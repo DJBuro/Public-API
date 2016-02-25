@@ -367,6 +367,11 @@
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Config.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Controllers.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Config.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Controllers.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Directives.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Services.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.ts" />
     <TypeScriptCompile Include="App\WebHooks\MyAndromeda.WebHooks.Tests.ts" />
     <TypeScriptCompile Include="App\WebHooks\MyAndromeda.WebHooks.ts" />
     <TypeScriptCompile Include="Scripts\typings\angular-ui-router\angular-ui-router.d.ts" />

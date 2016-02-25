@@ -6,7 +6,6 @@
         public AndromedaSiteId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
         public ChainId : Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
 
-        
 
         public CurrentChainId: number;
         public CurrentAndromedaSiteId: number;
@@ -37,6 +36,7 @@
 
         public Loading: Rx.Subject<boolean> = new Rx.Subject<boolean>();
         public IsLoading: boolean = false;
+        public SavingSchedule: Rx.Subject<boolean> = new Rx.Subject<boolean>();
         public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>(); 
         public Error: Rx.Subject<string> = new Rx.Subject<string>();
 
@@ -61,7 +61,7 @@
                         let promise = this.$http.get(route);
 
                         this.Loading.onNext(true);
-
+                        
                         Rx.Observable.fromPromise(promise).subscribe((callback) => {
                             options.success(callback.data);
 
@@ -72,20 +72,24 @@
                         Logger.Notify("Update employee records");
 
                         let model = e.data;
+                        this.SavingSchedule.onNext(true);
                         this.Update(model, (data) => {
-                            Logger.Notify("call datasource success");
+                            this.SavingSchedule.onNext(false);
                             e.success(data);
                         }, (data) => {
+                            this.SavingSchedule.onNext(false);
                             e.error(data);
                         });
                     },
                     create: (e) => {
                         Logger.Notify("Create employee record");
                         let data = e.data;
-                        
+                        this.SavingSchedule.onNext(true);
                         this.Create(data, (model) => {
+                            this.SavingSchedule.onNext(false);
                             e.success(model);
                         }, (data) => {
+                            this.SavingSchedule.onNext(false);
                             e.error(data);
                         });
                         
@@ -396,6 +400,8 @@
     }
 
     export class EmployeeSchedulerService {
+
+        public saving: Rx.Subject<boolean> = new Rx.Subject<boolean>();
 
         constructor(private employeeServiceState: EmployeeServiceState, private employeeService: Services.EmployeeService)
         {

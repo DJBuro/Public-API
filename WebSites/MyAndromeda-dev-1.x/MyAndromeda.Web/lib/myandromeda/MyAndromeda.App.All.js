@@ -3482,21 +3482,10 @@ var MyAndromeda;
         var Controllers;
         (function (Controllers) {
             var app = angular.module("MyAndromeda.Hr.Controllers", ["kendo.directives", "oitozero.ngSweetAlert"]);
-            app.controller("employeeListController", function ($scope, $timeout, $stateParams, SweetAlert, employeeService, employeeServiceState, employeeSchedulerService) {
+            app.controller("employeeListController", function ($scope, $element, $timeout, $stateParams, SweetAlert, employeeService, employeeServiceState, employeeSchedulerService, progressService) {
                 $scope.$stateParams = $stateParams;
                 employeeServiceState.ChainId.onNext($stateParams.chainId);
                 employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
-                employeeService.Loading.subscribe(function (isLoading) {
-                    //var message = null;
-                    //if (isLoading) {
-                    //    message =
-                    //        SweetAlert.swal({
-                    //            title: "Loading",
-                    //        });
-                    //} else {
-                    //    message.hide();
-                    //}
-                });
                 employeeService.Saved.subscribe(function (saved) {
                     if (saved) {
                         SweetAlert.swal("Saved!", "", "success");
@@ -3550,6 +3539,18 @@ var MyAndromeda;
                         var schedulerOptions = employeeSchedulerService.GetStoreEmployeeScheduler(stores);
                         $scope.schedulerOptions = schedulerOptions;
                     });
+                });
+                var savingSubscription = employeeService.SavingSchedule.where(function (e) { return e; }).subscribe(function (saving) {
+                    MyAndromeda.Logger.Notify("Scheduler saving.... show progress");
+                    progressService.ShowProgress($element);
+                });
+                var savedSubscription = employeeService.SavingSchedule.where(function (e) { return !e; }).subscribe(function (notSaving) {
+                    MyAndromeda.Logger.Notify("Scheduler saved!.... hide progress");
+                    progressService.HideProgress($element);
+                });
+                $scope.$on('$destroy', function () {
+                    savingSubscription.dispose();
+                    savedSubscription.dispose();
                 });
                 $scope.employeeGridOptions = employeeGridOptions;
             });
@@ -3647,14 +3648,6 @@ var MyAndromeda;
                     var route = employeeService.GetUploadRouteUrl($stateParams.chainId, $stateParams.andromedaSiteId, $scope.employee.Id);
                     return route;
                 };
-                //$scope.onUploadComplete = (args) => {
-                //    Logger.Notify("upload complete");
-                //    Logger.Notify(args);
-                //    let employee: Models.IEmployee = $scope.employee;
-                //    employee.ProfilePic = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
-                //};
-                //#k - upload="onUploading"
-                //k - success="onUploadSuccess"
                 $scope.onUploading = function () {
                     MyAndromeda.Logger.Notify("uploading profile pic");
                     status.uploading = true;
@@ -3938,21 +3931,17 @@ var MyAndromeda;
                             //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
                             showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
                         };
-                        MyAndromeda.Logger.Notify(options);
                         $scope.options = options;
                         var state = {
                             random: uuidService.GenerateUUID()
                         };
                         $scope.$watch('showShortName', function (newValue, old) {
-                            MyAndromeda.Logger.Notify("showShortName: " + newValue);
                             $timeout(function () { options.showShortName = getValueOrDefault(newValue, true); });
                         });
                         $scope.$watch('showFullName', function (newValue, oldValue) {
-                            MyAndromeda.Logger.Notify("showFullName: " + newValue);
                             $timeout(function () { options.showFullName = getValueOrDefault(newValue, true); });
                         });
                         $scope.$watch('showWorkStatus', function (newValue, oldValue) {
-                            MyAndromeda.Logger.Notify("showWorkStatus: " + newValue);
                             $timeout(function () { options.showWorkStatus = getValueOrDefault(newValue, true); });
                         });
                         var updates = employeeServiceState.EmployeeUpdated.where(function (e) { return e.Id == dataItem.Id; }).subscribe(function (change) {
@@ -3994,8 +3983,7 @@ var MyAndromeda;
                             MyAndromeda.Logger.Notify("cant find the person");
                         }
                         $scope.employee = employee;
-                        MyAndromeda.Logger.Notify("setup employee task");
-                        var top = $($element).closest(".k-event");
+                        var topElement = $($element).closest(".k-event");
                         var borderStyle = "";
                         switch (employee.Department) {
                             case "Front of house":
@@ -4011,24 +3999,22 @@ var MyAndromeda;
                                 borderStyle = 'task-delivery';
                                 break;
                         }
-                        top.addClass("task-border");
-                        top.addClass(borderStyle);
+                        topElement.addClass("task-border");
+                        topElement.addClass(borderStyle);
                         var status = {
                             clone: null
                         };
-                        var popover = top.popover({
+                        var popover = topElement.popover({
                             title: "Task preview",
                             placement: "auto",
                             html: true,
                             content: "please wait",
                             trigger: "hover"
                         }).on("show.bs.popover", function () {
-                            var html = top.html();
+                            var html = topElement.html();
                             popover.attr('data-content', html);
                         });
-                        MyAndromeda.Logger.Notify("top");
-                        MyAndromeda.Logger.Notify(top);
-                        top.on("hover", function (e) {
+                        topElement.on("hover", function (e) {
                             MyAndromeda.Logger.Notify("animate .k-event");
                         });
                         var extra = {
@@ -4165,6 +4151,7 @@ var MyAndromeda;
                     this.uuidService = uuidService;
                     this.Loading = new Rx.Subject();
                     this.IsLoading = false;
+                    this.SavingSchedule = new Rx.Subject();
                     this.Saved = new Rx.Subject();
                     this.Error = new Rx.Subject();
                     this.ChainEmployeeDataSource = new kendo.data.DataSource({
@@ -4191,19 +4178,24 @@ var MyAndromeda;
                             update: function (e) {
                                 MyAndromeda.Logger.Notify("Update employee records");
                                 var model = e.data;
+                                _this.SavingSchedule.onNext(true);
                                 _this.Update(model, function (data) {
-                                    MyAndromeda.Logger.Notify("call datasource success");
+                                    _this.SavingSchedule.onNext(false);
                                     e.success(data);
                                 }, function (data) {
+                                    _this.SavingSchedule.onNext(false);
                                     e.error(data);
                                 });
                             },
                             create: function (e) {
                                 MyAndromeda.Logger.Notify("Create employee record");
                                 var data = e.data;
+                                _this.SavingSchedule.onNext(true);
                                 _this.Create(data, function (model) {
+                                    _this.SavingSchedule.onNext(false);
                                     e.success(model);
                                 }, function (data) {
+                                    _this.SavingSchedule.onNext(false);
                                     e.error(data);
                                 });
                             }
@@ -4434,6 +4426,7 @@ var MyAndromeda;
                 function EmployeeSchedulerService(employeeServiceState, employeeService) {
                     this.employeeServiceState = employeeServiceState;
                     this.employeeService = employeeService;
+                    this.saving = new Rx.Subject();
                 }
                 EmployeeSchedulerService.prototype.GetResources = function (stores, employee) {
                     var _this = this;
@@ -9628,6 +9621,118 @@ var MyAndromeda;
             Services.storeService = storeService;
         })(Services = Store.Services || (Store.Services = {}));
     })(Store = MyAndromeda.Store || (MyAndromeda.Store = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Config", [
+                "MyAndromeda.Store.OpeningHours.Controllers",
+                "MyAndromeda.Store.OpeningHours.Services",
+                "MyAndromeda.Store.OpeningHours.Directives"
+            ]);
+            app.config(function ($stateProvider, $urlRouterProvider) {
+                var start = {
+                    url: '/:andromedaSiteId',
+                    controller: "OpeningHoursController",
+                    template: '<div id="masterUI" ui-view="main"></div>'
+                };
+                $stateProvider.state("opening-hours", start);
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Controllers", []);
+            app.controller("OpeningHoursController", function ($scope) {
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Directives", []);
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
+            var StoreOccasionSchedulerService = (function () {
+                function StoreOccasionSchedulerService() {
+                }
+                StoreOccasionSchedulerService.prototype.CreateResources = function () {
+                    var resources = [
+                        {
+                            title: "Occasion",
+                            field: "TaskType",
+                            dataSource: [
+                                {
+                                    text: "All",
+                                    value: "All",
+                                    color: "#ffffff"
+                                },
+                                {
+                                    text: "Delivery",
+                                    value: "Delivery",
+                                    color: "#d9534f"
+                                },
+                                {
+                                    text: "Collection",
+                                    value: "Collection",
+                                    color: "#d9edf7"
+                                },
+                                {
+                                    text: "Dine in",
+                                    value: "Dine in",
+                                    color: "#f2dede"
+                                }
+                            ]
+                        },
+                    ];
+                };
+                StoreOccasionSchedulerService.prototype.CreateScheduler = function () {
+                };
+                return StoreOccasionSchedulerService;
+            })();
+            OpeningHours.StoreOccasionSchedulerService = StoreOccasionSchedulerService;
+            app.service("storeOccasionSchedulerService", StoreOccasionSchedulerService);
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Stores.OpeningHours", [
+                "MyAndromeda.Core",
+                "MyAndromeda.Resize",
+                "MyAndromeda.Progress",
+                "ngAnimate",
+                "ui.bootstrap"
+            ]);
+            app.run(function () {
+                MyAndromeda.Logger.Notify("HR module is running");
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {

@@ -126,7 +126,14 @@ namespace MyAndromeda.Services.Bringg
             bool triedWithoutPhone = false;
 
             ResultEnum result = ResultEnum.UnknownError;
-            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder);
+            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, (message, level) => {
+                if (level == DebugLevel.Notify) {
+                    this.logger.Debug(message);
+                }
+                if (level == DebugLevel.Error) {
+                    this.logger.Error(message);
+                }
+            });
 
             //try again
             if(!success)
@@ -136,7 +143,16 @@ namespace MyAndromeda.Services.Bringg
                 triedWithoutPhone = true;
                 customer.Phone = null;
 
-                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder);
+                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, (message, level) => {
+                    if (level == DebugLevel.Notify)
+                    {
+                        this.logger.Debug(message);
+                    }
+                    if (level == DebugLevel.Error)
+                    {
+                        this.logger.Error(message);
+                    }
+                });
             }
 
             if (result == ResultEnum.OK)
@@ -202,6 +218,7 @@ namespace MyAndromeda.Services.Bringg
                     UserId = customer.PartnerId
                 };
 
+                //todo : make sendWebHooksService transient so i dont have to talk via a webservice
                 //await this.sendWebHooksService.CallEndpoints(outgoingMessage, e => e.BringUpdates);
 
                 try
@@ -284,7 +301,11 @@ namespace MyAndromeda.Services.Bringg
                     andromedaSiteId,
                     order.BringgTaskId.ToString(),
                     order.Bags,
-                    driver
+                    driver, 
+                    (message, level) => {
+                        if (level == DebugLevel.Notify) { this.logger.Debug(message); }
+                        if (level == DebugLevel.Error) { this.logger.Error(message); }
+                    }
                 );
 
             if (result == ResultEnum.UnknownError) { return Bringg.UpdateDriverResult.UnknownError; }

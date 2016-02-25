@@ -36,6 +36,7 @@
                 }
             }
         };
+
         var hrStoreScheduler: ng.ui.IState = {
             url: "/schedule",
             views: {

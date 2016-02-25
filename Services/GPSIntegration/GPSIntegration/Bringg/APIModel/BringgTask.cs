@@ -6,6 +6,18 @@ using System.Threading.Tasks;
 
 namespace Andromeda.GPSIntegration.Bringg.APIModel
 {
+    public class BringgNote 
+    {
+        public string task_id { get; set; }
+        public string way_point_id { get; set; }
+        public string note { get; set; }
+        public int company_id { get; set; }
+        //public int user_id { get; set; }
+        public int type { get; set; }
+        public string access_token { get; set; }
+        public string timestamp { get; set; }
+    }
+    
     public class BringgTask
     {
         public int? id { get; set; } 
@@ -32,5 +44,23 @@ namespace Andromeda.GPSIntegration.Bringg.APIModel
         public decimal? tax_price { get; set; }
         public string access_token { get; set; }
         public string timestamp { get; set; }
+    }
+
+    public class BringgTaskDetailModel : BringgTask
+    {
+        //lets see if you are here - null sometimes 
+        public string active_way_point_id { get; set; }
+
+        public List<BringgWaypoint> way_points { get; set; }
+    }
+
+    public class BringgWaypoint 
+    {
+        public string id { get; set; }
+        public decimal? lat { get; set; }
+        public decimal? lng { get; set; }
+
+        public string address { get; set; }
+        public int? customer_id { get; set; }
     }
 }

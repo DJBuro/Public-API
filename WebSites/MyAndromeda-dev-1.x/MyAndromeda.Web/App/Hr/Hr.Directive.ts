@@ -291,28 +291,20 @@ module MyAndromeda.Hr.Directives {
                     showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
                     //typeof ($scope.showWorkStatus) == "undefined" ? true : $scope.showWorkStatus
                 };
-                Logger.Notify(options);
-
+                
                 $scope.options = options;
-
 
                 let state = {
                     random : uuidService.GenerateUUID()
                 };
 
                 $scope.$watch('showShortName', (newValue, old) => {
-                    Logger.Notify("showShortName: " + newValue);
-
                     $timeout(() => { options.showShortName = getValueOrDefault(newValue, true); });
                 });
                 $scope.$watch('showFullName', (newValue, oldValue) => {
-                    Logger.Notify("showFullName: " + newValue);
-
                     $timeout(() => { options.showFullName = getValueOrDefault(newValue, true); });
                 });
                 $scope.$watch('showWorkStatus', (newValue, oldValue) => {
-                    Logger.Notify("showWorkStatus: " + newValue);
-                    
                     $timeout(() => { options.showWorkStatus = getValueOrDefault(newValue, true); });
                 });
                
@@ -364,9 +356,7 @@ module MyAndromeda.Hr.Directives {
 
                 $scope.employee = employee;
 
-                Logger.Notify("setup employee task");
-
-                let top = $($element).closest(".k-event");
+                let topElement = $($element).closest(".k-event");
                 let borderStyle = ""
 
                 switch (employee.Department) {
@@ -376,32 +366,28 @@ module MyAndromeda.Hr.Directives {
                     case "Delivery": borderStyle = 'task-delivery'; break;
                 }
 
-                top.addClass("task-border");
-                top.addClass(borderStyle);
+                topElement.addClass("task-border");
+                topElement.addClass(borderStyle);
 
                 var status = {
                     clone : null 
                 };
 
-                var popover = top.popover({
+                var popover = topElement.popover({
                     title: "Task preview",
                     placement: "auto",
                     html: true,
                     content: "please wait",
                     trigger: "hover"
                 }).on("show.bs.popover", () => {
-                    let html = top.html();
+                    let html = topElement.html();
                     popover.attr('data-content', html);
                 });
 
-                Logger.Notify("top");
-                Logger.Notify(top);
-                top.on("hover", function (e) {
+                topElement.on("hover", function (e) {
                     Logger.Notify("animate .k-event");
                 });
 
-                
-                
 
                 var extra = {
                     hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,

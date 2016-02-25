@@ -3,31 +3,20 @@
     
     app.controller("employeeListController", (
         $scope,
+        $element,
         $timeout,
         $stateParams: Models.IEmployeeStoreListState,
         SweetAlert: any,
         employeeService: Services.EmployeeService,
         employeeServiceState: Services.EmployeeServiceState,
-        employeeSchedulerService: Services.EmployeeSchedulerService) => {
+        employeeSchedulerService: Services.EmployeeSchedulerService,
+        progressService: MyAndromeda.Services.ProgressService) => {
 
         $scope.$stateParams = $stateParams;
         
 
         employeeServiceState.ChainId.onNext($stateParams.chainId);
         employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
-
-        employeeService.Loading.subscribe((isLoading) => {
-            //var message = null;
-            //if (isLoading) {
-            //    message =
-            //        SweetAlert.swal({
-            //            title: "Loading",
-            //        });
-
-            //} else {
-            //    message.hide();
-            //}
-        });
 
         employeeService.Saved.subscribe((saved) => {
             if (saved)
@@ -94,6 +83,24 @@
             });
             
         });
+
+        var savingSubscription = employeeService.SavingSchedule.where(e=> e).subscribe(saving => {
+            Logger.Notify("Scheduler saving.... show progress");
+
+            progressService.ShowProgress($element);
+        });
+
+        var savedSubscription = employeeService.SavingSchedule.where(e=> !e).subscribe(notSaving => {
+            Logger.Notify("Scheduler saved!.... hide progress");
+
+            progressService.HideProgress($element);
+        });
+
+        $scope.$on('$destroy', () => {
+            savingSubscription.dispose();
+            savedSubscription.dispose();
+        });
+
         $scope.employeeGridOptions = employeeGridOptions;
     });
 
@@ -233,16 +240,7 @@
             let route = employeeService.GetUploadRouteUrl($stateParams.chainId, $stateParams.andromedaSiteId, $scope.employee.Id);
             return route; 
         };
-        //$scope.onUploadComplete = (args) => {
-        //    Logger.Notify("upload complete");
-        //    Logger.Notify(args);
 
-        //    let employee: Models.IEmployee = $scope.employee;
-        //    employee.ProfilePic = employeeService.GetEmployeePictureUrl($stateParams.chainId, $stateParams.andromedaSiteId, employee.Id);
-        //};
-        //#k - upload="onUploading"
-        //k - success="onUploadSuccess"
-                                   
         $scope.onUploading = () => {
             Logger.Notify("uploading profile pic");
             status.uploading = true;
