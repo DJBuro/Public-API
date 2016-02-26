@@ -8,12 +8,11 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 {
     public class StoreOccasionTimeModel
     {
-        public int AndromedaSiteId { get; set; }
         public string Description { get; set; }
 
         public DateTime EndUtc { get; set; }
 
-        public int Id { get; set; }
+        public Guid? Id { get; set; }
 
         public bool IsAllDay { get; set; }
 
@@ -52,17 +51,20 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
         }
 
 
-        public static void CreateEntiy(StoreOccasionTimeModel model, MyAndromeda.Data.Model.AndroAdmin.Store storeEntity) 
+        public static StoreOccasionTime CreateEntiy(this StoreOccasionTimeModel model, MyAndromeda.Data.Model.AndroAdmin.Store storeEntity) 
         {
             var entity = new StoreOccasionTime();
+            entity.Id = Guid.NewGuid();
             entity.StoreId = storeEntity.Id;
+
+            return entity;
         }
 
         public static void Update(this StoreOccasionTime entity, StoreOccasionTimeModel model) 
         {
             entity.Description = model.Description;
             entity.EndUtc = model.EndUtc;
-            entity.Id = model.Id;
+            entity.Id = model.Id.GetValueOrDefault();
             entity.IsAllDay = model.IsAllDay;
             entity.Occasions = model.Occasions;
             entity.RecurrenceException = model.RecurrenceException;

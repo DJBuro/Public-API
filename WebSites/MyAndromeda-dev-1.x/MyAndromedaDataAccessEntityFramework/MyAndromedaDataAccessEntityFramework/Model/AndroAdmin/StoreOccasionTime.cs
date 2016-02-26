@@ -14,7 +14,7 @@ namespace MyAndromeda.Data.Model.AndroAdmin
     
     public partial class StoreOccasionTime
     {
-        public int Id { get; set; }
+        public System.Guid Id { get; set; }
         public int StoreId { get; set; }
         public string Description { get; set; }
         public System.DateTime EndUtc { get; set; }

@@ -9629,6 +9629,8 @@ var MyAndromeda;
         var OpeningHours;
         (function (OpeningHours) {
             var app = angular.module("MyAndromeda.Store.OpeningHours.Config", [
+                "ui.router",
+                "kendo.directives", "oitozero.ngSweetAlert",
                 "MyAndromeda.Store.OpeningHours.Controllers",
                 "MyAndromeda.Store.OpeningHours.Services",
                 "MyAndromeda.Store.OpeningHours.Directives"
@@ -9640,6 +9642,7 @@ var MyAndromeda;
                     templateUrl: "OpeningHours-template.html"
                 };
                 $stateProvider.state("opening-hours", start);
+                $urlRouterProvider.otherwise("/" + OpeningHours.settings.andromedaSiteId);
             });
         })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
     })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
@@ -9651,7 +9654,9 @@ var MyAndromeda;
         var OpeningHours;
         (function (OpeningHours) {
             var app = angular.module("MyAndromeda.Store.OpeningHours.Controllers", []);
-            app.controller("OpeningHoursController", function ($scope) {
+            app.controller("OpeningHoursController", function ($scope, storeOccasionSchedulerService) {
+                var schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
+                $scope.schedulerOptions = schedulerOptions;
             });
         })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
     })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
@@ -9663,6 +9668,13 @@ var MyAndromeda;
         var OpeningHours;
         (function (OpeningHours) {
             var app = angular.module("MyAndromeda.Store.OpeningHours.Directives", []);
+            app.directive("occasionTask", function () {
+                return {
+                    name: "occasionTaskController",
+                    controller: "occasionTaskController"
+                };
+            });
+            app.controller("occasionTaskController", function () { });
         })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
     })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -9720,8 +9732,9 @@ var MyAndromeda;
             (function (Services) {
                 var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
                 var StoreOccasionSchedulerService = (function () {
-                    function StoreOccasionSchedulerService($http) {
+                    function StoreOccasionSchedulerService($http, uuidService) {
                         this.$http = $http;
+                        this.uuidService = uuidService;
                     }
                     StoreOccasionSchedulerService.prototype.CreateDataSource = function () {
                         var _this = this;
@@ -9734,7 +9747,6 @@ var MyAndromeda;
                             batch: false,
                             transport: {
                                 read: function (options) {
-                                    //let route = "/api/chain/{chainId}/store/{andromedaSiteId}/Occasions";
                                     var route = "/api/chain/{0}/store/{1}/Occasions";
                                     route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
                                     var promise = _this.$http.post(route, options.data);
@@ -9745,6 +9757,7 @@ var MyAndromeda;
                                 update: function (options) {
                                     MyAndromeda.Logger.Notify("Scheduler update");
                                     var route = "/api/chain/{0}/store/{1}/update-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
                                     var promise = _this.$http.post(route, options.data);
                                     promise.then(function (callback) {
                                         options.success();
@@ -9753,7 +9766,8 @@ var MyAndromeda;
                                 create: function (options) {
                                     MyAndromeda.Logger.Notify("Scheduler create");
                                     MyAndromeda.Logger.Notify(options.data);
-                                    var route = "/api/chain/{0}/store/{1}/add-occasion";
+                                    var route = "/api/chain/{0}/store/{1}/update-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
                                     var promise = _this.$http.post(route, options.data);
                                     promise.then(function (callback) {
                                         MyAndromeda.Logger.Notify("Create response:");
@@ -9763,6 +9777,7 @@ var MyAndromeda;
                                 },
                                 destroy: function (options) {
                                     var route = "/api/chain/{0}/store/{1}/delete-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
                                     var promise = _this.$http.post(route, options.data);
                                     promise.then(function (callback) {
                                         options.success(callback.data);
@@ -9777,13 +9792,9 @@ var MyAndromeda;
                         var resources = [
                             {
                                 title: "Occasion",
-                                field: "TaskType",
+                                field: "Occasions",
+                                multiple: true,
                                 dataSource: [
-                                    {
-                                        text: "All",
-                                        value: "All",
-                                        color: "#ffffff"
-                                    },
                                     {
                                         text: "Delivery",
                                         value: "Delivery",
@@ -9805,6 +9816,7 @@ var MyAndromeda;
                         return resources;
                     };
                     StoreOccasionSchedulerService.prototype.CreateScheduler = function () {
+                        var uuidService = this.uuidService;
                         var dataSource = this.CreateDataSource();
                         var schedulerOptions = {
                             date: new Date(),
@@ -9823,18 +9835,23 @@ var MyAndromeda;
                                 fileName: "Opening hours",
                                 title: "Schedule"
                             },
-                            eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                            eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
                             toolbar: ["pdf"],
                             showWorkHours: false,
                             resources: this.CreateResources(),
                             views: [
                                 { type: "week", selected: true, showWorkHours: false },
+                                { type: "month" }
                             ],
                             resize: function (e) { MyAndromeda.Logger.Notify("resize"); MyAndromeda.Logger.Notify(e); },
                             resizeEnd: function (e) { MyAndromeda.Logger.Notify("resize-end"); MyAndromeda.Logger.Notify(e); },
                             move: function (e) { MyAndromeda.Logger.Notify("move"); MyAndromeda.Logger.Notify(e); },
                             moveEnd: function (e) { MyAndromeda.Logger.Notify("move-end"); MyAndromeda.Logger.Notify(e); },
-                            add: function (e) { MyAndromeda.Logger.Notify("add"); MyAndromeda.Logger.Notify(e); },
+                            add: function (e) {
+                                MyAndromeda.Logger.Notify("add");
+                                MyAndromeda.Logger.Notify(e);
+                                //e.event.id = uuidService.GenerateUUID();
+                            },
                             save: function (e) { MyAndromeda.Logger.Notify("save"); MyAndromeda.Logger.Notify(e); }
                         };
                         return schedulerOptions;
@@ -9865,8 +9882,13 @@ var MyAndromeda;
                 "ngAnimate",
                 "ui.bootstrap"
             ]);
-            app.run(function () {
-                MyAndromeda.Logger.Notify("HR module is running");
+            app.run(function ($templateCache) {
+                MyAndromeda.Logger.Notify("Started Opening Hours");
+                angular
+                    .element('script[type="text/ng-template"]')
+                    .each(function (i, element) {
+                    $templateCache.put(element.id, element.innerHTML);
+                });
             });
             function boostrap(element, chainId, andromedaSiteId) {
                 OpeningHours.settings.chainId = chainId;

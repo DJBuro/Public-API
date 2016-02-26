@@ -14,8 +14,14 @@
         "ui.bootstrap"
     ]);
 
-    app.run(() => {
-        Logger.Notify("HR module is running");
+    app.run(($templateCache: ng.ITemplateCacheService) => {
+        Logger.Notify("Started Opening Hours");
+
+        angular
+            .element('script[type="text/ng-template"]')
+            .each((i, element: HTMLElement) => {
+                $templateCache.put(element.id, element.innerHTML);
+            });
     });
 
     export function boostrap(element, chainId, andromedaSiteId) {
@@ -24,5 +30,6 @@
 
         var e = $(element);
         angular.bootstrap(e, ["MyAndromeda.Stores.OpeningHours"]);
+
     }
 }

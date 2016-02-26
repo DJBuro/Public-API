@@ -20,9 +20,9 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         private readonly DataWarehouseDbContext dbContext;
         private readonly DbSet<EmployeeRecord> employeeTable;
-        private readonly DbSet<EmployeeStoreLinkRecord> linkRecords; 
+        private readonly DbSet<EmployeeStoreLinkRecord> linkRecords;
 
-        private readonly DbSet<Store> storeRecords;
+        private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.Store> storeRecords;
 
         public EmployeeFileController(IMyAndromedaLogger logger,
             MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext,
@@ -32,7 +32,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             this.dbContext = dbContext;
             this.employeeTable = this.dbContext.Set<EmployeeRecord>();
             this.linkRecords = this.dbContext.Set<EmployeeStoreLinkRecord>();
-            this.storeRecords = this.androAdminDbContext.Set<Store>();
+            this.storeRecords = this.androAdminDbContext.Set<MyAndromeda.Data.Model.AndroAdmin.Store>();
 
             this.logger = logger;
         }

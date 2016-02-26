@@ -30,5 +30,33 @@
 
 @using (Html.BeginScripts()) 
 {
-    if (false) { }
+    if (false) { 
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+
+    <script type="text/ng-template" id="OpeningHours-template.html">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                hi
+            </div>
+        </div>
+
+        <div kendo-scheduler k-options="schedulerOptions">
+        </div>
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+
+            var element = $("#store-scheduler");
+            var chainId = '@workContext.CurrentChain.Chain.Id';
+            var andromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
+            MyAndromeda.Stores.OpeningHours.boostrap(element, chainId, andromedaSiteId);
+
+        });
+    </script>
+
+   
 }
