@@ -6,17 +6,15 @@
         "MyAndromeda.Store.OpeningHours.Directives"
     ]);
 
-
     app.config(($stateProvider: ng.ui.IStateProvider, $urlRouterProvider) => {
         var start: ng.ui.IState = {
             url: '/:andromedaSiteId',
             controller: "OpeningHoursController",
-            template: '<div id="masterUI" ui-view="main"></div>'
+            templateUrl: "OpeningHours-template.html"
         };
 
-
         $stateProvider.state("opening-hours", start);
-    }
+    });
 
     
 } 

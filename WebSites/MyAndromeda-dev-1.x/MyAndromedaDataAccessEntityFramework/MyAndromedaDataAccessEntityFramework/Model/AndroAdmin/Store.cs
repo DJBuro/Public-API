@@ -32,6 +32,7 @@ namespace MyAndromeda.Data.Model.AndroAdmin
             this.StoreDevices = new HashSet<StoreDevice>();
             this.HostV2 = new HashSet<HostV2>();
             this.HubAddresses = new HashSet<HubAddress>();
+            this.StoreOccasionTimes = new HashSet<StoreOccasionTime>();
         }
     
         public int Id { get; set; }
@@ -90,5 +91,7 @@ namespace MyAndromeda.Data.Model.AndroAdmin
         public virtual ICollection<HostV2> HostV2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HubAddress> HubAddresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StoreOccasionTime> StoreOccasionTimes { get; set; }
     }
 }

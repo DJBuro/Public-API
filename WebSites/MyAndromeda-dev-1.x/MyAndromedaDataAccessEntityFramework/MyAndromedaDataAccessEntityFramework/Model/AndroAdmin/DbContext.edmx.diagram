@@ -69,6 +69,7 @@
         <AssociationConnector Association="AndroAdminModel.FK_StoreAMSServerFtpSite_StoreAMSServer" />
         <AssociationConnector Association="AndroAdminModel.ACSApplicationHostsV2" />
         <AssociationConnector Association="AndroAdminModel.HostAcsApplication" />
+        <EntityTypeShape EntityType="AndroAdminModel.StoreOccasionTime" Width="1.5" PointX="19.375" PointY="19.75" />
       </Diagram>
       <Diagram DiagramId="c938ca2b9f614ef687c67228383e368e" Name="Menu" >
       </Diagram>

@@ -69,5 +69,6 @@ namespace MyAndromeda.Data.Model.AndroAdmin
         public virtual DbSet<StoreMenuThumbnail> StoreMenuThumbnails { get; set; }
         public virtual DbSet<StorePaymentProvider> StorePaymentProviders { get; set; }
         public virtual DbSet<StoreStatu> StoreStatus { get; set; }
+        public virtual DbSet<StoreOccasionTime> StoreOccasionTimes { get; set; }
     }
 }

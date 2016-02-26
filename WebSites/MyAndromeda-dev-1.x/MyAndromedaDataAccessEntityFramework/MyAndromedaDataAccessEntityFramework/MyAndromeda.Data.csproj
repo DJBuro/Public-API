@@ -311,6 +311,9 @@
     <Compile Include="Model\AndroAdmin\StoreMenuThumbnail.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AndroAdmin\StoreOccasionTime.cs">
+      <DependentUpon>DbContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\AndroAdmin\StorePaymentProvider.cs">
       <DependentUpon>DbContext.tt</DependentUpon>
     </Compile>

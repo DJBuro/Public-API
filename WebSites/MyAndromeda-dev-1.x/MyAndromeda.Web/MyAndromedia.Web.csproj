@@ -367,6 +367,7 @@
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Config.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Controllers.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.ts" />
+    <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Models.ts" />
     <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Config.ts" />
     <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Controllers.ts" />
     <TypeScriptCompile Include="App\Store\OpeningHours\OpeningHours.Directives.ts" />
@@ -2486,13 +2487,14 @@
     <Compile Include="Controllers\Api\NotificationController.cs" />
     <Compile Include="Controllers\Api\PublishMenuController.cs" />
     <Compile Include="Controllers\Api\Reporting\OrdersController.cs" />
+    <Compile Include="Controllers\Api\Store\Models\StoreOccasionTimeModel.cs" />
     <Compile Include="Controllers\Api\User\ChainAndStoreController.cs" />
     <Compile Include="Controllers\Api\WebHooks\WebHookNotificationApiController.cs" />
     <Compile Include="Controllers\Api\WebHooks\SendGridWebHookController.cs" />
     <Compile Include="Controllers\Api\WebOrdering\AndroWebOrderingThemeController.cs" />
     <Compile Include="Controllers\Api\GprsOrdersController.cs" />
     <Compile Include="Controllers\Api\MenuController.cs" />
-    <Compile Include="Controllers\Api\StoreController.cs" />
+    <Compile Include="Controllers\Api\Store\StoreController.cs" />
     <Compile Include="Controllers\Api\TestWebApiController.cs" />
     <Compile Include="Controllers\Api\WebOrdering\AndroWebOrderingController.cs" />
     <Compile Include="Controllers\ChainsController.cs" />

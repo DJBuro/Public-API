@@ -495,6 +495,23 @@
           <Property Name="JsonMenuThumbnailsData" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LastUpdate" Type="datetime" />
         </EntityType>
+        <EntityType Name="StoreOccasionTimes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="StoreId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EndUtc" Type="datetime" Nullable="false" />
+          <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAllDay" Type="bit" Nullable="false" />
+          <Property Name="RecurrenceException" Type="varchar(max)" />
+          <Property Name="RecurrenceRule" Type="varchar(max)" />
+          <Property Name="StartUtc" Type="datetime" Nullable="false" />
+          <Property Name="StartTimezone" Type="varchar" MaxLength="50" />
+          <Property Name="Occasions" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="StorePaymentProvider">
           <Key>
             <PropertyRef Name="Id" />
@@ -1134,6 +1151,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StoreOccasionTimes_Store">
+          <End Role="Store" Type="Self.Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StoreOccasionTimes" Type="Self.StoreOccasionTimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StoreOccasionTimes">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_StoreTypes_Store">
           <End Role="Store" Type="Self.Store" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1209,6 +1240,7 @@
           <EntitySet Name="StoreLoyalty" EntityType="Self.StoreLoyalty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreMenu" EntityType="Self.StoreMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreMenuThumbnails" EntityType="Self.StoreMenuThumbnails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreOccasionTimes" EntityType="Self.StoreOccasionTimes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StorePaymentProvider" EntityType="Self.StorePaymentProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreStatus" EntityType="Self.StoreStatus" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Chain__MasterMen__671F4F74" Association="Self.FK__Chain__MasterMen__671F4F74">
@@ -1406,6 +1438,10 @@
           <AssociationSet Name="FK_StoreMenuThumbnails_Store" Association="Self.FK_StoreMenuThumbnails_Store">
             <End Role="Store" EntitySet="Store" />
             <End Role="StoreMenuThumbnails" EntitySet="StoreMenuThumbnails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreOccasionTimes_Store" Association="Self.FK_StoreOccasionTimes_Store">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreOccasionTimes" EntitySet="StoreOccasionTimes" />
           </AssociationSet>
           <AssociationSet Name="FK_StoreTypes_Store" Association="Self.FK_StoreTypes_Store">
             <End Role="Store" EntitySet="Store" />
@@ -1653,6 +1689,11 @@
             <End Role="HubAddress" EntitySet="HubAddresses" />
             <End Role="Store" EntitySet="Stores" />
           </AssociationSet>
+          <EntitySet Name="StoreOccasionTimes" EntityType="AndroAdminModel.StoreOccasionTime" />
+          <AssociationSet Name="FK_StoreOccasionTimes_Store" Association="AndroAdminModel.FK_StoreOccasionTimes_Store">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="StoreOccasionTime" EntitySet="StoreOccasionTimes" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Chain">
           <Key>
@@ -1715,6 +1756,7 @@
           <NavigationProperty Name="StoreDevices" Relationship="AndroAdminModel.FK_StoreTypes_Store" FromRole="Store" ToRole="StoreDevice" />
           <NavigationProperty Name="HostV2" Relationship="AndroAdminModel.StoreHostsV2" FromRole="Store" ToRole="HostV2" />
           <NavigationProperty Name="HubAddresses" Relationship="AndroAdminModel.StoreHubs" FromRole="Store" ToRole="HubAddress" />
+          <NavigationProperty Name="StoreOccasionTimes" Relationship="AndroAdminModel.FK_StoreOccasionTimes_Store" FromRole="Store" ToRole="StoreOccasionTime" />
         </EntityType>
         <Association Name="FK_Store_Chain">
           <End Type="AndroAdminModel.Chain" Role="Chain" Multiplicity="1" />
@@ -2775,6 +2817,38 @@
           <End Type="AndroAdminModel.HubAddress" Role="HubAddress" Multiplicity="*" />
           <End Type="AndroAdminModel.Store" Role="Store" Multiplicity="*" />
         </Association>
+        <EntityType Name="StoreOccasionTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="StoreId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTimezone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAllDay" Type="Boolean" Nullable="false" />
+          <Property Name="RecurrenceException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RecurrenceRule" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Occasions" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Store" Relationship="AndroAdminModel.FK_StoreOccasionTimes_Store" FromRole="StoreOccasionTime" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_StoreOccasionTimes_Store">
+          <End Type="AndroAdminModel.Store" Role="Store" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AndroAdminModel.StoreOccasionTime" Role="StoreOccasionTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StoreOccasionTime">
+              <PropertyRef Name="StoreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3332,6 +3406,24 @@
               <ScalarProperty Name="Id" ColumnName="HubAddressId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="StoreOccasionTimes">
+            <EntityTypeMapping TypeName="AndroAdminModel.StoreOccasionTime">
+              <MappingFragment StoreEntitySet="StoreOccasionTimes">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Occasions" ColumnName="Occasions" />
+                <ScalarProperty Name="StartTimezone" ColumnName="StartTimezone" />
+                <ScalarProperty Name="StartUtc" ColumnName="StartUtc" />
+                <ScalarProperty Name="RecurrenceRule" ColumnName="RecurrenceRule" />
+                <ScalarProperty Name="RecurrenceException" ColumnName="RecurrenceException" />
+                <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
+                <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
+                <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StoreId" ColumnName="StoreId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
