@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4BF3ABB5-7630-475E-9083-EE85CC2139C9}"
 EndProject
@@ -37,13 +37,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AndroAdminUsers", "AndroAdm
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cloud", "Cloud", "{2B96ABB7-2F40-497B-8419-D8050CDF8541}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2FE8CE64-36F3-48E2-B97F-9A36666343A4}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{28E485A7-B620-4B0D-8F7F-30F576A64D19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin.Hubs", "..\AndroAdmin.Hubs\AndroAdmin.Hubs.csproj", "{16DEFA3E-892B-4DD4-8C56-E504785EB8C5}"
@@ -59,70 +52,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPSIntegration", "..\..\Services\GPSIntegration\GPSIntegration\GPSIntegration.csproj", "{ACA522F4-3B25-4972-81E1-DF0213A1439C}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfsvm2012:8080/tfs/tfs
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = AndroAdmin.csproj
-		SccProjectTopLevelParentUniqueName1 = AndroAdmin.sln
-		SccLocalPath1 = .
-		SccProjectUniqueName2 = ..\\..\\DataAccess\\AndroAdminDataAccess\\AndroAdminDataAccess.csproj
-		SccProjectTopLevelParentUniqueName2 = AndroAdmin.sln
-		SccProjectName2 = ../../DataAccess/AndroAdminDataAccess
-		SccLocalPath2 = ..\\..\\DataAccess\\AndroAdminDataAccess
-		SccProjectUniqueName3 = ..\\..\\DataAccess\\AndroUsersDataAccess\\AndroUsersDataAccess.csproj
-		SccProjectTopLevelParentUniqueName3 = AndroAdmin.sln
-		SccProjectName3 = ../../DataAccess/AndroUsersDataAccess
-		SccLocalPath3 = ..\\..\\DataAccess\\AndroUsersDataAccess
-		SccProjectUniqueName4 = ..\\AndroAdminTests\\AndroAdminTests.csproj
-		SccProjectTopLevelParentUniqueName4 = AndroAdmin.sln
-		SccProjectName4 = ../AndroAdminTests
-		SccLocalPath4 = ..\\AndroAdminTests
-		SccProjectUniqueName5 = ..\\..\\DataAccess\\AndroCloudDataAccess\\AndroCloudDataAccess.csproj
-		SccProjectTopLevelParentUniqueName5 = AndroAdmin.sln
-		SccProjectName5 = ../../DataAccess/AndroCloudDataAccess
-		SccLocalPath5 = ..\\..\\DataAccess\\AndroCloudDataAccess
-		SccProjectUniqueName6 = ..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework\\AndroCloudDataAccessEntityFramework.csproj
-		SccProjectTopLevelParentUniqueName6 = AndroAdmin.sln
-		SccProjectName6 = ../../DataAccess/AndroCloudDataAccessEntityFramework
-		SccLocalPath6 = ..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework
-		SccProjectUniqueName7 = ..\\..\\Services\\AndroCloudServices\\AndroCloudWCFHelper\\AndroCloudHelper.csproj
-		SccProjectTopLevelParentUniqueName7 = AndroAdmin.sln
-		SccProjectName7 = ../../Services/AndroCloudServices/AndroCloudWCFHelper
-		SccLocalPath7 = ..\\..\\Services\\AndroCloudServices\\AndroCloudWCFHelper
-		SccProjectUniqueName8 = ..\\..\\CloudSync\\CloudSync\\CloudSync.csproj
-		SccProjectTopLevelParentUniqueName8 = AndroAdmin.sln
-		SccProjectName8 = ../../CloudSync/CloudSync
-		SccLocalPath8 = ..\\..\\CloudSync\\CloudSync
-		SccProjectUniqueName9 = ..\\..\\CloudSync\\CloudSyncTests\\CloudSyncTests.csproj
-		SccProjectTopLevelParentUniqueName9 = AndroAdmin.sln
-		SccProjectName9 = ../../CloudSync/CloudSyncTests
-		SccLocalPath9 = ..\\..\\CloudSync\\CloudSyncTests
-		SccProjectUniqueName10 = ..\\..\\CloudSync\\CloudSyncModel\\CloudSyncModel.csproj
-		SccProjectTopLevelParentUniqueName10 = AndroAdmin.sln
-		SccProjectName10 = ../../CloudSync/CloudSyncModel
-		SccLocalPath10 = ..\\..\\CloudSync\\CloudSyncModel
-		SccProjectUniqueName11 = ..\\AndroAdmin.Hubs\\AndroAdmin.Hubs.csproj
-		SccProjectTopLevelParentUniqueName11 = AndroAdmin.sln
-		SccProjectName11 = ../AndroAdmin.Hubs
-		SccLocalPath11 = ..\\AndroAdmin.Hubs
-		SccProjectUniqueName12 = Acs.Tests.Devices\\Acs.Tests.Devices.csproj
-		SccProjectTopLevelParentUniqueName12 = AndroAdmin.sln
-		SccProjectName12 = Acs.Tests.Devices
-		SccLocalPath12 = Acs.Tests.Devices
-		SccProjectUniqueName13 = ..\\..\\DataAccess\\DataWarehouseDataAccess\\DataWarehouseDataAccess.csproj
-		SccProjectTopLevelParentUniqueName13 = AndroAdmin.sln
-		SccProjectName13 = ../../DataAccess/DataWarehouseDataAccess
-		SccLocalPath13 = ..\\..\\DataAccess\\DataWarehouseDataAccess
-		SccProjectUniqueName14 = ..\\..\\DataAccess\\DataWarehouseDataAccessEntityFramework\\DataWarehouseDataAccessEntityFramework.csproj
-		SccProjectTopLevelParentUniqueName14 = AndroAdmin.sln
-		SccProjectName14 = ../../DataAccess/DataWarehouseDataAccessEntityFramework
-		SccLocalPath14 = ..\\..\\DataAccess\\DataWarehouseDataAccessEntityFramework
-		SccProjectUniqueName15 = ..\\..\\Services\\GPSIntegration\\GPSIntegration\\GPSIntegration.csproj
-		SccProjectName15 = ../../Services/GPSIntegration/GPSIntegration
-		SccLocalPath15 = ..\\..\\Services\\GPSIntegration\\GPSIntegration
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -425,5 +354,69 @@ Global
 		{2282D051-AD9D-4CC3-90E0-091745F0618C} = {8E80B878-38EC-4184-B838-E76010DF6B2D}
 		{10BA737F-F9E7-4EED-B096-BBC47CE14338} = {2282D051-AD9D-4CC3-90E0-091745F0618C}
 		{20B6E3C9-17FD-44C4-9980-CAE413E6C55D} = {2282D051-AD9D-4CC3-90E0-091745F0618C}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 16
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://andromedapos.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AndroAdmin.csproj
+		SccProjectTopLevelParentUniqueName1 = AndroAdmin.sln
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = ..\\..\\DataAccess\\AndroAdminDataAccess\\AndroAdminDataAccess.csproj
+		SccProjectTopLevelParentUniqueName2 = AndroAdmin.sln
+		SccProjectName2 = ../../DataAccess/AndroAdminDataAccess
+		SccLocalPath2 = ..\\..\\DataAccess\\AndroAdminDataAccess
+		SccProjectUniqueName3 = ..\\..\\DataAccess\\AndroUsersDataAccess\\AndroUsersDataAccess.csproj
+		SccProjectTopLevelParentUniqueName3 = AndroAdmin.sln
+		SccProjectName3 = ../../DataAccess/AndroUsersDataAccess
+		SccLocalPath3 = ..\\..\\DataAccess\\AndroUsersDataAccess
+		SccProjectUniqueName4 = ..\\AndroAdminTests\\AndroAdminTests.csproj
+		SccProjectTopLevelParentUniqueName4 = AndroAdmin.sln
+		SccProjectName4 = ../AndroAdminTests
+		SccLocalPath4 = ..\\AndroAdminTests
+		SccProjectUniqueName5 = ..\\..\\DataAccess\\AndroCloudDataAccess\\AndroCloudDataAccess.csproj
+		SccProjectTopLevelParentUniqueName5 = AndroAdmin.sln
+		SccProjectName5 = ../../DataAccess/AndroCloudDataAccess
+		SccLocalPath5 = ..\\..\\DataAccess\\AndroCloudDataAccess
+		SccProjectUniqueName6 = ..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework\\AndroCloudDataAccessEntityFramework.csproj
+		SccProjectTopLevelParentUniqueName6 = AndroAdmin.sln
+		SccProjectName6 = ../../DataAccess/AndroCloudDataAccessEntityFramework
+		SccLocalPath6 = ..\\..\\DataAccess\\AndroCloudDataAccessEntityFramework
+		SccProjectUniqueName7 = ..\\..\\Services\\AndroCloudServices\\AndroCloudWCFHelper\\AndroCloudHelper.csproj
+		SccProjectTopLevelParentUniqueName7 = AndroAdmin.sln
+		SccProjectName7 = ../../Services/AndroCloudServices/AndroCloudWCFHelper
+		SccLocalPath7 = ..\\..\\Services\\AndroCloudServices\\AndroCloudWCFHelper
+		SccProjectUniqueName8 = ..\\..\\CloudSync\\CloudSync\\CloudSync.csproj
+		SccProjectTopLevelParentUniqueName8 = AndroAdmin.sln
+		SccProjectName8 = ../../CloudSync/CloudSync
+		SccLocalPath8 = ..\\..\\CloudSync\\CloudSync
+		SccProjectUniqueName9 = ..\\..\\CloudSync\\CloudSyncTests\\CloudSyncTests.csproj
+		SccProjectTopLevelParentUniqueName9 = AndroAdmin.sln
+		SccProjectName9 = ../../CloudSync/CloudSyncTests
+		SccLocalPath9 = ..\\..\\CloudSync\\CloudSyncTests
+		SccProjectUniqueName10 = ..\\..\\CloudSync\\CloudSyncModel\\CloudSyncModel.csproj
+		SccProjectTopLevelParentUniqueName10 = AndroAdmin.sln
+		SccProjectName10 = ../../CloudSync/CloudSyncModel
+		SccLocalPath10 = ..\\..\\CloudSync\\CloudSyncModel
+		SccProjectUniqueName11 = ..\\AndroAdmin.Hubs\\AndroAdmin.Hubs.csproj
+		SccProjectTopLevelParentUniqueName11 = AndroAdmin.sln
+		SccProjectName11 = ../AndroAdmin.Hubs
+		SccLocalPath11 = ..\\AndroAdmin.Hubs
+		SccProjectUniqueName12 = Acs.Tests.Devices\\Acs.Tests.Devices.csproj
+		SccProjectTopLevelParentUniqueName12 = AndroAdmin.sln
+		SccProjectName12 = Acs.Tests.Devices
+		SccLocalPath12 = Acs.Tests.Devices
+		SccProjectUniqueName13 = ..\\..\\DataAccess\\DataWarehouseDataAccess\\DataWarehouseDataAccess.csproj
+		SccProjectTopLevelParentUniqueName13 = AndroAdmin.sln
+		SccProjectName13 = ../../DataAccess/DataWarehouseDataAccess
+		SccLocalPath13 = ..\\..\\DataAccess\\DataWarehouseDataAccess
+		SccProjectUniqueName14 = ..\\..\\DataAccess\\DataWarehouseDataAccessEntityFramework\\DataWarehouseDataAccessEntityFramework.csproj
+		SccProjectTopLevelParentUniqueName14 = AndroAdmin.sln
+		SccProjectName14 = ../../DataAccess/DataWarehouseDataAccessEntityFramework
+		SccLocalPath14 = ..\\..\\DataAccess\\DataWarehouseDataAccessEntityFramework
+		SccProjectUniqueName15 = ..\\..\\Services\\GPSIntegration\\GPSIntegration\\GPSIntegration.csproj
+		SccProjectName15 = ../../Services/GPSIntegration/GPSIntegration
+		SccLocalPath15 = ..\\..\\Services\\GPSIntegration\\GPSIntegration
 	EndGlobalSection
 EndGlobal
