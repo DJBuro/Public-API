@@ -4013,6 +4013,8 @@ var MyAndromeda;
                         }).on("show.bs.popover", function () {
                             var html = topElement.html();
                             popover.attr('data-content', html);
+                            var current = $(this);
+                            setTimeout(function () { current.popover('hide'); }, 5000);
                         });
                         topElement.on("hover", function (e) {
                             MyAndromeda.Logger.Notify("animate .k-event");
@@ -9668,13 +9670,61 @@ var MyAndromeda;
         var OpeningHours;
         (function (OpeningHours) {
             var app = angular.module("MyAndromeda.Store.OpeningHours.Directives", []);
+            app.directive("occasionTaskEditor", function () {
+                return {
+                    name: "occasionTaskEditor",
+                    scope: {
+                        task: "=task",
+                    },
+                    templateUrl: "occasionTaskEditor.html",
+                    controller: function ($scope) {
+                        MyAndromeda.Logger.Notify("Occasion task editor - started");
+                    }
+                };
+            });
             app.directive("occasionTask", function () {
                 return {
                     name: "occasionTaskController",
-                    controller: "occasionTaskController"
+                    scope: {
+                        task: "=task",
+                    },
+                    templateUrl: "occasionTask.html",
+                    controller: function ($scope, $element) {
+                        var task = $scope.task;
+                        var state = {
+                            occasions: task.Occasions.split(','),
+                        };
+                        var extra = {
+                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                            startTime: kendo.toString(task.start, "HH:mm"),
+                            endTime: kendo.toString(task.end, "HH:mm")
+                        };
+                        var definitions = OpeningHours.Models.occasionDefinitions;
+                        $scope.getColour = function (name) {
+                            switch (name) {
+                                case definitions.Delivery.Name: return OpeningHours.Models.occasionDefinitions.Delivery.Colour;
+                                case definitions.Collection.Name: return OpeningHours.Models.occasionDefinitions.Collection.Colour;
+                                case definitions.DineIn.Name: return OpeningHours.Models.occasionDefinitions.DineIn.Colour;
+                            }
+                        };
+                        $scope.state = state;
+                        $scope.extra = extra;
+                        var topElement = $($element).closest(".k-event");
+                        var popover = topElement.popover({
+                            title: "Task preview",
+                            placement: "auto",
+                            html: true,
+                            content: "please wait",
+                            trigger: "click"
+                        }).on("show.bs.popover", function () {
+                            var html = topElement.html();
+                            popover.attr('data-content', html);
+                            var current = $(this);
+                            setTimeout(function () { current.popover('hide'); }, 5000);
+                        });
+                    }
                 };
             });
-            app.controller("occasionTaskController", function () { });
         })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
     })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -9686,6 +9736,13 @@ var MyAndromeda;
         (function (OpeningHours) {
             var Models;
             (function (Models) {
+                Models.occasionDefinitions = {
+                    Delivery: { Name: "Delivery", Colour: "#d9534f" },
+                    Collection: { Name: "Collection", Colour: "#d9edf7" },
+                    DineIn: {
+                        Name: "Dine In", Colour: "#f2dede"
+                    }
+                };
                 function getSchedulerDataSourceSchema() {
                     var model = {
                         id: "Id",
@@ -9706,7 +9763,7 @@ var MyAndromeda;
                             isAllDay: { type: "boolean", from: "IsAllDay" },
                             Occasions: {
                                 type: "string",
-                                defaultValue: "All",
+                                defaultValue: "",
                                 nullable: false,
                                 validation: {
                                     required: true
@@ -9731,10 +9788,73 @@ var MyAndromeda;
             var Services;
             (function (Services) {
                 var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
+                var StoreOccasionAvailabilityService = (function () {
+                    function StoreOccasionAvailabilityService(scheduler) {
+                        this.scheduler = scheduler;
+                    }
+                    StoreOccasionAvailabilityService.prototype.GetTasksInRange = function (start, end) {
+                        var occurences = this.scheduler.occurrencesInRange(start, end);
+                        return occurences;
+                    };
+                    StoreOccasionAvailabilityService.prototype.GetTasksByResource = function (start, end, task) {
+                        var context = {
+                            start: start,
+                            end: end,
+                            task: task
+                        };
+                        var currentTasks = this.GetTasksInRange(start, end)
+                            .filter(function (e) { return e.Id !== task.Id && e.RecurrenceId !== task.Id; });
+                        var startCheck = start.toLocaleTimeString();
+                        var endCheck = end.toLocaleTimeString();
+                        MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+                        MyAndromeda.Logger.Notify(context);
+                        MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
+                        MyAndromeda.Logger.Notify(currentTasks);
+                        var matchedOccurences = [];
+                        var flagResource = [];
+                        //let allResources = [
+                        //    Models.occasionDefinitions.Delivery,
+                        //    Models.occasionDefinitions.Collection,
+                        //    Models.occasionDefinitions.DineIn
+                        //];
+                        var taskResources = task.Occasions ? task.Occasions.split(',') : [];
+                        MyAndromeda.Logger.Notify("check resources: ");
+                        MyAndromeda.Logger.Notify(taskResources);
+                        var map = currentTasks.map(function (e) {
+                            return {
+                                task: e,
+                                occasion: e.Occasions.split(',')
+                            };
+                        });
+                        Rx.Observable.fromArray(map).where(function (e) {
+                            for (var i = 0; i < e.occasion.length; i++) {
+                                var compareOccasion = e.occasion[i];
+                                for (var k = 0; k < taskResources.length; k++) {
+                                    var occasion = taskResources[k];
+                                    if (occasion.indexOf(compareOccasion) > -1) {
+                                        MyAndromeda.Logger.Notify("task objection: " + e.task.title);
+                                        MyAndromeda.Logger.Notify(e.task);
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }).subscribe(function (overlaped) {
+                            matchedOccurences.push(overlaped.task);
+                        });
+                        MyAndromeda.Logger.Notify("occurrences: " + matchedOccurences.length);
+                        return matchedOccurences.length === 0;
+                    };
+                    StoreOccasionAvailabilityService.prototype.IsOccasionAvailable = function (start, end, task) {
+                        return this.GetTasksByResource(start, end, task);
+                    };
+                    return StoreOccasionAvailabilityService;
+                })();
                 var StoreOccasionSchedulerService = (function () {
-                    function StoreOccasionSchedulerService($http, uuidService) {
+                    function StoreOccasionSchedulerService($http, uuidService, SweetAlert) {
                         this.$http = $http;
                         this.uuidService = uuidService;
+                        this.SweetAlert = SweetAlert;
                     }
                     StoreOccasionSchedulerService.prototype.CreateDataSource = function () {
                         var _this = this;
@@ -9747,6 +9867,7 @@ var MyAndromeda;
                             batch: false,
                             transport: {
                                 read: function (options) {
+                                    MyAndromeda.Logger.Notify("Scheduler read");
                                     var route = "/api/chain/{0}/store/{1}/Occasions";
                                     route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
                                     var promise = _this.$http.post(route, options.data);
@@ -9796,19 +9917,19 @@ var MyAndromeda;
                                 multiple: true,
                                 dataSource: [
                                     {
-                                        text: "Delivery",
-                                        value: "Delivery",
-                                        color: "#d9534f"
+                                        text: OpeningHours.Models.occasionDefinitions.Delivery.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.Delivery.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.Delivery.Colour
                                     },
                                     {
-                                        text: "Collection",
-                                        value: "Collection",
-                                        color: "#d9edf7"
+                                        text: OpeningHours.Models.occasionDefinitions.Collection.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.Collection.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.Collection.Colour
                                     },
                                     {
-                                        text: "Dine in",
-                                        value: "Dine in",
-                                        color: "#f2dede"
+                                        text: OpeningHours.Models.occasionDefinitions.DineIn.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.DineIn.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.DineIn.Colour
                                     }
                                 ]
                             },
@@ -9816,6 +9937,7 @@ var MyAndromeda;
                         return resources;
                     };
                     StoreOccasionSchedulerService.prototype.CreateScheduler = function () {
+                        var _this = this;
                         var uuidService = this.uuidService;
                         var dataSource = this.CreateDataSource();
                         var schedulerOptions = {
@@ -9830,7 +9952,9 @@ var MyAndromeda;
                             currentTimeMarker: {
                                 useLocalTimezone: false
                             },
-                            editable: true,
+                            editable: {
+                                template: "<occasion-task-editor task='dataItem'></occasion-task-editor>"
+                            },
                             pdf: {
                                 fileName: "Opening hours",
                                 title: "Schedule"
@@ -9843,16 +9967,61 @@ var MyAndromeda;
                                 { type: "week", selected: true, showWorkHours: false },
                                 { type: "month" }
                             ],
-                            resize: function (e) { MyAndromeda.Logger.Notify("resize"); MyAndromeda.Logger.Notify(e); },
-                            resizeEnd: function (e) { MyAndromeda.Logger.Notify("resize-end"); MyAndromeda.Logger.Notify(e); },
-                            move: function (e) { MyAndromeda.Logger.Notify("move"); MyAndromeda.Logger.Notify(e); },
-                            moveEnd: function (e) { MyAndromeda.Logger.Notify("move-end"); MyAndromeda.Logger.Notify(e); },
+                            resize: function (e) {
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                                    MyAndromeda.Logger.Notify("cancel resize");
+                                    this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                                    e.preventDefault();
+                                }
+                            },
+                            resizeEnd: function (e) {
+                                MyAndromeda.Logger.Notify("resize-end");
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                                    MyAndromeda.Logger.Notify("cancel resize");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            },
+                            move: function (e) {
+                                MyAndromeda.Logger.Notify("move-start");
+                                MyAndromeda.Logger.Notify(e);
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                                    this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
+                                }
+                            },
+                            moveEnd: function (e) {
+                                MyAndromeda.Logger.Notify("move-end");
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                                    MyAndromeda.Logger.Notify("cancel move");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            },
                             add: function (e) {
                                 MyAndromeda.Logger.Notify("add");
                                 MyAndromeda.Logger.Notify(e);
-                                //e.event.id = uuidService.GenerateUUID();
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+                                    MyAndromeda.Logger.Notify("cancel add");
+                                    //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
                             },
-                            save: function (e) { MyAndromeda.Logger.Notify("save"); MyAndromeda.Logger.Notify(e); }
+                            save: function (e) {
+                                MyAndromeda.Logger.Notify("save");
+                                MyAndromeda.Logger.Notify(e);
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+                                    MyAndromeda.Logger.Notify("cancel save");
+                                    _this.SweetAlert.swal("Sorry", "A task already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            }
                         };
                         return schedulerOptions;
                     };

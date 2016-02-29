@@ -2,26 +2,105 @@
 
     var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
 
-
-    export class StoreOccasionSchedulerService
-    {
-        constructor(private $http: ng.IHttpService, private uuidService: MyAndromeda.Services.UUIdService)
-        {
+    class StoreOccasionAvailabilityService {
+        constructor(private scheduler: kendo.ui.Scheduler) {
 
         }
 
-        private CreateDataSource()
-        {
+        private GetTasksInRange(start: Date, end: Date) {
+            let occurences: Models.IOccasionTask[] = this.scheduler.occurrencesInRange(start, end);
+
+            return occurences;
+        }
+
+        private GetTasksByResource(start: Date, end: Date, task: Models.IOccasionTask) {
+            var context = {
+                start: start,
+                end: end,
+                task: task
+            };
+
+            var currentTasks = this.GetTasksInRange(start, end)
+                .filter(e=> e.Id !== task.Id && e.RecurrenceId !== task.Id);
+
+
+            let startCheck = start.toLocaleTimeString();
+            let endCheck = end.toLocaleTimeString();
+
+            Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+            Logger.Notify(context);
+            Logger.Notify("Tasks in range: " + currentTasks.length);
+
+            Logger.Notify(currentTasks);
+
+            let matchedOccurences: Models.IOccasionTask[] = [];
+            let flagResource: string[] = [];
+
+            //let allResources = [
+            //    Models.occasionDefinitions.Delivery,
+            //    Models.occasionDefinitions.Collection,
+            //    Models.occasionDefinitions.DineIn
+            //];
+            let taskResources = task.Occasions ? task.Occasions.split(',') : [];
+
+            Logger.Notify("check resources: ");
+            Logger.Notify(taskResources);
+
+            let map = currentTasks.map(e=> {
+                return {
+                    task: e,
+                    occasion: e.Occasions.split(',')
+                }
+            });
+
+            Rx.Observable.fromArray(map).where(e=> {
+
+                for (let i = 0; i < e.occasion.length; i++) {
+                    let compareOccasion = e.occasion[i];
+
+                    for (let k = 0; k < taskResources.length; k++) {
+                        let occasion = taskResources[k];
+
+                        if (occasion.indexOf(compareOccasion) > -1) {
+                            Logger.Notify("task objection: " + e.task.title);
+                            Logger.Notify(e.task);
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }).subscribe((overlaped) => {
+                matchedOccurences.push(overlaped.task);
+            });
+
+            Logger.Notify("occurrences: " + matchedOccurences.length);
+
+            return matchedOccurences.length === 0;
+        }
+
+        public IsOccasionAvailable(start, end, task) {
+            return this.GetTasksByResource(start, end, task);
+        }
+    }
+
+    export class StoreOccasionSchedulerService {
+        constructor(private $http: ng.IHttpService, private uuidService: MyAndromeda.Services.UUIdService, private SweetAlert) {
+
+        }
+
+        private CreateDataSource() {
             let schema: kendo.data.DataSourceSchema = {
                 data: "Data",
                 total: "Total",
                 model: Models.getSchedulerDataSourceSchema()
             };
-            
+
             let dataSource = new kendo.data.SchedulerDataSource({
                 batch: false,
                 transport: {
                     read: (options: kendo.data.DataSourceTransportReadOptions) => {
+                        Logger.Notify("Scheduler read");
 
                         let route = "/api/chain/{0}/store/{1}/Occasions";
                         route = kendo.format(route, settings.chainId, settings.andromedaSiteId);
@@ -70,11 +149,10 @@
                 schema: schema
             });
 
-            return dataSource;     
+            return dataSource;
         }
 
-        private CreateResources()
-        {
+        private CreateResources() {
             let resources = [
                 {
                     title: "Occasion",
@@ -82,19 +160,19 @@
                     multiple: true,
                     dataSource: [
                         {
-                            text: "Delivery",
-                            value: "Delivery",
-                            color: "#d9534f"
+                            text: Models.occasionDefinitions.Delivery.Name,
+                            value: Models.occasionDefinitions.Delivery.Name,
+                            color: Models.occasionDefinitions.Delivery.Colour
                         },
                         {
-                            text: "Collection",
-                            value: "Collection",
-                            color: "#d9edf7"
+                            text: Models.occasionDefinitions.Collection.Name,
+                            value: Models.occasionDefinitions.Collection.Name,
+                            color: Models.occasionDefinitions.Collection.Colour
                         },
                         {
-                            text: "Dine in",
-                            value: "Dine in",
-                            color: "#f2dede"
+                            text: Models.occasionDefinitions.DineIn.Name,
+                            value: Models.occasionDefinitions.DineIn.Name,
+                            color: Models.occasionDefinitions.DineIn.Colour
                         }
                     ]
                 },
@@ -103,8 +181,7 @@
             return resources;
         }
 
-        public CreateScheduler()
-        {
+        public CreateScheduler() {
             var uuidService = this.uuidService;
             let dataSource = this.CreateDataSource();
             let schedulerOptions: kendo.ui.SchedulerOptions = {
@@ -119,7 +196,9 @@
                 currentTimeMarker: {
                     useLocalTimezone: false
                 },
-                editable: true,
+                editable: {
+                    template: "<occasion-task-editor task='dataItem'></occasion-task-editor>"
+                },
                 pdf: {
                     fileName: "Opening hours",
                     title: "Schedule"
@@ -132,17 +211,70 @@
                     { type: "week", selected: true, showWorkHours: false },
                     { type: "month" }
                 ],
-                resize: (e) => { Logger.Notify("resize"); Logger.Notify(e); },
-                resizeEnd: (e) => { Logger.Notify("resize-end"); Logger.Notify(e); },
-                move: (e) => { Logger.Notify("move"); Logger.Notify(e); },
-                moveEnd: (e) => { Logger.Notify("move-end"); Logger.Notify(e); },
-                add: (e) => {
-                    Logger.Notify("add");
-                    Logger.Notify(e);
-                    //e.event.id = uuidService.GenerateUUID();
-                },
-                save: (e) => { Logger.Notify("save"); Logger.Notify(e); }
 
+                resize: function (e: any) {
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                        Logger.Notify("cancel resize");
+
+                        this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                        e.preventDefault();
+                    }
+                },
+                resizeEnd: (e: any) => {
+                    Logger.Notify("resize-end");
+
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                        Logger.Notify("cancel resize");
+                        this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                move: function (e: any) {
+                    Logger.Notify("move-start");
+                    Logger.Notify(e);
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                        this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
+                    }
+                },
+                moveEnd: (e) => {
+                    Logger.Notify("move-end");
+
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                        Logger.Notify("cancel move");
+                        this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                add: (e) => {
+                    Logger.Notify("add"); Logger.Notify(e);
+
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel add");
+                        //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
+                        this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                save: (e) => {
+                    Logger.Notify("save"); Logger.Notify(e);
+
+                    var tester = new StoreOccasionAvailabilityService(e.sender);
+                    if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel save");
+                        this.SweetAlert.swal("Sorry", "A task already exists for this occasion in this range.", "error");
+
+                        e.preventDefault();
+                    }
+
+                }
             }
 
             return schedulerOptions;

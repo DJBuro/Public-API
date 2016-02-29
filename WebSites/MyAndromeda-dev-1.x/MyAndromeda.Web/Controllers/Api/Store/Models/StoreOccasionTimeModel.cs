@@ -10,7 +10,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
     {
         public string Description { get; set; }
 
-        public DateTime EndUtc { get; set; }
+        public DateTime End { get; set; }
 
         public Guid? Id { get; set; }
 
@@ -22,7 +22,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 
         public string RecurrenceRule { get; set; }
 
-        public DateTime StartUtc { get; set; }
+        public DateTime Start { get; set; }
 
         public string Title { get; set; }
 
@@ -36,13 +36,13 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
             var vm = new StoreOccasionTimeModel()
             {
                 Description = entity.Description,
-                EndUtc = entity.EndUtc,
+                End = entity.EndUtc,
                 Id = entity.Id,
                 IsAllDay = entity.IsAllDay,
                 Occasions = entity.Occasions,
                 RecurrenceException = entity.RecurrenceException,
                 RecurrenceRule = entity.RecurrenceRule,
-                StartUtc = entity.StartUtc,
+                Start = entity.StartUtc,
                 StoreId = entity.StoreId,
                 Title = entity.Title,
             };
@@ -57,21 +57,26 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
             entity.Id = Guid.NewGuid();
             entity.StoreId = storeEntity.Id;
 
+            entity.Update(model);
+
             return entity;
         }
 
         public static void Update(this StoreOccasionTime entity, StoreOccasionTimeModel model) 
         {
             entity.Description = model.Description;
-            entity.EndUtc = model.EndUtc;
-            entity.Id = model.Id.GetValueOrDefault();
+            entity.EndUtc = model.End;
+            //entity.Id = model.Id.GetValueOrDefault();
             entity.IsAllDay = model.IsAllDay;
             entity.Occasions = model.Occasions;
             entity.RecurrenceException = model.RecurrenceException;
             entity.RecurrenceRule = model.RecurrenceRule;
-            entity.StartUtc = model.StartUtc;
-            entity.StoreId = model.StoreId;
+            entity.StartUtc = model.Start;
+            //entity.StoreId = model.StoreId;
             entity.Title = model.Title;
+
+            entity.StartTimezone = string.Empty;
+            entity.EndTimezone = string.Empty;
         }
     }
 }

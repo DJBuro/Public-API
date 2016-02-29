@@ -79,11 +79,23 @@ namespace MyAndromeda.Web.Controllers.Api.Store
             if (occasionEntity == null) 
             {
                 occasionEntity = model.CreateEntiy(storeEntity);
+                
+                this.storeOccasionTimes.Add(occasionEntity);
             }
 
             occasionEntity.Update(model);
 
-            await this.androAdminDbContext.SaveChangesAsync();
+            model = occasionEntity.ToViewModel();
+
+            try
+            {
+                await this.androAdminDbContext.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
 
             return new DataSourceResult()
             {

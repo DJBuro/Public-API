@@ -1,5 +1,5 @@
 ﻿@model MyAndromeda.Web.Areas.Store.Models.OpeningTimesViewModel
-           
+
 @{
     var workContext = Html.GetWorkContext();
     ViewBag.Title = "OpeningTimes";
@@ -13,13 +13,13 @@
 </div>
 @Html.ValidationSummary()
 <div class="clearfix">
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Monday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Tuesday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Wednesday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Thursday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Friday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Saturday"}})
-    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary {{"Day", "Sunday"}})
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Monday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Tuesday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Wednesday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Thursday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Friday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Saturday" } })
+    @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Sunday" } })
 </div>
 
 <div style="clear:both;"></div>
@@ -28,20 +28,44 @@
     <div ui-view></div>
 </div>
 
-@using (Html.BeginScripts()) 
+@using (Html.BeginScripts())
 {
-    if (false) { 
+    if (false)
+    {
         <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
 
+    <script type="text/ng-template" id="occasionTask.html">
+        <div ng-if="task.title">
+            {{::task.title}}
+        </div>
 
+        <div class="container-fluid">
+            <div class="row" ng-repeat="occasion in state.occasions">
+                <div class="col-sm-12">
+                    <i class="fa fa-asterisk" style="color:{{::getColour(occasion)}} "></i>
+                    {{::occasion}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h6>{{::extra.startTime}} - {{::extra.endTime}} <span class="label label-success">{{::extra.hours}} hr</span></h6>
+                </div>
+            </div>
+        </div>
+    </script>
     <script type="text/ng-template" id="OpeningHours-template.html">
         <div class="panel panel-default">
             <div class="panel-heading">
                 hi
             </div>
         </div>
-
+        <style>
+            .invalid-slot {
+                background: red !important;
+                cursor: no-drop;
+            }
+        </style>
         <div kendo-scheduler k-options="schedulerOptions">
         </div>
     </script>
@@ -58,5 +82,30 @@
         });
     </script>
 
-   
+    <script type="text/ng-template" id="occasionTaskEditor.html">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <input kendo-date-time-picker
+                           ng-model="start"
+                           style="width: 100%;" />
+                </div>
+                <div class="col-sm-6">
+                    <input kendo-date-time-picker
+                           ng-model="end"
+                           style="width: 100%;" />
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                hi
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+
+
+    </script>
 }

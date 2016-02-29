@@ -379,15 +379,19 @@ module MyAndromeda.Hr.Directives {
                     html: true,
                     content: "please wait",
                     trigger: "hover"
-                }).on("show.bs.popover", () => {
+                }).on("show.bs.popover", function() {
                     let html = topElement.html();
                     popover.attr('data-content', html);
+                    var current = $(this); 
+                    setTimeout(() => { current.popover('hide'); }, 5000)
                 });
 
                 topElement.on("hover", function (e) {
                     Logger.Notify("animate .k-event");
                 });
 
+                
+                
 
                 var extra = {
                     hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
