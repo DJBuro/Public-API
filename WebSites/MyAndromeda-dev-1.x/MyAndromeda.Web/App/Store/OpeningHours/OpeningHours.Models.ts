@@ -35,7 +35,7 @@
                     type: "string",
                     nullable: true
                 },
-                title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                title: { from: "Title", validation: { required: true } },
                 start: { type: "date", from: "Start" },
                 end: { type: "date", from: "End" },
                 startTimezone: { from: "StartTimezone" },
@@ -45,14 +45,17 @@
                 recurrenceRule: { from: "RecurrenceRule" },
                 recurrenceException: { from: "RecurrenceException" },
                 isAllDay: { type: "boolean", from: "IsAllDay" },
-                Occasions: <kendo.data.DataSourceSchemaModelField>{
-                    type: "string",
-                    defaultValue: "",
-                    nullable: false,
-                    validation: {
-                        required: true
-                    }
+                Occasions: {
+                    defaultValue : ["Delivery", "Collection"]
                 }
+                //Occasions: <kendo.data.DataSourceSchemaModelField>{
+                //    type: "string",
+                //    defaultValue: "",
+                //    nullable: false,
+                //    validation: {
+                //        required: true
+                //    }
+                //}
             }
         }
 

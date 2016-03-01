@@ -1,6 +1,8 @@
 using System.Linq;
 using MyAndromeda.Data.DataAccess.Chains;
 using Domain = MyAndromeda.Data.Domain;
+using System.Collections.Generic;
+using System.Web.Http.Routing;
 
 namespace MyAndromeda.Framework.Contexts
 {
@@ -74,9 +76,28 @@ namespace MyAndromeda.Framework.Contexts
 
             var chainIdValue = this.currentRequest.GetRouteData("ChainId");
 
-            if (chainIdValue == null)
+            if (chainIdValue == null || string.IsNullOrWhiteSpace(chainIdValue.ToString()))
             {
-                return null;
+                IDictionary<string, object> allValues = this.currentRequest.RouteData.Values;
+                var webApiParameterRoutes = allValues
+                    .Where(e => e.Value is IEnumerable<IHttpRouteData>)
+                    .Select(e => e.Value as IEnumerable<IHttpRouteData>)
+                    .SelectMany(e => e)
+                    .SelectMany(e => e.Values)
+                    .ToArray();
+
+                var webapiChainId = webApiParameterRoutes.FirstOrDefault(e => e.Key.Equals("ChainId", System.StringComparison.InvariantCultureIgnoreCase));
+
+
+                if(!string.IsNullOrWhiteSpace(webapiChainId.Value.ToString()))
+                {
+                    chainIdValue = webapiChainId.Value;
+                }
+
+                if(chainIdValue == null)
+                {
+                    return null;
+                }
             }
             var chainIdString = chainIdValue.ToString();
             if (string.IsNullOrWhiteSpace(chainIdString))

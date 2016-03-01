@@ -14,7 +14,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 
         public bool IsAllDay { get; set; }
 
-        public string Occasions { get; set; }
+        public string[] Occasions { get; set; }
 
         public string RecurrenceException { get; set; }
 
@@ -36,7 +36,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
                 End = entity.EndUtc,
                 Id = entity.Id,
                 IsAllDay = entity.IsAllDay,
-                Occasions = entity.Occasions,
+                Occasions = entity.Occasions.Split(','),
                 RecurrenceException = entity.RecurrenceException,
                 RecurrenceRule = entity.RecurrenceRule,
                 Start = entity.StartUtc,
@@ -64,7 +64,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
             entity.EndUtc = model.End;
             //entity.Id = model.Id.GetValueOrDefault();
             entity.IsAllDay = model.IsAllDay;
-            entity.Occasions = model.Occasions;
+            entity.Occasions = string.Join(",", model.Occasions);
             entity.RecurrenceException = model.RecurrenceException;
             entity.RecurrenceRule = model.RecurrenceRule;
             entity.StartUtc = model.Start;

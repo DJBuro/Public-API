@@ -9714,8 +9714,10 @@ var MyAndromeda;
                     templateUrl: "occasionTask.html",
                     controller: function ($scope, $element) {
                         var task = $scope.task;
+                        var occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+                        var occasionIsArray = typeof (task.Occasions) === "object" ? true : false;
                         var state = {
-                            occasions: task.Occasions.split(','),
+                            occasions: occasionTypeIsString ? task.Occasions.split(',') : task.Occasions,
                         };
                         var extra = {
                             hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
@@ -9774,7 +9776,7 @@ var MyAndromeda;
                                 type: "string",
                                 nullable: true
                             },
-                            title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                            title: { from: "Title", validation: { required: true } },
                             start: { type: "date", from: "Start" },
                             end: { type: "date", from: "End" },
                             startTimezone: { from: "StartTimezone" },
@@ -9785,12 +9787,7 @@ var MyAndromeda;
                             recurrenceException: { from: "RecurrenceException" },
                             isAllDay: { type: "boolean", from: "IsAllDay" },
                             Occasions: {
-                                type: "string",
-                                defaultValue: "",
-                                nullable: false,
-                                validation: {
-                                    required: true
-                                }
+                                defaultValue: ["Delivery", "Collection"]
                             }
                         }
                     };
@@ -9840,13 +9837,18 @@ var MyAndromeda;
                         //    Models.occasionDefinitions.Collection,
                         //    Models.occasionDefinitions.DineIn
                         //];
-                        var taskResources = task.Occasions ? task.Occasions.split(',') : [];
+                        var occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+                        var taskResources = task.Occasions
+                            ? occasionTypeIsString
+                                ? task.Occasions.split(',')
+                                : task.Occasions
+                            : [];
                         MyAndromeda.Logger.Notify("check resources: ");
                         MyAndromeda.Logger.Notify(taskResources);
                         var map = currentTasks.map(function (e) {
                             return {
                                 task: e,
-                                occasion: e.Occasions.split(',')
+                                occasion: e.Occasions
                             };
                         });
                         Rx.Observable.fromArray(map).where(function (e) {
@@ -10038,6 +10040,13 @@ var MyAndromeda;
                             save: function (e) {
                                 MyAndromeda.Logger.Notify("save");
                                 MyAndromeda.Logger.Notify(e);
+                                var ev = e.event;
+                                if (ev.Occasions) {
+                                    var o = ev.Occasions.length;
+                                    if (o.length === 0) {
+                                        _this.SweetAlert.swal("occasions", "Please add at least one occasion", "information");
+                                    }
+                                }
                                 var tester = new StoreOccasionAvailabilityService(e.sender);
                                 if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
                                     MyAndromeda.Logger.Notify("cancel save");

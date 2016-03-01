@@ -56,8 +56,11 @@
 
                 var task: Models.IOccasionTask = $scope.task;
 
+                var occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+                var occasionIsArray = typeof (task.Occasions) === "object" ? true : false;
+
                 var state = {
-                    occasions: task.Occasions.split(','),
+                    occasions:  occasionTypeIsString ? task.Occasions.split(',') : task.Occasions,
                 };
 
                 var extra = {

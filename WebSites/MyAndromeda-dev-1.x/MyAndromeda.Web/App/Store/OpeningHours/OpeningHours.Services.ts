@@ -41,7 +41,13 @@
             //    Models.occasionDefinitions.Collection,
             //    Models.occasionDefinitions.DineIn
             //];
-            let taskResources = task.Occasions ? task.Occasions.split(',') : [];
+
+            let occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+            let taskResources = task.Occasions
+                ? occasionTypeIsString
+                    ? task.Occasions.split(',')
+                    : task.Occasions
+                : [];
 
             Logger.Notify("check resources: ");
             Logger.Notify(taskResources);
@@ -49,7 +55,7 @@
             let map = currentTasks.map(e=> {
                 return {
                     task: e,
-                    occasion: e.Occasions.split(',')
+                    occasion: e.Occasions
                 }
             });
 
@@ -265,6 +271,15 @@
                 },
                 save: (e) => {
                     Logger.Notify("save"); Logger.Notify(e);
+
+                    let ev: any = e.event;
+                    if (ev.Occasions)
+                    {
+                        let o = ev.Occasions.length;
+                        if (o.length === 0) {
+                            this.SweetAlert.swal("occasions", "Please add at least one occasion", "information");
+                        }
+                    }
 
                     var tester = new StoreOccasionAvailabilityService(e.sender);
                     if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {

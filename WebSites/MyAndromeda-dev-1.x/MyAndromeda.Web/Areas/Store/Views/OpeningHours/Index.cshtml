@@ -55,7 +55,7 @@
     }
 
     <script type="text/ng-template" id="occasionTask.html">
-        
+
 
         <div class="container-fluid">
             <div ng-if="task.title">
@@ -99,55 +99,75 @@
     </script>
 
     <script type="text/ng-template" id="occasionTaskEditor.html">
-        <div class="row">
-            <div class="col-sm-12">
-                <div>Title:</div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Occasion settings
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div>Title:</div>
 
-                <input class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
+                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
+                                    <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div></div>
+                                    <label><input type="checkbox" ng-model="task.isAllDay" /> All day?</label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row" ng-if="!task.isAllDay">
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <label><input type="checkbox" ng-model="task.isAllDay" /> All day?</label>
-            </div>
-        </div>
-        <div class="row" ng-if="!task.isAllDay">
+                                <div class="col-sm-6">
+                                    <div>Start:</div>
+                                    <input kendo-date-time-picker required
+                                           name="start"
+                                           k-ng-model="task.start"
+                                           style="width: 100%;" />
+                                    <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div>End:</div>
+                                    <input kendo-date-time-picker required
+                                           name="end"
+                                           k-ng-model="task.end"
+                                           style="width: 100%;" />
+                                    <span data-for="end" class="k-invalid-msg" style="display: none;"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12">Occasion Type(s):</div>
+                                <div class="col-sm-12">
+                                    <select required kendo-multi-select k-options="occasionOptions" k-ng-model="task.Occasions"></select>
+                                </div>
+                            </div>
 
-            <div class="col-sm-6">
-                <div>Start</div>
-                <input kendo-date-time-picker
-                       k-ng-model="task.start"
-                       style="width: 100%;" />
-                <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
-            </div>
-            <div class="col-sm-6">
-                <div>End</div>
-                <input kendo-date-time-picker
-                       k-ng-model="task.end"
-                       style="width: 100%;" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">Occasion Types:</div>
-            <div class="col-sm-12">
-                <select kendo-multi-select k-options="occasionOptions" k-ng-model="task.Occasions"></select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
 
-                <div class="panel-body">
-                    <div class="k-edit-label"><label for="recurrenceRule">Repeat</label></div>
-                    <div data-container-for="recurrenceRule" class="k-edit-field">
-                        <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Repeat occasion on different days</div>
+                        <div class="panel-body">
+                            <div class="k-edit-label"><label for="recurrenceRule">Repeat</label></div>
+                            <div data-container-for="recurrenceRule" class="k-edit-field">
+                                <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
-
-
 
 
     </script>

@@ -108,6 +108,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
 
                 this.acsSynchronizationTaskService.CreateTask(new MyAndromeda.Data.Model.MyAndromeda.CloudSynchronizationTask() { 
+                    Name = "Occasion time",
                     ChainId = this.currentChain.Chain.Id,
                     Description = "Sync Task for update hours on occasions", 
                     StoreId = this.currentStore.Store.Id,
@@ -150,6 +151,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
             {
                 await this.androAdminDbContext.SaveChangesAsync();
                 this.acsSynchronizationTaskService.CreateTask(new MyAndromeda.Data.Model.MyAndromeda.CloudSynchronizationTask() { 
+                    Name = "Remove occasion",
                     ChainId = this.currentChain.Chain.Id,
                     Description = "Sync Task for update hours on occasions", 
                     StoreId = this.currentStore.Store.Id,
