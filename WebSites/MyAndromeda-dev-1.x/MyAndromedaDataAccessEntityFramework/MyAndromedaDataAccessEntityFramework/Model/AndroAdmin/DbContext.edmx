@@ -501,7 +501,6 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="StoreId" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="EndUtc" Type="datetime" Nullable="false" />
           <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsAllDay" Type="bit" Nullable="false" />
@@ -511,6 +510,8 @@
           <Property Name="StartTimezone" Type="varchar" MaxLength="50" />
           <Property Name="Occasions" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DataVersion" Type="int" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="StorePaymentProvider">
           <Key>
@@ -2823,7 +2824,6 @@
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="StoreId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EndUtc" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTimezone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsAllDay" Type="Boolean" Nullable="false" />
@@ -2833,7 +2833,9 @@
           <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Occasions" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DataVersion" Type="Int32" />
           <NavigationProperty Name="Store" Relationship="AndroAdminModel.FK_StoreOccasionTimes_Store" FromRole="StoreOccasionTime" ToRole="Store" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_StoreOccasionTimes_Store">
           <End Type="AndroAdminModel.Store" Role="Store" Multiplicity="1">
@@ -3409,6 +3411,8 @@
           <EntitySetMapping Name="StoreOccasionTimes">
             <EntityTypeMapping TypeName="AndroAdminModel.StoreOccasionTime">
               <MappingFragment StoreEntitySet="StoreOccasionTimes">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="DataVersion" ColumnName="DataVersion" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Occasions" ColumnName="Occasions" />
                 <ScalarProperty Name="StartTimezone" ColumnName="StartTimezone" />
@@ -3418,7 +3422,6 @@
                 <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
                 <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
                 <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="StoreId" ColumnName="StoreId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

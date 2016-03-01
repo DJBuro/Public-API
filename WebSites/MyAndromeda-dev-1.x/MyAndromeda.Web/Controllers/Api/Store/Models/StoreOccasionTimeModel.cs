@@ -8,8 +8,6 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 {
     public class StoreOccasionTimeModel
     {
-        public string Description { get; set; }
-
         public DateTime End { get; set; }
 
         public Guid? Id { get; set; }
@@ -35,7 +33,6 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
         {
             var vm = new StoreOccasionTimeModel()
             {
-                Description = entity.Description,
                 End = entity.EndUtc,
                 Id = entity.Id,
                 IsAllDay = entity.IsAllDay,
@@ -64,7 +61,6 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 
         public static void Update(this StoreOccasionTime entity, StoreOccasionTimeModel model) 
         {
-            entity.Description = model.Description;
             entity.EndUtc = model.End;
             //entity.Id = model.Id.GetValueOrDefault();
             entity.IsAllDay = model.IsAllDay;

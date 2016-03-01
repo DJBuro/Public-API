@@ -63,9 +63,36 @@ namespace CloudSync
 
             AndroAdminSyncHelper.AddLoyalty(syncModel, fromVersion);
 
+            AndroAdminSyncHelper.AddInStoreOccasionTimes(syncModel, fromVersion);
+
             syncXml = SerializeHelper.Serialize<SyncModel>(syncModel);
 
             return string.Empty;
+        }
+ 
+        private static void AddInStoreOccasionTimes(SyncModel syncModel, int fromVersion)
+        {
+            using (var dbContext = new AndroAdminDataAccess.EntityFramework.AndroAdminEntities())
+            {
+                var projection = dbContext.StoreOccasionTimes.Where(e => e.DataVersion > fromVersion)
+                    .Select(e=> new StoreOccasionTimeModel(){
+                        AndromedaSiteId = e.Store.AndromedaSiteId,
+                        Deleted = e.Deleted,
+                        EndUtc = e.EndUtc, 
+                        Id  = e.Id,
+                        IsAllDay = e.IsAllDay,
+                        Occasions = e.Occasions,
+                        RecurrenceException = e.RecurrenceException,
+                        RecurrenceRule = e.RecurrenceRule,
+                        StartUtc = e.StartUtc,
+                        Title = e.Title
+                    })
+                    .ToList();
+
+                projection.ForEach((item) => {
+                    syncModel.StoreOccasionTimes.Add(item);
+                });
+            }   
         }
 
         private static void AddLoyalty(SyncModel syncModel, int fromVersion)

@@ -10,7 +10,36 @@
             },
             templateUrl: "occasionTaskEditor.html",
             controller: ($scope) => {
+                var task: Models.IOccasionTask = $scope.task;
+
                 Logger.Notify("Occasion task editor - started");
+
+                Logger.Notify("Occasion task");
+                Logger.Notify(task);
+
+                let occasionOptions: kendo.ui.MultiSelectOptions = {
+                    //dataSource: [
+                    //    Models.occasionDefinitions.Delivery,
+                    //    Models.occasionDefinitions.Collection,
+                    //    Models.occasionDefinitions.DineIn
+                    //],
+                    dataSource: new kendo.data.DataSource({
+                        data: [
+                            Models.occasionDefinitions.Delivery,
+                            Models.occasionDefinitions.Collection,
+                            Models.occasionDefinitions.DineIn
+                        ]
+                    }),
+                    
+                    valuePrimitive: true,
+                    dataTextField: "Name",
+                    dataValueField: "Name",
+                    //ignoreCase: true,
+                    autoBind: true
+                    
+                };
+
+                $scope.occasionOptions = occasionOptions;
             }
         };
     });
@@ -18,7 +47,7 @@
     app.directive("occasionTask", () => {
 
         return {
-            name: "occasionTaskController",
+            name: "occasionTask",
             scope: {
                 task: "=task",
             },

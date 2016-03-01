@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyAndromeda.Data.Model.AndroAdmin
+namespace AndroAdminDataAccess.EntityFramework
 {
     using System;
     using System.Collections.Generic;

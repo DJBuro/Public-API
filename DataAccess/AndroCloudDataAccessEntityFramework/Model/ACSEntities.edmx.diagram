@@ -60,6 +60,8 @@
         <EntityTypeShape EntityType="ACSModel.SitesOffline" Width="1.5" PointX="13.375" PointY="6.75" />
         <EntityTypeShape EntityType="ACSModel.sysdiagram" Width="1.5" PointX="13.375" PointY="9.75" />
         <AssociationConnector Association="ACSModel.FK_SiteLoyalty_Sites" />
+        <EntityTypeShape EntityType="ACSModel.SiteOccasionTime" Width="1.5" PointX="7.5" PointY="31" />
+        <AssociationConnector Association="ACSModel.FK_SiteOccasionTimes_Sites" />
         </Diagram>
       <Diagram DiagramId="a0dcccb03707476f90349de2c058e74d" Name="Menu" >
       </Diagram>

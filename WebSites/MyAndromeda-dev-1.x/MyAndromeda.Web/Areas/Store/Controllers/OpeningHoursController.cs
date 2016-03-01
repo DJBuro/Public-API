@@ -23,17 +23,10 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
         private readonly INotifier notifier;
         private readonly IAuthorizer authorizer;
         private readonly ITranslator translator;
-        private readonly ISynchronizationTaskService acsSynchronizationTaskService;
 
-        public OpeningHoursController(IStoreOpeningTimesService storeOpeningTimesService,
-            INotifier notifier,
-            IAuthorizer authorizer,
-            IMyAndromedaLogger logger,
-            ISynchronizationTaskService acsSynchronizationTaskService,
-            ITranslator translator)
+        public OpeningHoursController(IStoreOpeningTimesService storeOpeningTimesService, INotifier notifier, IAuthorizer authorizer, IMyAndromedaLogger logger, ITranslator translator)
         {
             this.translator = translator;
-            this.acsSynchronizationTaskService = acsSynchronizationTaskService;
             this.logger = logger;
             this.storeOpeningTimesService = storeOpeningTimesService;
             this.notifier = notifier;

@@ -322,6 +322,24 @@
           <Property Name="MenuDataExtended" Type="nvarchar(max)" />
           <Property Name="MenuDataExtendedVersion" Type="nvarchar" MaxLength="36" />
         </EntityType>
+        <EntityType Name="SiteOccasionTimes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SiteId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AndromedaSiteId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EndUtc" Type="datetime" Nullable="false" />
+          <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAllDay" Type="bit" Nullable="false" />
+          <Property Name="RecurrenceException" Type="varchar(max)" />
+          <Property Name="RecurrenceRule" Type="varchar(max)" />
+          <Property Name="StartUtc" Type="datetime" Nullable="false" />
+          <Property Name="StartTimezone" Type="varchar" MaxLength="50" />
+          <Property Name="Occasions" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="Sites">
           <Key>
             <PropertyRef Name="ID" />
@@ -771,6 +789,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SiteOccasionTimes_Sites">
+          <End Role="Sites" Type="Self.Sites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SiteOccasionTimes" Type="Self.SiteOccasionTimes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sites">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SiteOccasionTimes">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Sites_Addresses">
           <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
           <End Role="Sites" Type="Self.Sites" Multiplicity="*" />
@@ -839,6 +871,7 @@
           <EntitySet Name="SiteHubs" EntityType="Self.SiteHubs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteLoyalty" EntityType="Self.SiteLoyalty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteMenus" EntityType="Self.SiteMenus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiteOccasionTimes" EntityType="Self.SiteOccasionTimes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sites" EntityType="Self.Sites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SitesOffline" EntityType="Self.SitesOffline" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SiteStatuses" EntityType="Self.SiteStatuses" Schema="dbo" store:Type="Tables" />
@@ -963,6 +996,10 @@
           <AssociationSet Name="FK_SiteMenus_Sites" Association="Self.FK_SiteMenus_Sites">
             <End Role="Sites" EntitySet="Sites" />
             <End Role="SiteMenus" EntitySet="SiteMenus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SiteOccasionTimes_Sites" Association="Self.FK_SiteOccasionTimes_Sites">
+            <End Role="Sites" EntitySet="Sites" />
+            <End Role="SiteOccasionTimes" EntitySet="SiteOccasionTimes" />
           </AssociationSet>
           <AssociationSet Name="FK_Sites_Addresses" Association="Self.FK_Sites_Addresses">
             <End Role="Addresses" EntitySet="Addresses" />
@@ -1124,6 +1161,11 @@
           <AssociationSet Name="FK_SiteLoyalty_Sites" Association="ACSModel.FK_SiteLoyalty_Sites">
             <End Role="Site" EntitySet="Sites" />
             <End Role="SiteLoyalty" EntitySet="SiteLoyalties" />
+          </AssociationSet>
+          <EntitySet Name="SiteOccasionTimes" EntityType="ACSModel.SiteOccasionTime" />
+          <AssociationSet Name="FK_SiteOccasionTimes_Sites" Association="ACSModel.FK_SiteOccasionTimes_Sites">
+            <End Role="Site" EntitySet="Sites" />
+            <End Role="SiteOccasionTime" EntitySet="SiteOccasionTimes" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACSApplicationSite">
@@ -1336,6 +1378,7 @@
           <Property Name="UiCulture" Type="String" MaxLength="8" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SiteLoyalties" Relationship="ACSModel.FK_SiteLoyalty_Sites" FromRole="Site" ToRole="SiteLoyalty" />
           <Property Name="EstimatedCollectionTime" Type="Int32" />
+          <NavigationProperty Name="SiteOccasionTimes" Relationship="ACSModel.FK_SiteOccasionTimes_Sites" FromRole="Site" ToRole="SiteOccasionTime" />
         </EntityType>
         <EntityType Name="SiteStatus">
           <Key>
@@ -1828,6 +1871,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SiteOccasionTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="SiteId" Type="Guid" Nullable="false" />
+          <Property Name="AndromedaSiteId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EndUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTimezone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAllDay" Type="Boolean" Nullable="false" />
+          <Property Name="RecurrenceException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RecurrenceRule" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartUtc" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Occasions" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Site" Relationship="ACSModel.FK_SiteOccasionTimes_Sites" FromRole="SiteOccasionTime" ToRole="Site" />
+        </EntityType>
+        <Association Name="FK_SiteOccasionTimes_Sites">
+          <End Type="ACSModel.Site" Role="Site" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ACSModel.SiteOccasionTime" Role="SiteOccasionTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Site">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="SiteOccasionTime">
+              <PropertyRef Name="SiteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2241,6 +2317,25 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteOccasionTimes">
+            <EntityTypeMapping TypeName="ACSModel.SiteOccasionTime">
+              <MappingFragment StoreEntitySet="SiteOccasionTimes">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Occasions" ColumnName="Occasions" />
+                <ScalarProperty Name="StartTimezone" ColumnName="StartTimezone" />
+                <ScalarProperty Name="StartUtc" ColumnName="StartUtc" />
+                <ScalarProperty Name="RecurrenceRule" ColumnName="RecurrenceRule" />
+                <ScalarProperty Name="RecurrenceException" ColumnName="RecurrenceException" />
+                <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
+                <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
+                <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

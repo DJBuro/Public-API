@@ -9678,13 +9678,36 @@ var MyAndromeda;
                     },
                     templateUrl: "occasionTaskEditor.html",
                     controller: function ($scope) {
+                        var task = $scope.task;
                         MyAndromeda.Logger.Notify("Occasion task editor - started");
+                        MyAndromeda.Logger.Notify("Occasion task");
+                        MyAndromeda.Logger.Notify(task);
+                        var occasionOptions = {
+                            //dataSource: [
+                            //    Models.occasionDefinitions.Delivery,
+                            //    Models.occasionDefinitions.Collection,
+                            //    Models.occasionDefinitions.DineIn
+                            //],
+                            dataSource: new kendo.data.DataSource({
+                                data: [
+                                    OpeningHours.Models.occasionDefinitions.Delivery,
+                                    OpeningHours.Models.occasionDefinitions.Collection,
+                                    OpeningHours.Models.occasionDefinitions.DineIn
+                                ]
+                            }),
+                            valuePrimitive: true,
+                            dataTextField: "Name",
+                            dataValueField: "Name",
+                            //ignoreCase: true,
+                            autoBind: true
+                        };
+                        $scope.occasionOptions = occasionOptions;
                     }
                 };
             });
             app.directive("occasionTask", function () {
                 return {
-                    name: "occasionTaskController",
+                    name: "occasionTask",
                     scope: {
                         task: "=task",
                     },

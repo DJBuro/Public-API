@@ -28,6 +28,7 @@ namespace AndroCloudDataAccessEntityFramework.Model
             this.HostsV2 = new HashSet<HostsV2>();
             this.SiteDevices = new HashSet<SiteDevice>();
             this.SiteLoyalties = new HashSet<SiteLoyalty>();
+            this.SiteOccasionTimes = new HashSet<SiteOccasionTime>();
         }
     
         public System.Guid ID { get; set; }
@@ -76,5 +77,7 @@ namespace AndroCloudDataAccessEntityFramework.Model
         public virtual ICollection<SiteDevice> SiteDevices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SiteLoyalty> SiteLoyalties { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SiteOccasionTime> SiteOccasionTimes { get; set; }
     }
 }

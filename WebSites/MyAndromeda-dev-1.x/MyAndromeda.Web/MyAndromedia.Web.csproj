@@ -1653,6 +1653,9 @@
     <Content Include="Content\myAndromeda\Less\scheduling.css.map">
       <DependentUpon>scheduling.css</DependentUpon>
     </Content>
+    <Content Include="Content\myAndromeda\Less\clearfix.css.map">
+      <DependentUpon>Clearfix.css</DependentUpon>
+    </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -3866,7 +3869,6 @@
     </Content>
     <Content Include="Content\myAndromeda\Less\panels.less" />
     <Content Include="Content\myAndromeda\Less\notifications.less" />
-    <None Include="Content\myAndromeda\Less\prettyPhoto.less" />
     <Content Include="Content\myAndromeda\Less\andro.less" />
     <None Include="Content\myAndromeda\Less\siteTheme.less" />
     <Content Include="Content\myAndromeda\Less\SiteTheme.css">

@@ -84,11 +84,61 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
 
                     this.SyncStoreLoyalty(acsEntities, syncModel.LoyaltyUpdates);
 
+                    this.SyncStoreOccasionTimes(acsEntities, syncModel.StoreOccasionTimes);
+
                     transactionScope.Complete();
                 }
             }
 
             return errorMessage;
+        }
+ 
+        private void SyncStoreOccasionTimes(ACSEntities acsEntities, List<StoreOccasionTimeModel> storeOccasionTimes)
+        {
+            if (storeOccasionTimes == null || storeOccasionTimes.Count == 0) { return; }
+
+            var groupedByStore = storeOccasionTimes.GroupBy(e => e.AndromedaSiteId);
+
+            foreach (var group in groupedByStore) 
+            {
+                var store = acsEntities.Sites.FirstOrDefault(e => e.AndroID == group.Key);
+
+                var addOrUpdate = group.Where(e => !e.Deleted);
+                var delete = group.Where(e => e.Deleted);
+
+                foreach (var model in addOrUpdate) 
+                {
+                    var entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e => e.Id == model.Id);
+
+                    if (entity == null) 
+                    {
+                        entity = new SiteOccasionTime();
+                        acsEntities.SiteOccasionTimes.Add(entity);
+                    }
+
+                    entity.AndromedaSiteId = model.AndromedaSiteId;
+                    entity.EndUtc = model.EndUtc;
+                    entity.Id = model.Id;
+                    entity.IsAllDay = model.IsAllDay;
+                    entity.Occasions = model.Occasions;
+                    entity.RecurrenceException = model.RecurrenceException;
+                    entity.RecurrenceRule = model.RecurrenceRule;
+                    entity.SiteId = store.ID;
+                    entity.StartUtc = model.StartUtc;
+                    entity.Title = model.Title;
+
+                }
+                foreach (var model in delete) 
+                {
+                    var entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e=> e.Id == model.Id);
+
+                    if (entity == null) { continue; }
+
+                    acsEntities.SiteOccasionTimes.Remove(entity);
+                }
+            }
+
+            acsEntities.SaveChanges();
         }
  
         private void SyncStoreEdt(ACSEntities acsEntities, List<StoreEdt> storeEdt)
@@ -942,6 +992,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             var siteStatusQuery = from s in acsEntities.SiteStatuses
                                   where s.Status == store.StoreStatus
                                   select s;
+
             Model.SiteStatus siteStatusEntity = siteStatusQuery.FirstOrDefault();
 
             if (siteStatusEntity == null)

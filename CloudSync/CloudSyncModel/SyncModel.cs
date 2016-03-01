@@ -27,6 +27,8 @@ namespace CloudSyncModel
             this.StoreDeviceModels = new StoreDevicesModels();
 
             this.LoyaltyUpdates = new Loyalty.LoyaltyUpdates();
+            this.StoreOccasionTimes = new List<StoreOccasionTimeModel>();
+            
         }
 
         public int FromDataVersion { get; set; }
@@ -80,5 +82,10 @@ namespace CloudSyncModel
         /// <value>The post code sectors.</value>
         public List<PostCodeSector> PostCodeSectors { set; get; }
 
+        /// <summary>
+        /// Gets or sets the store occasion times.
+        /// </summary>
+        /// <value>The store occasion times.</value>
+        public List<StoreOccasionTimeModel> StoreOccasionTimes { get; set; }
     }
 }

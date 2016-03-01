@@ -7,15 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyAndromeda.Data.Model.AndroAdmin
+namespace AndroCloudDataAccessEntityFramework.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class StoreOccasionTime
+    public partial class SiteOccasionTime
     {
         public System.Guid Id { get; set; }
-        public int StoreId { get; set; }
+        public System.Guid SiteId { get; set; }
+        public int AndromedaSiteId { get; set; }
+        public string Description { get; set; }
         public System.DateTime EndUtc { get; set; }
         public string EndTimezone { get; set; }
         public bool IsAllDay { get; set; }
@@ -25,9 +27,7 @@ namespace MyAndromeda.Data.Model.AndroAdmin
         public string StartTimezone { get; set; }
         public string Occasions { get; set; }
         public string Title { get; set; }
-        public Nullable<int> DataVersion { get; set; }
-        public bool Deleted { get; set; }
     
-        public virtual Store Store { get; set; }
+        public virtual Site Site { get; set; }
     }
 }
