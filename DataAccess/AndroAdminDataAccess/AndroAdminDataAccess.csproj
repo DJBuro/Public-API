@@ -392,6 +392,9 @@
     <Compile Include="EntityFramework\StoreMenuThumbnail.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityFramework\StoreOccasionTime.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityFramework\StorePaymentProvider.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>

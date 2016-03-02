@@ -293,6 +293,9 @@
     <Compile Include="Model\SiteMenu.cs">
       <DependentUpon>ACSEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SiteOccasionTime.cs">
+      <DependentUpon>ACSEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\SitesOffline.cs">
       <DependentUpon>ACSEntities.tt</DependentUpon>
     </Compile>
