@@ -3,17 +3,17 @@ using System.Linq;
 using AndroCloudDataAccess.DataAccess;
 using System.Collections.Generic;
 using AndroCloudDataAccessEntityFramework.Model;
-using CloudSyncModel;
 using System.Transactions;
-using CloudSyncModel.HostV2;
-using CloudSyncModel.Hubs;
+using CloudSyncModel;
+using CloudSyncModel.StoreDeviceModels;
 using CloudSyncModel.Loyalty;
 using CloudSyncModel.Menus;
-using CloudSyncModel.StoreDeviceModels;
+using CloudSyncModel.Hubs;
+using CloudSyncModel.HostV2;
 
 namespace AndroCloudDataAccessEntityFramework.DataAccess
 {
-    public class SyncDataAccess : ISyncDataAccess
+    public class SyncDataAccess : AndroCloudDataAccess.DataAccess.ISyncDataAccess
     {
         /// <summary>
         /// Gets or sets the connection string override.

@@ -2,7 +2,6 @@
 using System.Linq;
 using AndroCloudDataAccess.DataAccess;
 using AndroCloudDataAccessEntityFramework.Model;
-using CloudSyncModel.Hubs;
 
 namespace AndroCloudDataAccessEntityFramework.DataAccess
 {
