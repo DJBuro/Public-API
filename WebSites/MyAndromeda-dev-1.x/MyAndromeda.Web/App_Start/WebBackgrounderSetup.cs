@@ -7,10 +7,10 @@ using MyAndromeda.Logging;
 using WebBackgrounder;
 using MyAndromeda.Menus.Jobs;
 
+[assembly: WebActivator.PostApplicationStartMethod(typeof(MyAndromeda.Web.AppStart.WebBackgrounderSetup), "Start")]
+[assembly: WebActivator.ApplicationShutdownMethod(typeof(MyAndromeda.Web.AppStart.WebBackgrounderSetup), "Shutdown")]
 namespace MyAndromeda.Web.AppStart
 {
-    [assembly: WebActivator.PostApplicationStartMethod(typeof(MyAndromeda.Web.AppStart.WebBackgrounderSetup), "Start")]
-    [assembly: WebActivator.ApplicationShutdownMethod(typeof(MyAndromeda.Web.AppStart.WebBackgrounderSetup), "Shutdown")]
     public static class WebBackgrounderSetup
     {
         static readonly JobManager jobManager = CreateJobWorkersManager();

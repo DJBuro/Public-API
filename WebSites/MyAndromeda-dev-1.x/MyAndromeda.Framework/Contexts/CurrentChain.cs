@@ -74,22 +74,22 @@ namespace MyAndromeda.Framework.Contexts
             if (!this.currentRequest.Available)
                 return null; //no chain data to load from
 
-            var chainIdValue = this.currentRequest.GetRouteData("ChainId");
+            object chainIdValue = this.currentRequest.GetRouteData(parameter: "ChainId");
 
             if (chainIdValue == null || string.IsNullOrWhiteSpace(chainIdValue.ToString()))
             {
                 IDictionary<string, object> allValues = this.currentRequest.RouteData.Values;
-                var webApiParameterRoutes = allValues
+                KeyValuePair<string, object>[] webApiParameterRoutes = allValues
                     .Where(e => e.Value is IEnumerable<IHttpRouteData>)
                     .Select(e => e.Value as IEnumerable<IHttpRouteData>)
                     .SelectMany(e => e)
                     .SelectMany(e => e.Values)
                     .ToArray();
 
-                var webapiChainId = webApiParameterRoutes.FirstOrDefault(e => e.Key.Equals("ChainId", System.StringComparison.InvariantCultureIgnoreCase));
-
-
-                if(!string.IsNullOrWhiteSpace(webapiChainId.Value.ToString()))
+                KeyValuePair<string, object> webapiChainId = webApiParameterRoutes
+                    .FirstOrDefault(e => e.Key.Equals(value: "ChainId", comparisonType: System.StringComparison.InvariantCultureIgnoreCase));
+                
+                if(!string.IsNullOrWhiteSpace(webapiChainId.Value?.ToString()))
                 {
                     chainIdValue = webapiChainId.Value;
                 }

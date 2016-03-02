@@ -157,7 +157,6 @@ namespace MyAndromeda.SendGridService.MarketingApi
             model.ApiUser = this.emailSettings.UserName;
             model.ApiKey = this.emailSettings.Password;
 
-            GetListResponseModel result = null;
             try
             {
                 using (var client = new HttpClient())
@@ -192,22 +191,22 @@ namespace MyAndromeda.SendGridService.MarketingApi
 
                 var json = JsonConvert.SerializeObject(model);
 
-                this.logger.Debug("Add People:");
+                this.logger.Debug(message: "Add People:");
                 this.logger.Debug(json);
 
                 using (var client = new HttpClient())
                 {
-                    var request = await client.PostAsFormPostAsync(AddPeopleRoute, model);
+                    HttpResponseMessage request = await client.PostAsFormPostAsync(AddPeopleRoute, model);
 
                     if (request.IsSuccessStatusCode)
                     {
-                        var r = await request.Content.ReadAsStringAsync();
+                        string r = await request.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<AddPeopleResponseModel>(r);
                     }
                     else
                     {
-                        var r = await request.Content.ReadAsStringAsync();
-                        this.logger.Error("Could not add people");
+                        string r = await request.Content.ReadAsStringAsync();
+                        this.logger.Error(message: "Could not add people");
                         throw new WebException(r);
                     }
                 }
