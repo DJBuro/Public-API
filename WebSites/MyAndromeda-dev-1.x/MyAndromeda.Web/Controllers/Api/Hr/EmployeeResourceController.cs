@@ -38,29 +38,29 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             try
             {
-                var location = string.Format("hr/employee/{0}/profile-pic.png", employeeId);
+                string location = string.Format(format: "hr/employee/{0}/profile-pic.png", arg0: employeeId);
                 Stream memoryStream = await blobStorage.DownloadBlob(location);
 
                 if (memoryStream == null)
                 {
-                    String filePath = HostingEnvironment.MapPath("~/content/profile-picture.jpg");
+                    string filePath = HostingEnvironment.MapPath(virtualPath: "~/content/profile-picture.jpg");
                     FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 
                     result.Content = new StreamContent(fileStream);
                     result.Content.Headers.ContentLength = fileStream.Length;
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "image/jpeg");
                 }
                 else
                 {
                     memoryStream.Position = 0;
                     result.Content = new StreamContent(memoryStream);
                     result.Content.Headers.ContentLength = memoryStream.Length;
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "image/png");
                 }
             }
             catch (Exception ex)
             {
-                this.logger.Error("Could not get the image");
+                this.logger.Error(message: "Could not get the image");
                 this.logger.Error(ex);
                 throw;
             }
@@ -73,20 +73,20 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [Route("update-profile-pic")]
         public async Task<HttpResponseMessage> UploadProfilePic([FromUri] Guid employeeId) 
         {
-            var newFileName = "profile-pic";
+            string newFileName = "profile-pic";
 
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
 
-            var file = provider.Contents.First();
-            var stream = await file.ReadAsStreamAsync();
+            HttpContent file = provider.Contents.First();
+            Stream stream = await file.ReadAsStreamAsync();
 
-            var destinationPath = string.Format("hr/employee/{0}/", employeeId);
+            string destinationPath = string.Format(format: "hr/employee/{0}/", arg0: employeeId);
 
             //go grab that file extension that i don't care about, but is used to transform it to png.
-            var fileName = newFileName + Path.GetExtension(file.Headers.ContentDisposition.FileName.Replace("\"", String.Empty));
+            string fileName = newFileName + Path.GetExtension(file.Headers.ContentDisposition.FileName.Replace(oldValue: "\"", newValue: String.Empty));
 
-            var result = UploadImages(stream, destinationPath, fileName);
+            ThumbnailFileResult result = UploadImages(stream, destinationPath, fileName);
 
             return Request.CreateResponse<ThumbnailFileResult>(HttpStatusCode.Created, result);
         }
@@ -97,7 +97,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [Route("update-document/{documentId}")]
         public async Task<HttpResponseMessage> UpdateDocument([FromUri] Guid employeeId, [FromUri]string documentId)
         {
-            List<ThumbnailFileResult> result = new List<ThumbnailFileResult>();
+            var result = new List<ThumbnailFileResult>();
             //var newFileName = documentId;
 
             var provider = new MultipartMemoryStreamProvider();
@@ -106,14 +106,14 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             foreach (var file in provider.Contents) 
             {
-                var stream = await file.ReadAsStreamAsync();
+                Stream stream = await file.ReadAsStreamAsync();
 
-                var destinationPath = string.Format("hr/employee/{0}/documents/{1}", employeeId, documentId);
+                string destinationPath = string.Format(format: "hr/employee/{0}/documents/{1}", arg0: employeeId, arg1: documentId);
 
                 //go grab that file extension that i don't care about, but is used to transform it to png.
-                var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", String.Empty);
+                string fileName = file.Headers.ContentDisposition.FileName.Replace(oldValue: "\"", newValue: string.Empty);
 
-                var r = UploadFile(stream, destinationPath, fileName);
+                ThumbnailFileResult r = UploadFile(stream, destinationPath, fileName);
                 result.Add(r);
             }
 
@@ -122,12 +122,32 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             return Request.CreateResponse<IEnumerable<ThumbnailFileResult>>(HttpStatusCode.Created, result);
         }
 
-        //[HttpGet]
-        //[Route("document/{documentId}/download/{fileName}")]
-        //public async Task<HttpResponseMessage> DownloadDocument([FromUri] Guid employeeId, string fileName)
-        //{
+        [HttpGet]
+        [Route("document/{documentId}/download/{fileName}")]
+        public async Task<HttpResponseMessage> DownloadDocument([FromUri] Guid employeeId, [FromUri]Guid documentId, string fileName)
+        {
+            var result = new HttpResponseMessage(HttpStatusCode.OK);
             
-        //}
+            //result.Headers.Add(new MediaTypeHeaderValue("application/octet-stream"));
+            try
+            {
+                string location = string.Format(format: "hr/employee/{0}/documents/{1}/{2}", arg0: employeeId, arg1: documentId, arg2: fileName);
+                Stream memoryStream = await blobStorage.DownloadBlob(location);
+                memoryStream.Position = 0;
+                result.Content = new StreamContent(memoryStream);
+                //result.Content.Headers.ContentLength = memoryStream.Length;
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "application/octet-stream");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+            return result;
+        }
+
 
         //hr/{0}/employees/{1}/resources/{2}/document/{3}
         [HttpGet]
@@ -135,13 +155,14 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         public async Task<HttpResponseMessage> GetDocumentPicture([FromUri] Guid employeeId, [FromUri]string documentId, [FromUri] string fileName)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK);
-            var imageExtensions = new []{"gif", "png", "jpg", "jpeg", "bmp" };
+            string[] imageExtensions = new []{"gif", "png", "jpg", "jpeg", "bmp" };
             try
             {
-                var location = string.Format("hr/employee/{0}/documents/{1}/{2}", employeeId, documentId, fileName);
+                string location = string.Format(format: "hr/employee/{0}/documents/{1}/{2}", arg0: employeeId, arg1: documentId, arg2: fileName);
                 
-                var fileExtension = Path.GetExtension(fileName).Replace(".", "");//) { }
-                var isImage = imageExtensions.Any(e => e.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase));
+                string fileExtension = Path.GetExtension(fileName).Replace(oldValue: ".", newValue: "");//) { }
+
+                bool isImage = imageExtensions.Any(e => e.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase));
 
                 Stream memoryStream = null;
 
@@ -152,24 +173,24 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
                 if (memoryStream == null)
                 {
-                    String filePath = HostingEnvironment.MapPath("~/content/no_image_available.png");
-                    FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                    string filePath = HostingEnvironment.MapPath(virtualPath: "~/content/no_image_available.png");
+                    var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 
                     result.Content = new StreamContent(fileStream);
                     result.Content.Headers.ContentLength = fileStream.Length;
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "image/png");
                 }
                 else
                 {
                     memoryStream.Position = 0;
                     result.Content = new StreamContent(memoryStream);
                     result.Content.Headers.ContentLength = memoryStream.Length;
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue(mediaType: "image/png");
                 }
             }
             catch (Exception ex)
             {
-                this.logger.Error("Could not get the image");
+                this.logger.Error(message: "Could not get the image");
                 this.logger.Error(ex);
                 throw;
             }
@@ -179,27 +200,27 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         private ThumbnailFileResult UploadFile(Stream stream, string folderPath, string fileName) 
         {
-            MemoryStream origin = new MemoryStream();
+            var origin = new MemoryStream();
 
             stream.CopyTo(origin);
             origin.Seek(0, SeekOrigin.Begin);
 
-            var ext = Path.GetExtension(fileName);
+            string ext = Path.GetExtension(fileName);
 
-            var filesReposonse = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, ext);
+            ThumbnailFileResult filesReposonse = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, ext);
 
             return filesReposonse;
         }
 
         private ThumbnailFileResult UploadImages(Stream stream, string folderPath, string fileName)
         {
-            var newExtension = ".png";
-            MemoryStream origin = new MemoryStream();
+            string newExtension = ".png";
+            var origin = new MemoryStream();
 
             stream.CopyTo(origin);
             origin.Seek(0, SeekOrigin.Begin);
 
-            var filesReposonse = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, newExtension);
+            ThumbnailFileResult filesReposonse = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, newExtension);
 
             return filesReposonse;
         }

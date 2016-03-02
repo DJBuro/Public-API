@@ -173,7 +173,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [Route("list-stores/{employeeId}")]
         public async Task<IEnumerable<object>> ListEmployeeStores([FromUri]Guid employeeId) 
         {
-            var ids = await this.linkRecords.Where(e => e.EmployeeRecordId == employeeId).Select(e=> e.AndromedaSiteId).ToListAsync();
+            List<int> ids = await this.linkRecords.Where(e => e.EmployeeRecordId == employeeId).Select(e=> e.AndromedaSiteId).ToListAsync();
 
             var stores = await this.storeRecords
                 .Where(e => ids.Contains(e.AndromedaSiteId))
