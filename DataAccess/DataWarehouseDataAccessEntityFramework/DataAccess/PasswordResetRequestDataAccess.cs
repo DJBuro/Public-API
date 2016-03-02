@@ -37,7 +37,7 @@ namespace DataWarehouseDataAccessEntityFramework.DataAccess
 
                     if (customerEntity == null)
                     {
-                        return "Unknown username: " + username;
+                        return "Unknown username";
                     }
                     //else if (customerEntity.CustomerAccount.FacebookId != null)
                     else if(!string.IsNullOrWhiteSpace(customerEntity.CustomerAccount.FacebookId))
@@ -113,7 +113,7 @@ namespace DataWarehouseDataAccessEntityFramework.DataAccess
 
                         if (customerEntity == null)
                         {
-                            return "Unknown customer: " + passwordResetEntity.CustomerId;
+                            return "Unknown customer";
                         }
                         else
                         {
