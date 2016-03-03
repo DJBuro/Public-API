@@ -329,14 +329,13 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="SiteId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AndromedaSiteId" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="EndUtc" Type="datetime" Nullable="false" />
-          <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EndTimezone" Type="nvarchar" MaxLength="50" />
           <Property Name="IsAllDay" Type="bit" Nullable="false" />
           <Property Name="RecurrenceException" Type="varchar(max)" />
           <Property Name="RecurrenceRule" Type="varchar(max)" />
           <Property Name="StartUtc" Type="datetime" Nullable="false" />
-          <Property Name="StartTimezone" Type="varchar" MaxLength="50" />
+          <Property Name="StartTimezone" Type="nvarchar" MaxLength="50" />
           <Property Name="Occasions" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
@@ -1878,14 +1877,13 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="SiteId" Type="Guid" Nullable="false" />
           <Property Name="AndromedaSiteId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EndUtc" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndTimezone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EndTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsAllDay" Type="Boolean" Nullable="false" />
           <Property Name="RecurrenceException" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="RecurrenceRule" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="StartUtc" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartTimezone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Occasions" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Site" Relationship="ACSModel.FK_SiteOccasionTimes_Sites" FromRole="SiteOccasionTime" ToRole="Site" />
@@ -2332,7 +2330,6 @@
                 <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
                 <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
                 <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

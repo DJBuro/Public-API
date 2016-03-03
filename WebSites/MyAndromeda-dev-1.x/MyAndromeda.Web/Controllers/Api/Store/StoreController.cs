@@ -12,6 +12,7 @@ using MyAndromeda.Logging;
 using MyAndromeda.Web.Controllers.Api.Store.Models;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
+using MyAndromeda.Framework.Notification;
 
 namespace MyAndromeda.Web.Controllers.Api.Store
 {
@@ -22,6 +23,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
         private readonly ICurrentChain currentChain;
         private readonly ICurrentSite currentStore;
+        private readonly INotifier notifier;
 
         private readonly IStoreDataService storeDataService;
         private readonly MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext;
@@ -29,10 +31,11 @@ namespace MyAndromeda.Web.Controllers.Api.Store
         private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.Store> stores;
         private readonly ISynchronizationTaskService acsSynchronizationTaskService;
 
-        public StoreController(IStoreDataService storeDataService, MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
+        public StoreController(INotifier notifier, IStoreDataService storeDataService, MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
         {
             this.acsSynchronizationTaskService = acsSynchronizationTaskService;
             this.logger = logger;
+            this.notifier = notifier;
             this.currentChain = currentChain;
             this.currentStore = currentStore;
             this.androAdminDbContext = androAdminDbContext;
@@ -105,7 +108,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
             try
             {
                 await this.androAdminDbContext.SaveChangesAsync();
-
+                this.notifier.Notify(message: "Occasion updated", notifyOthersInStore: true);
 
                 this.acsSynchronizationTaskService.CreateTask(new MyAndromeda.Data.Model.MyAndromeda.CloudSynchronizationTask() { 
                     Name = "Occasion time",
@@ -114,6 +117,8 @@ namespace MyAndromeda.Web.Controllers.Api.Store
                     StoreId = this.currentStore.Store.Id,
                     Timestamp = DateTime.UtcNow
                 });
+
+                this.notifier.Notify(message: "Sync should begin shortly.");
             }
             catch (Exception ex)
             {

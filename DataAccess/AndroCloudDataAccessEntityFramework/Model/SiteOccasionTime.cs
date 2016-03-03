@@ -17,7 +17,6 @@ namespace AndroCloudDataAccessEntityFramework.Model
         public System.Guid Id { get; set; }
         public System.Guid SiteId { get; set; }
         public int AndromedaSiteId { get; set; }
-        public string Description { get; set; }
         public System.DateTime EndUtc { get; set; }
         public string EndTimezone { get; set; }
         public bool IsAllDay { get; set; }

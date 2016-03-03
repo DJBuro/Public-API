@@ -203,17 +203,22 @@ namespace MyAndromeda.Services.Ibs.Models
         {
             decimal value = payment.Value;
 
-            string paymentType = string.IsNullOrWhiteSpace(payment.PayTypeName) ? payment.PaymentType : payment.PayTypeName;
+            string checkPaymentType = string.IsNullOrWhiteSpace(payment.PayTypeName) 
+                ? payment.PaymentType 
+                : payment.PayTypeName;
+
             //paymenttype - cash / paylater 
             //paytypename - visa / internet / 
 
             int offset = 1; //cash 
 
-            bool isCash = paymentType.Equals("PAYLATER") || paymentType.Equals("CASH");
+            bool isCash = checkPaymentType.Equals(value: "PAYLATER")|| checkPaymentType.Equals(value: "CASH");
 
             if (!isCash)
             {
-                var mapping = paymentTypeMappings.FirstOrDefault(e => e.OrderPaymentTypeName.Equals(paymentType, StringComparison.CurrentCultureIgnoreCase));
+                IbsPaymentTypeTranslation mapping = paymentTypeMappings.FirstOrDefault(e => e
+                    .OrderPaymentTypeName
+                    .Equals(checkPaymentType, StringComparison.CurrentCultureIgnoreCase));
 
                 if (mapping == null)
                 {
@@ -224,7 +229,7 @@ namespace MyAndromeda.Services.Ibs.Models
                 {
                     //cash = 1, card = 2, account = 3, amex = 10 etc ... 
                     offset = mapping.MediaNumber;
-                    paymentType = mapping.MediaType; //switch to whatever they have written down.
+                    checkPaymentType = mapping.MediaType; //switch to whatever they have written down.
                 }
             }
 

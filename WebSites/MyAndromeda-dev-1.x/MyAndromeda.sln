@@ -96,13 +96,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.Export", "MyAnd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.SendGridService", "MyAndromeda.SendGridService\MyAndromeda.SendGridService.csproj", "{6EC481A4-48CD-463C-933A-BFDB60D78B12}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{22D2EB66-0F22-408A-AABE-67A4124C3131}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.Data.DataWarehouse", "MyAndromeda.Data.DataWarehouse\MyAndromeda.Data.DataWarehouse.csproj", "{E58B350F-A2CA-4FF2-94D1-B0708958D98E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAndromeda.Services.Customers", "MyAndromeda.Services.Customers\MyAndromeda.Services.Customers.csproj", "{49416437-8EE4-43C8-ADFD-05E2A24C6A08}"

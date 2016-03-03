@@ -101,14 +101,14 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
 
             foreach (var group in groupedByStore) 
             {
-                var store = acsEntities.Sites.FirstOrDefault(e => e.AndroID == group.Key);
+                Site siteEntity = acsEntities.Sites.FirstOrDefault(e => e.AndroID == group.Key);
 
-                var addOrUpdate = group.Where(e => !e.Deleted);
-                var delete = group.Where(e => e.Deleted);
+                IEnumerable<StoreOccasionTimeModel> addOrUpdateModels = group.Where(e => !e.Deleted);
+                IEnumerable<StoreOccasionTimeModel> deleteModels = group.Where(e => e.Deleted);
 
-                foreach (var model in addOrUpdate) 
+                foreach (var model in addOrUpdateModels) 
                 {
-                    var entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e => e.Id == model.Id);
+                    SiteOccasionTime entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e => e.Id == model.Id);
 
                     if (entity == null) 
                     {
@@ -123,14 +123,14 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                     entity.Occasions = model.Occasions;
                     entity.RecurrenceException = model.RecurrenceException;
                     entity.RecurrenceRule = model.RecurrenceRule;
-                    entity.SiteId = store.ID;
+                    entity.SiteId = siteEntity.ID;
                     entity.StartUtc = model.StartUtc;
                     entity.Title = model.Title;
-
+                    
                 }
-                foreach (var model in delete) 
+                foreach (var model in deleteModels) 
                 {
-                    var entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e=> e.Id == model.Id);
+                    SiteOccasionTime entity = acsEntities.SiteOccasionTimes.FirstOrDefault(e=> e.Id == model.Id);
 
                     if (entity == null) { continue; }
 

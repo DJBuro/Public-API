@@ -2517,7 +2517,7 @@
     <Compile Include="Controllers\Api\Data\Models\DataWareHouseStore.cs" />
     <Compile Include="Controllers\Api\Data\OrdersDataServiceController.cs" />
     <Compile Include="Controllers\Api\DeliveryZonesByRadiusController.cs" />
-    <Compile Include="Controllers\Api\Hr\EmployeePicController.cs" />
+    <Compile Include="Controllers\Api\Hr\EmployeeResourceController.cs" />
     <Compile Include="Controllers\Api\Hr\EmployeeSchedulingController.cs" />
     <Compile Include="Controllers\Api\Hr\Models\EmployeeDocumentModel.cs" />
     <Compile Include="Controllers\Api\Hr\EmployeeFileController.cs" />
@@ -4423,13 +4423,6 @@
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
   <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.10\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.10\tools\webjobs.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
