@@ -94,6 +94,22 @@ namespace AndroCloudWCFServices
         }
 
         /// <summary>
+        /// SiteDetails GET
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <param name="partnerId">For backwards compatibility only</param>
+        /// <param name="applicationId"></param>
+        /// <returns>The site details</returns>
+        [WebGet(UriTemplate = "sitedetails2/{siteId}?partnerId={partnerId}&applicationId={applicationId}")]
+        public Stream GetSiteDetails2(string siteId, string partnerId, string applicationId)
+        {
+            string responseText = AndroCloudWCFServices.Services.SiteDetails.GetSiteDetails2(Helper.GetDataTypes(), partnerId, siteId, applicationId);
+
+            // Convert the response text to a binary stream
+            return Helper.StringToStream(responseText);
+        }
+
+        /// <summary>
         /// Order PUT
         /// </summary>
         /// <param name="input">The order XML/JSON</param>

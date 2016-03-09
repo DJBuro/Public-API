@@ -112,6 +112,7 @@
     <Compile Include="MenuGETUnitTests.cs" />
     <Compile Include="OrderPUTUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceTImesUnitTests.cs" />
     <Compile Include="SiteDetailsGETUnitTests.cs" />
     <Compile Include="SiteGETUnitTests.cs" />
     <Compile Include="SpacialHelperTests.cs" />

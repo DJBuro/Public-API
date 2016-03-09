@@ -204,6 +204,8 @@
     <Compile Include="Domain\IHost.cs" />
     <Compile Include="Domain\PrivateHostV2.cs" />
     <Compile Include="Domain\PrivateHost.cs" />
+    <Compile Include="Domain\DayServiceTimes.cs" />
+    <Compile Include="Domain\SiteDetails3.cs" />
     <Compile Include="Domain\SiteLoyalty.cs" />
     <Compile Include="Domain\StorePaymentProvider.cs" />
     <Compile Include="Domain\Host.cs" />
@@ -214,6 +216,8 @@
     <Compile Include="Domain\Site.cs" />
     <Compile Include="Domain\SiteMenu.cs" />
     <Compile Include="Domain\SiteStatus.cs" />
+    <Compile Include="Domain\ServiceTimes.cs" />
+    <Compile Include="Domain\TimeSpanBlock3.cs" />
     <Compile Include="Domain\TimeSpanBlock.cs" />
     <Compile Include="IDataAccessFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

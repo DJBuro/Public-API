@@ -11,5 +11,7 @@ namespace AndroCloudDataAccess.DataAccess
     {
         string ConnectionStringOverride { get; set; }
         string GetBySiteId(Guid siteId, DataTypeEnum dataType, out SiteDetails siteDetails);
+
+        string GetBySiteId3(Guid siteId, DataTypeEnum dataType, out SiteDetails3 siteDetails);
     }
 }

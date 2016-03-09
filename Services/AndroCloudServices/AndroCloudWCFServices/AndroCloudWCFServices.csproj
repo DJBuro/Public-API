@@ -190,6 +190,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IRESTServicesV3.cs" />
+    <Compile Include="RESTServicesV3.cs" />
     <Compile Include="RESTServicesV2_CustomerAccounts.cs" />
     <Compile Include="RESTServicesV2_Telemetry.cs" />
     <Compile Include="RESTServicesV2_Orders.cs" />
