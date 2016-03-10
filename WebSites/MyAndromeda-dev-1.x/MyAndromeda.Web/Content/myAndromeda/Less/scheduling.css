@@ -21,4 +21,7 @@
 .task-delivery {
   border-color: #483d8b !important;
 }
-/*# sourceMappingURL=scheduling.css.map */
+.invalid-slot {
+  background: red !important;
+  cursor: no-drop;
+}

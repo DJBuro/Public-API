@@ -13,11 +13,19 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
     {
         public static EmployeeScheduleModel ToModel(this EmployeeSchedule entity) 
         {
+            EmployeeRecordModel data = null;
+
+            if (entity.EmployeeRecord != null)
+            {
+                data = JsonConvert.DeserializeObject<EmployeeRecordModel>(entity.EmployeeRecord.Data);
+            }
 
             return new EmployeeScheduleModel()
             {
                 AndromedaSiteId = entity.AndromedaSiteId,
                 Description = entity.Description,
+                Department = data.Department ?? "None",
+                PrimaryRole = data.PrimaryRole ?? "None",
                 EmployeeId = entity.EmployeeRecordId,
                 End = entity.EndUtc,
                 EndTimezone = entity.EndTimezone,
@@ -140,5 +148,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
         /// </summary>
         /// <value>The type of the task.</value>
         public string TaskType { get; set; }
+        public string Department { get; internal set; }
+        public string PrimaryRole { get; internal set; }
     }
 }

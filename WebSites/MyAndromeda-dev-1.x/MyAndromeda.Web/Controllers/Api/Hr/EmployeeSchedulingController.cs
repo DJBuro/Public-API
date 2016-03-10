@@ -20,13 +20,13 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         private readonly IMyAndromedaLogger logger;
 
-        private readonly DbSet<EmployeeSchedule> EmployeeSchedule;
+        private readonly DbSet<EmployeeSchedule> employeeScheduleTable;
 
         public EmployeeSchedulingController(MyAndromeda.Data.DataWarehouse.Models.DataWarehouseDbContext dataWareHouseDbContext, IMyAndromedaLogger logger)
         { 
             this.logger = logger;
             this.dataWareHouseDbContext = dataWareHouseDbContext;
-            this.EmployeeSchedule = this.dataWareHouseDbContext.Set<EmployeeSchedule>();
+            this.employeeScheduleTable = this.dataWareHouseDbContext.Set<EmployeeSchedule>();
         }
 
 
@@ -38,24 +38,29 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             DataSourceRequest request = JsonConvert.DeserializeObject<DataSourceRequest>(content);
 
-            var models = this.EmployeeSchedule.Where(e => e.AndromedaSiteId == andromedaSiteId);
+            IQueryable<EmployeeSchedule> models = this.employeeScheduleTable
+                .Include(e => e.EmployeeRecord)
+                .Where(e => e.AndromedaSiteId == andromedaSiteId);
 
-            var result = models.ToDataSourceResult(request, e=> e.ToModel());
+            DataSourceResult result = models.ToDataSourceResult(request, e=> e.ToModel());
             
             return result;
         }
 
         [HttpPost]
         [Route("list/{employeeId}")]
-        public async Task<DataSourceResult> GetSchedule([FromUri]int AndromedaSiteId, [FromUri]Guid employeeId) 
+
+        public async Task<DataSourceResult> GetSchedule([FromUri]int andromedaSiteId, [FromUri]Guid employeeId) 
         {
             string content = await this.Request.Content.ReadAsStringAsync();
 
             DataSourceRequest request = JsonConvert.DeserializeObject<DataSourceRequest>(content);
 
-            var models = this.EmployeeSchedule.Where(e => e.AndromedaSiteId == AndromedaSiteId && e.EmployeeRecordId == employeeId);
+            IQueryable<EmployeeSchedule> models = this.employeeScheduleTable
+                .Include(e=> e.EmployeeRecord)
+                .Where(e => e.AndromedaSiteId == andromedaSiteId && e.EmployeeRecordId == employeeId);
 
-            var result = models.ToDataSourceResult(request, e=> e.ToModel());
+            DataSourceResult result = models.ToDataSourceResult(request, e=> e.ToModel());
 
             return result;
         }
@@ -84,11 +89,11 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                 model.Id = Guid.NewGuid();
             }
 
-            var entity = await this.EmployeeSchedule.FirstOrDefaultAsync(e => e.Id == model.Id);
+            var entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
             if (entity == null)
             {
                 entity = model.CreateEntiyFromModel();
-                this.EmployeeSchedule.Add(entity);
+                this.employeeScheduleTable.Add(entity);
             }
             else
             {
@@ -114,11 +119,11 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             Models.EmployeeScheduleModel model = JsonConvert.DeserializeObject<Models.EmployeeScheduleModel>(content);
 
-            var entity = await this.EmployeeSchedule.FirstOrDefaultAsync(e => e.Id == model.Id);
+            var entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
 
             if (entity != null) 
             {
-                this.EmployeeSchedule.Remove(entity);
+                this.employeeScheduleTable.Remove(entity);
             }
 
             await this.dataWareHouseDbContext.SaveChangesAsync();

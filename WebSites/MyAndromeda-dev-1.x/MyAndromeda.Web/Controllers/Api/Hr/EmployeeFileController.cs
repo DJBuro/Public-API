@@ -41,12 +41,12 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [Route("list")]
         public async Task<List<EmployeeRecordModel>> List([FromUri]int andromedaSiteId) 
         {
-            var query = this.employeeTable
+            IQueryable<EmployeeRecord> query = this.employeeTable
                 .Where(e => e.EmployeeStoreLinkRecords.Any(r => r.AndromedaSiteId == andromedaSiteId));
 
-            var records = await query.ToListAsync();
+            List<EmployeeRecord> records = await query.ToListAsync();
 
-            var models = records
+            List<EmployeeRecordModel> models = records
                 .Select((record) => record.ToViewModel())
                 .ToList();
 
@@ -77,9 +77,9 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                                                    int andromedaSiteId, [FromUri]
                                                    Guid id) 
         {
-            var query = this.employeeTable.Where(e => e.EmployeeStoreLinkRecords.Any(k => k.AndromedaSiteId == andromedaSiteId));
+            IQueryable<EmployeeRecord> query = this.employeeTable.Where(e => e.EmployeeStoreLinkRecords.Any(k => k.AndromedaSiteId == andromedaSiteId));
 
-            var record = await query.FirstOrDefaultAsync();
+            EmployeeRecord record = await query.FirstOrDefaultAsync();
 
             return record.ToViewModel();
         }
@@ -92,16 +92,16 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             [FromBody]
             EmployeeRecordModel model) 
         {
-            var query = this.employeeTable
+            IQueryable<EmployeeRecord> query = this.employeeTable
                             .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AndromedaSiteId == andromedaSiteId))
                             .Where(e => e.Id == model.Id);
 
-            var dbItem = await query.FirstOrDefaultAsync();
+            EmployeeRecord dbItem = await query.FirstOrDefaultAsync();
 
             //create
             if (dbItem == null)
             {
-                dbItem = this.employeeTable.CreateDbItem(model, andromedaSiteId, true);
+                dbItem = this.employeeTable.CreateDbItem(model, andromedaSiteId, attach: true);
                 await this.dbContext.SaveChangesAsync();
             }
             else //update
@@ -110,7 +110,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             }
 
             
-            var vm = dbItem.ToViewModel();
+            EmployeeRecordModel vm = dbItem.ToViewModel();
 
             await this.dbContext.SaveChangesAsync();
 
@@ -122,13 +122,13 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         public async Task<EmployeeRecordModel> Create(
             [FromUri] int andromedaSiteId)
         {
-            var content = await this.Request.Content.ReadAsStringAsync();
+            string content = await this.Request.Content.ReadAsStringAsync();
             EmployeeRecordModel result = null;
             try
             {
-                var model = JsonConvert.DeserializeObject<EmployeeRecordModel>(content);
+                EmployeeRecordModel model = JsonConvert.DeserializeObject<EmployeeRecordModel>(content);
 
-                var dbRecord = this.employeeTable.CreateDbItem(model, andromedaSiteId, true);
+                EmployeeRecord dbRecord = this.employeeTable.CreateDbItem(model, andromedaSiteId, attach: true);
 
                 await this.dbContext.SaveChangesAsync();
 
@@ -136,7 +136,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             }
             catch (Exception ex)
             {
-                this.logger.Error("failed to create EmployeeRecordModel");
+                this.logger.Error(message: "failed to create EmployeeRecordModel");
                 this.logger.Error(ex);   
                 throw ex;
             }

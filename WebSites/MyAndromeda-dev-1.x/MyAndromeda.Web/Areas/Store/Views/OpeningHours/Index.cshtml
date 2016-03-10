@@ -51,9 +51,19 @@
 {
     if (false)
     {
-        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
 
+    <script type="text/javascript">
+        $(function () {
+
+            var element = $("#store-scheduler");
+            var chainId = '@workContext.CurrentChain.Chain.Id';
+            var andromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
+            MyAndromeda.Stores.OpeningHours.boostrap(element, chainId, andromedaSiteId);
+
+        });
+    </script>
     <script type="text/ng-template" id="occasionTask.html">
 
 
@@ -75,27 +85,10 @@
             </div>
         </div>
     </script>
+
     <script type="text/ng-template" id="OpeningHours-template.html">
-        <style>
-            .invalid-slot {
-                background: red !important;
-                cursor: no-drop;
-            }
-        </style>
         <div kendo-scheduler k-options="schedulerOptions">
         </div>
-    </script>
-
-
-    <script type="text/javascript">
-        $(function () {
-
-            var element = $("#store-scheduler");
-            var chainId = '@workContext.CurrentChain.Chain.Id';
-            var andromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
-            MyAndromeda.Stores.OpeningHours.boostrap(element, chainId, andromedaSiteId);
-
-        });
     </script>
 
     <script type="text/ng-template" id="occasionTaskEditor.html">

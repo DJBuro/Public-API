@@ -35,9 +35,14 @@
         ShiftStatus?: IEmployeeShiftStatus;
     }
 
-    
+    export var departments = [
+        { text: 'Front of house', majorColour: "#AA6C39", minorColour: "#FFD0AA" },
+        { text: 'Kitchen', majorColour: "#2D882D", minorColour: "#87CC87" },
+        { text: 'Management', majorColour: "#AA3939", minorColour: "#FFAAAA" },
+        { text: 'Delivery', majorColour: "#483d8b", minorColour: "#938CC5" }
+    ];
 
-    export var getSchedulerDataSourceSchema = (andromedaSiteId: number, employeeId?: string) => {
+    export var getSchedulerDataSourceSchema = (andromedaSiteId: number, employeeService: Services.EmployeeService, employeeId?: string) => {
         let employeePart = () => {
             var employee = <kendo.data.DataSourceSchemaModelField>{
                 type: "string",
@@ -89,7 +94,28 @@
                         validation: {
                             required: true
                         }
+                    },
+                    Department: <kendo.data.DataSourceSchemaModelField>{
+                        type: "string",
+                        nullable: true
                     }
+                    //Employee: function () {
+                    //    let id = this.EmployeeId;
+                    //    if (!id) {
+                    //        return;
+                    //    }
+
+                    //    let employee = employeeService.StoreEmployeeDataSource.get(id);
+                    //    return employee;
+                    //},
+                    //Department: function () {
+                    //    var employee: Models.IEmployee = this.Employee;
+                    //    if (employee) {
+                    //        return employee.Department;
+                    //    }
+
+                    //    return "";
+                    //}
                 }
         }
 
@@ -126,6 +152,7 @@
 
     export interface IEmployeeTask
     {
+        id: string;
         Id: string;
         Title: string;
         start: Date;
@@ -142,6 +169,7 @@
         EmployeeId: string;
         AndromedaSiteId: number;
         TaskType: string;
+        Department: string;
     }
 
     export interface IEmployeeDocument

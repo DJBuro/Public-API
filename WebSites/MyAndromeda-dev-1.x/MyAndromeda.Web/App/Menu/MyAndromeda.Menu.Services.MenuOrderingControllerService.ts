@@ -155,10 +155,11 @@ module MyAndromeda.Menu.Services {
             var internal = this;
             var ds = internal.menuService.menuItemService.dataSource;
 
-            $(internal.options.ids.listViewId).kendoDraggable({
+            let draggableSettings: any = {
                 filter: ".menu-item",
                 hint: internal.generateHint,
                 group: "listViewItems",
+                
                 //container: "html",
                 holdToDrag: true,//kendo.support.mobileOS ? true : false,
                 hold: function (e) {
@@ -176,9 +177,12 @@ module MyAndromeda.Menu.Services {
                 },
                 drag: function (e) {
                 }
-            });
+            }
 
-            $(internal.options.ids.listViewId).kendoDropTargetArea({
+            $(internal.options.ids.listViewId).kendoDraggable(draggableSettings);
+
+
+            let dropTargetAreaOptions = {
                 filter: ".menu-item",
                 group: "listViewItems",
                 hint: internal.generateHint,
@@ -197,7 +201,6 @@ module MyAndromeda.Menu.Services {
 
                     var $e = e.dropTarget;
 
-                    //if ($e.is(".moving")) { return; }
                     $($e).animate({
                         "margin-left": "0px",
                         "opacity": 1,
@@ -215,7 +218,9 @@ module MyAndromeda.Menu.Services {
                     ds.sort({ field: "WebSequence", dir: "asc" });
                     internal.menuService.menuItemService.dataSource.sync();
                 }
-            });
+            };
+
+            $(internal.options.ids.listViewId).kendoDropTargetArea(dropTargetAreaOptions);
         }
 
         /*todo write a handler to allow the page to scroll with drag */
@@ -362,7 +367,7 @@ module MyAndromeda.Menu.Services {
             $(hint).css({ "border-color": "#600BA2", "border-width": "4px" });
             $(element).animate({ "opacity": 0.8 });
 
-            return hint;
+            //return hint;
         }
 
         private initHubChanges(): void {

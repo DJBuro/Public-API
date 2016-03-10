@@ -11,6 +11,7 @@ module MyAndromeda.WebHooks.Tests {
         export interface IOrderStatusChange {
             AndromedaSiteId: number;
             ExternalOrderId: string;
+            AcsApplicationId: any;
             //RamesesOrderNum: number;
             Status: string;
             StatusDescription: string;
@@ -148,7 +149,9 @@ module MyAndromeda.WebHooks.Tests {
         });
 
         var dataSource = new kendo.data.DataSource({
-            "transport": { "read": { "url": "/api/Store" }, "prefix": "" },
+            "transport": {
+                "read": { "url": "/api/Store" },
+            },
             "schema": { "errors": "Errors" }
         });
 
@@ -196,8 +199,7 @@ module MyAndromeda.WebHooks.Tests {
                     "data": {
                         andromedaSiteId: $routeParams.andromedaSiteId
                     }
-                },
-                "prefix": ""
+                }
             }
         });
         var acsDataSource = new kendo.data.DataSource({
@@ -230,6 +232,7 @@ module MyAndromeda.WebHooks.Tests {
             var request = webHookTestService.OrderStatusTest({
                 AndromedaSiteId: $routeParams.andromedaSiteId,
                 ExternalOrderId: $scope.settings.Order.ExternalOrderRef,
+
                 //ExternalAcsApplicationId: $scope.settings.AcsApplication.ExternalApplicationId,
                 AcsApplicationId: $scope.settings.AcsApplication ? $scope.settings.AcsApplication.Id: null,
                 Source: "test",

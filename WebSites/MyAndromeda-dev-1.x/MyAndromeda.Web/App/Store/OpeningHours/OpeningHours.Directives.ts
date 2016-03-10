@@ -96,6 +96,9 @@
                     setTimeout(() => { current.popover('hide'); }, 5000)
                 });
                 
+                $scope.$on('$destroy', function () {
+                    popover.hide();
+                });
             }
             
         };

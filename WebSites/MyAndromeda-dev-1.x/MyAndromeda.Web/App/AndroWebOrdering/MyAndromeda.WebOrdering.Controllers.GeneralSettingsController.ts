@@ -26,7 +26,7 @@ module MyAndromeda.WebOrdering.Controllers {
         public static CustomerAccountsDefault : Models.ICustomerAccountSettings = {
             IsEnable: true,
             EnableAndromedaLogin: true,
-            IsEnableAndromedaLogin: true
+            EnableFacebookLogin: true
         };
 
         public static OnLoad(

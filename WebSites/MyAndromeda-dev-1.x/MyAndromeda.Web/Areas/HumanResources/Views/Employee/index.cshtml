@@ -15,7 +15,7 @@
                             <li ui-sref-active="active">
                                 <a ui-sref="hr.store-list.scheduler">
                                     <i class="fa fa-calendar-o"></i>
-                                    Schedule
+                                    Store Schedule
                                 </a>
                             </li>
                         </ul>
@@ -28,7 +28,6 @@
                 </nav>
             </div>
         </div>
-
 
         <!-- store-employee-list.html -->
         <!-- store-employee-scheduler.html -->
@@ -43,8 +42,13 @@
 </script>
 
 <script type="text/ng-template" id="store-employee-scheduler.html">
+    @*<style>
+        #scheduler td[role='gridcell'] {
+            height: 250px !important;
+        }
+    </style>*@
     <div ng-if="schedulerOptions">
-        <div kendo-scheduler k-options="schedulerOptions">
+        <div id="scheduler" kendo-scheduler k-options="schedulerOptions">
         </div>
     </div>
 </script>
@@ -275,6 +279,25 @@
         </div>
     </div>
 </script>
+<script type="text/ng-template" id="working-task.html">
+
+    <div class="task" ng-class="{
+            'task-front-of-house' : employee.Department == 'Front of house',
+            'task-kitchen' : employee.Department == 'Kitchen',
+            'task-management' : employee.Department == 'Management',
+            'task-delivery' : employee.Delivery == 'Delivery'
+          }">
+        <div class="container-fluid">
+
+            <div class="row"><span class="label label-success">{{extra.hours | number: 1 }} h</span>
+                <span class="label label-default">{{extra.startTime}}-{{extra.endTime}} </span>
+            </div>
+
+        </div>
+    </div>
+
+</script>
+
 
 <script type="text/ng-template" id="employee-edit-details.html">
     <div class="row">

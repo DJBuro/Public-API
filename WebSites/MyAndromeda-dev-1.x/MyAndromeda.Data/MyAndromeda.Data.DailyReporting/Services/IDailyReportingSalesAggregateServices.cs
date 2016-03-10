@@ -98,12 +98,18 @@ namespace MyAndromeda.Data.DailyReporting.Services
             using (var dbContext = new Model.CodeFirst.DailyReportingCodeFirstDbContext()) 
             {
                 long? firstId = androAdminIds.First();
-                var table = dbContext.DailySummaries;
-                
-                var tableQuery = androAdminIds.Length > 1 ?
-                    table.Where(e => androAdminIds.Contains(e.NStoreId ?? 0)) :
-                    table.Where(e => firstId == e.NStoreId);
+                DbSet<DailySummary> table = dbContext.DailySummaries;
 
+                IQueryable<DailySummary> tableQuery = table;
+                if (androAdminIds.Length > 1)
+                {
+                    tableQuery = table.Where(e => androAdminIds.Contains(e.NStoreId ?? 0));
+                }
+                else
+                {
+                    tableQuery = table.Where(e => firstId == e.NStoreId);
+                }
+                
                 var resultQuery = tableQuery.Where(query).Select(e => new
                 {
                     e.NStoreId,

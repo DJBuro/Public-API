@@ -35,7 +35,7 @@ namespace MyAndromeda.Web
             log4net.Config.XmlConfigurator.Configure();
 
             var logger = DependencyResolver.Current.GetService<IMyAndromedaLogger>();
-            logger.Debug("App Start");
+            logger.Debug(message: "App Start");
 
 
             GlobalFilters.Filters.Add(new MyAndromeda.Web.AppErrors.WatchHandleErrorAttribute());

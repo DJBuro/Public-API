@@ -46,7 +46,7 @@
             sortable: true,
             editable: false,
             filterable: {
-                mode: "row"
+                //mode: "row"
             },
             //autoBind: false,
             resizable: true,

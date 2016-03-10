@@ -14,15 +14,18 @@
         public EmployeeUpdated: Rx.Subject<Models.IEmployee> = new Rx.Subject<Models.IEmployee>();
 
         constructor() {
+
             this.ChainId.where(e=> e !== null).subscribe((e) => {
                 Logger.Notify("new chain id: " + e);
                 this.CurrentChainId = e;
 
             });
+
             this.AndromedaSiteId.where(e=> e !== null).subscribe((e) => {
                 Logger.Notify("new Andromeda site id: " + e);
                 this.CurrentAndromedaSiteId = e;
             });
+
         }
     }
 
@@ -40,7 +43,9 @@
         public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>(); 
         public Error: Rx.Subject<string> = new Rx.Subject<string>();
 
-        constructor(private $http: ng.IHttpService, private employeeServiceState: EmployeeServiceState, private uuidService: MyAndromeda.Services.UUIdService)
+        constructor(private $http: ng.IHttpService,
+            private employeeServiceState: EmployeeServiceState,
+            private uuidService: MyAndromeda.Services.UUIdService)
         {
             this.ChainEmployeeDataSource = new kendo.data.DataSource({
                 schema: {
@@ -267,7 +272,7 @@
             let schema: kendo.data.DataSourceSchema = {
                 data: "Data",
                 total: "Total",
-                model: Models.getSchedulerDataSourceSchema(andromedaSiteId)
+                model: Models.getSchedulerDataSourceSchema(andromedaSiteId, this, undefined)
             };
 
             let dataSource = new kendo.data.SchedulerDataSource({
@@ -303,10 +308,29 @@
                         });
                     },
                     destroy: (options: kendo.data.DataSourceTransportOptions) => {
-                        throw "Matt- not implemented - scheduler -store destroy";
+                        Logger.Notify("GetEmployeeSchedulerDestroyRoute");
+                        Logger.Notify(options.data);
+
+                        let route = this.GetEmployeeSchedulerDestroyRoute(chainId, andromedaSiteId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            Logger.Notify("destroy response:");
+                            Logger.Notify(callback.data);
+
+                            options.success(callback.data);
+                        });
                     }
                 },
+                //sort: [
+                //    { field: "Department", dir: "asc" }
+                //],
                 schema: schema
+            });
+
+            dataSource.sort({
+                field: "EmployeeId",
+                dir : "desc"
             });
 
             return dataSource;
@@ -316,7 +340,7 @@
             let schema: kendo.data.DataSourceSchema = {
                 data: "Data",
                 total: "Total",
-                model: Models.getSchedulerDataSourceSchema(andromedaSiteId, employeeId)
+                model: Models.getSchedulerDataSourceSchema(andromedaSiteId, this, employeeId)
             };
 
             let dataSource = new kendo.data.SchedulerDataSource({
@@ -352,7 +376,18 @@
                         });
                     },
                     destroy: (options: kendo.data.DataSourceTransportOptions) => {
-                        throw "Matt- not implemented - scheduler destroy";
+                        Logger.Notify("GetEmployeeSchedulerDestroyRoute");
+                        Logger.Notify(options.data);
+
+                        let route = this.GetEmployeeSchedulerDestroyRoute(chainId, andromedaSiteId);
+                        let promise = this.$http.post(route, options.data);
+
+                        promise.then((callback) => {
+                            Logger.Notify("destroy response:");
+                            Logger.Notify(callback.data);
+
+                            options.success(callback.data);
+                        });
                     }
                 },
                 schema: schema
@@ -403,7 +438,7 @@
 
         public saving: Rx.Subject<boolean> = new Rx.Subject<boolean>();
 
-        constructor(private employeeServiceState: EmployeeServiceState, private employeeService: Services.EmployeeService)
+        constructor(private employeeServiceState: EmployeeServiceState, private employeeService: Services.EmployeeService, private SweetAlert)
         {
 
         }
@@ -416,6 +451,7 @@
                     dataTextField: "ShortName",
                     dataValueField: "Id",
                     title: "Employee",
+                    name: "Employee",
                     dataSource: <any>[]
                 }
 
@@ -431,6 +467,15 @@
                 return part;
             };
 
+            let departmentAvailable = false;
+            if (employee) {
+                if (employee.Department) {
+                    Logger.Notify("department: " + employee.Department);
+                    departmentAvailable = true;
+                }
+            }
+            
+            //= employee && employee.Department;
             let resources = [
                 {
                     title: "Task",
@@ -463,16 +508,29 @@
                         }
                     ]
                 },
+                //{
+                //    name: "Department",
+                //    field: "Department",
+                //    dataValueField: "text",
+                //    dataTextField: "text",
+                //    dataSource: Models.departments
+                //    //dataSource: departmentAvailable
+                //    //    ? [{ text: employee.Department }]
+                //    //    : [{ text: "NA" }]
+                //},
                 employeePart(),
+                
                 {
+                    name: "Store",
                     title: "Store",
                     field: "AndromedaSiteId",
                     dataSource: stores,
                     dataValueField: "AndromedaSiteId",
                     dataTextField: "Name"
                 }
+            ];
 
-            ]
+
 
             return resources;
         }
@@ -489,6 +547,18 @@
                 andromedaSiteId = this.employeeServiceState.CurrentAndromedaSiteId,
                 currentStore = stores[0],
                 dataSource = this.employeeService.GetDataSourceForStoreScheduler(chainId, andromedaSiteId);
+                
+            let employeeGroupTemplate = `
+                <div>
+                    #=text#
+                </div>
+                <div>
+                    <span class="label" style="background-color:#=majorColor#">#=employee.Department #</span>
+                </div>
+                <div>
+                    <span class="label" style="background-color:#=minorColor#">#=employee.PrimaryRole #</span>
+                </div>
+            `;
 
             let schedulerOptions: kendo.ui.SchedulerOptions = {
                 date: new Date(),
@@ -509,22 +579,121 @@
                     fileName: currentStore.Name + " schedule",
                     title: "Schedule"
                 },
-                eventTemplate: "<employee-task task='dataItem'></employee-task>",
+                //groupHeaderTemplate: "<div>#=text#</div>",
+                groupHeaderTemplate: employeeGroupTemplate,
                 toolbar: ["pdf"],
                 showWorkHours: false,
                 resources: this.GetResources(stores),
                 views: [
-                    { type: "day", showWorkHours: false },
-                    { type: "week", selected: true, showWorkHours: false },
-                    { type: "month", showWorkHours: false },
-                    { type: "timeline", showWorkHours: false }
+                    {
+                        type: "day", showWorkHours: false,
+                        eventTemplate: "<employee-task task='dataItem'></employee-task>"
+                    },
+                    //{ type: "week", selected: true, showWorkHours: false },
+                    //{ type: "month", showWorkHours: false },
+                    //{ type: "timeline", showWorkHours: false },
+                    //{
+                    //    title: "Week thing",
+                    //    eventHeight: 100,
+                    //    slotTemplate: "<div style='background-color:\\#FFF'; height: 100%;width: 100%;'></div>",
+                    //    selected: true,
+                    //    majorTick: 1440,
+                    //    minorTickCount: 1,
+                    //    type: "kendo.ui.SchedulerTimelineWeekView", showWorkHours: false,
+                    //    group: {
+                    //        orientation: "vertical",
+                    //        resources: ["Employee"]
+                    //    }
+                    //},
+                    <any>{
+                        title: "Week Overview",
+                        selected: true,
+                        eventHeight: 20,
+                        type: "kendo.ui.MonthTimeWeekView", 
+                        eventTemplate: "<working-task task='dataItem'></working-task>",
+                        //dayTemplate: "",
+                        dayTemplate: '#:kendo.toString(date, "dd")#',
+                        
+                        group: <any>{
+                            orientation: "vertical",
+                            resources: ["Employee"]
+                        }
+                    }
                 ],
-                resize: (e) => { Logger.Notify("resize"); Logger.Notify(e); },
-                resizeEnd: (e) => { Logger.Notify("resize-end"); Logger.Notify(e); },
-                move: (e) => { Logger.Notify("move"); Logger.Notify(e); },
-                moveEnd: (e) => { Logger.Notify("move-end"); Logger.Notify(e); },
-                add: (e) => { Logger.Notify("add"); Logger.Notify(e); },
-                save: (e) => { Logger.Notify("save"); Logger.Notify(e); }
+                
+                resize: function (e: any) {
+                    Logger.Notify("resize"); Logger.Notify(e);
+                    let checker = new EmployeeAvailabilityTestService(e.sender);
+
+                    let valid = checker.IsWorkAvailable(e.start, e.end, e.event);
+                    if (!valid) {
+                        this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                        e.preventDefault();
+                    }
+                },
+                resizeEnd: (e: any) => {
+                    Logger.Notify("resize-end"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        return;
+                    }
+
+                    Logger.Notify("cancel resize");
+
+                    this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                    e.preventDefault();
+                },
+                move: function (e: any) {
+                    Logger.Notify("move"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        return;
+                    }
+
+                    this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
+                },
+                moveEnd: (e) => {
+                    Logger.Notify("move-end"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        return;
+                    }
+
+                    Logger.Notify("cancel move");
+
+                    this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                    e.preventDefault();
+                },
+                add: (e) => {
+                    Logger.Notify("add"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel add");
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                save: (e) => {
+                    Logger.Notify("save"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel save");
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                }
+
 
             }
 
@@ -572,7 +741,73 @@
                     { type: "week", selected: true, showWorkHours: false },
                     { type: "month", showWorkHours: false },
                     { type: "timeline", showWorkHours: false }
-                ]
+                ],
+                resize: function (e: any) {
+                    Logger.Notify("resize"); Logger.Notify(e);
+                    let checker = new EmployeeAvailabilityTestService(e.sender);
+
+                    let valid = checker.IsWorkAvailable(e.start, e.end, e.event);
+                    if (!valid) {
+                        this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                        e.preventDefault();
+                    }
+                },
+                resizeEnd: (e: any) => {
+                    Logger.Notify("resize-end"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    if (!tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        Logger.Notify("cancel resize");
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                move: function (e: any) {
+                    Logger.Notify("move"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    if (!tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
+                    }
+                },
+                moveEnd: (e) => {
+                    Logger.Notify("move-end"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (!tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        Logger.Notify("cancel move");
+
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                add: (e) => {
+                    Logger.Notify("add"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel add");
+                        //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                },
+                save: (e) => {
+                    Logger.Notify("save"); Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+                    if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
+                        Logger.Notify("cancel save");
+                        this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
+
+                        e.preventDefault();
+                    }
+                }
             }
 
             return schedulerOptions;
@@ -588,6 +823,52 @@
 
         }
 
+    }
+
+
+    export class EmployeeAvailabilityTestService
+    {
+        constructor(private scheduler: kendo.ui.Scheduler) { }
+
+        private GetTasksInRange(start: Date, end: Date) {
+            let occurences: Models.IEmployeeTask[] = this.scheduler.occurrencesInRange(start, end);
+
+            return occurences;
+        }
+
+        private CheckTasksByEmployee(start: Date, end: Date, task: Models.IEmployeeTask)
+        {
+            var context = {
+                start: start,
+                end: end,
+                task: task
+            };
+
+            let startCheck = start.toLocaleTimeString();
+            let endCheck = end.toLocaleTimeString();
+
+            //only interested in current employee, which is not the current task
+            var currentTasks = this.GetTasksInRange(start, end);
+            Logger.Notify("Tasks in range: " + currentTasks.length);
+
+            Logger.Notify(currentTasks);
+            currentTasks = currentTasks.filter(e=> e.id !== task.id);
+            Logger.Notify("Tasks in range after removing self: " + currentTasks.length);
+
+            currentTasks = currentTasks.filter(e=> e.EmployeeId === task.EmployeeId);
+            Logger.Notify("Tasks in range - by employee: " + currentTasks.length);
+
+            Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+            Logger.Notify(context);
+            Logger.Notify("Tasks in range: " + currentTasks.length);
+
+            return currentTasks.length === 0;
+        }
+
+        public IsWorkAvailable(start, end, task)
+        {
+            return this.CheckTasksByEmployee(start, end, task);
+        }
     }
 
     app.service("employeeService", EmployeeService);

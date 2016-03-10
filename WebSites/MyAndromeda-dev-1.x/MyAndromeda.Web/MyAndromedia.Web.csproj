@@ -16,7 +16,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
@@ -386,6 +386,7 @@
     <TypeScriptCompile Include="App\General\ResizeModule.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Config.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Controllers.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.KendoSchedulerView.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Models.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Services.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.ts" />
@@ -425,6 +426,7 @@
     <TypeScriptCompile Include="Scripts\typings\bootstrap\bootstrap.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\rx-angular\rx.angular.d.ts" />
+    <Content Include="App\angular2.txt" />
     <Content Include="Content\kendo\2016.1.112\Black\editor.png" />
     <Content Include="Content\kendo\2016.1.112\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2016.1.112\Black\indeterminate.gif" />
@@ -1581,6 +1583,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Config\Log.Staging-MyAndromeda - Web Deploy.config">
       <DependentUpon>Log.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -2528,7 +2534,7 @@
     <Compile Include="Controllers\Api\GprsGateway\ListingController.cs" />
     <Compile Include="Controllers\Api\Hr\Models\EmployeeRecordModel.cs" />
     <Compile Include="Controllers\Api\Hr\Models\EmployeeRecordModelExtensions.cs" />
-    <Compile Include="Controllers\Api\Hr\Models\EmployeeScheduleModel.cs" />
+    <Compile Include="Controllers\Api\Hr\Models\EmployeeScheduleModelExtensions.cs" />
     <Compile Include="Controllers\Api\Ibs\IbsController.cs" />
     <Compile Include="Controllers\Api\LoyaltyController.cs" />
     <Compile Include="Controllers\Api\NotificationController.cs" />

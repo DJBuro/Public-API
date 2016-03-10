@@ -9,6 +9,7 @@ using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Web.Areas.ChainReporting.ViewModels;
 using Kendo.Mvc.UI;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Web.Areas.ChainReporting.Controllers
 {
@@ -66,7 +67,7 @@ namespace MyAndromeda.Web.Areas.ChainReporting.Controllers
 
             if (query == null)
             {
-                var now = DateTime.Today;
+                DateTime now = DateTime.Today;
                 query = new FilterQuery()
                 {
                     FilterTo = now,
@@ -74,8 +75,8 @@ namespace MyAndromeda.Web.Areas.ChainReporting.Controllers
                 };
             }
 
-            var queryTheseIds = sites.Select(e => (long)e.AndromediaSiteId).ToArray();
-            var data = 
+            long[] queryTheseIds = sites.Select(e => (long)e.AndromediaSiteId).ToArray();
+            Dictionary<long, DailyMetricGroup[]> data = 
                 (
                     await this.dailyReportingService
                     .SalesByDayAsync(queryTheseIds, e => e.TheDate > query.FilterFrom && e.TheDate < query.FilterTo)

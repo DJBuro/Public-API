@@ -19,39 +19,45 @@ namespace MyAndromeda.Web.Handlers
             HttpRequestMessage request, 
             System.Threading.CancellationToken cancellationToken)
         {
-            var logger = DependencyResolver.Current.GetService<IMyAndromedaLogger>();
-            var httpContext = DependencyResolver.Current.GetService<HttpContextWrapper>();
+            IMyAndromedaLogger logger = DependencyResolver.Current.GetService<IMyAndromedaLogger>();
+            HttpContextWrapper httpContext = DependencyResolver.Current.GetService<HttpContextWrapper>();
 
-            var body =  
+            string body =  
                 await request.Content.ReadAsStringAsync();
 
-            logger.Debug("Request URI: {0}; UserHostAddress: {1}", 
-                request.RequestUri.AbsoluteUri,
-                httpContext.Request.UserHostAddress);
-            
-            //logger.Debug("Endpoint hit: {0}", httpContext.Request.RawUrl);
-            logger.Debug("Message body:");
+            logger.Debug(format: "Request URI: {0}; UserHostAddress: {1}", args: new object[] { request.RequestUri.AbsoluteUri, httpContext.Request.UserHostAddress });
+            logger.Debug(message: "Message body:");
 
 
             if (string.IsNullOrWhiteSpace(body))
             {
-                logger.Debug("NO CONTENT");
+                logger.Debug(message: "NO CONTENT");
             }
             else 
             {
-                if (body.IndexOf("filename", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                if (body.IndexOf(value: "filename", comparisonType: StringComparison.InvariantCultureIgnoreCase)>= 0)
                 {
-                    logger.Debug("Updating a lovely image of some kind...");
+                    logger.Debug(message: "Updating a lovely image of some kind...");
                 }
                 else
                 {
-                    
                     logger.Debug(body);
                     
                 }
             }
+
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await base.SendAsync(request, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e);
+                throw ;
+            }
             
-            return await base.SendAsync(request, cancellationToken);
+            return response;
         }
     }
 }
