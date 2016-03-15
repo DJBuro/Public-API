@@ -338,5 +338,101 @@ namespace AndroCloudServices.Services
             // Serialize
             return new Response();
         }
+
+        /// <summary>
+        /// Gets the full details of the specified site
+        /// </summary>
+        /// <param name="externalApplicationId"></param>
+        /// <param name="externalSiteId"></param>
+        /// <param name="dataType"></param>
+        /// <param name="dataAccessFactory"></param>
+        /// <param name="sourceId"></param>
+        /// <returns></returns>
+        public static Response Get3(
+            string externalApplicationId,
+            string externalSiteId,
+            int notVersion,
+            bool? statusCheck,
+            DataTypeEnum dataType,
+            IDataAccessFactory dataAccessFactory,
+            out string sourceId)
+        {
+            sourceId = "";
+
+            // Was a applicationId provided?
+            if (externalApplicationId == null || externalApplicationId.Length == 0)
+            {
+                // Application id was not provided
+                return new Response(Errors.MissingApplicationId, dataType);
+            }
+
+            // The source is the externalApplicationId
+            sourceId = externalApplicationId;
+
+            // Check site id
+            if (externalSiteId == null || externalSiteId.Length == 0)
+            {
+                // External site id was not provided
+                return new Response(Errors.MissingSiteId, dataType);
+            }
+
+            // Check the application details
+            int? applicationId = null;
+            Guid siteId = Guid.Empty;
+            Response response = SecurityHelper.CheckSiteDetailsGetAccess(externalApplicationId, externalSiteId, dataAccessFactory, dataType, out applicationId, out siteId);
+
+            if (response != null)
+            {
+                return response;
+            }
+
+            AndroCloudServices.Domain.Site3 site = null;
+
+            // Is this a simple status check?
+            if (statusCheck.HasValue && statusCheck.Value)
+            {
+                // Just get the site - we don't need to return the menu or anything other than the status
+                AndroCloudDataAccess.Domain.Site siteObject = null;
+                dataAccessFactory.SiteDataAccess.GetById(siteId, out siteObject);
+
+                site = new AndroCloudServices.Domain.Site3()
+                {
+                    Details = new SiteDetails3() { IsOpen = siteObject.IsOpen },
+                    Menu = null,
+                    DeliveryZones = null
+                };
+            }
+            else
+            {
+                // Get site details
+                SiteDetails3 siteDetails = null;
+                dataAccessFactory.SiteDetailsDataAccess.GetBySiteId3(siteId, dataType, out siteDetails);
+
+                // Get the menu
+                SiteMenu siteMenu = null;
+                dataAccessFactory.SiteMenuDataAccess.GetMenuAndImagesBySiteIdAndNotVersion(siteId, dataType, notVersion, out siteMenu);
+
+                // Was a menu returned?
+                if (siteMenu == null)
+                {
+                    return new Response(Errors.MenuNotFound, dataType);
+                }
+
+                // Get delivery zones
+                List<string> deliveryZones = null;
+                dataAccessFactory.DeliveryZoneDataAccess.GetBySiteId(siteId, out deliveryZones);
+
+                // Return the full site details
+                site = new AndroCloudServices.Domain.Site3()
+                {
+                    Details = siteDetails,
+                    Menu = siteMenu,
+                    DeliveryZones = DeliveryZoneService.BuildDeliveryZonesList(dataType, deliveryZones)
+                };
+            }
+
+            // Success
+            return new Response(SerializeHelper.Serialize<AndroCloudServices.Domain.Site>(site, dataType));
+        }
     }
 }

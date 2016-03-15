@@ -90,5 +90,8 @@ namespace AndroCloudWCFServices
         Stream PutTelemetrySession(Stream input, string siteId, string applicationId);
         [OperationContract]
         Stream PutTelemetry(Stream input, string siteId, string applicationId);
+
+        [OperationContract]
+        Stream GetSite3(string siteId, string applicationId, int gotMenuVersion, string statusCheck);
     }
 }

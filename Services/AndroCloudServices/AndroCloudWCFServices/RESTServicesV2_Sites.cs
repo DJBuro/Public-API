@@ -157,5 +157,31 @@ namespace AndroCloudWCFServices
             // Convert the response text to a binary stream
             return Helper.StringToStream(responseText);
         }
+
+        /// <summary>
+        /// Gets full details of a site
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <param name="applicationId"></param>
+        /// <param name="gotMenuVersion"></param>
+        /// <returns>Site details</returns>
+        [WebInvoke(Method = "GET", UriTemplate = "sites3/{siteId}?applicationId={applicationId}&gotMenuVersion={gotMenuVersion}&statusCheck={statusCheck}")]
+        public Stream GetSite3(string siteId, string applicationId, int gotMenuVersion, string statusCheck)
+        {
+            try
+            {
+                // New v2 method
+                bool? statusCheckBool = statusCheck == null ? (bool?)null : statusCheck.ToUpper() == "TRUE" ? true : false;
+                string responseText = AndroCloudWCFServices.Services.Site.GetSite3(Helper.GetDataTypes(), siteId, applicationId, gotMenuVersion, statusCheckBool);
+
+                // Convert the response text to a binary stream
+                return Helper.StringToStream(responseText);
+            }
+            catch (Exception exception)
+            {
+                Global.Log.Error("Unhandled exception", exception);
+                return Helper.StringToStream(Helper.ProcessCatastrophicException(exception));
+            }
+        }
     }
 }

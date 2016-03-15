@@ -173,5 +173,65 @@ namespace AndroCloudWCFServices.Services
 
             return responseText;
         }
+
+        /// <summary>
+        /// Gets the full details of the specific site
+        /// </summary>
+        /// <param name="dataTypes"></param>
+        /// <param name="externalSiteId"></param>
+        /// <param name="externalApplicationId"></param>
+        /// <returns></returns>
+        public static string GetSite3
+        (
+            DataTypes dataTypes,
+            string externalSiteId,
+            string externalApplicationId,
+            int gotMenuVersion,
+            bool? statusCheck
+        )
+        {
+            string responseText = "";
+
+            try
+            {
+                string callerIPAddress = "";
+                Response response = null;
+                string sourceId = "";
+
+                // Measure how long this call takes
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                try
+                {
+                    // Get the source ip address (we have to do this before reading the payload)
+                    callerIPAddress = Helper.GetClientIPAddressPortString();
+
+                    // Get the site details from the datastore
+                    response = SiteService.Get3(externalApplicationId, externalSiteId, gotMenuVersion, statusCheck, dataTypes.WantsDataType, DataAccessHelper.DataAccessFactory, out sourceId);
+                }
+                catch (Exception exception)
+                {
+                    response = Helper.ProcessUnhandledException("GetSite", exception, dataTypes.WantsDataType);
+                }
+
+                // Log the call
+                DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
+                    sourceId,
+                    "",
+                    callerIPAddress,
+                    "GetSite",
+                    (int)stopWatch.Elapsed.TotalMilliseconds,
+                    (int?)response.Error.ErrorCode,
+                    "{\"esid\":\"" + externalSiteId + "\"}");
+
+                // Stream the result back
+                Helper.FinishWebCall(dataTypes.WantsDataType, response);
+                responseText = response.ResponseText;
+            }
+            catch (Exception exception) { responseText = Helper.ProcessCatastrophicException(exception); }
+
+            return responseText;
+        }
     }
 }

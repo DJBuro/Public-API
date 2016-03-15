@@ -78,10 +78,6 @@
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -163,7 +159,6 @@
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
-    <Content Include="packages\WebActivator.1.5.1\lib\net40\WebActivator.dll" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\jquery.signalR-0.5.3.js" />
@@ -190,8 +185,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRESTServicesV3.cs" />
-    <Compile Include="RESTServicesV3.cs" />
     <Compile Include="RESTServicesV2_CustomerAccounts.cs" />
     <Compile Include="RESTServicesV2_Telemetry.cs" />
     <Compile Include="RESTServicesV2_Orders.cs" />
@@ -221,22 +214,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net35\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net40\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net45-full\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl2\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl3-wp\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl3\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl4-windowsphone71\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl4\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl5\" />
-    <Folder Include="packages\Ninject.MVC3.3.0.0.6\lib\net40-full\" />
-    <Folder Include="packages\Ninject.MVC3.3.0.0.6\lib\net45-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\Content\App_Start\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net35-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net40-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net45-full\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
@@ -268,9 +245,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages\repositories.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\AWS.pubxml" />

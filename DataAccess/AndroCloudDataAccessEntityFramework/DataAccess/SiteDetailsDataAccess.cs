@@ -310,7 +310,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             ServiceTimes dineInServiceTimes = new ServiceTimes() { Occasion = "dinein" };
             serviceTimes.Add(dineInServiceTimes);
 
-            // Distrubute the service times between occasions
+            // Distribute the service times between occasions
             foreach (SiteOccasionTime siteOccasionTime in siteOccasionTimes)
             {
                 // What occasions are these occasion times for?
@@ -367,7 +367,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                 }
             }
 
-            if (frequency.ToUpper() == "WEEKLY")
+            if (frequency.ToUpper() == "WEEKLY" || frequency.ToUpper() == "DAILY")
             {
                 // Happens every week
                 TimeSpanBlock3 time = null;
@@ -388,9 +388,24 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                 foreach (ServiceTimes serviceTimes in serviceTimeOccasions)
                 {
                     // Add the service time to the relevant day
-                    foreach (string day in days)
+                    if (frequency.ToUpper() == "WEEKLY")
                     {
-                        this.SetDay(day, siteOccasionTime, serviceTimes, time);
+                        // Add the times to the specified days
+                        foreach (string day in days)
+                        {
+                            this.SetDay(day, siteOccasionTime, serviceTimes, time);
+                        }
+                    }
+                    else if (frequency.ToUpper() == "DAILY")
+                    {
+                        // Add the times to all days
+                        this.SetDay(siteOccasionTime, serviceTimes.Monday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Tuesday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Wednesday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Thursday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Friday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Saturday, time);
+                        this.SetDay(siteOccasionTime, serviceTimes.Sunday, time);
                     }
                 }
             }

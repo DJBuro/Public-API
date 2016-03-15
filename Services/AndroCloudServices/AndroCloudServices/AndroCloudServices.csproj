@@ -108,6 +108,7 @@
     <Compile Include="Domain\CustomerOrderLineModifiers.cs" />
     <Compile Include="Domain\CustomerOrderDeals.cs" />
     <Compile Include="Domain\Pricing.cs" />
+    <Compile Include="Domain\Site3.cs" />
     <Compile Include="Domain\Vouchers.cs" />
     <Compile Include="Domain\Voucher.cs" />
     <Compile Include="Domain\Order.cs" />
