@@ -72,19 +72,20 @@
                 </event-template>
             </div>
         </uib-tab>
-        @if (User.Identity.Name.Equals("Matt", StringComparison.InvariantCultureIgnoreCase)) { 
-        <uib-tab heading="Test" active="testtab.active">
-            <!-- Test tab 5 -->
-            <div ng-if="testtab.active" class="col-sm-12">
-                <event-template andromeda-site-id="@id"
-                                external-site-id="@externalSiteId"
-                                container="@container"
-                                marketing-type="test marketing type"
-                                description="Matt's test."
-                                show-sending-button="true">
-                </event-template>
-            </div>
-        </uib-tab>
+        @if (User.Identity.Name.Equals("Matt", StringComparison.InvariantCultureIgnoreCase))
+        {
+            <uib-tab heading="Test" active="testtab.active">
+                <!-- Test tab 5 -->
+                <div ng-if="testtab.active" class="col-sm-12">
+                    <event-template andromeda-site-id="@id"
+                                    external-site-id="@externalSiteId"
+                                    container="@container"
+                                    marketing-type="test marketing type"
+                                    description="Matt's test."
+                                    show-sending-button="true">
+                    </event-template>
+                </div>
+            </uib-tab>
         }
     </uib-tabset>
 </div>
@@ -248,38 +249,26 @@
 
 
         <div kendo-window="createPreviewWindow" k-title="'Preview'" k-width="500" k-modal="true" k-visible="false">
-            <div kendo-validator="previewValidator">
-                <div class="form-horizontal form-widgets">
+            <div class="container-fluid">
+                <div kendo-validator="previewValidator">
                     <div class="row">
-                        <div class="form-group">
-
-                            <label class="control-label col-sm-2">Email</label>
-                            <div class="col-sm-10">
-                                <input class="k-textbox" type="text" required
-                                       placeholder="Email(s) comma delimited."
-                                       ng-model="previewSettings.To" />
-
-                            </div>
-
+                        <div class="col-sm-12">
+                            <div class="label label-default">Emails</div>
+                            <input class="k-textbox" type="text" required style="width:100%"
+                                   placeholder="Enter email(s) comma delimited."
+                                   ng-model="previewSettings.To" />
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="control-label col-sm-2">
-                                Send now?
-                            </label>
-                            <div class="col-sm-01">
-                                <label>
-                                    <input type="checkbox" ng-model="previewSettings.Send" />
-                                </label>
+                        <div class="col-sm-12">&nbsp;</div>
+                        <div class="col-sm-12">
+                            <label>
+                                <input type="checkbox" ng-model="previewSettings.Send" />
                                 Send a preview to the recipients above
-                            </div>
+                            </label>
                         </div>
-                    </div>
-                </div>
-                <div class="row form-horizontal form-widgets">
-                    <div class="col-sm-12">
-                        <a class="k-button" ng-click="sendPreview()">Send</a>
+                        <div class="col-sm-12">&nbsp;</div>
+                        <div class="col-sm-12">
+                            <a class="btn btn-primary" ng-click="sendPreview()">Send</a>
+                        </div>
                     </div>
                 </div>
             </div>
