@@ -386,9 +386,13 @@
     <TypeScriptCompile Include="App\General\ResizeModule.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Config.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Controllers.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Directives.SchedulerTasks.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.KendoSchedulerTimeLineView.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.KendoSchedulerView.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Models.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Services.TaskRestriction.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.Services.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Servivces.Scheduler.ts" />
     <TypeScriptCompile Include="App\Hr\Hr.ts" />
     <TypeScriptCompile Include="App\Marketing\MyAndromeda.Marketing.Controllers.ts" />
     <TypeScriptCompile Include="App\Marketing\MyAndromeda.Marketing.Models.ts" />
@@ -402,7 +406,7 @@
     <TypeScriptCompile Include="App\Reports\MyAndromeda.Reports.ChainDashboard.Today.ts" />
     <TypeScriptCompile Include="App\Reports\MyAndromeda.Reports.ChainDashboard.ts" />
     <TypeScriptCompile Include="App\Reports\MyAndromeda.ts" />
-    <TypeScriptCompile Include="App\Hr\Hr.Directive.ts" />
+    <TypeScriptCompile Include="App\Hr\Hr.Directives.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Services.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Config.ts" />
     <TypeScriptCompile Include="App\Start\MyAndromeda.Start.Controllers.ts" />

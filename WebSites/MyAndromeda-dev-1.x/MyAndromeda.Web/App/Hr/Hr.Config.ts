@@ -3,7 +3,10 @@
     var app = angular.module("MyAndromeda.Hr.Config", [
         "MyAndromeda.Hr.Controllers",
         "MyAndromeda.Hr.Services",
-        "MyAndromeda.Hr.Directives"]);
+        "MyAndromeda.Hr.Services.Scheduler", 
+        "MyAndromeda.Hr.Directives",
+        "MyAndromeda.Hr.Directives.Scheduler"
+    ]);
 
     app.config(($stateProvider: ng.ui.IStateProvider, $urlRouterProvider) => {
 

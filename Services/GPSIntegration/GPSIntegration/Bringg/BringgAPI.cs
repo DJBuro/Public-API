@@ -217,9 +217,6 @@ namespace Andromeda.GPSIntegration.Bringg
             {
                 // Update an existing task
                 errorMessage = this.UpdateOrder(bringgConfig, customerGPS, newOrder, log);
-
-
-
             }
 
             return errorMessage;
@@ -298,16 +295,16 @@ namespace Andromeda.GPSIntegration.Bringg
             return errorMessage;
         }
 
-        private string UpdateOrder(BringgConfig bringgConfig, Model.Customer customerGps, Model.Order newOrder, Action<string, DebugLevel> log)
+        private string UpdateOrder(BringgConfig bringgConfig, Customer customerGps, Order newOrder, Action<string, DebugLevel> log)
         {
-            BringgTask bringgTask = new BringgTask();
+            var bringgTask = new BringgTask();
             BringgTaskDetailModel bringgDetailTask = null;
             // Get the task from Bringg
             string errorMessage = this.GetTask(bringgConfig, newOrder.BringgTaskId, out bringgTask, out bringgDetailTask);
 
-            if (!String.IsNullOrEmpty(errorMessage))
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                ErrorHelper.LogError("UpdateOrder unable to find Bringg task ", errorMessage, newOrder.BringgTaskId.ToString());
+                ErrorHelper.LogError(method: "UpdateOrder unable to find Bringg task ", message: errorMessage, storeId: newOrder.BringgTaskId.ToString());
                 return errorMessage;
             }
 
@@ -317,18 +314,29 @@ namespace Andromeda.GPSIntegration.Bringg
             bringgTask.lat = newOrder.Address.Lat;
             bringgTask.lng = newOrder.Address.Long;
             bringgTask.note = newOrder.Note;
-            bringgTask.scheduled_at = newOrder.ScheduledAt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            bringgTask.scheduled_at = newOrder.ScheduledAt.ToString(format: "yyyy-MM-ddTHH:mm:ss.fffZ");
 
             // Update the task in Bringg
             errorMessage = this.UpdateTask(bringgConfig, newOrder.BringgTaskId, bringgTask, log);
 
+            string updateNoteMessage = string.Empty;
             if (string.IsNullOrWhiteSpace(errorMessage))
             {
                 if (!string.IsNullOrWhiteSpace(bringgTask.note))
                 {
-                    errorMessage = this.PostUpdateNote(bringgConfig, newOrder.BringgTaskId, bringgDetailTask, newOrder.Note);
-                        //this.AddNote(bringgConfig, customerGps, newOrder, bringgTask, log);
+                    updateNoteMessage = this.PostUpdateNote(bringgConfig, newOrder.BringgTaskId, bringgDetailTask, newOrder.Note);
                 }
+                else
+                {
+                    string t = string.Format(format: "No task note: {0}", arg0: newOrder.BringgTaskId); 
+                    log(t, DebugLevel.Notify);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateNoteMessage))
+            {
+                string logMessage = string.Format(format: "Add note failed for task: {0}", arg0: newOrder.BringgTaskId);
+                log(logMessage, DebugLevel.Error);
             }
 
             return errorMessage;

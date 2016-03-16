@@ -97,7 +97,7 @@ namespace MyAndromeda.Services.Bringg
 
         public async Task AddOrderAsync(int andromedaSiteId, Guid orderId)
         {
-            var order = await this.orderHeaderDataService
+            OrderHeader order = await this.orderHeaderDataService
                 .OrderHeaders
                     .Include(e => e.Customer)
                     .Include(e => e.Customer.Address)
@@ -107,52 +107,47 @@ namespace MyAndromeda.Services.Bringg
 
             if (order.Customer == null)
             {
-                throw new ArgumentNullException("order.customer");
+                throw new ArgumentNullException(paramName: "order.customer");
             }
 
             if (order.CustomerAddress == null)
             {
-                throw new ArgumentNullException("order.CustomerAddress");
+                throw new ArgumentNullException(paramName: "order.CustomerAddress");
             }
 
-            var customer = this.CreateCustomer(order.Customer);
-            var customerAddress = this.CreateAddress(order.CustomerAddress);
+            Store store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
 
-            var bringgOrder = this.CreateOrder(order, customerAddress);
+            Andromeda.GPSIntegration.Model.Customer customer = this.CreateCustomer(order.Customer);
+            Andromeda.GPSIntegration.Model.Address customerAddress = this.CreateAddress(order.CustomerAddress);
 
-            var store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
+            Andromeda.GPSIntegration.Model.Order bringgOrder = this.CreateOrder(order, customerAddress);
 
+            
             bool success = false;
-            bool triedWithoutPhone = false;
 
             ResultEnum result = ResultEnum.UnknownError;
-            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, (message, level) => {
-                if (level == DebugLevel.Notify) {
+
+            Action<string, DebugLevel> log = (message, level) => {
+                if (level == DebugLevel.Notify)
+                {
                     this.logger.Debug(message);
                 }
-                if (level == DebugLevel.Error) {
+                if (level == DebugLevel.Error)
+                {
                     this.logger.Error(message);
                 }
-            });
+            };
+
+            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, log);
 
             //try again
             if(!success)
             {                    
-                this.logger.Error("Sending Bringg task failed with the phone number... switch to email only");
-
-                triedWithoutPhone = true;
+                this.logger.Error(message: "Sending Bringg task failed with the phone number... switch to email only");
+                
                 customer.Phone = null;
 
-                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, (message, level) => {
-                    if (level == DebugLevel.Notify)
-                    {
-                        this.logger.Debug(message);
-                    }
-                    if (level == DebugLevel.Error)
-                    {
-                        this.logger.Error(message);
-                    }
-                });
+                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, log);
             }
 
             if (result == ResultEnum.OK)
@@ -162,22 +157,22 @@ namespace MyAndromeda.Services.Bringg
 
             if (!success) 
             {
-                this.logger.Error("Failed with phone and email");
+                this.logger.Error(message: "Failed with phone and email");
             }
 
             switch (result)
             {
                 case ResultEnum.Disabled:
                     {
-                        throw new Exception("Disabled?");
+                        throw new Exception(message: "Disabled?");
                     }
                 case ResultEnum.NoStoreSettings:
                     {
-                        throw new Exception("No Store Settings");
+                        throw new Exception(message: "No Store Settings");
                     }
                 case ResultEnum.UnknownError:
                     {
-                        throw new Exception("Unknown Error... cool. (Bringg had a boo boo but wont be specific)");
+                        throw new Exception(message: "Unknown Error... cool. (Bringg had a boo boo but wont be specific)");
                     }
                 case ResultEnum.OK:
                     {
@@ -187,7 +182,7 @@ namespace MyAndromeda.Services.Bringg
                             order.BringgTaskId = Convert.ToInt32(bringgOrder.BringgTaskId);
                             await this.orderHeaderDataService.SaveChangesAsync();
 
-                            await this.FluffAbout(andromedaSiteId, order, customer);
+                            await this.AnnounceNewBringgTask(andromedaSiteId, order, customer);
                             
                         }
                         break;
@@ -201,11 +196,11 @@ namespace MyAndromeda.Services.Bringg
 
         
 
-        private async Task FluffAbout(int andromedaSiteId, OrderHeader order, Andromeda.GPSIntegration.Model.Customer customer) 
+        private async Task AnnounceNewBringgTask(int andromedaSiteId, OrderHeader order, Andromeda.GPSIntegration.Model.Customer customer) 
         {
             try
             {
-                OutgoingWebHookBringg outgoingMessage = new OutgoingWebHookBringg() 
+                var outgoingMessage = new OutgoingWebHookBringg() 
                 {
                     AndromedaSiteId = andromedaSiteId,
                     ExternalSiteId = order.ExternalSiteID,
@@ -218,7 +213,7 @@ namespace MyAndromeda.Services.Bringg
                     UserId = customer.PartnerId
                 };
 
-                //todo : make sendWebHooksService transient so i dont have to talk via a webservice
+                //todo : make sendWebHooksService transient so i don't have to talk via a webservice
                 //await this.sendWebHooksService.CallEndpoints(outgoingMessage, e => e.BringUpdates);
 
                 try
@@ -232,7 +227,7 @@ namespace MyAndromeda.Services.Bringg
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            string message = string.Format("Could not call : {0}", this.webhookEndpointManger.BringgEndpoint);
+                            string message = string.Format(format: "Could not call : {0}", arg0: this.webhookEndpointManger.BringgEndpoint);
                             string responseMessage = await response.Content.ReadAsStringAsync();
 
                             throw new WebException(message, new Exception(responseMessage));

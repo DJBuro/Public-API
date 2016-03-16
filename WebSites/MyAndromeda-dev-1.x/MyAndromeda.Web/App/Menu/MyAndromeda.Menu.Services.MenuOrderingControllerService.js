@@ -121,7 +121,7 @@ var MyAndromeda;
                 MenuOrderingControllerService.prototype.initListViewEvents = function () {
                     var internal = this;
                     var ds = internal.menuService.menuItemService.dataSource;
-                    $(internal.options.ids.listViewId).kendoDraggable({
+                    var draggableSettings = {
                         filter: ".menu-item",
                         hint: internal.generateHint,
                         group: "listViewItems",
@@ -143,8 +143,9 @@ var MyAndromeda;
                         },
                         drag: function (e) {
                         }
-                    });
-                    $(internal.options.ids.listViewId).kendoDropTargetArea({
+                    };
+                    $(internal.options.ids.listViewId).kendoDraggable(draggableSettings);
+                    var dropTargetAreaOptions = {
                         filter: ".menu-item",
                         group: "listViewItems",
                         hint: internal.generateHint,
@@ -161,7 +162,6 @@ var MyAndromeda;
                         },
                         dragleave: function (e) {
                             var $e = e.dropTarget;
-                            //if ($e.is(".moving")) { return; }
                             $($e).animate({
                                 "margin-left": "0px",
                                 "opacity": 1,
@@ -171,13 +171,15 @@ var MyAndromeda;
                         drop: function (e) {
                             var draggableThing = e.draggable;
                             var hint = draggableThing.hint;
-                            var draggableDataItem = ds.getByUid(hint.data("uid")), dropTargetDataItem = ds.getByUid(e.dropTarget.data("uid"));
+                            var draggableDataItem = ds.getByUid(hint.data("uid")), //ds.getByUid(e.draggable.hint.data("uid")),
+                            dropTargetDataItem = ds.getByUid(e.dropTarget.data("uid"));
                             internal.movePlaces(dropTargetDataItem, draggableDataItem, Positioning.BEFORE);
                             internal.normalize();
                             ds.sort({ field: "WebSequence", dir: "asc" });
                             internal.menuService.menuItemService.dataSource.sync();
                         }
-                    });
+                    };
+                    $(internal.options.ids.listViewId).kendoDropTargetArea(dropTargetAreaOptions);
                 };
                 /*todo write a handler to allow the page to scroll with drag */
                 MenuOrderingControllerService.prototype.movePage = function (mouseMoveEvent) {
@@ -293,7 +295,7 @@ var MyAndromeda;
                     });
                     $(hint).css({ "border-color": "#600BA2", "border-width": "4px" });
                     $(element).animate({ "opacity": 0.8 });
-                    return hint;
+                    //return hint;
                 };
                 MenuOrderingControllerService.prototype.initHubChanges = function () {
                     var internal = this, hub = MyAndromeda.Hubs.StoreHub.GetInstance(internal.options.routeParameters);

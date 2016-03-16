@@ -5874,13 +5874,19 @@ Copyright (c) 2014 Daniel Eden
   background: red !important;
   cursor: no-drop;
 }
-.k-scheduler-monthview .k-scheduler-table td {
-  height: 50px !important;
+.k-scheduler-WeekOverViewview .k-scheduler-table td {
+  height: 55px !important;
 }
-.k-scheduler-monthview th.k-thingy,
-.k-scheduler-monthview .k-hidden {
-  height: 50px !important;
+.k-scheduler-WeekOverViewview th.k-thingy,
+.k-scheduler-WeekOverViewview .k-hidden {
+  height: 55px !important;
 }
-.k-scheduler-monthview .k-scheduler-table .k-today {
+.k-scheduler-WeekOverViewview .k-scheduler-table .k-today {
   background-color: #CFE4E4;
+}
+.sweet-alert {
+  border: 1px solid #bbbaaa;
+  -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px;
 }

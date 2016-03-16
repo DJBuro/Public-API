@@ -8,64 +8,29 @@
         kDate: any = k.date,
         kAttr: any = k.attr,
         kGetter: any = k.getter,
-        SchedulerTimelineView = ui.TimelineView,
-        SchedulerMonthView = ui.MonthView,
+        kTemplate: any = k.Template,
+        KUserEvents: any = k.UserEvents,
+        getDate = k.date.getDate,
+        //SchedulerMonthView = ui.MonthView,
+        SchedulerView = ui.SchedulerView,
         MS_PER_DAY = kDate.MS_PER_DAY,
         MS_PER_MINUTE = kDate.MS_PER_MINUTE,
-        SchedulerView = ui.SchedulerView,
         NS = ".kendoTimelineWeekView";
-
-    function customCreateLayoutConfiguration(name, resources, inner, something) {
-        var resource = resources[0];
-        if (resource) {
-            var configuration = [];
-
-            var data = resource.dataSource.view();
-
-            for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
-                var defaultText = kendo.htmlEncode(k.getter(resource.dataTextField)(data[dataIndex]));
-                var dataItem = data[dataIndex];
-
-                MyAndromeda.Logger.Notify(dataItem);
-
-                var templateText = `
-                    <div>{0}</div>
-                    <employee-pic id=\"'{0}'\"></employee-pic>`;
-
-                templateText = kendo.format(templateText, dataItem.Id);
-
-                var template = kendo.template("<a href='javascript: void(0)'>#=data.Email#</a>");
-                var template2 = kendo.template("<a href='javascript: void(0)'>{{dataItem.Email}}</a>");
-                var obj = {
-                    text: template2(dataItem),// t(dataItem),
-                    className: "k-slot-cell",
-                    data: dataItem,
-                    dataItem: dataItem
-                };
-
-                //var element = $(template2(data));
-                //var scope = something.$angular_scope; //scope from _createColumnsLayout
-                //scope('
-                //this.angular is not defined :( 
-                //this.angular('compile', function () {
-                //    return {
-                //        elements: element,
-                //        data: [{ dataItem: data }]
-                //    };
-                //});
-                //obj[name] = customCreateLayoutConfiguration(name, resources.slice(1), inner);
-
-                //text version
-                configuration.push(obj);
-                //configuration.push(element);
-            }
-            return configuration;
-        }
-        return inner;
-    }
 
     function shiftArray(array, idx) {
         return array.slice(idx).concat(array.slice(0, idx));
+    }
+    function firstVisibleMonthDay(date, calendarInfo) {
+        var firstDay = calendarInfo.firstDay, firstVisibleDay = new Date(date.getFullYear(), date.getMonth(), 0, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+        while (firstVisibleDay.getDay() != firstDay) {
+            k.date.setTime(firstVisibleDay, -1 * MS_PER_DAY);
+        }
+        return firstVisibleDay;
+    }
+    function isInDateRange(value, min, max) {
+        var msMin = min, msMax = max, msValue;
+        msValue = value;
+        return msValue >= msMin && msValue <= msMax;
     }
 
     function createLayoutConfiguration(name, resources, inner, template) {
@@ -86,11 +51,12 @@
                 let things = Models.departments;
                 let searchDepartments = things.filter(e=> e.text === dataItem.Department);
                 var department = { text: 'None', majorColour: "#000", minorColour: "#000" };
-                if (searchDepartments.length > 0)
-                {
+                if (searchDepartments.length > 0) {
                     department = searchDepartments[0];
                 }
 
+                Logger.Notify("department:");
+                Logger.Notify(department);
                 var obj = {
                     text: template({
                         text: kendo.htmlEncode(kGetter(resource.dataTextField)(data[dataIndex])),
@@ -112,197 +78,24 @@
         }
         return inner;
     }
-
-    /**
-     * ***********************************************************
-     * Timeline view
-     * ***********************************************************
-     */
-
-    let timeLineOptions: any = {
-        nextDate: function () {
-            return kDate.nextDay(this.startDate());
-        },
-        calculateDateRange: function () {
-            var selectedDate = this.options.date,
-                start = selectedDate,
-                end = kDate,
-                dates = [];
-                
-            for (let index = 0, length = 7; index < length; index++)
-            {
-                dates.push(start);
-                start = kDate.nextDay(start);
-            }
-
-            this._render(dates);
-        },
-        
-        _createEventElement: function (event) {
-            var options = this.options;
-            var editable = options.editable;
-            var isMobile = this._isMobile();
-            event.showDelete = editable && editable.destroy !== false && !isMobile;
-            event.resizable = false; //editable && editable.resize !== false && !isMobile;
-            event.ns = kendo.ns;
-            event.resources = this.eventResources(event);
-            event.inverseColor = event.resources && event.resources[0] ? this._shouldInverseResourceColor(event.resources[0]) : false;
-            var element = $(this.eventTemplate(event));
-            this.angular('compile', function () {
-                return {
-                    elements: element,
-                    data: [{ dataItem: event }]
-                };
-            });
-            return element;
-        },
-        _render: function (dates) {
-            var that = this;
-            dates = dates || [];
-            that._dates = dates;
-            that._startDate = dates[0];
-            that._endDate = dates[dates.length - 1 || 0];
-            that._calculateSlotRanges();
-            that.createLayout(that._layout(dates));
-            that._content(dates);
-            that._footer();
-            that._setContentWidth();
-            that.refreshLayout();
-            that.datesHeader.on('click' + NS, '.k-nav-day', function (e) {
-                var th = $(e.currentTarget).closest('th');
-                var slot = that._slotByPosition(th.offset().left, that.content.offset().top);
-                that.trigger('navigate', {
-                    view: 'timeline',
-                    date: slot.startDate()
-                });
-            });
-            that.timesHeader.find('table tr:last').hide();
-            that.datesHeader.find('table tr:last').hide();
-        },
-        _positionEvent: function (eventObject) {
-            var slotsCollection = eventObject.slotRange.collection;
-            //var eventWidth = 100;
-            var eventHeight = this.options.eventHeight + 2;
-            var rect = eventObject.slotRange.innerRect(eventObject.start, eventObject.end, false);
-            var left = this._adjustLeftPosition(rect.left);
-            var width = rect.right - rect.left - 2;
-            if (width < 0) {
-                width = 0;
-            }
-
-            if (width < this.options.eventMinWidth) {
-                var lastSlot = slotsCollection._slots[slotsCollection._slots.length - 1];
-                var offsetRight = lastSlot.offsetLeft + lastSlot.offsetWidth;
-                width = this.options.eventMinWidth;
-                if (offsetRight < left + width) {
-                    width = offsetRight - rect.left - 2;
-                }
-            }
-
-            eventObject.element.css({
-                top: eventObject.slotRange.start.offsetTop + eventObject.rowIndex * (eventHeight + 2) + 'px',
-                left: left,
-                height: 50,
-                width: width//slot.clientWidth - 2
-            });
-
-
-            $(eventObject.element).hover(
-                function () {
-                    $(this).animate({ width: 100 });
-                },
-                function () {
-                    $(this).animate({ width: width });
-                }
-            );
-
-        },
-        _renderEvents: function (events, groupIndex, eventGroup) {
-            var event;
-            var idx;
-            var length;
-            for (idx = 0, length = events.length; idx < length; idx++) {
-                event = events[idx];
-                if (this._isInDateSlot(event)) {
-                    var isMultiDayEvent = event.isAllDay || event.end.getTime() - event.start.getTime() >= MS_PER_DAY;
-                    var container = this.content;
-                    if (isMultiDayEvent || this._isInTimeSlot(event)) {
-                        var adjustedEvent = this._adjustEvent(event);
-                        var group = this.groups[groupIndex];
-                        if (!group._continuousEvents) {
-                            group._continuousEvents = [];
-                        }
-                        var ranges = group.slotRanges(adjustedEvent.occurrence, false);
-                        var range = ranges[0];
-                        var element;
-                        if (this._isInTimeSlot(adjustedEvent.occurrence)) {
-                            element = this._createEventElement(adjustedEvent.occurrence, event, range.head || adjustedEvent.head, range.tail || adjustedEvent.tail);
-                            element.appendTo(container).css({
-                                top: 0,
-                                height: this.options.eventHeight
-                            });
-                            var eventObject = {
-                                start: adjustedEvent.occurrence._startTime || adjustedEvent.occurrence.start,
-                                end: adjustedEvent.occurrence._endTime || adjustedEvent.occurrence.end,
-                                element: element,
-                                uid: event.uid,
-                                slotRange: range,
-                                rowIndex: 0,
-                                offsetTop: 0
-                            };
-                            eventGroup.events[event.uid] = eventObject;
-                            this.addContinuousEvent(group, range, element, event.isAllDay);
-                            this._arrangeRows(eventObject, range, eventGroup);
-                        }
-                    }
-                }
-            }
-        },
-        //_groupRowHtml: function (group, colspan, level, groupHeaderBuilder, templates, skipColspan) {
-        //    var that = this, html = '', idx, length, field = group.field, column = $.grep(leafColumns(that.columns), function (column) {
-        //        return column.field == field;
-        //    })[0] || {}, template = column.groupHeaderTemplate, text = (column.title || field) + ': ' + formatGroupValue(group.value, column.format, column.values, column.encoded), footerDefaults = that._groupAggregatesDefaultObject || {}, aggregates = extend({}, footerDefaults, group.aggregates), data = extend({}, {
-        //        field: group.field,
-        //        value: group.value,
-        //        aggregates: aggregates
-        //    }, group.aggregates[group.field]), groupFooterTemplate = templates.groupFooterTemplate, groupItems = group.items;
-        //    if (template) {
-        //        text = typeof template === FUNCTION ? template(data) : kendo.template(template)(data);
-        //    }
-        //    html += groupHeaderBuilder(colspan, level, text);
-        //    if (group.hasSubgroups) {
-        //        for (idx = 0, length = groupItems.length; idx < length; idx++) {
-        //            html += that._groupRowHtml(groupItems[idx], skipColspan ? colspan : colspan - 1, level + 1, groupHeaderBuilder, templates, skipColspan);
-        //        }
-        //    } else {
-        //        html += that._rowsHtml(groupItems, templates);
-        //    }
-        //    if (groupFooterTemplate) {
-        //        html += groupFooterTemplate(aggregates);
-        //    }
-        //    return html;
-        //}
-        //_createColumnsLayout: function (resources, inner) {
-        //    var that = this;
-        //    return customCreateLayoutConfiguration("columns", resources, inner, that);
-        //},
-        //_createRowsLayout: function (resources, inner) {
-        //    var that = this;
-        //    return customCreateLayoutConfiguration("rows", resources, inner, that);
-        //},
-    };
+    
+    
 
     /**
      * ***********************************************************
      * Month view
      * ***********************************************************
      */
-    
-    const NUMBER_OF_COLUMNS = 7,
+
+    const
+        NUMBER_OF_COLUMNS = 7,
         NUMBER_OF_ROWS = 1,
         MORE_BUTTON_TEMPLATE = kendo.template(`<div style="width:#=width#px;left:#=left#px;top:#=top#px;height:20px" class="k-more-events k-button">
     <span style="height:20px; margin-top:0" class="label label-success">#=count#...</span>
-</div>`);
+</div>`),
+        DAY_TEMPLATE = kendo.template('<span class="k-link k-nav-day">#:kendo.toString(date, "dd")#</span>'),
+        EVENT_WRAPPER_STRING = '<div role="gridcell" aria-selected="false" data-#=ns#uid="#=uid#"' + '#if (resources[0]) { #' + 'style="background-color:#=resources[0].color #; border-color: #=resources[0].color#"' + 'class="k-event#=inverseColor ? " k-event-inverse" : ""#"' + '#} else {#' + 'class="k-event"' + '#}#' + '>' + '<span class="k-event-actions">' + '# if(data.tail || data.middle) {#' + '<span class="k-icon k-i-arrow-w"></span>' + '#}#' + '# if(data.isException()) {#' + '<span class="k-icon k-i-exception"></span>' + '# } else if(data.isRecurring()) {#' + '<span class="k-icon k-i-refresh"></span>' + '#}#' + '</span>' + '{0}' + '<span class="k-event-actions">' + '#if (showDelete) {#' + '<a href="\\#" class="k-link k-event-delete"><span class="k-icon k-si-close"></span></a>' + '#}#' + '# if(data.head || data.middle) {#' + '<span class="k-icon k-i-arrow-e"></span>' + '#}#' + '</span>' + '# if(resizable && !data.tail && !data.middle) {#' + '<span class="k-resize-handle k-resize-w"></span>' + '#}#' + '# if(resizable && !data.head && !data.middle) {#' + '<span class="k-resize-handle k-resize-e"></span>' + '#}#' + '</div>',
+        EVENT_TEMPLATE = kendo.template('<div title="#=title.replace(/"/g,"&\\#34;")#">' + '<div class="k-event-template">#:title#</div>' + '</div>');
 
     let monthViewOptions: any = {
         //calculateDateRange: function () {
@@ -317,6 +110,72 @@
 
         //    this._render(dates);
         //},
+        init: function (element, options) {
+            var that = this;
+            SchedulerView.fn.init.call(that, element, options);
+            that.title = that.options.title;
+            that._templates();
+            that._editable();
+            that._renderLayout(that.options.date);
+            that._groups();
+        },
+        name: 'WeekOverView',
+        _updateDirection: function (selection, ranges, multiple, reverse, vertical) {
+            if (multiple) {
+                var startSlot = ranges[0].start;
+                var endSlot = ranges[ranges.length - 1].end;
+                var isSameSlot = startSlot.index === endSlot.index;
+                var isSameCollection = startSlot.collectionIndex === endSlot.collectionIndex;
+                var updateDirection;
+                if (vertical) {
+                    updateDirection = isSameSlot && isSameCollection || isSameCollection;
+                } else {
+                    updateDirection = isSameSlot && isSameCollection;
+                }
+                if (updateDirection) {
+                    selection.backward = reverse;
+                }
+            }
+        },
+
+        _changeViewPeriod: function (selection, reverse, vertical) {
+            var pad = vertical ? 7 : 1;
+            if (reverse) {
+                pad *= -1;
+            }
+            selection.start = kDate.addDays(selection.start, pad);
+            selection.end = kDate.addDays(selection.end, pad);
+            if (!vertical || vertical && this._isVerticallyGrouped()) {
+                selection.groupIndex = reverse ? this.groups.length - 1 : 0;
+            }
+            selection.events = [];
+            return true;
+        },
+        _continuousSlot: function (selection, ranges, reverse) {
+            var index = selection.backward ? 0 : ranges.length - 1;
+            var group = this.groups[selection.groupIndex];
+            return group.continuousSlot(ranges[index].start, reverse);
+        },
+        _changeGroupContinuously: function (selection, continuousSlot, multiple, reverse) {
+            if (!multiple) {
+                var groupIndex = selection.groupIndex;
+                var lastGroupIndex = this.groups.length - 1;
+                var vertical = this._isVerticallyGrouped();
+                var group = this.groups[groupIndex];
+                if (!continuousSlot && vertical) {
+                    continuousSlot = group[reverse ? 'lastSlot' : 'firstSlot']();
+                    groupIndex += reverse ? -1 : 1;
+                } else if (continuousSlot && !vertical) {
+                    groupIndex = reverse ? lastGroupIndex : 0;
+                }
+                if (groupIndex < 0 || groupIndex > lastGroupIndex) {
+                    groupIndex = reverse ? lastGroupIndex : 0;
+                    continuousSlot = null;
+                }
+                selection.groupIndex = groupIndex;
+            }
+            return continuousSlot;
+        },
         _createRow: function (startDate, startIdx, cellsPerRow, groupIndex) {
             var that = this;
             var min = that._firstDayOfMonth;
@@ -350,6 +209,204 @@
             }
             return html;
         },
+        _createRowsLayout: function (resources, inner, template) {
+            return createLayoutConfiguration('rows', resources, inner, template);
+        },
+        _normalizeHorizontalSelection: function (selection, ranges, reverse) {
+            var slot;
+            if (reverse) {
+                slot = ranges[0].start;
+            } else {
+                slot = ranges[ranges.length - 1].end;
+            }
+            return slot;
+        },
+        _normalizeVerticalSelection: function (selection, ranges) {
+            var slot;
+            if (selection.backward) {
+                slot = ranges[0].start;
+            } else {
+                slot = ranges[ranges.length - 1].end;
+            }
+            return slot;
+        },
+        _templates: function () {
+            var options = this.options, settings = extend({}, kTemplate, options.templateSettings);
+            this.eventTemplate = this._eventTmpl(options.eventTemplate, EVENT_WRAPPER_STRING);
+            this.dayTemplate = kendo.template(options.dayTemplate, settings);
+            this.groupHeaderTemplate = kendo.template(options.groupHeaderTemplate, settings);
+        },
+        dateForTitle: function () {
+            return kendo.format(this.options.selectedDateFormat, this._firstDayOfMonth, this._lastDayOfMonth);
+        },
+        shortDateForTitle: function () {
+            return kendo.format(this.options.selectedShortDateFormat, this._firstDayOfMonth, this._lastDayOfMonth);
+        },
+        previousDate: function () {
+            let now = this.startDate();
+            let yesterday = kDate.previousDay(now); //kendo.date.previousDay(this._firstDayOfMonth);
+
+            return yesterday;
+        },
+        nextDate: function () {
+            let now = this.startDate();
+            let tomorrow = kDate.nextDay(now);
+
+            return tomorrow;
+        },
+        startDate: function () {
+            return this._startDate;
+        },
+        endDate: function () {
+            return this._endDate;
+        },
+        _renderLayout: function (date) {
+            var that = this;
+            this._firstDayOfMonth = date;
+            this._lastDayOfMonth = kDate.addDays(date, 7);
+            this._startDate = date;
+            this._endDate = kDate.addDays(date, 7);
+
+            this.createLayout(this._layout());
+            this._content();
+            this.refreshLayout();
+            this.content.on('click' + NS, '.k-nav-day,.k-more-events', function (e) {
+                var offset = $(e.currentTarget).offset();
+                var slot = that._slotByPosition(offset.left, offset.top);
+                e.preventDefault();
+                //alert("popup :)");
+
+                //console.log(slot);
+                //let slotElement = slot.element;
+                //var popover = $(slotElement).popover({
+                //    title: "Tasks",
+                //    placement: "auto",
+                //    html: true,
+                //    content: "please wait"
+                //}).on("show.bs.popover", function () {
+                //    console.log("show popover");
+                //    let html = $(slotElement).contents().html();
+                //    popover.attr('data-content', html);
+                //    var current = $(this);
+                //    setTimeout(() => { current.popover('hide'); }, 5000);
+                //});
+                //popover.popover("show");
+
+                that.trigger('navigate', {
+                    view: 'day',
+                    date: slot.startDate()
+                });
+            });
+        },
+        _editable: function () {
+            if (this.options.editable && !this._isMobilePhoneView()) {
+                if (this._isMobile()) {
+                    this._touchEditable();
+                } else {
+                    this._mouseEditable();
+                }
+            }
+        },
+        _mouseEditable: function () {
+            var that = this;
+            that.element.on('click' + NS, '.k-scheduler-WeekOverViewview .k-event a:has(.k-si-close)', function (e) {
+                that.trigger('remove', { uid: $(this).closest('.k-event').attr(kAttr('uid')) });
+                e.preventDefault();
+            });
+            if (that.options.editable.create !== false) {
+                that.element.on('dblclick' + NS, '.k-scheduler-WeekOverViewview .k-scheduler-content td', function (e) {
+                    Logger.Notify("edit mode");
+                    var offset = $(e.currentTarget).offset();
+
+
+                    var slot = that._slotByPosition(offset.left, offset.top);
+                    if (slot) {
+                        var resourceInfo = that._resourceBySlot(slot);
+                        that.trigger('add', {
+                            eventInfo: extend({
+                                //isAllDay: true,
+                                start: slot.startDate(),
+                                end: slot.startDate()
+                            }, resourceInfo)
+                        });
+                    }
+                    e.preventDefault();
+                });
+            }
+            if (that.options.editable.update !== false) {
+                that.element.on('dblclick' + NS, '.k-scheduler-WeekOverViewview .k-event', function (e) {
+                    that.trigger('edit', { uid: $(this).closest('.k-event').attr(kAttr('uid')) });
+                    e.preventDefault();
+                });
+            }
+        },
+        _touchEditable: function () {
+            var that = this;
+            var threshold = 0;
+            if (k.support.mobileOS.android) {
+                threshold = 5;
+            }
+            if (that.options.editable.create !== false) {
+                that._addUserEvents = new KUserEvents(that.element, {
+                    threshold: threshold,
+                    filter: '.k-scheduler-WeekOverViewview .k-scheduler-content td',
+                    tap: function (e) {
+                        var offset = $(e.target).offset();
+                        var slot = that._slotByPosition(offset.left, offset.top);
+                        if (slot) {
+                            var resourceInfo = that._resourceBySlot(slot);
+                            that.trigger('add', {
+                                eventInfo: extend({
+                                    isAllDay: true,
+                                    start: slot.startDate(),
+                                    end: slot.startDate()
+                                }, resourceInfo)
+                            });
+                        }
+                        e.preventDefault();
+                    }
+                });
+            }
+            if (that.options.editable.update !== false) {
+                that._editUserEvents = new k.UserEvents(that.element, {
+                    threshold: threshold,
+                    filter: '.k-scheduler-WeekOverViewview .k-event',
+                    tap: function (e) {
+                        if ($(e.event.target).closest('a:has(.k-si-close)').length === 0) {
+                            that.trigger('edit', { uid: $(e.target).closest('.k-event').attr(k.attr('uid')) });
+                            e.preventDefault();
+                        }
+                    }
+                });
+            }
+        },
+        selectionByElement: function (cell) {
+            var offset = $(cell).offset();
+            return this._slotByPosition(offset.left, offset.top);
+        },
+        _columnCountForLevel: function (level) {
+            var columnLevel = this.columnLevels[level];
+            return columnLevel ? columnLevel.length : 0;
+        },
+        _rowCountForLevel: function (level) {
+            var rowLevel = this.rowLevels[level];
+            return rowLevel ? rowLevel.length : 0;
+        },
+        _content: function () {
+            var html = '<tbody>';
+            var verticalGroupCount = 1;
+            var resources = this.groupedResources;
+            if (resources.length) {
+                if (this._isVerticallyGrouped()) {
+                    verticalGroupCount = this._rowCountForLevel(resources.length - 1);
+                }
+            }
+            for (var verticalGroupIdx = 0; verticalGroupIdx < verticalGroupCount; verticalGroupIdx++) {
+                html += this._createCalendar(verticalGroupIdx);
+            }
+            html += '</tbody>';
+            this.content.find('table').html(html);
+        },
         _createCalendar: function (verticalGroupIndex) {
             var start = this.startDate();
             var cellCount = NUMBER_OF_COLUMNS * NUMBER_OF_ROWS;
@@ -372,7 +429,7 @@
                 weekStartDates.push(start);
                 var startIdx = rowIdx * cellsPerRow;
                 for (var groupIdx = 0; groupIdx < horizontalGroupCount; groupIdx++) {
-                    
+
                     html += this._createRow(start, startIdx, cellsPerRow, isVerticallyGrouped ? verticalGroupIndex : groupIdx);
                 }
                 start = kDate.addDays(start, cellsPerRow);
@@ -393,10 +450,10 @@
             //});
             let columns = [];
             let columnDate = this.startDate();
-            for (let i = 0; i < 7; i++){
+            for (let i = 0; i < 7; i++) {
                 let m = kendo.toString(columnDate, 'm'),
                     d = kendo.toString(columnDate, 'ddd');
-                    
+
                 columns.push({
                     text: d + ", " + m
                 });
@@ -430,8 +487,77 @@
                 rows: rows
             };
         },
-        _createRowsLayout: function (resources, inner, template) {
-            return createLayoutConfiguration('rows', resources, inner, template);
+        _createEventElement: function (event) {
+            var options = this.options;
+            var editable = options.editable;
+            var isMobile = this._isMobile();
+            event.showDelete = editable && editable.destroy !== false && !isMobile;
+            event.resizable = editable && editable.resize !== false && !isMobile;
+            event.ns = kendo.ns;
+            event.resources = this.eventResources(event);
+            event.inverseColor = event.resources && event.resources[0] ? this._shouldInverseResourceColor(event.resources[0]) : false;
+            var element = $(this.eventTemplate(event));
+            this.angular('compile', function () {
+                return {
+                    elements: element,
+                    data: [{ dataItem: event }]
+                };
+            });
+            return element;
+        },
+        _isInDateSlot: function (event) {
+            var groups = this.groups[0];
+            var slotStart = groups.firstSlot().start;
+            var slotEnd = groups.lastSlot().end - 1;
+            var startTime = kDate.toUtcTime(event.start);
+            var endTime = kDate.toUtcTime(event.end);
+            return (isInDateRange(startTime, slotStart, slotEnd)
+                || isInDateRange(endTime, slotStart, slotEnd)
+                || isInDateRange(slotStart, startTime, endTime)
+                || isInDateRange(slotEnd, startTime, endTime))
+                && (!isInDateRange(endTime, slotStart, slotStart)
+                    || isInDateRange(endTime, startTime, startTime) || event.isAllDay);
+        },
+        _slotIndex: function (date) {
+            return this._slotIndices[getDate(date).getTime()];
+        },
+        _positionMobileEvent: function (slotRange, element, group) {
+            var startSlot = slotRange.start;
+            if (slotRange.start.offsetLeft > slotRange.end.offsetLeft) {
+                startSlot = slotRange.end;
+            }
+            var startIndex = slotRange.start.index;
+            var endIndex = startIndex;
+            var eventCount = 3;
+            var events = SchedulerView.collidingEvents(slotRange.events(), startIndex, endIndex);
+            events.push({
+                element: element,
+                start: startIndex,
+                end: endIndex
+            });
+            var rows = SchedulerView.createRows(events);
+            var slot = slotRange.collection.at(startIndex);
+            var container = slot.container;
+            if (!container) {
+                container = $(kendo.format('<div class="k-events-container" style="top:{0};left:{1};width:{2}"/>', startSlot.offsetTop + startSlot.firstChildTop + startSlot.firstChildHeight - 3 + 'px', startSlot.offsetLeft + 'px', startSlot.offsetWidth + 'px'));
+                slot.container = container;
+                this.content[0].appendChild(container[0]);
+            }
+            if (rows.length <= eventCount) {
+                slotRange.addEvent({
+                    element: element,
+                    start: startIndex,
+                    end: endIndex,
+                    groupIndex: startSlot.groupIndex
+                });
+                group._continuousEvents.push({
+                    element: element,
+                    uid: element.attr(kAttr('uid')),
+                    start: slotRange.start,
+                    end: slotRange.end
+                });
+                container[0].appendChild(element[0]);
+            }
         },
         _positionEvent: function (slotRange, element, group) {
             var eventHeight = this.options.eventHeight;
@@ -449,6 +575,7 @@
                 start: startIndex,
                 end: endIndex
             });
+
             var rows = SchedulerView.createRows(events);
             for (var idx = 0, length = Math.min(rows.length, eventCount); idx < length; idx++) {
                 var rowEvents = rows[idx].events;
@@ -464,17 +591,15 @@
                     if (slot.more) {
                         return;
                     }
-
                     slot.more = $(MORE_BUTTON_TEMPLATE({
                         ns: kendo.ns,
                         start: slotIndex,
                         end: slotIndex,
+                        count: eventCount,
                         width: slot.clientWidth - 2,
                         left: slot.offsetLeft + 2,
-                        top: slot.offsetTop + slot.firstChildHeight + eventCount * eventHeight + 3 * eventCount,
-                        count: rows.length
+                        top: slot.offsetTop + slot.firstChildHeight + eventCount * eventHeight + 3 * eventCount
                     }));
-
                     this.content[0].appendChild(slot.more[0]);
                 }
             } else {
@@ -489,51 +614,260 @@
                 element[0].style.height = eventHeight + 'px';
                 group._continuousEvents.push({
                     element: element,
-                    uid: element.attr(kAttr('uid')),
+                    uid: element.attr(k.attr('uid')),
                     start: slotRange.start,
                     end: slotRange.end
                 });
                 element.appendTo(this.content);
             }
         },
-        _renderLayout: function (date) {
-            var that = this;
-            this._firstDayOfMonth = date;
-            this._lastDayOfMonth = kDate.addDays(date, 7);
-            this._startDate = date;
-            this._endDate = kDate.addDays(date, 7);
-            
-            this.createLayout(this._layout());
-            this._content();
-            this.refreshLayout();
-            this.content.on('click' + NS, '.k-nav-day,.k-more-events', function (e) {
-                var offset = $(e.currentTarget).offset();
-                var slot = that._slotByPosition(offset.left, offset.top);
-                e.preventDefault();
-                //alert("popup :)");
+        //_slotByPosition: function (x, y) {
+        //    let content = this.content;
+        //    if (!content) {
+        //        content = $("div.k-scheduler-content");
+        //    }
 
-                //console.log(slot);
-                //let slotElement = slot.element;
-                //var popover = $(slotElement).popover({
-                //    title: "Tasks",
-                //    placement: "auto",
-                //    html: true,
-                //    content: "please wait"
-                //}).on("show.bs.popover", function () {
-                //    console.log("show popover");
-                //    let html = $(slotElement).contents().html();
-                //    popover.attr('data-content', html);
-                //    var current = $(this);
-                //    setTimeout(() => { current.popover('hide'); }, 5000);
-                //});
-                //popover.popover("show");
+        //    var offset = content.offset();
 
-                that.trigger('navigate', {
-                    view: 'day',
-                    date: slot.startDate()
-                });
-            });
+        //    x -= offset.left;
+        //    y -= offset.top;
+        //    y += content[0].scrollTop;
+        //    x += content[0].scrollLeft;
+        //    x = Math.ceil(x);
+        //    y = Math.ceil(y);
+
+        //    for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
+        //        var slot = this.groups[groupIndex].daySlotByPosition(x, y);
+        //        if (slot) {
+        //            return slot;
+        //        }
+        //    }
+        //    return null;
+        //},
+        _slotByPosition: function (x, y) {
+            var offset = this.content.offset();
+            x -= offset.left;
+            y -= offset.top;
+            y += this.content[0].scrollTop;
+            x += this.content[0].scrollLeft;
+            x = Math.ceil(x);
+            y = Math.ceil(y);
+            for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
+                var slot = this.groups[groupIndex].daySlotByPosition(x, y);
+                if (slot) {
+                    return slot;
+                }
+            }
+            return null;
         },
+        _createResizeHint: function (range) {
+            var left = range.startSlot().offsetLeft;
+            var top = range.start.offsetTop;
+            var width = range.innerWidth();
+            var height = range.start.clientHeight - 2;
+            var hint = SchedulerView.fn._createResizeHint.call(this, left, top, width, height);
+            hint.appendTo(this.content);
+            this._resizeHint = this._resizeHint.add(hint);
+        },
+        _updateResizeHint: function (event, groupIndex, startTime, endTime) {
+            this._removeResizeHint();
+            var group = this.groups[groupIndex];
+            var ranges = group.ranges(startTime, endTime, true, event.isAllDay);
+            for (var rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
+                this._createResizeHint(ranges[rangeIndex]);
+            }
+            this._resizeHint.find('.k-label-top,.k-label-bottom').text('');
+            this._resizeHint.first().addClass('k-first').find('.k-label-top').text(kendo.toString(k.timezone.toLocalDate(startTime), 'M/dd'));
+            this._resizeHint.last().addClass('k-last').find('.k-label-bottom').text(kendo.toString(k.timezone.toLocalDate(endTime), 'M/dd'));
+        },
+        _updateMoveHint: function (event, groupIndex, distance) {
+            var start = k.date.toUtcTime(event.start) + distance;
+            var end = start + event.duration();
+            var group = this.groups[groupIndex];
+            var ranges = group.ranges(start, end, true, event.isAllDay);
+            this._removeMoveHint();
+            for (var rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
+                var range = ranges[rangeIndex];
+                var startSlot = range.startSlot();
+                var endSlot = range.endSlot();
+                var hint = this._createEventElement(event.clone({
+                    head: range.head,
+                    tail: range.tail
+                }));
+                hint.css({
+                    left: startSlot.offsetLeft + 2,
+                    top: startSlot.offsetTop + startSlot.firstChildHeight,
+                    height: this.options.eventHeight,
+                    width: range.innerWidth() - (startSlot.index !== endSlot.index ? 5 : 4)
+                });
+                hint.addClass('k-event-drag-hint');
+                hint.appendTo(this.content);
+                this._moveHint = this._moveHint.add(hint);
+            }
+        },
+        //_positionEvent: function (slotRange, element, group) {
+        //    var eventHeight = this.options.eventHeight;
+        //    var startSlot = slotRange.start;
+        //    if (slotRange.start.offsetLeft > slotRange.end.offsetLeft) {
+        //        startSlot = slotRange.end;
+        //    }
+        //    var startIndex = slotRange.start.index;
+        //    var endIndex = slotRange.end.index;
+        //    var eventCount = startSlot.eventCount;
+        //    var events = SchedulerView.collidingEvents(slotRange.events(), startIndex, endIndex);
+        //    var rightOffset = startIndex !== endIndex ? 5 : 4;
+        //    events.push({
+        //        element: element,
+        //        start: startIndex,
+        //        end: endIndex
+        //    });
+        //    var rows = SchedulerView.createRows(events);
+        //    for (var idx = 0, length = Math.min(rows.length, eventCount); idx < length; idx++) {
+        //        var rowEvents = rows[idx].events;
+        //        var eventTop = startSlot.offsetTop + startSlot.firstChildHeight + idx * eventHeight + 3 * idx + 'px';
+        //        for (var j = 0, eventLength = rowEvents.length; j < eventLength; j++) {
+        //            rowEvents[j].element[0].style.top = eventTop;
+        //        }
+        //    }
+        //    if (rows.length > eventCount) {
+        //        for (var slotIndex = startIndex; slotIndex <= endIndex; slotIndex++) {
+        //            var collection = slotRange.collection;
+        //            var slot = collection.at(slotIndex);
+        //            if (slot.more) {
+        //                return;
+        //            }
+
+        //            slot.more = $(MORE_BUTTON_TEMPLATE({
+        //                ns: kendo.ns,
+        //                start: slotIndex,
+        //                end: slotIndex,
+        //                width: slot.clientWidth - 2,
+        //                left: slot.offsetLeft + 2,
+        //                top: slot.offsetTop + slot.firstChildHeight + eventCount * eventHeight + 3 * eventCount,
+        //                count: rows.length
+        //            }));
+
+        //            this.content[0].appendChild(slot.more[0]);
+        //        }
+        //    } else {
+        //        slotRange.addEvent({
+        //            element: element,
+        //            start: startIndex,
+        //            end: endIndex,
+        //            groupIndex: startSlot.groupIndex
+        //        });
+        //        element[0].style.width = slotRange.innerWidth() - rightOffset + 'px';
+        //        element[0].style.left = startSlot.offsetLeft + 2 + 'px';
+        //        element[0].style.height = eventHeight + 'px';
+        //        group._continuousEvents.push({
+        //            element: element,
+        //            uid: element.attr(kAttr('uid')),
+        //            start: slotRange.start,
+        //            end: slotRange.end
+        //        });
+        //        element.appendTo(this.content);
+        //    }
+        //},
+        _groups: function () {
+            var groupCount = this._groupCount();
+            var columnCount = NUMBER_OF_COLUMNS;
+            var rowCount = NUMBER_OF_ROWS;
+            this.groups = [];
+
+            for (var idx = 0; idx < groupCount; idx++) {
+                this._addResourceView(idx);
+            }
+
+            var tableRows = this.content[0].getElementsByTagName('tr');
+            var startDate = this.startDate();
+
+            for (var groupIndex = 0; groupIndex < groupCount; groupIndex++) {
+                var cellCount = 0;
+                var rowMultiplier = 0;
+
+                if (this._isVerticallyGrouped()) {
+                    rowMultiplier = groupIndex;
+                }
+
+                for (var rowIndex = rowMultiplier * rowCount; rowIndex < (rowMultiplier + 1) * rowCount; rowIndex++) {
+
+                    var group = this.groups[groupIndex];
+                    var collection = group.addDaySlotCollection(kDate.addDays(startDate, cellCount), kDate.addDays(this.startDate(), cellCount + columnCount));
+                    var tableRow = tableRows[rowIndex];
+                    var cells = tableRow.children;
+                    var cellMultiplier = 0;
+
+                    Logger.Notify("group: ");
+                    Logger.Notify(group);
+                    Logger.Notify("collection: " + collection);
+                    Logger.Notify(collection);
+
+                    tableRow.setAttribute('role', 'row');
+
+                    if (!this._isVerticallyGrouped()) {
+                        cellMultiplier = groupIndex;
+                    }
+
+                    for (var cellIndex = cellMultiplier * columnCount; cellIndex < (cellMultiplier + 1) * columnCount; cellIndex++) {
+
+                        var cell = cells[cellIndex];
+                        var clientHeight = cell.clientHeight;
+                        var firstChildHeight = cell.children.length ? cell.children[0].offsetHeight + 3 : 0;
+                        var start = kDate.addDays(startDate, cellCount);
+                        var end = kDate.MS_PER_DAY;
+
+                        if (startDate.getHours() !== start.getHours()) {
+                            end += (startDate.getHours() - start.getHours()) * kDate.MS_PER_HOUR;
+                        }
+
+                        start = kDate.toUtcTime(start);
+                        end += start;
+                        cellCount++;
+
+                        //var eventCount = 20; 
+                        var overflows = Math.floor((clientHeight - firstChildHeight - this.options.moreButtonHeight) / (this.options.eventHeight + 3));
+
+                        //console.log("show events: " + eventCount);
+                        //let majorColour = "#fff";
+                        //let minorColour = "#465298";
+
+                        //minorColour = ""; 
+
+                        //let background = "repeating-linear-gradient(90deg, {0}, {0} 10px, {1} 10px, {1} 20px)";
+                        //background = kendo.format(background, majorColour, minorColour);
+                        //$(cell).css({
+                        //    "background": background
+                        //});
+                        cell.setAttribute('role', 'gridcell');
+                        cell.setAttribute('aria-selected', false);
+                        collection.addDaySlot(cell, start, end, overflows);
+                    }
+                }
+            }
+        },
+        render: function (events) {
+            this.content.children('.k-event,.k-more-events,.k-events-container').remove();
+            this._groups();
+            events = new kData.Query(events).sort([
+                {
+                    field: 'start',
+                    dir: 'asc'
+                },
+                {
+                    field: 'end',
+                    dir: 'desc'
+                }
+            ]).toArray();
+            var resources = this.groupedResources;
+            if (resources.length) {
+                this._renderGroups(events, resources, 0, 1);
+            } else {
+                this._renderEvents(events, 0);
+            }
+            this.refreshLayout();
+            this.trigger('activate');
+        },
+
         _renderEvents: function (events, groupIndex) {
             var event;
             var idx;
@@ -553,7 +887,7 @@
                     }
                     var ranges = group.slotRanges(event, true);
                     var rangeCount = ranges.length;
-                    
+
 
                     for (var rangeIndex = 0; rangeIndex < rangeCount; rangeIndex++) {
                         var range = ranges[rangeIndex];
@@ -571,7 +905,6 @@
                                 end = range.end.endDate();
                             }
                         }
-
 
                         var occurrence = event.clone({
                             start: start,
@@ -631,123 +964,67 @@
             }
             return offset;
         },
-        render: function (events) {
-            this.content.children('.k-event,.k-more-events,.k-events-container').remove();
-            this._groups();
-            events = new kData.Query(events).sort([
-                {
-                    field: 'start',
-                    dir: 'asc'
-                },
-                {
-                    field: 'end',
-                    dir: 'desc'
-                }
-            ]).toArray();
+        _groupCount: function () {
             var resources = this.groupedResources;
             if (resources.length) {
-                this._renderGroups(events, resources, 0, 1);
-            } else {
-                this._renderEvents(events, 0);
-            }
-            this.refreshLayout();
-            this.trigger('activate');
-        },
-        //_addResourceView: function () {
-        //    var resourceView = new ResourceView(this.groups.length, this._isRtl);
-        //    this.groups.push(resourceView);
-        //    return resourceView;
-        //},
-        _groups: function () {
-            var groupCount = this._groupCount();
-            var columnCount = NUMBER_OF_COLUMNS;
-            var rowCount = NUMBER_OF_ROWS;
-            this.groups = [];
-
-            for (var idx = 0; idx < groupCount; idx++) {
-                this._addResourceView(idx);
-            }
-
-            var tableRows = this.content[0].getElementsByTagName('tr');
-            var startDate = this.startDate();
-
-            for (var groupIndex = 0; groupIndex < groupCount; groupIndex++) {
-                var cellCount = 0;
-                var rowMultiplier = 0;
-
                 if (this._isVerticallyGrouped()) {
-                    rowMultiplier = groupIndex;
-                }
-
-                for (var rowIndex = rowMultiplier * rowCount; rowIndex < (rowMultiplier + 1) * rowCount; rowIndex++)
-                {
-
-                    var group = this.groups[groupIndex];
-                    var collection = group.addDaySlotCollection(kDate.addDays(startDate, cellCount), kDate.addDays(this.startDate(), cellCount + columnCount));
-                    var tableRow = tableRows[rowIndex];
-                    var cells = tableRow.children;
-                    var cellMultiplier = 0;
-
-                    Logger.Notify("group: ");
-                    Logger.Notify(group);
-                    Logger.Notify("collection: " + collection);
-                    Logger.Notify(collection);
-
-                    tableRow.setAttribute('role', 'row');
-
-                    if (!this._isVerticallyGrouped())
-                    {
-                        cellMultiplier = groupIndex;
-                    }
-
-                    for (var cellIndex = cellMultiplier * columnCount; cellIndex < (cellMultiplier + 1) * columnCount; cellIndex++) {
-
-                        var cell = cells[cellIndex];
-                        var clientHeight = cell.clientHeight;
-                        var firstChildHeight = cell.children.length ? cell.children[0].offsetHeight + 3 : 0;
-                        var start = kDate.addDays(startDate, cellCount);
-                        var end = kDate.MS_PER_DAY;
-
-                        if (startDate.getHours() !== start.getHours()) {
-                            end += (startDate.getHours() - start.getHours()) * kDate.MS_PER_HOUR;
-                        }
-
-                        start = kDate.toUtcTime(start);
-                        end += start;
-                        cellCount++;
-
-                        //var eventCount = 20; 
-                        var overflows = Math.floor((clientHeight - firstChildHeight - this.options.moreButtonHeight) / (this.options.eventHeight + 3));
-
-                        //console.log("show events: " + eventCount);
-                        //let majorColour = "#fff";
-                        //let minorColour = "#465298";
-
-                        //minorColour = ""; 
-
-                        //let background = "repeating-linear-gradient(90deg, {0}, {0} 10px, {1} 10px, {1} 20px)";
-                        //background = kendo.format(background, majorColour, minorColour);
-                        //$(cell).css({
-                        //    "background": background
-                        //});
-                        cell.setAttribute('role', 'gridcell');
-                        cell.setAttribute('aria-selected', false);
-                        collection.addDaySlot(cell, start, end, overflows);
-                    }
+                    return this._rowCountForLevel(resources.length - 1);
+                } else {
+                    return this._columnCountForLevel(resources.length) / this._columnOffsetForResource(resources.length);
                 }
             }
+            return 1;
+        },
+        _columnOffsetForResource: function (index) {
+            return this._columnCountForLevel(index) / this._columnCountForLevel(index - 1);
+        },
+        destroy: function () {
+            if (this.table) {
+                this.table.removeClass('k-scheduler-WeekOverViewview');
+            }
+            if (this.content) {
+                this.content.off(NS);
+            }
+            if (this.element) {
+                this.element.off(NS);
+            }
+            SchedulerView.fn.destroy.call(this);
+            if (this._isMobile() && !this._isMobilePhoneView() && this.options.editable) {
+                if (this.options.editable.create !== false) {
+                    this._addUserEvents.destroy();
+                }
+                if (this.options.editable.update !== false) {
+                    this._editUserEvents.destroy();
+                }
+            }
+        },
+        events: [
+            'remove',
+            'add',
+            'edit',
+            'navigate'
+        ],
+        options: {
+            title: 'Month',
+            name: 'month',
+            //eventHeight: 25,
+            moreButtonHeight: 13,
+            editable: true,
+            selectedDateFormat: '{0:y}',
+            selectedShortDateFormat: '{0:y}',
+            groupHeaderTemplate: '#=text#',
+            dayTemplate: DAY_TEMPLATE,
+            eventTemplate: EVENT_TEMPLATE
         }
-            
+
     };
 
-    var SchedulerTimelineWeekView = SchedulerTimelineView.extend(timeLineOptions);
-    var SchedulerMonthWeekView = SchedulerMonthView.extend(monthViewOptions);
+    var SchedulerMonthWeekView = SchedulerView.extend(monthViewOptions);
 
     MyAndromeda.Logger.Notify("Defining SchedulerTimelineWeekView");
 
     extend(true, ui, {
-        SchedulerTimelineWeekView: SchedulerTimelineWeekView,
         MonthTimeWeekView: SchedulerMonthWeekView
     });
-     
+
 }

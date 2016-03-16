@@ -38,7 +38,8 @@ var MyAndromeda;
                         menuItem.Category1Name = category1 ? category1.Name : "";
                         menuItem.Category2Name = category2 ? category2.Name : "";
                         menuItem.DisplayName = function () {
-                            var self = this, webName = self.get("WebName"), name = self.get("Name");
+                            var self = this, //observable 
+                            webName = self.get("WebName"), name = self.get("Name");
                             if (webName && webName.length > 0) {
                                 return webName;
                             }
@@ -121,7 +122,8 @@ var MyAndromeda;
                             update: function (options) {
                                 var data = options.data, 
                                 //find the related menu items
-                                menuItem = null, similarItems = null; //internal.menuItemService.getRelatedItems([menuItem]),
+                                menuItem = null, //internal.menuItemService.findById(data.Id),
+                                similarItems = null; //internal.menuItemService.getRelatedItems([menuItem]),
                                 kendo.ui.progress($("body"), true);
                                 var jData = JSON.stringify(data);
                                 var promise = $.ajax({

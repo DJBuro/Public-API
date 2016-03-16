@@ -114,7 +114,7 @@ var MyAndromeda;
                 GeneralSettingsController.CustomerAccountsDefault = {
                     IsEnable: true,
                     EnableAndromedaLogin: true,
-                    IsEnableAndromedaLogin: true
+                    EnableFacebookLogin: true
                 };
                 return GeneralSettingsController;
             })();

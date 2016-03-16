@@ -58,7 +58,7 @@ namespace Andromeda.GPSIntegration
         /// <param name="externalOrderId">The order id returned by the third party provider when the order was originally created</param>
         /// <param name="driver">The driver that should be assigned to the order</param>
         /// <returns></returns>
-        ResultEnum AssignDriverToOrder(int andromedaStoreId, string externalOrderId, int? bags, Model.Driver driver, Action<string, DebugLevel> log);
+        ResultEnum AssignDriverToOrder(int andromedaStoreId, string externalOrderId, int? bags, Driver driver, Action<string, DebugLevel> log);
 
         /// <summary>
         /// Cancels an order in the third party provider

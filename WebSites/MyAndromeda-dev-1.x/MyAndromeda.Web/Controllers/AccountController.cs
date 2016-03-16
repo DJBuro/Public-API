@@ -240,7 +240,7 @@ namespace MyAndromeda.Web.Controllers
             {
                 foreach (var error in passwordErrors)
                 {
-                    this.ModelState.AddModelError("Password", Translator.T(error));
+                    this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
                 }
 
                 return View(model);
@@ -259,13 +259,13 @@ namespace MyAndromeda.Web.Controllers
             }
             catch (Exception)
             {
-                this.notifier.Error("There was a problem setting your password. Please try again");
+                this.notifier.Error(message: "There was a problem setting your password. Please try again");
                 changePasswordSucceeded = false;
             }
 
             if (changePasswordSucceeded)
             {
-                this.notifier.Notify("Your password has been successfully changed.");
+                this.notifier.Notify(message: "Your password has been successfully changed.");
                 model.ConfirmPassword = string.Empty;
                 model.NewPassword = string.Empty;
 
@@ -273,7 +273,7 @@ namespace MyAndromeda.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                ModelState.AddModelError(key: string.Empty, errorMessage: "The current password is incorrect or the new password is invalid.");
             }
 
             // If we got this far, something failed, redisplay form

@@ -2,6 +2,101 @@
 module MyAndromeda.Hr.Directives {
     var app = angular.module("MyAndromeda.Hr.Directives", []);
 
+
+    app.directive("employeePic", () => {
+
+        return {
+            name: "employeePic",
+            templateUrl: "employee-pic.html",
+            restrict: "EA",
+            transclude: true,
+            scope: {
+                employeeId: '=id',
+                employee: '=employee',
+                showShortName: "=showShortName",
+                showFullName: "=showFullName",
+                showWorkStatus: "=showWorkStatus"
+            },
+            controller: ($scope, $timeout,
+                employeeService: Services.EmployeeService,
+                employeeServiceState: Services.EmployeeServiceState,
+                uuidService: MyAndromeda.Services.UUIdService) => {
+
+                if (!$scope.employee) {
+                    Logger.Notify("I have a employee Id: " + $scope.employeeId);
+                    Logger.Notify($scope);
+                }
+
+                let dataItem: Models.IEmployee = $scope.employee;
+                let getValueOrDefault = (source: any, defaultValue: any) => {
+                    let v = source;
+                    let k = typeof (v);
+
+                    if (k == "undefined") {
+                        return defaultValue;
+                    }
+                    return v;
+                };
+
+
+                let options = {
+                    showShortName: getValueOrDefault($scope.showShortName, false),
+                    //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
+                    showFullName: getValueOrDefault($scope.showFullName, false),
+                    //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
+                    showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
+                    //typeof ($scope.showWorkStatus) == "undefined" ? true : $scope.showWorkStatus
+                };
+
+                $scope.options = options;
+
+                let state = {
+                    random: uuidService.GenerateUUID()
+                };
+
+                $scope.$watch('showShortName', (newValue, old) => {
+                    $timeout(() => { options.showShortName = getValueOrDefault(newValue, true); });
+                });
+                $scope.$watch('showFullName', (newValue, oldValue) => {
+                    $timeout(() => { options.showFullName = getValueOrDefault(newValue, true); });
+                });
+                $scope.$watch('showWorkStatus', (newValue, oldValue) => {
+                    $timeout(() => { options.showWorkStatus = getValueOrDefault(newValue, true); });
+                });
+
+
+                let updates = employeeServiceState.EmployeeUpdated.where(e=> e.Id == dataItem.Id).subscribe((change) => {
+                    $timeout(() => {
+                        Logger.Notify(dataItem.ShortName + " updated");
+                        //just run ... not nothing to do. 
+                        state.random = uuidService.GenerateUUID();
+                    });
+                });;
+
+
+                $scope.state = state;
+                $scope.profilePicture = () => {
+                    //var profilePicture = "/content/profile-picture.jpg";
+                    let chainId = employeeServiceState.CurrentChainId;
+                    let andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+
+                    let route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
+                    route = route + "?r=" + state.random;
+
+                    return {
+                        'background-image': 'url(' + route + ')'
+                    };
+                };
+
+                $scope.$on('$destroy', () => {
+                    updates.dispose();
+                });
+
+
+            }
+        };
+    });
+
     app.directive("employeeDocs", () => {
         return {
             name: "employeeDocs",
@@ -252,245 +347,6 @@ module MyAndromeda.Hr.Directives {
         }
     });
 
-    app.directive("employeePic", () => {
-
-        return {
-            name: "employeePic",
-            templateUrl: "employee-pic.html",
-            restrict: "EA",
-            transclude: true,
-            scope: {
-                employeeId: '=id',
-                employee: '=employee',
-                showShortName: "=showShortName",
-                showFullName: "=showFullName",
-                showWorkStatus: "=showWorkStatus"
-            },
-            controller: ($scope, $timeout, 
-                employeeService: Services.EmployeeService,
-                employeeServiceState: Services.EmployeeServiceState,
-                uuidService: MyAndromeda.Services.UUIdService) => {
-
-                if (!$scope.employee) {
-                    Logger.Notify("I have a employee Id: " + $scope.employeeId);
-                    Logger.Notify($scope);
-                }
-
-                let dataItem: Models.IEmployee = $scope.employee;
-                let getValueOrDefault = (source: any, defaultValue: any) => {
-                    let v = source;
-                    let k = typeof (v);
-                    
-                    if (k == "undefined") {
-                        return defaultValue;
-                    }
-                    return v;
-                };
-
-
-                let options = {
-                    showShortName: getValueOrDefault($scope.showShortName, false),
-                    //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
-                    showFullName: getValueOrDefault($scope.showFullName, false),
-                    //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
-                    showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
-                    //typeof ($scope.showWorkStatus) == "undefined" ? true : $scope.showWorkStatus
-                };
-                
-                $scope.options = options;
-
-                let state = {
-                    random : uuidService.GenerateUUID()
-                };
-
-                $scope.$watch('showShortName', (newValue, old) => {
-                    $timeout(() => { options.showShortName = getValueOrDefault(newValue, true); });
-                });
-                $scope.$watch('showFullName', (newValue, oldValue) => {
-                    $timeout(() => { options.showFullName = getValueOrDefault(newValue, true); });
-                });
-                $scope.$watch('showWorkStatus', (newValue, oldValue) => {
-                    $timeout(() => { options.showWorkStatus = getValueOrDefault(newValue, true); });
-                });
-               
-
-                let updates = employeeServiceState.EmployeeUpdated.where(e=> e.Id == dataItem.Id).subscribe((change) => {
-                    $timeout(() => {
-                        Logger.Notify(dataItem.ShortName + " updated");
-                        //just run ... not nothing to do. 
-                        state.random = uuidService.GenerateUUID();
-                    });
-                });;
-                
-
-                $scope.state = state;
-                $scope.profilePicture = () => {
-                    //var profilePicture = "/content/profile-picture.jpg";
-                    let chainId = employeeServiceState.CurrentChainId;
-                    let andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
-
-                    let route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
-                    route = route + "?r=" + state.random;
-
-                    return {
-                        'background-image': 'url(' + route + ')'
-                    };
-                };
-
-                $scope.$on('$destroy', () => {
-                    updates.dispose();
-                });
-
-
-            }
-        };
-    });
-
-    app.directive("workingTask", () => {
-        return {
-            name: "workingTask",
-            templateUrl: "working-task.html",
-            scope: {
-                task: "=task",
-                timeLineMode: "=timeLineMode"
-                //employee: "=employee"
-            },
-            controller: ($element, $scope, employeeService: Services.EmployeeService) => {
-                var task: Models.IEmployeeTask = $scope.task;
-                var employee: Models.IEmployee = <any>employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
-                if (employee === null) { Logger.Notify("cant find the person"); }
-
-                $scope.employee = employee;
-
-                let topElement = $($element).closest(".k-event");
-                let borderStyle = ""
-
-                switch (employee.Department) {
-                    case "Front of house": borderStyle = 'task-front-of-house'; break;
-                    case "Kitchen": borderStyle = 'task-kitchen'; break;
-                    case "Management": borderStyle = 'task-management'; break;
-                    case "Delivery": borderStyle = 'task-delivery'; break;
-                }
-
-                topElement.addClass("task-border");
-                topElement.addClass(borderStyle);
-
-                var status = {
-                    clone: null
-                };
-                
-                var popover = topElement.popover({
-                    title: "Task preview",
-                    placement: "auto",
-                    html: true,
-                    content: "please wait",
-                    trigger: "click"
-                }).on("show.bs.popover", function () {
-                    let html = topElement.html();
-                    popover.attr('data-content', html);
-                    var current = $(this);
-                    setTimeout(() => { current.popover('hide'); }, 5000);
-                    $scope.$on('$destroy', function () {
-                        //current.fadeOut();
-                    });
-                });
-
-                $scope.$on('$destroy', function () {
-                    popover.hide();
-                });
-
-                var extra = {
-                    hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
-                    startTime: kendo.toString(task.start, "HH:mm"),
-                    endTime: kendo.toString(task.end, "HH:mm")
-                };
-
-                $scope.extra = extra;
-            }
-        };
-    });
-
-    app.directive("employeeTask", () => {
-        return {
-            name: "employeeTask",
-            templateUrl: "employee-task.html",
-            scope: {
-                task: "=task",
-                timeLineMode: "=timeLineMode"
-                //employee: "=employee"
-            },
-            controller: ($element, $scope, employeeService: Services.EmployeeService) => {
-                var task: Models.IEmployeeTask = $scope.task;
-                var employee: Models.IEmployee = <any>employeeService.StoreEmployeeDataSource.get(task.EmployeeId);
-                if (employee === null) { Logger.Notify("cant find the person"); }
-
-                $scope.employee = employee;
-
-                let topElement = $($element).closest(".k-event");
-                let borderStyle = ""
-
-                switch (employee.Department) {
-                    case "Front of house": borderStyle = 'task-front-of-house'; break;
-                    case "Kitchen": borderStyle = 'task-kitchen'; break; 
-                    case "Management": borderStyle = 'task-management'; break;
-                    case "Delivery": borderStyle = 'task-delivery'; break;
-                }
-
-                topElement.addClass("task-border");
-                topElement.addClass(borderStyle);
-
-                var status = {
-                    clone : null 
-                };
-
-                //var popover = topElement.popover({
-                //    title: "Task preview",
-                //    placement: "auto",
-                //    html: true,
-                //    content: "please wait",
-                //    trigger: "hover"
-                //}).on("show.bs.popover", function() {
-                //    let html = topElement.html();
-                //    popover.attr('data-content', html);
-                //    var current = $(this); 
-                //    setTimeout(() => { current.popover('hide'); }, 5000)
-                //});
-
-                //topElement.on("hover", function (e) {
-                //    Logger.Notify("animate .k-event");
-                //});
-
-                
-                var popover = topElement.popover({
-                    title: "Task preview",
-                    placement: "auto",
-                    html: true,
-                    content: "please wait",
-                    trigger: "click"
-                }).on("show.bs.popover", function () {
-                    let html = topElement.html();
-                    popover.attr('data-content', html);
-                    var current = $(this);
-                    setTimeout(() => { current.popover('hide'); }, 5000);
-                    $scope.$on('$destroy', function () {
-                        //current.fadeOut();
-                    });
-                });
-
-                $scope.$on('$destroy', function () {
-                    popover.hide();
-                });
-
-                var extra = {
-                    hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
-                    startTime: kendo.toString(task.start, "HH:mm"),
-                    endTime: kendo.toString(task.end, "HH:mm")
-                };  
-                
-                $scope.extra = extra; 
-            }
-        };
-    });
 
     //app.directive("schedulerEmployeeLabel", () => { });
 }

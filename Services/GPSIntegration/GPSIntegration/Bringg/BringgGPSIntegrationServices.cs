@@ -50,14 +50,18 @@ namespace Andromeda.GPSIntegration.Bringg
         /// <param name="customer">Details of the customer that placed the order</param>
         /// <param name="newOrder">The order that was placed</param>
         /// <returns></returns>
-        public ResultEnum CustomerPlacedOrder(int andromedaStoreId, Model.Customer customer, Model.Order newOrder, Action<string, DebugLevel> log)
+        public ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, Action<string, DebugLevel> log)
         {
             ResultEnum result = ResultEnum.UnknownError;
 
-            ErrorHelper.LogInfo("BringgGPSIntegrationServices.CustomerPlacedOrder", "New order " + newOrder.AndromedaOrderId, andromedaStoreId.ToString());
+            //ErrorHelper.LogInfo(method: "BringgGPSIntegrationServices.CustomerPlacedOrder", 
+            //info: "New order " + newOrder.AndromedaOrderId, storeId: andromedaStoreId.ToString());
+            string message = string.Format(format: "New order {0}", arg0: newOrder.AndromedaOrderId);
+
+            log(arg1: "BringgGPSIntegrationServices.CustomerPlacedOrder "+ message, arg2: DebugLevel.Notify);
 
             // Lookup the Bringg config
-            Model.StoreConfiguration store = null;
+            StoreConfiguration store = null;
             result = this.GetStoreByAndromedaStoreId(andromedaStoreId, out store);
 
             // Get the bringg config
@@ -69,33 +73,38 @@ namespace Andromeda.GPSIntegration.Bringg
 
             if (!bringgConfig.isEnabled)
             {
-                ErrorHelper.LogError("BringgGPSIntegrationServices.CustomerPlacedOrder", "Attempt to send order to disabled Bringg.  Store " + andromedaStoreId.ToString(), andromedaStoreId.ToString());
+                //"BringgGPSIntegrationServices.CustomerPlacedOrder", 
+                //"Attempt to send order to disabled Bringg.  Store " + andromedaStoreId.ToString(), andromedaStoreId.ToString()
+                //ErrorHelper.LogError();
                 return ResultEnum.Disabled;
             }
 
-            // Add/update customer
-            if (result == ResultEnum.OK)
+            if (result != ResultEnum.OK)
             {
-                result = this.AddUpdateCustomer(andromedaStoreId, bringgConfig, customer);
+                return result;
             }
+
+            // Add/update customer
+            result = this.AddUpdateCustomer(andromedaStoreId, bringgConfig, customer);
 
             if (result == ResultEnum.OK)
             {
                 // Send order to Bringg
-                string errorMessage =
-                    bringgConfig.partnerConfig.apiCallsEnabled ? BringgAPI.AddTask(bringgConfig.partnerConfig, customer, newOrder, log) : null;
+                string errorMessage = bringgConfig.partnerConfig.apiCallsEnabled 
+                    ? BringgAPI.AddTask(bringgConfig.partnerConfig, customer, newOrder, log) 
+                    : null;
 
-                if (!String.IsNullOrEmpty(errorMessage))
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.CustomerPlacedOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.CustomerPlacedOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }
 
+
             ErrorHelper.LogInfo(
-                "BringgGPSIntegrationServices.CustomerPlacedOrder", 
-                "Completed with task id " + ((newOrder.BringgTaskId == null) ? "" : newOrder.BringgTaskId ), 
-                andromedaStoreId.ToString()); 
+                method: "BringgGPSIntegrationServices.CustomerPlacedOrder",
+                info: "Completed with task id " + ((newOrder.BringgTaskId == null) ? "" : newOrder.BringgTaskId), storeId: andromedaStoreId.ToString()); 
 
             return result;
         }
@@ -107,14 +116,18 @@ namespace Andromeda.GPSIntegration.Bringg
         /// <param name="externalOrderId">The order id returned by Bringg when the order was originally created</param>
         /// <param name="driver">The driver that should be assigned to the order</param>
         /// <returns></returns>
-        public ResultEnum AssignDriverToOrder(int andromedaStoreId, string bringgTaskId, int? bags, Model.Driver driver, Action<string, DebugLevel> log)
+        public ResultEnum AssignDriverToOrder(int andromedaStoreId, string bringgTaskId, int? bags, Driver driver, 
+            Action<string, DebugLevel> log)
         {
             ResultEnum result = ResultEnum.UnknownError;
 
-            ErrorHelper.LogInfo("BringgGPSIntegrationServices.AssignDriverToOrder", "", andromedaStoreId.ToString());
+            //ErrorHelper.LogInfo(method: "BringgGPSIntegrationServices.AssignDriverToOrder", info: "", storeId: andromedaStoreId.ToString());
+
+            string logMessage = string.Format(format: "assign driver to {0}", arg0: bringgTaskId);
+            log(arg1: "BringgGPSIntegrationServices.AssignDriverToOrder: " + logMessage, arg2: DebugLevel.Notify);
 
             // Lookup the Bringg config
-            Model.StoreConfiguration store = null;
+            StoreConfiguration store = null;
             result = this.GetStoreByAndromedaStoreId(andromedaStoreId, out store);
 
             // Get the bringg config
@@ -126,7 +139,9 @@ namespace Andromeda.GPSIntegration.Bringg
 
             if (!bringgConfig.isEnabled)
             {
-                ErrorHelper.LogError("BringgGPSIntegrationServices.AssignDriverToOrder", "Attempt to send order to disabled Bringg.  Store " + andromedaStoreId.ToString(), andromedaStoreId.ToString());
+                ErrorHelper.LogError(
+                    method: "BringgGPSIntegrationServices.AssignDriverToOrder",
+                    message: "Attempt to send order to disabled Bringg.  Store " + andromedaStoreId.ToString(), storeId: andromedaStoreId.ToString());
                 return ResultEnum.Disabled;
             }
 
@@ -136,10 +151,10 @@ namespace Andromeda.GPSIntegration.Bringg
                 string errorMessage =
                     bringgConfig.partnerConfig.apiCallsEnabled ? BringgAPI.GetOrAddUser(bringgConfig.partnerConfig, driver, log) : null;
 
-                if (!String.IsNullOrEmpty(errorMessage))
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
                     log("BringgAPI.GetOrAddUser" + errorMessage, DebugLevel.Error);
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.AssignDriverToOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.AssignDriverToOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }
@@ -154,10 +169,10 @@ namespace Andromeda.GPSIntegration.Bringg
                     ? BringgAPI.GetTask(bringgConfig.partnerConfig, bringgTaskId, out bringgTask, out detailTask) 
                     : null;
 
-                if (!String.IsNullOrEmpty(errorMessage))
+                if (!string.IsNullOrEmpty(errorMessage))
                 {
                     log("BringgAPI.GetTask" + errorMessage, DebugLevel.Error);
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.AssignDriverToOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.AssignDriverToOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }
@@ -165,7 +180,7 @@ namespace Andromeda.GPSIntegration.Bringg
             // Assign the driver to the task
             if (result == ResultEnum.OK)
             {
-                string message = string.Format("Assign driver: {0} to task: {1}", driver.ExternalId, bringgTask.id);
+                string message = string.Format(format: "Assign driver: {0} to task: {1}", arg0: driver.ExternalId, arg1: bringgTask.id);
                 log(message, DebugLevel.Notify);
                 // Assign the driver to the task
                 bringgTask.user_id = driver.ExternalId;
@@ -184,7 +199,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
                 if (!String.IsNullOrEmpty(errorMessage))
                 {
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.AssignDriverToOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.AssignDriverToOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }
@@ -197,7 +212,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
                 if (!String.IsNullOrEmpty(errorMessage))
                 {
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.AssignDriverToOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.AssignDriverToOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }
@@ -227,67 +242,15 @@ namespace Andromeda.GPSIntegration.Bringg
         {
             ResultEnum result = ResultEnum.OK;
 
-    //        DW.EntityFrameworkDataAccessFactory entityFrameworkDataAccessFactory = new DW.EntityFrameworkDataAccessFactory();
+    
+            string errorMessage =
+                bringgConfig.partnerConfig.apiCallsEnabled ? BringgAPI.AddCustomer(bringgConfig.partnerConfig, customer) : null;
 
-    //        CustomerGPS customerGPS = null;
-    //        if (result == ResultEnum.OK)
-   //         {
-                // Get the Bringg customer details from the database
-   //             entityFrameworkDataAccessFactory.CustomerGPSDataAccess.GetById(customer.Id, out customerGPS);
-   //         }
-
-    //        if (result == ResultEnum.OK)
-   //         {
-                //if (customerGPS == null)
-                //{
-                    // Customer has not already been created in Bringg
-     //               ErrorHelper.LogInfo("BringgGPSIntegrationServices.AddUpdateCustomer", "Customer NOT in Bringg", andromedaStoreId.ToString());
-
-                    // Create customer in Bringg 
-                    // Note that the customer object returned by AddCustomer will contain the Bringg customer id (partnerId)
-                    string errorMessage =
-                        bringgConfig.partnerConfig.apiCallsEnabled ? BringgAPI.AddCustomer(bringgConfig.partnerConfig, customer) : null;
-
-                    if (!String.IsNullOrEmpty(errorMessage))
-                    {
-                        ErrorHelper.LogError("BringgGPSIntegrationServices.AddUpdateCustomer", errorMessage, andromedaStoreId.ToString());
-                        result = ResultEnum.UnknownError;
-                    }
-          //          else
-         //           {
-                        // Update the customer in the datawarehouse
-         //               customerGPS = new CustomerGPS()
-         //               {
-         //                   CustomerId = customer.Id,
-         //                   PartnerId = customer.PartnerId
-         //               };
-     //                   entityFrameworkDataAccessFactory.CustomerGPSDataAccess.Add(customerGPS);
-         //           }
-                //}
-                //else
-                //{
-                //    // We've already got the Bringg customer id
-                //    ErrorHelper.LogInfo("BringgGPSIntegrationServices.AddUpdateCustomer", "Customer " + customerGPS.PartnerId + " already in Bringg", andromedaStoreId.ToString());
-
-                //    customer.PartnerId = customerGPS.PartnerId;
-
-                //    // Update the customer in Bringg
-                //    string errorMessage =
-                //        bringgConfig.partnerConfig.apiCallsEnabled ? BringgAPI.UpdateCustomer(bringgConfig.partnerConfig, customer) : null;
-
-                //    if (!String.IsNullOrEmpty(errorMessage))
-                //    {
-                //        ErrorHelper.LogError("BringgGPSIntegrationServices.AddUpdateCustomer", errorMessage, andromedaStoreId.ToString());
-                //        result = ResultEnum.UnknownError;
-                //    }
-                //}
-     //       }
-
-     //       if (result == ResultEnum.OK)
-     //       {
-                // We've either created or gotten the customer - we need the Bringg customer id to tag the order against
-     //           customer.PartnerId = customerGPS.PartnerId;
-     //       }
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                ErrorHelper.LogError(method: "BringgGPSIntegrationServices.AddUpdateCustomer", message: errorMessage, storeId: andromedaStoreId.ToString());
+                result = ResultEnum.UnknownError;
+            }
 
             return result;
         }
@@ -296,7 +259,7 @@ namespace Andromeda.GPSIntegration.Bringg
         {
             ResultEnum result = ResultEnum.UnknownError;
 
-            ErrorHelper.LogInfo("BringgGPSIntegrationServices.CancelOrder", "", bringgTaskId);
+            ErrorHelper.LogInfo(method: "BringgGPSIntegrationServices.CancelOrder", info: "", storeId: bringgTaskId);
 
             // Lookup the Bringg config
             Model.StoreConfiguration store = null;
@@ -311,7 +274,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
             if (!bringgConfig.isEnabled)
             {
-                ErrorHelper.LogError("BringgGPSIntegrationServices.CancelOrder", "Attempt to cancel order in disabled Bringg.  Store " + andromedaStoreId.ToString(), andromedaStoreId.ToString());
+                ErrorHelper.LogError(method: "BringgGPSIntegrationServices.CancelOrder", message: "Attempt to cancel order in disabled Bringg.  Store " + andromedaStoreId.ToString(), storeId: andromedaStoreId.ToString());
                 return ResultEnum.Disabled;
             }
 
@@ -323,7 +286,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
                 if (!String.IsNullOrEmpty(errorMessage))
                 {
-                    ErrorHelper.LogError("BringgGPSIntegrationServices.CancelOrder", errorMessage, andromedaStoreId.ToString());
+                    ErrorHelper.LogError(method: "BringgGPSIntegrationServices.CancelOrder", message: errorMessage, storeId: andromedaStoreId.ToString());
                     result = ResultEnum.UnknownError;
                 }
             }

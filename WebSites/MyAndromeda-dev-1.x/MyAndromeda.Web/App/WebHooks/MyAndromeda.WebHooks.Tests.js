@@ -93,7 +93,9 @@ var MyAndromeda;
                     //do i have anything to resize
                 });
                 var dataSource = new kendo.data.DataSource({
-                    "transport": { "read": { "url": "/api/Store" }, "prefix": "" },
+                    "transport": {
+                        "read": { "url": "/api/Store" }
+                    },
                     "schema": { "errors": "Errors" }
                 });
                 $scope.storeDataSource = dataSource;
@@ -131,8 +133,7 @@ var MyAndromeda;
                             "data": {
                                 andromedaSiteId: $routeParams.andromedaSiteId
                             }
-                        },
-                        "prefix": ""
+                        }
                     }
                 });
                 var acsDataSource = new kendo.data.DataSource({

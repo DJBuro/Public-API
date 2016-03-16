@@ -51,7 +51,7 @@
 {
     if (false)
     {
-    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
 
     <script type="text/javascript">
@@ -65,25 +65,18 @@
         });
     </script>
     <script type="text/ng-template" id="occasionTask.html">
+        <span class="label label-success">{{::extra.hours |  number:1 }} h</span>
+        <span class="label label-info">{{::extra.startTime}} - {{::extra.endTime}}</span>
 
-
-        <div class="container-fluid">
-            <div ng-if="task.title">
-                {{::task.title}}
-            </div>
-
-            <div class="row" ng-repeat="occasion in state.occasions">
-                <div class="col-sm-12">
-                    <i class="fa fa-cutlery" style="color:{{::getColour(occasion)}} "></i>
-                    {{::occasion}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h6>{{::extra.startTime}} - {{::extra.endTime}} <span class="label label-success">{{extra.hours}} hr</span></h6>
-                </div>
-            </div>
+        <span class="label label-info" ng-repeat="occasion in state.occasions">
+            <i class="fa fa-cutlery" style="color:{{::getColour(occasion)}} "></i>
+            {{::occasion | limitTo: 2 }}
+        </span>
+        
+        <div ng-if="task.title" >
+            <span class="label label-default">{{::task.title}}</span>
         </div>
+
     </script>
 
     <script type="text/ng-template" id="OpeningHours-template.html">
@@ -102,13 +95,13 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div>Title:</div>
+                                    <div class="label label-default">Title:</div>
 
                                     <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
                                     <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <div></div>
+                                    <div>&nbsp;</div>
                                     <label><input type="checkbox" ng-model="task.isAllDay" /> All day?</label>
                                 </div>
                             </div>
@@ -116,7 +109,7 @@
                             <div class="row" ng-if="!task.isAllDay">
 
                                 <div class="col-sm-6">
-                                    <div>Start:</div>
+                                    <div class="label label-default">Start:</div>
                                     <input kendo-date-time-picker required
                                            name="start"
                                            k-ng-model="task.start"
@@ -124,7 +117,7 @@
                                     <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
                                 </div>
                                 <div class="col-sm-6">
-                                    <div>End:</div>
+                                    <div class="label label-default">End:</div>
                                     <input kendo-date-time-picker required
                                            name="end"
                                            k-ng-model="task.end"
@@ -134,8 +127,9 @@
                             </div>
                             <br />
                             <div class="row">
-                                <div class="col-sm-12">Occasion Type(s):</div>
                                 <div class="col-sm-12">
+                                    <div class="label label-default">Occasion Type(s):</div>
+
                                     <select required kendo-multi-select k-options="occasionOptions" k-ng-model="task.Occasions"></select>
                                 </div>
                             </div>
@@ -151,8 +145,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Repeat occasion on different days</div>
                         <div class="panel-body">
-                            <div class="k-edit-label"><label for="recurrenceRule">Repeat</label></div>
-                            <div data-container-for="recurrenceRule" class="k-edit-field">
+                            <div class="label label-default">Repeat</div>
+                            <div data-container-for="recurrenceRule">
                                 <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
                             </div>
                         </div>

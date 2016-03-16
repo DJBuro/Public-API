@@ -254,7 +254,7 @@ var MyAndromeda;
                         seriesDefaults: {
                             labels: {
                                 template: "#= category # - #= kendo.format('{0:P}', percentage)#",
-                                position: "outsideEnd",
+                                //position: "outsideEnd",
                                 visible: true,
                                 background: "transparent"
                             },

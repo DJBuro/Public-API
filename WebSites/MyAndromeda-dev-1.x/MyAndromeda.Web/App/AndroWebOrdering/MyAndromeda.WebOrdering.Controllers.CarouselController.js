@@ -183,7 +183,9 @@ var MyAndromeda;
                                     var dataSource = new kendo.data.DataSource({
                                         data: carousel.Items,
                                         schema: {
-                                            id: "Id"
+                                            model: {
+                                                id: "Id"
+                                            }
                                         }
                                     });
                                     var model = {

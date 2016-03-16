@@ -43,10 +43,10 @@
 
 <script type="text/ng-template" id="store-employee-scheduler.html">
     @*<style>
-        #scheduler td[role='gridcell'] {
-            height: 250px !important;
-        }
-    </style>*@
+            #scheduler td[role='gridcell'] {
+                height: 250px !important;
+            }
+        </style>*@
     <div ng-if="schedulerOptions">
         <div id="scheduler" kendo-scheduler k-options="schedulerOptions">
         </div>
@@ -289,7 +289,8 @@
           }">
         <div class="container-fluid">
 
-            <div class="row"><span class="label label-success">{{extra.hours | number: 1 }} h</span>
+            <div class="row">
+                <span class="label label-success">{{extra.hours | number: 1 }} h</span>
                 <span class="label label-default">{{extra.startTime}}-{{extra.endTime}} </span>
             </div>
 
@@ -481,6 +482,111 @@
                 </div>
             </div>
         </div>
+    </div>
+
+</script>
+
+<script type="text/ng-template" id="rotaTaskEditor.html">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Presets
+                    </div>
+                    <div class="panel-body">
+                        No presets (holiday, preset shift times (morning / afternoon))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Shift
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label><input type="checkbox" ng-model="task.isAllDay" /> All day?</label>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="!task.isAllDay">
+
+                            <div class="col-sm-6">
+                                <div class="label label-default">Start:</div>
+                                <input kendo-date-time-picker required
+                                       name="start"
+                                       k-ng-model="task.start"
+                                       style="width: 100%;" />
+                                <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="label label-default">End:</div>
+                                <input kendo-date-time-picker required
+                                       name="end"
+                                       k-ng-model="task.end"
+                                       style="width: 100%;" />
+                                <span data-for="end" class="k-invalid-msg" style="display: none;"></span>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="label label-default">Employee:</div>
+                                
+                                <select kendo-drop-down-list
+                                        ng-model="task.EmployeeId"
+                                       
+                                        k-data-text-field="'ShortName'"
+                                        k-data-value-field="'Id'"
+                                        k-data-source="dataSources.storeEmployeeDataSource"
+                                        style="width: 100%;"></select>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="label label-default">Task type:</div>
+
+                                <select kendo-drop-down-list
+                                        ng-model="task.TaskType"
+                                        k-data-text-field="'text'"
+                                        k-data-value-field="'value'"
+                                        k-data-source="dataSources.storeTaskTypeDataSource"
+                                        style="width: 100%;"></select>
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" ng-if="(task.TaskType == 'Need cover' || task.TaskType == 'Covering Shift')">
+                            
+                                <div class="col-sm-6">
+                                    <div class="label label-default">Title:</div>
+
+                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
+                                    <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                                </div>
+                                
+                            
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Repeat rota on different days</div>
+                    <div class="panel-body">
+                        <div class="label label-default">Repeat</div>
+                        <div data-container-for="recurrenceRule" >
+                            <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </script>

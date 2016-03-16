@@ -35,6 +35,40 @@
         ShiftStatus?: IEmployeeShiftStatus;
     }
 
+    export interface ITaskType {
+        text: string;
+        value: string; 
+        color: string;         
+    }
+
+    export var taskTypes: Array<ITaskType> = [
+        {
+            text: "Normal Shift",
+            value: "Shift",
+            color: "#ffffff"
+        },
+        {
+            text: "Need cover",
+            value: "Need cover",
+            color: "#d9534f"
+        },
+        {
+            text: "Covering Shift",
+            value: "Covering Shift",
+            color: "#d9edf7"
+        },
+        {
+            text: "Unplanned leave",
+            value: "Unplanned",
+            color: "#f2dede"
+        },
+        {
+            text: "Planned leave",
+            value: "Holiday",
+            color: "#fcf8e3"
+        }
+    ];
+
     export var departments = [
         { text: 'Front of house', majorColour: "#AA6C39", minorColour: "#FFD0AA" },
         { text: 'Kitchen', majorColour: "#2D882D", minorColour: "#87CC87" },
