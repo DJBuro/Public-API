@@ -352,26 +352,30 @@ namespace Andromeda.GPSIntegration.Bringg
                 company_id = bringgConfig.companyId.Value,
                 access_token = bringgConfig.accessToken,
                 timestamp = BringgHelper.GetTimestamp(),
-                task_id = bringgTaskId,
-                way_point_id = bringgTask.active_way_point_id,
+             //   task_id = int.Parse(bringgTaskId),
+             //   way_point_id = int.Parse(bringgTask.active_way_point_id),
                 note = note,
                 type = 0
             };
 
-            if (string.IsNullOrWhiteSpace(bringgNote.way_point_id)) 
-            {
+            //    if (bringgNote.way_point_id.HasValue) 
+            //   {
+            string waypointId = "";
                 var waypoint = bringgTask.way_points.FirstOrDefault();
-                if (waypoint != null)
+                if (waypoint != null && !string.IsNullOrEmpty(waypoint.id))
                 {
-                    bringgNote.way_point_id = waypoint.id;
+                //  bringgNote.way_point_id = int.Parse(waypoint.id);
+                waypointId = waypoint.id;
                 }
-            }
+          //  }
 
             // Call the Bringg API
             string message = BringgHelper.GenerateMessage(bringgNote, bringgConfig.secretKey);
 
             ///https://developer-api.bringg.com/partner_api/tasks/:task_id/way_points/:way_point_id/notes
-            string url = bringgConfig.apiUrl + "/tasks/" + bringgNote.task_id + "/way_points/" + bringgNote.way_point_id  + "/notes";
+            string url = bringgConfig.apiUrl + "/tasks/" + bringgTaskId + "/way_points/" + waypointId + "/notes";
+//            string url = bringgConfig.apiUrl + "/tasks/" + bringgNote.task_id + "/way_points/" + bringgNote.way_point_id + "/notes";
+
             HttpHelper.Call(
                 "POST", url, "APPLICATION/JSON", "APPLICATION/JSON", null, message, false, out httpStatusCode, out responseData);
 

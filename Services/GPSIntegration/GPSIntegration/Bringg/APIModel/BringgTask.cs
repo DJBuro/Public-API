@@ -8,8 +8,8 @@ namespace Andromeda.GPSIntegration.Bringg.APIModel
 {
     public class BringgNote 
     {
-        public string task_id { get; set; }
-        public string way_point_id { get; set; }
+     //   public int task_id { get; set; }
+    //    public int? way_point_id { get; set; }
         public string note { get; set; }
         public int company_id { get; set; }
         //public int user_id { get; set; }
