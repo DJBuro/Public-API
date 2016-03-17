@@ -244,22 +244,24 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                 // Extract the service times
                 siteDetails.ServiceTimes = this.ExtractOccasionTimes(siteEntity.SiteOccasionTimes);
 
-                //siteDetails.OpeningHours = new List<TimeSpanBlock>();
-                //if (siteEntity.OpeningHours != null)
-                //{
-                //    foreach (OpeningHour openingHour in siteEntity.OpeningHours)
-                //    {
-                //        TimeSpanBlock timeSpanBlock = new TimeSpanBlock();
-                //        timeSpanBlock.ID = openingHour.ID;
-                //        timeSpanBlock.Day = openingHour.Day.Description;
-                //        timeSpanBlock.StartTime = openingHour.TimeStart.Hours.ToString("00") + ":" + openingHour.TimeStart.Minutes.ToString("00");
-                //        timeSpanBlock.EndTime = openingHour.TimeEnd.Hours.ToString("00") + ":" + openingHour.TimeEnd.Minutes.ToString("00");
-                //        timeSpanBlock.OpenAllDay = openingHour.OpenAllDay;
+                // Opening hours (legacy - replaced by service times but left in for backwards compatability)
+                siteDetails.OpeningHours = new List<TimeSpanBlock>();
+                if (siteEntity.OpeningHours != null)
+                {
+                    foreach (OpeningHour openingHour in siteEntity.OpeningHours)
+                    {
+                        TimeSpanBlock timeSpanBlock = new TimeSpanBlock();
+                        timeSpanBlock.ID = openingHour.ID;
+                        timeSpanBlock.Day = openingHour.Day.Description;
+                        timeSpanBlock.StartTime = openingHour.TimeStart.Hours.ToString("00") + ":" + openingHour.TimeStart.Minutes.ToString("00");
+                        timeSpanBlock.EndTime = openingHour.TimeEnd.Hours.ToString("00") + ":" + openingHour.TimeEnd.Minutes.ToString("00");
+                        timeSpanBlock.OpenAllDay = openingHour.OpenAllDay;
 
-                //        siteDetails.OpeningHours.Add(timeSpanBlock);
-                //    }
-                //}
+                        siteDetails.OpeningHours.Add(timeSpanBlock);
+                    }
+                }
 
+                // Loyalty
                 siteDetails.SiteLoyalties = new List<AndroCloudDataAccess.Domain.SiteLoyalty>();
                 if (siteEntity.SiteLoyalties != null)
                 {

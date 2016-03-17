@@ -46,6 +46,9 @@ namespace AndroCloudDataAccess.Domain
         [JsonProperty(PropertyName = "serviceTimes", NullValueHandling = NullValueHandling.Ignore)]
         public List<ServiceTimes> ServiceTimes { get; set; }
 
+        [JsonProperty(PropertyName = "openingHours", NullValueHandling = NullValueHandling.Ignore)]
+        public List<TimeSpanBlock> OpeningHours { get; set; }
+
         [JsonProperty(PropertyName = "paymentProvider")]
         public string PaymentProvider { get; set; }
 
