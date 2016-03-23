@@ -59,19 +59,21 @@ namespace MyAndromeda.Services.Bringg.Handlers
 
             if (string.IsNullOrWhiteSpace(update.ExternalOrderId)) 
             {
-                this.logger.Error("ExternalOrderId is missing from orderstatus update");
+                this.logger.Error(message: "ExternalOrderId is missing from orderstatus update");
             }
             if (!update.InternalOrderId.HasValue) 
             {
-                this.logger.Error("InternalOrderId is missing from orderstatus update");
+                this.logger.Error(message: "InternalOrderId is missing from orderstatus update");
                 return;
             }
 
-            var orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == update.InternalOrderId);
+            Data.DataWarehouse.Models.OrderHeader orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == update.InternalOrderId);
 
             if (orderHeader.BringgTaskId.HasValue) 
             {
-                this.logger.Debug("{0} - The order already has a bringgId - {1} (skipping 'create' task)", orderHeader.ExternalOrderRef, orderHeader.BringgTaskId);
+                this.logger.Debug("{0} - The order already has a bringgId - {1} (skipping 'create' task)", 
+                    orderHeader.ExternalOrderRef, 
+                    orderHeader.BringgTaskId);
 
                 return;
             }
@@ -95,26 +97,24 @@ namespace MyAndromeda.Services.Bringg.Handlers
             try
             {
                 this.logger.Debug("Sending the order to BRINGG: " + orderHeader.ExternalOrderRef);
-                var currentState = orderHeader.GetState();
+                UsefulOrderStatus currentState = orderHeader.GetState();
 
                 //create order - completed for GPRS 
                 //create order - created for Rameses
-                var createOrderForBring = await this.bringgSerivce.ShallWeSendOrder(andromedaSiteId, currentState);
+                bool createOrderForBring = await this.bringgSerivce.ShallWeSendOrder(andromedaSiteId, currentState);
 
                 if (!createOrderForBring)
                 {
                     return;
                 }
 
-                bool delivery = orderHeader.OrderType.Equals("DELIVERY", StringComparison.InvariantCultureIgnoreCase);
+                bool delivery = orderHeader.OrderType.Equals(value: "DELIVERY", comparisonType: StringComparison.InvariantCultureIgnoreCase);
                 
                 if (!delivery) { return; }
 
                 this.logger.Debug("Try to use Bringg: " + andromedaSiteId);
 
-                await this.bringgSerivce.AddOrderAsync(andromedaSiteId, orderHeader.ID);
-
-
+                await this.bringgSerivce.AddOrderAsync(andromedaSiteId, orderHeader.ID, addNotes: false);
 
             }
             catch (Exception e)

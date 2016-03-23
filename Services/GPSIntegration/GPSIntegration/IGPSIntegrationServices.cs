@@ -49,7 +49,7 @@ namespace Andromeda.GPSIntegration
         /// <param name="customer">Details of the customer that placed the order</param>
         /// <param name="newOrder">The order that was placed</param>
         /// <returns></returns>
-        ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, Action<string, DebugLevel> log);
+        ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, bool addNote, Action<string, DebugLevel> log);
 
         /// <summary>
         /// Assigns a driver to an existing order in the third party provider

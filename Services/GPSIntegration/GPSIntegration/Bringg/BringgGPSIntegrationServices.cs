@@ -11,7 +11,7 @@ namespace Andromeda.GPSIntegration.Bringg
     /// </summary>
     public class BringgGPSIntegrationServices : GPSIntegrationServices, IGPSIntegrationServices
     {
-        private BringgAPI BringgAPI = new BringgAPI();
+        private readonly BringgAPI BringgAPI = new BringgAPI();
 
         /// <summary>
         /// A simple call to Bringg to check that the login details work
@@ -50,7 +50,7 @@ namespace Andromeda.GPSIntegration.Bringg
         /// <param name="customer">Details of the customer that placed the order</param>
         /// <param name="newOrder">The order that was placed</param>
         /// <returns></returns>
-        public ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, Action<string, DebugLevel> log)
+        public ResultEnum CustomerPlacedOrder(int andromedaStoreId, Customer customer, Order newOrder, bool addNote, Action<string, DebugLevel> log)
         {
             ResultEnum result = ResultEnum.UnknownError;
 
@@ -91,7 +91,7 @@ namespace Andromeda.GPSIntegration.Bringg
             {
                 // Send order to Bringg
                 string errorMessage = bringgConfig.partnerConfig.apiCallsEnabled 
-                    ? BringgAPI.AddTask(bringgConfig.partnerConfig, customer, newOrder, log) 
+                    ? BringgAPI.AddTask(bringgConfig.partnerConfig, customer, newOrder, addNote, log) 
                     : null;
 
                 if (!string.IsNullOrEmpty(errorMessage))

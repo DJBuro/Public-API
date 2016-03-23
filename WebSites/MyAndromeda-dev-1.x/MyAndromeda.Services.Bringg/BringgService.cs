@@ -95,7 +95,7 @@ namespace MyAndromeda.Services.Bringg
             //    UsefulOrderStatus.OrderHasBeenReceivedByTheStore;
         }
 
-        public async Task AddOrderAsync(int andromedaSiteId, Guid orderId)
+        public async Task AddOrderAsync(int andromedaSiteId, Guid orderId, bool addNotes)
         {
             OrderHeader order = await this.orderHeaderDataService
                 .OrderHeaders
@@ -121,7 +121,6 @@ namespace MyAndromeda.Services.Bringg
             Andromeda.GPSIntegration.Model.Address customerAddress = this.CreateAddress(order.CustomerAddress);
 
             Andromeda.GPSIntegration.Model.Order bringgOrder = this.CreateOrder(order, customerAddress);
-
             
             bool success = false;
 
@@ -138,7 +137,7 @@ namespace MyAndromeda.Services.Bringg
                 }
             };
 
-            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, log);
+            result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, addNotes, log);
 
             //try again
             if(!success)
@@ -147,7 +146,7 @@ namespace MyAndromeda.Services.Bringg
                 
                 customer.Phone = null;
 
-                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, log);
+                result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, addNotes, log);
             }
 
             if (result == ResultEnum.OK)
@@ -285,13 +284,13 @@ namespace MyAndromeda.Services.Bringg
                 return Bringg.UpdateDriverResult.NoDriverName;
             }
             if (string.IsNullOrWhiteSpace(order.DriverPhoneNumber))
-            {
+            {                                                            
                 return Bringg.UpdateDriverResult.NoDriverPhoneNumber;
             }
 
-            var driver = this.CreateDriver(order.DriverName, order.DriverPhoneNumber);
+            Andromeda.GPSIntegration.Model.Driver driver = this.CreateDriver(order.DriverName, order.DriverPhoneNumber);
 
-            var result = this.gpsIntegrationServices
+            ResultEnum result = this.gpsIntegrationServices
                 .AssignDriverToOrder(
                     andromedaSiteId,
                     order.BringgTaskId.ToString(),
@@ -387,8 +386,8 @@ namespace MyAndromeda.Services.Bringg
 
             model.Note += "Directions: ";
             
-            var hasCustomerDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
-            var hasOrderDirections = orderHeader.CustomerAddress != null && !string.IsNullOrWhiteSpace(orderHeader.CustomerAddress.Directions);
+            bool hasCustomerDirections = orderHeader.Customer.Address != null && !string.IsNullOrWhiteSpace(orderHeader.Customer.Address.Directions);
+            bool hasOrderDirections = orderHeader.CustomerAddress != null && !string.IsNullOrWhiteSpace(orderHeader.CustomerAddress.Directions);
 
             if (hasOrderDirections || hasCustomerDirections)
             {

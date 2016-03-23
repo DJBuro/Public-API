@@ -108,6 +108,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
             try
             {
                 await this.androAdminDbContext.SaveChangesAsync();
+
                 this.notifier.Notify(message: "Occasion updated", notifyOthersInStore: true);
 
                 this.acsSynchronizationTaskService.CreateTask(new MyAndromeda.Data.Model.MyAndromeda.CloudSynchronizationTask() { 

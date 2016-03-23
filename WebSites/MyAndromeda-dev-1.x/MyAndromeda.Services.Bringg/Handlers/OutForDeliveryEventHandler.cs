@@ -15,7 +15,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
 {
     public class OutForDeliveryEventHandler : IWebHooksEvent 
     {
-        private readonly Task emptyTask = Task.FromResult(false);
+        private readonly Task emptyTask = Task.FromResult(result: false);
 
         private readonly IBringgService bringgService;
         private readonly IMyAndromedaLogger logger;
@@ -70,7 +70,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
             if (!valid) { return; }
 
             var modelType = model as OutgoingWebHookOrderStatusChange;
-            var status = MyAndromeda.Data.DataWarehouse.OrderStatusExtensions.GetState(modelType.Status);
+            UsefulOrderStatus status = MyAndromeda.Data.DataWarehouse.OrderStatusExtensions.GetState(modelType.Status);
 
             if (status != UsefulOrderStatus.OrderIsOutForDelivery)
             {
@@ -80,44 +80,47 @@ namespace MyAndromeda.Services.Bringg.Handlers
 
             try
             {
-                var orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == modelType.InternalOrderId);
+                Data.DataWarehouse.Models.OrderHeader orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == modelType.InternalOrderId);
 
                 if (!orderHeader.BringgTaskId.HasValue) 
                 {
-                    this.logger.Debug("Skipping adding driver - no task id");
+                    this.logger.Debug(message: "Skipping adding driver - no task id");
                     return;
                 }
 
-                if (!orderHeader.OrderType.Equals("Delivery", StringComparison.InvariantCultureIgnoreCase)) 
+                if (!orderHeader.OrderType.Equals(value: "Delivery", comparisonType: StringComparison.InvariantCultureIgnoreCase)) 
                 {
-                    this.logger.Debug("Skipping order because it is not delivery");
+                    this.logger.Debug(message: "Skipping order because it is not delivery");
                     return;
                 }
 
                 this.logger.Debug("Try to assign driver to bring task id:" + orderHeader.BringgTaskId.Value);
                 this.logger.Debug("Bags" + orderHeader.Bags.GetValueOrDefault());
                 
-                var store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
-                var result = await this.bringgService.UpdateDriverAsync(store.Id, modelType.InternalOrderId, modelType.ExternalOrderId);
+                Data.Model.AndroAdmin.Store store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
+
+                await this.bringgService.AddOrderAsync(andromedaSiteId, orderHeader.ID, addNotes: true);
+                UpdateDriverResult result = await this.bringgService.UpdateDriverAsync(store.Id, modelType.InternalOrderId, modelType.ExternalOrderId);
 
                 switch (result) 
                 {
                     case UpdateDriverResult.CantFindOrderInWarehouse:
-                        throw new NullReferenceException("Order"); 
-                    case UpdateDriverResult.NoDriverName:
-                        throw new ArgumentNullException("DriverName");
-                    case UpdateDriverResult.NoDriverPhoneNumber:
-                        throw new ArgumentNullException("DriverPhoneNumber");
-                    case UpdateDriverResult.UnknownError :
-                        throw new Exception("Unknown error from bringg");
+                        throw new NullReferenceException(message: "Order"); 
                     case UpdateDriverResult.NoBringgTaskId:
-                        throw new ArgumentNullException("BringgTaskId"); 
+                        throw new ArgumentNullException(paramName: "BringgTaskId"); 
+                    case UpdateDriverResult.NoDriverName:
+                        throw new ArgumentNullException(paramName: "DriverName");
+                    case UpdateDriverResult.NoDriverPhoneNumber:
+                        throw new ArgumentNullException(paramName: "DriverPhoneNumber");
+                    case UpdateDriverResult.UnknownError :
+                        throw new Exception(message: "Unknown error from bringg");
                 }
+
             }
             catch (Exception ex)
             {
-                this.notifier.Error("Failed to update driver");
-                this.logger.Error("failed to update driver.");
+                this.notifier.Error(message: "Failed to update driver");
+                this.logger.Error(message: "failed to update driver.");
                 this.logger.Error(ex);
                 throw;
             }

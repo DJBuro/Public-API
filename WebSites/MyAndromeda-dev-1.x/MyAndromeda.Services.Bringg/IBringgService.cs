@@ -29,7 +29,7 @@ namespace MyAndromeda.Services.Bringg
         /// <param name="andromedaSiteId">The andromeda site id.</param>
         /// <param name="orderId">The order id.</param>
         /// <returns></returns>
-        Task AddOrderAsync(int andromedaSiteId, Guid orderId);
+        Task AddOrderAsync(int andromedaSiteId, Guid orderId, bool addNotes);
 
         /// <summary>
         /// Updates the driver async.

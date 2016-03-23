@@ -60,24 +60,24 @@ namespace MyAndromeda.Services.Bringg.Handlers
 
             if (string.IsNullOrWhiteSpace(update.ExternalOrderId))
             {
-                this.logger.Error("ExternalOrderId is missing from order status update");
+                this.logger.Error(message: "ExternalOrderId is missing from order status update");
             }
 
             if (!update.InternalOrderId.HasValue)
             {
-                this.logger.Error("InternalOrderId is missing from order status update");
+                this.logger.Error(message: "InternalOrderId is missing from order status update");
             }
 
             //already jobs for create / cancel 
-            if (update.Status == 1 || update.Status == 6 || update.Status == 5 || update.Status >= 1000) { return; }
+            if (update.Status == 1 || update.Status == 4 || update.Status == 6 || update.Status == 5 || update.Status >= 1000) { return; }
 
             try
             {
-                var isAvailable = await this.bringgSerivce.IsBringgConfigured(andromedaSiteId);
+                bool isAvailable = await this.bringgSerivce.IsBringgConfigured(andromedaSiteId);
 
                 if (!isAvailable) { return; }
 
-                var orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == update.InternalOrderId);
+                Data.DataWarehouse.Models.OrderHeader orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == update.InternalOrderId);
 
                 if (!orderHeader.BringgTaskId.HasValue) 
                 {
@@ -85,11 +85,11 @@ namespace MyAndromeda.Services.Bringg.Handlers
                     return;
                 }
 
-                await this.bringgSerivce.AddOrderAsync(andromedaSiteId, orderHeader.ID);
+                await this.bringgSerivce.AddOrderAsync(andromedaSiteId, orderHeader.ID, addNotes: false);
             }
             catch (Exception ex)
             {
-                this.logger.Error("Updating the bring task has thrown an error");
+                this.logger.Error(message: "Updating the bring task has thrown an error");
                 this.logger.Error(ex);
                 //throw;
             }

@@ -77,6 +77,7 @@
                         case definitions.DineIn.Name: return Models.occasionDefinitions.DineIn.Colour;
                     }
                 };
+
                 $scope.getColour = getColor; 
                 $scope.state = state;
                 $scope.extra = extra; 

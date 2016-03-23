@@ -11564,11 +11564,12 @@ var MyAndromeda;
                                 useLocalTimezone: false
                             },
                             editable: {
-                                template: "<occasion-task-editor task='dataItem'></occasion-task-editor>"
+                                template: "<occasion-task-editor task='dataItem'></occasion-task-editor>",
+                                editRecurringMode: "series"
                             },
                             pdf: {
                                 fileName: "Opening hours",
-                                title: "Schedule"
+                                title: "Opening hours"
                             },
                             eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
                             toolbar: ["pdf"],
