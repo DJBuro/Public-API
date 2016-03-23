@@ -24,9 +24,9 @@ namespace AndroAdmin.Mvc.Extensions
 
         public static string Resource(this HtmlHelper htmlHelper, string expression, params object[] args)
         {
-            var path = (string)htmlHelper.ViewData[SiteWebFormView.ViewPathKey];
-            if (string.IsNullOrEmpty(path))
-                path = "~/";
+       //     var path = (string)htmlHelper.ViewData[SiteWebFormView.ViewPathKey];
+       //     if (string.IsNullOrEmpty(path))
+       var         path = "~/";
 
             var fields = GetResourceFields(expression, path);
             if (!string.IsNullOrEmpty(fields.ClassKey))

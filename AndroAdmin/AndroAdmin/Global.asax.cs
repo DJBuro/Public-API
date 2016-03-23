@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 using AndroAdmin.Mvc.Spring;
 
@@ -39,8 +35,8 @@ namespace AndroAdmin
 
         protected void Application_Start()
         {
-            ViewEngines.Engines.Clear();//must have
-            ViewEngines.Engines.Add(new AndroAdmin.Mvc.SiteWebFormViewEngine());//register localization engine
+            //ViewEngines.Engines.Clear();//must have
+            //ViewEngines.Engines.Add(new AndroAdmin.Mvc.SiteWebFormViewEngine());//register localization engine
 
             ControllerBuilder.Current.SetControllerFactory(typeof(SpringControllerFactory));
             RegisterRoutes(RouteTable.Routes);

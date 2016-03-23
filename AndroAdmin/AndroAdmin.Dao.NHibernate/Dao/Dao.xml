@@ -21,7 +21,7 @@
                      provider="System.Data.SqlClient"
                      connectionString="Server=${db.datasource};Integrated Security=no;User ID=${db.user};PWD=${db.password};initial catalog=${db.database}"/>
 
-    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate21">
+    <object id="NHibernateSessionFactory" type="Spring.Data.NHibernate.LocalSessionFactoryObject, Spring.Data.NHibernate4">
         <property name="DbProvider" ref="DbProvider"/>
         <property name="MappingAssemblies">
             <list>
@@ -67,7 +67,7 @@
 
 
     <object id="transactionManager"
-          type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate21">
+          type="Spring.Data.NHibernate.HibernateTransactionManager, Spring.Data.NHibernate4">
 
         <property name="DbProvider" ref="DbProvider"/>
         <property name="SessionFactory" ref="NHibernateSessionFactory"/>

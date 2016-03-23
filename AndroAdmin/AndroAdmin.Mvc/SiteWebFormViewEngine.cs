@@ -1,17 +1,17 @@
-﻿using System.Web.Mvc;
+﻿//using System.Web.Mvc;
 
-namespace AndroAdmin.Mvc
-{
-    public class SiteWebFormViewEngine : WebFormViewEngine
-    {
-        protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
-        {
-            return new SiteWebFormView(viewPath, masterPath);
-        }
+//namespace AndroAdmin.Mvc
+//{
+//    public class SiteWebFormViewEngine : WebFormViewEngine
+//    {
+//        protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
+//        {
+//            return new SiteWebFormView(viewPath, masterPath);
+//        }
 
-        protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
-        {
-            return new SiteWebFormView(partialPath, null);
-        }
-    }
-}
+//        protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
+//        {
+//            return new SiteWebFormView(partialPath, null);
+//        }
+//    }
+//}

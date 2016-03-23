@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin", "AndroAdmin\AndroAdmin.csproj", "{6B3614FF-8E14-440A-B743-282F01BD61C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroAdmin.Mvc", "AndroAdmin.Mvc\AndroAdmin.Mvc.csproj", "{17D3934D-62FD-4162-BA50-EBB73CAB6A2C}"
@@ -34,5 +36,23 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://andromedapos.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AndroAdmin.Dao.NHibernate\\AndroAdmin.Dao.NHibernate.csproj
+		SccProjectName1 = AndroAdmin.Dao.NHibernate
+		SccLocalPath1 = AndroAdmin.Dao.NHibernate
+		SccProjectUniqueName2 = AndroAdmin.Dao\\AndroAdmin.Dao.csproj
+		SccProjectName2 = AndroAdmin.Dao
+		SccLocalPath2 = AndroAdmin.Dao
+		SccProjectUniqueName3 = AndroAdmin.Mvc\\AndroAdmin.Mvc.csproj
+		SccProjectName3 = AndroAdmin.Mvc
+		SccLocalPath3 = AndroAdmin.Mvc
+		SccProjectUniqueName4 = AndroAdmin\\AndroAdmin.csproj
+		SccProjectName4 = AndroAdmin
+		SccLocalPath4 = AndroAdmin
 	EndGlobalSection
 EndGlobal

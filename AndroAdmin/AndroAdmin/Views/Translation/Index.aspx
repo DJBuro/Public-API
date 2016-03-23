@@ -3,7 +3,7 @@
 <%@ Import Namespace="AndroAdmin.Models"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
-	<%=Html.Resource("Master, Translate")%>
+    <%=Html.Resource("Master, Translate")%>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -17,7 +17,10 @@
             <td><strong>Projects</strong></td>
         </tr> 
         <tr>
-            <td><strong><%= Html.ActionLink("Andro Admin", "Index/Admin", "Translation")%></strong></td><td><strong><%= Html.ActionLink("Order Tracking", "Index/OrderTracking", "Translation")%></strong></td><td><strong><%= Html.ActionLink("Dashboard", "Index/Dashboard", "Translation")%></strong></td><td><strong>Loyalty<%//= Html.ActionLink("Loyalty", "Index/Loyalty", "Translation")%></strong></td><td><strong></strong></td>
+            <td><strong><%= Html.ActionLink("Andro Admin", "~/Index/Admin", "Translation")%></strong></td>
+            <td><strong><%= Html.ActionLink("Order Tracking", "~/Index/OrderTracking", "Translation")%></strong></td>
+            <td><strong><%= Html.ActionLink("Dashboard", "~/Index/Dashboard", "Translation")%></strong></td>
+            <td><strong></strong></td>
         </tr>         
         <tr class="separator">
             <td colspan="5"></td>

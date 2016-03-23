@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.SessionState;
 using Spring.Context.Support;
+using System.Collections.Generic;
 
 namespace AndroAdmin.Mvc.Spring
 {
@@ -35,11 +38,16 @@ namespace AndroAdmin.Mvc.Spring
 
             var closeables = ctxt.GetObjectsOfType(typeof(ICloseable));
 
-            foreach (DictionaryEntry closeable in closeables)
+            foreach (KeyValuePair<string, object> closeable in closeables)
             {
                 ((ICloseable)closeable.Value).Close();
             }
 
+        }
+
+        public SessionStateBehavior GetControllerSessionBehavior(RequestContext requestContext, string controllerName)
+        {
+            return SessionStateBehavior.Default;
         }
 
         #region IControllerFactory Members
@@ -50,7 +58,7 @@ namespace AndroAdmin.Mvc.Spring
 
             var closeables = ctxt.GetObjectsOfType(typeof(ICloseable));
 
-            foreach (DictionaryEntry closeable in closeables)
+            foreach (KeyValuePair<string, object> closeable in closeables)
             {
                 ((ICloseable)closeable.Value).Close();
             }
