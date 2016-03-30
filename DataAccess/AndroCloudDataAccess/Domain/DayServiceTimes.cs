@@ -17,7 +17,7 @@ namespace AndroCloudDataAccess.Domain
         public DayServiceTimes()
         {
             this.IsOpenAllDay = false;
-            this.IsClosedAllDay = true; // Unless we are told otherwise the store is closed
+            this.IsClosedAllDay = false;
             this.Times = new List<TimeSpanBlock3>();
         }
     }

@@ -244,7 +244,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                 // Extract the service times
                 siteDetails.ServiceTimes = this.ExtractOccasionTimes(siteEntity.SiteOccasionTimes);
 
-                // Opening hours (legacy - replaced by service times but left in for backwards compatability)
+                // Opening hours
                 siteDetails.OpeningHours = new List<TimeSpanBlock>();
                 if (siteEntity.OpeningHours != null)
                 {
@@ -353,30 +353,20 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             string[] days = new string[0];
 
             // Figure out which days this relates to
-            foreach (string recurrenceRuleBlock in recurrenceRuleBlocks)
-            {
-                string[] recurrenceRuleBlockParts = recurrenceRuleBlock.Split('=');
-                if (recurrenceRuleBlockParts.Length == 2)
-                {
-                    if (recurrenceRuleBlockParts[0].ToUpper() == "FREQ")
-                    {
-                        frequency = recurrenceRuleBlockParts[1];
-                    }
-                    else if (recurrenceRuleBlockParts[0].ToUpper() == "BYDAY")
-                    {
-                        days = recurrenceRuleBlockParts[1].Split(',');
-                    }
-                }
-            }
+            this.GetFrequencyDays(recurrenceRuleBlocks, out frequency, out days);
 
             if (frequency.ToUpper() == "WEEKLY" || frequency.ToUpper() == "DAILY")
             {
-                // Happens every week
+                // Happens every week or every day
                 TimeSpanBlock3 time = null;
 
                 // Are there opening times?
                 if (!siteOccasionTime.IsAllDay)
                 {
+                    // The MyAndromeda UI does not account for trading days so we may need to fiddle the times around
+                    this.CheckTradingDay(siteOccasionTime);
+
+                    // It's not open all day
                     TimeSpan duration = siteOccasionTime.EndUtc - siteOccasionTime.StartUtc;
 
                     time = new TimeSpanBlock3()
@@ -408,6 +398,48 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                         this.SetDay(siteOccasionTime, serviceTimes.Friday, time);
                         this.SetDay(siteOccasionTime, serviceTimes.Saturday, time);
                         this.SetDay(siteOccasionTime, serviceTimes.Sunday, time);
+                    }
+                }
+            }
+        }
+
+        private void CheckTradingDay(SiteOccasionTime siteOccasionTime)
+        {
+            // Is this time for todays trading day
+            if (siteOccasionTime.StartUtc.Hour < 6)
+            {
+                // This time slot actually starts in yesterdays trading day
+                if (siteOccasionTime.EndUtc.Hour > 6)
+                {
+                    // The time slot straddles yesterday and today so we need to split the timeslot
+                    siteOccasionTime.StartUtc = new DateTime(siteOccasionTime.StartUtc.Year, siteOccasionTime.StartUtc.Month, siteOccasionTime.StartUtc.Day, 6, 0, 0);
+                }
+                else
+                {
+                    // Move the entire time slot to yesterday?
+                    // Too Complicated - maybe if it's raised as a bug :)
+                }
+            }
+        }
+
+        private void GetFrequencyDays(string[] recurrenceRuleBlocks, out string frequency, out string[] days)
+        {
+            frequency = "";
+            days = null;
+
+            // Figure out which days this relates to
+            foreach (string recurrenceRuleBlock in recurrenceRuleBlocks)
+            {
+                string[] recurrenceRuleBlockParts = recurrenceRuleBlock.Split('=');
+                if (recurrenceRuleBlockParts.Length == 2)
+                {
+                    if (recurrenceRuleBlockParts[0].ToUpper() == "FREQ")
+                    {
+                        frequency = recurrenceRuleBlockParts[1];
+                    }
+                    else if (recurrenceRuleBlockParts[0].ToUpper() == "BYDAY")
+                    {
+                        days = recurrenceRuleBlockParts[1].Split(',');
                     }
                 }
             }
