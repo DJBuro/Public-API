@@ -39,8 +39,99 @@
                     
                 };
 
+
                 $scope.occasionOptions = occasionOptions;
             }
+        };
+    });
+
+    app.directive("repeatWeeklyEditor", () => {
+        return {
+            name: "repeatWeeklyEditor",
+            templateUrl: "repeatWeeklyEditor.html",
+            scoppe: {
+                task: "=task"
+            },
+            controller: ($scope) => {
+                var task: Models.IOccasionTask = $scope.task;
+
+                Logger.Notify("repeatWeeklyEditor started: " + task); 
+
+                const partialRecurrenceRule = "FREQ=WEEKLY;BYDAY=";
+                let recurrenceRule = task.recurrenceRule;
+                let rule = {
+                    Monday: false,
+                    Tuesday: false,
+                    Wednesday: false,
+                    Thursday: false,
+                    Friday: false,
+                    Saturday: false,
+                    Sunday: false
+                };
+                let parseRuleToRecurrence = () => {
+                    let recurrence = partialRecurrenceRule;
+                    //MO,TU,WE,TH,FR,SA,SU
+                    let hasDays = false;
+                    let add = (day) => {
+                        recurrence += (hasDays ? "," + day : day);
+                        hasDays = true;
+                        
+                    };
+                    if (rule.Monday) {
+                        add("MO");
+                    }
+                    if (rule.Tuesday) {
+                        add("TU");
+                    }
+                    if (rule.Wednesday) {
+                        add("WE");
+                    }
+                    if (rule.Thursday) {
+                        add("TH");
+                    }
+                    if (rule.Friday) {
+                        add("FR");
+                    }
+                    if (rule.Saturday) {
+                        add("SA");
+                    }
+                    if (rule.Sunday) {
+                        add("SU");
+                    }
+                    return recurrence;
+                };
+                let parseRecurrenceToRule = () => {
+                    var a = recurrenceRule.split(partialRecurrenceRule);
+                    Logger.Notify("Split");
+                    Logger.Notify(a);
+                    var b = a[1];
+                    var c = b.split(",");
+
+                    c.forEach((day) => {
+                        switch (day) {
+                            case "MO": rule.Monday = true; break;
+                            case "TU": rule.Tuesday = true; break;
+                            case "WE": rule.Wednesday = true; break;
+                            case "TH": rule.Thursday = true; break;
+                            case "FR": rule.Friday = true; break;
+                            case "SA": rule.Saturday = true; break;
+                            case "SU": rule.Sunday = true; break;
+                        }
+                    });
+                };
+
+                parseRecurrenceToRule();
+
+                $scope.rule = rule;
+                $scope.ruleChanged = () => {
+                    Logger.Notify("rule changed");
+                    let newRule = parseRuleToRecurrence();
+                    Logger.Notify(newRule);
+
+                    task.recurrenceRule = newRule;
+                };
+            }
+
         };
     });
 
@@ -60,7 +151,7 @@
                 var occasionIsArray = typeof (task.Occasions) === "object" ? true : false;
 
                 var state = {
-                    occasions:  occasionTypeIsString ? task.Occasions.split(',') : task.Occasions,
+                    occasions:  task.Occasions,
                 };
 
                 var extra = {

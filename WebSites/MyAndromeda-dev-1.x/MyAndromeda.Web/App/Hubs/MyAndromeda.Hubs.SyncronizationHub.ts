@@ -19,11 +19,10 @@ module MyAndromeda.Hubs {
 
         constructor(options: Models.IHubParameters) {
             this.options = options;
-            this.connect();
-
+            
             var hubs = <any>$.connection,
                 hub = hubs.hub,
-                cloudHub = hubs.cloudSynchronization;
+                cloudHub = hubs.cloudSynchronizationHub;
 
             cloudHub.client.ping = function (date) {
                 SynchronizationHub.log("ping fired");
@@ -46,8 +45,10 @@ module MyAndromeda.Hubs {
                 SynchronizationHub.log("skip fired");
             };
 
-            if (!cloudHub) { cloudHub = this.produceConnection(); }
+            //if (!cloudHub) { cloudHub = this.produceConnection(); }
             this.client = <Models.ISynchronizationHub>cloudHub.client;
+
+            this.connect();
 
             //hub.start()
             //    .done(function () {
@@ -64,29 +65,29 @@ module MyAndromeda.Hubs {
             this.myAndromedaHubConnection.connect();
         }
 
-        produceConnection(): any {
-            var connection = $.hubConnection();
+        //produceConnection(): any {
+        //    var connection = $.hubConnection();
 
-            var proxy = connection.createHubProxy("CloudSynchronization");
+        //    var proxy = connection.createHubProxy("CloudSynchronizationHub");
 
-            //proxy.on("startedSynchronization", (msg: any) => {
-            //    this.client.startedSynchronization(msg);
-            //});
-            //proxy.on("completedSynchronization", (msg: any) => {
-            //});
-            //proxy.on("completedSynchronization", function (d) {
-            //    this.client.completedSynchronization(d);
-            //});
-            //proxy.on("errorSynchronization", function (d) {
-            //    this.client.errorSynchronization(d);
-            //});
+        //    //proxy.on("startedSynchronization", (msg: any) => {
+        //    //    this.client.startedSynchronization(msg);
+        //    //});
+        //    //proxy.on("completedSynchronization", (msg: any) => {
+        //    //});
+        //    //proxy.on("completedSynchronization", function (d) {
+        //    //    this.client.completedSynchronization(d);
+        //    //});
+        //    //proxy.on("errorSynchronization", function (d) {
+        //    //    this.client.errorSynchronization(d);
+        //    //});
 
-            connection.start()
-                .done(function () { SynchronizationHub.log("Connected"); })
-                .fail(function () { SynchronizationHub.log("Could not connect"); });
+        //    connection.start()
+        //        .done(function () { SynchronizationHub.log("Connected"); })
+        //        .fail(function () { SynchronizationHub.log("Could not connect"); });
 
-            return proxy;
-        }
+        //    return proxy;
+        //}
     }
 
     export class SynchronizationHubService {
@@ -107,7 +108,7 @@ module MyAndromeda.Hubs {
 
         initEvents(): void {
             var internal = this,
-                hub = <any>this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronization,
+                hub = <any>this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronizationhub,
                 client = hub.client;
 
             client.startedSynchronization = function (data) {

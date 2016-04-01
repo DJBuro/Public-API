@@ -8,7 +8,7 @@ using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Web.Areas.Store.Models;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
-
+using System.Globalization;
 
 namespace MyAndromeda.Web.Areas.Store.Controllers
 {
@@ -97,15 +97,15 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
         private Models.LocalizationViewModel CreateViewModel() 
         {
             var model= new Models.LocalizationViewModel();
-
-            var cultures = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures);
-            var uiCultures = cultures.Select(e => new CultureChoiceViewModel
+            
+            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            IOrderedEnumerable<CultureChoiceViewModel> uiCultures = cultures.Select(e => new CultureChoiceViewModel
             {
-                Name = System.Globalization.CultureInfo.CreateSpecificCulture(e.Name).Name,
+                Name = CultureInfo.CreateSpecificCulture(e.Name).Name,
                 EnglishName = e.EnglishName
             }).OrderBy(e=> e.Name);
 
-            var timeZones = TimeZoneInfo.GetSystemTimeZones()
+            IOrderedEnumerable<TimeZoneViewModel> timeZones = TimeZoneInfo.GetSystemTimeZones()
                 .Select(e=> new TimeZoneViewModel(){
                     DisplayName = e.DisplayName,
                     StandardName = e.StandardName,

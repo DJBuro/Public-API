@@ -2146,6 +2146,10 @@ textarea,
 .k-content .content-row .content2 {
   padding-bottom: 4em;
 }
+.k-content .container-fluid {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 .content1 {
   width: 318px;
   padding: 1px;

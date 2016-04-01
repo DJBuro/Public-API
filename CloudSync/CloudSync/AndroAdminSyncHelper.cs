@@ -74,7 +74,7 @@ namespace CloudSync
         {
             using (var dbContext = new AndroAdminDataAccess.EntityFramework.AndroAdminEntities())
             {
-                var projection = dbContext.StoreOccasionTimes.Where(e => e.DataVersion > fromVersion)
+                List<StoreOccasionTimeModel> projection = dbContext.StoreOccasionTimes.Where(e => e.DataVersion > fromVersion)
                     .Select(e=> new StoreOccasionTimeModel(){
                         AndromedaSiteId = e.Store.AndromedaSiteId,
                         Deleted = e.Deleted,

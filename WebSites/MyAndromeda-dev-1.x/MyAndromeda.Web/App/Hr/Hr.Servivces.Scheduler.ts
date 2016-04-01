@@ -70,8 +70,6 @@ module MyAndromeda.Hr.Services {
                 }
             ];
 
-
-
             return resources;
         }
 

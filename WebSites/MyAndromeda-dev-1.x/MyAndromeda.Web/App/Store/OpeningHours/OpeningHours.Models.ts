@@ -1,8 +1,12 @@
 ﻿module MyAndromeda.Stores.OpeningHours.Models {
 
     export var occasionDefinitions = {
-        Delivery: { Name: "Delivery", Colour: "#d9534f" },
-        Collection: { Name: "Collection", Colour: "#d9edf7" },
+        Delivery: {
+            Name: "Delivery", Colour: "#d9534f"
+        },
+        Collection: {
+            Name: "Collection", Colour: "#d9edf7"
+        },
         DineIn: {
             Name: "Dine In", Colour: "#f2dede"
         }
@@ -21,9 +25,11 @@
         Description: string;
         RecurrenceId: string;
         RecurrenceRule: string;
+        recurrenceRule: string;
         RecurrenceException: string;
+        isAllDay: boolean;
         IsAllDay: boolean;
-        Occasions: string;
+        Occasions: Array<string>;
     }
 
 
@@ -42,7 +48,7 @@
                 endTimezone: { from: "EndTimezone" },
                 description: { from: "Description" },
                 recurrenceId: { from: "RecurrenceId" },
-                recurrenceRule: { from: "RecurrenceRule" },
+                recurrenceRule: { from: "RecurrenceRule", defaultValue: "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU" },
                 recurrenceException: { from: "RecurrenceException" },
                 isAllDay: { type: "boolean", from: "IsAllDay" },
                 Occasions: {

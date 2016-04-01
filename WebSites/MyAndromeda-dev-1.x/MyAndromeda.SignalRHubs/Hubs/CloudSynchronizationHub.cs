@@ -10,8 +10,8 @@ using MyAndromeda.Logging;
 
 namespace MyAndromeda.SignalRHubs.Hubs
 {
-    [HubName("cloudSynchronization")]
-    [MyAndromedaAuthorizeAttribute]
+    [HubName("cloudSynchronizationHub")]
+    //[MyAndromedaAuthorizeAttribute]
     public class CloudSynchronizationHub : Hub
     {
         private readonly IAuthorizer authorizer;

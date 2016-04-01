@@ -241,47 +241,55 @@
                 items.Add().Text("Online Menu")
                     .Content(@<text>
                         <div class="html-menu-item-wrapper" style="padding:1em">
-                            <div class="header"><h3>@translator.T("Online menu editor")</h3></div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        @translator.T("Online menu editor")
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+
+                                    <div class="col-sm-6">
+                                        <div class="header">
+                                            <h4><i class="fa fa-edit"></i> @translator.T("Edit Web items")</h4>
+                                        </div>
+
+                                        <p>@translator.T("This part of the editor can be used to edit the online menu items:")</p>
+
+                                        <ul>
+                                            <li>@translator.T("A menu items title")</li>
+                                            <li>@translator.T("Online description")</li>
+                                            <li>@translator.T("Delivery and collection price)")</li>
+                                            <li>@translator.T("And dine-in price")</li>
+                                        </ul>
+                                        <a class="k-button k-button-link" href="@Url.Action("Index", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit items")</a>
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="header">
+                                            <h4><i class="fa fa-sort-amount-asc"></i> @translator.T("Web sequencing")</h4>
+                                        </div>
+                                        <p>@translator.T("Use this editor to change the order of how your menu items appear on your online menu.")</p>
+                                        @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.EditStoreMenu))
+                                        {
+                                            <a class="k-button k-button-link" href="@Url.Action("Hierarchy", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit sequence")</a>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                @translator.T("you are not authorized to edit the menu sequence")
+                                            </span>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+
                             @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.ViewToppings))
                             {
                                 <a class="k-button" href="@Url.Action("Index", "Modifiers", new { Area = "Menu" })">Matt's secret modifiers - a ghost town ... like many parts of My Andromeda.</a>
                             }
-                            <div class="clearfix content-row" style="width:600px">
-                                <div class="content1 k-widget">
-                                    <div class="header">
-                                        <h4><i class="fa fa-edit"></i> @translator.T("Edit Web items")</h4>
-                                    </div>
-
-                                    <p>@translator.T("This part of the editor can be used to edit the online menu items:")</p>
-
-                                    <ul>
-                                        <li>@translator.T("A menu items title")</li>
-                                        <li>@translator.T("Online description")</li>
-                                        <li>@translator.T("Delivery and collection price)")</li>
-                                        <li>@translator.T("And dine-in price")</li>
-                                    </ul>
-                                    <a class="k-button k-button-link" href="@Url.Action("Index", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit items")</a>
-                                </div>
-
-                                <div class="content1 k-widget">
-                                    <div class="header">
-                                        <h4><i class="fa fa-sort-amount-asc"></i> @translator.T("Web sequencing")</h4>
-                                    </div>
-                                    <p>@translator.T("Use this editor to change the order of how your menu items appear on your online menu.")</p>
-                                    @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.EditStoreMenu))
-                                    {
-                                        <a class="k-button k-button-link" href="@Url.Action("Hierarchy", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit sequence")</a>
-                                    }
-                                    else
-                                    {
-                                        <span>
-                                            @translator.T("you are not authorized to edit the menu sequence")
-                                        </span>
-                                    }
-                                </div>
-
-
-                            </div>
+                            
                         </div>
 
                     </text>);

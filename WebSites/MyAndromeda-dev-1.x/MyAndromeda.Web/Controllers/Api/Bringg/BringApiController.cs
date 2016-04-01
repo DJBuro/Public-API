@@ -26,13 +26,6 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
 {
     public class BringApiController : ApiController
     {
-        private class StoreDetails 
-        {
-            public string ExternalSiteId { get; set; }
-            public int AndromedaSiteId { get; set; }
-            public int AndroAdminStoreId { get; set; }
-        }
-
         private readonly IWebApiClientContext webApiClientContext;
         private readonly IMyAndromedaLogger logger;
         private readonly IOrderHeaderDataService orderHeaderService;
@@ -59,13 +52,13 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             {
                 if (bringgTaskId == 0)
                 {
-                    var message = "The Bringg task id is missing!";
+                    string message = "The Bringg task id is missing!";
                     this.logger.Error(message);
-
                 }
 
-                var order = await this.orderHeaderService.OrderHeaders
+                OrderHeader[] order = await this.orderHeaderService.OrderHeaders
                     .Where(e => e.BringgTaskId == bringgTaskId)
+                    .OrderByDescending(e=> e.TimeStamp)
                     .ToArrayAsync();
                 //.SingleOrDefaultAsync();
 
@@ -78,13 +71,14 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 {
                     this.logger.Error("There are too many orders with the Bringg id: {0}", bringgTaskId);
                 }
-
+                
                 return order.FirstOrDefault();
             }
             catch (Exception ex)
             {
                 this.logger.Error(ex);
             }
+
             return null;
         }
 
@@ -92,11 +86,21 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         {
             try
             {
-                var query = this.storeDataService.Table
-                    .Where(e => e.ExternalId == model.ExternalSiteID && e.ACSApplicationSites.Any(s => s.ACSApplicationId == model.ApplicationID))
-                    .Select(e => new { e.ExternalId, e.AndromedaSiteId, e.Id });//.ToArrayAsync();
+                var basicQuery = this.storeDataService.Table
+                     .Where(e => e.ExternalId == model.ExternalSiteID);
 
-                var queryResult = await query.ToArrayAsync();
+                //1100000000 Rameses - special number
+                if (model.ApplicationID != 1100000000)
+                {
+                    basicQuery = basicQuery.Where(e => e.ACSApplicationSites.Any(s => s.ACSApplicationId == model.ApplicationID)); 
+                }
+
+                //projection query 
+                IQueryable<StoreDetails> query = basicQuery
+                    .Select(e => new StoreDetails { ExternalSiteId = e.ExternalId, AndromedaSiteId = e.AndromedaSiteId, AndroAdminStoreId = e.Id });//.ToArrayAsync();
+                
+                //projection result
+                StoreDetails[] queryResult = await query.ToArrayAsync();
 
                 if (queryResult.Length > 1)
                 {
@@ -104,18 +108,10 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
                 }
                 if (queryResult.Length == 0)
                 {
-                    this.logger.Error("There were more than one store returned by ACSApplicationId: {0} and ExternalSiteID: {1}", model.ApplicationID, model.ExternalSiteID);
+                    this.logger.Error("There were no stores returned by ACSApplicationId: {0} and ExternalSiteID: {1}", model.ApplicationID, model.ExternalSiteID);
                 }
 
-                var store = queryResult
-                                .Select(e => new StoreDetails
-                                {
-                                    ExternalSiteId = e.ExternalId,
-                                    AndromedaSiteId = e.AndromedaSiteId,
-                                    AndroAdminStoreId = e.Id
-                                }
-                                )
-                                .SingleOrDefault();
+                StoreDetails store = queryResult.FirstOrDefault();
 
                 return store;
             }
@@ -151,26 +147,26 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
         {
             logger.Debug("Creating the model for the Bringg webhook based on the incoming.");
 
-            var order = await this.GetOrderHeaderAsync(taskId);
-            var store = await this.GetStoreIdsAsync(order);
+            OrderHeader order = await this.GetOrderHeaderAsync(taskId);
+            StoreDetails store = await this.GetStoreIdsAsync(order);
 
             //check nulls 
             if (model.IsNull()) 
             {
-                var message = "Where is the Bringg Message?";
+                string message = "Where is the Bringg Message?";
                 logger.Error(message);
                 throw new ArgumentException("model", new Exception(message));
             }
             if (order.IsNull()) 
             {
-                var message = "Order could not be matched. Bringg will blow up."; 
+                string message = "Order could not be matched. Bringg will blow up."; 
                 logger.Error(message);
                 throw new ArgumentException("order", new Exception(message));
             }
 
             if (store.IsNull()) 
             {
-                var message = "The store could not be matched. Bringg will blow up.";
+                string message = "The store could not be matched. Bringg will blow up.";
                 logger.Error(message);
                 throw new Exception(message);
             }
@@ -185,7 +181,7 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             //model.Status.Check(e => !string.IsNullOrWhiteSpace(model.Status), e => new ArgumentException("Status"));
             
             //nothing can be a null object except order.ID :D why is it blowing up :S 
-            OutgoingWebHookBringg sendModel = new OutgoingWebHookBringg()
+            var sendModel = new OutgoingWebHookBringg()
             {
                 AndromedaSiteId = store.AndromedaSiteId,
                 ExternalSiteId = store.ExternalSiteId,
@@ -553,5 +549,12 @@ namespace MyAndromeda.Web.Controllers.Api.Bringg
             return result;
         }
 
+    }
+
+    public class StoreDetails
+    {
+        public string ExternalSiteId { get; set; }
+        public int AndromedaSiteId { get; set; }
+        public int AndroAdminStoreId { get; set; }
     }
 }

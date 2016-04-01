@@ -78,42 +78,22 @@
     <script type="text/ng-template" id="StoreEmailSection">
         <div class='row'>
             <div class="col-sm-3">
-                <div class="k-widget">
-                    <div class="k-header">
-                        <div class="k-toolbar k-header">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    Email Sections
-                                </div>
-                                
-                            </div>
-                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">Email Sections</div>
                     </div>
-                    <div class="row" ng-repeat="cmsPage in context.Pages">
+                    <div class="panel-body">
                         <div class="col-xs-12">
                             {{cmsPage.Title}}
                             <span ng-if="!cmsPage.Enabled">(Disabled)</span>
                         </div>
-                        <div class="col-xs-12">
-                            @*<a class="k-button" ng-click="edit(cmsPage)">Edit</a>*@
-                            <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
-                            <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
-                        </div>
                     </div>
-
-                    @*<div ng-repeat="cmsPage in lookup(store)">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    {{cmsPage.Title}}
-                                    <span ng-if="!cmsPage.Enabled">(Disabled)</span>
-                                </div>
-                                <div class="col-xs-12">
-                                    <a class="k-button" ng-click="edit(cmsPage)">Edit</a>
-                                    <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
-                                    <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
-                                </div>
-                            </div>
-                        </div>*@
+                    <div class="panel-footer">
+                        Manage AndroWeb Ordering                @*<a class="k-button" ng-click="edit(cmsPage)">Edit</a>*@
+                        <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
+                        <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
+                        
+                    </div>
                 </div>
             </div>
             <div class="col-sm-9" ng-show="context.Page != null">

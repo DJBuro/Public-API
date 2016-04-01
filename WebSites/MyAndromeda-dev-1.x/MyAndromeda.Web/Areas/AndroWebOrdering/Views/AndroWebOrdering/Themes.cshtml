@@ -10,64 +10,85 @@
 </style>
 
 <div class="row">
-    <div class="col-xs-12 col-md-8">
-        <div class="row">
-            <input class="k-textbox" type="text" placeholder="Search" ng-change="SearchTemplates()" ng-model="SearchText" />
+    <div class="col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <input class="k-textbox" type="text" placeholder="Search" ng-change="SearchTemplates()" ng-model="SearchText" />
+            </div>
+            <div class="panel-body">
+                <div kendo-listview id="listView" k-data-source="DataSource" k-template='ListViewTemplate' class="row">
+                </div>
+            </div>
         </div>
-        <div kendo-listview id="listView" k-data-source="DataSource" k-template='ListViewTemplate' class="row">
+    </div>
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">Preview <button class="btn btn-primary" ng-show="HasPreviewTheme" ng-click="SelectPreviewTheme(SelectedTheme)">Select</button></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div ng-if="HasPreviewTheme">
+                            {{SelectedTheme.ThemeName}}
+                            <img ng-src="{{SelectedTheme.ThemePath}}" alt="{{SelectedTheme.ThemePath}} thumbnail" style="width: 100%" />
+                            <div>
+                                {{SelectedTheme.Description}}
+                            </div>
+                        </div>
+                        <div ng-hide="HasPreviewTheme">
+                            <p>Select a theme from the left to preview and select.</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">Current</div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div ng-if="HasCurrentTheme">
+                            {{CurrentTheme.ThemeName}}
+                            <img ng-src="{{CurrentTheme.ThemePath}}" alt="{{CurrentTheme.ThemePath}} thumbnail" style="width: 100%" />
+                        </div>
+                        <div ng-hide="HasCurrentTheme">
+                            <p>No theme has been selected before.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        @using (Html.BeginScripts())
-        { 
-            <script type="text/template" id="ListViewTemplate">
-                <div class="col-xs-12 col-md-4 col-lg-4">
-                    <label>
-                        <input type="radio" name="SelectedTemplate" ng-click="SelectTemplate(dataItem.Id)" />
-                        {{dataItem.ThemeName}}
-                        <img ng-src="{{dataItem.ThemePath}}" alt="{{dataItem.ThemePath}} thumbnail" style="width: 100%" />
-                    </label>
-                </div>
-            </script>
-        }
 
     </div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    <script type="text/template" id="ListViewTemplate">
+        <div class="col-xs-12 col-md-4 col-lg-4">
+            <label>
+                <input type="radio" name="SelectedTemplate" ng-click="SelectTemplate(dataItem.Id)" />
+                {{dataItem.ThemeName}}
+                <img ng-src="{{dataItem.ThemePath}}" alt="{{dataItem.ThemePath}} thumbnail" style="width: 100%" />
+            </label>
+        </div>
+    </script>
+}
+
+<div class="row">
+
     <div class="col-xs-12 col-md-4">
         <div class="row">
             <div class="header">
-                <h3>Preview</h3>
-                <button class="k-button" ng-show="HasPreviewTheme" ng-click="SelectPreviewTheme(SelectedTheme)">Select</button>
+                
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div ng-if="HasPreviewTheme">
-                    {{SelectedTheme.ThemeName}}
-                    <img ng-src="{{SelectedTheme.ThemePath}}" alt="{{SelectedTheme.ThemePath}} thumbnail" style="width: 100%" />
-                    <div>
-                        {{SelectedTheme.Description}}
-                    </div>
-                </div>
-                <div ng-hide="HasPreviewTheme">
-                    <p>Select a theme from the left to preview.</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="header">
-                <h3>Current</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div ng-if="HasCurrentTheme">
-                    {{CurrentTheme.ThemeName}}
-                    <img ng-src="{{CurrentTheme.ThemePath}}" alt="{{CurrentTheme.ThemePath}} thumbnail" style="width: 100%" />
-                </div>
-                <div ng-hide="HasCurrentTheme">
-                    <p>No theme has been selected before.</p>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 

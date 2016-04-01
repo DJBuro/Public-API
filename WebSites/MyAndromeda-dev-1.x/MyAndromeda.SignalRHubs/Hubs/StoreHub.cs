@@ -12,7 +12,7 @@ using MyAndromeda.Logging;
 namespace MyAndromeda.SignalRHubs.Hubs
 {
     [HubName("storeHub")]
-    [MyAndromedaAuthorizeAttribute]
+    //[MyAndromedaAuthorizeAttribute]
     public class StoreHub : Hub 
     {
         private readonly IAccessDbMenuVersionDataService menuVersionDataService;

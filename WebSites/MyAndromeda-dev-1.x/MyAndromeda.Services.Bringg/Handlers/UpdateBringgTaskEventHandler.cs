@@ -69,7 +69,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
             }
 
             //already jobs for create / cancel 
-            if (update.Status == 1 || update.Status == 4 || update.Status == 6 || update.Status == 5 || update.Status >= 1000) { return; }
+            if (update.Status == 1 || update.Status == 4 || update.Status == 5 || update.Status == 6 ||  update.Status >= 1000) { return; }
 
             try
             {

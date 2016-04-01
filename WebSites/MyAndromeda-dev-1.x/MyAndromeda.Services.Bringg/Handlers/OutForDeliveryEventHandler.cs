@@ -88,7 +88,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
                     return;
                 }
 
-                if (!orderHeader.OrderType.Equals(value: "Delivery", comparisonType: StringComparison.InvariantCultureIgnoreCase)) 
+                if (!orderHeader.OrderType.ToLower().Equals(value: "Delivery", comparisonType: StringComparison.InvariantCultureIgnoreCase)) 
                 {
                     this.logger.Debug(message: "Skipping order because it is not delivery");
                     return;
@@ -100,6 +100,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 Data.Model.AndroAdmin.Store store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
 
                 await this.bringgService.AddOrderAsync(andromedaSiteId, orderHeader.ID, addNotes: true);
+
                 UpdateDriverResult result = await this.bringgService.UpdateDriverAsync(store.Id, modelType.InternalOrderId, modelType.ExternalOrderId);
 
                 switch (result) 

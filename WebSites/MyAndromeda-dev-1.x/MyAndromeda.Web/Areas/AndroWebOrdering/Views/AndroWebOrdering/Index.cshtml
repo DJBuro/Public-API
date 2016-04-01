@@ -12,21 +12,22 @@
     {
         <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
+
     <script type="text/javascript">
         $(function () {
             var angular = MyAndromeda.WebOrdering.Angular;
             var settings = MyAndromeda.WebOrdering.Settings;
-            var upselling = MyAndromeda.WebOrdering.UpSelling;
-
-            upselling.UpSellDataService.GetMemuRoute = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "GetMenu", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
             settings.AndromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
             settings.WebSiteId = '@Model.Id';
+
+            var upselling = MyAndromeda.WebOrdering.UpSelling;
+            upselling.UpSellDataService.GetMemuRoute = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "GetMenu", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
             //default is the webapi
             //controller route
             //settings.PublishRoute = '@Url.Action("Publish", "AndroWebOrdering", new { Id = Model.Id })';
             angular.Init();
         });
-</script>
+    </script>
 }
 
 <div id="WebOrdering">
@@ -56,17 +57,16 @@
                 </div>
             </div>
         </div>
-        <div class="well-sm">
-            <div class="row">
-                <div class="col-sm-12">
-                    <a class="k-button" target="_blank" href="http://@Model.PreviewWebSite">
-                        <i class="fa fa-play-circle"></i> Open Preview website
-                    </a>
-                    <a class="k-button" target="_blank" href="http://@Model.LiveDomainName">
-                        <i class="fa fa-play-circle"></i> Open live site
-                    </a>
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="k-button" target="_blank" href="http://@Model.PreviewWebSite">
+                    <i class="fa fa-play-circle"></i> Open Preview website
+                </a>
+                <a class="k-button" target="_blank" href="http://@Model.LiveDomainName">
+                    <i class="fa fa-play-circle"></i> Open live site
+                </a>
             </div>
+            <div class="col-sm-12">&nbsp;</div>
         </div>
 
         <div kendo-mobile-modal-view="Modal">
@@ -78,9 +78,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-12">
-            @Html.Kendo().TabStrip().Name("FindChain").Items(items =>
+    @Html.Kendo().TabStrip().Name("FindChain").Items(items =>
         {
             if (authorizer.Authorize(Permisssions.UserPermissions.ViewSiteDetails))
             {
@@ -89,7 +87,7 @@
                     .Selected(false)
                     .Enabled(true)
                     .Content(@<text>
-                        <div id="SiteDetailsController" ng-controller="SiteDetailsController">
+                        <div id="SiteDetailsController" ng-controller="SiteDetailsController" class="container-fluid">
                             @Html.Partial("SiteDetails")
                         </div>
                     </text>);
@@ -100,9 +98,9 @@
                 items.Add().Text("Home Page")
                     .Selected(true)
                     .Content(@<text>
-
-                        @RenderHomePanelbarSection()
-
+                        <div class="container-fluid">
+                            @RenderHomePanelbarSection()
+                        </div>
                     </text>);
             }
 
@@ -110,35 +108,44 @@
             {
                 items.Add().Text("CMS Pages")
                     .Content(@<text>
-                        @Html.Partial("CMSPages")
+            <div class="container-fluid">
+                @Html.Partial("CMSPages")
+            </div>
                     </text>);
             }
 
             if (authorizer.Authorize(Permisssions.UserPermissions.ViewGeneralSettings))
             {
                 items.Add().Text("General Settings").Selected(false).Content(@<text>
-                    <div id="GeneralSettingsController" ng-controller="GeneralSettingsController">
-                        @Html.Partial("GeneralSettings")
-                    </div>
+        <div class="container-fluid" id="GeneralSettingsController" ng-controller="GeneralSettingsController">
+            @Html.Partial("GeneralSettings")
+        </div>
                 </text>);
             }
 
             if (authorizer.Authorize(Permisssions.UserPermissions.ViewSocialNetworks))
             {
                 items.Add().Text("Social Networks").Selected(false).Content(@<text>
-                    @RenderSocialNetworksSection()
+                    <div class="container-fluid">
+                        @RenderSocialNetworksSection()
+                    </div>
                 </text>);
             }
             if (authorizer.Authorize(Permisssions.UserPermissions.ViewThemes))
             {
                 items.Add().Text("Themes & Settings").Selected(false).Content(@<text>
-                    @RenderThemePanelbarSection()
+                    <div class="container-fluid">
+                        @RenderThemePanelbarSection()
+                    </div>
                 </text>);
             }
             if (authorizer.Authorize(Permisssions.UserPermissions.ViewEmailCmsSection))
             {
                 items.Add().Text("Emails").Selected(false).Content(@<text>
-                    @RenderEmailPanelbarSection()
+                    <div class="container-fluid">
+                        @RenderEmailPanelbarSection()
+                    </div>
+                    
                 </text>);
             }
 
@@ -147,7 +154,7 @@
                 items.Add().Text("Legal notices")
                .Selected(false)
                .Content(@<text>
-                <div id="LegalNoticesController" ng-controller="LegalNoticesController">
+                <div class="container-fluid" id="LegalNoticesController" ng-controller="LegalNoticesController">
                     @Html.Partial("LegalNotices")
                 </div>
             </text>);
@@ -158,7 +165,10 @@
                   .Selected(false)
                   .Enabled(true)
                   .Content(@<text>
-                    @RenderAnalyticsSEOSection()
+                    <div class="container-fluid">
+                        @RenderAnalyticsSEOSection()
+                    </div>
+                    
                 </text>);
             }
             if (authorizer.AuthorizeAny(Permisssions.UserPermissions.EditUpSelling))
@@ -167,30 +177,29 @@
                     .Selected(false)
                     .Enabled(true)
                     .Content(@<text>
-                        <div id="Up-sell">
+                        <div id="Up-sell" class="container-fluid">
                             @Html.Partial("UpSelling")
                         </div>
                     </text>);
             }
 
-            @*items.Add().Text("Settings")
-                     .Selected(false)
-                     .Enabled(false)
-                     .Content(@<text>
-                     @RenderSettingsTab()
-                 </text>);
-                }*@
+    @*items.Add().Text("Settings")
+             .Selected(false)
+             .Enabled(false)
+             .Content(@<text>
+             @RenderSettingsTab()
+         </text>);
+        }*@
 
-                @*items.Add().Text("Stores")
-                       .Selected(false)
-                       .Enabled(true)
-                       .Content(@<text>
+    @*items.Add().Text("Stores")
+           .Selected(false)
+           .Enabled(true)
+           .Content(@<text>
 
-                        @Html.Partial("StoreList", Model)
-                    </text>);*@
+            @Html.Partial("StoreList", Model)
+        </text>);*@
         })
-        </div>
-    </div>
+
 
 </div>
 
@@ -205,7 +214,7 @@
             .Selected(false)
             .Enabled(true)
             .Content(@<text>
-                <div id="CustomerAccountSettingsController" ng-controller="CustomerAccountSettingsController">
+                <div class="container-fluid" id="CustomerAccountSettingsController" ng-controller="CustomerAccountSettingsController">
                     @Html.Partial("CustomerAccountSettings")
                 </div>
             </text>);
@@ -241,12 +250,15 @@
 
             items.Add().Expanded(true).Text("Email theme").Content(
                 @<text>
-                    <div ng-controller="CustomEmailTemplateController">
+                    <div class="container-fluid" ng-controller="CustomEmailTemplateController">
                         @Html.Partial("CustomEmailTemplate");
                     </div>
                 </text>);
             items.Add().Expanded(true).Text("Custom CMS").Content(@<text>
-            @Html.Partial("EmailCustomCms")
+                    <div class="container-fluid">
+                        @Html.Partial("EmailCustomCms")
+                    </div>
+                    
             </text>);
         })
     )
@@ -262,35 +274,37 @@
             items.Add().Text("Theme Settings")
                 .Expanded(true)
                 .Content(@<text>
-                    @Html.Partial("ThemeSettings")
+                    <div class="container-fluid">
+                        @Html.Partial("ThemeSettings")
+                    </div>
                 </text>);
             items.Add().Text("Pick a theme")
                 .Selected(true)
                 .Expanded(true)
                 .Content(@<text>
-                    <div ng-controller="PickThemeController">
+                    <div class="container-fluid" ng-controller="PickThemeController">
                         @Html.Partial("Themes")
                     </div>
                 </text>);
             items.Add().Text("Custom Background Images")
                 .Content(@<text>
-                    <div id="CustomBackgroundImagesController" ng-controller="CustomBackgroundImagesController">
-                        @Html.Partial("CustomBackgroundImages")
-                    </div>
+                <div class="container-fluid" id="CustomBackgroundImagesController" ng-controller="CustomBackgroundImagesController">
+                    @Html.Partial("CustomBackgroundImages")
+                </div>
                 </text>);
             items.Add().Text("Custom Colors")
                 .Content(@<text>
-                    <div id="CustomThemeSettingsController" ng-controller="CustomThemeSettingsController">
-                        @Html.Partial("CustomThemeSettings")
-                    </div>
+                <div class="container-fluid" id="CustomThemeSettingsController" ng-controller="CustomThemeSettingsController">
+                    @Html.Partial("CustomThemeSettings")
+                </div>
                 </text>);
-        @*items.Add().Text("Custom Email Template")
-            .Content(
-             @<text>
-                 <div id="CustomEmailTemplateController" ng-controller="CustomEmailTemplateController">
-                     @Html.Partial("CustomEmailTemplate");
-                 </div>
-             </text>);*@
+            @*items.Add().Text("Custom Email Template")
+                .Content(
+                 @<text>
+                     <div id="CustomEmailTemplateController" ng-controller="CustomEmailTemplateController">
+                         @Html.Partial("CustomEmailTemplate");
+                     </div>
+                 </text>);*@
 
         })
     )
@@ -310,7 +324,7 @@
                     .Expanded(true)
                     .Enabled(true)
                     .Content(@<text>
-                        <div id="HomePageController" ng-controller="HomePageController">
+                        <div id="HomePageController" ng-controller="HomePageController" class="container-fluid">
                             @Html.Partial("Welcome")
                         </div>
 
@@ -321,7 +335,7 @@
                 .Expanded(false)
                 .Enabled(true)
                 .Content(@<text>
-                    <div id="CarouselController" ng-controller="CarouselController">
+                    <div id="CarouselController" ng-controller="CarouselController" class="container-fluid">
                         @Html.Partial("Carousel")
                     </div>
 
@@ -343,19 +357,22 @@
                 .Selected(true)
                 .Enabled(true)
             .Content(@<text>
-                    <div id="Main">@Html.Partial("Carousel1")</div>
+                    <div id="Main" class="container-fluid">@Html.Partial("Carousel1")</div>
             </text>);
             tabStrip.Add().Text("Container Settings")
             .Selected(false)
             .Enabled(true)
             .Content(@<text>
-                @Html.Partial("CarouselContainer1")
+                <div class="container-fluid">@Html.Partial("CarouselContainer1")</div>
+               
             </text>);
             tabStrip.Add().Text("Navigator Settings")
             .Selected(false)
             .Enabled(true)
             .Content(@<text>
-                @Html.Partial("CarouselNavigator1")
+                <div class="container-fluid">
+                    @Html.Partial("CarouselNavigator1")
+                </div>
             </text>);
         })
     )
@@ -410,15 +427,15 @@
                 .Selected(true)
                 .Expanded(true)
                 .Content(@<text>
-                    <div id="SocialNetworkSettingsController" ng-controller="SocialNetworkSettingsController">
+                    <div class="container-fluid" id="SocialNetworkSettingsController" ng-controller="SocialNetworkSettingsController">
                         @Html.Partial("SocialNetworkSettings")
                     </div>
                 </text>);
             items.Add().Text("Facebook Crawler Settings")
                 .Content(@<text>
-                    <div id="FacebookCrawlerSettingsController" ng-controller="FacebookCrawlerSettingsController">
-                        @Html.Partial("FacebookCrawlerSettings")
-                    </div>
+                <div class="container-fluid" id="FacebookCrawlerSettingsController" ng-controller="FacebookCrawlerSettingsController">
+                    @Html.Partial("FacebookCrawlerSettings")
+                </div>
                 </text>);
 
         })
@@ -438,13 +455,13 @@
                     .Selected(true)
                     .Expanded(true)
                     .Content(@<text>
-                        <div id="AnalyticsController" ng-controller="AnalyticsController">
+                        <div class="container-fluid" id="AnalyticsController" ng-controller="AnalyticsController">
                             @Html.Partial("Analytics")
                         </div>
                     </text>);
                 items.Add().Text("SEO")
                     .Content(@<text>
-                        <div id="SEOSettingsController" ng-controller="SEOSettingsController">
+                        <div class="container-fluid" id="SEOSettingsController" ng-controller="SEOSettingsController">
                             @Html.Partial("SEO")
                         </div>
                     </text>);

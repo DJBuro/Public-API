@@ -58,7 +58,7 @@ namespace Andromeda.GPSIntegration.Bringg
             //info: "New order " + newOrder.AndromedaOrderId, storeId: andromedaStoreId.ToString());
             string message = string.Format(format: "New order {0}", arg0: newOrder.AndromedaOrderId);
 
-            log(arg1: "BringgGPSIntegrationServices.CustomerPlacedOrder "+ message, arg2: DebugLevel.Notify);
+            log("BringgGPSIntegrationServices.CustomerPlacedOrder "+ message, DebugLevel.Notify);
 
             // Lookup the Bringg config
             StoreConfiguration store = null;
@@ -73,9 +73,6 @@ namespace Andromeda.GPSIntegration.Bringg
 
             if (!bringgConfig.isEnabled)
             {
-                //"BringgGPSIntegrationServices.CustomerPlacedOrder", 
-                //"Attempt to send order to disabled Bringg.  Store " + andromedaStoreId.ToString(), andromedaStoreId.ToString()
-                //ErrorHelper.LogError();
                 return ResultEnum.Disabled;
             }
 

@@ -6,8 +6,7 @@ var MyAndromeda;
         var SynchronizationHub = (function () {
             function SynchronizationHub(options) {
                 this.options = options;
-                this.connect();
-                var hubs = $.connection, hub = hubs.hub, cloudHub = hubs.cloudSynchronization;
+                var hubs = $.connection, hub = hubs.hub, cloudHub = hubs.cloudSynchronizationHub;
                 cloudHub.client.ping = function (date) {
                     SynchronizationHub.log("ping fired");
                     SynchronizationHub.log(date);
@@ -24,10 +23,9 @@ var MyAndromeda;
                 cloudHub.client.skippedSynchronization = function (data) {
                     SynchronizationHub.log("skip fired");
                 };
-                if (!cloudHub) {
-                    cloudHub = this.produceConnection();
-                }
+                //if (!cloudHub) { cloudHub = this.produceConnection(); }
                 this.client = cloudHub.client;
+                this.connect();
                 //hub.start()
                 //    .done(function () {
                 //        SynchronizationHub.log("connected");
@@ -48,25 +46,6 @@ var MyAndromeda;
                 this.myAndromedaHubConnection = Hubs.MyAndromedaHubConnection.GetInstance(this.options);
                 this.myAndromedaHubConnection.connect();
             };
-            SynchronizationHub.prototype.produceConnection = function () {
-                var connection = $.hubConnection();
-                var proxy = connection.createHubProxy("CloudSynchronization");
-                //proxy.on("startedSynchronization", (msg: any) => {
-                //    this.client.startedSynchronization(msg);
-                //});
-                //proxy.on("completedSynchronization", (msg: any) => {
-                //});
-                //proxy.on("completedSynchronization", function (d) {
-                //    this.client.completedSynchronization(d);
-                //});
-                //proxy.on("errorSynchronization", function (d) {
-                //    this.client.errorSynchronization(d);
-                //});
-                connection.start()
-                    .done(function () { SynchronizationHub.log("Connected"); })
-                    .fail(function () { SynchronizationHub.log("Could not connect"); });
-                return proxy;
-            };
             SynchronizationHub.STARTED = "started";
             SynchronizationHub.COMPLETED = "completed";
             SynchronizationHub.ERROR = "error";
@@ -84,7 +63,7 @@ var MyAndromeda;
                 });
             }
             SynchronizationHubService.prototype.initEvents = function () {
-                var internal = this, hub = this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronization, client = hub.client;
+                var internal = this, hub = this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronizationhub, client = hub.client;
                 client.startedSynchronization = function (data) {
                     SynchronizationHub.log("started fired");
                     var models = internal.viewModel.get("started");

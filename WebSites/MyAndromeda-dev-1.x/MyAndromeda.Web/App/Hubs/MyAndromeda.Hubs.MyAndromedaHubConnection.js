@@ -27,7 +27,7 @@ var MyAndromeda;
                     MyAndromeda.Logger.Notify("already setup");
                     return;
                 }
-                //$.connection.hub.logging = true;
+                $.connection.hub.logging = true;
                 var internal = this, hubConnection = $.connection.hub;
                 //if (this.hubConnection)
                 //{
@@ -43,12 +43,15 @@ var MyAndromeda;
                     internal.connecting = true;
                     MyAndromedaHubConnection.log("hub connection starting");
                 });
-                var transportType = "longPolling";
+                var transportType = 
+                //"webSockets";
+                "longPolling";
                 //if(document.URL.indexOf("localhost") >= 0){
                 //    transportType = "webSockets";
                 //}
                 hubConnection.start({
-                    transport: transportType //['webSockets', 'longPolling'] 
+                    //transport: transportType //['webSockets', 'longPolling'] 
+                    transport: transportType
                 }).done(function () {
                     internal.connecting = false;
                     internal.connected = true;

@@ -15,6 +15,8 @@ namespace Andromeda.GPSIntegration.Bringg
 {
     internal class BringgAPI
     {
+        
+
         internal string ValidateCredentials(BringgConfig bringgConfig)
         {
             HttpStatusCode httpStatusCode;
@@ -216,31 +218,32 @@ namespace Andromeda.GPSIntegration.Bringg
             else
             {
                 // Update an existing task
-                errorMessage = this.UpdateOrder(bringgConfig, customerGPS, newOrder, log);
+                errorMessage = this.UpdateOrder(bringgConfig, customerGPS, newOrder, addNote, log);
             }
 
             return errorMessage;
         }
 
-        private string AddOrder(BringgConfig bringgConfig, Model.Customer customerGPS, Model.Order newOrder, bool addNote)
+        private string AddOrder(BringgConfig bringgConfig, Model.Customer customerGps, Model.Order newOrder, bool addNote)
         {
             HttpStatusCode httpStatusCode;
             string responseData = "";
 
             // Call the Bringg API
+
             var bringgTask = new BringgTask()
             {
                 address = newOrder.Address.ToString(),
                 asap = false,
                 company_id = bringgConfig.companyId.Value,
-                customer_id = int.Parse(customerGPS.PartnerId),
+                customer_id = int.Parse(customerGps.PartnerId),
                 delivery_price = null,//newOrder.DeliveryFee,
                 external_id = newOrder.AndromedaOrderId,
                 extras = "",
                 lat = newOrder.Address.Lat,
                 left_to_be_paid = null, // newOrder.HasBeenPaid ? 0 : newOrder.TotalPrice,
                 lng = newOrder.Address.Long,
-                note = addNote 
+                note = addNote
                     ? newOrder.Note
                     : null,
                 place_id = null,
@@ -269,7 +272,7 @@ namespace Andromeda.GPSIntegration.Bringg
 
             ErrorHelper.LogInfo(method: "BringgAPI.AddOrder", info: "url:" + url + " result:" + (errorMessage == null ? "" : errorMessage), storeId: "");
 
-            if (String.IsNullOrEmpty(errorMessage))
+            if (string.IsNullOrEmpty(errorMessage))
             {
                 // Get the new task id
                 JToken taskToken = BringgHelper.GetJSONAttribute(responseData, "task");
@@ -296,8 +299,9 @@ namespace Andromeda.GPSIntegration.Bringg
             return errorMessage;
         }
 
-        private string UpdateOrder(BringgConfig bringgConfig, Customer customerGps, Order newOrder, Action<string, DebugLevel> log)
+        private string UpdateOrder(BringgConfig bringgConfig, Customer customerGps, Order newOrder, bool addNote, Action<string, DebugLevel> log)
         {
+            
             var bringgTask = new BringgTask();
             BringgTaskDetailModel bringgDetailTask = null;
             // Get the task from Bringg
@@ -308,6 +312,10 @@ namespace Andromeda.GPSIntegration.Bringg
                 ErrorHelper.LogError(method: "UpdateOrder unable to find Bringg task ", message: errorMessage, storeId: newOrder.BringgTaskId.ToString());
                 return errorMessage;
             }
+
+            string notifyMessage = string.Format("Update task: {0}; add note? {1}", newOrder.BringgTaskId, addNote);
+            log(notifyMessage, DebugLevel.Notify);
+
 
             // Update the task details
             bringgTask.address = newOrder.Address.ToString();
@@ -320,18 +328,29 @@ namespace Andromeda.GPSIntegration.Bringg
             // Update the task in Bringg
             errorMessage = this.UpdateTask(bringgConfig, newOrder.BringgTaskId, bringgTask, log);
 
-            string updateNoteMessage = string.Empty;
-            if (string.IsNullOrWhiteSpace(errorMessage))
+            //exit early if there is a error. 
+            if (!string.IsNullOrWhiteSpace(errorMessage))
             {
+                return errorMessage;
+            }
+
+            string updateNoteMessage = string.Empty;
+
+            if (addNote)
+            {
+                
                 if (!string.IsNullOrWhiteSpace(bringgTask.note))
                 {
+                    string message = string.Format("Add note to task: {0}!", newOrder.BringgTaskId);
+                    log(message, DebugLevel.Notify);
+
                     updateNoteMessage = this.PostUpdateNote(bringgConfig, newOrder.BringgTaskId, bringgDetailTask, newOrder.Note);
                 }
                 else
                 {
-                    string t = string.Format(format: "No task note: {0}", arg0: newOrder.BringgTaskId);
+                    string updateReason = string.Format(format: "No task note: {0}", arg0: newOrder.BringgTaskId);
 
-                    log(t, DebugLevel.Notify);
+                    log(updateReason, DebugLevel.Notify);
                 }
 
                 if (!string.IsNullOrWhiteSpace(updateNoteMessage))
@@ -360,7 +379,7 @@ namespace Andromeda.GPSIntegration.Bringg
                 note = note,
                 type = 0
             };
-            
+
             string waypointId = "";
             BringgWaypoint waypoint = bringgTask.way_points.FirstOrDefault();
             if (waypoint != null && !string.IsNullOrEmpty(waypoint.id))
@@ -368,7 +387,7 @@ namespace Andromeda.GPSIntegration.Bringg
                 //  bringgNote.way_point_id = int.Parse(waypoint.id);
                 waypointId = waypoint.id;
             }
-            
+
             // Call the Bringg API
             string message = BringgHelper.GenerateMessage(bringgNote, bringgConfig.secretKey);
 
@@ -376,22 +395,22 @@ namespace Andromeda.GPSIntegration.Bringg
             string url = bringgConfig.apiUrl + "/tasks/" + bringgTaskId + "/way_points/" + waypointId + "/notes";
             //string url = bringgConfig.apiUrl + "/tasks/" + bringgNote.task_id + "/way_points/" + bringgNote.way_point_id + "/notes";
 
-            HttpHelper.Call(httpMethod: "POST", 
-                url: url, 
-                contentType: "APPLICATION/JSON", 
-                accepts: "APPLICATION/JSON", 
-                headers: null, 
-                requestData: message, 
-                logOutput: false, 
-                httpStatus: out httpStatusCode, 
+            HttpHelper.Call(httpMethod: "POST",
+                url: url,
+                contentType: "APPLICATION/JSON",
+                accepts: "APPLICATION/JSON",
+                headers: null,
+                requestData: message,
+                logOutput: false,
+                httpStatus: out httpStatusCode,
                 responseData: out responseData);
 
             // Check to see if an error was returned
             string errorMessage = BringgHelper.CheckResponse(httpStatusCode, responseData);
 
             ErrorHelper.LogInfo(
-                method: "BringgAPI.PostUpdateNote", 
-                info: "url:" + url + " result:" + (errorMessage == null ? "" : errorMessage), 
+                method: "BringgAPI.PostUpdateNote",
+                info: "url:" + url + " result:" + (errorMessage == null ? "" : errorMessage),
                 storeId: "");
 
             return errorMessage;
@@ -484,10 +503,10 @@ namespace Andromeda.GPSIntegration.Bringg
             string message = BringgHelper.GenerateMessage(bringgUser, bringgConfig.secretKey);
 
             string url = bringgConfig.apiUrl + "/users";
-            HttpHelper.Call(httpMethod: "POST", 
-                url: url, 
-                contentType: "APPLICATION/JSON", 
-                accepts: "APPLICATION/JSON", 
+            HttpHelper.Call(httpMethod: "POST",
+                url: url,
+                contentType: "APPLICATION/JSON",
+                accepts: "APPLICATION/JSON",
                 headers: null, requestData: message, logOutput: false, httpStatus: out httpStatusCode, responseData: out responseData);
 
             // Check to see if an error was returned
@@ -571,14 +590,14 @@ namespace Andromeda.GPSIntegration.Bringg
 
             string url = bringgConfig.apiUrl + "/tasks/" + Uri.EscapeDataString(bringTaskId) + "?" + queryString;
             HttpStatusCode httpStatusCode;
-            HttpHelper.Call(httpMethod: "GET", 
-                url: url, 
-                contentType: "APPLICATION/JSON", 
-                accepts: "APPLICATION/JSON", 
-                headers: null, 
-                requestData: null, 
-                logOutput: false, 
-                httpStatus: out httpStatusCode, 
+            HttpHelper.Call(httpMethod: "GET",
+                url: url,
+                contentType: "APPLICATION/JSON",
+                accepts: "APPLICATION/JSON",
+                headers: null,
+                requestData: null,
+                logOutput: false,
+                httpStatus: out httpStatusCode,
                 responseData: out responseData);
 
             if (httpStatusCode == HttpStatusCode.OK && !String.IsNullOrEmpty(responseData))
@@ -612,16 +631,16 @@ namespace Andromeda.GPSIntegration.Bringg
             string message = BringgHelper.GenerateMessage(bringgTask, bringgConfig.secretKey);
 
             string url = bringgConfig.apiUrl + "/tasks/" + bringTaskId + "?company_id=" + bringgConfig.companyId.Value;
-            
+
             HttpHelper.Call(
-                httpMethod: "PATCH", 
-                url: url, 
-                contentType: "APPLICATION/JSON", 
-                accepts: "APPLICATION/JSON", 
-                headers: null, 
+                httpMethod: "PATCH",
+                url: url,
+                contentType: "APPLICATION/JSON",
+                accepts: "APPLICATION/JSON",
+                headers: null,
                 requestData: message,
                 logOutput: false,
-                httpStatus: out httpStatusCode, 
+                httpStatus: out httpStatusCode,
                 responseData: out responseData);
 
             // Check to see if an error was returned

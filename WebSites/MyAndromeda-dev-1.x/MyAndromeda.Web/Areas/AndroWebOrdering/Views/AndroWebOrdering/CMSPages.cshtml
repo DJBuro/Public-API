@@ -2,26 +2,28 @@
 
     <div class="row">
         <div class="col-sm-3">
-            <div class="k-widget">
-                <div class="k-header padding">
+            <div class="panel panel-default">
+                <div class="panel-heading">
                     <a class="k-button" ng-click="add()">
                         Create page
                     </a>
                     <a class="k-button k-primary" ng-click="save()">Save</a>
                 </div>
-                <div ng-repeat="cmsPage in pages">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            {{cmsPage.Title}}
-                            <span ng-if="!cmsPage.Enabled">(Disabled)</span>
+                <div class="panel-body">
+                    <div ng-repeat="cmsPage in pages">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{cmsPage.Title}}
+                                <span ng-if="!cmsPage.Enabled">(Disabled)</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <a class="k-button" ng-click="edit(cmsPage)">Edit</a>
+                                <a class="k-button" ng-click="delete(cmsPage)">Delete</a>
+                                <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
+                                <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
+                            </div>
+                            @*<div>{{cmsPage.Content}}</div>*@
                         </div>
-                        <div class="col-xs-12">
-                            <a class="k-button" ng-click="edit(cmsPage)">Edit</a>
-                            <a class="k-button" ng-click="delete(cmsPage)">Delete</a>
-                            <a class="k-button disable-button" ng-show="!cmsPage.Enabled" ng-click="cmsPage.Enabled=true">Enable</a>
-                            <a class="k-button" ng-show="cmsPage.Enabled" ng-click="cmsPage.Enabled=false">Disable</a>
-                        </div>
-                        @*<div>{{cmsPage.Content}}</div>*@
                     </div>
                 </div>
             </div>

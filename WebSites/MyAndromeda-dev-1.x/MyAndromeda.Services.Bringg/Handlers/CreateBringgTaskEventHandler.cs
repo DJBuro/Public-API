@@ -108,7 +108,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
                     return;
                 }
 
-                bool delivery = orderHeader.OrderType.Equals(value: "DELIVERY", comparisonType: StringComparison.InvariantCultureIgnoreCase);
+                bool delivery = orderHeader.OrderType.ToLower().Equals(value: "DELIVERY", comparisonType: StringComparison.InvariantCultureIgnoreCase);
                 
                 if (!delivery) { return; }
 

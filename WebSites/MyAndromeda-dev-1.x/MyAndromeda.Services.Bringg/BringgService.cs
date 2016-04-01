@@ -19,13 +19,14 @@ using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net;
+using MyAndromeda.Framework.Contexts;
 
 namespace MyAndromeda.Services.Bringg
 {
     public class BringgService : IBringgService
     {
         private readonly IMyAndromedaLogger logger;
-        private readonly IDateServices dateServices;
+        
         private readonly IStoreDataService storeDataService;
         private readonly IOrderHeaderDataService orderHeaderDataService;
 
@@ -35,16 +36,21 @@ namespace MyAndromeda.Services.Bringg
 
         private readonly WebhookEndpointManger webhookEndpointManger;
         private readonly IWebApiClientContext webApiClientContext;
+        private readonly IWorkContext workContext;
 
-        public BringgService(IOrderHeaderDataService orderHeaderDataService,
-            IDateServices dateServices,
+
+        public BringgService(
+            WebhookEndpointManger webhookEndpointManger,
+            IOrderHeaderDataService orderHeaderDataService,
+            IWorkContext workContext,
+            //IDateServices dateServices,
             IStoreDataService storeDataService,
             IBringgSettingsDataService gpsSettingsDataService,
             IGprsService gprsDeviceService,
             IMyAndromedaLogger logger,
-            WebhookEndpointManger webhookEndpointManger,
             IWebApiClientContext webApiClientContext)
         {
+            this.workContext = workContext;
             this.webApiClientContext = webApiClientContext;
             this.webhookEndpointManger = webhookEndpointManger;
             this.logger = logger;
@@ -52,13 +58,12 @@ namespace MyAndromeda.Services.Bringg
             this.gpsSettingsDataService = gpsSettingsDataService;
             this.storeDataService = storeDataService;
             this.orderHeaderDataService = orderHeaderDataService;
-            this.dateServices = dateServices;
             this.gpsIntegrationServices = new BringgGPSIntegrationServices();
         }
-
+        
         public async Task<bool> IsBringgConfigured(int andromedaSiteId)
         {
-            var settings = await this.gpsSettingsDataService
+            StoreGPSSetting settings = await this.gpsSettingsDataService
                 .Settings
                 .FirstOrDefaultAsync(e => e.Store.AndromedaSiteId == andromedaSiteId);
 
@@ -91,8 +96,6 @@ namespace MyAndromeda.Services.Bringg
     
             //and for rameses ... on any status (not completed/rejected) ... send 
             return true;
-            //return 
-            //    UsefulOrderStatus.OrderHasBeenReceivedByTheStore;
         }
 
         public async Task AddOrderAsync(int andromedaSiteId, Guid orderId, bool addNotes)
@@ -116,11 +119,10 @@ namespace MyAndromeda.Services.Bringg
             }
 
             Store store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
-
+            
             Andromeda.GPSIntegration.Model.Customer customer = this.CreateCustomer(order.Customer);
             Andromeda.GPSIntegration.Model.Address customerAddress = this.CreateAddress(order.CustomerAddress);
-
-            Andromeda.GPSIntegration.Model.Order bringgOrder = this.CreateOrder(order, customerAddress);
+            Andromeda.GPSIntegration.Model.Order bringgOrder = this.CreateOrder(store, order, customerAddress);
             
             bool success = false;
 
@@ -138,6 +140,11 @@ namespace MyAndromeda.Services.Bringg
             };
 
             result = this.gpsIntegrationServices.CustomerPlacedOrder(store.Id, customer, bringgOrder, addNotes, log);
+
+            if (result == ResultEnum.OK)
+            {
+                success = true; 
+            }
 
             //try again
             if(!success)
@@ -349,6 +356,7 @@ namespace MyAndromeda.Services.Bringg
         }
 
         private Andromeda.GPSIntegration.Model.Order CreateOrder(
+            Store store,
             OrderHeader orderHeader,
             Andromeda.GPSIntegration.Model.Address address)
         {
@@ -364,7 +372,16 @@ namespace MyAndromeda.Services.Bringg
                 + " - " + orderHeader.Customer.FirstName;
 
             model.Address = address;
-            model.ScheduledAt = orderHeader.OrderWantedTime.GetValueOrDefault();
+
+            LocalizationContext localizationContext = LocalizationContext.Create(store.UiCulture, store.TimeZoneInfoId);
+            IDateServices dateService = DateServicesFactory.CreateInstance(localizationContext);
+
+            DateTime utcScheduledForDateTime = dateService.ConvertToUtcFromLocal(orderHeader.OrderWantedTime).GetValueOrDefault();
+                //TimeZoneInfo.ConvertTimeToUtc(orderHeader.OrderWantedTime.GetValueOrDefault(), this.TimeZone);
+            //string utcScheduledForString = utcScheduledForDateTime.ToString(format: "yyyy-MM-ddTHH:mm:ss.fffZ");
+
+
+            model.ScheduledAt = utcScheduledForDateTime;
             model.TotalPrice = orderHeader.FinalPrice;
 
             if (orderHeader.paytype == "CARD")

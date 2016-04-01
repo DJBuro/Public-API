@@ -12,8 +12,8 @@ namespace MyAndromeda.Services.Ibs.Models
     {
         public static AddOrderRequest TransformDraft(this OrderHeader orderHeader, IDateServices dateServices)
         {
-            var placedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderPlacedTime).GetValueOrDefault();
-            var wantedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderWantedTime).GetValueOrDefault();
+            DateTime placedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderPlacedTime).GetValueOrDefault();
+            DateTime wantedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderWantedTime).GetValueOrDefault();
 
             if (wantedTime < DateTime.Now)
             {
@@ -26,7 +26,7 @@ namespace MyAndromeda.Services.Ibs.Models
                 //model.WantedOrderYear = future.Year;
             }
 
-            var timeSlot = string.Format("{0:00}{1:00}", wantedTime.Hour, wantedTime.Minute);
+            string timeSlot = string.Format("{0:00}{1:00}", wantedTime.Hour, wantedTime.Minute);
 
             var model = new AddOrderRequest()
             {

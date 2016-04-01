@@ -1,10 +1,12 @@
 using System;
 using MyAndromeda.Core;
+using MyAndromeda.Framework.Contexts;
 
 namespace MyAndromeda.Framework.Dates
 {
     public interface IDateServices : IDependency
     {
+        ILocalizationContext LocalizationContext { get; }
         /// <summary>
         /// Converts a non-nullable date from Gregorian calendar UTC to the MyAndromeda's configured calendar and time zone.
         /// </summary>

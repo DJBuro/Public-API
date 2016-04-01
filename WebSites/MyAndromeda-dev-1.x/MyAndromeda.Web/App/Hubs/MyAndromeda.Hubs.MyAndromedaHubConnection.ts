@@ -10,7 +10,6 @@
 
         public hubConnection: HubConnection;
 
-
         public static GetInstance(options: Models.IHubParameters): MyAndromedaHubConnection {
             if (MyAndromedaHubConnection._instance) { return MyAndromedaHubConnection._instance; }
 
@@ -41,7 +40,7 @@
                 return;
             }
 
-            //$.connection.hub.logging = true;
+            $.connection.hub.logging = true;
 
             var internal = this,
                 hubConnection = $.connection.hub;
@@ -60,7 +59,8 @@
                 MyAndromedaHubConnection.log("hub connection starting");
             });
 
-            var transportType = //"webSockets";
+            var transportType =
+                //"webSockets";
                 "longPolling";
             
             //if(document.URL.indexOf("localhost") >= 0){
@@ -68,8 +68,8 @@
             //}
 
             hubConnection.start({
-                transport: transportType //['webSockets', 'longPolling'] 
-                //transport: transportType
+                //transport: transportType //['webSockets', 'longPolling'] 
+                transport: transportType
                 //transport: kendo.support.mobileOS ? 'longPolling' : 'webSockets'
             }).done(() => {
                 internal.connecting = false;
@@ -95,6 +95,7 @@
                 'externalSiteId': this.options.externalSiteId,
                 'chainId': this.options.chainId
             };
+
             return true;
         }
 

@@ -10,7 +10,25 @@
         private GetTasksInRange(start: Date, end: Date) {
             let occurences: Models.IOccasionTask[] = this.scheduler.occurrencesInRange(start, end);
 
-            return occurences;
+            let allDay = this.scheduler.dataSource.data().filter(e => {
+                let task: Models.IOccasionTask = <any>e;
+                if (!task.isAllDay) { return false; }
+
+                let startOnSameDay = task.start.toDateString() == start.toDateString();
+                if (startOnSameDay) {
+                    return true;
+                }
+                let endsOnSameDay = task.end.toDateString() == end.toDateString();
+                if (endsOnSameDay) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            let all = occurences.concat(allDay);
+
+            return all;
         }
 
         private GetTasksByResource(start: Date, end: Date, task: Models.IOccasionTask) {
@@ -33,23 +51,15 @@
 
             Logger.Notify(currentTasks);
 
+            //which occasion(s) are causing a problem.
             let matchedOccurences: Models.IOccasionTask[] = [];
-            let flagResource: string[] = [];
-
-            //let allResources = [
-            //    Models.occasionDefinitions.Delivery,
-            //    Models.occasionDefinitions.Collection,
-            //    Models.occasionDefinitions.DineIn
-            //];
-
-            let occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+            
             let taskResources = task.Occasions
-                ? occasionTypeIsString
-                    ? task.Occasions.split(',')
-                    : task.Occasions
+                ? task.Occasions
                 : [];
 
             Logger.Notify("check resources: ");
+            Logger.Notify(task);
             Logger.Notify(taskResources);
 
             let map = currentTasks.map(e=> {
@@ -82,17 +92,32 @@
 
             Logger.Notify("occurrences: " + matchedOccurences.length);
 
-            return matchedOccurences.length === 0;
+            return matchedOccurences;
         }
 
-        public IsOccasionAvailable(start, end, task) {
+        public IsOccasionAvailable(start, end, task): Models.IOccasionTask[]  {
             return this.GetTasksByResource(start, end, task);
+        }
+
+        public IsValid(start, end) {
+            let hours = Math.abs(end.getTime() - start.getTime()) / 36e5;
+            Logger.Notify("Task length: " + hours);
+            return (hours < 24)
         }
     }
 
     export class StoreOccasionSchedulerService {
         constructor(private $http: ng.IHttpService, private uuidService: MyAndromeda.Services.UUIdService, private SweetAlert) {
 
+        }
+
+        public ClearAllTasks() {
+            let route = "/api/chain/{0}/store/{1}/remove-occasions";
+            route = kendo.format(route, settings.chainId, settings.andromedaSiteId);
+
+            let promise = this.$http.post(route, {});
+
+            return promise;
         }
 
         private CreateDataSource() {
@@ -198,7 +223,7 @@
                 workWeekEnd: 6,
                 allDaySlot: true,
                 dataSource: dataSource,
-                timezone: "Europe/London",
+                timezone: "Etc/UTC",
                 currentTimeMarker: {
                     useLocalTimezone: false
                 },
@@ -211,17 +236,25 @@
                     title: "Opening hours"
                 },
                 eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
-                toolbar: ["pdf"],
+                //toolbar: ["pdf"],
                 showWorkHours: false,
                 resources: this.CreateResources(),
                 views: [
-                    { type: "week", selected: true, showWorkHours: false },
-                    { type: "month" }
+                    { type: "week", selected: true, showWorkHours: false }
+                    //{ type: "month" }
                 ],
 
                 resize: function (e: any) {
                     var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                    if (!tester.IsValid(e.start, e.end)) {
+                        Logger.Notify("too long");
+
+                        this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                        e.preventDefault();
+                    }
+
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event); 
+                    if (occasionsInSpace.length > 0) {
                         Logger.Notify("cancel resize");
 
                         this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
@@ -232,7 +265,16 @@
                     Logger.Notify("resize-end");
 
                     var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                    if (!tester.IsValid(e.start, e.end)) {
+                        Logger.Notify("cancel resize");
+                        this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+
+                        e.preventDefault();
+                        return;
+                    }
+
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                    if (occasionsInSpace.length > 0) {
                         Logger.Notify("cancel resize");
                         this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
 
@@ -242,16 +284,20 @@
                 move: function (e: any) {
                     Logger.Notify("move-start");
                     Logger.Notify(e);
-                    var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                    let tester = new StoreOccasionAvailabilityService(e.sender);
+
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                    if (occasionsInSpace.length > 0) {
                         this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
                     }
                 },
                 moveEnd: (e) => {
                     Logger.Notify("move-end");
 
-                    var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.start, e.end, e.event)) {
+                    let tester = new StoreOccasionAvailabilityService(e.sender);
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+
+                    if (occasionsInSpace.length > 0) {
                         Logger.Notify("cancel move");
                         this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
 
@@ -262,7 +308,16 @@
                     Logger.Notify("add"); Logger.Notify(e);
 
                     var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+                    if (!tester.IsValid(e.event.start, e.event.end)) {
+                        Logger.Notify("cancel add");
+                        this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+
+                        e.preventDefault();
+                        return;
+                    }
+
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
+                    if (occasionsInSpace.length > 0) {
                         Logger.Notify("cancel add");
                         //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
                         this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
@@ -283,7 +338,17 @@
                     }
 
                     var tester = new StoreOccasionAvailabilityService(e.sender);
-                    if (!tester.IsOccasionAvailable(e.event.start, e.event.end, e.event)) {
+
+                    if (!tester.IsValid(e.event.start, e.event.end)) {
+                        Logger.Notify("cancel save");
+                        this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+
+                        e.preventDefault();
+                        return;
+                    }
+
+                    let occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
+                    if (occasionsInSpace.length > 0) {
                         Logger.Notify("cancel save");
                         this.SweetAlert.swal("Sorry", "A task already exists for this occasion in this range.", "error");
 

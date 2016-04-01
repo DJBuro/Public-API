@@ -1,7 +1,5 @@
 ﻿module MyAndromeda.Hubs {
     export class StoreHub {
-        private static _storeHubInstance: StoreHub;
-        public static MenuItemChangeEvent: string = "MenuItemChangeEvent";
 
         public static GetInstance(options: Models.IHubParameters): StoreHub {
             Logger.Notify("Get Store Hub");
@@ -11,18 +9,20 @@
             return StoreHub._storeHubInstance;
         }
 
+        public static MenuItemChangeEvent: string = "MenuItemChangeEvent";
+        private static _storeHubInstance: StoreHub;
         private menuItemChangeEvents: Array<Function> = [];
         private eventMap: Models.ILoggingMessageEvent;
-
         private menuHub: any;
-        public user: Users.Models.IUser
 
+        public user: Users.Models.IUser
         public options: Models.IHubParameters;
         public myAndromedaHubConnection: MyAndromedaHubConnection;
 
         constructor(options: Models.IHubParameters) {
             this.options = options;
             this.connect();
+
 
             if (StoreHub._storeHubInstance) {
                 throw Error("The class has already been initialized. Use StoreHub.GetInstance");
@@ -34,6 +34,9 @@
             this.eventMap = {};
             this.menuHub = menuHub;
             this.setupEvents();
+
+            
+
         }
 
         private connect(): void {

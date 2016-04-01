@@ -15,7 +15,8 @@
 @(Html.Kendo().TabStrip().Name("openingHoursOptions").Items(items =>
 {
 
-    items.Add().Text("Simple mode").Selected(true).Content(@<text>
+    items.Add().Text("Opening Hours").Selected(true).Content(@<text>
+        <div class="alert alert-info" role="alert">If the occasion start and end is different to the opening times ie. Only Deliver for the last 3 hours of the day then assign them in the occasion tab.</div>
 
         @Html.ValidationSummary()
 
@@ -32,7 +33,8 @@
         <div style="clear:both;"></div>
 
     </text>);
-    items.Add().Text("Advanced").Content(@<text>
+
+    items.Add().Text("Occasion Times").Content(@<text>
 
 
         <div id="store-scheduler">
@@ -68,19 +70,25 @@
         <span class="label label-success">{{::extra.hours |  number:1 }} h</span>
         <span class="label label-info">{{::extra.startTime}} - {{::extra.endTime}}</span>
 
-        <span class="label label-info" ng-repeat="occasion in state.occasions">
+        <span class="label label-default" ng-repeat="occasion in state.occasions">
             <i class="fa fa-cutlery" style="color:{{::getColour(occasion)}} "></i>
             {{::occasion | limitTo: 2 }}
         </span>
-        
-        <div ng-if="task.title" >
+
+        <div ng-if="task.title">
             <span class="label label-default">{{::task.title}}</span>
         </div>
 
     </script>
 
     <script type="text/ng-template" id="OpeningHours-template.html">
-        <div kendo-scheduler k-options="schedulerOptions">
+        <div class="alert alert-info" role="alert">
+            Add specific times for collection / delivery / dine in as needed.
+            <a class="btn btn-danger" ng-click="clearAll()">Clear All</a>
+        </div>
+
+
+        <div kendo-scheduler="OccasionScheduler" k-options="schedulerOptions">
         </div>
     </script>
 
@@ -98,7 +106,10 @@
                                     <div class="label label-default">Title:</div>
 
                                     <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
-                                    <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                                    <div style="margin-top:2em">
+                                        <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                                    </div>
+
                                 </div>
                                 <div class="col-sm-6">
                                     <div>&nbsp;</div>
@@ -114,6 +125,7 @@
                                            name="start"
                                            k-ng-model="task.start"
                                            style="width: 100%;" />
+                                    <div class="label label-default">{{task.start | date:"fullDate" }}</div>
                                     <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
                                 </div>
                                 <div class="col-sm-6">
@@ -122,18 +134,18 @@
                                            name="end"
                                            k-ng-model="task.end"
                                            style="width: 100%;" />
+                                    <div class="label label-default">{{task.end | date:"fullDate"}}</div>
                                     <span data-for="end" class="k-invalid-msg" style="display: none;"></span>
                                 </div>
                             </div>
                             <br />
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="label label-default">Occasion Type(s):</div>
+                                    <div class="label label-default">Occasion Type(s): - occasions available during this day/slot</div>
 
                                     <select required kendo-multi-select k-options="occasionOptions" k-ng-model="task.Occasions"></select>
                                 </div>
                             </div>
-
 
                         </div>
                     </div>
@@ -145,10 +157,11 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Repeat occasion on different days</div>
                         <div class="panel-body">
-                            <div class="label label-default">Repeat</div>
-                            <div data-container-for="recurrenceRule">
+                            <repeat-weekly-editor task="task"></repeat-weekly-editor>
+
+                            @*<div data-container-for="recurrenceRule">
                                 <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
@@ -157,5 +170,43 @@
         </div>
 
 
+    </script>
+    <script type="text/ng-template" id="repeatWeeklyEditor.html">
+        <div class="label label-default">Repeat on these days:</div>
+        <div>
+            <label>
+                <input type="checkbox" ng-model="rule.Monday" ng-change="ruleChanged()"  />
+                Mon
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Tuesday" ng-change="ruleChanged()" />
+                Tue
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Wednesday" ng-change="ruleChanged()" />
+                Wed
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Thursday" ng-change="ruleChanged()" />
+                Thur
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Friday" ng-change="ruleChanged()" />
+                Fri
+            </label>
+
+            
+        </div>
+        <div class="label label-default">Weekend:</div>
+        <div>
+            <label>
+                <input type="checkbox" ng-model="rule.Saturday" ng-change="ruleChanged()" />
+                Sat
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Sunday" />
+                Sun
+            </label>
+        </div>
     </script>
 }

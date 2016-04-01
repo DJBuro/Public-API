@@ -12,6 +12,11 @@ namespace MyAndromeda.Framework.Dates
         {
             return DefaultDateService.Create(localizationContext);
         }
+
+        public static IDateServices CreateInstance(LocalizationContext localizationContext)
+        {
+            return DefaultDateService.Create(localizationContext) as IDateServices;
+        }
     }
 
     public class DefaultDateService : IDateServices
@@ -25,8 +30,6 @@ namespace MyAndromeda.Framework.Dates
         }
 
         private readonly IMyAndromedaLogger logger;
-
-        private readonly ILocalizationContext localizationContext;
         private readonly IDateTimeFormatProvider dateTimeFormatProvider;
         private readonly ICalendarManager calendarManager;
 
@@ -35,10 +38,11 @@ namespace MyAndromeda.Framework.Dates
             ILocalizationContext localizationContext, IDateTimeFormatProvider dateTimeFormatProvider, ICalendarManager calendarManager) 
         {
             this.logger = logger;
-            this.localizationContext = localizationContext;
+            this.LocalizationContext = localizationContext;
             this.calendarManager = calendarManager;
             this.dateTimeFormatProvider = dateTimeFormatProvider;
         }
+        public ILocalizationContext LocalizationContext { get; private set; }
 
         public virtual DateTime? ConvertToLocalFromUtc(DateTime date)
         {
@@ -52,7 +56,7 @@ namespace MyAndromeda.Framework.Dates
                 return null;
             }
 
-            return TimeZoneInfo.ConvertTimeFromUtc(date.Value, localizationContext.CurrentTimeZone);
+            return TimeZoneInfo.ConvertTimeFromUtc(date.Value, LocalizationContext.CurrentTimeZone);
         }
 
         public virtual string ConvertToLocalString(DateTime date, string nullText = null)
@@ -125,7 +129,7 @@ namespace MyAndromeda.Framework.Dates
                 return null;
             }
 
-            return TimeZoneInfo.ConvertTimeToUtc(date.Value, this.localizationContext.CurrentTimeZone);
+            return TimeZoneInfo.ConvertTimeToUtc(date.Value, this.LocalizationContext.CurrentTimeZone);
         }
 
         public virtual DateTime? ConvertToUtcFromLocalString(string dateString)
@@ -217,7 +221,7 @@ namespace MyAndromeda.Framework.Dates
             if (DateTime.TryParseExact(dateString, customFormat, cultureInfo, DateTimeStyles.AssumeLocal, out localDate))
             {
                 Log(this.logger, "Getting the local date worked!");
-                var calendar = SiteCalendar;
+                Calendar calendar = SiteCalendar;
                 localDate = calendar.ToDateTime(localDate.Year, localDate.Month, localDate.Day, localDate.Hour, localDate.Minute, localDate.Second, localDate.Millisecond);
 
                 var utcDateTime = this.ConvertToUtcFromLocal(localDate);
@@ -248,7 +252,7 @@ namespace MyAndromeda.Framework.Dates
         {
             get
             {
-                return CultureInfo.GetCultureInfo(this.localizationContext.CurrentUiCulture);
+                return CultureInfo.GetCultureInfo(this.LocalizationContext.CurrentUiCulture);
             }
         }
 
@@ -256,9 +260,9 @@ namespace MyAndromeda.Framework.Dates
         {
             get
             {
-                if (!String.IsNullOrEmpty(this.localizationContext.CurrentCalendar))
+                if (!String.IsNullOrEmpty(this.LocalizationContext.CurrentCalendar))
                 {
-                    return calendarManager.GetCalendarByName(this.localizationContext.CurrentCalendar);
+                    return calendarManager.GetCalendarByName(this.LocalizationContext.CurrentCalendar);
                 }
                 return SiteCulture.Calendar;
             }

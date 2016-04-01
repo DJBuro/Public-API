@@ -13,6 +13,7 @@ using MyAndromeda.Web.Controllers.Api.Store.Models;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
 using MyAndromeda.Framework.Notification;
+using MyAndromeda.Framework.Dates;
 
 namespace MyAndromeda.Web.Controllers.Api.Store
 {
@@ -24,6 +25,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
         private readonly ICurrentChain currentChain;
         private readonly ICurrentSite currentStore;
         private readonly INotifier notifier;
+        private readonly IDateServices dateServices;
 
         private readonly IStoreDataService storeDataService;
         private readonly MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext;
@@ -31,8 +33,9 @@ namespace MyAndromeda.Web.Controllers.Api.Store
         private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.Store> stores;
         private readonly ISynchronizationTaskService acsSynchronizationTaskService;
 
-        public StoreController(INotifier notifier, IStoreDataService storeDataService, MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
+        public StoreController(IDateServices dateServices, INotifier notifier, IStoreDataService storeDataService, MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
         {
+            this.dateServices = dateServices;
             this.acsSynchronizationTaskService = acsSynchronizationTaskService;
             this.logger = logger;
             this.notifier = notifier;
@@ -55,6 +58,53 @@ namespace MyAndromeda.Web.Controllers.Api.Store
                 e.ClientSiteName
             })
             .OrderBy(e=> e.ClientSiteName);
+        }
+
+        [HttpPost]
+        [Route("{andromedaSiteId}/remove-occasions")]
+        public async Task RemoveAll(int andromedaSiteId)
+        {
+            MyAndromeda.Data.Model.AndroAdmin.StoreOccasionTime[] occasions = await this.storeOccasionTimes
+                .Where(e => e.Store.AndromedaSiteId == andromedaSiteId)
+                .Where(e => !e.Deleted)
+                .ToArrayAsync();
+
+            
+            int dataVersion = this.androAdminDbContext.GetNextDataVersionForEntity();
+
+            foreach (var entity in occasions)
+            {
+                entity.Deleted = true;
+                entity.DataVersion = dataVersion; 
+            }
+
+            try
+            {
+                await this.androAdminDbContext.SaveChangesAsync();
+
+                this.notifier.Notify(message: "Occasions have been removed");
+
+                this.acsSynchronizationTaskService.CreateTask(new MyAndromeda.Data.Model.MyAndromeda.CloudSynchronizationTask()
+                {
+                    Name = "Occasion time",
+                    ChainId = this.currentChain.Chain.Id,
+                    Description = "Sync Task for update hours on occasions",
+                    StoreId = this.currentStore.Store.Id,
+                    Timestamp = DateTime.UtcNow
+                });
+
+                this.notifier.Notify(message: "Sync should begin shortly.");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+
+                throw;
+            }
+
+            await this.androAdminDbContext.SaveChangesAsync();
+
+            return;
         }
 
         [HttpPost]
@@ -89,6 +139,9 @@ namespace MyAndromeda.Web.Controllers.Api.Store
             string content = await this.Request.Content.ReadAsStringAsync();
 
             StoreOccasionTimeModel model = JsonConvert.DeserializeObject<StoreOccasionTimeModel>(content);
+
+            model.Start = this.dateServices.ConvertToLocalFromUtc(model.Start).GetValueOrDefault();
+            model.End = this.dateServices.ConvertToLocalFromUtc(model.End).GetValueOrDefault();
 
             var storeEntity = await this.stores.FirstOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
             var occasionEntity = await this.storeOccasionTimes.FirstOrDefaultAsync(e => e.Id == model.Id);
@@ -144,7 +197,7 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
             StoreOccasionTimeModel model = JsonConvert.DeserializeObject<StoreOccasionTimeModel>(content);
 
-            var entity = await this.storeOccasionTimes.FirstOrDefaultAsync(e => e.Id == model.Id);
+            MyAndromeda.Data.Model.AndroAdmin.StoreOccasionTime entity = await this.storeOccasionTimes.FirstOrDefaultAsync(e => e.Id == model.Id);
 
             if (entity != null) 
             {
