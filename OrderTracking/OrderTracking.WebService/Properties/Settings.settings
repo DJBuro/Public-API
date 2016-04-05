@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="OrderTracking.WebService.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="OrderTracking_WebService_AndroGps_Trackers" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://gps.andromedagps.com/Trackers.asmx</Value>
-    </Setting>
     <Setting Name="OrderTracking_WebService_AndroGeoCode_GeoCode" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://geocode.androtechnology.co.uk/GeoCode.asmx</Value>
+    </Setting>
+    <Setting Name="OrderTracking_WebService_AndroGps_Trackers" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://gpsgate.androcloudservices.com/gps/trackers.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

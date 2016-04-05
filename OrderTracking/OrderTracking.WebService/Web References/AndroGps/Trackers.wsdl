@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://gps.andromedagps.com" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://gps.andromedagps.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://gpsgate.androcloudservices.com" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://gpsgate.androcloudservices.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
   <wsdl:types>
-    <s:schema elementFormDefault="qualified" targetNamespace="http://gps.andromedagps.com">
+    <s:schema elementFormDefault="qualified" targetNamespace="http://gpsgate.androcloudservices.com">
       <s:element name="GetTrackerByName">
         <s:complexType>
           <s:sequence>
@@ -58,6 +58,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="trackerName" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="phoneNumber" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="trackerType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="protocolId" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -145,6 +146,7 @@
     <wsdl:part name="trackerName" type="s:string" />
     <wsdl:part name="phoneNumber" type="s:string" />
     <wsdl:part name="trackerType" type="s:string" />
+    <wsdl:part name="protocolId" type="s:string" />
   </wsdl:message>
   <wsdl:message name="AddTrackerHttpGetOut">
     <wsdl:part name="Body" element="tns:boolean" />
@@ -170,6 +172,7 @@
     <wsdl:part name="trackerName" type="s:string" />
     <wsdl:part name="phoneNumber" type="s:string" />
     <wsdl:part name="trackerType" type="s:string" />
+    <wsdl:part name="protocolId" type="s:string" />
   </wsdl:message>
   <wsdl:message name="AddTrackerHttpPostOut">
     <wsdl:part name="Body" element="tns:boolean" />
@@ -259,7 +262,7 @@
   <wsdl:binding name="TrackersSoap" type="tns:TrackersSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetTrackerByName">
-      <soap:operation soapAction="http://gps.andromedagps.com/GetTrackerByName" style="document" />
+      <soap:operation soapAction="http://gpsgate.androcloudservices.com/GetTrackerByName" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -268,7 +271,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetTrackersByNames">
-      <soap:operation soapAction="http://gps.andromedagps.com/GetTrackersByNames" style="document" />
+      <soap:operation soapAction="http://gpsgate.androcloudservices.com/GetTrackersByNames" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -277,7 +280,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AddTracker">
-      <soap:operation soapAction="http://gps.andromedagps.com/AddTracker" style="document" />
+      <soap:operation soapAction="http://gpsgate.androcloudservices.com/AddTracker" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -286,7 +289,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateTrackerPhoneNumber">
-      <soap:operation soapAction="http://gps.andromedagps.com/UpdateTrackerPhoneNumber" style="document" />
+      <soap:operation soapAction="http://gpsgate.androcloudservices.com/UpdateTrackerPhoneNumber" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -295,7 +298,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetLicense">
-      <soap:operation soapAction="http://gps.andromedagps.com/GetLicense" style="document" />
+      <soap:operation soapAction="http://gpsgate.androcloudservices.com/GetLicense" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -307,7 +310,7 @@
   <wsdl:binding name="TrackersSoap12" type="tns:TrackersSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetTrackerByName">
-      <soap12:operation soapAction="http://gps.andromedagps.com/GetTrackerByName" style="document" />
+      <soap12:operation soapAction="http://gpsgate.androcloudservices.com/GetTrackerByName" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -316,7 +319,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetTrackersByNames">
-      <soap12:operation soapAction="http://gps.andromedagps.com/GetTrackersByNames" style="document" />
+      <soap12:operation soapAction="http://gpsgate.androcloudservices.com/GetTrackersByNames" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -325,7 +328,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="AddTracker">
-      <soap12:operation soapAction="http://gps.andromedagps.com/AddTracker" style="document" />
+      <soap12:operation soapAction="http://gpsgate.androcloudservices.com/AddTracker" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -334,7 +337,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="UpdateTrackerPhoneNumber">
-      <soap12:operation soapAction="http://gps.andromedagps.com/UpdateTrackerPhoneNumber" style="document" />
+      <soap12:operation soapAction="http://gpsgate.androcloudservices.com/UpdateTrackerPhoneNumber" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -343,7 +346,7 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="GetLicense">
-      <soap12:operation soapAction="http://gps.andromedagps.com/GetLicense" style="document" />
+      <soap12:operation soapAction="http://gpsgate.androcloudservices.com/GetLicense" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -433,16 +436,16 @@
   <wsdl:service name="Trackers">
     <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Defines operations</wsdl:documentation>
     <wsdl:port name="TrackersSoap" binding="tns:TrackersSoap">
-      <soap:address location="http://localhost/OrderTracking.Gps.Webservice/Trackers.asmx" />
+      <soap:address location="http://gpsgate.androcloudservices.com/gps/trackers.asmx" />
     </wsdl:port>
     <wsdl:port name="TrackersSoap12" binding="tns:TrackersSoap12">
-      <soap12:address location="http://localhost/OrderTracking.Gps.Webservice/Trackers.asmx" />
+      <soap12:address location="http://gpsgate.androcloudservices.com/gps/trackers.asmx" />
     </wsdl:port>
     <wsdl:port name="TrackersHttpGet" binding="tns:TrackersHttpGet">
-      <http:address location="http://localhost/OrderTracking.Gps.Webservice/Trackers.asmx" />
+      <http:address location="http://gpsgate.androcloudservices.com/gps/trackers.asmx" />
     </wsdl:port>
     <wsdl:port name="TrackersHttpPost" binding="tns:TrackersHttpPost">
-      <http:address location="http://localhost/OrderTracking.Gps.Webservice/Trackers.asmx" />
+      <http:address location="http://gpsgate.androcloudservices.com/gps/trackers.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
