@@ -11,7 +11,7 @@ var MyAndromeda;
             }
             DeliveryZonesByRadiusApp.ApplicationName = "DeliveryZonesByRadius";
             return DeliveryZonesByRadiusApp;
-        })();
+        }());
         DeliveryZonesByRadius.DeliveryZonesByRadiusApp = DeliveryZonesByRadiusApp;
         var Angular = (function () {
             function Angular() {
@@ -38,7 +38,7 @@ var MyAndromeda;
             Angular.ServicesInitilizations = [];
             Angular.ControllersInitilizations = [];
             return Angular;
-        })();
+        }());
         DeliveryZonesByRadius.Angular = Angular;
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
 })(MyAndromeda || (MyAndromeda = {}));

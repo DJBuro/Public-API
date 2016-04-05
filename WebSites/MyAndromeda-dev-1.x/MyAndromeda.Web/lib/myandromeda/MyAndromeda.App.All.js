@@ -41,7 +41,7 @@ var MyAndromeda;
                 logger.UseError = value;
             };
             return Logger;
-        })();
+        }());
         Menu.Logger = Logger;
         var logger = new Logger();
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
@@ -59,7 +59,7 @@ var MyAndromeda;
             }
             WebOrderingApp.ApplicationName = "WebOrderingApplication";
             return WebOrderingApp;
-        })();
+        }());
         WebOrdering.WebOrderingApp = WebOrderingApp;
         var Angular = (function () {
             function Angular() {
@@ -95,10 +95,11 @@ var MyAndromeda;
             Angular.ServicesInitilizations = [];
             Angular.ControllersInitilizations = [];
             return Angular;
-        })();
+        }());
         WebOrdering.Angular = Angular;
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
 /// <reference path="MyAndromeda.WebOrdering.App.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -149,11 +150,12 @@ var MyAndromeda;
                 };
                 AnalyticsController.Name = "AnalyticsController";
                 return AnalyticsController;
-            })();
+            }());
             Controllers.AnalyticsController = AnalyticsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
     var WebOrdering;
@@ -161,127 +163,238 @@ var MyAndromeda;
         var Controllers;
         (function (Controllers) {
             WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                /* Store editor section */
-                app.directive("storeEmailSection", function () {
-                    WebOrdering.Logger.Notify("directive loaded");
-                    return {
-                        restrict: "E",
-                        transclude: true,
-                        template: $("#StoreEmailSection").html(),
-                        //templateUrl: "#StoreEmailSection",
-                        require: '^ngModel',
-                        scope: {
-                            ngModel: "="
-                        },
-                        link: function (scope, element, attrs, controller, transclude) {
-                            //transclude(scope, function (clone, scope) {
-                            //    element.append(clone);
-                            //});
-                        },
-                        controller: function ($scope, $timeout, contextService) {
-                            var store = $scope.ngModel;
-                            var lookup = function (store) {
-                                var pages = contextService.Model.CustomEmailTemplate.CustomTemplates[store.AndromedaSiteId];
-                                var context = {
-                                    Store: store,
-                                    Pages: pages,
-                                    Page: pages[0]
-                                };
-                                return context;
-                            };
-                            var context = lookup(store);
-                            $scope.context = context;
-                            WebOrdering.Logger.Notify("s: ");
-                            WebOrdering.Logger.Notify(context);
-                            $scope.edit = function (page) {
-                                context.Page = page;
-                            };
-                            $scope.delete = function (page) {
-                                if (!confirm("Sure you want to delete this item. There is no way of getting it back")) {
-                                    return;
-                                }
-                                context.Pages = context.Pages.filter(function (item) {
-                                    return item.Title !== page.Title;
-                                });
-                                if (context.Page !== null && context.Page.Title == page.Title) {
-                                    context.Page = null;
-                                }
-                            };
-                        }
-                    };
-                });
-                app.controller("EmailCmsPagesController", function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                    var settings = contextService.ModelSubject.where(function (e) { return e !== null; });
-                    var stores = contextService.StoreSubject.where(function (e) { return e.length > 0; });
-                    var emailSettings = {
-                        Pages: [
-                            //region on the email to inject content into, if enabled. 
-                            { Title: "Custom Content", Content: "", Enabled: false }
-                        ]
-                    };
-                    $scope.stores = [];
-                    $scope.page = null;
-                    var addSectionsForStore = function (store, sections) {
-                        Rx.Observable.fromArray(emailSettings.Pages).subscribe(function (page) {
-                            //if its got it ... don't care. 
-                            if (sections.filter(function (item) { return item.Title === page.Title; }).length > 0) {
-                                return;
-                            }
-                            var newPage = JSON.parse(JSON.stringify(page));
-                            //add any missing email sections. 
-                            sections.push(newPage);
-                        });
-                    };
-                    var both = Rx.Observable
-                        .zip(settings, stores, function (settings, stores) {
-                        return { settings: settings, stores: stores };
-                    })
-                        .subscribe(function (storesAndSettings) {
-                        var settings = storesAndSettings.settings.CustomEmailTemplate;
-                        for (var i = 0; i < storesAndSettings.stores.length; i++) {
-                            var store = storesAndSettings.stores[i], storeId = store.AndromedaSiteId;
-                            if (!settings.CustomTemplates[storeId]) {
-                                settings.CustomTemplates[storeId] = [];
-                            }
-                            var sections = settings.CustomTemplates[storeId];
-                            addSectionsForStore(store, sections);
-                        }
-                        //Logger.Notify("Stores in email settings: " settings.CustomTemplates.);
-                    });
-                    stores.subscribe(function (storeList) {
-                        $scope.stores = storeList;
-                    });
+                app.controller(CarouselController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        CarouselController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
+                        /* going to leave kendo to manage the observable object */
+                        CarouselController.SetupCarousels($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var CarouselController = (function () {
+                function CarouselController() {
+                }
+                CarouselController.OnLoad = function ($scope, $timout, contextService, webOrderingWebApiService) {
+                    /* Add image auto upload */
+                    $scope.ShowCarousel = true;
+                    $scope.ShowHtmlEditor = false;
+                    $scope.ShowImageEditor = false;
                     $scope.SaveChanges = function () {
+                        var data = $scope.CarouselBlocks;
+                        data.forEach(function (block) {
+                            console.log("sync block " + block.Carousel.Name);
+                            /* this important otherwise the local data source does not update the main object */
+                            //block.DataSource.sync();
+                            //block.Carousel.h
+                        });
                         webOrderingWebApiService.Update();
                     };
-                });
-            });
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller("StoresController", function ($scope, contextService) {
-                    var dataSource = new kendo.data.DataSource();
-                    $scope.storeGridOptions = {
-                        dataSource: dataSource,
-                        sortable: true,
-                        columns: [{
-                                field: "Name",
-                                title: "Store Name",
-                            }]
+                    /* These are setup depending on the task ... create / edit */
+                    $scope.CancelItem = function () { };
+                    $scope.SaveItem = function () { };
+                };
+                CarouselController.CreateGuid = function () {
+                    var S4 = function () {
+                        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
                     };
-                    contextService.StoreSubject.subscribe(function (stores) {
-                        WebOrdering.Logger.Notify("I have stores" + stores.length);
-                        dataSource.data(stores);
+                    // then to call it, plus stitch in '4' in the third group
+                    var guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
+                    return guid;
+                };
+                CarouselController.CreateItem = function (type) {
+                    return new kendo.data.Model({
+                        Id: CarouselController.CreateGuid(),
+                        Type: type,
+                        ImageUrl: "",
+                        Description: "",
+                        HTML: ""
                     });
-                });
-            });
+                };
+                CarouselController.LoadImageEditor = function ($scope, $timout, carousel, item) {
+                    $scope.ShowImageEditor = true;
+                    $scope.ShowCarousel = false;
+                    $scope.ShowHtmlEditor = false;
+                    $scope.HasImageSlideUrl = item.ImageUrl;
+                    kendo.unbind("#ImageTemplate");
+                    kendo.bind("#ImageTemplate", item);
+                    //part of the scope again.
+                    var upload = $scope.CarouselImageUpload;
+                    var carouselImageUploadUrl = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadCarouselImage/{2}/{3}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, carousel.Name, item.Id);
+                    WebOrdering.Logger.Notify("carouselImageUploadUrl" + carouselImageUploadUrl);
+                    upload.setOptions({
+                        async: {
+                            saveUrl: carouselImageUploadUrl,
+                            autoUpload: true
+                        },
+                        showFileList: false,
+                        multiple: false
+                    });
+                    upload.unbind("success");
+                    upload.bind("success", function (result) {
+                        console.log(result.response);
+                        console.log(result.response.Url);
+                        var r = Math.floor(Math.random() * 99999) + 1;
+                        item.set("ImageUrl", result.response.Url + "?k=" + r);
+                        $timout(function () {
+                            $scope.HasImageSlideUrl = true;
+                            $scope.BindCarouselsList();
+                        });
+                    });
+                };
+                CarouselController.LoadHtmlEditor = function ($scope, item) {
+                    $scope.ShowCarousel = false;
+                    $scope.ShowHtmlEditor = true;
+                    $scope.ShowImageEditor = false;
+                    kendo.unbind("#HtmlTemplate");
+                    kendo.bind("#HtmlTemplate", item);
+                };
+                CarouselController.ResetForm = function ($scope, $timeout, contextService) {
+                    $timeout(function () {
+                        $scope.ShowCarousel = true;
+                        $scope.ShowHtmlEditor = false;
+                        $scope.ShowImageEditor = false;
+                    });
+                    $scope.BindCarouselsList();
+                };
+                CarouselController.SetupCarousels = function ($scope, $timeout, contextService) {
+                    var _this = this;
+                    var actionsTemplate = $("#EditButtonTemplate").html();
+                    $scope.EditCarouselItem = function (carouselName, carouselItemId) {
+                        console.log("clicked on a item");
+                        var s = kendo.format("index: {0}; item: {1}", carouselName, carouselItemId);
+                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
+                        var c = carousels[0];
+                        //find the carousel item 
+                        var m = c.DataSource.view().find(function (item) { return item.Id == carouselItemId; });
+                        $scope.HtmlBeforeEdit = m.HTML;
+                        switch (m.Type.toLowerCase()) {
+                            case "image":
+                                _this.LoadImageEditor($scope, $timeout, c.Carousel, m);
+                                break;
+                            case "html":
+                                _this.LoadHtmlEditor($scope, m);
+                                break;
+                            default: throw kendo.format("{0} type is not supported", m.Type);
+                        }
+                        $scope.SaveItem = function () {
+                            //(c.DataSource.view().find((item: Models.ICarouselItem) => { return item.Id == carouselItemId; })).ImageUrl += "?k=" + r;
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                            $scope.SaveChanges();
+                        };
+                        $scope.CancelItem = function (Id) {
+                            (c.DataSource.view().find(function (item) { return item.Id == carouselItemId; })).HTML = $scope.HtmlBeforeEdit;
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                            $scope.HtmlBeforeEdit = "";
+                        };
+                    };
+                    $scope.CreateImageCarouselItem = function (carouselName) {
+                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
+                        var c = carousels[0];
+                        var newCarouselItem = CarouselController.CreateItem("image");
+                        //c.DataSource.add(newCarouselItem);
+                        $scope.SaveItem = function () {
+                            c.DataSource.add(newCarouselItem);
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                            $scope.SaveChanges();
+                        };
+                        $scope.CancelItem = function () {
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                        };
+                        CarouselController.LoadImageEditor($scope, $timeout, c.Carousel, newCarouselItem);
+                    };
+                    $scope.CreateHtmlCarouselItem = function (carouselName) {
+                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
+                        var c = carousels[0];
+                        var newCarouselItem = CarouselController.CreateItem("Html");
+                        $scope.SaveItem = function () {
+                            c.DataSource.add(newCarouselItem);
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                            $scope.SaveChanges();
+                        };
+                        $scope.CancelItem = function () {
+                            CarouselController.ResetForm($scope, $timeout, contextService);
+                        };
+                        CarouselController.LoadHtmlEditor($scope, newCarouselItem);
+                    };
+                    $scope.RemoveCarouselItem = function (carouselName, carouselItemId) {
+                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
+                        var c = carousels[0];
+                        var m = c.DataSource.view().find(function (item) { return item.Id == carouselItemId; });
+                        //remove from data source
+                        c.DataSource.remove(m);
+                        $scope.SaveChanges();
+                    };
+                    $scope.BindCarouselsList = function () {
+                        var toolbar = $("#CarouselHeaderTemplate").html();
+                        var editTemplate = $("#CarouselItemEditTemplate").html();
+                        var descriptionTemplate = $("#DescriptionTemplate").html();
+                        var settingsSubscription = contextService.ModelSubject
+                            .where(function (e) { return e !== null; })
+                            .subscribe(function (websiteSettings) {
+                            $timeout(function () {
+                                var carousels = websiteSettings.Home.Carousels;
+                                var carouselEditors = carousels.map(function (carousel, index) {
+                                    var dataSource = new kendo.data.DataSource({
+                                        data: carousel.Items,
+                                        schema: {
+                                            model: {
+                                                id: "Id"
+                                            }
+                                        }
+                                    });
+                                    var model = {
+                                        Carousel: carousel,
+                                        DataSource: dataSource,
+                                        GridOptions: {
+                                            name: carousel.Name,
+                                            toolbar: [
+                                                {
+                                                    name: "add-button",
+                                                    template: toolbar
+                                                }
+                                            ],
+                                            columns: [
+                                                {
+                                                    field: "Type",
+                                                    title: "Type",
+                                                    width: "120px"
+                                                },
+                                                {
+                                                    field: "Description",
+                                                    title: "Description",
+                                                    template: descriptionTemplate
+                                                },
+                                                {
+                                                    title: "Actions",
+                                                    template: editTemplate,
+                                                    width: "120px"
+                                                }
+                                            ],
+                                            dataSource: dataSource
+                                        }
+                                    };
+                                    //dataSource.bind("change", () => {
+                                    //    websiteSettings.Home.Carousels                            
+                                    //});
+                                    return model;
+                                });
+                                console.log("setup carousels:" + carouselEditors.length);
+                                $scope.CarouselBlocks = carouselEditors;
+                            });
+                        });
+                        $scope.$on('$destroy', function () {
+                            settingsSubscription.dispose();
+                        });
+                    };
+                    $scope.BindCarouselsList();
+                };
+                CarouselController.Name = "CarouselController";
+                return CarouselController;
+            }());
+            Controllers.CarouselController = CarouselController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -461,7 +574,7 @@ var MyAndromeda;
                 };
                 CustomBackgroundImagesController.Name = "CustomBackgroundImagesController";
                 return CustomBackgroundImagesController;
-            })();
+            }());
             Controllers.CustomBackgroundImagesController = CustomBackgroundImagesController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
@@ -556,7 +669,7 @@ var MyAndromeda;
                 };
                 CustomerAccountSettingsController.Name = "CustomerAccountSettingsController";
                 return CustomerAccountSettingsController;
-            })();
+            }());
             Controllers.CustomerAccountSettingsController = CustomerAccountSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
@@ -672,8 +785,113 @@ var MyAndromeda;
                 };
                 CustomThemeSettingsController.Name = "CustomThemeSettingsController";
                 return CustomThemeSettingsController;
-            })();
+            }());
             Controllers.CustomThemeSettingsController = CustomThemeSettingsController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                /* Store editor section */
+                app.directive("storeEmailSection", function () {
+                    WebOrdering.Logger.Notify("directive loaded");
+                    return {
+                        restrict: "E",
+                        transclude: true,
+                        template: $("#StoreEmailSection").html(),
+                        //templateUrl: "#StoreEmailSection",
+                        require: '^ngModel',
+                        scope: {
+                            ngModel: "="
+                        },
+                        link: function (scope, element, attrs, controller, transclude) {
+                            //transclude(scope, function (clone, scope) {
+                            //    element.append(clone);
+                            //});
+                        },
+                        controller: function ($scope, $timeout, contextService) {
+                            var store = $scope.ngModel;
+                            var lookup = function (store) {
+                                var pages = contextService.Model.CustomEmailTemplate.CustomTemplates[store.AndromedaSiteId];
+                                var context = {
+                                    Store: store,
+                                    Pages: pages,
+                                    Page: pages[0]
+                                };
+                                return context;
+                            };
+                            var context = lookup(store);
+                            $scope.context = context;
+                            WebOrdering.Logger.Notify("s: ");
+                            WebOrdering.Logger.Notify(context);
+                            $scope.edit = function (page) {
+                                context.Page = page;
+                            };
+                            $scope.delete = function (page) {
+                                if (!confirm("Sure you want to delete this item. There is no way of getting it back")) {
+                                    return;
+                                }
+                                context.Pages = context.Pages.filter(function (item) {
+                                    return item.Title !== page.Title;
+                                });
+                                if (context.Page !== null && context.Page.Title == page.Title) {
+                                    context.Page = null;
+                                }
+                            };
+                        }
+                    };
+                });
+                app.controller("EmailCmsPagesController", function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                    var settings = contextService.ModelSubject.where(function (e) { return e !== null; });
+                    var stores = contextService.StoreSubject.where(function (e) { return e.length > 0; });
+                    var emailSettings = {
+                        Pages: [
+                            //region on the email to inject content into, if enabled. 
+                            { Title: "Custom Content", Content: "", Enabled: false }
+                        ]
+                    };
+                    $scope.stores = [];
+                    $scope.page = null;
+                    var addSectionsForStore = function (store, sections) {
+                        Rx.Observable.fromArray(emailSettings.Pages).subscribe(function (page) {
+                            //if its got it ... don't care. 
+                            if (sections.filter(function (item) { return item.Title === page.Title; }).length > 0) {
+                                return;
+                            }
+                            var newPage = JSON.parse(JSON.stringify(page));
+                            //add any missing email sections. 
+                            sections.push(newPage);
+                        });
+                    };
+                    var both = Rx.Observable
+                        .zip(settings, stores, function (settings, stores) {
+                        return { settings: settings, stores: stores };
+                    })
+                        .subscribe(function (storesAndSettings) {
+                        var settings = storesAndSettings.settings.CustomEmailTemplate;
+                        for (var i = 0; i < storesAndSettings.stores.length; i++) {
+                            var store = storesAndSettings.stores[i], storeId = store.AndromedaSiteId;
+                            if (!settings.CustomTemplates[storeId]) {
+                                settings.CustomTemplates[storeId] = [];
+                            }
+                            var sections = settings.CustomTemplates[storeId];
+                            addSectionsForStore(store, sections);
+                        }
+                        //Logger.Notify("Stores in email settings: " settings.CustomTemplates.);
+                    });
+                    stores.subscribe(function (storeList) {
+                        $scope.stores = storeList;
+                    });
+                    $scope.SaveChanges = function () {
+                        webOrderingWebApiService.Update();
+                    };
+                });
+            });
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -752,7 +970,7 @@ var MyAndromeda;
                 };
                 FacebookCrawlerSettingsController.Name = "FacebookCrawlerSettingsController";
                 return FacebookCrawlerSettingsController;
-            })();
+            }());
             Controllers.FacebookCrawlerSettingsController = FacebookCrawlerSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
@@ -876,7 +1094,7 @@ var MyAndromeda;
                     EnableFacebookLogin: true
                 };
                 return GeneralSettingsController;
-            })();
+            }());
             Controllers.GeneralSettingsController = GeneralSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
@@ -922,7 +1140,7 @@ var MyAndromeda;
                 };
                 HomePageController.Name = "HomePageController";
                 return HomePageController;
-            })();
+            }());
             Controllers.HomePageController = HomePageController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
@@ -967,9 +1185,881 @@ var MyAndromeda;
                 };
                 LegalNoticesController.Name = "LegalNoticesController";
                 return LegalNoticesController;
-            })();
+            }());
             Controllers.LegalNoticesController = LegalNoticesController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(PickThemeController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    WebOrdering.Services.WebOrderingThemeWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService, webOrderingThemeWebApiService) {
+                        PickThemeController.OnLoad($scope, $timeout, webOrderingWebApiService, webOrderingThemeWebApiService);
+                        PickThemeController.SetupScope($scope);
+                        PickThemeController.SetupSelection($scope, webOrderingWebApiService);
+                        PickThemeController.SetupCurrentSelection($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var PickThemeController = (function () {
+                function PickThemeController() {
+                }
+                PickThemeController.OnLoad = function ($scope, $timout, webOrderingWebApiService, webOrderingThemeWebApiService) {
+                    var isThemesBusySubscription = webOrderingThemeWebApiService.IsBusy.subscribe(function (value) {
+                        $timout(function () {
+                            $scope.IsThemesBusy = value;
+                        });
+                    });
+                    var isDataBusySubscription = webOrderingWebApiService.IsLoading.subscribe(function (value) {
+                        $timout(function () {
+                            $scope.IsDataBusy = value;
+                        });
+                    });
+                    $scope.ListViewTemplate = $("#ListViewTemplate").html();
+                    $scope.DataSource = webOrderingThemeWebApiService.GetThemeDataSource();
+                    $scope.HasPreviewTheme = false;
+                    $scope.HasCurrentTheme = false;
+                    $scope.SearchTemplates = function () {
+                        webOrderingThemeWebApiService.SearchText($scope.SearchText);
+                    };
+                    $scope.$on('$destroy', function () {
+                        isThemesBusySubscription.dispose();
+                    });
+                };
+                PickThemeController.SetupCurrentSelection = function ($scope, $timout, contextService) {
+                    var modelSubscription = contextService.ModelSubject.where(function (value) {
+                        return value !== null;
+                    }).subscribe(function (settings) {
+                        var s = settings;
+                        s.bind("change", function () {
+                            $timout(function () {
+                                //console.log("set current theme settings");
+                                console.log(settings.ThemeSettings);
+                                $scope.CurrentTheme = settings.ThemeSettings;
+                                $scope.HasCurrentTheme = true;
+                            });
+                        });
+                        console.log(settings.ThemeSettings);
+                        $scope.CurrentTheme = settings.ThemeSettings;
+                        $scope.HasCurrentTheme = true;
+                    });
+                    $scope.$on("$destroy", function () {
+                        modelSubscription.dispose();
+                    });
+                };
+                PickThemeController.SetupSelection = function ($scope, webOrderingWebApiService) {
+                    $scope.SelectTemplate = function (id) {
+                        var dataSource = $scope.DataSource;
+                        var previewItem = dataSource.data().find(function (item) {
+                            return item.Id === id;
+                        });
+                        $scope.HasPreviewTheme = true;
+                        $scope.SelectedTheme = previewItem;
+                    };
+                    $scope.SelectPreviewTheme = function (theme) {
+                        console.log(theme);
+                        webOrderingWebApiService.UpdateThemeSettings(theme);
+                    };
+                };
+                PickThemeController.SetupScope = function ($scope) {
+                    $scope.$on('$destroy', function () { });
+                };
+                PickThemeController.Name = "PickThemeController";
+                PickThemeController.Route = "/";
+                return PickThemeController;
+            }());
+            Controllers.PickThemeController = PickThemeController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(SEOSettingsController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        SEOSettingsController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
+                        /* going to leave kendo to manage the observable object */
+                        SEOSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var SEOSettingsController = (function () {
+                function SEOSettingsController() {
+                }
+                SEOSettingsController.OnLoad = function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                    $scope.SaveChanges = function () {
+                        if ($scope.SEOSettingsValidator.validate()) {
+                            webOrderingWebApiService.Update();
+                        }
+                    };
+                };
+                SEOSettingsController.SetupKendoMvvm = function ($scope, $timeout, contextService) {
+                    var settingsSubscription = contextService.ModelSubject
+                        .where(function (e) { return e !== null; })
+                        .subscribe(function (webSiteSettings) {
+                        var viewElement = $("#SEOSettingsController");
+                        kendo.bind(viewElement, webSiteSettings.SEOSettings);
+                        $scope.ShowSEODescription = webSiteSettings.SEOSettings.get("IsEnableDescription");
+                        //added 500ms timeout as there are random issues. 
+                        $timeout(function () {
+                        }, 500, true);
+                    });
+                    $scope.$on('$destroy', function () {
+                        settingsSubscription.dispose();
+                    });
+                };
+                SEOSettingsController.Name = "SEOSettingsController";
+                return SEOSettingsController;
+            }());
+            Controllers.SEOSettingsController = SEOSettingsController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(SiteDetailsController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        SiteDetailsController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
+                        /* going to leave kendo to manage the observable object */
+                        SiteDetailsController.SetupKendoMvvm($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var SiteDetailsController = (function () {
+                function SiteDetailsController() {
+                }
+                SiteDetailsController.OnLoad = function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                    $scope.SaveChanges = function () {
+                        if ($scope.SiteDetailsValidator.validate()) {
+                            webOrderingWebApiService.Update();
+                        }
+                    };
+                    $scope.HasWebsiteLogo = false;
+                    $scope.HasMobileLogo = false;
+                    $scope.TempWebsiteLogoPath = "";
+                    $scope.TempMobileLogoPath = "";
+                };
+                SiteDetailsController.SetupUploaders = function ($scope, $timeout, contextService) {
+                    if (!$scope.MainImageUpload) {
+                        alert("MainImageUpload hasn't been created. Pester Matt");
+                    }
+                    if (!$scope.MobileImageUpload) {
+                        alert("MobileImageUpload hasn't been created. Pester Matt");
+                    }
+                    var webSiteImageUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "website");
+                    $scope.MainImageUpload.setOptions({
+                        async: {
+                            saveUrl: webSiteImageUploadRoute,
+                            autoUpload: true
+                        },
+                        showFileList: false,
+                        multiple: false
+                    });
+                    var mobileImageUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "mobile");
+                    $scope.MobileImageUpload.setOptions({
+                        async: {
+                            saveUrl: mobileImageUploadRoute,
+                            autoUpload: true
+                        },
+                        showFileList: false,
+                        multiple: false
+                    });
+                    var FaviconUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "favicon");
+                    $scope.FaviconImageUpload.setOptions({
+                        async: {
+                            saveUrl: FaviconUploadRoute,
+                            autoUpload: true
+                        },
+                        showFileList: false,
+                        multiple: false
+                    });
+                    $scope.MainImageUpload.bind("success", function (result) {
+                        WebOrdering.Logger.Notify(result);
+                        var observableObject = contextService.Model.SiteDetails;
+                        observableObject.set("WebsiteLogoPath", result.response.Url);
+                        var r = Math.floor(Math.random() * 99999) + 1;
+                        $timeout(function () {
+                            $scope.TempWebsiteLogoPath = result.response.Url + "?k=" + r;
+                            $scope.HasWebsiteLogo = true;
+                        });
+                    });
+                    $scope.MobileImageUpload.bind("success", function (result) {
+                        WebOrdering.Logger.Notify(result);
+                        var observableObject = contextService.Model.SiteDetails;
+                        observableObject.set("MobileLogoPath", result.response.Url);
+                        var r = Math.floor(Math.random() * 99999) + 1;
+                        $timeout(function () {
+                            $scope.TempMobileLogoPath = result.response.Url + "?k=" + r;
+                            $scope.HasMobileLogo = true;
+                        });
+                    });
+                    $scope.FaviconImageUpload.bind("success", function (result) {
+                        console.log(result);
+                        var observableObject = contextService.Model.SiteDetails;
+                        observableObject.set("FaviconPath", result.response.Url);
+                        var r = Math.floor(Math.random() * 99999) + 1;
+                        $timeout(function () {
+                            $scope.TempFaviconLogoPath = result.response.Url + "?k=" + r;
+                            $scope.HasFaviconLogo = true;
+                        });
+                    });
+                };
+                SiteDetailsController.SetupKendoMvvm = function ($scope, $timeout, contextService) {
+                    var _this = this;
+                    var settingsSubscription = contextService.ModelSubject
+                        .where(function (e) { return e !== null; })
+                        .subscribe(function (webSiteSettings) {
+                        var viewElement = $("#SiteDetailsController");
+                        kendo.bind(viewElement, webSiteSettings.SiteDetails);
+                        $scope.WebSiteSettings = webSiteSettings;
+                        $scope.SiteDetails = webSiteSettings.SiteDetails;
+                        //added 500ms timeout as there are random issues. 
+                        $timeout(function () {
+                            _this.SetupUploaders($scope, $timeout, contextService);
+                            var r = Math.floor(Math.random() * 99999) + 1;
+                            if (webSiteSettings.SiteDetails.WebsiteLogoPath && webSiteSettings.SiteDetails.WebsiteLogoPath !== null) {
+                                $scope.TempWebsiteLogoPath = webSiteSettings.SiteDetails.WebsiteLogoPath + "?k=" + r;
+                            }
+                            if (webSiteSettings.SiteDetails.MobileLogoPath && webSiteSettings.SiteDetails.MobileLogoPath !== null) {
+                                $scope.TempMobileLogoPath = webSiteSettings.SiteDetails.MobileLogoPath + "?k=" + r;
+                            }
+                            if (webSiteSettings.SiteDetails.FaviconPath && webSiteSettings.SiteDetails.FaviconPath !== null) {
+                                $scope.TempFaviconLogoPath = webSiteSettings.SiteDetails.FaviconPath + "?k=" + r;
+                            }
+                            $scope.HasWebsiteLogo = webSiteSettings.SiteDetails.WebsiteLogoPath && webSiteSettings.SiteDetails.WebsiteLogoPath.length > 0;
+                            $scope.HasMobileLogo = webSiteSettings.SiteDetails.MobileLogoPath && webSiteSettings.SiteDetails.MobileLogoPath.length > 0;
+                            $scope.HasFaviconLogo = webSiteSettings.SiteDetails.FaviconPath && webSiteSettings.SiteDetails.FaviconPath.length > 0;
+                        }, 500, true);
+                    });
+                    $scope.$on('$destroy', function () {
+                        settingsSubscription.dispose();
+                    });
+                };
+                SiteDetailsController.Name = "SiteDetailsController";
+                return SiteDetailsController;
+            }());
+            Controllers.SiteDetailsController = SiteDetailsController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(SocialNetworkSettingsController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        SocialNetworkSettingsController.SetupValidatorOptions($scope, $timeout, webOrderingWebApiService);
+                        SocialNetworkSettingsController.OnLoad($scope, $timeout, webOrderingWebApiService);
+                        /* going to leave kendo to manage the observable object */
+                        SocialNetworkSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var SocialNetworkSettingsController = (function () {
+                function SocialNetworkSettingsController() {
+                }
+                SocialNetworkSettingsController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
+                    //$scope.SocialNetworkSettingsValidator.ru
+                    $scope.SaveChanges = function () {
+                        if ($scope.SocialNetworkSettingsValidator.validate()) {
+                            webOrderingWebApiService.Update();
+                        }
+                    };
+                    var s = $scope;
+                    s.FacebookSettings = {};
+                };
+                SocialNetworkSettingsController.SetupValidatorOptions = function ($scope, $timout, contextService) {
+                    var validatorOptions = {
+                        name: "",
+                        rules: {
+                            FacebookUrlRequired: function (input) {
+                                if (!input.is("[data-required-if-facebook]")) {
+                                    return true;
+                                }
+                                var isEnabled = contextService.Model.SocialNetworkSettings.FacebookSettings.get("IsEnable");
+                                var text = input.val();
+                                return text.length > 0;
+                            },
+                            TwitterRequired: function (intput) { }
+                        }
+                    };
+                };
+                SocialNetworkSettingsController.SetupKendoMvvm = function ($scope, $timout, contextService) {
+                    var settingsSubscription = contextService.ModelSubject
+                        .where(function (e) { return e !== null; })
+                        .subscribe(function (websiteSettings) {
+                        var viewElement = $("#SocialNetworkSettingsController");
+                        kendo.bind(viewElement, websiteSettings.SocialNetworkSettings);
+                        $scope.SocialNetworkSettings = websiteSettings.SocialNetworkSettings;
+                        $scope.GeneralSettings = websiteSettings.GeneralSettings;
+                        $scope.CustomerAccountSettings = websiteSettings.CustomerAccountSettings;
+                        $scope.ShowFacebookSettings = websiteSettings.SocialNetworkSettings.FacebookSettings.get("IsEnable");
+                        $scope.ShowTwitterSettings = websiteSettings.SocialNetworkSettings.TwitterSettings.get("IsEnable");
+                        $scope.ShowInstagramSettings = websiteSettings.SocialNetworkSettings.InstagramSettings.get("IsEnable");
+                        // $scope.ShowTripAdvisorSettings = websiteSettings.TripAdvisorSettings.get("IsEnable");
+                    });
+                    $scope.$on('$destroy', function () {
+                        settingsSubscription.dispose();
+                    });
+                };
+                SocialNetworkSettingsController.Name = "SocialNetworkSettingsController";
+                return SocialNetworkSettingsController;
+            }());
+            Controllers.SocialNetworkSettingsController = SocialNetworkSettingsController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(StatusController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        StatusController.OnLoad($scope, $timeout, webOrderingWebApiService);
+                    }
+                ]);
+            });
+            var StatusController = (function () {
+                function StatusController() {
+                }
+                StatusController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
+                    $scope.SaveChanges = function () {
+                        webOrderingWebApiService.Update();
+                    };
+                    $scope.PublishChanges = function () {
+                        webOrderingWebApiService.Publish();
+                    };
+                    $scope.PreviewChanges = function () {
+                        webOrderingWebApiService.Preview();
+                    };
+                    webOrderingWebApiService.IsSaving.subscribe(function (e) {
+                        $timout(function () {
+                            $scope.Saving = e;
+                        });
+                    });
+                    webOrderingWebApiService.IsPublishPreviewBusy.subscribe(function (e) {
+                        $timout(function () {
+                            $scope.PublishPreviewBusy = e;
+                        });
+                    });
+                    webOrderingWebApiService.IsPublishLiveBusy.subscribe(function (e) {
+                        $timout(function () {
+                            $scope.PublishLiveBusy = e;
+                        });
+                    });
+                    //webOrderingWebApiService.IsPreviewReady.subscribe((busy) => {
+                    //    $scope.PreviewWindow.refresh({
+                    //        //content: {
+                    //        //    url: webOrderingWebApiService.Context.Model.SiteDetails.DomainName + "?q" + Math.random() 
+                    //        //}
+                    //    });
+                    //    $scope.PreviewWindow.open();
+                    //    $scope.PreviewWindow.center();
+                    //});
+                    //webOrderingWebApiService.IsWebOrderingBusy.subscribe((busy) => {
+                    //    $timout(() => {
+                    //        if (busy) {
+                    //            if (!$scope.Modal) { return; }
+                    //            var m = <any>$scope.Modal;
+                    //            m.open();
+                    //        }
+                    //        else {
+                    //            if (!$scope.Modal) { return; }
+                    //            var m = <any>$scope.Modal;
+                    //            m.close();
+                    //        }
+                    //        $scope.IsBusy = busy;
+                    //    });
+                    //});
+                };
+                StatusController.Name = "StatusController";
+                return StatusController;
+            }());
+            Controllers.StatusController = StatusController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller("StoresController", function ($scope, contextService) {
+                    var dataSource = new kendo.data.DataSource();
+                    $scope.storeGridOptions = {
+                        dataSource: dataSource,
+                        sortable: true,
+                        columns: [{
+                                field: "Name",
+                                title: "Store Name",
+                            }]
+                    };
+                    contextService.StoreSubject.subscribe(function (stores) {
+                        WebOrdering.Logger.Notify("I have stores" + stores.length);
+                        dataSource.data(stores);
+                    });
+                });
+            });
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Controllers;
+        (function (Controllers) {
+            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(TripAdvisorSettingsController.Name, [
+                    '$scope', '$timeout',
+                    WebOrdering.Services.ContextService.Name,
+                    WebOrdering.Services.WebOrderingWebApiService.Name,
+                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
+                        TripAdvisorSettingsController.SetupValidatorOptions($scope, $timeout, webOrderingWebApiService);
+                        TripAdvisorSettingsController.OnLoad($scope, $timeout, webOrderingWebApiService);
+                        /* going to leave kendo to manage the observable object */
+                        TripAdvisorSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
+                    }
+                ]);
+            });
+            var TripAdvisorSettingsController = (function () {
+                function TripAdvisorSettingsController() {
+                }
+                TripAdvisorSettingsController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
+                    //$scope.SaveChanges = () => {
+                    //    if ($scope.TripAdvisorSettingsValidator.validate()) {
+                    //        webOrderingWebApiService.Update();
+                    //    }
+                    //};
+                    //var s = <any>$scope;
+                    //s.FacebookSettings = {};
+                };
+                TripAdvisorSettingsController.SetupValidatorOptions = function ($scope, $timout, contextService) {
+                    var validatorOptions = {
+                        name: "",
+                        rules: {
+                            TripadvisorScirptRequired: function (input) {
+                                if (!input.is("[data-required-if-tripadvisor]")) {
+                                    return true;
+                                }
+                                var isEnabled = contextService.Model.TripAdvisorSettings.get("IsEnable");
+                                var text = input.val();
+                                return text.length > 0;
+                            }
+                        }
+                    };
+                };
+                TripAdvisorSettingsController.SetupKendoMvvm = function ($scope, $timout, contextService) {
+                    var settingsSubscription = contextService.ModelSubject
+                        .where(function (e) { return e !== null; })
+                        .subscribe(function (websiteSettings) {
+                        var viewElement = $("#TripAdvisorSettingsController");
+                        kendo.bind(viewElement, websiteSettings.TripAdvisorSettings);
+                        $scope.ShowTripAdvisorSettings = websiteSettings.TripAdvisorSettings.get("IsEnable");
+                    });
+                    $scope.$on('$destroy', function () {
+                        settingsSubscription.dispose();
+                    });
+                };
+                TripAdvisorSettingsController.Name = "TripAdvisorSettingsController";
+                return TripAdvisorSettingsController;
+            }());
+            Controllers.TripAdvisorSettingsController = TripAdvisorSettingsController;
+        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        "use strict";
+        var Logger = (function () {
+            function Logger() {
+                this.UseNotify = true;
+                this.UseDebug = true;
+                this.UseError = true;
+            }
+            Logger.Notify = function (o) {
+                if (logger.UseNotify) {
+                    console.log(o);
+                }
+            };
+            Logger.Debug = function (o) {
+                if (logger.UseDebug) {
+                    console.log(o);
+                }
+            };
+            Logger.Error = function (o) {
+                if (logger.UseError) {
+                    console.log(o);
+                }
+            };
+            Logger.SettingUpController = function (name, state) {
+                if (logger.UseNotify) {
+                    console.log("setting up controller - " + name + " : " + state);
+                }
+            };
+            Logger.SettingUpService = function (name, state) {
+                if (logger.UseNotify) {
+                    console.log("setting up service - " + name + " : " + state);
+                }
+            };
+            Logger.AllowDebug = function (value) {
+                logger.UseDebug = value;
+            };
+            Logger.AllowError = function (value) {
+                logger.UseError = value;
+            };
+            return Logger;
+        }());
+        WebOrdering.Logger = Logger;
+        var logger = new Logger();
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Services;
+        (function (Services) {
+            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(ContextService.Name, [
+                    function () {
+                        var instnance = new ContextService();
+                        return instnance;
+                    }
+                ]);
+            });
+            var contextServiceModule = angular.module("ContextServiceModule", []);
+            var ContextService = (function () {
+                function ContextService() {
+                    this.Model = null;
+                    this.ModelSubject = new Rx.BehaviorSubject(null);
+                    this.StoreSubject = new Rx.BehaviorSubject([]);
+                }
+                ContextService.Name = "contextService";
+                return ContextService;
+            }());
+            Services.ContextService = ContextService;
+            contextServiceModule.service("contextService", ContextService);
+        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/rx/rx.d.ts" />
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Services;
+        (function (Services) {
+            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(WebOrderingThemeWebApiService.Name, [
+                    function () {
+                        WebOrdering.Logger.Notify("new WebOrderingThemeWebApiService");
+                        var instnance = new WebOrderingThemeWebApiService();
+                        return instnance;
+                    }
+                ]);
+            });
+            var WebOrderingThemeWebApiService = (function () {
+                function WebOrderingThemeWebApiService() {
+                    var _this = this;
+                    this.IsBusy = new Rx.BehaviorSubject(false);
+                    this.Search = new Rx.Subject();
+                    if (!WebOrdering.Settings.AndromedaSiteId) {
+                        throw "Settings.AndromedaSiteId is undefined";
+                    }
+                    //throttle input for 1 second. ie search will resume after the user stops typing.
+                    this.Search
+                        .throttle(1000)
+                        .subscribe(function (value) { return _this.SearcInternal(value); });
+                }
+                WebOrderingThemeWebApiService.prototype.GetThemeDataSource = function () {
+                    var _this = this;
+                    var route = kendo.format('/api/AndroWebOrderingTheme/{0}/List', WebOrdering.Settings.AndromedaSiteId);
+                    this.dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read: route
+                        }
+                    });
+                    this.dataSource.bind("requestStart", function () { _this.IsBusy.onNext(true); });
+                    this.dataSource.bind("requestEnd", function () { _this.IsBusy.onNext(false); });
+                    return this.dataSource;
+                };
+                WebOrderingThemeWebApiService.prototype.SearchText = function (value) {
+                    this.Search.onNext(value);
+                };
+                WebOrderingThemeWebApiService.prototype.SearcInternal = function (value) {
+                    value || (value = "");
+                    value = value.trim();
+                    if (value.length === 0) {
+                        this.dataSource.filter([]);
+                        return;
+                    }
+                    var op = "contains";
+                    var filterFileName = {
+                        field: "FileName",
+                        operator: op,
+                        value: value
+                    };
+                    var filterInterName = {
+                        field: "InternalName",
+                        operator: op,
+                        value: value
+                    };
+                    var filterGroup = {
+                        filters: [filterFileName, filterInterName],
+                        logic: "or"
+                    };
+                    this.dataSource.filter([
+                        filterGroup
+                    ]);
+                };
+                WebOrderingThemeWebApiService.Name = "WebOrderingThemeWebApiService";
+                return WebOrderingThemeWebApiService;
+            }());
+            Services.WebOrderingThemeWebApiService = WebOrderingThemeWebApiService;
+        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Services;
+        (function (Services) {
+            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
+                app.service(WebOrderingWebApiService.Name, WebOrderingWebApiService);
+            });
+            var WebOrderingWebApiService = (function () {
+                function WebOrderingWebApiService($http, contextService) {
+                    var _this = this;
+                    this.Context = contextService;
+                    this.IsPublishLiveBusy = new Rx.BehaviorSubject(false);
+                    this.IsPublishPreviewBusy = new Rx.BehaviorSubject(false);
+                    this.IsLoading = new Rx.BehaviorSubject(false);
+                    this.IsSaving = new Rx.BehaviorSubject(false);
+                    if (!WebOrdering.Settings.AndromedaSiteId) {
+                        throw "Settings.AndromedaSiteId is undefined";
+                    }
+                    var readWebsiteSettings = kendo.format(WebOrdering.Settings.ReadRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
+                    var readStores = kendo.format(WebOrdering.Settings.ReadStoreRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
+                    this.IsLoading.onNext(true);
+                    this.watcher = new Rx.Subject();
+                    this.watcher.distinctUntilChanged(function (x) { return x.WebSiteId; }).subscribe(function (settings) {
+                        _this.Context.ModelSubject.onNext(settings);
+                    });
+                    this.Context.ModelSubject
+                        .where(function (e) { return e !== null; })
+                        .subscribe(function (v) { console.log(v.WebSiteName); });
+                    var promise = $http.get(readWebsiteSettings);
+                    promise.then(function (result) {
+                        //set defaults. 
+                        var nullOrUndefined = function (path) {
+                            return typeof (path) === "undefined" || path === null;
+                        };
+                        if (!result.data.MenuPageSettings) {
+                            result.data.MenuPageSettings = {
+                                IsSingleToppingsOnlyEnabled: false,
+                                IsQuantityDropdownEnabled: true,
+                                IsThumbnailsEnabled: true
+                            };
+                        }
+                        if (nullOrUndefined(result.data.GeneralSettings.EnableDelivery)) {
+                            result.data.GeneralSettings.EnableDelivery = true;
+                        }
+                        if (nullOrUndefined(result.data.GeneralSettings.EnableCollection)) {
+                            result.data.GeneralSettings.EnableCollection = true;
+                        }
+                        return result;
+                    }).then(function (result) {
+                        //transfer pence to decimal so that the editors can work easier. 
+                        if (result.data.GeneralSettings.MinimumDeliveryAmount) {
+                            result.data.GeneralSettings.MinimumDeliveryAmount /= 100;
+                        }
+                        if (result.data.GeneralSettings.DeliveryCharge) {
+                            result.data.GeneralSettings.DeliveryCharge /= 100;
+                        }
+                        if (result.data.GeneralSettings.OptionalFreeDeliveryThreshold) {
+                            result.data.GeneralSettings.OptionalFreeDeliveryThreshold /= 100;
+                        }
+                        if (result.data.GeneralSettings.CardCharge) {
+                            result.data.GeneralSettings.CardCharge /= 100;
+                        }
+                        return result;
+                    }).then(function (result) {
+                        //may get rid of this bit some point soon. 
+                        var observable = kendo.observable(result.data);
+                        _this.Context.Model = observable;
+                        _this.Context.ModelSubject.onNext(observable);
+                        return result;
+                    }).then(function (result) {
+                        var storePromise = $http.get(readStores);
+                        storePromise.success(function (stores) {
+                            contextService.StoreSubject.onNext(stores);
+                        });
+                        return result;
+                    });
+                    promise.finally(function () {
+                        _this.IsLoading.onNext(false);
+                    });
+                }
+                WebOrderingWebApiService.prototype.UpdateThemeSettings = function (settings) {
+                    var s = settings;
+                    var m = this.Context.Model;
+                    m.set("ThemeSettings", settings);
+                    this.Update();
+                };
+                WebOrderingWebApiService.prototype.Publish = function () {
+                    var _this = this;
+                    var publish = kendo.format(WebOrdering.Settings.PublishRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
+                    if (!this.Context.Model.CustomerAccountSettings.get("IsEnable")) {
+                        if (!confirm("Are you sure you want to continue with customer account settings disabled? Continue to accept this responsibility, or cancel to apply that setting.")) {
+                            this.Context.Model.CustomerAccountSettings.set("IsEnable", true);
+                        }
+                    }
+                    var raw = this.GetRawModel();
+                    var promise = $.ajax({
+                        url: publish,
+                        type: "POST",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        data: raw
+                    });
+                    this.IsPublishLiveBusy.onNext(true);
+                    promise.always(function () {
+                        _this.IsPublishLiveBusy.onNext(false);
+                    });
+                };
+                WebOrderingWebApiService.prototype.Preview = function () {
+                    var _this = this;
+                    var preview = kendo.format(WebOrdering.Settings.PreviewRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
+                    var raw = this.GetRawModel();
+                    var promise = $.ajax({
+                        url: preview,
+                        type: "POST",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        data: raw
+                    });
+                    this.IsPublishPreviewBusy.onNext(true);
+                    promise.always(function () {
+                        _this.IsPublishPreviewBusy.onNext(false);
+                    });
+                };
+                WebOrderingWebApiService.prototype.Update = function () {
+                    var _this = this;
+                    var update = kendo.format(WebOrdering.Settings.UpdateRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
+                    console.log("sync");
+                    var raw = this.GetRawModel();
+                    var promise = $.ajax({
+                        url: update,
+                        type: "POST",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        data: raw
+                    });
+                    this.IsSaving.onNext(true);
+                    promise.always(function () {
+                        _this.IsSaving.onNext(true);
+                    });
+                };
+                WebOrderingWebApiService.prototype.GetRawModel = function () {
+                    var newObject = JSON.parse(JSON.stringify(this.Context.Model));
+                    //jQuery.extend(true, {}, this.Context.Model);
+                    if (newObject.GeneralSettings.MinimumDeliveryAmount) {
+                        newObject.GeneralSettings.MinimumDeliveryAmount *= 100;
+                    }
+                    if (newObject.GeneralSettings.DeliveryCharge) {
+                        newObject.GeneralSettings.DeliveryCharge *= 100;
+                    }
+                    if (newObject.GeneralSettings.OptionalFreeDeliveryThreshold) {
+                        newObject.GeneralSettings.OptionalFreeDeliveryThreshold *= 100;
+                    }
+                    if (newObject.GeneralSettings.CardCharge) {
+                        newObject.GeneralSettings.CardCharge *= 100;
+                    }
+                    var raw = JSON.stringify(newObject);
+                    return raw;
+                };
+                WebOrderingWebApiService.Name = "webOrderingWebApiService";
+                return WebOrderingWebApiService;
+            }());
+            Services.WebOrderingWebApiService = WebOrderingWebApiService;
+        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
+    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.WebOrdering.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var WebOrdering;
+    (function (WebOrdering) {
+        var Settings = (function () {
+            function Settings() {
+            }
+            Settings.AndromedaSiteId = 0;
+            Settings.WebSiteId = 0;
+            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Read
+            Settings.ReadRoute = "/api/{0}/AndroWebOrdering/{1}/Read";
+            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Update
+            Settings.UpdateRoute = "/api/{0}/AndroWebOrdering/{1}/Update";
+            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Publish
+            Settings.PublishRoute = "/api/{0}/AndroWebOrdering/{1}/Publish";
+            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Preview
+            Settings.PreviewRoute = "/api/{0}/AndroWebOrdering/{1}/Preview";
+            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Stores/Read
+            Settings.ReadStoreRoute = "/api/{0}/AndroWebOrdering/{1}/Stores/Read";
+            return Settings;
+        }());
+        WebOrdering.Settings = Settings;
+        ;
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
@@ -1042,7 +2132,7 @@ var MyAndromeda;
                 //set by cshtml 
                 UpSellDataService.GetMemuRoute = "";
                 return UpSellDataService;
-            })();
+            }());
             UpSelling.UpSellDataService = UpSellDataService;
             upSellModule.service("upSellDataService", UpSellDataService);
         })(UpSelling = WebOrdering.UpSelling || (WebOrdering.UpSelling = {}));
@@ -1066,7 +2156,7 @@ var MyAndromeda;
                     return promise;
                 };
                 return DriverService;
-            })();
+            }());
             Services.DriverService = DriverService;
             m.service("driverService", DriverService);
         })(Services = Data.Services || (Data.Services = {}));
@@ -1127,9 +2217,9 @@ var MyAndromeda;
                                         var model = this;
                                         var lat = model.Customer.Latitude;
                                         var long = model.Customer.Longitude;
-                                        return [0, 0];
+                                        //return [0, 0];
                                         if (!lat) {
-                                            return null;
+                                            return [0, 0];
                                         }
                                         return [lat, long];
                                     }
@@ -1216,9 +2306,9 @@ var MyAndromeda;
                                         var model = this;
                                         var lat = model.Customer.Latitude;
                                         var long = model.Customer.Longitude;
-                                        return [0, 0];
+                                        //return [0, 0];
                                         if (!lat) {
-                                            return null;
+                                            [0, 0];
                                         }
                                         return [lat, long];
                                     }
@@ -1234,11 +2324,149 @@ var MyAndromeda;
                     return this.$http.post(route, change);
                 };
                 return OrderService;
-            })();
+            }());
             Services.OrderService = OrderService;
             m.service("orderService", OrderService);
         })(Services = Data.Services || (Data.Services = {}));
     })(Data = MyAndromeda.Data || (MyAndromeda.Data = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Services;
+        (function (Services) {
+            var chainService = (function () {
+                function chainService(chainServiceRoutes) {
+                    this.chainServiceRoutes = chainServiceRoutes;
+                }
+                chainService.prototype.get = function (id, callback) {
+                    var internal = this, route = {
+                        type: "POST",
+                        dataType: "json",
+                        data: { id: id },
+                        success: function (data) {
+                            callback(data);
+                        }
+                    };
+                    $.ajax($.extend({}, route, {
+                        url: internal.chainServiceRoutes.getById
+                    }));
+                };
+                return chainService;
+            }());
+            Services.chainService = chainService;
+        })(Services = Chain.Services || (Chain.Services = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../Scripts/typings/linqjs/linq.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Services;
+        (function (Services) {
+            var TreeviewMapService = (function () {
+                function TreeviewMapService(kendoTreeView) {
+                    var internal = this;
+                    this.viewModel = kendo.observable({
+                        stores: []
+                    });
+                    var bindingElement = $("#mapData");
+                    kendo.bind(bindingElement, this.viewModel);
+                    this.viewModel.bind("change", function () {
+                        internal.AddMarkers();
+                    });
+                    this.kendoMap = $("#map").data("kendoMap");
+                }
+                TreeviewMapService.prototype.AddMarkers = function () {
+                    var map = this.kendoMap, markers = map.markers;
+                    map.markers.clear();
+                    var stores = this.viewModel.get("stores");
+                    var viableStores = Enumerable.from(stores).where(function (e) { return e.latitude !== null && e.longitude !== null; });
+                    //zoom out
+                    if (viableStores.count() === 0) {
+                        map.zoom(1);
+                        map.center([0, 0]);
+                        return;
+                    }
+                    var centeredPosition = function () {
+                        //console.log(viableStores.toArray());
+                        var avgLat = viableStores.select(function (e) { return parseFloat(e.latitude); }).average();
+                        var avgLong = viableStores.select(function (e) { return parseFloat(e.longitude); }).average();
+                        var c = [avgLat, avgLong];
+                        return c;
+                    };
+                    viableStores.forEach(function (store, index) {
+                        if (store.longitude && store.latitude) {
+                            var location = [store.latitude, store.longitude];
+                            var addition = {
+                                shape: "pin",
+                                store: store,
+                                tooltip: {
+                                    animation: {
+                                        close: {
+                                            effects: "fade:out"
+                                        }
+                                    },
+                                    autoHide: true,
+                                    position: "right",
+                                    showOn: "mouseenter",
+                                    template: $("#map-tooltip-template").html()
+                                },
+                                location: location
+                            };
+                            map.markers.add(addition);
+                        }
+                    });
+                    var centerdLocation = centeredPosition();
+                    map.center(centeredPosition());
+                    map.zoom(3);
+                };
+                return TreeviewMapService;
+            }());
+            var TreeviewChainService = (function () {
+                function TreeviewChainService(data) {
+                    var internal = this;
+                    this.data = data;
+                    this.rootDataSource = new kendo.data.HierarchicalDataSource({
+                        transport: {
+                            read: function (options) {
+                                options.success(internal.data);
+                            }
+                        },
+                        schema: {
+                            model: {
+                                id: "id",
+                                children: "items"
+                            }
+                        }
+                    });
+                    this.rootDataSource.read();
+                    var treeVm = kendo.observable({
+                        chains: this.rootDataSource
+                    });
+                    var treeviewElement = $("#TreeviewChains").kendoTreeView({
+                        template: kendo.template($('#StoreNode').html()),
+                        dataSource: this.rootDataSource,
+                        loadOnDemand: false,
+                        dataTextField: "name"
+                    });
+                    this.kendoTreeView = treeviewElement.data("kendoTreeView");
+                    treeviewElement.on("click", ".k-button-show-stores", function (e) {
+                        e.preventDefault();
+                        var uid = $(this).closest(".k-item").data("uid");
+                        var element = internal.rootDataSource.getByUid(uid);
+                        internal.mapService.viewModel.set("stores", element.stores);
+                    });
+                    kendo.bind($("#treeviewdata"), treeVm);
+                    this.mapService = new TreeviewMapService(this.kendoTreeView);
+                }
+                return TreeviewChainService;
+            }());
+            Services.TreeviewChainService = TreeviewChainService;
+        })(Services = Chain.Services || (Chain.Services = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -1417,6 +2645,498 @@ var MyAndromeda;
         };
     })(Debug = MyAndromeda.Debug || (MyAndromeda.Debug = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../Menu/MyAndromeda.Menu.Logger.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular-route.d.ts" />
+/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        "use strict";
+        var DeliveryZonesByRadiusApp = (function () {
+            function DeliveryZonesByRadiusApp() {
+            }
+            DeliveryZonesByRadiusApp.ApplicationName = "DeliveryZonesByRadius";
+            return DeliveryZonesByRadiusApp;
+        }());
+        DeliveryZonesByRadius.DeliveryZonesByRadiusApp = DeliveryZonesByRadiusApp;
+        var Angular = (function () {
+            function Angular() {
+            }
+            Angular.Init = function () {
+                DeliveryZonesByRadius.Logger.Notify("bootstrap-Deliveryzonesbyradius");
+                var element = document.getElementById("DeliveryZonesByRadius");
+                var app = angular.module(DeliveryZonesByRadiusApp.ApplicationName, [
+                    "kendo.directives",
+                    //"ngRoute",
+                    "ngAnimate"
+                ]);
+                DeliveryZonesByRadius.Logger.Notify("Assign " + Angular.ServicesInitilizations.length + " services");
+                Angular.ServicesInitilizations.forEach(function (value) {
+                    value(app);
+                });
+                DeliveryZonesByRadius.Logger.Notify("Assign " + Angular.ControllersInitilizations.length + " controllers");
+                Angular.ControllersInitilizations.forEach(function (value) {
+                    value(app);
+                });
+                angular.bootstrap(element, [DeliveryZonesByRadiusApp.ApplicationName]);
+                DeliveryZonesByRadius.Logger.Notify("bootstrap-Deliveryzonesbyradius-complete");
+            };
+            Angular.ServicesInitilizations = [];
+            Angular.ControllersInitilizations = [];
+            return Angular;
+        }());
+        DeliveryZonesByRadius.Angular = Angular;
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        var Controllers;
+        (function (Controllers) {
+            DeliveryZonesByRadius.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(DeliveryZoneNamesController.Name, [
+                    '$scope', '$timeout',
+                    DeliveryZonesByRadius.Services.ContextService.Name,
+                    DeliveryZonesByRadius.Services.DeliveryZonesByRadiusWebApiService.Name,
+                    function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
+                        DeliveryZoneNamesController.OnLoad($scope, $timeout, contextService, deliveryZonesByRadiusApiService);
+                        DeliveryZoneNamesController.SetupSubscriptions($scope, $timeout, contextService, deliveryZonesByRadiusApiService);
+                    }
+                ]);
+            });
+            var DeliveryZoneNamesController = (function () {
+                function DeliveryZoneNamesController() {
+                }
+                DeliveryZoneNamesController.OnLoad = function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
+                    $scope.SaveChanges = function () {
+                        if ($scope.PostCodeValidator.validate()) {
+                            deliveryZonesByRadiusApiService.Update();
+                            $timeout(function () {
+                                var vm = $scope.ViewModel;
+                                var postCodeOptions = vm.PostCodeSectors;
+                                $scope.PostCodeOptionsListView.dataSource.data(postCodeOptions);
+                                var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
+                                $scope.SelectAll = unselectedItems.length === 0 ? true : false;
+                            });
+                        }
+                    };
+                    $scope.GeneratePostCodeSectors = function () {
+                        var validInput = $scope.PostCodeValidator.validate();
+                        if (!validInput) {
+                            alert("Correct the input.");
+                            return;
+                        }
+                        if ($scope.ViewModel.Id == 0 || confirm("The existing post code sectors selection will be lost and reset.Are you sure you want to Regenerate the post code sectors?")) {
+                            if ($scope.PostCodeValidator.validate()) {
+                                $("#loader").removeClass('hidden');
+                                $scope.ViewModel.HasPostCodes = false;
+                                deliveryZonesByRadiusApiService.GeneratePostCodes();
+                            }
+                        }
+                    };
+                    $scope.SelectAllChange = function () {
+                        var selectAll = $scope.SelectAll;
+                        $timeout(function () {
+                            var data = $scope.PostCodeOptionsListView.dataSource.data();
+                            data.forEach(function (item) {
+                                item.IsSelected = selectAll;
+                            });
+                        });
+                        //var data = $scope.PostCodeOptionsListView.dataSource.data();
+                        //contextService.Model.PostCodeSectors = data;
+                    };
+                    $scope.UpdateSelectAll = function () {
+                        console.log("update select all");
+                        var data = $scope.PostCodeOptionsListView.dataSource.data();
+                        //contextService.Model.PostCodeSectors = data;
+                        var unselectedItems = data.filter(function (e) { return !e.IsSelected; });
+                        if (unselectedItems.length === 0) {
+                            $scope.SelectAll = true;
+                        }
+                        else if (unselectedItems.length < data.length) {
+                            $scope.SelectAll = false;
+                        }
+                        else {
+                            $scope.SelectAll = false;
+                        }
+                    };
+                };
+                DeliveryZoneNamesController.SetupSubscriptions = function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
+                    $scope.IsSaveBusy = false;
+                    var settingsSubscription = contextService.ModelSubject
+                        .subscribe(function (deliveryZoneByRadius) {
+                        $timeout(function () {
+                            $scope.ViewModel = deliveryZoneByRadius;
+                            $scope.PostCodeOptionsListView.dataSource.data($scope.ViewModel.PostCodeSectors);
+                            $scope.ViewModel.HasPostCodes = deliveryZoneByRadius.PostCodeSectors.length === 0 ? false : true;
+                            var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
+                            $scope.SelectAll = unselectedItems.length === 0 ? true : false;
+                        });
+                    });
+                    var settingsPostcodeSubscription = contextService.PostcodeModels
+                        .subscribe(function (newDeliveryOptions) {
+                        $scope.ViewModel.HasPostCodes = newDeliveryOptions.length === 0 ? false : true;
+                        $timeout(function () {
+                            var vm = $scope.ViewModel;
+                            var postCodeOptions = vm.PostCodeSectors;
+                            postCodeOptions = new kendo.data.ObservableArray(newDeliveryOptions);
+                            vm.PostCodeSectors = postCodeOptions;
+                            $scope.PostCodeOptionsListView.dataSource.data(postCodeOptions);
+                            var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
+                            $scope.SelectAll = unselectedItems.length === 0 ? true : false;
+                            $scope.ViewModel.HasPostCodes = (contextService.Model.PostCodeSectors == null || contextService.Model.PostCodeSectors.length === 0) ? false : true;
+                        });
+                    });
+                    var savingSubscription = deliveryZonesByRadiusApiService.IsSavingBusy.distinctUntilChanged(function (e) { return e; }).subscribe(function (value) {
+                        $timeout(function () {
+                            $scope.IsSaveBusy = value;
+                        });
+                    });
+                    $scope.$on('$destroy', function () {
+                        settingsSubscription.dispose();
+                        settingsPostcodeSubscription.dispose();
+                        savingSubscription.dispose();
+                    });
+                };
+                DeliveryZoneNamesController.Name = "DeliveryZoneNamesController";
+                return DeliveryZoneNamesController;
+            }());
+            Controllers.DeliveryZoneNamesController = DeliveryZoneNamesController;
+        })(Controllers = DeliveryZonesByRadius.Controllers || (DeliveryZonesByRadius.Controllers = {}));
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        "use strict";
+        var Logger = (function () {
+            function Logger() {
+                this.UseNotify = true;
+                this.UseDebug = true;
+                this.UseError = true;
+            }
+            Logger.Notify = function (o) {
+                if (logger.UseNotify) {
+                    console.log(o);
+                }
+            };
+            Logger.Debug = function (o) {
+                if (logger.UseDebug) {
+                    console.log(o);
+                }
+            };
+            Logger.Error = function (o) {
+                if (logger.UseError) {
+                    console.log(o);
+                }
+            };
+            Logger.SettingUpController = function (name, state) {
+                if (logger.UseNotify) {
+                    console.log("setting up controller - " + name + " : " + state);
+                }
+            };
+            Logger.SettingUpService = function (name, state) {
+                if (logger.UseNotify) {
+                    console.log("setting up service - " + name + " : " + state);
+                }
+            };
+            Logger.AllowDebug = function (value) {
+                logger.UseDebug = value;
+            };
+            Logger.AllowError = function (value) {
+                logger.UseError = value;
+            };
+            return Logger;
+        }());
+        DeliveryZonesByRadius.Logger = Logger;
+        var logger = new Logger();
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        var Services;
+        (function (Services) {
+            DeliveryZonesByRadius.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(ContextService.Name, [
+                    function () {
+                        var instnance = new ContextService();
+                        return instnance;
+                    }
+                ]);
+            });
+            var ContextService = (function () {
+                function ContextService() {
+                    this.Model = null;
+                    this.ModelSubject = new Rx.Subject();
+                    this.PostcodeModels = new Rx.Subject();
+                }
+                ContextService.Name = "ContextService";
+                return ContextService;
+            }());
+            Services.ContextService = ContextService;
+        })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        var Services;
+        (function (Services) {
+            DeliveryZonesByRadius.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(DeliveryZonesByRadiusWebApiService.Name, [
+                    Services.ContextService.Name,
+                    function (contextService) {
+                        var instnance = new DeliveryZonesByRadiusWebApiService(contextService);
+                        return instnance;
+                    }
+                ]);
+            });
+            var DeliveryZonesByRadiusWebApiService = (function () {
+                function DeliveryZonesByRadiusWebApiService(context) {
+                    var _this = this;
+                    if (!DeliveryZonesByRadius.Settings.AndromedaSiteId) {
+                        throw "Settings.AndromedaSiteId is undefined";
+                    }
+                    this.Context = context;
+                    this.IsDeliveryZonesBusy = new Rx.BehaviorSubject(false);
+                    this.IsSavingBusy = new Rx.BehaviorSubject(false);
+                    this.Search = new Rx.Subject();
+                    this.DataSource = new kendo.data.DataSource({});
+                    this.IsDeliveryZonesBusy.onNext(true);
+                    var read = kendo.format(DeliveryZonesByRadius.Settings.ReadRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
+                    var promise = $.getJSON(read);
+                    promise.done(function (result) {
+                        var oldPostcodes = result.PostCodeSectors;
+                        _this.Context.Model = result;
+                        result.PostCodeSectors = new kendo.data.ObservableArray(oldPostcodes);
+                        _this.Context.ModelSubject.onNext(result);
+                        _this.IsDeliveryZonesBusy.onNext(false);
+                    });
+                    promise.fail(function () {
+                        _this.IsDeliveryZonesBusy.onNext(false);
+                    });
+                }
+                DeliveryZonesByRadiusWebApiService.prototype.Update = function () {
+                    var _this = this;
+                    var update = kendo.format(DeliveryZonesByRadius.Settings.UpdateRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
+                    console.log("sync");
+                    var raw = JSON.stringify(this.Context.Model);
+                    var currentPostCodes = this.Context.Model.PostCodeSectors;
+                    var accepted = currentPostCodes.filter(function (item) {
+                        return item.IsSelected;
+                    });
+                    console.log(currentPostCodes.length);
+                    this.IsSavingBusy.onNext(true);
+                    this.IsDeliveryZonesBusy.onNext(true);
+                    var promise = $.ajax({
+                        url: update,
+                        type: "POST",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        data: raw,
+                    });
+                    promise.done(function (result) {
+                        var postcodeArea = result;
+                        var oldPostcodes = postcodeArea.PostCodeSectors;
+                        var returnedRows = postcodeArea.PostCodeSectors;
+                        var acceptedReturnedRows = returnedRows.filter(function (item) {
+                            return item.IsSelected;
+                        });
+                        if (currentPostCodes.length !== returnedRows.length) {
+                            var alertMsg = kendo.format("this is not the expected amount of postcodes: {0} records sent.! Received: {1}", currentPostCodes.length, returnedRows.length);
+                            alert(alertMsg);
+                        }
+                        if (accepted.length !== acceptedReturnedRows.length) {
+                            var alertMsg = kendo.format("this is not the expected amount of 'accepted' postcodes: {0}. records sent.! Received: {1}", accepted.length, acceptedReturnedRows.length);
+                            alert(alertMsg);
+                        }
+                        _this.Context.Model = postcodeArea;
+                        _this.Context.Model.PostCodeSectors = new kendo.data.ObservableArray(oldPostcodes);
+                        _this.Context.ModelSubject.onNext(postcodeArea);
+                    });
+                    promise.always(function () {
+                        _this.IsDeliveryZonesBusy.onNext(false);
+                        _this.IsSavingBusy.onNext(false);
+                    });
+                };
+                DeliveryZonesByRadiusWebApiService.prototype.GeneratePostCodes = function () {
+                    var _this = this;
+                    var generatePostCodes = kendo.format(DeliveryZonesByRadius.Settings.ReadPostCodesRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
+                    var raw = JSON.stringify(this.Context.Model);
+                    var request = $.ajax({
+                        url: generatePostCodes,
+                        type: "POST",
+                        contentType: 'application/json',
+                        dataType: "json",
+                        data: raw
+                    });
+                    this.IsDeliveryZonesBusy.onNext(true);
+                    request.done(function (result) {
+                        if (result.length === 0) {
+                            alert("There are no postcodes near hear apparently...");
+                        }
+                        var postcodes = result.map(function (postcode) { return {
+                            PostCodeSector: postcode,
+                            IsSelected: true
+                        }; });
+                        _this.Context.PostcodeModels.onNext(postcodes);
+                        _this.IsDeliveryZonesBusy.onNext(false);
+                        $("#loader").addClass('hidden');
+                        _this.Context.Model.HasPostCodes = true;
+                    });
+                    request.fail(function () {
+                        _this.IsDeliveryZonesBusy.onNext(false);
+                    });
+                };
+                DeliveryZonesByRadiusWebApiService.Name = "DeliveryZonesByRadiusWebApiService";
+                return DeliveryZonesByRadiusWebApiService;
+            }());
+            Services.DeliveryZonesByRadiusWebApiService = DeliveryZonesByRadiusWebApiService;
+        })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var DeliveryZonesByRadius;
+    (function (DeliveryZonesByRadius) {
+        var Settings = (function () {
+            function Settings() {
+            }
+            Settings.AndromedaSiteId = 0;
+            //public static WebSiteId: number = 0;
+            //api/{AndromedaSiteId}/DeliveryZonesByRadius/Read
+            Settings.ReadRoute = "/api/{0}/DeliveryZonesByRadius/Read";
+            //api/{AndromedaSiteId}/DeliveryZonesByRadius/GeneratePostCodeSectors
+            Settings.ReadPostCodesRoute = "/api/{0}/DeliveryZonesByRadius/GeneratePostCodeSectors";
+            //api/{AndromedaSiteId}/DeliveryZonesByRadius/Update
+            Settings.UpdateRoute = "/api/{0}/DeliveryZonesByRadius/Update";
+            return Settings;
+        }());
+        DeliveryZonesByRadius.Settings = Settings;
+        ;
+    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var KendoExtensions;
+    (function (KendoExtensions) {
+        var EditorTools;
+        (function (EditorTools) {
+            var emailEditorService = (function () {
+                //public static editorOptions = {
+                //    tools: [
+                //        "bold", "italic", "underline",
+                //        "justifyLeft", "justifyCenter", "justifyRight", "justifyFull",
+                //        "insertUnorderedList", "insertOrderedList",
+                //        "indent", "outdent",
+                //        "createLink", "unlink",
+                //        {
+                //            name: "tokenTool",
+                //            tooltip: "Add tokens",
+                //            template  
+                //        }
+                //    ]
+                //};
+                function emailEditorService(options) {
+                    this.options = options;
+                    this.element = $(options.elementId);
+                    //document.getElementById(options.elementId);
+                    this.fieldsTemplate = $(options.fieldsTemplateId);
+                    //document.getElementById(options.fieldsTemplateId);
+                }
+                //confirm all the elements are set
+                emailEditorService.prototype.checkIntegrity = function () {
+                    if (!this.element) {
+                        throw new Error("The element for the editor is not known");
+                    }
+                    if (!this.fieldsTemplate) {
+                        throw new Error("the template for the field selection is not known");
+                    }
+                    if (!this.options.editorOptions) {
+                        throw new Error("the editor options are not set");
+                    }
+                };
+                emailEditorService.prototype.eventChangeTokenSelected = function (dropwDown, e) {
+                    var dataItem = dropwDown.dataItem(e.item.index());
+                    this.currentTemplate = dataItem.value;
+                };
+                emailEditorService.prototype.setupFieldsTemplate = function () {
+                    var internal = this;
+                    var dropDown = $("#ToolsInsertToken").kendoDropDownList({
+                        dataSource: this.options.tokenOptions,
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        optionLabel: "Select"
+                    }).data("kendoDropDownList");
+                    dropDown.bind("select", function (e) {
+                        internal.eventChangeTokenSelected(dropDown, e);
+                        //$.proxy(internal, "eventChangeTokenSelected", [dropDown, e]);
+                    });
+                };
+                emailEditorService.prototype.insertTemplate = function () {
+                    var template = this.currentTemplate + "&nbsp;";
+                    if (!template) {
+                        alert("Please select a token first");
+                    }
+                    this.getEditor().paste(template, {});
+                };
+                emailEditorService.prototype.setupInsertButton = function () {
+                    var internal = this;
+                    var button = $(".k-insert-token-button").on("click", function (e) {
+                        e.preventDefault();
+                        internal.insertTemplate();
+                    });
+                };
+                emailEditorService.prototype.manageSelection = function (e) {
+                    //var range = this.getEditor().getRange();
+                    //var selection = this.getEditor().getSelection();
+                    var r = this.getEditor();
+                    var a = 0;
+                };
+                emailEditorService.prototype.setupEditor = function () {
+                    var internal = this;
+                    var editorElememt = $(this.element);
+                    var editor = editorElememt.kendoEditor(this.options.editorOptions).data("kendoEditor");
+                    editor.bind("select", function (e) {
+                        internal.manageSelection(e);
+                    });
+                };
+                emailEditorService.prototype.init = function () {
+                    //validate internal
+                    this.checkIntegrity();
+                    this.setupEditor();
+                    this.setupFieldsTemplate();
+                    this.setupInsertButton();
+                };
+                emailEditorService.prototype.getEditor = function () {
+                    return $(this.element).data("kendoEditor");
+                };
+                emailEditorService.prototype.selected = function () {
+                    return this.getEditor().selectedHtml();
+                };
+                //about range http://www.quirksmode.org/dom/range_intro.html
+                emailEditorService.prototype.selectedRange = function () {
+                    return this.getEditor().getRange();
+                };
+                return emailEditorService;
+            }());
+            EditorTools.emailEditorService = emailEditorService;
+        })(EditorTools = KendoExtensions.EditorTools || (KendoExtensions.EditorTools = {}));
+    })(KendoExtensions = MyAndromeda.KendoExtensions || (MyAndromeda.KendoExtensions = {}));
+})(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
     var Services;
@@ -1438,7 +3158,7 @@ var MyAndromeda;
                 return uuid;
             };
             return UUIdService;
-        })();
+        }());
         Services.UUIdService = UUIdService;
         services.service("uuidService", UUIdService);
     })(Services = MyAndromeda.Services || (MyAndromeda.Services = {}));
@@ -1484,7 +3204,7 @@ var MyAndromeda;
             logger.UseError = value;
         };
         return Logger;
-    })();
+    }());
     MyAndromeda.Logger = Logger;
     var logger = new Logger();
 })(MyAndromeda || (MyAndromeda = {}));
@@ -1513,7 +3233,7 @@ var MyAndromeda;
                 kendo.ui.progress($($element), false);
             };
             return ProgressService;
-        })();
+        }());
         Services.ProgressService = ProgressService;
         m.factory("progressService", function () {
             return new ProgressService();
@@ -1539,7 +3259,7 @@ var MyAndromeda;
                 });
             }
             return ResizeService;
-        })();
+        }());
         Services.ResizeService = ResizeService;
         m.service("resizeService", ResizeService);
         m.run(function (resizeService) {
@@ -1559,6 +3279,76 @@ var MyAndromeda;
             };
         });
     })(Services = MyAndromeda.Services || (MyAndromeda.Services = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var GridExport;
+    (function (GridExport) {
+        var Services;
+        (function (Services) {
+            var KendoGridExcelExporter = (function () {
+                function KendoGridExcelExporter(options) {
+                    this.options = options;
+                }
+                KendoGridExcelExporter.prototype.getGrid = function () {
+                    return $(this.options.gridSelector).data("kendoGrid");
+                };
+                KendoGridExcelExporter.prototype.setupExcelEvents = function () {
+                    var internal = this;
+                    $(this.options.downloadSelector).on("click", function (e) {
+                        var grid = internal.getGrid();
+                        var currentGroup = grid.dataSource.group();
+                        if (currentGroup && currentGroup.length > 0) {
+                            alert(KendoGridExcelExporter.notSurportedMessage);
+                            e.preventDefault();
+                            return;
+                        }
+                        internal.exportExcel();
+                    });
+                    //ignore this.
+                    $(".k-button-show-orderType-then-payType").on("click", function (e) {
+                        var grid = internal.getGrid();
+                        var currentGroup = grid.dataSource.group();
+                        if (currentGroup && currentGroup.length > 0) {
+                            alert(KendoGridExcelExporter.alreadyGroupedItems);
+                            e.preventDefault();
+                            return;
+                        }
+                        grid.dataSource.group({
+                            field: "PayType", dir: "asc", aggregates: [
+                                { field: "PayType", aggregate: "count" },
+                                { field: "FinalPrice", aggregate: "min" },
+                                { field: "FinalPrice", aggregate: "max" },
+                                { field: "FinalPrice", aggregate: "sum" },
+                                { field: "FinalPrice", aggregate: "average" }
+                            ]
+                        });
+                    });
+                };
+                KendoGridExcelExporter.prototype.exportExcel = function () {
+                    var internal = this, grid = this.getGrid();
+                    var schemaTruncated = grid.columns.map(function (column, index) {
+                        return {
+                            title: column.title,
+                            field: column.field
+                        };
+                    });
+                    var title = this.options.title, model = JSON.stringify(schemaTruncated), data = JSON.stringify(grid.dataSource.view());
+                    //get the the pager 
+                    $(this.options.titleSelector).val(title);
+                    $(this.options.modelSelector).val(model);
+                    $(this.options.dataSelector).val(data);
+                };
+                KendoGridExcelExporter.prototype.init = function () {
+                    this.setupExcelEvents();
+                };
+                KendoGridExcelExporter.notSurportedMessage = "Please remove all groups before exporting. This feature is not supported.";
+                KendoGridExcelExporter.alreadyGroupedItems = "There the grid is already grouped by an item";
+                return KendoGridExcelExporter;
+            }());
+            Services.KendoGridExcelExporter = KendoGridExcelExporter;
+        })(Services = GridExport.Services || (GridExport.Services = {}));
+    })(GridExport = MyAndromeda.GridExport || (MyAndromeda.GridExport = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -1651,11 +3441,11 @@ var MyAndromeda;
                 cache: false
             };
             var hrStoreEmployeeCreate = {
-                url: "/create/",
+                url: "/create",
                 views: {
                     //use the 'main' view area of the 'hr' state. 
                     "main@hr": {
-                        templateUrl: "employee-edit.html",
+                        templateUrl: "employee-create.html",
                         controller: "employeeEditController"
                     }
                 },
@@ -1670,11 +3460,14 @@ var MyAndromeda;
             $stateProvider.state("hr.store-list", hrStoreList);
             $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
             $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
+            $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+            //reuse edit details for create
+            $stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
             $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
             $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
             $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
             $stateProvider.state("hr.store-list.edit-employee.documents", hrStoreEmployeeDocuments);
-            $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+            //$stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
         });
         app.run(function ($rootScope) {
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -1700,11 +3493,12 @@ var MyAndromeda;
                 $scope.$stateParams = $stateParams;
                 employeeServiceState.ChainId.onNext($stateParams.chainId);
                 employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
-                employeeService.Saved.subscribe(function (saved) {
-                    if (saved) {
-                        SweetAlert.swal("Saved!", "", "success");
-                    }
-                });
+                //employeeService.Saved.subscribe((saved) => {
+                //    if (saved)
+                //    {
+                //        SweetAlert.swal("Saved!", "", "success");
+                //    }
+                //});
                 var employeeGridDataSource = employeeService.StoreEmployeeDataSource;
                 var headerTemplate = $("#employee-list-header-template").html();
                 var actionsTemplate = $("#employee-list-row-template").html();
@@ -1768,7 +3562,7 @@ var MyAndromeda;
                 });
                 $scope.employeeGridOptions = employeeGridOptions;
             });
-            app.controller("employeeEditController", function ($element, $scope, $stateParams, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
+            app.controller("employeeEditController", function ($element, $scope, $stateParams, $timeout, $state, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
                 MyAndromeda.Logger.Notify("stateParams");
                 MyAndromeda.Logger.Notify($stateParams);
                 var chainId = $stateParams.chainId;
@@ -1835,14 +3629,49 @@ var MyAndromeda;
                         return;
                     }
                     progressService.ShowProgress($element);
-                    var sync = employeeService.Save(employee);
-                    sync.then(function () {
-                        progressService.HideProgress($element);
-                        MyAndromeda.Logger.Notify("Sync done");
-                        var name = employee.get("ShortName");
-                        SweetAlert.swal("Saved!", name + " has been saved.", "success");
-                        employeeServiceState.EmployeeUpdated.onNext(employee);
-                    });
+                    MyAndromeda.Logger.Notify("$state");
+                    MyAndromeda.Logger.Notify("$state.current");
+                    MyAndromeda.Logger.Notify($state.current);
+                    MyAndromeda.Logger.Notify("$state.$current");
+                    MyAndromeda.Logger.Notify($state.$current);
+                    var isCreatePage = $state.is("hr.store-list.create-employee.details");
+                    MyAndromeda.Logger.Notify("is create page:" + isCreatePage);
+                    if (isCreatePage) {
+                        var sync = employeeService.Save(employee);
+                        sync.then(function () {
+                            progressService.HideProgress($element);
+                            var name = employee.get("ShortName");
+                            //SweetAlert.swal("Created!", name + " has been added.", "success");
+                            SweetAlert.swal({
+                                title: "Employee Created",
+                                text: "Return to the list or add more detail to the employee e.g. documents?",
+                                type: "success",
+                                showCancelButton: true,
+                                //confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Continue editing",
+                                cancelButtonText: "Back to the list",
+                                closeOnConfirm: true,
+                                closeOnCancel: true
+                            }, function (continueEditing) {
+                                if (continueEditing) {
+                                    $state.go("hr.store-list.edit-employee.details", { id: employee.id });
+                                    return;
+                                }
+                                $state.go("hr.store-list.employee-list", { id: employee.id });
+                            });
+                        });
+                    }
+                    if (!isCreatePage) {
+                        MyAndromeda.Logger.Notify("THIS is the edit page");
+                        var sync = employeeService.Save(employee);
+                        sync.then(function () {
+                            progressService.HideProgress($element);
+                            MyAndromeda.Logger.Notify("Sync done");
+                            var name = employee.get("ShortName");
+                            SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                            employeeServiceState.EmployeeUpdated.onNext(employee);
+                        });
+                    }
                 };
                 var getProfilePic = function (employee) {
                     var route = "/content/profile-picture.jpg";
@@ -1881,6 +3710,7 @@ var MyAndromeda;
                 //uploadSettings
                 $scope.save = save;
                 $scope.profilePicture = getProfilePic;
+                $scope.fileTemplate = "<file-upload name='name' size='size' files='files' control='profilePicUploader'></file-upload>";
             });
             app.controller("employeeEditSchedulerController", function ($element, $scope, $timeout, employeeService, employeeServiceState, employeeSchedulerService) {
                 var loadRelatedStoresObservable = employeeServiceState.EditEmployee
@@ -1996,9 +3826,9 @@ var MyAndromeda;
                             popover.hide();
                         });
                         var extra = {
-                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                            hours: task.isAllDay ? 24 : Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                             startTime: kendo.toString(task.start, "HH:mm"),
-                            endTime: kendo.toString(task.end, "HH:mm")
+                            endTime: kendo.toString(task.end, "HH:mm"),
                         };
                         $scope.extra = extra;
                     }
@@ -2073,12 +3903,346 @@ var MyAndromeda;
                         $scope.$on('$destroy', function () {
                             popover.hide();
                         });
+                        MyAndromeda.Logger.Notify("is all day?" + task.isAllDay);
                         var extra = {
-                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                            hours: task.isAllDay ? 24 : Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                             startTime: kendo.toString(task.start, "HH:mm"),
-                            endTime: kendo.toString(task.end, "HH:mm")
+                            endTime: kendo.toString(task.end, "HH:mm"),
+                            isAllDay: task.isAllDay
                         };
                         $scope.extra = extra;
+                    }
+                };
+            });
+        })(Directives = Hr.Directives || (Hr.Directives = {}));
+    })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/bootstrap/bootstrap.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hr;
+    (function (Hr) {
+        var Directives;
+        (function (Directives) {
+            var app = angular.module("MyAndromeda.Hr.Directives", []);
+            app.directive("fileUpload", function () {
+                return {
+                    name: "fileUpload",
+                    templateUrl: "file-upload.html",
+                    scope: {
+                        name: '=name',
+                        size: '=size',
+                        files: '=files',
+                        control: '=control'
+                    },
+                    controller: function ($scope, $element) {
+                        var name = $scope.name, size = $scope.size, files = $scope.files, control = $scope.control;
+                        var state = {
+                            percentage: 0,
+                            complete: false
+                        };
+                        $scope.state = state;
+                        MyAndromeda.Logger.Notify("file-upload.html");
+                        MyAndromeda.Logger.Notify(name);
+                        MyAndromeda.Logger.Notify(size);
+                        MyAndromeda.Logger.Notify(files);
+                        MyAndromeda.Logger.Notify("upload control?");
+                        MyAndromeda.Logger.Notify(control);
+                        var bind = null, unBind = null;
+                        var onProgress = function (e) {
+                            MyAndromeda.Logger.Notify("Upload progress :: " + e.percentComplete + "% :: ");
+                            MyAndromeda.Logger.Notify("files:");
+                            MyAndromeda.Logger.Notify(e.files);
+                            state.percentage = e.percentComplete;
+                        };
+                        var onSuccess = function (e) {
+                            MyAndromeda.Logger.Notify("Success :: " + e.operation);
+                            //$element.addClass("k-file-success");
+                            $($element).find(".alert").addClass("alert-success").removeClass("alert-info");
+                            unBind();
+                        };
+                        var onError = function (e) {
+                            MyAndromeda.Logger.Notify("Error :: " + e.operation);
+                            $($element).find(".alert").addClass("alert-error").removeClass("alert-info");
+                            unBind();
+                        };
+                        bind = function () {
+                            control.bind("complete", onSuccess);
+                            control.bind("progress", onProgress);
+                            control.bind("error", onError);
+                        };
+                        unBind = function () {
+                            control.unbind("complete", onSuccess);
+                            control.unbind("progress", onProgress);
+                            control.unbind("error", onError);
+                        };
+                        bind();
+                    }
+                };
+            });
+            app.directive("employeePic", function () {
+                return {
+                    name: "employeePic",
+                    templateUrl: "employee-pic.html",
+                    restrict: "EA",
+                    transclude: true,
+                    scope: {
+                        employeeId: '=id',
+                        employee: '=employee',
+                        showShortName: "=showShortName",
+                        showFullName: "=showFullName",
+                        showWorkStatus: "=showWorkStatus"
+                    },
+                    controller: function ($scope, $timeout, employeeService, employeeServiceState, uuidService) {
+                        if (!$scope.employee) {
+                            MyAndromeda.Logger.Notify("I have a employee Id: " + $scope.employeeId);
+                            MyAndromeda.Logger.Notify($scope);
+                        }
+                        var dataItem = $scope.employee;
+                        var getValueOrDefault = function (source, defaultValue) {
+                            var v = source;
+                            var k = typeof (v);
+                            if (k == "undefined") {
+                                return defaultValue;
+                            }
+                            return v;
+                        };
+                        var options = {
+                            showShortName: getValueOrDefault($scope.showShortName, false),
+                            //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
+                            showFullName: getValueOrDefault($scope.showFullName, false),
+                            //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
+                            showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
+                        };
+                        $scope.options = options;
+                        var state = {
+                            random: uuidService.GenerateUUID()
+                        };
+                        $scope.$watch('showShortName', function (newValue, old) {
+                            $timeout(function () { options.showShortName = getValueOrDefault(newValue, true); });
+                        });
+                        $scope.$watch('showFullName', function (newValue, oldValue) {
+                            $timeout(function () { options.showFullName = getValueOrDefault(newValue, true); });
+                        });
+                        $scope.$watch('showWorkStatus', function (newValue, oldValue) {
+                            $timeout(function () { options.showWorkStatus = getValueOrDefault(newValue, true); });
+                        });
+                        var updates = employeeServiceState.EmployeeUpdated.where(function (e) { return e.Id == dataItem.Id; }).subscribe(function (change) {
+                            $timeout(function () {
+                                MyAndromeda.Logger.Notify(dataItem.ShortName + " updated");
+                                //just run ... not nothing to do. 
+                                state.random = uuidService.GenerateUUID();
+                            });
+                        });
+                        ;
+                        $scope.state = state;
+                        $scope.profilePicture = function () {
+                            //var profilePicture = "/content/profile-picture.jpg";
+                            var chainId = employeeServiceState.CurrentChainId;
+                            var andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
+                            route = route + "?r=" + state.random;
+                            return {
+                                'background-image': 'url(' + route + ')'
+                            };
+                        };
+                        $scope.$on('$destroy', function () {
+                            updates.dispose();
+                        });
+                    }
+                };
+            });
+            app.directive("employeeDocs", function () {
+                return {
+                    name: "employeeDocs",
+                    templateUrl: "employee-documents.html",
+                    restrict: "EA",
+                    scope: {
+                        dataItem: '=employee',
+                        save: "=save"
+                    },
+                    controller: function ($element, $scope, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
+                        var dataItem = $scope.dataItem;
+                        var save = function () {
+                            MyAndromeda.Logger.Notify("save - from docs");
+                            var employee = $scope.dataItem;
+                            var promise = employeeService.Save(employee);
+                            progressService.ShowProgress($element);
+                            promise.then(function () {
+                                SweetAlert.swal("Saved!", name + " has been saved.", "success");
+                                progressService.HideProgress($element);
+                            });
+                        };
+                        $scope.save = save;
+                        MyAndromeda.Logger.Notify("dataItem: " + dataItem);
+                        MyAndromeda.Logger.Notify($scope);
+                        var status = {
+                            uploading: false,
+                            random: uuidService.GenerateUUID()
+                        };
+                        if (!dataItem.Documents) {
+                            dataItem.Documents = [];
+                        }
+                        else {
+                            dataItem.Documents = dataItem.Documents.filter(function () { return true; });
+                        }
+                        $scope.status = status;
+                        $scope.uploadRoute = function () {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId, document = $scope.document;
+                            var route = employeeService.GetDocumentUploadRoute(chainId, andromedaSiteId, dataItem.Id, document.Id);
+                            return route;
+                        };
+                        $scope.onUploading = function (e) {
+                            MyAndromeda.Logger.Notify("upload started");
+                            status.uploading = true;
+                            status.random = undefined;
+                        };
+                        $scope.onUploadSuccess = function (e) {
+                            MyAndromeda.Logger.Notify("upload success");
+                            MyAndromeda.Logger.Notify(e);
+                            var document = $scope.document;
+                            e.files.forEach(function (item) {
+                                document.Files.push({
+                                    FileName: item.name
+                                });
+                            });
+                            //save();
+                            $timeout(function () {
+                                status.uploading = false;
+                                status.random = uuidService.GenerateUUID();
+                            });
+                        };
+                        $scope.onUploadComplete = function (e) {
+                            MyAndromeda.Logger.Notify("upload complete:");
+                            MyAndromeda.Logger.Notify(e);
+                            $timeout(function () {
+                                status.uploading = false;
+                                status.random = uuidService.GenerateUUID();
+                            });
+                        };
+                        $scope.removeAll = function () {
+                            var r = function () {
+                                dataItem.Documents = [];
+                                save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover these files!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    r();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.new = function () {
+                            var doc = {
+                                Id: uuidService.GenerateUUID(),
+                                Name: null,
+                                Files: []
+                            };
+                            MyAndromeda.Logger.Notify("Add to documents");
+                            dataItem.Documents.push(doc);
+                            MyAndromeda.Logger.Notify("set $scope.document");
+                            $scope.document = doc;
+                        };
+                        $scope.select = function (doc) {
+                            MyAndromeda.Logger.Notify(doc);
+                            if (!doc.Files) {
+                                doc.Files = [];
+                            }
+                            $timeout(function () {
+                                $scope.document = undefined;
+                            }).then(function () {
+                                $timeout(function () {
+                                    $scope.document = doc;
+                                }, 100);
+                            });
+                        };
+                        $scope.clear = function () {
+                            $scope.document = undefined;
+                        };
+                        $scope.remove = function (document) {
+                            var removeItem = function () {
+                                var editing = $scope.document;
+                                if (editing && editing.Id == document.Id) {
+                                    $scope.document = undefined;
+                                }
+                                dataItem.Documents = dataItem.Documents.filter(function (item) {
+                                    return item.Id !== document.Id;
+                                });
+                                //save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover this file!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    removeItem();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.removeFile = function (document, file) {
+                            var removeItem = function () {
+                                document.Files = document.Files.filter(function (item) { return item.FileName !== file.FileName; });
+                                //save();
+                            };
+                            SweetAlert.swal({
+                                title: "Are you sure?",
+                                text: "You will not be able to recover this file!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "Yes, delete it!",
+                                closeOnConfirm: false
+                            }, function (isConfirm) {
+                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                                if (isConfirm) {
+                                    var editing = $scope.document;
+                                    removeItem();
+                                    MyAndromeda.Logger.Notify("alert removed");
+                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
+                                }
+                                else {
+                                    MyAndromeda.Logger.Notify("alert cancel");
+                                }
+                            });
+                        };
+                        $scope.getEmployeeDocumentImage = function (document, file) {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetDocumentRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
+                            route = route + "?r=" + status.random;
+                            return route;
+                        };
+                        $scope.downloadDocumentFile = function (document, file) {
+                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
+                            var route = employeeService.GetDocumentDownloadRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
+                            return route;
+                        };
+                        $scope.dataItem = dataItem;
                     }
                 };
             });
@@ -2306,6 +4470,20 @@ var MyAndromeda;
         })(KendoThings = Hr.KendoThings || (Hr.KendoThings = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+//if (!template) {
+//    fileEntry = that._prepareDefaultFileEntryTemplate(name, data);
+//} else {
+//    templateData = that._prepareTemplateData(name, data);
+//    template = kendo.template(template);
+//    fileEntry = $('<li class=\'k-file\'>' + template(templateData) + '</li>');
+//    fileEntry.find('.k-upload-action').addClass('k-button k-button-bare');
+//    that.angular('compile', function () {
+//        return {
+//            elements: fileEntry,
+//            data: [templateData]
+//        };
+//    });
+//}
 var MyAndromeda;
 (function (MyAndromeda) {
     var Hr;
@@ -2347,8 +4525,8 @@ var MyAndromeda;
                         if (searchDepartments.length > 0) {
                             department = searchDepartments[0];
                         }
-                        Logger.Notify("department:");
-                        Logger.Notify(department);
+                        //Logger.Notify("department:");
+                        //Logger.Notify(department);
                         var obj = {
                             text: template({
                                 text: kendo.htmlEncode(kGetter(resource.dataTextField)(data[dataIndex])),
@@ -2590,7 +4768,7 @@ var MyAndromeda;
                     });
                     if (that.options.editable.create !== false) {
                         that.element.on('dblclick' + NS, '.k-scheduler-WeekOverViewview .k-scheduler-content td', function (e) {
-                            Logger.Notify("edit mode");
+                            //Logger.Notify("edit mode");
                             var offset = $(e.currentTarget).offset();
                             var slot = that._slotByPosition(offset.left, offset.top);
                             if (slot) {
@@ -2726,8 +4904,8 @@ var MyAndromeda;
                         columnDate = kDate.nextDay(columnDate);
                     }
                     var resources = this.groupedResources;
-                    Logger.Notify("Grouped resources:");
-                    Logger.Notify(resources);
+                    //Logger.Notify("Grouped resources:");
+                    //Logger.Notify(resources);
                     var rows;
                     if (resources.length) {
                         if (this._isVerticallyGrouped()) {
@@ -2739,8 +4917,6 @@ var MyAndromeda;
                                 });
                             }
                             rows = this._createRowsLayout(resources, inner, this.groupHeaderTemplate);
-                            console.log("rows: ");
-                            console.log(rows);
                         }
                         else {
                             columns = this._createColumnsLayout(resources, columns, this.groupHeaderTemplate);
@@ -3049,10 +5225,10 @@ var MyAndromeda;
                             var tableRow = tableRows[rowIndex];
                             var cells = tableRow.children;
                             var cellMultiplier = 0;
-                            Logger.Notify("group: ");
-                            Logger.Notify(group);
-                            Logger.Notify("collection: " + collection);
-                            Logger.Notify(collection);
+                            //Logger.Notify("group: ");
+                            //Logger.Notify(group);
+                            //Logger.Notify("collection: " + collection);
+                            //Logger.Notify(collection);
                             tableRow.setAttribute('role', 'row');
                             if (!this._isVerticallyGrouped()) {
                                 cellMultiplier = groupIndex;
@@ -3164,8 +5340,8 @@ var MyAndromeda;
                     var resource = resources[0];
                     if (resource) {
                         var view = resource.dataSource.view();
-                        Logger.Notify("resource view");
-                        Logger.Notify(view);
+                        //Logger.Notify("resource view");
+                        //Logger.Notify(view);
                         /* sort by department */
                         view = view.sort(function (a, b) {
                             var aValue = a.Department ? a.Department : "NA", bValue = b.Department ? b.Department : "NA";
@@ -3404,7 +5580,7 @@ var MyAndromeda;
                     });
                 }
                 return EmployeeServiceState;
-            })();
+            }());
             Services.EmployeeServiceState = EmployeeServiceState;
             var EmployeeService = (function () {
                 function EmployeeService($http, employeeServiceState, uuidService) {
@@ -3706,7 +5882,7 @@ var MyAndromeda;
                     return path;
                 };
                 return EmployeeService;
-            })();
+            }());
             Services.EmployeeService = EmployeeService;
             app.service("employeeService", EmployeeService);
             app.service("employeeServiceState", EmployeeServiceState);
@@ -3761,7 +5937,7 @@ var MyAndromeda;
                     return this.CheckTasksByEmployee(start, end, task);
                 };
                 return EmployeeAvailabilityTestService;
-            })();
+            }());
             Services.EmployeeAvailabilityTestService = EmployeeAvailabilityTestService;
         })(Services = Hr.Services || (Hr.Services = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
@@ -3922,6 +6098,7 @@ var MyAndromeda;
                             MyAndromeda.Logger.Notify(e);
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
                             if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                                e.event.set("dirty", true);
                                 return;
                             }
                             MyAndromeda.Logger.Notify("cancel resize");
@@ -3942,6 +6119,7 @@ var MyAndromeda;
                             MyAndromeda.Logger.Notify(e);
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
                             if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                                e.event.set("dirty", true);
                                 return;
                             }
                             MyAndromeda.Logger.Notify("cancel move");
@@ -3967,6 +6145,7 @@ var MyAndromeda;
                                 _this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
                                 e.preventDefault();
                             }
+                            e.event.set("dirty", true);
                         }
                     };
                     return schedulerOptions;
@@ -4075,7 +6254,7 @@ var MyAndromeda;
                 EmployeeSchedulerService.prototype.OccurrencesInRangeByResource = function () {
                 };
                 return EmployeeSchedulerService;
-            })();
+            }());
             Services.EmployeeSchedulerService = EmployeeSchedulerService;
             app.service("employeeSchedulerService", EmployeeSchedulerService);
         })(Services = Hr.Services || (Hr.Services = {}));
@@ -4097,6 +6276,693 @@ var MyAndromeda;
             MyAndromeda.Logger.Notify("HR module is running");
         });
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hubs;
+    (function (Hubs) {
+        var MyAndromedaHubConnection = (function () {
+            function MyAndromedaHubConnection(options) {
+                this.options = options;
+                this.connect();
+            }
+            MyAndromedaHubConnection.GetInstance = function (options) {
+                if (MyAndromedaHubConnection._instance) {
+                    return MyAndromedaHubConnection._instance;
+                }
+                return (MyAndromedaHubConnection._instance = new MyAndromedaHubConnection(options));
+            };
+            MyAndromedaHubConnection.prototype.connect = function () {
+                MyAndromeda.Logger.Notify("Hub: Connect called");
+                if (this.connected) {
+                    MyAndromeda.Logger.Notify("already connected");
+                    return;
+                }
+                if (this.connecting) {
+                    MyAndromeda.Logger.Notify("already connecting");
+                    return;
+                }
+                if (this.setup) {
+                    MyAndromeda.Logger.Notify("already setup");
+                    return;
+                }
+                $.connection.hub.logging = true;
+                var internal = this, hubConnection = $.connection.hub;
+                //if (this.hubConnection)
+                //{
+                //    return this.hubConnection;
+                //}
+                this.hubConnection = hubConnection;
+                //setup route parameters for MyAndromeda 
+                if (!this.setupQueryString()) {
+                    return hubConnection;
+                }
+                ;
+                hubConnection.starting(function () {
+                    internal.connecting = true;
+                    MyAndromedaHubConnection.log("hub connection starting");
+                });
+                var transportType = 
+                //"webSockets";
+                "longPolling";
+                //if(document.URL.indexOf("localhost") >= 0){
+                //    transportType = "webSockets";
+                //}
+                hubConnection.start({
+                    //transport: transportType //['webSockets', 'longPolling'] 
+                    transport: transportType
+                }).done(function () {
+                    internal.connecting = false;
+                    internal.connected = true;
+                    MyAndromedaHubConnection.log("hub connection started!");
+                });
+                this.setup = true;
+                return hubConnection;
+            };
+            MyAndromedaHubConnection.prototype.setupQueryString = function () {
+                var connection = this.hubConnection;
+                if (!this.options.chainId) {
+                    return false;
+                }
+                connection.qs = {
+                    'externalSiteId': this.options.externalSiteId,
+                    'chainId': this.options.chainId
+                };
+                return true;
+            };
+            MyAndromedaHubConnection.log = function (data) {
+                if (console && console.log) {
+                    try {
+                        console.log(data);
+                    }
+                    catch (e) { }
+                }
+            };
+            return MyAndromedaHubConnection;
+        }());
+        Hubs.MyAndromedaHubConnection = MyAndromedaHubConnection;
+    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hubs;
+    (function (Hubs) {
+        var Services;
+        (function (Services) {
+            var MenuHubService = (function () {
+                function MenuHubService(options) {
+                    var internal = this;
+                    this.options = options;
+                    this.hub = Hubs.StoreHub.GetInstance(options); //new StoreHub(options);
+                    this.viewModel = kendo.observable({
+                        siteName: "",
+                        menuVersion: "",
+                        lastUpdated: "",
+                        updates: []
+                    });
+                }
+                MenuHubService.prototype.init = function () {
+                    kendo.bind(this.options.id, this.viewModel);
+                };
+                return MenuHubService;
+            }());
+            Services.MenuHubService = MenuHubService;
+        })(Services = Hubs.Services || (Hubs.Services = {}));
+    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hubs;
+    (function (Hubs) {
+        var StoreHub = (function () {
+            function StoreHub(options) {
+                this.menuItemChangeEvents = [];
+                this.options = options;
+                this.connect();
+                if (StoreHub._storeHubInstance) {
+                    throw Error("The class has already been initialized. Use StoreHub.GetInstance");
+                }
+                var hubs = this.myAndromedaHubConnection.hubConnection.proxies, menuHub = hubs.storehub;
+                this.eventMap = {};
+                this.menuHub = menuHub;
+                this.setupEvents();
+            }
+            StoreHub.GetInstance = function (options) {
+                MyAndromeda.Logger.Notify("Get Store Hub");
+                if (StoreHub._storeHubInstance) {
+                    return StoreHub._storeHubInstance;
+                }
+                StoreHub._storeHubInstance = new StoreHub(options);
+                return StoreHub._storeHubInstance;
+            };
+            StoreHub.prototype.connect = function () {
+                this.myAndromedaHubConnection = Hubs.MyAndromedaHubConnection.GetInstance(this.options);
+                this.myAndromedaHubConnection.connect();
+            };
+            StoreHub.prototype.setupEvents = function () {
+                var internal = this;
+                this.menuHub.client.user = function (user) {
+                    internal.user = user;
+                    StoreHub.log("User:" + internal.user.Username);
+                };
+                this.menuHub.client.transactionLog = function (message) {
+                    if ($("#MenuFtpTransactionLog").length > 0) {
+                        $("#MenuFtpTransactionLog").append("<div>" + message + "</div>");
+                    }
+                };
+                this.menuHub.client.getStoreMenuVersion = function (data) {
+                    StoreHub.log("GetStoreMenuVersion");
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.ping = function (data) {
+                    StoreHub.log(data);
+                };
+                /* valid changes have been sent from the server */
+                this.menuHub.client.updateLocalItems = function (data) {
+                    StoreHub.log("local items need changing?");
+                    StoreHub.log(data);
+                    internal.menuItemChangeEvents.forEach(function (value, index) {
+                        value(data);
+                    });
+                };
+                this.menuHub.client.logFtp = function (data) {
+                    StoreHub.log("logftp");
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.storeInfo = function (data) {
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.menuInfo = function (data) {
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.onDebug = this.createEventMapping("onDebug");
+                this.menuHub.client.onNotifierDebug = this.createEventMapping("onNotifierDebug");
+                this.menuHub.client.onError = this.createEventMapping("onError");
+                this.menuHub.client.onNotifierError = this.createEventMapping("onNotifierError");
+                this.menuHub.client.onNotifyMail = this.createEventMapping("onNotifyMail");
+                this.menuHub.client.onNotify = this.createEventMapping("onNotify");
+                this.menuHub.client.onNotifierNotify = this.createEventMapping("onNotifierNotify");
+                this.menuHub.client.onNotifierSuccess = this.createEventMapping("onNotifierSuccess");
+                this.menuHub.client.checkingDatabaseEvent = function (data) {
+                    StoreHub.log("1. checkingDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.downloadingDatabaseEvent = function (data) {
+                    StoreHub.log("2. downloadingDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.downloadedDatabaseEvent = function (data) {
+                    StoreHub.log("3. downloadingDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                this.menuHub.client.extractedDatabaseEvent = function (data) {
+                    StoreHub.log("4. extractedDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                //opened a connection to both to compare altered data and versions
+                this.menuHub.client.comparingDatabaseEvent = function (data) {
+                    StoreHub.log("5. comparingDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                //database altered or version number is the same or lower 
+                this.menuHub.client.notChangedDatabaseEvent = function (data) {
+                    StoreHub.log("5.1  notChangedDatabaseEvent");
+                    StoreHub.log(data);
+                };
+                //database is newer - taking the ftp one. 
+                this.menuHub.client.copiedDatabaseEvent = function (data) {
+                    StoreHub.log("5.2. copiedDatabaseEvent");
+                };
+            };
+            StoreHub.prototype.createEventMapping = function (key) {
+                this.eventMap[key] = new Array();
+                var internal = this, action = function (data) {
+                    var dispatch = internal.eventMap[key];
+                    dispatch.forEach(function (listener) {
+                        listener(data);
+                    });
+                };
+                return action;
+            };
+            StoreHub.log = function (data) {
+                if (console && console.log) {
+                    try {
+                        console.log(data);
+                    }
+                    catch (e) { }
+                }
+            };
+            StoreHub.prototype.bind = function (types, listener) {
+                var _this = this;
+                if (types === StoreHub.MenuItemChangeEvent) {
+                    this.menuItemChangeEvents.push(listener);
+                    return;
+                }
+                types.split(" ").forEach(function (type) {
+                    var collection = _this.eventMap[type];
+                    if (collection) {
+                        collection.push(listener);
+                    }
+                    else {
+                        StoreHub.log("There is no type: " + type + " to bind to");
+                    }
+                });
+            };
+            StoreHub.prototype.getStoreMenuVersion = function (handler) {
+                this.menuHub.server.getStoreMenuVersion().done(function (data) {
+                    handler(data);
+                });
+            };
+            StoreHub.MenuItemChangeEvent = "MenuItemChangeEvent";
+            return StoreHub;
+        }());
+        Hubs.StoreHub = StoreHub;
+    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/signalr/signalr.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hubs;
+    (function (Hubs) {
+        var SynchronizationHub = (function () {
+            function SynchronizationHub(options) {
+                this.options = options;
+                var hubs = $.connection, hub = hubs.hub, cloudHub = hubs.cloudSynchronizationHub;
+                cloudHub.client.ping = function (date) {
+                    SynchronizationHub.log("ping fired");
+                    SynchronizationHub.log(date);
+                };
+                cloudHub.client.startedSynchronization = function (data) {
+                    SynchronizationHub.log("started fired");
+                };
+                cloudHub.client.completedSynchronization = function (data) {
+                    SynchronizationHub.log("completed fired");
+                };
+                cloudHub.client.errorSynchronization = function (data) {
+                    SynchronizationHub.log("error fired");
+                };
+                cloudHub.client.skippedSynchronization = function (data) {
+                    SynchronizationHub.log("skip fired");
+                };
+                //if (!cloudHub) { cloudHub = this.produceConnection(); }
+                this.client = cloudHub.client;
+                this.connect();
+                //hub.start()
+                //    .done(function () {
+                //        SynchronizationHub.log("connected");
+                //    })
+                //    .fail(function () {
+                //        SynchronizationHub.log("connection failed");
+                //    });
+            }
+            SynchronizationHub.log = function (data) {
+                if (console && console.log) {
+                    try {
+                        console.log(data);
+                    }
+                    catch (e) { }
+                }
+            };
+            SynchronizationHub.prototype.connect = function () {
+                this.myAndromedaHubConnection = Hubs.MyAndromedaHubConnection.GetInstance(this.options);
+                this.myAndromedaHubConnection.connect();
+            };
+            SynchronizationHub.STARTED = "started";
+            SynchronizationHub.COMPLETED = "completed";
+            SynchronizationHub.ERROR = "error";
+            return SynchronizationHub;
+        }());
+        Hubs.SynchronizationHub = SynchronizationHub;
+        var SynchronizationHubService = (function () {
+            function SynchronizationHubService(options) {
+                this.options = options;
+                this.hub = new SynchronizationHub(options);
+                this.viewModel = kendo.observable({
+                    started: [],
+                    completed: [],
+                    errors: []
+                });
+            }
+            SynchronizationHubService.prototype.initEvents = function () {
+                var internal = this, hub = this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronizationhub, client = hub.client;
+                client.startedSynchronization = function (data) {
+                    SynchronizationHub.log("started fired");
+                    var models = internal.viewModel.get("started");
+                    models.push(data);
+                };
+                client.completedSynchronization = function (data) {
+                    SynchronizationHub.log("completed fired");
+                    var models = internal.viewModel.get("completed");
+                    models.push(data);
+                };
+                client.errorSynchronization = function (data) {
+                    SynchronizationHub.log("error fired");
+                    var models = internal.viewModel.get("errors");
+                    models.push(data);
+                };
+                client.tasks = function (data) {
+                    var models = internal.viewModel.get("started");
+                    models.push({
+                        Note: "Checking how many tasks",
+                        TimeStamp: new Date(),
+                        Count: data
+                    });
+                };
+            };
+            SynchronizationHubService.prototype.init = function () {
+                kendo.bind(this.options.id, this.viewModel);
+                this.initEvents();
+            };
+            return SynchronizationHubService;
+        }());
+        Hubs.SynchronizationHubService = SynchronizationHubService;
+    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Loyalty;
+    (function (Loyalty) {
+        Loyalty.ServicesName = "LoyaltyServices";
+        var servicesModule = angular.module(Loyalty.ServicesName, []);
+        var Services;
+        (function (Services) {
+            var LoyaltyService = (function () {
+                function LoyaltyService($http) {
+                    this.$http = $http;
+                    /* data messaging */
+                    // all types that have not been used yet. 
+                    this.AllLoyaltyTypeList = new Rx.Subject();
+                    // store loyalty types that have been used 
+                    this.StoreLoyalties = new Rx.Subject();
+                    this.LoyaltyProvider = new Rx.Subject();
+                    /* monitor network */
+                    this.ListLoyaltyTypesBusy = new Rx.BehaviorSubject(false);
+                    this.ListBusy = new Rx.BehaviorSubject(false);
+                    this.GetBusy = new Rx.BehaviorSubject(false);
+                    this.UpdateBusy = new Rx.BehaviorSubject(false);
+                }
+                LoyaltyService.prototype.ListLoyaltyTypes = function () {
+                    var _this = this;
+                    var partialRoute = "/api/{0}/loyalty/types";
+                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId);
+                    var promise = this.$http.get(route);
+                    this.ListLoyaltyTypesBusy.onNext(true);
+                    promise.success(function (data) {
+                        _this.AllLoyaltyTypeList.onNext(data);
+                    });
+                    promise.finally(function () {
+                        _this.ListLoyaltyTypesBusy.onNext(false);
+                    });
+                };
+                LoyaltyService.prototype.List = function () {
+                    var _this = this;
+                    var partialRoute = "/api/{0}/loyalty/list";
+                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId);
+                    var promise = this.$http.get(route);
+                    this.ListBusy.onNext(true);
+                    promise.success(function (data) {
+                        _this.StoreLoyalties.onNext(data);
+                    });
+                    promise.finally(function () {
+                        _this.ListBusy.onNext(false);
+                    });
+                };
+                LoyaltyService.prototype.Get = function (name) {
+                    var _this = this;
+                    var partialRoute = "/api/{0}/loyalty/get/{1}";
+                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId, name);
+                    var promise = this.$http.get(route);
+                    this.GetBusy.onNext(true);
+                    promise.success(function (data) {
+                        _this.LoyaltyProvider.onNext(data);
+                    });
+                    promise.finally(function () { _this.GetBusy.onNext(false); });
+                };
+                LoyaltyService.prototype.Update = function (model) {
+                    var _this = this;
+                    var partialRoute = "/api/{0}/loyalty/update/{1}";
+                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId, model.ProviderName);
+                    var promise = this.$http.post(route, model);
+                    this.UpdateBusy.onNext(true);
+                    promise.success(function (data) { _this.UpdateBusy.onNext(false); });
+                    promise.finally(function () { _this.UpdateBusy.onNext(false); });
+                };
+                return LoyaltyService;
+            }());
+            Services.LoyaltyService = LoyaltyService;
+            var loyaltyService = "loyaltyService";
+            servicesModule.service(loyaltyService, LoyaltyService);
+        })(Services = Loyalty.Services || (Loyalty.Services = {}));
+    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="Loyalty.Services.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Loyalty;
+    (function (Loyalty) {
+        Loyalty.ControllersName = "LoyaltyControllers";
+        var controllersModule = angular.module(Loyalty.ControllersName, [
+            Loyalty.ServicesName
+        ]);
+        Loyalty.StartController = "StartController";
+        controllersModule.controller(Loyalty.StartController, function ($scope, $timeout, loyaltyService) {
+            loyaltyService.ListLoyaltyTypes();
+            loyaltyService.List();
+            $scope.ShowAddList = false;
+            $scope.ShowEditList = false;
+            var allTypesSubscription = loyaltyService.AllLoyaltyTypeList.subscribe(function (list) {
+                $timeout(function () {
+                    $scope.AvailableLoyaltyTypeNames = list;
+                    $scope.ShowAddList = list.length > 0;
+                });
+            });
+            var currentStoreLoyalties = loyaltyService.StoreLoyalties.subscribe(function (list) {
+                $timeout(function () {
+                    $scope.CurrentLoyaltyTypes = list;
+                    $scope.ShowEditList = list.length > 0;
+                });
+            });
+            $scope.$on("$destroy", function () {
+                allTypesSubscription.dispose();
+                currentStoreLoyalties.dispose();
+            });
+        });
+        Loyalty.EditLoyaltyController = "EditLoyaltyController";
+        controllersModule.controller(Loyalty.EditLoyaltyController, function ($scope, $timeout, $routeParams, loyaltyService) {
+            $scope.SaveBusy = false;
+            $scope.Currency = kendo.toString(1.00, "c");
+            $scope.Currency10 = kendo.toString(10.00, "c");
+            //lets explicitly look for this one:
+            $scope.ProviderAvailable = false;
+            loyaltyService.Get($routeParams.providerName);
+            var modelAvailableSubscription = loyaltyService.LoyaltyProvider.subscribe(function (provider) {
+                $timeout(function () {
+                    $scope.Name = provider.ProviderName;
+                    $scope.ProviderLoyalty = provider;
+                    $scope.Model = provider.Configuration;
+                    $scope.ProviderAvailable = true;
+                    if ($scope.Model.MinimumPointsBeforeAvailable > $scope.Model.MaximumObtainablePoints &&
+                        $scope.Model.MinimumPointsBeforeAvailable && $scope.Model.MaximumObtainablePoints) {
+                        alert("Minimum points needed before spending is available cannot be lower than the maximum points that a user can have. Correcting.");
+                        $scope.Model.MinimumPointsBeforeAvailable = $scope.Model.MaximumObtainablePoints;
+                    }
+                });
+            });
+            var saveBusySubscription = loyaltyService.UpdateBusy.subscribe(function (value) {
+                $timeout(function () {
+                    $scope.SaveBusy = value;
+                });
+            });
+            $scope.SetDefaults = function () {
+                $scope.Model || ($scope.Model = {
+                    RoundUp: true
+                });
+                var m = $scope.Model;
+                if (!confirm("Setting defaults will wipe any existing change")) {
+                    return;
+                }
+                m.Enabled = true;
+                m.AutoSpendPointsOverThisPeak = null;
+                m.AwardOnRegiration = 500;
+                m.AwardPointsPerPoundSpent = 10;
+                m.MaximumPercentThatCanBeClaimed = 1; /* 100% */
+                m.MaximumValueThatCanBeClaimed = 10.00; /* 10.00 */
+                m.MinimumPointsBeforeAvailable = null;
+                m.PointValue = 100;
+                //more defaults 
+                m.MaximumObtainablePoints = null;
+                m.MinimumOrderTotalAfterLoyalty = null;
+            };
+            $scope.IsAutoSpendPointsOverThisPeakEnabled = function () {
+                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
+                    return false;
+                }
+                var m = $scope.Model;
+                if (m.AutoSpendPointsOverThisPeak === null) {
+                    return false;
+                }
+                var t = (m.AutoSpendPointsOverThisPeak >= 0);
+                return t;
+            };
+            $scope.IsMinimumPointsBeforeAvailableEnabled = function () {
+                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
+                    return false;
+                }
+                var m = $scope.Model;
+                if (m.MinimumPointsBeforeAvailable === null) {
+                    return false;
+                }
+                var t = m.MinimumPointsBeforeAvailable >= 0;
+                return t;
+            };
+            $scope.IsMaximumObtainablePointsEnabled = function () {
+                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
+                    return false;
+                }
+                var m = $scope.Model;
+                if (m.MaximumObtainablePoints === null) {
+                    return false;
+                }
+                var t = m.MaximumObtainablePoints >= 0;
+                return t;
+            };
+            $scope.Save = function () {
+                var validator = $scope.AndromedaLoyaltyValidator;
+                if (validator.validate()) {
+                    loyaltyService.Update($scope.ProviderLoyalty);
+                }
+            };
+            $scope.IsMaximumAndMinimumRulesInvalid = function () {
+                var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
+                var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
+                if (!maxValue || !minValue) {
+                    return false;
+                }
+                if (minValue <= maxValue) {
+                    return false;
+                }
+                return true;
+            };
+            $scope.IsMaximumAndMinimumRulesEqual = function () {
+                var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
+                var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
+                if (!maxValue || !minValue) {
+                    return false;
+                }
+                if (maxValue == minValue) {
+                    return true;
+                }
+                return false;
+            };
+            $scope.$watch("Model.MaximumObtainablePoints", function () {
+                MyAndromeda.Logger.Notify("Model.MaximumObtainablePoints changed");
+                if (!$scope.MaximumObtainablePointsNumericTextBox) {
+                    MyAndromeda.Logger.Notify("cant find numeric text box");
+                    return;
+                }
+                if ($scope.MinimumPointsBeforeAvailableNumericTextBox) {
+                    var value = $scope.MaximumObtainablePointsNumericTextBox.value();
+                    if ($scope.MinimumPointsBeforeAvailableNumericTextBox.value() >
+                        $scope.MaximumObtainablePointsNumericTextBox.value()) {
+                        $scope.MaximumObtainablePointsNumericTextBox.value($scope.MinimumPointsBeforeAvailableNumericTextBox.value());
+                    }
+                    MyAndromeda.Logger.Notify("set max");
+                    if (value) {
+                        $scope.MinimumPointsBeforeAvailableNumericTextBox.max(value);
+                    }
+                    else {
+                        $scope.MinimumPointsBeforeAvailableNumericTextBox.max(null);
+                    }
+                }
+            });
+            //$scope.$watch("Model.MinimumPointsBeforeAvailable", () => {
+            //    Logger.Notify("Model.MinimumPointsBeforeAvailable changed");
+            //    if (!$scope.MinimumPointsBeforeAvailableNumericTextBox) {
+            //        Logger.Notify("cant find numeric text box");
+            //        return;
+            //    }
+            //    if ($scope.Model.MaximumObtainablePoints) {
+            //        Logger.Notify("set max");
+            //        var minimumPointsBeforeAvailableNumericTextBox = $scope.MinimumPointsBeforeAvailableNumericTextBox;
+            //        var maximumObtainablePointsNumericTextBox = $scope.MaximumObtainablePointsNumericTextBox;
+            //        if (minimumPointsBeforeAvailableNumericTextBox.value()) {
+            //            maximumObtainablePointsNumericTextBox.max(minimumPointsBeforeAvailableNumericTextBox.value());
+            //        } else {
+            //            maximumObtainablePointsNumericTextBox.max(null);
+            //        }
+            //    }
+            //});
+            $scope.$watch("Model.PointValue", function () {
+                if (!$scope.AwardingPointsNumericTextBox) {
+                    return;
+                }
+                if ($scope.Model.PointValue) {
+                    console.log("update points");
+                    var numericPicker = $scope.AwardingPointsNumericTextBox;
+                    numericPicker.max($scope.Model.PointValue);
+                }
+            });
+            $scope.ValueOf = function (points) {
+                points || (points = 0);
+                if (!$scope.Model) {
+                    return "";
+                }
+                //£1 = pointValue
+                var pointValue = $scope.Model.PointValue;
+                if (!pointValue) {
+                    return "";
+                }
+                var worth = (1.00 / pointValue) * points;
+                return kendo.toString(worth, "c"); //$1,234.57
+            };
+            $scope.DisplayAsCurrency = function (monies) {
+                monies || (monies = 0);
+                return kendo.toString(monies, "c");
+            };
+            $scope.$on("$destroy", function () {
+                modelAvailableSubscription.dispose();
+                saveBusySubscription.dispose();
+            });
+        });
+    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="Loyalty.Services.ts" />
+/// <reference path="Loyalty.Controllers.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Loyalty;
+    (function (Loyalty) {
+        Loyalty.LoyaltyName = "MyAndromedaLoyalty";
+        Loyalty.Settings = {
+            AndromedaSiteId: ""
+        };
+        var loyaltyModule = angular.module(Loyalty.LoyaltyName, [
+            'ngRoute',
+            'ngAnimate',
+            "kendo.directives",
+            Loyalty.ServicesName,
+            Loyalty.ControllersName
+        ]);
+        loyaltyModule.config(function ($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: "start.html",
+                controller: Loyalty.StartController
+            });
+            $routeProvider.when("/edit/:providerName", {
+                templateUrl: "edit.html",
+                controller: Loyalty.EditLoyaltyController
+            });
+        });
+        loyaltyModule.run(function ($templateCache) {
+            console.log("Loyalty Started");
+            angular.element('script[type="text/template"]').each(function (i, element) {
+                $templateCache.put(element.id, element.innerHTML);
+            });
+        });
+        Loyalty.Start = function (element) {
+            angular.bootstrap(element, [Loyalty.LoyaltyName]);
+        };
+    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 /// <reference path="../general/resizemodule.ts" />
 var MyAndromeda;
@@ -4159,7 +7025,6 @@ var MyAndromeda;
         });
     })(Marketing = MyAndromeda.Marketing || (MyAndromeda.Marketing = {}));
 })(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="myandromeda.marketing.ts" />
 /// <reference path="myandromeda.marketing.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -4610,6 +7475,7 @@ var MyAndromeda;
 })(MyAndromeda || (MyAndromeda = {}));
 /// <reference path="myandromeda.marketing.ts" />
 /// <reference path="myandromeda.marketing.ts" />
+/// <reference path="myandromeda.marketing.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
     var Marketing;
@@ -4627,7 +7493,7 @@ var MyAndromeda;
                 this.dataSource = dataSource;
             }
             return TokenDataService;
-        })();
+        }());
         Marketing.TokenDataService = TokenDataService;
         var MarketingEventService = (function () {
             function MarketingEventService($http) {
@@ -4684,7 +7550,7 @@ var MyAndromeda;
                 return promise;
             };
             return MarketingEventService;
-        })();
+        }());
         Marketing.MarketingEventService = MarketingEventService;
         var RecipientService = (function () {
             function RecipientService($http) {
@@ -4696,2979 +7562,12 @@ var MyAndromeda;
                 return promise;
             };
             return RecipientService;
-        })();
+        }());
         Marketing.RecipientService = RecipientService;
         Marketing.m.service("recipientService", RecipientService);
         Marketing.m.service("marketingEventService", MarketingEventService);
         Marketing.m.service("tokenDataService", TokenDataService);
     })(Marketing = MyAndromeda.Marketing || (MyAndromeda.Marketing = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reports;
-    (function (Reports) {
-        var ChainDashboard;
-        (function (ChainDashboard) {
-            var app = angular.module("ChainDashboard.Config", [
-                "ui.router",
-                "ngAnimate"
-            ]);
-            app.config(function ($stateProvider, $urlRouterProvider) {
-                var app = {
-                    abstract: true,
-                    url: "/",
-                    templateUrl: "dashboard-app-template.html"
-                };
-                var appChainSalesDashboard = {
-                    url: "/sales-dashboard",
-                    views: {
-                        "summary": {
-                            templateUrl: "chain-sales-dashboard-summary.html",
-                            controller: "chainSalesDashboardSummaryController"
-                        },
-                        "detail": {
-                            templateUrl: "chain-sales-dashboard-detail.html",
-                            controller: "chainSalesDashboardDetailController"
-                        }
-                    }
-                };
-                var appStoreSalesDashboard = {
-                    url: "/store-sales-dashboard/:storeId",
-                    views: {
-                        "summary": {
-                            templateUrl: "store-sales-dashboard-summary.html",
-                            controller: "storeSalesDashboardSummaryController"
-                        },
-                        "detail": {
-                            templateUrl: "store-sales-dashboard-detail.html",
-                            controller: "storeSalesDashboardDetailController"
-                        }
-                    },
-                    onEnter: function ($stateParams, groupedStoreResultsService) {
-                        groupedStoreResultsService.LoadStore($stateParams.storeId);
-                    },
-                    cache: false
-                };
-                var appChainSalesDataWarehouse = {
-                    url: "/chain-sales-live",
-                    views: {
-                        "summary": {
-                            templateUrl: "store-sales-day-dashboard-summary.html",
-                            controller: "chainTodaysSalesSummaryController"
-                        },
-                        "detail": {
-                            templateUrl: "store-sales-day-dashboard-detail.html",
-                            controller: "chainTodaysSalesDetailController"
-                        }
-                    }
-                };
-                var appStoreSalesLive = {
-                    url: "/store-sales-live/:storeId",
-                    views: {
-                        "summary": {
-                            templateUrl: "store-sales-day-dashboard-summary.html",
-                            controller: "storeSalesDayDashboardSummaryController"
-                        },
-                    },
-                    onEnter: function ($stateParams, groupedStoreResultsService) {
-                        groupedStoreResultsService.LoadStore($stateParams.storeId);
-                    },
-                    cache: false
-                };
-                var storeMapDashboard = {
-                    url: "/store-map-live/:storeId",
-                    views: {
-                        "summary": {
-                            templateUrl: "store-sales-map.summary.html",
-                            controller: "storeMapDashboardSummaryController"
-                        },
-                        "detail": {
-                            templateUrl: "store-sales-map.detail.html",
-                            controller: "storeMapDashboardDetailController"
-                        }
-                    },
-                    onEnter: function ($stateParams, groupedStoreResultsService) {
-                        groupedStoreResultsService.LoadStore($stateParams.storeId);
-                    },
-                    cache: false
-                };
-                //$stateProvider.state("app", app);
-                $stateProvider.state("chain-sales-dashboard", appChainSalesDashboard);
-                $stateProvider.state("chain-sales-data-warehouse", appChainSalesDataWarehouse);
-                $stateProvider.state("store-sales-dashboard", appStoreSalesDashboard);
-                $stateProvider.state("store-sales-live", appStoreSalesLive);
-                $stateProvider.state("store-map-live", storeMapDashboard);
-                $urlRouterProvider.otherwise("/sales-dashboard");
-            });
-            app.run(function ($templateCache) {
-                MyAndromeda.Logger.Notify("WebHooks Started");
-                angular
-                    .element('script[type="text/ng-template"]')
-                    .each(function (i, element) {
-                    $templateCache.put(element.id, element.innerHTML);
-                });
-            });
-        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
-    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reports;
-    (function (Reports) {
-        var ChainDashboard;
-        (function (ChainDashboard) {
-            var app = angular.module("ChainDashboard.StoreMap", ["ChainDashboard.Services"]);
-            app.controller("storeMapDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
-                MyAndromeda.Logger.Notify("Starting storeSalesDayDashboardSummaryController");
-                $scope.currency = valueFormater.Currency;
-                $scope.store = groupedStoreResultsService.StoreData;
-                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
-                    MyAndromeda.Logger.Notify("set store");
-                    $timeout(function () {
-                        $scope.store = store;
-                    });
-                });
-                if (groupedStoreResultsService.StoreData == null) {
-                    MyAndromeda.Logger.Notify("load store data");
-                    groupedStoreResultsService.LoadStore($stateParams.storeId);
-                }
-            });
-            app.controller("storeMapDashboardDetailController", function ($scope, $timeout, $stateParams, orderService, dashboardQueryContext, valueFormater) {
-                $scope.currency = valueFormater.CurrencyDecimal;
-                //var dataSource = orderService.ListOrders($stateParams.storeId);
-                var dataSource = orderService.ListOrdersForMap(1885, dashboardQueryContext.Query.FromObj, dashboardQueryContext.Query.ToObj);
-                dashboardQueryContext.Changed.throttle(300).subscribe(function () {
-                    dataSource.read();
-                });
-                var getMap = function () {
-                    return $scope.myMap;
-                };
-                var selectMarker = function (e) {
-                    var marker = e.marker;
-                    var dataItem = marker.dataItem;
-                    MyAndromeda.Logger.Notify(dataItem);
-                    $timeout(function () {
-                        $scope.highlightedOrder = dataItem;
-                    });
-                };
-                var mapOptions = {
-                    markerClick: selectMarker,
-                    center: [0, 0],
-                    zoom: 2,
-                    layers: [
-                        {
-                            type: "tile",
-                            urlTemplate: "http://#= subdomain #.tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png",
-                            subdomains: ["a", "b", "c"],
-                            attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
-                        },
-                        {
-                            type: "marker",
-                            dataSource: dataSource,
-                            locationField: "Customer.GeoLocation"
-                        }
-                    ],
-                };
-                $scope.mapOptions = mapOptions;
-            });
-        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
-    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reports;
-    (function (Reports) {
-        var ChainDashboard;
-        (function (ChainDashboard) {
-            var app = angular.module("ChainDashboard.Services", []);
-            var DashboardQueryContext = (function () {
-                function DashboardQueryContext() {
-                    this.Changed = new Rx.BehaviorSubject(false);
-                    var today = new Date();
-                    var thirtyDaysAgo = new Date();
-                    this.Query = {
-                        FromObj: new Date(thirtyDaysAgo.setDate(-30)),
-                        ToObj: today
-                    };
-                    this.Changed.onNext(true);
-                }
-                return DashboardQueryContext;
-            })();
-            ChainDashboard.DashboardQueryContext = DashboardQueryContext;
-            var GroupedDataWarehouseStoreResultsService = (function () {
-                function GroupedDataWarehouseStoreResultsService($http) {
-                    this.ChainData = null;
-                    this.ChainDataObservable = new Rx.BehaviorSubject(null);
-                    this.$http = $http;
-                }
-                GroupedDataWarehouseStoreResultsService.prototype.LoadChain = function (chainId, query) {
-                    var _this = this;
-                    var route = kendo.format("/chain-data-warehouse/{0}", chainId);
-                    var data = query !== null ? this.CreateQueryObj(query) : {};
-                    var promise = this.$http.post(route, data);
-                    promise.then(function (result) {
-                        _this.ChainData = result.data;
-                        _this.ChainDataObservable.onNext(_this.ChainData);
-                    });
-                    return this.ChainDataObservable.asObservable();
-                };
-                GroupedDataWarehouseStoreResultsService.prototype.CreateQueryObj = function (query) {
-                    var f = kendo.toString(query.FromObj, "u");
-                    var t = kendo.toString(query.ToObj, "u");
-                    MyAndromeda.Logger.Notify(f);
-                    MyAndromeda.Logger.Notify(t);
-                    return {
-                        From: f,
-                        To: t
-                    };
-                };
-                GroupedDataWarehouseStoreResultsService.prototype.CreaateTotals = function (name, allOrders) {
-                    var totals = {
-                        Cancelled: 0,
-                        CancelledValue: 0,
-                        Completed: 0,
-                        CompletedValue: 0,
-                        OutForDelivery: 0,
-                        OutForDeliveryValue: 0,
-                        Oven: 0,
-                        OvenValue: 0,
-                        ReadyToDispatch: 0,
-                        ReadyToDispatchValue: 0,
-                        Received: 0,
-                        ReceivedValue: 0,
-                        Total: 0,
-                        TotalValue: 0,
-                        FutureOrder: 0,
-                        FutureOrderValue: 0,
-                        /* pie chart values */
-                        Collection: 0,
-                        CollectionValue: 0,
-                        Delivery: 0,
-                        DeliveryValue: 0,
-                        InStore: 0,
-                        InStoreValue: 0,
-                        /* */
-                        Name: "",
-                        Data: new kendo.data.DataSource(),
-                        AcsApplicationData: new kendo.data.DataSource({
-                            group: [
-                                {
-                                    field: "ApplicationId"
-                                }
-                            ]
-                        }),
-                        OccasionData: new kendo.data.DataSource()
-                    };
-                    var k = [];
-                    allOrders.subscribe(function (order) {
-                        k.push(order);
-                        totals.Total++;
-                        totals.TotalValue += order.FinalPrice;
-                        totals.Name = name;
-                        switch (order.OrderType.toLocaleLowerCase()) {
-                            case "collection": {
-                                totals.Collection++;
-                                totals.CollectionValue += order.FinalPrice;
-                                break;
-                            }
-                            case "delivery": {
-                                totals.Delivery++;
-                                totals.DeliveryValue += order.FinalPrice;
-                                break;
-                            }
-                            default: {
-                                totals.InStore++;
-                                totals.InStoreValue += order.FinalPrice;
-                            }
-                        }
-                        switch (order.Status) {
-                            //Order has been received by the store
-                            case 1: {
-                                totals.Received++;
-                                totals.ReceivedValue += order.FinalPrice;
-                                break;
-                            }
-                            //Order is in oven
-                            case 2: {
-                                totals.Oven++;
-                                totals.OvenValue += order.FinalPrice;
-                                break;
-                            }
-                            //Order is ready for dispatch
-                            case 3: {
-                                totals.ReadyToDispatch++;
-                                totals.ReadyToDispatchValue += order.FinalPrice;
-                                break;
-                            }
-                            //Order is out for delivery
-                            case 4: {
-                                totals.OutForDelivery++;
-                                totals.OutForDeliveryValue += order.FinalPrice;
-                                break;
-                            }
-                            //Order has been completed
-                            case 5: {
-                                totals.Completed++;
-                                totals.CompletedValue += order.FinalPrice;
-                                break;
-                            }
-                            //Order has been canceled
-                            case 6: {
-                                totals.Cancelled++;
-                                totals.CancelledValue += order.FinalPrice;
-                                break;
-                            }
-                            //Future Order
-                            case 8: {
-                                totals.FutureOrder++;
-                                totals.FutureOrderValue += order.FinalPrice;
-                                break;
-                            }
-                        }
-                    });
-                    totals.AcsApplicationData.data(k);
-                    totals.Data.data(k);
-                    totals.OccasionData.data([
-                        { OrderType: "Collection", Count: totals.Collection, Sum: totals.CollectionValue },
-                        { OrderType: "Delivery", Count: totals.Delivery, Sum: totals.DeliveryValue },
-                        { OrderType: "Dine in", Count: totals.InStore, Sum: totals.InStoreValue }
-                    ]);
-                    return totals;
-                };
-                return GroupedDataWarehouseStoreResultsService;
-            })();
-            ChainDashboard.GroupedDataWarehouseStoreResultsService = GroupedDataWarehouseStoreResultsService;
-            var GroupedStoreResultsService = (function () {
-                function GroupedStoreResultsService(groupedStoreResultsDataService, dashboardQueryContext) {
-                    var _this = this;
-                    this.ChainData = null;
-                    this.StoreData = null;
-                    this.dashboardQueryContext = dashboardQueryContext;
-                    this.groupedStoreResultsDataService = groupedStoreResultsDataService;
-                    this.ChainDataObservable = new Rx.BehaviorSubject(null);
-                    this.StoreObservable = new Rx.BehaviorSubject(null);
-                    var throttled = dashboardQueryContext.Changed.where(function (e) { return e; }).throttle(700);
-                    throttled.select(function () {
-                        var promise = _this.groupedStoreResultsDataService.GetDailyAllStoreData(ChainDashboard.settings.chainId, _this.dashboardQueryContext.Query);
-                        return promise;
-                    }).subscribe(function (e) {
-                        //load stuff; 
-                        e.then(function (dataResult) {
-                            _this.ChainData = dataResult.data;
-                            _this.ChainDataObservable.onNext(dataResult.data);
-                        });
-                    });
-                    this.ChainDataObservable.subscribe(function (data) {
-                    });
-                    throttled.where(function () { return _this.StoreData !== null; }).select(function () {
-                        var promise = _this.groupedStoreResultsDataService.GetDailySingleStoreData(ChainDashboard.settings.chainId, _this.StoreData.StoreId, _this.dashboardQueryContext.Query);
-                        return promise;
-                    }).subscribe(function (e) {
-                        e.then(function (dataResult) {
-                            _this.StoreData = dataResult.data;
-                            _this.StoreObservable.onNext(_this.StoreData);
-                        });
-                    });
-                }
-                GroupedStoreResultsService.prototype.LoadStore = function (andromedaSiteId) {
-                    var _this = this;
-                    if (this.ChainData == null) {
-                        var promise = this.groupedStoreResultsDataService
-                            .GetDailySingleStoreData(ChainDashboard.settings.chainId, andromedaSiteId, this.dashboardQueryContext.Query);
-                        promise.then(function (dataResult) {
-                            _this.StoreData = dataResult.data;
-                            _this.StoreObservable.onNext(_this.StoreData);
-                        });
-                    }
-                    else {
-                        var store = this.ChainData.Data.filter(function (e) { return e.StoreId == andromedaSiteId; });
-                        this.StoreData = store[0];
-                        this.StoreObservable.onNext(this.StoreData);
-                    }
-                };
-                return GroupedStoreResultsService;
-            })();
-            ChainDashboard.GroupedStoreResultsService = GroupedStoreResultsService;
-            var GroupedStoreResultsDataService = (function () {
-                function GroupedStoreResultsDataService($http) {
-                    this.$http = $http;
-                }
-                GroupedStoreResultsDataService.prototype.CreateQueryObj = function (query) {
-                    var f = kendo.toString(query.FromObj, "u");
-                    var t = kendo.toString(query.ToObj, "u");
-                    MyAndromeda.Logger.Notify(f);
-                    MyAndromeda.Logger.Notify(t);
-                    return {
-                        From: f,
-                        To: t
-                    };
-                };
-                GroupedStoreResultsDataService.prototype.GetDailyAllStoreData = function (chainId, query) {
-                    var route = kendo.format("/chain-data/{0}", chainId);
-                    var queryBody = this.CreateQueryObj(query);
-                    var promise = this.$http.post(route, queryBody);
-                    return promise;
-                };
-                GroupedStoreResultsDataService.prototype.GetDailySingleStoreData = function (chainId, andromedaSiteId, query) {
-                    var route = kendo.format("/chain-data/{0}/store/{1}", chainId, andromedaSiteId);
-                    var queryBody = this.CreateQueryObj(query);
-                    var promise = this.$http.post(route, queryBody);
-                    return promise;
-                };
-                return GroupedStoreResultsDataService;
-            })();
-            ChainDashboard.GroupedStoreResultsDataService = GroupedStoreResultsDataService;
-            var ChartOptions = (function () {
-                function ChartOptions() {
-                }
-                ChartOptions.prototype.DataWareHouseOccasionChart = function () {
-                    var options = {
-                        theme: "bootstrap",
-                        legend: {
-                            position: "top"
-                        },
-                        seriesDefaults: {
-                            labels: {
-                                template: "#= category # - #= kendo.format('{0:P}', percentage)#",
-                                //position: "outsideEnd",
-                                visible: true,
-                                background: "transparent"
-                            },
-                            type: "pie"
-                        },
-                        series: [
-                            {
-                                name: "Count", categoryField: "OrderType", field: "Count",
-                                labels: {
-                                    template: "#=category# - #= dataItem.Count# order(s)\n#= kendo.toString(dataItem.Sum, 'c') #"
-                                }
-                            }
-                        ]
-                    };
-                    return options;
-                };
-                ChartOptions.prototype.DataWareHouseAcsApplicationChart = function () {
-                    var options = {
-                        theme: "bootstrap",
-                        legend: {
-                            position: "top"
-                        },
-                        categoryAxis: [
-                            {
-                                field: "WantedTime",
-                                type: "date",
-                                baseUnit: "months"
-                            }
-                        ],
-                        valueAxis: [
-                            {
-                                title: "Sales",
-                                name: "Sales",
-                                labels: {
-                                    template: "#= kendo.toString(value, 'c') #"
-                                },
-                            },
-                        ],
-                        series: [
-                            { name: "Sales", field: "FinalPrice", type: "column", axis: "Sales", aggregate: "sum", stack: { group: "Sales" } },
-                        ]
-                    };
-                    return options;
-                };
-                ChartOptions.prototype.WeekChart = function () {
-                    var options = {
-                        theme: "bootstrap",
-                        legend: {
-                            position: "top"
-                        },
-                        categoryAxis: [
-                            {
-                                field: "WeekOfYear",
-                                baseUnitStep: "auto",
-                            }
-                        ],
-                        valueAxis: [
-                            {
-                                title: "Sales",
-                                name: "Sales",
-                                labels: {
-                                    template: "#= kendo.toString(value / 100, 'c') #"
-                                }
-                            },
-                            { title: "Orders", name: "Orders" }
-                        ],
-                        //seriesDefaults: { type: "radarLine" },
-                        series: [
-                            { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales" },
-                            { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders" },
-                            { name: "Delivery", field: "Delivery.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
-                            { name: "Collection", field: "Collection.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
-                            { name: "Carry out", field: "CarryOut.NetSales", type: "area", axis: "Sales", aggregate: "sum" }
-                        ]
-                    };
-                    return options;
-                };
-                ChartOptions.prototype.DayChart = function (baseUnit) {
-                    var options = {
-                        theme: "bootstrap",
-                        legend: {
-                            position: "top"
-                        },
-                        categoryAxis: [
-                            {
-                                field: "CreateTimeStamp",
-                                //baseUnitStep: "auto",
-                                type: "date",
-                                baseUnit: baseUnit,
-                                baseUnitStep: 1,
-                                autoBaseUnitSteps: {
-                                    days: [1],
-                                    weeks: [],
-                                    months: []
-                                },
-                                weekStartDay: 1,
-                            }
-                        ],
-                        valueAxis: [
-                            {
-                                title: "Sales", name: "Sales",
-                                labels: {
-                                    template: "#= kendo.toString(value / 100, 'c') #"
-                                }
-                            },
-                            { title: "Orders", name: "Orders" }
-                        ],
-                        //seriesDefaults: { type: "radarLine" },
-                        series: [
-                            { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
-                            { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders", aggregate: "sum" },
-                            { name: "Delivery", field: "Delivery.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
-                            { name: "Collection", field: "Collection.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
-                            { name: "Carry out", field: "CarryOut.NetSales", type: "area", axis: "Sales", aggregate: "sum" }
-                        ]
-                    };
-                    if (baseUnit == "days") {
-                        var category = options.categoryAxis[0];
-                        category.labels = {
-                            step: 3,
-                            format: "d/M"
-                        };
-                    }
-                    if (baseUnit == "months") {
-                        var category = options.categoryAxis[0];
-                        category.labels = {
-                            dateFormats: {
-                                days: "d/M"
-                            }
-                        };
-                    }
-                    return options;
-                };
-                return ChartOptions;
-            })();
-            ChainDashboard.ChartOptions = ChartOptions;
-            var ValueFormater = (function () {
-                function ValueFormater() {
-                }
-                ValueFormater.prototype.Currency = function (value) {
-                    var x = value / 100;
-                    return kendo.toString(x, "c");
-                };
-                ValueFormater.prototype.CurrencyDecimal = function (value) {
-                    return kendo.toString(value, "c");
-                };
-                ValueFormater.prototype.DateFormat = function (value) {
-                    return kendo.toString(value, "g");
-                };
-                return ValueFormater;
-            })();
-            ChainDashboard.ValueFormater = ValueFormater;
-            app.service("dashboardQueryContext", DashboardQueryContext);
-            app.service("groupedStoreResultsDataService", GroupedStoreResultsDataService);
-            app.service("groupedStoreResultsService", GroupedStoreResultsService);
-            app.service("valueFormater", ValueFormater);
-            app.service("chartOptions", ChartOptions);
-            app.service("groupedDataWarehouseStoreResultsService", GroupedDataWarehouseStoreResultsService);
-        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
-    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reports;
-    (function (Reports) {
-        var ChainDashboard;
-        (function (ChainDashboard) {
-            var app = angular.module("ChainDashboard.Today", ["ChainDashboard.Services"]);
-            app.controller("chainTodaysSalesSummaryController", function ($scope, $stateParams, $timeout, dashboardQueryContext, chartOptions, groupedDataWarehouseStoreResultsService, valueFormater) {
-                //only work with 5;
-                //var observable = groupedDataWarehouseStoreResultsService
-                //    .LoadChain(settings.chainId)
-                //    .where(e => e !== null);
-                var observable = groupedDataWarehouseStoreResultsService
-                    .LoadChain(ChainDashboard.settings.chainId, null)
-                    .where(function (e) { return e !== null; });
-                var changeSubscription = dashboardQueryContext.Changed.throttle(700).subscribe(function (b) {
-                    groupedDataWarehouseStoreResultsService
-                        .LoadChain(ChainDashboard.settings.chainId, dashboardQueryContext.Query);
-                });
-                observable.subscribe(function (data) {
-                    var allOrders = Rx.Observable.from(data.Stores).selectMany(function (store) { return Rx.Observable.from(store.Orders); });
-                    var r = groupedDataWarehouseStoreResultsService.CreaateTotals(data.Name, allOrders);
-                    $timeout(function () {
-                        $scope.summary = r;
-                    });
-                });
-                $scope.occasionChartOptions = chartOptions.DataWareHouseOccasionChart();
-                $scope.acsChartOptions = chartOptions.DataWareHouseAcsApplicationChart();
-                $scope.currency = valueFormater.CurrencyDecimal;
-            });
-            app.controller("chainTodaysSalesDetailController", function ($scope, $stateParams, $timeout, dashboardQueryContext, chartOptions, groupedDataWarehouseStoreResultsService, valueFormater) {
-                var observable = groupedDataWarehouseStoreResultsService
-                    .LoadChain(5, null)
-                    .where(function (e) { return e !== null; });
-                observable.subscribe(function (data) {
-                    var summaries = [];
-                    //var allOrders = Rx.Observable.from(data.Stores).selectMany((store) => Rx.Observable.from(store.Orders));
-                    var stores = Rx.Observable.from(data.Stores);
-                    stores.subscribe(function (store) {
-                        var allOrders = Rx.Observable.from(store.Orders);
-                        var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.Name, allOrders);
-                        summaries.push(r);
-                    });
-                    $timeout(function () {
-                        $scope.summaries = summaries;
-                    });
-                });
-                $scope.currency = valueFormater.CurrencyDecimal;
-            });
-            app.controller("storeSalesDayDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
-                MyAndromeda.Logger.Notify("Starting storeSalesDayDashboardSummaryController");
-                $scope.currency = valueFormater.Currency;
-                $scope.store = groupedStoreResultsService.StoreData;
-                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
-                    MyAndromeda.Logger.Notify("set store");
-                    $timeout(function () {
-                        $scope.store = store;
-                    });
-                });
-                if (groupedStoreResultsService.StoreData == null) {
-                    MyAndromeda.Logger.Notify("load store data");
-                    //ignore store 
-                    groupedStoreResultsService.LoadStore($stateParams.storeId);
-                }
-            });
-        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
-    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/angular-ui-router/angular-ui-router.d.ts" />
-/// <reference path="myandromeda.reports.chaindashboard.models.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reports;
-    (function (Reports) {
-        var ChainDashboard;
-        (function (ChainDashboard) {
-            var app = angular.module("ChainDashboard", [
-                "MyAndromeda.Resize",
-                "MyAndromeda.Progress",
-                "MyAndromeda.Data.Orders",
-                "ChainDashboard.Services",
-                "ChainDashboard.StoreMap",
-                "ChainDashboard.Today",
-                "ChainDashboard.Config",
-                "kendo.directives",
-                "oitozero.ngSweetAlert",
-                "ngAnimate"
-            ]);
-            app.controller("chainSalesDashboardSummaryController", function ($scope, $timeout, groupedStoreResultsService, valueFormater, chartOptions) {
-                $scope.hi = "hi ho";
-                $scope.data = [];
-                $scope.currency = valueFormater.Currency;
-                var radarOptions = {
-                    legend: {
-                        position: "top"
-                    },
-                    categoryAxis: [
-                        {
-                            field: "WeekOfYear",
-                            baseUnitStep: "auto",
-                        }
-                    ],
-                    valueAxis: [
-                        { title: "Sales", name: "Sales" },
-                        { title: "Orders", name: "Orders" }
-                    ],
-                    //seriesDefaults: { type: "radarLine" },
-                    series: [
-                        { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales" },
-                        { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders" }
-                    ]
-                };
-                $scope.weekChartOptions = chartOptions.WeekChart();
-                $scope.dayChartOptions = chartOptions.DayChart("days");
-                $scope.weekChartOptions = chartOptions.DayChart("weeks");
-                $scope.monthChartOptions = chartOptions.DayChart("months");
-                var salesWeekData = new kendo.data.DataSource({});
-                var salesMonthData = new kendo.data.DataSource({
-                    group: [
-                        { field: "CreatedTimeStamp" }
-                    ],
-                    schema: {
-                        model: {
-                            fields: {
-                                CreatedTimeStamp: {
-                                    type: "date"
-                                }
-                            }
-                        }
-                    }
-                });
-                $scope.radarOptions = radarOptions;
-                $scope.salesDayData = salesMonthData;
-                $scope.salesWeekData = salesWeekData;
-                groupedStoreResultsService.ChainDataObservable.where(function (e) { return e !== null; }).subscribe(function (chainResult) {
-                    $timeout(function () {
-                        $scope.data = chainResult;
-                        $scope.storeCount = chainResult.Data.length;
-                        MyAndromeda.Logger.Notify("$scope.data :");
-                        MyAndromeda.Logger.Notify(chainResult);
-                        Rx.Observable.from(chainResult.WeekData).maxBy(function (e) { return e.Total.NetSales; }).subscribe(function (max) {
-                            MyAndromeda.Logger.Notify("$scope.bestWeek");
-                            MyAndromeda.Logger.Notify(max[0]);
-                            $scope.bestWeek = max[0];
-                        });
-                        var dayData = [];
-                        var dayDataObservable = Rx.Observable.from(chainResult.Data).flatMap(function (e) { return Rx.Observable.fromArray(e.DailyData); });
-                        dayDataObservable.subscribe(function (o) {
-                            dayData.push(o);
-                        });
-                        MyAndromeda.Logger.Notify("day data");
-                        MyAndromeda.Logger.Notify(dayData);
-                        salesWeekData.data(chainResult.WeekData);
-                        salesMonthData.data(dayData);
-                    });
-                });
-            });
-            app.controller("chainSalesDashboardDetailController", function ($scope, $timeout, $state, groupedStoreResultsService, valueFormater) {
-                $scope.data = [];
-                $scope.currency = valueFormater.Currency;
-                $scope.select = function (store) {
-                    groupedStoreResultsService.StoreData = store;
-                    $state.go("store-sales-dashboard", { storeId: store.StoreId });
-                };
-                groupedStoreResultsService.ChainDataObservable.subscribe(function (data) {
-                    $scope.data = data;
-                });
-            });
-            app.controller("storeSalesDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, valueFormater) {
-                $scope.currency = valueFormater.Currency;
-                $scope.store = groupedStoreResultsService.StoreData;
-                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
-                    MyAndromeda.Logger.Notify("set store");
-                    $timeout(function () {
-                        $scope.store = store;
-                    });
-                });
-                if (groupedStoreResultsService.StoreData == null) {
-                    MyAndromeda.Logger.Notify("load store data");
-                    groupedStoreResultsService.LoadStore($stateParams.storeId);
-                }
-            });
-            app.controller("storeSalesDashboardDetailController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
-                $scope.storeWeekOptions = chartOptions.WeekChart();
-                $scope.storeDailyOptions = chartOptions.DayChart("days");
-                $scope.storeWeeklyOptions = chartOptions.DayChart("weeks");
-                $scope.storeMonthlyOptions = chartOptions.DayChart("months");
-                var weekDataSource = new kendo.data.DataSource({});
-                var dailyDataSource = new kendo.data.DataSource({
-                    schema: {
-                        model: {
-                            fields: {
-                                CreateTimeStamp: {
-                                    type: "date"
-                                }
-                            }
-                        }
-                    }
-                });
-                $scope.storeWeekData = weekDataSource;
-                $scope.dailyDataSource = dailyDataSource;
-                var storeObservable = groupedStoreResultsService.StoreObservable.where(function (e) { return e !== null; }).subscribe(function (store) {
-                    MyAndromeda.Logger.Notify("reload charts");
-                    $timeout(function () {
-                        $scope.store = store;
-                        weekDataSource.data(store.WeekData);
-                        dailyDataSource.data(store.DailyData);
-                    });
-                });
-            });
-            app.directive("dashboardAppFilter", function () {
-                return {
-                    controller: function ($scope, dashboardQueryContext) {
-                        $scope.query = dashboardQueryContext.Query;
-                        //dashboardQueryContext.Query.ToObj
-                        $scope.$watch('query.ToObj', function () {
-                            MyAndromeda.Logger.Notify("changes");
-                            dashboardQueryContext.Changed.onNext(true);
-                        });
-                        $scope.$watch('query.FromObj', function () {
-                            MyAndromeda.Logger.Notify("changes");
-                            dashboardQueryContext.Changed.onNext(true);
-                        });
-                        $scope.today = function () {
-                            dashboardQueryContext.Query.FromObj = new Date();
-                        };
-                        $scope.createPdf = function () {
-                            MyAndromeda.Logger.Notify("hi");
-                            var region = $(".pdfRegion");
-                            kendo.drawing.drawDOM(region)
-                                .then(function (group) {
-                                // Render the result as a PDF file
-                                return kendo.drawing.exportPDF(group, {
-                                    creator: "Andromeda",
-                                    keywords: "Chain,Report",
-                                    date: new Date(),
-                                    landscape: false,
-                                    subject: "Report",
-                                    title: "Chain",
-                                    paperSize: "auto",
-                                    margin: { left: "1cm", top: "1cm", right: "1cm", bottom: "1cm" }
-                                });
-                            })
-                                .done(function (data) {
-                                // Save the PDF file
-                                kendo.saveAs({
-                                    dataURI: data,
-                                    fileName: "Dashboard.pdf",
-                                });
-                            });
-                        };
-                    },
-                    restrict: "E",
-                    templateUrl: "dashboard-app-filter.html"
-                };
-            });
-            ChainDashboard.settings = {
-                chainId: 0
-            };
-            function setupChainDashboard(id) {
-                var element = document.getElementById(id);
-                angular.bootstrap(element, ["ChainDashboard"]);
-            }
-            ChainDashboard.setupChainDashboard = setupChainDashboard;
-            ;
-        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
-    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/bootstrap/bootstrap.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hr;
-    (function (Hr) {
-        var Directives;
-        (function (Directives) {
-            var app = angular.module("MyAndromeda.Hr.Directives", []);
-            app.directive("employeePic", function () {
-                return {
-                    name: "employeePic",
-                    templateUrl: "employee-pic.html",
-                    restrict: "EA",
-                    transclude: true,
-                    scope: {
-                        employeeId: '=id',
-                        employee: '=employee',
-                        showShortName: "=showShortName",
-                        showFullName: "=showFullName",
-                        showWorkStatus: "=showWorkStatus"
-                    },
-                    controller: function ($scope, $timeout, employeeService, employeeServiceState, uuidService) {
-                        if (!$scope.employee) {
-                            MyAndromeda.Logger.Notify("I have a employee Id: " + $scope.employeeId);
-                            MyAndromeda.Logger.Notify($scope);
-                        }
-                        var dataItem = $scope.employee;
-                        var getValueOrDefault = function (source, defaultValue) {
-                            var v = source;
-                            var k = typeof (v);
-                            if (k == "undefined") {
-                                return defaultValue;
-                            }
-                            return v;
-                        };
-                        var options = {
-                            showShortName: getValueOrDefault($scope.showShortName, false),
-                            //typeof ($scope.showShortName) == "undefined" ? true : $scope.showShortName,
-                            showFullName: getValueOrDefault($scope.showFullName, false),
-                            //typeof($scope.showFullName) == "undefined" ? true : $scope.showFullName,
-                            showWorkStatus: getValueOrDefault($scope.showWorkStatus, false)
-                        };
-                        $scope.options = options;
-                        var state = {
-                            random: uuidService.GenerateUUID()
-                        };
-                        $scope.$watch('showShortName', function (newValue, old) {
-                            $timeout(function () { options.showShortName = getValueOrDefault(newValue, true); });
-                        });
-                        $scope.$watch('showFullName', function (newValue, oldValue) {
-                            $timeout(function () { options.showFullName = getValueOrDefault(newValue, true); });
-                        });
-                        $scope.$watch('showWorkStatus', function (newValue, oldValue) {
-                            $timeout(function () { options.showWorkStatus = getValueOrDefault(newValue, true); });
-                        });
-                        var updates = employeeServiceState.EmployeeUpdated.where(function (e) { return e.Id == dataItem.Id; }).subscribe(function (change) {
-                            $timeout(function () {
-                                MyAndromeda.Logger.Notify(dataItem.ShortName + " updated");
-                                //just run ... not nothing to do. 
-                                state.random = uuidService.GenerateUUID();
-                            });
-                        });
-                        ;
-                        $scope.state = state;
-                        $scope.profilePicture = function () {
-                            //var profilePicture = "/content/profile-picture.jpg";
-                            var chainId = employeeServiceState.CurrentChainId;
-                            var andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
-                            var route = employeeService.GetEmployeePictureUrl(chainId, andromedaSiteId, dataItem.Id);
-                            route = route + "?r=" + state.random;
-                            return {
-                                'background-image': 'url(' + route + ')'
-                            };
-                        };
-                        $scope.$on('$destroy', function () {
-                            updates.dispose();
-                        });
-                    }
-                };
-            });
-            app.directive("employeeDocs", function () {
-                return {
-                    name: "employeeDocs",
-                    templateUrl: "employee-documents.html",
-                    restrict: "EA",
-                    scope: {
-                        dataItem: '=employee',
-                        save: "=save"
-                    },
-                    controller: function ($element, $scope, $timeout, SweetAlert, progressService, employeeService, employeeServiceState, uuidService) {
-                        var dataItem = $scope.dataItem;
-                        var save = function () {
-                            MyAndromeda.Logger.Notify("save - from docs");
-                            var employee = $scope.dataItem;
-                            var promise = employeeService.Save(employee);
-                            progressService.ShowProgress($element);
-                            promise.then(function () {
-                                SweetAlert.swal("Saved!", name + " has been saved.", "success");
-                                progressService.HideProgress($element);
-                            });
-                        };
-                        $scope.save = save;
-                        MyAndromeda.Logger.Notify("dataItem: " + dataItem);
-                        MyAndromeda.Logger.Notify($scope);
-                        var status = {
-                            uploading: false,
-                            random: uuidService.GenerateUUID()
-                        };
-                        if (!dataItem.Documents) {
-                            dataItem.Documents = [];
-                        }
-                        else {
-                            dataItem.Documents = dataItem.Documents.filter(function () { return true; });
-                        }
-                        $scope.status = status;
-                        $scope.uploadRoute = function () {
-                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId, document = $scope.document;
-                            var route = employeeService.GetDocumentUploadRoute(chainId, andromedaSiteId, dataItem.Id, document.Id);
-                            return route;
-                        };
-                        $scope.onUploading = function (e) {
-                            MyAndromeda.Logger.Notify("upload started");
-                            status.uploading = true;
-                            status.random = undefined;
-                        };
-                        $scope.onUploadSuccess = function (e) {
-                            MyAndromeda.Logger.Notify("upload success");
-                            MyAndromeda.Logger.Notify(e);
-                            var document = $scope.document;
-                            e.files.forEach(function (item) {
-                                document.Files.push({
-                                    FileName: item.name
-                                });
-                            });
-                            //save();
-                            $timeout(function () {
-                                status.uploading = false;
-                                status.random = uuidService.GenerateUUID();
-                            });
-                        };
-                        $scope.onUploadComplete = function (e) {
-                            MyAndromeda.Logger.Notify("upload complete:");
-                            MyAndromeda.Logger.Notify(e);
-                            $timeout(function () {
-                                status.uploading = false;
-                                status.random = uuidService.GenerateUUID();
-                            });
-                        };
-                        $scope.removeAll = function () {
-                            var r = function () {
-                                dataItem.Documents = [];
-                                save();
-                            };
-                            SweetAlert.swal({
-                                title: "Are you sure?",
-                                text: "You will not be able to recover these files!",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Yes, delete it!",
-                                closeOnConfirm: false
-                            }, function (isConfirm) {
-                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
-                                if (isConfirm) {
-                                    var editing = $scope.document;
-                                    r();
-                                    MyAndromeda.Logger.Notify("alert removed");
-                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
-                                }
-                                else {
-                                    MyAndromeda.Logger.Notify("alert cancel");
-                                }
-                            });
-                        };
-                        $scope.new = function () {
-                            var doc = {
-                                Id: uuidService.GenerateUUID(),
-                                Name: null,
-                                Files: []
-                            };
-                            MyAndromeda.Logger.Notify("Add to documents");
-                            dataItem.Documents.push(doc);
-                            MyAndromeda.Logger.Notify("set $scope.document");
-                            $scope.document = doc;
-                        };
-                        $scope.select = function (doc) {
-                            MyAndromeda.Logger.Notify(doc);
-                            if (!doc.Files) {
-                                doc.Files = [];
-                            }
-                            $timeout(function () {
-                                $scope.document = undefined;
-                            }).then(function () {
-                                $timeout(function () {
-                                    $scope.document = doc;
-                                }, 100);
-                            });
-                        };
-                        $scope.clear = function () {
-                            $scope.document = undefined;
-                        };
-                        $scope.remove = function (document) {
-                            var removeItem = function () {
-                                var editing = $scope.document;
-                                if (editing && editing.Id == document.Id) {
-                                    $scope.document = undefined;
-                                }
-                                dataItem.Documents = dataItem.Documents.filter(function (item) {
-                                    return item.Id !== document.Id;
-                                });
-                                //save();
-                            };
-                            SweetAlert.swal({
-                                title: "Are you sure?",
-                                text: "You will not be able to recover this file!",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Yes, delete it!",
-                                closeOnConfirm: false
-                            }, function (isConfirm) {
-                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
-                                if (isConfirm) {
-                                    var editing = $scope.document;
-                                    removeItem();
-                                    MyAndromeda.Logger.Notify("alert removed");
-                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
-                                }
-                                else {
-                                    MyAndromeda.Logger.Notify("alert cancel");
-                                }
-                            });
-                        };
-                        $scope.removeFile = function (document, file) {
-                            var removeItem = function () {
-                                document.Files = document.Files.filter(function (item) { return item.FileName !== file.FileName; });
-                                //save();
-                            };
-                            SweetAlert.swal({
-                                title: "Are you sure?",
-                                text: "You will not be able to recover this file!",
-                                type: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Yes, delete it!",
-                                closeOnConfirm: false
-                            }, function (isConfirm) {
-                                MyAndromeda.Logger.Notify("confirm:" + isConfirm);
-                                if (isConfirm) {
-                                    var editing = $scope.document;
-                                    removeItem();
-                                    MyAndromeda.Logger.Notify("alert removed");
-                                    SweetAlert.swal("Deleted!", "Your file has been deleted.", "success");
-                                }
-                                else {
-                                    MyAndromeda.Logger.Notify("alert cancel");
-                                }
-                            });
-                        };
-                        $scope.getEmployeeDocumentImage = function (document, file) {
-                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
-                            var route = employeeService.GetDocumentRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
-                            route = route + "?r=" + status.random;
-                            return route;
-                        };
-                        $scope.downloadDocumentFile = function (document, file) {
-                            var chainId = employeeServiceState.CurrentAndromedaSiteId, andromedaSiteId = employeeServiceState.CurrentAndromedaSiteId;
-                            var route = employeeService.GetDocumentDownloadRouteUrl(chainId, andromedaSiteId, dataItem.Id, document.Id, file.FileName);
-                            return route;
-                        };
-                        $scope.dataItem = dataItem;
-                    }
-                };
-            });
-        })(Directives = Hr.Directives || (Hr.Directives = {}));
-    })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Start;
-    (function (Start) {
-        var Services;
-        (function (Services) {
-            var services = angular.module("MyAndromeda.Start.Services", []);
-            var UserChainDataService = (function () {
-                function UserChainDataService($http) {
-                    this.$http = $http;
-                }
-                UserChainDataService.prototype.List = function () {
-                    var getChains = this.$http.get("/user/chains");
-                    return getChains;
-                };
-                return UserChainDataService;
-            })();
-            Services.UserChainDataService = UserChainDataService;
-            var UserStoreDataService = (function () {
-                function UserStoreDataService($http) {
-                    this.$http = $http;
-                }
-                UserStoreDataService.prototype.ListStores = function () {
-                    var route = "/user/stores";
-                    var getStores = this.$http.get(route);
-                    return getStores;
-                };
-                UserStoreDataService.prototype.ListStoresByChainId = function (chainId) {
-                    var route = kendo.format("/user/chains/{0}", chainId);
-                    var getChains = this.$http.get(route);
-                    return getChains;
-                };
-                return UserStoreDataService;
-            })();
-            Services.UserStoreDataService = UserStoreDataService;
-            services.service("userChainDataService", UserChainDataService);
-            services.service("userStoreDataService", UserStoreDataService);
-        })(Services = Start.Services || (Start.Services = {}));
-    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Start;
-    (function (Start) {
-        var app = angular.module("MyAndromeda.Start.Config", [
-            "MyAndromeda.Start.Controllers",
-            "ui.router",
-            "ngAnimate"
-        ]);
-        app.config(function ($stateProvider, $urlRouterProvider) {
-            MyAndromeda.Logger.Notify("set start config");
-            var app = {
-                abstract: true,
-                url: "/chain",
-                template: '<div ui-view="main"></div>'
-            };
-            var appChainList = {
-                url: "/list",
-                views: {
-                    "main": {
-                        templateUrl: "chain-list.html",
-                        controller: "chainListController"
-                    },
-                },
-                cache: false
-            };
-            //var appChainsStoreList: ng.ui.IState = {
-            //    url: "/:chainId",
-            //    views: {
-            //        "main": {
-            //            templateUrl: "store-list.html",
-            //            controller: "storeListController"
-            //        }
-            //    },
-            //    cache: false
-            //};
-            $stateProvider.state("chain", app);
-            $stateProvider.state("chain.list", appChainList);
-            //$stateProvider.state("start-chain-store", appChainsStoreList);
-            $urlRouterProvider.otherwise("/chain/list");
-        });
-        app.run(function ($templateCache) {
-            MyAndromeda.Logger.Notify("Started config");
-            angular
-                .element('script[type="text/ng-template"]')
-                .each(function (i, element) {
-                $templateCache.put(element.id, element.innerHTML);
-            });
-        });
-    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Start;
-    (function (Start) {
-        var controllers = angular.module("MyAndromeda.Start.Controllers", ["MyAndromeda.Start.Services", "kendo.directives"]);
-        controllers.controller("chainListController", function ($scope, userChainDataService) {
-            var chainActionTemplate = $("#chain-actions-template").html();
-            var storeTemplate = $("#chain-template").html();
-            MyAndromeda.Logger.Notify("store template");
-            MyAndromeda.Logger.Notify(storeTemplate);
-            var chainListOptionsDataSource = new kendo.data.TreeListDataSource({
-                //data: [
-                //    { Id: 1, Name: "test", ParentId: null },
-                //    { Id: 2, Name: "test 2", ParentId: 1 }
-                //],
-                schema: {
-                    model: {
-                        id: "Id",
-                        parentId: "ParentId",
-                        fields: {
-                            Name: {
-                                field: "Name", type: "string"
-                            },
-                            StoreCount: { field: "StoreCount", type: "number" },
-                            ParentId: { field: "ParentId", nullable: true },
-                        },
-                        StoreCountLabel: function () {
-                            var model = this;
-                            if (model.ChildChainCount > 0) {
-                                var chainTotal = model.ChildStoreCount + model.StoreCount;
-                                return model.StoreCount + "/" + chainTotal;
-                            }
-                            return "" + model.StoreCount;
-                        },
-                        expanded: true
-                    }
-                }
-            });
-            var chainListOptions = {
-                sortable: true,
-                editable: false,
-                filterable: {},
-                //autoBind: false,
-                resizable: true,
-                dataSource: chainListOptionsDataSource,
-                columns: [
-                    //{ title: "Actions", width: 170, template: chainActionTemplate, filterable: false }
-                    { field: "Name", title: "Name", template: storeTemplate },
-                ]
-            };
-            var chainsPromise = userChainDataService.List();
-            chainsPromise.then(function (callback) {
-                MyAndromeda.Logger.Notify("chain call back data");
-                var data = callback.data;
-                chainListOptionsDataSource.data(data);
-                var dataSourceData = chainListOptionsDataSource.data();
-                MyAndromeda.Logger.Notify(dataSourceData);
-            }).catch(function () {
-                alert("Something went wrong");
-            });
-            $scope.chainListOptions = chainListOptions;
-        });
-        controllers.directive("chainGrid", function () {
-            return {
-                name: "chainGrid",
-                controller: "storeListController",
-                restrict: "E",
-                scope: {
-                    chain: "="
-                },
-                templateUrl: "store-list.html"
-            };
-        });
-        controllers.controller("storeListController", function ($scope, $timeout, userStoreDataService) {
-            var chain = $scope.chain;
-            var status = {
-                hasStores: false,
-                hideStores: true
-            };
-            $scope.status = status;
-            var storeListDataSource = new kendo.data.DataSource({
-                transport: {
-                    read: function (options) {
-                        var promise = userStoreDataService.ListStoresByChainId(chain.Id);
-                        promise.then(function (callback) {
-                            options.success(callback.data);
-                            if (callback.data.length > 0) {
-                                $timeout(function () {
-                                    status.hasStores = true;
-                                });
-                            }
-                        });
-                    }
-                },
-                sort: [
-                    { field: "Name", dir: "asc" }
-                ],
-                serverSorting: false,
-                serverFiltering: false,
-                serverPaging: false
-            });
-            storeListDataSource.read();
-            var storeTemplate = $("#store-list-template").html();
-            var storeListOptions = {
-                autoBind: true,
-                sortable: true,
-                dataSource: storeListDataSource,
-                filterable: {
-                    mode: "row"
-                },
-                columns: [
-                    { title: "Name", field: "Name", width: 200 },
-                    { title: "Actions", template: storeTemplate }
-                ]
-            };
-            $scope.storeListOptions = storeListOptions;
-        });
-    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Start;
-    (function (Start) {
-        var start = angular.module("MyAndromeda.Start", [
-            "ngAnimate",
-            "MyAndromeda.Start.Config",
-            "MyAndromeda.Hr"
-        ]);
-        function setupStart(id) {
-            var element = document.getElementById(id);
-            angular.bootstrap(element, ["MyAndromeda.Start"]);
-        }
-        Start.setupStart = setupStart;
-        ;
-    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            var Models;
-            (function (Models) {
-                Models.occasionDefinitions = {
-                    Delivery: {
-                        Name: "Delivery", Colour: "#d9534f"
-                    },
-                    Collection: {
-                        Name: "Collection", Colour: "#d9edf7"
-                    },
-                    DineIn: {
-                        Name: "Dine In", Colour: "#f2dede"
-                    }
-                };
-                function getSchedulerDataSourceSchema() {
-                    var model = {
-                        id: "Id",
-                        fields: {
-                            Id: {
-                                type: "string",
-                                nullable: true
-                            },
-                            title: { from: "Title", validation: { required: true } },
-                            start: { type: "date", from: "Start" },
-                            end: { type: "date", from: "End" },
-                            startTimezone: { from: "StartTimezone" },
-                            endTimezone: { from: "EndTimezone" },
-                            description: { from: "Description" },
-                            recurrenceId: { from: "RecurrenceId" },
-                            recurrenceRule: { from: "RecurrenceRule", defaultValue: "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU" },
-                            recurrenceException: { from: "RecurrenceException" },
-                            isAllDay: { type: "boolean", from: "IsAllDay" },
-                            Occasions: {
-                                defaultValue: ["Delivery", "Collection"]
-                            }
-                        }
-                    };
-                    return model;
-                }
-                Models.getSchedulerDataSourceSchema = getSchedulerDataSourceSchema;
-                ;
-            })(Models = OpeningHours.Models || (OpeningHours.Models = {}));
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            var app = angular.module("MyAndromeda.Store.OpeningHours.Config", [
-                "ui.router",
-                "kendo.directives", "oitozero.ngSweetAlert",
-                "MyAndromeda.Store.OpeningHours.Controllers",
-                "MyAndromeda.Store.OpeningHours.Services",
-                "MyAndromeda.Store.OpeningHours.Directives"
-            ]);
-            app.config(function ($stateProvider, $urlRouterProvider) {
-                var start = {
-                    url: '/:andromedaSiteId',
-                    controller: "OpeningHoursController",
-                    templateUrl: "OpeningHours-template.html"
-                };
-                $stateProvider.state("opening-hours", start);
-                $urlRouterProvider.otherwise("/" + OpeningHours.settings.andromedaSiteId);
-            });
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            var app = angular.module("MyAndromeda.Store.OpeningHours.Controllers", []);
-            app.controller("OpeningHoursController", function ($scope, SweetAlert, storeOccasionSchedulerService) {
-                var schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
-                $scope.schedulerOptions = schedulerOptions;
-                $scope.clearAll = function () {
-                    SweetAlert.swal({
-                        title: "Are you sure?",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete it!",
-                        closeOnConfirm: false
-                    }, function (isConfirm) {
-                        MyAndromeda.Logger.Notify("confirm:" + isConfirm);
-                        if (isConfirm) {
-                            storeOccasionSchedulerService.ClearAllTasks().then(function () {
-                                var scheduler = $scope.OccasionScheduler;
-                                scheduler.dataSource.data([]);
-                                SweetAlert.swal("Deleted!", "All times have been deleted", "success");
-                            });
-                        }
-                        else {
-                            MyAndromeda.Logger.Notify("alert cancel");
-                        }
-                    });
-                };
-            });
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            var app = angular.module("MyAndromeda.Store.OpeningHours.Directives", []);
-            app.directive("occasionTaskEditor", function () {
-                return {
-                    name: "occasionTaskEditor",
-                    scope: {
-                        task: "=task",
-                    },
-                    templateUrl: "occasionTaskEditor.html",
-                    controller: function ($scope) {
-                        var task = $scope.task;
-                        MyAndromeda.Logger.Notify("Occasion task editor - started");
-                        MyAndromeda.Logger.Notify("Occasion task");
-                        MyAndromeda.Logger.Notify(task);
-                        var occasionOptions = {
-                            //dataSource: [
-                            //    Models.occasionDefinitions.Delivery,
-                            //    Models.occasionDefinitions.Collection,
-                            //    Models.occasionDefinitions.DineIn
-                            //],
-                            dataSource: new kendo.data.DataSource({
-                                data: [
-                                    OpeningHours.Models.occasionDefinitions.Delivery,
-                                    OpeningHours.Models.occasionDefinitions.Collection,
-                                    OpeningHours.Models.occasionDefinitions.DineIn
-                                ]
-                            }),
-                            valuePrimitive: true,
-                            dataTextField: "Name",
-                            dataValueField: "Name",
-                            //ignoreCase: true,
-                            autoBind: true
-                        };
-                        $scope.occasionOptions = occasionOptions;
-                    }
-                };
-            });
-            app.directive("repeatWeeklyEditor", function () {
-                return {
-                    name: "repeatWeeklyEditor",
-                    templateUrl: "repeatWeeklyEditor.html",
-                    scoppe: {
-                        task: "=task"
-                    },
-                    controller: function ($scope) {
-                        var task = $scope.task;
-                        MyAndromeda.Logger.Notify("repeatWeeklyEditor started: " + task);
-                        var partialRecurrenceRule = "FREQ=WEEKLY;BYDAY=";
-                        var recurrenceRule = task.recurrenceRule;
-                        var rule = {
-                            Monday: false,
-                            Tuesday: false,
-                            Wednesday: false,
-                            Thursday: false,
-                            Friday: false,
-                            Saturday: false,
-                            Sunday: false
-                        };
-                        var parseRuleToRecurrence = function () {
-                            var recurrence = partialRecurrenceRule;
-                            //MO,TU,WE,TH,FR,SA,SU
-                            var hasDays = false;
-                            var add = function (day) {
-                                recurrence += (hasDays ? "," + day : day);
-                                hasDays = true;
-                            };
-                            if (rule.Monday) {
-                                add("MO");
-                            }
-                            if (rule.Tuesday) {
-                                add("TU");
-                            }
-                            if (rule.Wednesday) {
-                                add("WE");
-                            }
-                            if (rule.Thursday) {
-                                add("TH");
-                            }
-                            if (rule.Friday) {
-                                add("FR");
-                            }
-                            if (rule.Saturday) {
-                                add("SA");
-                            }
-                            if (rule.Sunday) {
-                                add("SU");
-                            }
-                            return recurrence;
-                        };
-                        var parseRecurrenceToRule = function () {
-                            var a = recurrenceRule.split(partialRecurrenceRule);
-                            MyAndromeda.Logger.Notify("Split");
-                            MyAndromeda.Logger.Notify(a);
-                            var b = a[1];
-                            var c = b.split(",");
-                            c.forEach(function (day) {
-                                switch (day) {
-                                    case "MO":
-                                        rule.Monday = true;
-                                        break;
-                                    case "TU":
-                                        rule.Tuesday = true;
-                                        break;
-                                    case "WE":
-                                        rule.Wednesday = true;
-                                        break;
-                                    case "TH":
-                                        rule.Thursday = true;
-                                        break;
-                                    case "FR":
-                                        rule.Friday = true;
-                                        break;
-                                    case "SA":
-                                        rule.Saturday = true;
-                                        break;
-                                    case "SU":
-                                        rule.Sunday = true;
-                                        break;
-                                }
-                            });
-                        };
-                        parseRecurrenceToRule();
-                        $scope.rule = rule;
-                        $scope.ruleChanged = function () {
-                            MyAndromeda.Logger.Notify("rule changed");
-                            var newRule = parseRuleToRecurrence();
-                            MyAndromeda.Logger.Notify(newRule);
-                            task.recurrenceRule = newRule;
-                        };
-                    }
-                };
-            });
-            app.directive("occasionTask", function () {
-                return {
-                    name: "occasionTask",
-                    scope: {
-                        task: "=task",
-                    },
-                    templateUrl: "occasionTask.html",
-                    controller: function ($scope, $element) {
-                        var task = $scope.task;
-                        var occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
-                        var occasionIsArray = typeof (task.Occasions) === "object" ? true : false;
-                        var state = {
-                            occasions: task.Occasions,
-                        };
-                        var extra = {
-                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
-                            startTime: kendo.toString(task.start, "HH:mm"),
-                            endTime: kendo.toString(task.end, "HH:mm")
-                        };
-                        var definitions = OpeningHours.Models.occasionDefinitions;
-                        var getColor = function (name) {
-                            switch (name) {
-                                case definitions.Delivery.Name: return OpeningHours.Models.occasionDefinitions.Delivery.Colour;
-                                case definitions.Collection.Name: return OpeningHours.Models.occasionDefinitions.Collection.Colour;
-                                case definitions.DineIn.Name: return OpeningHours.Models.occasionDefinitions.DineIn.Colour;
-                            }
-                        };
-                        $scope.getColour = getColor;
-                        $scope.state = state;
-                        $scope.extra = extra;
-                        var topElement = $($element).closest(".k-event");
-                        MyAndromeda.Logger.Notify("occasions");
-                        MyAndromeda.Logger.Notify(task.Occasions);
-                        var twoColors = "repeating-linear-gradient(\n                        45deg,\n                        {0},\n                        {0} 10px,\n                        {1} 10px,\n                        {1} 20px\n                    )";
-                        var threeColors = "repeating-linear-gradient(\n                        45deg,\n                        {0},\n                        {0} 10px,\n                        {1} 10px,\n                        {1} 20px,\n                        {2} 20px,\n                        {2} 30px\n                    )";
-                        twoColors =
-                            kendo.format(twoColors, definitions.Delivery.Colour, definitions.Collection.Colour);
-                        threeColors =
-                            kendo.format(threeColors, definitions.Delivery.Colour, definitions.Collection.Colour, definitions.DineIn.Colour);
-                        if (task.Occasions.length == 2) {
-                            topElement.css({
-                                "background": twoColors,
-                            });
-                        }
-                        else if (task.Occasions.length === 3) {
-                            topElement.css({
-                                "background": threeColors,
-                            });
-                        }
-                        //var popover = topElement.popover({
-                        //    title: "Task preview",
-                        //    placement: "auto",
-                        //    html: true,
-                        //    content: "please wait",
-                        //    trigger: "click"
-                        //}).on("show.bs.popover", function () {
-                        //    let html = topElement.html();
-                        //    popover.attr('data-content', html);
-                        //    var current = $(this);
-                        //    setTimeout(() => { current.popover('hide'); }, 5000)
-                        //});
-                        //$scope.$on('$destroy', function () {
-                        //    popover.hide();
-                        //});
-                    }
-                };
-            });
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            var Services;
-            (function (Services) {
-                var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
-                var StoreOccasionAvailabilityService = (function () {
-                    function StoreOccasionAvailabilityService(scheduler) {
-                        this.scheduler = scheduler;
-                    }
-                    StoreOccasionAvailabilityService.prototype.GetTasksInRange = function (start, end) {
-                        var occurences = this.scheduler.occurrencesInRange(start, end);
-                        var allDay = this.scheduler.dataSource.data().filter(function (e) {
-                            var task = e;
-                            if (!task.isAllDay) {
-                                return false;
-                            }
-                            var startOnSameDay = task.start.toDateString() == start.toDateString();
-                            if (startOnSameDay) {
-                                return true;
-                            }
-                            var endsOnSameDay = task.end.toDateString() == end.toDateString();
-                            if (endsOnSameDay) {
-                                return true;
-                            }
-                            return false;
-                        });
-                        var all = occurences.concat(allDay);
-                        return all;
-                    };
-                    StoreOccasionAvailabilityService.prototype.GetTasksByResource = function (start, end, task) {
-                        var context = {
-                            start: start,
-                            end: end,
-                            task: task
-                        };
-                        var currentTasks = this.GetTasksInRange(start, end)
-                            .filter(function (e) { return e.Id !== task.Id && e.RecurrenceId !== task.Id; });
-                        var startCheck = start.toLocaleTimeString();
-                        var endCheck = end.toLocaleTimeString();
-                        MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
-                        MyAndromeda.Logger.Notify(context);
-                        MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
-                        MyAndromeda.Logger.Notify(currentTasks);
-                        //which occasion(s) are causing a problem.
-                        var matchedOccurences = [];
-                        var taskResources = task.Occasions
-                            ? task.Occasions
-                            : [];
-                        MyAndromeda.Logger.Notify("check resources: ");
-                        MyAndromeda.Logger.Notify(task);
-                        MyAndromeda.Logger.Notify(taskResources);
-                        var map = currentTasks.map(function (e) {
-                            return {
-                                task: e,
-                                occasion: e.Occasions
-                            };
-                        });
-                        Rx.Observable.fromArray(map).where(function (e) {
-                            for (var i = 0; i < e.occasion.length; i++) {
-                                var compareOccasion = e.occasion[i];
-                                for (var k = 0; k < taskResources.length; k++) {
-                                    var occasion = taskResources[k];
-                                    if (occasion.indexOf(compareOccasion) > -1) {
-                                        MyAndromeda.Logger.Notify("task objection: " + e.task.title);
-                                        MyAndromeda.Logger.Notify(e.task);
-                                        return true;
-                                    }
-                                }
-                            }
-                            return false;
-                        }).subscribe(function (overlaped) {
-                            matchedOccurences.push(overlaped.task);
-                        });
-                        MyAndromeda.Logger.Notify("occurrences: " + matchedOccurences.length);
-                        return matchedOccurences;
-                    };
-                    StoreOccasionAvailabilityService.prototype.IsOccasionAvailable = function (start, end, task) {
-                        return this.GetTasksByResource(start, end, task);
-                    };
-                    StoreOccasionAvailabilityService.prototype.IsValid = function (start, end) {
-                        var hours = Math.abs(end.getTime() - start.getTime()) / 36e5;
-                        MyAndromeda.Logger.Notify("Task length: " + hours);
-                        return (hours < 24);
-                    };
-                    return StoreOccasionAvailabilityService;
-                })();
-                var StoreOccasionSchedulerService = (function () {
-                    function StoreOccasionSchedulerService($http, uuidService, SweetAlert) {
-                        this.$http = $http;
-                        this.uuidService = uuidService;
-                        this.SweetAlert = SweetAlert;
-                    }
-                    StoreOccasionSchedulerService.prototype.ClearAllTasks = function () {
-                        var route = "/api/chain/{0}/store/{1}/remove-occasions";
-                        route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
-                        var promise = this.$http.post(route, {});
-                        return promise;
-                    };
-                    StoreOccasionSchedulerService.prototype.CreateDataSource = function () {
-                        var _this = this;
-                        var schema = {
-                            data: "Data",
-                            total: "Total",
-                            model: OpeningHours.Models.getSchedulerDataSourceSchema()
-                        };
-                        var dataSource = new kendo.data.SchedulerDataSource({
-                            batch: false,
-                            transport: {
-                                read: function (options) {
-                                    MyAndromeda.Logger.Notify("Scheduler read");
-                                    var route = "/api/chain/{0}/store/{1}/Occasions";
-                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
-                                    var promise = _this.$http.post(route, options.data);
-                                    promise.then(function (callback) {
-                                        options.success(callback.data);
-                                    });
-                                },
-                                update: function (options) {
-                                    MyAndromeda.Logger.Notify("Scheduler update");
-                                    var route = "/api/chain/{0}/store/{1}/update-occasion";
-                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
-                                    var promise = _this.$http.post(route, options.data);
-                                    promise.then(function (callback) {
-                                        options.success();
-                                    });
-                                },
-                                create: function (options) {
-                                    MyAndromeda.Logger.Notify("Scheduler create");
-                                    MyAndromeda.Logger.Notify(options.data);
-                                    var route = "/api/chain/{0}/store/{1}/update-occasion";
-                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
-                                    var promise = _this.$http.post(route, options.data);
-                                    promise.then(function (callback) {
-                                        MyAndromeda.Logger.Notify("Create response:");
-                                        MyAndromeda.Logger.Notify(callback.data);
-                                        options.success(callback.data);
-                                    });
-                                },
-                                destroy: function (options) {
-                                    var route = "/api/chain/{0}/store/{1}/delete-occasion";
-                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
-                                    var promise = _this.$http.post(route, options.data);
-                                    promise.then(function (callback) {
-                                        options.success(callback.data);
-                                    });
-                                }
-                            },
-                            schema: schema
-                        });
-                        return dataSource;
-                    };
-                    StoreOccasionSchedulerService.prototype.CreateResources = function () {
-                        var resources = [
-                            {
-                                title: "Occasion",
-                                field: "Occasions",
-                                multiple: true,
-                                dataSource: [
-                                    {
-                                        text: OpeningHours.Models.occasionDefinitions.Delivery.Name,
-                                        value: OpeningHours.Models.occasionDefinitions.Delivery.Name,
-                                        color: OpeningHours.Models.occasionDefinitions.Delivery.Colour
-                                    },
-                                    {
-                                        text: OpeningHours.Models.occasionDefinitions.Collection.Name,
-                                        value: OpeningHours.Models.occasionDefinitions.Collection.Name,
-                                        color: OpeningHours.Models.occasionDefinitions.Collection.Colour
-                                    },
-                                    {
-                                        text: OpeningHours.Models.occasionDefinitions.DineIn.Name,
-                                        value: OpeningHours.Models.occasionDefinitions.DineIn.Name,
-                                        color: OpeningHours.Models.occasionDefinitions.DineIn.Colour
-                                    }
-                                ]
-                            },
-                        ];
-                        return resources;
-                    };
-                    StoreOccasionSchedulerService.prototype.CreateScheduler = function () {
-                        var _this = this;
-                        var uuidService = this.uuidService;
-                        var dataSource = this.CreateDataSource();
-                        var schedulerOptions = {
-                            date: new Date(),
-                            majorTick: 60,
-                            minorTickCount: 1,
-                            workWeekStart: 0,
-                            workWeekEnd: 6,
-                            allDaySlot: true,
-                            dataSource: dataSource,
-                            timezone: "Etc/UTC",
-                            currentTimeMarker: {
-                                useLocalTimezone: false
-                            },
-                            editable: {
-                                template: "<occasion-task-editor task='dataItem'></occasion-task-editor>",
-                                editRecurringMode: "series"
-                            },
-                            pdf: {
-                                fileName: "Opening hours",
-                                title: "Opening hours"
-                            },
-                            eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
-                            //toolbar: ["pdf"],
-                            showWorkHours: false,
-                            resources: this.CreateResources(),
-                            views: [
-                                { type: "week", selected: true, showWorkHours: false }
-                            ],
-                            resize: function (e) {
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                if (!tester.IsValid(e.start, e.end)) {
-                                    MyAndromeda.Logger.Notify("too long");
-                                    this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
-                                    e.preventDefault();
-                                }
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    MyAndromeda.Logger.Notify("cancel resize");
-                                    this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
-                                    e.preventDefault();
-                                }
-                            },
-                            resizeEnd: function (e) {
-                                MyAndromeda.Logger.Notify("resize-end");
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                if (!tester.IsValid(e.start, e.end)) {
-                                    MyAndromeda.Logger.Notify("cancel resize");
-                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
-                                    e.preventDefault();
-                                    return;
-                                }
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    MyAndromeda.Logger.Notify("cancel resize");
-                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
-                                    e.preventDefault();
-                                }
-                            },
-                            move: function (e) {
-                                MyAndromeda.Logger.Notify("move-start");
-                                MyAndromeda.Logger.Notify(e);
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
-                                }
-                            },
-                            moveEnd: function (e) {
-                                MyAndromeda.Logger.Notify("move-end");
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    MyAndromeda.Logger.Notify("cancel move");
-                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
-                                    e.preventDefault();
-                                }
-                            },
-                            add: function (e) {
-                                MyAndromeda.Logger.Notify("add");
-                                MyAndromeda.Logger.Notify(e);
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                if (!tester.IsValid(e.event.start, e.event.end)) {
-                                    MyAndromeda.Logger.Notify("cancel add");
-                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
-                                    e.preventDefault();
-                                    return;
-                                }
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    MyAndromeda.Logger.Notify("cancel add");
-                                    //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
-                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
-                                    e.preventDefault();
-                                }
-                            },
-                            save: function (e) {
-                                MyAndromeda.Logger.Notify("save");
-                                MyAndromeda.Logger.Notify(e);
-                                var ev = e.event;
-                                if (ev.Occasions) {
-                                    var o = ev.Occasions.length;
-                                    if (o.length === 0) {
-                                        _this.SweetAlert.swal("occasions", "Please add at least one occasion", "information");
-                                    }
-                                }
-                                var tester = new StoreOccasionAvailabilityService(e.sender);
-                                if (!tester.IsValid(e.event.start, e.event.end)) {
-                                    MyAndromeda.Logger.Notify("cancel save");
-                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
-                                    e.preventDefault();
-                                    return;
-                                }
-                                var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
-                                if (occasionsInSpace.length > 0) {
-                                    MyAndromeda.Logger.Notify("cancel save");
-                                    _this.SweetAlert.swal("Sorry", "A task already exists for this occasion in this range.", "error");
-                                    e.preventDefault();
-                                }
-                            }
-                        };
-                        return schedulerOptions;
-                    };
-                    return StoreOccasionSchedulerService;
-                })();
-                Services.StoreOccasionSchedulerService = StoreOccasionSchedulerService;
-                app.service("storeOccasionSchedulerService", StoreOccasionSchedulerService);
-            })(Services = OpeningHours.Services || (OpeningHours.Services = {}));
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Stores;
-    (function (Stores) {
-        var OpeningHours;
-        (function (OpeningHours) {
-            OpeningHours.settings = {
-                chainId: 0,
-                andromedaSiteId: 0
-            };
-            var app = angular.module("MyAndromeda.Stores.OpeningHours", [
-                "MyAndromeda.Store.OpeningHours.Config",
-                "MyAndromeda.Core",
-                "MyAndromeda.Resize",
-                "MyAndromeda.Progress",
-                "ngAnimate",
-                "ui.bootstrap"
-            ]);
-            app.run(function ($templateCache) {
-                MyAndromeda.Logger.Notify("Started Opening Hours");
-                angular
-                    .element('script[type="text/ng-template"]')
-                    .each(function (i, element) {
-                    $templateCache.put(element.id, element.innerHTML);
-                });
-            });
-            function boostrap(element, chainId, andromedaSiteId) {
-                OpeningHours.settings.chainId = chainId;
-                OpeningHours.settings.andromedaSiteId = andromedaSiteId;
-                var e = $(element);
-                angular.bootstrap(e, ["MyAndromeda.Stores.OpeningHours"]);
-            }
-            OpeningHours.boostrap = boostrap;
-        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
-    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../general/resizemodule.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebHooks;
-    (function (WebHooks) {
-        var Tests;
-        (function (Tests) {
-            var moduleName = "MyAndromeda.WebHook.Tests";
-            var m = angular.module(moduleName, [
-                "MyAndromeda.Resize",
-                "MyAndromeda.Progress",
-                "ngRoute",
-                "ngAnimate",
-                "kendo.directives"
-            ]);
-            m.run(function ($templateCache) {
-                MyAndromeda.Logger.Notify("WebHook tests Started");
-                angular.element('script[type="text/template"]').each(function (i, element) {
-                    $templateCache.put(element.id, element.innerHTML);
-                });
-            });
-            m.config(function ($routeProvider) {
-                $routeProvider.when('/', {
-                    templateUrl: "start.html",
-                    controller: "StartController"
-                });
-                $routeProvider.when('/store-status/:andromedaSiteId', {
-                    templateUrl: "store-status.html",
-                    controller: "StoreStatusController"
-                });
-                $routeProvider.when('/order-status/:andromedaSiteId', {
-                    templateUrl: "order-status.html",
-                    controller: "OrderStatusController"
-                });
-                $routeProvider.when('/menu-version/:andromedaSiteId', {
-                    templateUrl: "menu-version.html",
-                    controller: "MenuVersionController"
-                });
-                $routeProvider.when('/delivery-time/:andromedaSiteId', {
-                    templateUrl: "delivery-time.html",
-                    controller: "DeliveryTimeController"
-                });
-            });
-            m.controller("DeliveryTimeController", function ($scope, $routeParams, webHookTestService, progressService) {
-                var settings = {
-                    Edt: null
-                };
-                $scope.settings = settings;
-                $scope.send = function (value) {
-                    progressService.Show();
-                    var request = webHookTestService.DeliveryTime({
-                        AndromedaSiteId: $routeParams.andromedaSiteId,
-                        Source: "test",
-                        Edt: settings.Edt
-                    });
-                    Rx.Observable.fromPromise(request).subscribe(function () {
-                        $scope.settings.messages = "Sent! No problems.";
-                        progressService.Hide();
-                    }, function (ex) {
-                        $scope.settings.messages = "Error";
-                        progressService.Hide();
-                    }, function () {
-                        progressService.Hide();
-                    });
-                };
-            });
-            m.controller("MenuVersionController", function ($scope, $routeParams, webHookTestService, progressService) {
-                var settings = {
-                    Version: null
-                };
-                $scope.settings = settings;
-                $scope.send = function (value) {
-                    progressService.Show();
-                    var request = webHookTestService.MenuVersion({
-                        AndromedaSiteId: $routeParams.andromedaSiteId,
-                        Source: "test",
-                        Version: settings.Version
-                    });
-                    Rx.Observable.fromPromise(request).subscribe(function () {
-                        $scope.settings.messages = "Sent! No problems.";
-                        progressService.Hide();
-                    }, function (ex) {
-                        $scope.settings.messages = "Error";
-                        progressService.Hide();
-                    }, function () {
-                        progressService.Hide();
-                    });
-                };
-            });
-            m.controller("StartController", function ($scope, $http, $timeout, resizeService, progressService) {
-                MyAndromeda.Logger.Notify("start");
-                var resizeSubscription = resizeService.ResizeObservable.subscribe(function (e) {
-                    //do i have anything to resize
-                });
-                var dataSource = new kendo.data.DataSource({
-                    "transport": {
-                        "read": { "url": "/api/Store" },
-                    },
-                    "schema": { "errors": "Errors" }
-                });
-                $scope.storeDataSource = dataSource;
-                $scope.settings = {
-                    AndromedaSiteId: null
-                };
-            });
-            m.controller("StoreStatusController", function ($scope, $routeParams, webHookTestService, progressService) {
-                var element = document.getElementById("WebhookTest");
-                progressService.Create(element);
-                $scope.settings = {};
-                $scope.send = function (value) {
-                    progressService.Show();
-                    var request = webHookTestService.OnlineStateTest({
-                        AndromedaSiteId: $routeParams.andromedaSiteId,
-                        Online: value,
-                        Source: "test"
-                    });
-                    Rx.Observable.fromPromise(request).subscribe(function () {
-                        $scope.settings.messages = "Sent! No problems.";
-                        progressService.Hide();
-                    }, function (ex) {
-                        $scope.settings.messages = "Error";
-                        progressService.Hide();
-                    }, function () {
-                        progressService.Hide();
-                    });
-                };
-            });
-            m.controller("OrderStatusController", function ($scope, $routeParams, progressService, webHookTestService) {
-                var orderDataSource = new kendo.data.DataSource({
-                    "transport": {
-                        "read": {
-                            "url": "/api/GprsOrders",
-                            "data": {
-                                andromedaSiteId: $routeParams.andromedaSiteId
-                            }
-                        }
-                    }
-                });
-                var acsDataSource = new kendo.data.DataSource({
-                    transport: {
-                        read: {
-                            url: function () { return "/api/acs/list/" + $routeParams.andromedaSiteId; },
-                            "type": "GET"
-                        }
-                    }
-                });
-                var element = document.getElementById("WebhookTest");
-                progressService.Create(element);
-                var settings = {
-                    Status: null,
-                    StatusDescription: null
-                };
-                $scope.orderDataSource = orderDataSource;
-                $scope.acsDataSource = acsDataSource;
-                $scope.settings = settings;
-                //jQuery(function () { jQuery("#Order_id").kendoComboBox({ 
-                //"dataSource": { "transport": { "read": { "url": "/api/GprsOrders", "data": filterOrders }, "prefix": "" }, "serverFiltering": true, "filter": [], "schema": { "errors": "Errors" } }, "dataTextField": "RamesesOrderNum", "dataValueField": "RamesesOrderNum", "cascadeFrom": "andromedaSiteId" }); });
-                $scope.send = function (value) {
-                    progressService.Show();
-                    var request = webHookTestService.OrderStatusTest({
-                        AndromedaSiteId: $routeParams.andromedaSiteId,
-                        ExternalOrderId: $scope.settings.Order.ExternalOrderRef,
-                        //ExternalAcsApplicationId: $scope.settings.AcsApplication.ExternalApplicationId,
-                        AcsApplicationId: $scope.settings.AcsApplication ? $scope.settings.AcsApplication.Id : null,
-                        Source: "test",
-                        Status: settings.Status,
-                        StatusDescription: settings.StatusDescription
-                    });
-                    Rx.Observable.fromPromise(request).subscribe(function () {
-                        $scope.settings.messages = "Sent! No problems.";
-                        progressService.Hide();
-                    }, function (ex) {
-                        $scope.settings.messages = "Error";
-                        progressService.Hide();
-                    }, function () {
-                        progressService.Hide();
-                    });
-                };
-            });
-            var WebHookTestService = (function () {
-                function WebHookTestService($http) {
-                    this.orderStatusUrl = "/web-hooks/store/orders/update-order-status";
-                    this.storeStatusUrl = "/web-hooks/store/update-status";
-                    this.updateDeliveryTime = "/web-hooks/store/update-estimated-delivery-time";
-                    this.updateMenuChange = "/web-hooks/store/update-menu";
-                    this.$http = $http;
-                    MyAndromeda.Logger.Notify("Where am i");
-                }
-                WebHookTestService.prototype.OnlineStateTest = function (model) {
-                    var promise = this.$http.post(this.storeStatusUrl, model);
-                    return promise;
-                };
-                WebHookTestService.prototype.OrderStatusTest = function (model) {
-                    var promise = this.$http.post(this.orderStatusUrl, model);
-                    return promise;
-                };
-                WebHookTestService.prototype.MenuVersion = function (model) {
-                    var promise = this.$http.post(this.updateMenuChange, model);
-                    return promise;
-                };
-                WebHookTestService.prototype.DeliveryTime = function (model) {
-                    var promise = this.$http.post(this.updateDeliveryTime, model);
-                    return promise;
-                };
-                return WebHookTestService;
-            })();
-            Tests.WebHookTestService = WebHookTestService;
-            m.service("webHookTestService", WebHookTestService);
-            //"Store Online Status", "EDT", "Menu Version", "Order Status"
-            function Setup(id) {
-                var element = document.getElementById(id);
-                angular.bootstrap(element, [moduleName]);
-            }
-            Tests.Setup = Setup;
-        })(Tests = WebHooks.Tests || (WebHooks.Tests = {}));
-    })(WebHooks = MyAndromeda.WebHooks || (MyAndromeda.WebHooks = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../general/resizemodule.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebHooks;
-    (function (WebHooks) {
-        var moduleName = "MyAndromeda.WebHooks";
-        var m = angular.module(moduleName, [
-            "MyAndromeda.Resize",
-            "MyAndromeda.Progress",
-            "ngRoute",
-            "ngAnimate",
-            "kendo.directives"
-        ]);
-        m.run(function ($templateCache) {
-            MyAndromeda.Logger.Notify("WebHooks Started");
-            angular.element('script[type="text/template"]').each(function (i, element) {
-                $templateCache.put(element.id, element.innerHTML);
-            });
-        });
-        m.config(function ($routeProvider) {
-            $routeProvider.when('/', {
-                templateUrl: "start.html",
-                controller: "StartControler"
-            });
-        });
-        m.controller("StartControler", function ($scope, $timeout, resizeService, progressService, webHookService, webHookTypes) {
-            MyAndromeda.Logger.Notify("start");
-            var resizeSubscription = resizeService.ResizeObservable.subscribe(function (e) {
-                //do i have anything to resize
-            });
-            var element = document.getElementById("WebHooks");
-            progressService.Create(element).Show();
-            var globalSettings = null;
-            var settingsPromise = webHookService.Read();
-            var settingsObservable = Rx.Observable
-                .fromPromise(settingsPromise);
-            var refresh = function (settings) {
-                globalSettings = settings;
-                MyAndromeda.Logger.Notify("settings:");
-                MyAndromeda.Logger.Notify(globalSettings);
-                $scope.webHookTypes = webHookTypes;
-                var t = Rx.Observable.fromArray(webHookTypes);
-                t.subscribe(function (setting) {
-                    MyAndromeda.Logger.Notify(setting);
-                    //prepare the settings
-                    if (!globalSettings[setting.Key]) {
-                        globalSettings[setting.Key] = [];
-                    }
-                }, function (ex) { }, function () {
-                    $timeout(function () {
-                        MyAndromeda.Logger.Notify("new settings");
-                        MyAndromeda.Logger.Notify(globalSettings);
-                        $scope.settings = globalSettings;
-                        progressService.Hide();
-                    });
-                });
-            };
-            $scope.getGroupNameFromKey = function (key) {
-                var find = webHookTypes.filter(function (e) { return e.Key === key; });
-                if (find.length === 0) {
-                    return key + " not found";
-                }
-                return find[0].Name;
-            };
-            $scope.add = function (key) {
-                MyAndromeda.Logger.Notify("add to: " + key);
-                var group = $scope.settings[key];
-                var model = {
-                    Name: "Default",
-                    CallBackUrl: "",
-                    RequestHeaders: {},
-                    Enabled: true
-                };
-                group.push(model);
-            };
-            $scope.update = function () {
-                progressService.Show();
-                var promise = webHookService.Update(globalSettings);
-                Rx.Observable.fromPromise(promise).subscribe(function () { }, function (ex) {
-                    progressService.Hide();
-                }, function () {
-                    progressService.Hide();
-                });
-            };
-            $scope.remove = function (key, subscription) {
-                var group = globalSettings[key];
-                globalSettings[key] = group.filter(function (e) { return e !== subscription; });
-            };
-            settingsObservable
-                .subscribe(function (response) {
-                MyAndromeda.Logger.Notify(response.data);
-                //settings = response.data;
-                refresh(response.data);
-            }, function (ex) {
-                MyAndromeda.Logger.Error(ex);
-            }, function () {
-            });
-        });
-        var WebHookService = (function () {
-            function WebHookService($http) {
-                this.$http = $http;
-                MyAndromeda.Logger.Notify("Where am i");
-            }
-            WebHookService.prototype.Read = function () {
-                var route = WebHookService.readRoute + WebHookService.acsApplicationId;
-                var promise = this.$http.get(route);
-                return promise;
-            };
-            WebHookService.prototype.Update = function (data) {
-                var route = WebHookService.updateRoute + WebHookService.acsApplicationId;
-                var promise = this.$http.post(route, data);
-                return promise;
-            };
-            WebHookService.readRoute = "";
-            WebHookService.updateRoute = "";
-            WebHookService.acsApplicationId = "";
-            return WebHookService;
-        })();
-        WebHooks.WebHookService = WebHookService;
-        m.service("webHookService", WebHookService);
-        //"Store Online Status", "EDT", "Menu Version", "Order Status"
-        var storeStatus = { Key: "StoreOnlineStatus", Name: "Store Online Status" };
-        var estimatedDeliveryTime = { Key: "Edt", Name: "EDT" };
-        var menuVersion = { Key: "MenuVersion", Name: "Menu Version" };
-        var menuItems = { Key: "MenuItems", Name: "Menu Items" };
-        var orderStatus = { Key: "OrderStatus", Name: "Order Status" };
-        var bringg = { Key: "BringUpdates", Name: "Bringg" };
-        var bringgEta = { Key: "BringEtaUpdates", Name: "Bringg ETA" };
-        var webHookTypes = [
-            storeStatus,
-            estimatedDeliveryTime,
-            menuVersion,
-            menuItems,
-            orderStatus,
-            bringg,
-            bringgEta
-        ];
-        m.constant("webHookTypes", webHookTypes);
-        function Setup(id) {
-            var element = document.getElementById(id);
-            angular.bootstrap(element, [moduleName]);
-        }
-        WebHooks.Setup = Setup;
-    })(WebHooks = MyAndromeda.WebHooks || (MyAndromeda.WebHooks = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(SEOSettingsController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        SEOSettingsController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
-                        /* going to leave kendo to manage the observable object */
-                        SEOSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var SEOSettingsController = (function () {
-                function SEOSettingsController() {
-                }
-                SEOSettingsController.OnLoad = function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                    $scope.SaveChanges = function () {
-                        if ($scope.SEOSettingsValidator.validate()) {
-                            webOrderingWebApiService.Update();
-                        }
-                    };
-                };
-                SEOSettingsController.SetupKendoMvvm = function ($scope, $timeout, contextService) {
-                    var settingsSubscription = contextService.ModelSubject
-                        .where(function (e) { return e !== null; })
-                        .subscribe(function (webSiteSettings) {
-                        var viewElement = $("#SEOSettingsController");
-                        kendo.bind(viewElement, webSiteSettings.SEOSettings);
-                        $scope.ShowSEODescription = webSiteSettings.SEOSettings.get("IsEnableDescription");
-                        //added 500ms timeout as there are random issues. 
-                        $timeout(function () {
-                        }, 500, true);
-                    });
-                    $scope.$on('$destroy', function () {
-                        settingsSubscription.dispose();
-                    });
-                };
-                SEOSettingsController.Name = "SEOSettingsController";
-                return SEOSettingsController;
-            })();
-            Controllers.SEOSettingsController = SEOSettingsController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(SocialNetworkSettingsController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        SocialNetworkSettingsController.SetupValidatorOptions($scope, $timeout, webOrderingWebApiService);
-                        SocialNetworkSettingsController.OnLoad($scope, $timeout, webOrderingWebApiService);
-                        /* going to leave kendo to manage the observable object */
-                        SocialNetworkSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var SocialNetworkSettingsController = (function () {
-                function SocialNetworkSettingsController() {
-                }
-                SocialNetworkSettingsController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
-                    //$scope.SocialNetworkSettingsValidator.ru
-                    $scope.SaveChanges = function () {
-                        if ($scope.SocialNetworkSettingsValidator.validate()) {
-                            webOrderingWebApiService.Update();
-                        }
-                    };
-                    var s = $scope;
-                    s.FacebookSettings = {};
-                };
-                SocialNetworkSettingsController.SetupValidatorOptions = function ($scope, $timout, contextService) {
-                    var validatorOptions = {
-                        name: "",
-                        rules: {
-                            FacebookUrlRequired: function (input) {
-                                if (!input.is("[data-required-if-facebook]")) {
-                                    return true;
-                                }
-                                var isEnabled = contextService.Model.SocialNetworkSettings.FacebookSettings.get("IsEnable");
-                                var text = input.val();
-                                return text.length > 0;
-                            },
-                            TwitterRequired: function (intput) { }
-                        }
-                    };
-                };
-                SocialNetworkSettingsController.SetupKendoMvvm = function ($scope, $timout, contextService) {
-                    var settingsSubscription = contextService.ModelSubject
-                        .where(function (e) { return e !== null; })
-                        .subscribe(function (websiteSettings) {
-                        var viewElement = $("#SocialNetworkSettingsController");
-                        kendo.bind(viewElement, websiteSettings.SocialNetworkSettings);
-                        $scope.SocialNetworkSettings = websiteSettings.SocialNetworkSettings;
-                        $scope.GeneralSettings = websiteSettings.GeneralSettings;
-                        $scope.CustomerAccountSettings = websiteSettings.CustomerAccountSettings;
-                        $scope.ShowFacebookSettings = websiteSettings.SocialNetworkSettings.FacebookSettings.get("IsEnable");
-                        $scope.ShowTwitterSettings = websiteSettings.SocialNetworkSettings.TwitterSettings.get("IsEnable");
-                        $scope.ShowInstagramSettings = websiteSettings.SocialNetworkSettings.InstagramSettings.get("IsEnable");
-                        // $scope.ShowTripAdvisorSettings = websiteSettings.TripAdvisorSettings.get("IsEnable");
-                    });
-                    $scope.$on('$destroy', function () {
-                        settingsSubscription.dispose();
-                    });
-                };
-                SocialNetworkSettingsController.Name = "SocialNetworkSettingsController";
-                return SocialNetworkSettingsController;
-            })();
-            Controllers.SocialNetworkSettingsController = SocialNetworkSettingsController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(TripAdvisorSettingsController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        TripAdvisorSettingsController.SetupValidatorOptions($scope, $timeout, webOrderingWebApiService);
-                        TripAdvisorSettingsController.OnLoad($scope, $timeout, webOrderingWebApiService);
-                        /* going to leave kendo to manage the observable object */
-                        TripAdvisorSettingsController.SetupKendoMvvm($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var TripAdvisorSettingsController = (function () {
-                function TripAdvisorSettingsController() {
-                }
-                TripAdvisorSettingsController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
-                    //$scope.SaveChanges = () => {
-                    //    if ($scope.TripAdvisorSettingsValidator.validate()) {
-                    //        webOrderingWebApiService.Update();
-                    //    }
-                    //};
-                    //var s = <any>$scope;
-                    //s.FacebookSettings = {};
-                };
-                TripAdvisorSettingsController.SetupValidatorOptions = function ($scope, $timout, contextService) {
-                    var validatorOptions = {
-                        name: "",
-                        rules: {
-                            TripadvisorScirptRequired: function (input) {
-                                if (!input.is("[data-required-if-tripadvisor]")) {
-                                    return true;
-                                }
-                                var isEnabled = contextService.Model.TripAdvisorSettings.get("IsEnable");
-                                var text = input.val();
-                                return text.length > 0;
-                            }
-                        }
-                    };
-                };
-                TripAdvisorSettingsController.SetupKendoMvvm = function ($scope, $timout, contextService) {
-                    var settingsSubscription = contextService.ModelSubject
-                        .where(function (e) { return e !== null; })
-                        .subscribe(function (websiteSettings) {
-                        var viewElement = $("#TripAdvisorSettingsController");
-                        kendo.bind(viewElement, websiteSettings.TripAdvisorSettings);
-                        $scope.ShowTripAdvisorSettings = websiteSettings.TripAdvisorSettings.get("IsEnable");
-                    });
-                    $scope.$on('$destroy', function () {
-                        settingsSubscription.dispose();
-                    });
-                };
-                TripAdvisorSettingsController.Name = "TripAdvisorSettingsController";
-                return TripAdvisorSettingsController;
-            })();
-            Controllers.TripAdvisorSettingsController = TripAdvisorSettingsController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../Menu/MyAndromeda.Menu.Logger.ts" />
-/// <reference path="../../Scripts/typings/angularjs/angular-route.d.ts" />
-/// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        "use strict";
-        var DeliveryZonesByRadiusApp = (function () {
-            function DeliveryZonesByRadiusApp() {
-            }
-            DeliveryZonesByRadiusApp.ApplicationName = "DeliveryZonesByRadius";
-            return DeliveryZonesByRadiusApp;
-        })();
-        DeliveryZonesByRadius.DeliveryZonesByRadiusApp = DeliveryZonesByRadiusApp;
-        var Angular = (function () {
-            function Angular() {
-            }
-            Angular.Init = function () {
-                DeliveryZonesByRadius.Logger.Notify("bootstrap-Deliveryzonesbyradius");
-                var element = document.getElementById("DeliveryZonesByRadius");
-                var app = angular.module(DeliveryZonesByRadiusApp.ApplicationName, [
-                    "kendo.directives",
-                    //"ngRoute",
-                    "ngAnimate"
-                ]);
-                DeliveryZonesByRadius.Logger.Notify("Assign " + Angular.ServicesInitilizations.length + " services");
-                Angular.ServicesInitilizations.forEach(function (value) {
-                    value(app);
-                });
-                DeliveryZonesByRadius.Logger.Notify("Assign " + Angular.ControllersInitilizations.length + " controllers");
-                Angular.ControllersInitilizations.forEach(function (value) {
-                    value(app);
-                });
-                angular.bootstrap(element, [DeliveryZonesByRadiusApp.ApplicationName]);
-                DeliveryZonesByRadius.Logger.Notify("bootstrap-Deliveryzonesbyradius-complete");
-            };
-            Angular.ServicesInitilizations = [];
-            Angular.ControllersInitilizations = [];
-            return Angular;
-        })();
-        DeliveryZonesByRadius.Angular = Angular;
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        var Controllers;
-        (function (Controllers) {
-            DeliveryZonesByRadius.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(DeliveryZoneNamesController.Name, [
-                    '$scope', '$timeout',
-                    DeliveryZonesByRadius.Services.ContextService.Name,
-                    DeliveryZonesByRadius.Services.DeliveryZonesByRadiusWebApiService.Name,
-                    function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
-                        DeliveryZoneNamesController.OnLoad($scope, $timeout, contextService, deliveryZonesByRadiusApiService);
-                        DeliveryZoneNamesController.SetupSubscriptions($scope, $timeout, contextService, deliveryZonesByRadiusApiService);
-                    }
-                ]);
-            });
-            var DeliveryZoneNamesController = (function () {
-                function DeliveryZoneNamesController() {
-                }
-                DeliveryZoneNamesController.OnLoad = function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
-                    $scope.SaveChanges = function () {
-                        if ($scope.PostCodeValidator.validate()) {
-                            deliveryZonesByRadiusApiService.Update();
-                            $timeout(function () {
-                                var vm = $scope.ViewModel;
-                                var postCodeOptions = vm.PostCodeSectors;
-                                $scope.PostCodeOptionsListView.dataSource.data(postCodeOptions);
-                                var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
-                                $scope.SelectAll = unselectedItems.length === 0 ? true : false;
-                            });
-                        }
-                    };
-                    $scope.GeneratePostCodeSectors = function () {
-                        var validInput = $scope.PostCodeValidator.validate();
-                        if (!validInput) {
-                            alert("Correct the input.");
-                            return;
-                        }
-                        if ($scope.ViewModel.Id == 0 || confirm("The existing post code sectors selection will be lost and reset.Are you sure you want to Regenerate the post code sectors?")) {
-                            if ($scope.PostCodeValidator.validate()) {
-                                $("#loader").removeClass('hidden');
-                                $scope.ViewModel.HasPostCodes = false;
-                                deliveryZonesByRadiusApiService.GeneratePostCodes();
-                            }
-                        }
-                    };
-                    $scope.SelectAllChange = function () {
-                        var selectAll = $scope.SelectAll;
-                        $timeout(function () {
-                            var data = $scope.PostCodeOptionsListView.dataSource.data();
-                            data.forEach(function (item) {
-                                item.IsSelected = selectAll;
-                            });
-                        });
-                        //var data = $scope.PostCodeOptionsListView.dataSource.data();
-                        //contextService.Model.PostCodeSectors = data;
-                    };
-                    $scope.UpdateSelectAll = function () {
-                        console.log("update select all");
-                        var data = $scope.PostCodeOptionsListView.dataSource.data();
-                        //contextService.Model.PostCodeSectors = data;
-                        var unselectedItems = data.filter(function (e) { return !e.IsSelected; });
-                        if (unselectedItems.length === 0) {
-                            $scope.SelectAll = true;
-                        }
-                        else if (unselectedItems.length < data.length) {
-                            $scope.SelectAll = false;
-                        }
-                        else {
-                            $scope.SelectAll = false;
-                        }
-                    };
-                };
-                DeliveryZoneNamesController.SetupSubscriptions = function ($scope, $timeout, contextService, deliveryZonesByRadiusApiService) {
-                    $scope.IsSaveBusy = false;
-                    var settingsSubscription = contextService.ModelSubject
-                        .subscribe(function (deliveryZoneByRadius) {
-                        $timeout(function () {
-                            $scope.ViewModel = deliveryZoneByRadius;
-                            $scope.PostCodeOptionsListView.dataSource.data($scope.ViewModel.PostCodeSectors);
-                            $scope.ViewModel.HasPostCodes = deliveryZoneByRadius.PostCodeSectors.length === 0 ? false : true;
-                            var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
-                            $scope.SelectAll = unselectedItems.length === 0 ? true : false;
-                        });
-                    });
-                    var settingsPostcodeSubscription = contextService.PostcodeModels
-                        .subscribe(function (newDeliveryOptions) {
-                        $scope.ViewModel.HasPostCodes = newDeliveryOptions.length === 0 ? false : true;
-                        $timeout(function () {
-                            var vm = $scope.ViewModel;
-                            var postCodeOptions = vm.PostCodeSectors;
-                            postCodeOptions = new kendo.data.ObservableArray(newDeliveryOptions);
-                            vm.PostCodeSectors = postCodeOptions;
-                            $scope.PostCodeOptionsListView.dataSource.data(postCodeOptions);
-                            var unselectedItems = contextService.Model.PostCodeSectors.filter(function (e) { return !e.IsSelected; });
-                            $scope.SelectAll = unselectedItems.length === 0 ? true : false;
-                            $scope.ViewModel.HasPostCodes = (contextService.Model.PostCodeSectors == null || contextService.Model.PostCodeSectors.length === 0) ? false : true;
-                        });
-                    });
-                    var savingSubscription = deliveryZonesByRadiusApiService.IsSavingBusy.distinctUntilChanged(function (e) { return e; }).subscribe(function (value) {
-                        $timeout(function () {
-                            $scope.IsSaveBusy = value;
-                        });
-                    });
-                    $scope.$on('$destroy', function () {
-                        settingsSubscription.dispose();
-                        settingsPostcodeSubscription.dispose();
-                        savingSubscription.dispose();
-                    });
-                };
-                DeliveryZoneNamesController.Name = "DeliveryZoneNamesController";
-                return DeliveryZoneNamesController;
-            })();
-            Controllers.DeliveryZoneNamesController = DeliveryZoneNamesController;
-        })(Controllers = DeliveryZonesByRadius.Controllers || (DeliveryZonesByRadius.Controllers = {}));
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        "use strict";
-        var Logger = (function () {
-            function Logger() {
-                this.UseNotify = true;
-                this.UseDebug = true;
-                this.UseError = true;
-            }
-            Logger.Notify = function (o) {
-                if (logger.UseNotify) {
-                    console.log(o);
-                }
-            };
-            Logger.Debug = function (o) {
-                if (logger.UseDebug) {
-                    console.log(o);
-                }
-            };
-            Logger.Error = function (o) {
-                if (logger.UseError) {
-                    console.log(o);
-                }
-            };
-            Logger.SettingUpController = function (name, state) {
-                if (logger.UseNotify) {
-                    console.log("setting up controller - " + name + " : " + state);
-                }
-            };
-            Logger.SettingUpService = function (name, state) {
-                if (logger.UseNotify) {
-                    console.log("setting up service - " + name + " : " + state);
-                }
-            };
-            Logger.AllowDebug = function (value) {
-                logger.UseDebug = value;
-            };
-            Logger.AllowError = function (value) {
-                logger.UseError = value;
-            };
-            return Logger;
-        })();
-        DeliveryZonesByRadius.Logger = Logger;
-        var logger = new Logger();
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        var Services;
-        (function (Services) {
-            DeliveryZonesByRadius.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(ContextService.Name, [
-                    function () {
-                        var instnance = new ContextService();
-                        return instnance;
-                    }
-                ]);
-            });
-            var ContextService = (function () {
-                function ContextService() {
-                    this.Model = null;
-                    this.ModelSubject = new Rx.Subject();
-                    this.PostcodeModels = new Rx.Subject();
-                }
-                ContextService.Name = "ContextService";
-                return ContextService;
-            })();
-            Services.ContextService = ContextService;
-        })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        var Services;
-        (function (Services) {
-            DeliveryZonesByRadius.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(DeliveryZonesByRadiusWebApiService.Name, [
-                    Services.ContextService.Name,
-                    function (contextService) {
-                        var instnance = new DeliveryZonesByRadiusWebApiService(contextService);
-                        return instnance;
-                    }
-                ]);
-            });
-            var DeliveryZonesByRadiusWebApiService = (function () {
-                function DeliveryZonesByRadiusWebApiService(context) {
-                    var _this = this;
-                    if (!DeliveryZonesByRadius.Settings.AndromedaSiteId) {
-                        throw "Settings.AndromedaSiteId is undefined";
-                    }
-                    this.Context = context;
-                    this.IsDeliveryZonesBusy = new Rx.BehaviorSubject(false);
-                    this.IsSavingBusy = new Rx.BehaviorSubject(false);
-                    this.Search = new Rx.Subject();
-                    this.DataSource = new kendo.data.DataSource({});
-                    this.IsDeliveryZonesBusy.onNext(true);
-                    var read = kendo.format(DeliveryZonesByRadius.Settings.ReadRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
-                    var promise = $.getJSON(read);
-                    promise.done(function (result) {
-                        var oldPostcodes = result.PostCodeSectors;
-                        _this.Context.Model = result;
-                        result.PostCodeSectors = new kendo.data.ObservableArray(oldPostcodes);
-                        _this.Context.ModelSubject.onNext(result);
-                        _this.IsDeliveryZonesBusy.onNext(false);
-                    });
-                    promise.fail(function () {
-                        _this.IsDeliveryZonesBusy.onNext(false);
-                    });
-                }
-                DeliveryZonesByRadiusWebApiService.prototype.Update = function () {
-                    var _this = this;
-                    var update = kendo.format(DeliveryZonesByRadius.Settings.UpdateRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
-                    console.log("sync");
-                    var raw = JSON.stringify(this.Context.Model);
-                    var currentPostCodes = this.Context.Model.PostCodeSectors;
-                    var accepted = currentPostCodes.filter(function (item) {
-                        return item.IsSelected;
-                    });
-                    console.log(currentPostCodes.length);
-                    this.IsSavingBusy.onNext(true);
-                    this.IsDeliveryZonesBusy.onNext(true);
-                    var promise = $.ajax({
-                        url: update,
-                        type: "POST",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: raw,
-                    });
-                    promise.done(function (result) {
-                        var postcodeArea = result;
-                        var oldPostcodes = postcodeArea.PostCodeSectors;
-                        var returnedRows = postcodeArea.PostCodeSectors;
-                        var acceptedReturnedRows = returnedRows.filter(function (item) {
-                            return item.IsSelected;
-                        });
-                        if (currentPostCodes.length !== returnedRows.length) {
-                            var alertMsg = kendo.format("this is not the expected amount of postcodes: {0} records sent.! Received: {1}", currentPostCodes.length, returnedRows.length);
-                            alert(alertMsg);
-                        }
-                        if (accepted.length !== acceptedReturnedRows.length) {
-                            var alertMsg = kendo.format("this is not the expected amount of 'accepted' postcodes: {0}. records sent.! Received: {1}", accepted.length, acceptedReturnedRows.length);
-                            alert(alertMsg);
-                        }
-                        _this.Context.Model = postcodeArea;
-                        _this.Context.Model.PostCodeSectors = new kendo.data.ObservableArray(oldPostcodes);
-                        _this.Context.ModelSubject.onNext(postcodeArea);
-                    });
-                    promise.always(function () {
-                        _this.IsDeliveryZonesBusy.onNext(false);
-                        _this.IsSavingBusy.onNext(false);
-                    });
-                };
-                DeliveryZonesByRadiusWebApiService.prototype.GeneratePostCodes = function () {
-                    var _this = this;
-                    var generatePostCodes = kendo.format(DeliveryZonesByRadius.Settings.ReadPostCodesRoute, DeliveryZonesByRadius.Settings.AndromedaSiteId);
-                    var raw = JSON.stringify(this.Context.Model);
-                    var request = $.ajax({
-                        url: generatePostCodes,
-                        type: "POST",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: raw
-                    });
-                    this.IsDeliveryZonesBusy.onNext(true);
-                    request.done(function (result) {
-                        if (result.length === 0) {
-                            alert("There are no postcodes near hear apparently...");
-                        }
-                        var postcodes = result.map(function (postcode) { return {
-                            PostCodeSector: postcode,
-                            IsSelected: true
-                        }; });
-                        _this.Context.PostcodeModels.onNext(postcodes);
-                        _this.IsDeliveryZonesBusy.onNext(false);
-                        $("#loader").addClass('hidden');
-                        _this.Context.Model.HasPostCodes = true;
-                    });
-                    request.fail(function () {
-                        _this.IsDeliveryZonesBusy.onNext(false);
-                    });
-                };
-                DeliveryZonesByRadiusWebApiService.Name = "DeliveryZonesByRadiusWebApiService";
-                return DeliveryZonesByRadiusWebApiService;
-            })();
-            Services.DeliveryZonesByRadiusWebApiService = DeliveryZonesByRadiusWebApiService;
-        })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var DeliveryZonesByRadius;
-    (function (DeliveryZonesByRadius) {
-        var Settings = (function () {
-            function Settings() {
-            }
-            Settings.AndromedaSiteId = 0;
-            //public static WebSiteId: number = 0;
-            //api/{AndromedaSiteId}/DeliveryZonesByRadius/Read
-            Settings.ReadRoute = "/api/{0}/DeliveryZonesByRadius/Read";
-            //api/{AndromedaSiteId}/DeliveryZonesByRadius/GeneratePostCodeSectors
-            Settings.ReadPostCodesRoute = "/api/{0}/DeliveryZonesByRadius/GeneratePostCodeSectors";
-            //api/{AndromedaSiteId}/DeliveryZonesByRadius/Update
-            Settings.UpdateRoute = "/api/{0}/DeliveryZonesByRadius/Update";
-            return Settings;
-        })();
-        DeliveryZonesByRadius.Settings = Settings;
-        ;
-    })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 /// <reference path="../../Scripts/typings/angularjs/angular-route.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
@@ -7682,7 +7581,7 @@ var MyAndromeda;
             }
             MenuApp.ApplicationName = "MenuApplication";
             return MenuApp;
-        })();
+        }());
         Menu.MenuApp = MenuApp;
         var Angular = (function () {
             function Angular() {
@@ -7717,118 +7616,221 @@ var MyAndromeda;
             Angular.ServicesInitilizations = [];
             Angular.ControllersInitilizations = [];
             return Angular;
-        })();
+        }());
         Menu.Angular = Angular;
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../Scripts/typings/linqjs/linq.d.ts" />
+/// <reference path="MyAndromeda.Menu.App.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
-    var Chain;
-    (function (Chain) {
+    var Menu;
+    (function (Menu) {
+        var Controllers;
+        (function (Controllers) {
+            var FtpController = (function () {
+                function FtpController() {
+                }
+                FtpController.SetupScope = function ($scope, $timeout, ftpService) {
+                    $scope.DeleteLocalFile = function () {
+                        var c = confirm("Are you sure you want to delete the current version? Thumbnails will not be effected.");
+                        if (c) {
+                            ftpService.DeleteLocalFile();
+                        }
+                    };
+                    $scope.DownloadFromFtp = function () { return ftpService.StartFtpDownload(); };
+                    $scope.UploadToFtp = function () { return ftpService.StartFtpUpload(); };
+                    $scope.CheckDbVersion = function () { return ftpService.GetVersion(); };
+                    //FTP download status 
+                    ftpService.FtpDownloadBusy.subscribe(function (busy) {
+                        $timeout(function () { $scope.DownloadBusy = busy; });
+                    });
+                    ftpService.FtpDownloadErrors.subscribe(function (error) {
+                        $timeout(function () { $scope.Errors = error; });
+                    });
+                    //FTP upload status
+                    ftpService.FtpUploadBusy.subscribe(function (busy) {
+                        $timeout(function () { $scope.UploadBusy = busy; });
+                    });
+                    ftpService.FtpUploadErrors.subscribe(function (error) {
+                        $timeout(function () { $scope.Errors = error; });
+                    });
+                    //FTP access status
+                    ftpService.LocalAccessVersion.subscribe(function (versionModel) {
+                        $timeout(function () {
+                            $scope.Version = versionModel.Version;
+                            $scope.UpdatedOn = versionModel.UpdatedOn;
+                            $scope.LastDownloaded = versionModel.LastDownloaded;
+                        });
+                    });
+                    var a = ftpService.FtpUploadBusy, b = ftpService.FtpDownloadBusy, c = ftpService.LocalAccessVersionBusy, d = ftpService.DeleteBusy;
+                    var anyBusy = Rx.Observable.combineLatest(a, b, c, d, function (o1, o2, o3, o4) {
+                        return o1 || o2 || o3 || o4;
+                    });
+                    anyBusy.subscribe(function (busy) {
+                        $timeout(function () {
+                            $scope.BlockAccess = busy;
+                        });
+                    });
+                    $scope.CheckDbVersion();
+                };
+                FtpController.Name = "FtpController";
+                return FtpController;
+            }());
+            Controllers.FtpController = FtpController;
+        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
         var Services;
         (function (Services) {
-            var TreeviewMapService = (function () {
-                function TreeviewMapService(kendoTreeView) {
-                    var internal = this;
-                    this.viewModel = kendo.observable({
-                        stores: []
-                    });
-                    var bindingElement = $("#mapData");
-                    kendo.bind(bindingElement, this.viewModel);
-                    this.viewModel.bind("change", function () {
-                        internal.AddMarkers();
-                    });
-                    this.kendoMap = $("#map").data("kendoMap");
+            var FtpService = (function () {
+                function FtpService($http) {
+                    this.$http = $http;
+                    this.FtpDownloadBusy = new Rx.BehaviorSubject(false);
+                    this.FtpDownloadErrors = new Rx.Subject();
+                    this.FtpUploadBusy = new Rx.BehaviorSubject(false);
+                    this.FtpUploadErrors = new Rx.Subject();
+                    this.LocalAccessVersion = new Rx.Subject();
+                    this.LocalAccessVersionBusy = new Rx.BehaviorSubject(false);
+                    this.DeleteBusy = new Rx.BehaviorSubject(false);
                 }
-                TreeviewMapService.prototype.AddMarkers = function () {
-                    var map = this.kendoMap, markers = map.markers;
-                    map.markers.clear();
-                    var stores = this.viewModel.get("stores");
-                    var viableStores = Enumerable.from(stores).where(function (e) { return e.latitude !== null && e.longitude !== null; });
-                    //zoom out
-                    if (viableStores.count() === 0) {
-                        map.zoom(1);
-                        map.center([0, 0]);
-                        return;
+                FtpService.prototype.ValidateRoute = function (route) {
+                    route || (route = "");
+                    if (route.length === 0) {
+                        throw "The route locations have not been set.";
                     }
-                    var centeredPosition = function () {
-                        //console.log(viableStores.toArray());
-                        var avgLat = viableStores.select(function (e) { return parseFloat(e.latitude); }).average();
-                        var avgLong = viableStores.select(function (e) { return parseFloat(e.longitude); }).average();
-                        var c = [avgLat, avgLong];
-                        return c;
-                    };
-                    viableStores.forEach(function (store, index) {
-                        if (store.longitude && store.latitude) {
-                            var location = [store.latitude, store.longitude];
-                            var addition = {
-                                shape: "pin",
-                                store: store,
-                                tooltip: {
-                                    animation: {
-                                        close: {
-                                            effects: "fade:out"
-                                        }
-                                    },
-                                    autoHide: true,
-                                    position: "right",
-                                    showOn: "mouseenter",
-                                    template: $("#map-tooltip-template").html()
-                                },
-                                location: location
-                            };
-                            map.markers.add(addition);
-                        }
-                    });
-                    var centerdLocation = centeredPosition();
-                    map.center(centeredPosition());
-                    map.zoom(3);
                 };
-                return TreeviewMapService;
-            })();
-            var TreeviewChainService = (function () {
-                function TreeviewChainService(data) {
-                    var internal = this;
-                    this.data = data;
-                    this.rootDataSource = new kendo.data.HierarchicalDataSource({
-                        transport: {
-                            read: function (options) {
-                                options.success(internal.data);
-                            }
-                        },
-                        schema: {
-                            model: {
-                                id: "id",
-                                children: "items"
-                            }
-                        }
+                FtpService.prototype.GetVersion = function () {
+                    var _this = this;
+                    var route = Menu.Settings.Routes.Ftp.Version;
+                    this.ValidateRoute(route);
+                    var promise = this.$http.post(route, {});
+                    this.LocalAccessVersionBusy.onNext(true);
+                    promise.success(function (data, status, headers, config) {
+                        _this.LocalAccessVersion.onNext(data);
                     });
-                    this.rootDataSource.read();
-                    var treeVm = kendo.observable({
-                        chains: this.rootDataSource
+                    promise.finally(function () { _this.LocalAccessVersionBusy.onNext(false); });
+                    return promise;
+                };
+                FtpService.prototype.StartFtpDownload = function () {
+                    var _this = this;
+                    var route = Menu.Settings.Routes.Ftp.DownloadMenu;
+                    this.ValidateRoute(route);
+                    this.FtpDownloadBusy.onNext(true);
+                    var promise = this.$http.post(route, {});
+                    promise.then(function (result) {
+                        var versionPromise = _this.GetVersion();
+                        return versionPromise;
+                    }).finally(function () {
+                        _this.FtpDownloadBusy.onNext(false);
                     });
-                    var treeviewElement = $("#TreeviewChains").kendoTreeView({
-                        template: kendo.template($('#StoreNode').html()),
-                        dataSource: this.rootDataSource,
-                        loadOnDemand: false,
-                        dataTextField: "name"
+                };
+                FtpService.prototype.StartFtpUpload = function () {
+                    var _this = this;
+                    var route = Menu.Settings.Routes.Ftp.UploadMenu;
+                    this.ValidateRoute(route);
+                    this.FtpUploadBusy.onNext(true);
+                    var promise = this.$http.post(route, {});
+                    promise.finally(function () {
+                        _this.FtpUploadBusy.onNext(false);
                     });
-                    this.kendoTreeView = treeviewElement.data("kendoTreeView");
-                    treeviewElement.on("click", ".k-button-show-stores", function (e) {
-                        e.preventDefault();
-                        var uid = $(this).closest(".k-item").data("uid");
-                        var element = internal.rootDataSource.getByUid(uid);
-                        internal.mapService.viewModel.set("stores", element.stores);
+                };
+                FtpService.prototype.DeleteLocalFile = function () {
+                    var _this = this;
+                    var route = Menu.Settings.Routes.Ftp.Delete;
+                    this.ValidateRoute(route);
+                    this.DeleteBusy.onNext(true);
+                    var promise = this.$http.post(route, {});
+                    promise.finally(function () {
+                        _this.DeleteBusy.onNext(false);
                     });
-                    kendo.bind($("#treeviewdata"), treeVm);
-                    this.mapService = new TreeviewMapService(this.kendoTreeView);
+                };
+                FtpService.Name = "FtpControllerService";
+                return FtpService;
+            }());
+            Services.FtpService = FtpService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Controllers;
+        (function (Controllers) {
+            Menu.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(MenuItemsController.Name, [
+                    '$scope',
+                    function ($scope) {
+                        MenuItemsController.OnLoad($scope);
+                        MenuItemsController.SetupScope($scope);
+                    }
+                ]);
+            });
+            var MenuItemsController = (function () {
+                function MenuItemsController() {
                 }
-                return TreeviewChainService;
-            })();
-            Services.TreeviewChainService = TreeviewChainService;
-        })(Services = Chain.Services || (Chain.Services = {}));
-    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+                MenuItemsController.OnLoad = function ($scope) {
+                    $scope.$on('$destroy', function () { });
+                };
+                MenuItemsController.SetupScope = function ($scope) {
+                    $scope.$on('$destroy', function () { });
+                };
+                MenuItemsController.Template = "Templates/MenuItems";
+                MenuItemsController.Name = "MenuItemsController";
+                MenuItemsController.Route = "/MenuItems";
+                return MenuItemsController;
+            }());
+            Controllers.MenuItemsController = MenuItemsController;
+        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Controllers;
+        (function (Controllers) {
+            Menu.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(MenuNavigationController.Name, [
+                    '$scope',
+                    Menu.Services.MenuNavigationService.Name,
+                    Menu.Services.PublishingService.Name,
+                    function ($scope, menuNavigationService, publishingService) {
+                        Menu.Logger.Notify("Menu navigation controller loaded");
+                        MenuNavigationController.ToolbarOptions($scope, publishingService);
+                        MenuNavigationController.OnLoad($scope, menuNavigationService);
+                    }
+                ]);
+            });
+            var MenuNavigationController = (function () {
+                function MenuNavigationController() {
+                }
+                MenuNavigationController.ToolbarOptions = function ($scope, publishingService) {
+                    publishingService.init();
+                    $scope.Publish = function () { publishingService.openWindow(); };
+                    $scope.ToolbarOptions = {
+                        items: [
+                            //{ type: "button", text: "Menu Items" },
+                            //{ type: "button", text: "Menu Sequencing" },
+                            //{ type: "button", text: "Toppings" },
+                            //{ type: "separator" },
+                            { type: "button", text: "Publish", click: function () { publishingService.openWindow(); } }
+                        ]
+                    };
+                };
+                MenuNavigationController.OnLoad = function ($scope, menuNavigationService) {
+                    $scope.$on("$destroy", function () { });
+                };
+                MenuNavigationController.Name = "MenuNavigationController";
+                return MenuNavigationController;
+            }());
+            Controllers.MenuNavigationController = MenuNavigationController;
+        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -7886,7 +7888,7 @@ var MyAndromeda;
                 ToppingsController.Route = "/";
                 ToppingsController.Template = function () { return $("#MenuTemplate").html(); };
                 return ToppingsController;
-            })();
+            }());
             Controllers.ToppingsController = ToppingsController;
         })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
@@ -7895,207 +7897,55 @@ var MyAndromeda;
 (function (MyAndromeda) {
     var Menu;
     (function (Menu) {
-        var Services;
-        (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(MenuToppingsService.Name, [
-                    function () {
-                        var instnance = new MenuToppingsService();
-                        return instnance;
+        var Controllers;
+        (function (Controllers) {
+            Menu.Angular.ControllersInitilizations.push(function (app) {
+                app.controller(ToppingsFilterController.Name, [
+                    '$scope',
+                    '$timeout',
+                    Menu.Services.MenuToppingsService.Name,
+                    Menu.Services.MenuToppingsFilterService.Name,
+                    function ($scope, $timeout, menuToppingsService, menuToppingsFilterService) {
+                        Menu.Logger.Debug("Setting up ToppingsFilterController");
+                        ToppingsFilterController.OnLoad($scope);
+                        ToppingsFilterController.SetupScope($scope, $timeout, menuToppingsFilterService);
+                        Menu.Logger.Debug("Set up ToppingsFilterController");
                     }
                 ]);
             });
-            var MenuToppingsService = (function () {
-                function MenuToppingsService() {
+            var ToppingsFilterController = (function () {
+                function ToppingsFilterController() {
                 }
-                MenuToppingsService.prototype.GetDataSource = function () {
-                    var internal = this;
-                    if (this.dataSource) {
-                        return this.dataSource;
-                    }
-                    var routes = Menu.Settings.Routes.Toppings;
-                    var dataSourceGroup = [
-                        { field: "Name", dir: "" }
-                    ];
-                    this.dataSource = new kendo.data.DataSource({
-                        type: "aspnetmvc-ajax",
-                        batch: true,
-                        pageSize: 10,
-                        //group: dataSourceGroup,
-                        transport: {
-                            read: { url: routes.List },
-                            update: { url: routes.Update }
-                        },
-                        schema: {
-                            data: "Data",
-                            total: "Total",
-                            errors: "Errors",
-                            model: {
-                                id: "Id",
-                                UpdateAllDelivery: function (confirm) {
-                                    var item = this;
-                                    item.ToppingVarients.forEach(function (varient) {
-                                        var c = item.get("CollectionPrice"), d = item.get("DeliveryPrice"), s = item.get("DineInPrice");
-                                        varient.set("DeliveryPrice", d);
-                                        varient.trigger("change");
-                                    });
-                                    item.trigger("change");
-                                },
-                                UpdateAllCollection: function (confirm) {
-                                    var item = this;
-                                    item.ToppingVarients.forEach(function (varient) {
-                                        var c = item.get("CollectionPrice");
-                                        varient.set("CollectionPrice", c);
-                                        varient.trigger("change");
-                                    });
-                                },
-                                UpdateAllDineIn: function (confirm) {
-                                    var item = this;
-                                    item.ToppingVarients.forEach(function (varient) {
-                                        var s = item.get("DineInPrice");
-                                        varient.set("DineInPrice", s);
-                                        varient.trigger("change");
-                                    });
-                                },
-                                UpdateAllToppingPrices: function (confirm) {
-                                    var item = this;
-                                    console.log(item);
-                                    item.ToppingVarients.forEach(function (varient) {
-                                        var c = item.get("CollectionPrice"), d = item.get("DeliveryPrice"), s = item.get("DineInPrice");
-                                        varient.set("CollectionPrice", c);
-                                        varient.set("DeliveryPrice", d);
-                                        varient.set("DineInPrice", s);
-                                        varient.trigger("change");
-                                    });
-                                    item.trigger("change");
-                                },
-                                ColorStatus: function () {
-                                    var item = this;
-                                    if (this.dirty) {
-                                        return "#F29A00";
-                                    }
-                                    return "#A4E400";
-                                }
-                            }
-                        }
-                    });
-                    return this.dataSource;
+                ToppingsFilterController.OnLoad = function ($scope) {
+                    Menu.Logger.Notify("Toppings Filter Controller Loaded");
                 };
-                MenuToppingsService.prototype.FindTopppings = function (predicate) {
-                    var data = this.dataSource.data();
-                    var filtered = data.filter(predicate);
-                    return filtered;
-                };
-                MenuToppingsService.Name = "ToppingsService";
-                return MenuToppingsService;
-            })();
-            Services.MenuToppingsService = MenuToppingsService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(PublishingService.Name, [
-                    function () {
-                        return new PublishingService({
-                            publishPanel: {
-                                mainButtonId: "#doesnotexist",
-                                publishPanelId: "#publishPanel",
-                                publishUrlPath: Menu.Settings.Routes.Publish
-                            }
-                        }, null);
-                    }
-                ]);
-            });
-            var PublishingService = (function () {
-                function PublishingService(options, menuservice) {
-                    var _this = this;
-                    var internal = this;
-                    this.options = options;
-                    this.menuService = menuservice;
-                    this.model = kendo.observable({
-                        publishThumbnails: true,
-                        publishMenu: true,
-                        publishNow: true,
-                        publishLater: false,
-                        publishOn: new Date(),
-                        minDate: new Date(),
-                        cancel: function () {
-                            $(options.publishPanel.publishPanelId).kendoMobileModalView("close");
-                        },
-                        publishNowClick: function () {
-                            internal.publishNow(true, true, new Date());
-                        },
-                        publishLaterClick: function () {
-                            var publishThumbs = internal.model.get("publishThumbnails"), publishMenu = internal.model.get("publishMenu"), publishOn = internal.model.get("publishOn");
-                            internal.publishNow(publishMenu, publishThumbs, publishOn);
-                        },
-                        publishThumbnailsClick: function () {
-                            internal.publishNow(false, true, new Date());
-                        }
-                    });
-                    this.model.bind("change", function (e) {
-                        if (e.field !== 'publishNow')
+                ToppingsFilterController.SetupScope = function ($scope, $timeout, menuToppingsFilterService) {
+                    $scope.Name = menuToppingsFilterService.GetName();
+                    $scope.$watch("Name", function (newValue, olderValue) {
+                        Menu.Logger.Debug("ToppingsFilterController : Name changed");
+                        if (newValue === olderValue) {
                             return;
-                        var now = _this.model.get("publishNow");
-                        _this.model.set("publishLater", now === "later");
-                    });
-                    this.init();
-                }
-                PublishingService.prototype.publishNow = function (menu, thumbnails, date) {
-                    var internal = this, data = {
-                        menu: menu,
-                        thumbnails: thumbnails,
-                        dateUtc: null
-                    };
-                    if (this.menuService !== null && this.menuService.menuItemService !== null && this.menuService.menuItemService.anyDirtyItems()) {
-                        internal.closeWindow();
-                        alert("Please save the items before publish");
-                        return;
-                    }
-                    if (date > new Date()) {
-                        //toJson will change a local date time to UTC format that is accepted by the json parser in .NET
-                        data.dateUtc = date.toJSON();
-                    }
-                    $.ajax({
-                        url: internal.options.publishPanel.publishUrlPath,
-                        type: "POST",
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        cache: false,
-                        data: JSON.stringify(data),
-                        success: function (data) {
-                            internal.closeWindow();
                         }
+                        menuToppingsFilterService.ChangeNameFilter(newValue);
+                    });
+                    $scope.ResetFilters = function () {
+                        Menu.Logger.Debug("Reset button clicked");
+                        menuToppingsFilterService.ResetFilters();
+                    };
+                    var observable = menuToppingsFilterService.ResetFiltersObservable.subscribe(function () {
+                        $timeout(function () {
+                            $scope.Name = "";
+                        }, 0);
+                    });
+                    $scope.$on("$destroy", function () {
+                        observable.dispose();
                     });
                 };
-                PublishingService.prototype.openWindow = function () {
-                    var options = this.options.publishPanel;
-                    $(options.publishPanelId).kendoMobileModalView("open");
-                };
-                PublishingService.prototype.closeWindow = function () {
-                    var options = this.options.publishPanel;
-                    $(options.publishPanelId).kendoMobileModalView("close");
-                };
-                PublishingService.prototype.init = function () {
-                    var internal = this, options = this.options.publishPanel;
-                    $(options.publishPanelId).kendoMobileModalView();
-                    kendo.bind(options.publishPanelId, this.model);
-                    $(options.mainButtonId).on("click", function (e) {
-                        e.preventDefault();
-                        internal.openWindow();
-                    });
-                };
-                PublishingService.Name = "PublishingService";
-                return PublishingService;
-            })();
-            Services.PublishingService = PublishingService;
-        })(Services = Menu.Services || (Menu.Services = {}));
+                ToppingsFilterController.Name = "ToppingsFilterController";
+                return ToppingsFilterController;
+            }());
+            Controllers.ToppingsFilterController = ToppingsFilterController;
+        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
@@ -8108,9 +7958,38 @@ var MyAndromeda;
                 function thumbItem() {
                 }
                 return thumbItem;
-            })();
+            }());
             Models.thumbItem = thumbItem;
         })(Models = Menu.Models || (Menu.Models = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="MyAndromeda.Menu.Controllers.FtpController.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Modules;
+        (function (Modules) {
+            Modules.MenuFtpModuleName = "MenuFtpModule";
+            var FtpModule = angular.module(Modules.MenuFtpModuleName, [
+                "kendo.directives"
+            ]);
+            FtpModule.factory(Menu.Services.FtpService.Name, [
+                '$http',
+                function ($http) {
+                    var instance = new Menu.Services.FtpService($http);
+                    return instance;
+                }
+            ]);
+            FtpModule.controller(Menu.Controllers.FtpController.Name, [
+                '$scope',
+                '$timeout',
+                Menu.Services.FtpService.Name,
+                function ($scope, $timeout, ftpService) {
+                    Menu.Controllers.FtpController.SetupScope($scope, $timeout, ftpService);
+                }
+            ]);
+        })(Modules = Menu.Modules || (Menu.Modules = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
@@ -8119,328 +7998,28 @@ var MyAndromeda;
     (function (Menu) {
         var Services;
         (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-            });
-            var Positioning = (function () {
-                function Positioning() {
+            var CategoryService = (function () {
+                function CategoryService(categories) {
+                    this.categories = categories;
                 }
-                Positioning.BEFORE = "before";
-                Positioning.AFTER = "after";
-                Positioning.INTO = "into";
-                Positioning.REPLACE = "replace";
-                return Positioning;
-            })();
-            var MenuOrderingControllerService = (function () {
-                function MenuOrderingControllerService(options) {
-                    var internal = this;
-                    this.options = options;
-                    this.menuService = new Services.MenuService(this.options);
-                    this.publishingService = new Services.PublishingService(this.options, this.menuService);
-                    this.positionWindowViewModel = kendo.observable({
-                        length: function () {
-                            var items = internal.menuService.menuItemService.dataSource.view();
-                            var total = items.length;
-                            return total;
-                        },
-                        onMoveToFirst: function () {
-                            var item = this.get("item");
-                            var firstItem = internal.menuService.menuItemService.dataSource.view()[0];
-                            internal.movePlaces(firstItem, item, Positioning.BEFORE);
-                            internal.updateWindowUi();
-                        },
-                        onMoveToLast: function () {
-                            var menuItemService = internal.menuService.menuItemService;
-                            var view = internal.menuService.menuItemService.dataSource.view();
-                            var item = this.get("item");
-                            var lastItem = view[this.get("length") - 1];
-                            internal.movePlaces(lastItem, item, Positioning.AFTER);
-                            internal.updateWindowUi();
-                        },
-                        onMoveItemDown: function () {
-                            var item = this.get("item"), index = parseInt(this.get("index")), view = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
-                            vm.set("index", index < view.length ? index + 1 : index);
-                            internal.moveItemByTextBox();
-                        },
-                        onMoveItemUp: function () {
-                            var item = this.get("item"), index = parseInt(this.get("index")), vm = internal.positionWindowViewModel;
-                            vm.set("index", index > 1 ? index - 1 : index);
-                            internal.moveItemByTextBox();
-                        },
-                        onMoveToPositionClick: function () {
-                            var item = this.get("item"), index = this.get("index"), view = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
-                            internal.moveItemByTextBox();
-                        },
-                        saveChanges: function () {
-                            internal.closeWindow(true);
-                        },
-                        cancelChanges: function () {
-                            internal.closeWindow(false);
-                            internal.menuService.menuItemService.dataSource.cancelChanges();
-                        },
-                        displayTest: function () {
-                            var value = this.get("item");
-                            if (value === null) {
-                                return "nothing";
-                            }
-                            return value.DisplayName();
-                        },
-                        item: null,
-                        itemName: "-",
-                        itemIndex: 0,
-                        //index of the numeric input box
-                        index: 0
-                    });
-                }
-                MenuOrderingControllerService.prototype.updateWindowUi = function () {
-                    var internal = this;
-                    internal.normalize();
-                    internal.menuService.menuItemService.dataSource.sort({ field: "WebSequence", dir: "asc" });
-                    var vm = this.positionWindowViewModel;
-                    var item = vm.get("item");
-                    vm.set("itemName", item.DisplayName());
-                    vm.set("itemIndex", item.Index());
-                    vm.set("index", item.Index());
-                };
-                MenuOrderingControllerService.prototype.moveItemByTextBox = function () {
-                    var vm = this.positionWindowViewModel, item = vm.get("item"), internal = this, view = this.menuService.menuItemService.dataSource.view();
-                    var value = $("#numericIndexSelector").val();
-                    if (value < 0) {
-                        return;
-                    }
-                    if (value == vm.get("itemIndex")) {
-                        return;
-                    }
-                    vm.set("index", parseInt(value));
-                    var a = view[value - 1];
-                    this.movePlaces(a, item, Positioning.INTO);
-                    this.updateWindowUi();
-                };
-                MenuOrderingControllerService.prototype.initListView = function () {
-                    var internal = this;
-                    this.listView = $(this.options.ids.listViewId).kendoListView({
-                        autoBind: false,
-                        dataSource: this.menuService.menuItemService.dataSource,
-                        template: kendo.template(this.options.listview.template),
-                        editTemplate: kendo.template(this.options.listview.editTemplate)
-                    }).data("kendoListView");
-                };
-                MenuOrderingControllerService.prototype.highlighOriginalItem = function (item) {
-                    $(item)
-                        .animate({ "margin-left": "10px", "opacity": 0.4 }, 100)
-                        .animate({ "margin-left": "0px" }, 100)
-                        .css({ "border-color": "#E7001B", "border-width": "4px" });
-                };
-                MenuOrderingControllerService.prototype.UnhighlightOriginalItem = function (item) {
-                    $(item).css({ "border-width": "0px" });
-                };
-                MenuOrderingControllerService.prototype.initListViewEvents = function () {
-                    var internal = this;
-                    var ds = internal.menuService.menuItemService.dataSource;
-                    var draggableSettings = {
-                        filter: ".menu-item",
-                        hint: internal.generateHint,
-                        group: "listViewItems",
-                        //container: "html",
-                        holdToDrag: true,
-                        hold: function (e) {
-                            if (e.which === 2) {
-                                e.preventDefault();
-                            }
-                            internal.highlighOriginalItem(e.currentTarget);
-                        },
-                        dragcancel: function (e) {
-                            internal.UnhighlightOriginalItem(e.currentTarget);
-                        },
-                        dragstart: function (e) {
-                        },
-                        dragend: function (e) {
-                            internal.UnhighlightOriginalItem(e.currentTarget);
-                        },
-                        drag: function (e) {
+                CategoryService.prototype.findById = function (id) {
+                    for (var i = 0; i < this.categories.length; i++) {
+                        var c = this.categories[i];
+                        if (c.Id === id) {
+                            return c;
                         }
-                    };
-                    $(internal.options.ids.listViewId).kendoDraggable(draggableSettings);
-                    var dropTargetAreaOptions = {
-                        filter: ".menu-item",
-                        group: "listViewItems",
-                        hint: internal.generateHint,
-                        cancel: internal.destroyDraggable,
-                        dragenter: function (e) {
-                            var $e = e.dropTarget;
-                            //if ($e.is(".moving")) { return; }
-                            $($e).css({ "border-color": "#A5E400" });
-                            $($e).animate({
-                                "margin-left": "40px",
-                                "opacity": 0.9,
-                                "border-width": 4
-                            }, 200);
-                        },
-                        dragleave: function (e) {
-                            var $e = e.dropTarget;
-                            $($e).animate({
-                                "margin-left": "0px",
-                                "opacity": 1,
-                                "border-width": 0
-                            }, 200);
-                        },
-                        drop: function (e) {
-                            var draggableThing = e.draggable;
-                            var hint = draggableThing.hint;
-                            var draggableDataItem = ds.getByUid(hint.data("uid")), //ds.getByUid(e.draggable.hint.data("uid")),
-                            dropTargetDataItem = ds.getByUid(e.dropTarget.data("uid"));
-                            internal.movePlaces(dropTargetDataItem, draggableDataItem, Positioning.BEFORE);
-                            internal.normalize();
-                            ds.sort({ field: "WebSequence", dir: "asc" });
-                            internal.menuService.menuItemService.dataSource.sync();
-                        }
-                    };
-                    $(internal.options.ids.listViewId).kendoDropTargetArea(dropTargetAreaOptions);
+                    }
+                    return null;
                 };
-                /*todo write a handler to allow the page to scroll with drag */
-                MenuOrderingControllerService.prototype.movePage = function (mouseMoveEvent) {
-                    var m = mouseMoveEvent;
-                };
-                MenuOrderingControllerService.prototype.movePlaces = function (target, moveItem, switchPosition) {
-                    switchPosition || (switchPosition = Positioning.BEFORE);
-                    var internal = this, ds = internal.menuService.menuItemService.dataSource, items = ds.view(), max = items.length - 1;
-                    var draggedItem = { id: moveItem.id, item: moveItem, webSesquence: moveItem.get("WebSequence"), position: items.indexOf(moveItem) };
-                    var droppedOnItem = { id: target.id, item: target, webSesquence: target.get("WebSequence"), position: items.indexOf(target) };
-                    var switchPositions = draggedItem.position - droppedOnItem.position;
-                    switchPositions *= switchPositions;
-                    if (switchPositions === 1) {
-                        moveItem.set("WebSequence", droppedOnItem.webSesquence);
-                        target.set("WebSequence", draggedItem.webSesquence);
-                    }
-                    else if (droppedOnItem.position === 0) {
-                        //move item to position 1
-                        var moveItemPosition = droppedOnItem.webSesquence / 2;
-                        moveItem.set("WebSequence", moveItemPosition);
-                    }
-                    else if (droppedOnItem.position === max) {
-                        //move item before or after last position
-                        var moveItemPosition = 0;
-                        switch (switchPosition) {
-                            case Positioning.BEFORE:
-                                moveItemPosition = droppedOnItem.webSesquence + items[droppedOnItem.position - 1];
-                                break;
-                            case Positioning.INTO:
-                                moveItemPosition = droppedOnItem.webSesquence * 2 + 100;
-                                break;
-                            case Positioning.AFTER:
-                                moveItemPosition = droppedOnItem.webSesquence * 2 + 100;
-                                break;
-                        }
-                        moveItemPosition = moveItemPosition / 2;
-                        draggedItem.item.set("WebSequence", moveItemPosition);
-                    }
-                    else {
-                        var fitBetweenItem = xIndex === 0 ? target : items[droppedOnItem.position - 1];
-                        if (Positioning.INTO === switchPosition && draggedItem.position < droppedOnItem.position) {
-                            fitBetweenItem = droppedOnItem.position === 0 ? droppedOnItem.item : items[droppedOnItem.position + 1];
-                        }
-                        //if (Positioning.INTO === switchPosition && draggedItem.position > droppedOnItem.position)
-                        //{
-                        //    fitBetweenItem = droppedOnItem.position === 0 ? droppedOnItem.item : items[droppedOnItem.position - 1]
-                        //}
-                        var xIndex = droppedOnItem.position;
-                        var zPosition = droppedOnItem.webSesquence + fitBetweenItem.get("WebSequence");
-                        zPosition = zPosition / 2;
-                        draggedItem.item.set("WebSequence", zPosition);
-                    }
-                };
-                MenuOrderingControllerService.prototype.normalize = function () {
-                    var internal = this, ds = internal.menuService.menuItemService.dataSource, view = ds.view();
-                    var start = 100;
-                    var linq = Enumerable.from(view);
-                    var group = linq
-                        .groupBy(function (x) { return x.Name; }, function (x) { return x; }, function (key, result) {
-                        return {
-                            key: key,
-                            items: result.toArray()
-                        };
-                    })
-                        .toArray();
-                    group.forEach(function (item) {
-                        //group should end up in the same order as the first element found for each key. 
-                        //ergo we can apply it sequentially. 
-                        item.items.forEach(function (menuItem) {
-                            menuItem.set("WebSequence", start);
-                        });
-                        start += 100;
+                CategoryService.prototype.findCategoriesByParentId = function (id) {
+                    var elements = $.grep(this.categories, function (category, index) {
+                        return category.ParentId === id;
                     });
-                    //view.forEach((item: any, index, source) => {
-                    //    item.set("WebSequence", start);
-                    //    start += 100;
-                    //});
-                    internal.positionWindowViewModel.trigger("change");
-                    ds.trigger("change");
+                    return elements;
                 };
-                MenuOrderingControllerService.prototype.closeWindow = function (saveChanges) {
-                    var kendoWindow = $("#positionWindow").data("kendoWindow");
-                    var ds = this.menuService.menuItemService.dataSource;
-                    if (saveChanges) {
-                        ds.sync();
-                    }
-                    else {
-                        ds.cancelChanges();
-                    }
-                    kendoWindow.close();
-                };
-                MenuOrderingControllerService.prototype.displayWindow = function () {
-                    var internal = this, wrapper = $("#positionWindowWrapper");
-                    kendo.bind(wrapper, this.positionWindowViewModel);
-                    $(internal.options.ids.listViewId).on("click", ".k-button-edit-position", function (e) {
-                        e.preventDefault();
-                        var itemId = $(this).closest(".menu-item").data("id"), item = internal.menuService.menuItemService.findById(itemId), items = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
-                        var kendoWindows = $("#positionWindow").data("kendoWindow");
-                        vm.set("item", item);
-                        vm.set("itemName", item.DisplayName());
-                        vm.set("itemIndex", item.Index());
-                        vm.set("length", items.length);
-                        vm.set("index", item.Index());
-                        kendoWindows.open();
-                        kendoWindows.center();
-                    });
-                };
-                MenuOrderingControllerService.prototype.generateHint = function (element) {
-                    var hint = element.clone();
-                    hint.css({
-                        "width": element.width(),
-                        "height": element.height()
-                    });
-                    $(hint).css({ "border-color": "#600BA2", "border-width": "4px" });
-                    $(element).animate({ "opacity": 0.8 });
-                    //return hint;
-                };
-                MenuOrderingControllerService.prototype.initHubChanges = function () {
-                    var internal = this, hub = MyAndromeda.Hubs.StoreHub.GetInstance(internal.options.routeParameters);
-                    hub.bind(MyAndromeda.Hubs.StoreHub.MenuItemChangeEvent, function (context) {
-                        console.log("i have changes :)");
-                        console.log(context);
-                        internal.menuService.extendMenuItemData(context.EditedItems);
-                        internal.menuService.menuItemService.updateItems(context.EditedItems, true);
-                        internal.menuService.menuItemService.dataSource.sort({ field: "WebSequence", dir: "asc" });
-                    });
-                };
-                MenuOrderingControllerService.prototype.destroyDraggable = function (e) {
-                    var o = this;
-                    e.currentTarget.css("opacity", 1);
-                    e.currentTarget.removeClass("draggable");
-                    o.destroy();
-                };
-                MenuOrderingControllerService.prototype.init = function () {
-                    Services.menuFilterController.RESETFILTER = [{ field: "DisplayCategoryId", operator: "eq", value: -19232131 }];
-                    Services.menuFilterController.SORTFILTER = [{ field: "WebSequence", dir: "asc" }];
-                    this.menuService.init();
-                    this.menuService.menuItemService.dataSource.pageSize(1000);
-                    this.initListView();
-                    this.initListViewEvents();
-                    this.initHubChanges();
-                    this.displayWindow();
-                };
-                return MenuOrderingControllerService;
-            })();
-            Services.MenuOrderingControllerService = MenuOrderingControllerService;
+                return CategoryService;
+            }());
+            Services.CategoryService = CategoryService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -8760,8 +8339,620 @@ var MyAndromeda;
                 MenuControllerService.MaxLengthMessage = "The max length for the field is {0} characters. Current count: {1}";
                 MenuControllerService.EditingNewItemMessage = "You are navigating away from the current item, please save changes or press cancel to the current item.";
                 return MenuControllerService;
-            })();
+            }());
             Services.MenuControllerService = MenuControllerService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            var menuFilterController = (function () {
+                function menuFilterController(filterIds, target) {
+                    this.filterIds = filterIds;
+                    this.target = target;
+                    this.viewModel = kendo.observable({
+                        ItemName: "",
+                        SelectedDisplayCategory: "",
+                        SelectedCategory1: "",
+                        SelectedCategory2: "",
+                        ShowGetStartedMessage: true,
+                        Filtered: false,
+                        FilteredBy: kendo.observable({
+                            Name: "",
+                            DisplayCategory: "",
+                            Category1: "",
+                            Category2: ""
+                        }),
+                        Sorted: false,
+                        SortedBy: ""
+                    });
+                }
+                //setup display category data
+                menuFilterController.prototype.InitDisplayCategoryDataSource = function () {
+                    var source = this.displayCategoryService.categories;
+                    this.displayCategoryDataSource = new kendo.data.DataSource({
+                        data: source
+                    });
+                    this.viewModel.set("DisplayCategory", this.displayCategoryDataSource);
+                    this.viewModel.set("SelectedDisplayCategory", null);
+                };
+                //setup category 1 data
+                menuFilterController.prototype.InitCategory1DataSource = function () {
+                    var source = this.category1Service.categories;
+                    this.category1DataSource = new kendo.data.DataSource({
+                        data: source
+                    });
+                    this.viewModel.set("Category1", this.category1DataSource);
+                };
+                //setup category 2 data
+                menuFilterController.prototype.InitCategory2DataSource = function () {
+                    var source = this.category2Service.categories;
+                    this.category2DataSource = new kendo.data.DataSource({
+                        data: source
+                    });
+                    this.viewModel.set("Category2", this.category2DataSource);
+                };
+                //setup all local data sources
+                menuFilterController.prototype.InitDataSources = function () {
+                    console.log("setting category data sources");
+                    this.InitDisplayCategoryDataSource();
+                    this.InitCategory1DataSource();
+                    this.InitCategory2DataSource();
+                };
+                menuFilterController.prototype.InitSearchBox = function () {
+                    var internal = this;
+                    this.itemSearchBox = $(this.filterIds.itemNameId);
+                };
+                menuFilterController.prototype.BindViewModel = function () {
+                    kendo.bind(this.filterIds.toolBarId, this.viewModel);
+                };
+                menuFilterController.prototype.InitDisplayCategoryAndEvents = function () {
+                    var internal = this;
+                    this.displayCategoryCombo = $(this.filterIds.displayCategoryId).data("kendoComboBox");
+                    this.displayCategoryCombo.bind("select", function (e) {
+                        internal.viewModel.set(menuFilterController.SHOWGETSTARTEDMESSAGE, false);
+                    });
+                };
+                menuFilterController.prototype.InitFields = function () {
+                    this.BindViewModel();
+                    this.InitSearchBox();
+                    this.InitDisplayCategoryAndEvents();
+                    this.category1Combo = $(this.filterIds.category1Id).data("kendoComboBox");
+                    this.category2Combo = $(this.filterIds.category2Id).data("kendoComboBox");
+                };
+                menuFilterController.prototype.buildFilterForMainList = function () {
+                    var filters = [];
+                    var values = {
+                        itemName: this.viewModel.get(menuFilterController.ITEMNAME).trim(),
+                        displayCategoryId: this.displayCategoryCombo.value(),
+                        category1Id: this.category1Combo.value(),
+                        category2Id: this.category2Combo.value()
+                    };
+                    if (values.itemName) {
+                        var nameFilters = {
+                            logic: "or",
+                            filters: [
+                                { field: "Name", operator: "contains", value: values.itemName },
+                                { field: "WebName", operator: "contains", value: values.itemName },
+                                { field: "WebDescription", operator: "contains", value: values.itemName }
+                            ]
+                        };
+                        filters.push(nameFilters);
+                    }
+                    //value needs to be the same as the query item. 
+                    if (typeof (values.displayCategoryId) !== "undefined" && values.displayCategoryId !== "") {
+                        filters.push({ field: "DisplayCategoryId", operator: "eq", value: parseInt(values.displayCategoryId) });
+                    }
+                    var category1Selected = typeof (values.category1Id) !== "undefined" && values.category1Id !== "";
+                    var category2Selected = typeof (values.category2Id) !== "undefined" && values.category2Id !== "";
+                    if (category1Selected) {
+                        filters.push({ field: "CategoryId1", operator: "eq", value: parseInt(values.category1Id) });
+                    }
+                    if (category2Selected) {
+                        filters.push({ field: "CategoryId2", operator: "eq", value: parseInt(values.category2Id) });
+                    }
+                    return filters;
+                };
+                menuFilterController.prototype.initFilterChanges = function () {
+                    var internal = this;
+                    $(this.filterIds.toolBarId).on("keyup change", function (e) {
+                        //if(internal.itemSearchBox.context.activeElement.value){
+                        //}
+                        var filters = internal.buildFilterForMainList();
+                        internal.target.filter(filters);
+                        internal.target.sort(menuFilterController.SORTFILTER);
+                    });
+                };
+                menuFilterController.prototype.initDisplayFilterAndSortMessageCue = function () {
+                    var internal = this;
+                    internal.target.bind("change", function (e) {
+                        var dsFilter = internal.target.filter(), dsSort = internal.target.sort(), vm = internal.viewModel;
+                        vm.set(menuFilterController.FILTERED, dsFilter && dsFilter.filters && dsFilter.filters.length > 0 && internal.target.data().length > 0);
+                        var filteredBy = vm.get(menuFilterController.FILTEREDBY);
+                        filteredBy.set("Name", internal.itemSearchBox.val());
+                        filteredBy.set("DisplayCategory", internal.displayCategoryCombo.text());
+                        filteredBy.set("Category1", internal.category1Combo.text());
+                        filteredBy.set("Category2", internal.category2Combo.text());
+                        var sorting = dsSort.length > 0;
+                        vm.set(menuFilterController.SORTED, sorting);
+                        vm.set(menuFilterController.SORTEDBY, sorting ? dsSort[0].field : "");
+                    });
+                };
+                menuFilterController.prototype.initFilterReset = function () {
+                    var internal = this;
+                    $(this.filterIds.resetId).on("click", function (e) {
+                        e.preventDefault();
+                        internal.viewModel.set(menuFilterController.DISPLAYCATEGORY, "");
+                        internal.viewModel.set("SelectedDisplayCategory", null);
+                        internal.viewModel.set(menuFilterController.CATEGORY1, "");
+                        internal.viewModel.set(menuFilterController.CATEGORY2, "");
+                        internal.viewModel.set(menuFilterController.ITEMNAME, "");
+                        internal.viewModel.set(menuFilterController.SHOWGETSTARTEDMESSAGE, true);
+                        internal.target.filter(menuFilterController.RESETFILTER);
+                    });
+                };
+                menuFilterController.prototype.init = function (displayCategoryService, category1Service, category2Service) {
+                    this.displayCategoryService = displayCategoryService;
+                    this.category1Service = category1Service;
+                    this.category2Service = category2Service;
+                    //create data sources from the data 
+                    this.InitDataSources();
+                    //create ui controls to manage the filters 
+                    this.InitFields();
+                    this.initFilterChanges();
+                    this.initFilterReset();
+                    this.initDisplayFilterAndSortMessageCue();
+                };
+                menuFilterController.ITEMNAME = "ItemName";
+                menuFilterController.DISPLAYCATEGORY = "SelectedDisplayCategory";
+                menuFilterController.CATEGORY1 = "SelectedCategory1";
+                menuFilterController.CATEGORY2 = "SelectedCategory2";
+                menuFilterController.SHOWGETSTARTEDMESSAGE = "ShowGetStartedMessage";
+                menuFilterController.FILTERED = "Filtered";
+                menuFilterController.FILTEREDBY = "FilteredBy";
+                menuFilterController.SORTED = "Sorted";
+                menuFilterController.SORTEDBY = "SortedBy";
+                menuFilterController.RESETFILTER = [];
+                menuFilterController.SORTFILTER = [];
+                return menuFilterController;
+            }());
+            Services.menuFilterController = menuFilterController;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+            });
+            var MenuItemService = (function () {
+                function MenuItemService(dataSource) {
+                    this.dataSource = dataSource;
+                    this.menuStatus = new Services.MenuStatus(dataSource);
+                }
+                //find elements based on the id
+                MenuItemService.prototype.findById = function (id) {
+                    return this.dataSource.get(id);
+                };
+                //find elements based on the name
+                MenuItemService.prototype.getRelatedItems = function (menuItems) {
+                    var internal = this;
+                    var data = internal.dataSource.data();
+                    //var filtered = data.filter((value: Models.IMenuItemObservable) => {
+                    //    var left = menuItems.filter((item) => {
+                    //        if (item.Id === value.Id) { return false; }
+                    //        if (item.Name === value.Name) { return true; }
+                    //    });
+                    //    return 
+                    //});
+                    var series = Enumerable.from(menuItems).selectMany(function (x) {
+                        return internal.dataSource.data().filter(function (value, index, array) {
+                            return value.Name == x.Name && value.Id !== x.Id;
+                        });
+                    }).toArray();
+                    return series;
+                };
+                MenuItemService.prototype.removeThumb = function (menuItem, filename) {
+                    var thumbs = menuItem.get("Thumbs");
+                    var thumb = thumbs.find(function (item, index, array) {
+                        return item.FileName === filename;
+                    });
+                    thumbs.remove(thumb);
+                };
+                MenuItemService.prototype.updateItems = function (menuItems, updateDataSource) {
+                    var internal = this;
+                    for (var i = 0; i < menuItems.length; i++) {
+                        var item = menuItems[i];
+                        var dataSourceItem = internal.findById(item.Id), dataItem = dataSourceItem;
+                        if (!dataSourceItem) {
+                            continue;
+                        }
+                        var acceptParams = {
+                            Name: item.Name,
+                            WebDescription: item.WebDescription,
+                            WebName: item.WebName,
+                            WebSequence: item.WebSequence,
+                            Prices: item.Prices
+                        };
+                        dataItem.accept(acceptParams);
+                        if (!updateDataSource) {
+                            dataItem.trigger("change");
+                        }
+                    }
+                    if (updateDataSource) {
+                        this.dataSource.trigger("change");
+                    }
+                    //this.dataSource.trigger("change");
+                };
+                MenuItemService.prototype.anyDirtyItems = function () {
+                    var internal = this;
+                    return this.dataSource.hasChanges();
+                };
+                return MenuItemService;
+            }());
+            Services.MenuItemService = MenuItemService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(MenuNavigationService.Name, [
+                    function () {
+                        var instance = new MenuNavigationService();
+                        return instance;
+                    }
+                ]);
+            });
+            var MenuNavigationService = (function () {
+                function MenuNavigationService() {
+                }
+                MenuNavigationService.Name = "MenuNavigationService";
+                return MenuNavigationService;
+            }());
+            Services.MenuNavigationService = MenuNavigationService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+            });
+            var Positioning = (function () {
+                function Positioning() {
+                }
+                Positioning.BEFORE = "before";
+                Positioning.AFTER = "after";
+                Positioning.INTO = "into";
+                Positioning.REPLACE = "replace";
+                return Positioning;
+            }());
+            var MenuOrderingControllerService = (function () {
+                function MenuOrderingControllerService(options) {
+                    var internal = this;
+                    this.options = options;
+                    this.menuService = new Services.MenuService(this.options);
+                    this.publishingService = new Services.PublishingService(this.options, this.menuService);
+                    this.positionWindowViewModel = kendo.observable({
+                        length: function () {
+                            var items = internal.menuService.menuItemService.dataSource.view();
+                            var total = items.length;
+                            return total;
+                        },
+                        onMoveToFirst: function () {
+                            var item = this.get("item");
+                            var firstItem = internal.menuService.menuItemService.dataSource.view()[0];
+                            internal.movePlaces(firstItem, item, Positioning.BEFORE);
+                            internal.updateWindowUi();
+                        },
+                        onMoveToLast: function () {
+                            var menuItemService = internal.menuService.menuItemService;
+                            var view = internal.menuService.menuItemService.dataSource.view();
+                            var item = this.get("item");
+                            var lastItem = view[this.get("length") - 1];
+                            internal.movePlaces(lastItem, item, Positioning.AFTER);
+                            internal.updateWindowUi();
+                        },
+                        onMoveItemDown: function () {
+                            var item = this.get("item"), index = parseInt(this.get("index")), view = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
+                            vm.set("index", index < view.length ? index + 1 : index);
+                            internal.moveItemByTextBox();
+                        },
+                        onMoveItemUp: function () {
+                            var item = this.get("item"), index = parseInt(this.get("index")), vm = internal.positionWindowViewModel;
+                            vm.set("index", index > 1 ? index - 1 : index);
+                            internal.moveItemByTextBox();
+                        },
+                        onMoveToPositionClick: function () {
+                            var item = this.get("item"), index = this.get("index"), view = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
+                            internal.moveItemByTextBox();
+                        },
+                        saveChanges: function () {
+                            internal.closeWindow(true);
+                        },
+                        cancelChanges: function () {
+                            internal.closeWindow(false);
+                            internal.menuService.menuItemService.dataSource.cancelChanges();
+                        },
+                        displayTest: function () {
+                            var value = this.get("item");
+                            if (value === null) {
+                                return "nothing";
+                            }
+                            return value.DisplayName();
+                        },
+                        item: null,
+                        itemName: "-",
+                        itemIndex: 0,
+                        //index of the numeric input box
+                        index: 0
+                    });
+                }
+                MenuOrderingControllerService.prototype.updateWindowUi = function () {
+                    var internal = this;
+                    internal.normalize();
+                    internal.menuService.menuItemService.dataSource.sort({ field: "WebSequence", dir: "asc" });
+                    var vm = this.positionWindowViewModel;
+                    var item = vm.get("item");
+                    vm.set("itemName", item.DisplayName());
+                    vm.set("itemIndex", item.Index());
+                    vm.set("index", item.Index());
+                };
+                MenuOrderingControllerService.prototype.moveItemByTextBox = function () {
+                    var vm = this.positionWindowViewModel, item = vm.get("item"), internal = this, view = this.menuService.menuItemService.dataSource.view();
+                    var value = $("#numericIndexSelector").val();
+                    if (value < 0) {
+                        return;
+                    }
+                    if (value == vm.get("itemIndex")) {
+                        return;
+                    }
+                    vm.set("index", parseInt(value));
+                    var a = view[value - 1];
+                    this.movePlaces(a, item, Positioning.INTO);
+                    this.updateWindowUi();
+                };
+                MenuOrderingControllerService.prototype.initListView = function () {
+                    var internal = this;
+                    this.listView = $(this.options.ids.listViewId).kendoListView({
+                        autoBind: false,
+                        dataSource: this.menuService.menuItemService.dataSource,
+                        template: kendo.template(this.options.listview.template),
+                        editTemplate: kendo.template(this.options.listview.editTemplate)
+                    }).data("kendoListView");
+                };
+                MenuOrderingControllerService.prototype.highlighOriginalItem = function (item) {
+                    $(item)
+                        .animate({ "margin-left": "10px", "opacity": 0.4 }, 100)
+                        .animate({ "margin-left": "0px" }, 100)
+                        .css({ "border-color": "#E7001B", "border-width": "4px" });
+                };
+                MenuOrderingControllerService.prototype.UnhighlightOriginalItem = function (item) {
+                    $(item).css({ "border-width": "0px" });
+                };
+                MenuOrderingControllerService.prototype.initListViewEvents = function () {
+                    var internal = this;
+                    var ds = internal.menuService.menuItemService.dataSource;
+                    var draggableSettings = {
+                        filter: ".menu-item",
+                        hint: internal.generateHint,
+                        group: "listViewItems",
+                        //container: "html",
+                        holdToDrag: true,
+                        hold: function (e) {
+                            if (e.which === 2) {
+                                e.preventDefault();
+                            }
+                            internal.highlighOriginalItem(e.currentTarget);
+                        },
+                        dragcancel: function (e) {
+                            internal.UnhighlightOriginalItem(e.currentTarget);
+                        },
+                        dragstart: function (e) {
+                        },
+                        dragend: function (e) {
+                            internal.UnhighlightOriginalItem(e.currentTarget);
+                        },
+                        drag: function (e) {
+                        }
+                    };
+                    $(internal.options.ids.listViewId).kendoDraggable(draggableSettings);
+                    var dropTargetAreaOptions = {
+                        filter: ".menu-item",
+                        group: "listViewItems",
+                        hint: internal.generateHint,
+                        cancel: internal.destroyDraggable,
+                        dragenter: function (e) {
+                            var $e = e.dropTarget;
+                            //if ($e.is(".moving")) { return; }
+                            $($e).css({ "border-color": "#A5E400" });
+                            $($e).animate({
+                                "margin-left": "40px",
+                                "opacity": 0.9,
+                                "border-width": 4
+                            }, 200);
+                        },
+                        dragleave: function (e) {
+                            var $e = e.dropTarget;
+                            $($e).animate({
+                                "margin-left": "0px",
+                                "opacity": 1,
+                                "border-width": 0
+                            }, 200);
+                        },
+                        drop: function (e) {
+                            var draggableThing = e.draggable;
+                            var hint = draggableThing.hint;
+                            var draggableDataItem = ds.getByUid(hint.data("uid")), //ds.getByUid(e.draggable.hint.data("uid")),
+                            dropTargetDataItem = ds.getByUid(e.dropTarget.data("uid"));
+                            internal.movePlaces(dropTargetDataItem, draggableDataItem, Positioning.BEFORE);
+                            internal.normalize();
+                            ds.sort({ field: "WebSequence", dir: "asc" });
+                            internal.menuService.menuItemService.dataSource.sync();
+                        }
+                    };
+                    $(internal.options.ids.listViewId).kendoDropTargetArea(dropTargetAreaOptions);
+                };
+                /*todo write a handler to allow the page to scroll with drag */
+                MenuOrderingControllerService.prototype.movePage = function (mouseMoveEvent) {
+                    var m = mouseMoveEvent;
+                };
+                MenuOrderingControllerService.prototype.movePlaces = function (target, moveItem, switchPosition) {
+                    switchPosition || (switchPosition = Positioning.BEFORE);
+                    var internal = this, ds = internal.menuService.menuItemService.dataSource, items = ds.view(), max = items.length - 1;
+                    var draggedItem = { id: moveItem.id, item: moveItem, webSesquence: moveItem.get("WebSequence"), position: items.indexOf(moveItem) };
+                    var droppedOnItem = { id: target.id, item: target, webSesquence: target.get("WebSequence"), position: items.indexOf(target) };
+                    var switchPositions = draggedItem.position - droppedOnItem.position;
+                    switchPositions *= switchPositions;
+                    if (switchPositions === 1) {
+                        moveItem.set("WebSequence", droppedOnItem.webSesquence);
+                        target.set("WebSequence", draggedItem.webSesquence);
+                    }
+                    else if (droppedOnItem.position === 0) {
+                        //move item to position 1
+                        var moveItemPosition = droppedOnItem.webSesquence / 2;
+                        moveItem.set("WebSequence", moveItemPosition);
+                    }
+                    else if (droppedOnItem.position === max) {
+                        //move item before or after last position
+                        var moveItemPosition = 0;
+                        switch (switchPosition) {
+                            case Positioning.BEFORE:
+                                moveItemPosition = droppedOnItem.webSesquence + items[droppedOnItem.position - 1];
+                                break;
+                            case Positioning.INTO:
+                                moveItemPosition = droppedOnItem.webSesquence * 2 + 100;
+                                break;
+                            case Positioning.AFTER:
+                                moveItemPosition = droppedOnItem.webSesquence * 2 + 100;
+                                break;
+                        }
+                        moveItemPosition = moveItemPosition / 2;
+                        draggedItem.item.set("WebSequence", moveItemPosition);
+                    }
+                    else {
+                        var fitBetweenItem = xIndex === 0 ? target : items[droppedOnItem.position - 1];
+                        if (Positioning.INTO === switchPosition && draggedItem.position < droppedOnItem.position) {
+                            fitBetweenItem = droppedOnItem.position === 0 ? droppedOnItem.item : items[droppedOnItem.position + 1];
+                        }
+                        //if (Positioning.INTO === switchPosition && draggedItem.position > droppedOnItem.position)
+                        //{
+                        //    fitBetweenItem = droppedOnItem.position === 0 ? droppedOnItem.item : items[droppedOnItem.position - 1]
+                        //}
+                        var xIndex = droppedOnItem.position;
+                        var zPosition = droppedOnItem.webSesquence + fitBetweenItem.get("WebSequence");
+                        zPosition = zPosition / 2;
+                        draggedItem.item.set("WebSequence", zPosition);
+                    }
+                };
+                MenuOrderingControllerService.prototype.normalize = function () {
+                    var internal = this, ds = internal.menuService.menuItemService.dataSource, view = ds.view();
+                    var start = 100;
+                    var linq = Enumerable.from(view);
+                    var group = linq
+                        .groupBy(function (x) { return x.Name; }, function (x) { return x; }, function (key, result) {
+                        return {
+                            key: key,
+                            items: result.toArray()
+                        };
+                    })
+                        .toArray();
+                    group.forEach(function (item) {
+                        //group should end up in the same order as the first element found for each key. 
+                        //ergo we can apply it sequentially. 
+                        item.items.forEach(function (menuItem) {
+                            menuItem.set("WebSequence", start);
+                        });
+                        start += 100;
+                    });
+                    //view.forEach((item: any, index, source) => {
+                    //    item.set("WebSequence", start);
+                    //    start += 100;
+                    //});
+                    internal.positionWindowViewModel.trigger("change");
+                    ds.trigger("change");
+                };
+                MenuOrderingControllerService.prototype.closeWindow = function (saveChanges) {
+                    var kendoWindow = $("#positionWindow").data("kendoWindow");
+                    var ds = this.menuService.menuItemService.dataSource;
+                    if (saveChanges) {
+                        ds.sync();
+                    }
+                    else {
+                        ds.cancelChanges();
+                    }
+                    kendoWindow.close();
+                };
+                MenuOrderingControllerService.prototype.displayWindow = function () {
+                    var internal = this, wrapper = $("#positionWindowWrapper");
+                    kendo.bind(wrapper, this.positionWindowViewModel);
+                    $(internal.options.ids.listViewId).on("click", ".k-button-edit-position", function (e) {
+                        e.preventDefault();
+                        var itemId = $(this).closest(".menu-item").data("id"), item = internal.menuService.menuItemService.findById(itemId), items = internal.menuService.menuItemService.dataSource.view(), vm = internal.positionWindowViewModel;
+                        var kendoWindows = $("#positionWindow").data("kendoWindow");
+                        vm.set("item", item);
+                        vm.set("itemName", item.DisplayName());
+                        vm.set("itemIndex", item.Index());
+                        vm.set("length", items.length);
+                        vm.set("index", item.Index());
+                        kendoWindows.open();
+                        kendoWindows.center();
+                    });
+                };
+                MenuOrderingControllerService.prototype.generateHint = function (element) {
+                    var hint = element.clone();
+                    hint.css({
+                        "width": element.width(),
+                        "height": element.height()
+                    });
+                    $(hint).css({ "border-color": "#600BA2", "border-width": "4px" });
+                    $(element).animate({ "opacity": 0.8 });
+                    //return hint;
+                };
+                MenuOrderingControllerService.prototype.initHubChanges = function () {
+                    var internal = this, hub = MyAndromeda.Hubs.StoreHub.GetInstance(internal.options.routeParameters);
+                    hub.bind(MyAndromeda.Hubs.StoreHub.MenuItemChangeEvent, function (context) {
+                        console.log("i have changes :)");
+                        console.log(context);
+                        internal.menuService.extendMenuItemData(context.EditedItems);
+                        internal.menuService.menuItemService.updateItems(context.EditedItems, true);
+                        internal.menuService.menuItemService.dataSource.sort({ field: "WebSequence", dir: "asc" });
+                    });
+                };
+                MenuOrderingControllerService.prototype.destroyDraggable = function (e) {
+                    var o = this;
+                    e.currentTarget.css("opacity", 1);
+                    e.currentTarget.removeClass("draggable");
+                    o.destroy();
+                };
+                MenuOrderingControllerService.prototype.init = function () {
+                    Services.menuFilterController.RESETFILTER = [{ field: "DisplayCategoryId", operator: "eq", value: -19232131 }];
+                    Services.menuFilterController.SORTFILTER = [{ field: "WebSequence", dir: "asc" }];
+                    this.menuService.init();
+                    this.menuService.menuItemService.dataSource.pageSize(1000);
+                    this.initListView();
+                    this.initListViewEvents();
+                    this.initHubChanges();
+                    this.displayWindow();
+                };
+                return MenuOrderingControllerService;
+            }());
+            Services.MenuOrderingControllerService = MenuOrderingControllerService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -8967,296 +9158,8 @@ var MyAndromeda;
                 };
                 MenuService.Name = "MenuService";
                 return MenuService;
-            })();
+            }());
             Services.MenuService = MenuService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            var menuFilterController = (function () {
-                function menuFilterController(filterIds, target) {
-                    this.filterIds = filterIds;
-                    this.target = target;
-                    this.viewModel = kendo.observable({
-                        ItemName: "",
-                        SelectedDisplayCategory: "",
-                        SelectedCategory1: "",
-                        SelectedCategory2: "",
-                        ShowGetStartedMessage: true,
-                        Filtered: false,
-                        FilteredBy: kendo.observable({
-                            Name: "",
-                            DisplayCategory: "",
-                            Category1: "",
-                            Category2: ""
-                        }),
-                        Sorted: false,
-                        SortedBy: ""
-                    });
-                }
-                //setup display category data
-                menuFilterController.prototype.InitDisplayCategoryDataSource = function () {
-                    var source = this.displayCategoryService.categories;
-                    this.displayCategoryDataSource = new kendo.data.DataSource({
-                        data: source
-                    });
-                    this.viewModel.set("DisplayCategory", this.displayCategoryDataSource);
-                    this.viewModel.set("SelectedDisplayCategory", null);
-                };
-                //setup category 1 data
-                menuFilterController.prototype.InitCategory1DataSource = function () {
-                    var source = this.category1Service.categories;
-                    this.category1DataSource = new kendo.data.DataSource({
-                        data: source
-                    });
-                    this.viewModel.set("Category1", this.category1DataSource);
-                };
-                //setup category 2 data
-                menuFilterController.prototype.InitCategory2DataSource = function () {
-                    var source = this.category2Service.categories;
-                    this.category2DataSource = new kendo.data.DataSource({
-                        data: source
-                    });
-                    this.viewModel.set("Category2", this.category2DataSource);
-                };
-                //setup all local data sources
-                menuFilterController.prototype.InitDataSources = function () {
-                    console.log("setting category data sources");
-                    this.InitDisplayCategoryDataSource();
-                    this.InitCategory1DataSource();
-                    this.InitCategory2DataSource();
-                };
-                menuFilterController.prototype.InitSearchBox = function () {
-                    var internal = this;
-                    this.itemSearchBox = $(this.filterIds.itemNameId);
-                };
-                menuFilterController.prototype.BindViewModel = function () {
-                    kendo.bind(this.filterIds.toolBarId, this.viewModel);
-                };
-                menuFilterController.prototype.InitDisplayCategoryAndEvents = function () {
-                    var internal = this;
-                    this.displayCategoryCombo = $(this.filterIds.displayCategoryId).data("kendoComboBox");
-                    this.displayCategoryCombo.bind("select", function (e) {
-                        internal.viewModel.set(menuFilterController.SHOWGETSTARTEDMESSAGE, false);
-                    });
-                };
-                menuFilterController.prototype.InitFields = function () {
-                    this.BindViewModel();
-                    this.InitSearchBox();
-                    this.InitDisplayCategoryAndEvents();
-                    this.category1Combo = $(this.filterIds.category1Id).data("kendoComboBox");
-                    this.category2Combo = $(this.filterIds.category2Id).data("kendoComboBox");
-                };
-                menuFilterController.prototype.buildFilterForMainList = function () {
-                    var filters = [];
-                    var values = {
-                        itemName: this.viewModel.get(menuFilterController.ITEMNAME).trim(),
-                        displayCategoryId: this.displayCategoryCombo.value(),
-                        category1Id: this.category1Combo.value(),
-                        category2Id: this.category2Combo.value()
-                    };
-                    if (values.itemName) {
-                        var nameFilters = {
-                            logic: "or",
-                            filters: [
-                                { field: "Name", operator: "contains", value: values.itemName },
-                                { field: "WebName", operator: "contains", value: values.itemName },
-                                { field: "WebDescription", operator: "contains", value: values.itemName }
-                            ]
-                        };
-                        filters.push(nameFilters);
-                    }
-                    //value needs to be the same as the query item. 
-                    if (typeof (values.displayCategoryId) !== "undefined" && values.displayCategoryId !== "") {
-                        filters.push({ field: "DisplayCategoryId", operator: "eq", value: parseInt(values.displayCategoryId) });
-                    }
-                    var category1Selected = typeof (values.category1Id) !== "undefined" && values.category1Id !== "";
-                    var category2Selected = typeof (values.category2Id) !== "undefined" && values.category2Id !== "";
-                    if (category1Selected) {
-                        filters.push({ field: "CategoryId1", operator: "eq", value: parseInt(values.category1Id) });
-                    }
-                    if (category2Selected) {
-                        filters.push({ field: "CategoryId2", operator: "eq", value: parseInt(values.category2Id) });
-                    }
-                    return filters;
-                };
-                menuFilterController.prototype.initFilterChanges = function () {
-                    var internal = this;
-                    $(this.filterIds.toolBarId).on("keyup change", function (e) {
-                        //if(internal.itemSearchBox.context.activeElement.value){
-                        //}
-                        var filters = internal.buildFilterForMainList();
-                        internal.target.filter(filters);
-                        internal.target.sort(menuFilterController.SORTFILTER);
-                    });
-                };
-                menuFilterController.prototype.initDisplayFilterAndSortMessageCue = function () {
-                    var internal = this;
-                    internal.target.bind("change", function (e) {
-                        var dsFilter = internal.target.filter(), dsSort = internal.target.sort(), vm = internal.viewModel;
-                        vm.set(menuFilterController.FILTERED, dsFilter && dsFilter.filters && dsFilter.filters.length > 0 && internal.target.data().length > 0);
-                        var filteredBy = vm.get(menuFilterController.FILTEREDBY);
-                        filteredBy.set("Name", internal.itemSearchBox.val());
-                        filteredBy.set("DisplayCategory", internal.displayCategoryCombo.text());
-                        filteredBy.set("Category1", internal.category1Combo.text());
-                        filteredBy.set("Category2", internal.category2Combo.text());
-                        var sorting = dsSort.length > 0;
-                        vm.set(menuFilterController.SORTED, sorting);
-                        vm.set(menuFilterController.SORTEDBY, sorting ? dsSort[0].field : "");
-                    });
-                };
-                menuFilterController.prototype.initFilterReset = function () {
-                    var internal = this;
-                    $(this.filterIds.resetId).on("click", function (e) {
-                        e.preventDefault();
-                        internal.viewModel.set(menuFilterController.DISPLAYCATEGORY, "");
-                        internal.viewModel.set("SelectedDisplayCategory", null);
-                        internal.viewModel.set(menuFilterController.CATEGORY1, "");
-                        internal.viewModel.set(menuFilterController.CATEGORY2, "");
-                        internal.viewModel.set(menuFilterController.ITEMNAME, "");
-                        internal.viewModel.set(menuFilterController.SHOWGETSTARTEDMESSAGE, true);
-                        internal.target.filter(menuFilterController.RESETFILTER);
-                    });
-                };
-                menuFilterController.prototype.init = function (displayCategoryService, category1Service, category2Service) {
-                    this.displayCategoryService = displayCategoryService;
-                    this.category1Service = category1Service;
-                    this.category2Service = category2Service;
-                    //create data sources from the data 
-                    this.InitDataSources();
-                    //create ui controls to manage the filters 
-                    this.InitFields();
-                    this.initFilterChanges();
-                    this.initFilterReset();
-                    this.initDisplayFilterAndSortMessageCue();
-                };
-                menuFilterController.ITEMNAME = "ItemName";
-                menuFilterController.DISPLAYCATEGORY = "SelectedDisplayCategory";
-                menuFilterController.CATEGORY1 = "SelectedCategory1";
-                menuFilterController.CATEGORY2 = "SelectedCategory2";
-                menuFilterController.SHOWGETSTARTEDMESSAGE = "ShowGetStartedMessage";
-                menuFilterController.FILTERED = "Filtered";
-                menuFilterController.FILTEREDBY = "FilteredBy";
-                menuFilterController.SORTED = "Sorted";
-                menuFilterController.SORTEDBY = "SortedBy";
-                menuFilterController.RESETFILTER = [];
-                menuFilterController.SORTFILTER = [];
-                return menuFilterController;
-            })();
-            Services.menuFilterController = menuFilterController;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-            });
-            var MenuItemService = (function () {
-                function MenuItemService(dataSource) {
-                    this.dataSource = dataSource;
-                    this.menuStatus = new Services.MenuStatus(dataSource);
-                }
-                //find elements based on the id
-                MenuItemService.prototype.findById = function (id) {
-                    return this.dataSource.get(id);
-                };
-                //find elements based on the name
-                MenuItemService.prototype.getRelatedItems = function (menuItems) {
-                    var internal = this;
-                    var data = internal.dataSource.data();
-                    //var filtered = data.filter((value: Models.IMenuItemObservable) => {
-                    //    var left = menuItems.filter((item) => {
-                    //        if (item.Id === value.Id) { return false; }
-                    //        if (item.Name === value.Name) { return true; }
-                    //    });
-                    //    return 
-                    //});
-                    var series = Enumerable.from(menuItems).selectMany(function (x) {
-                        return internal.dataSource.data().filter(function (value, index, array) {
-                            return value.Name == x.Name && value.Id !== x.Id;
-                        });
-                    }).toArray();
-                    return series;
-                };
-                MenuItemService.prototype.removeThumb = function (menuItem, filename) {
-                    var thumbs = menuItem.get("Thumbs");
-                    var thumb = thumbs.find(function (item, index, array) {
-                        return item.FileName === filename;
-                    });
-                    thumbs.remove(thumb);
-                };
-                MenuItemService.prototype.updateItems = function (menuItems, updateDataSource) {
-                    var internal = this;
-                    for (var i = 0; i < menuItems.length; i++) {
-                        var item = menuItems[i];
-                        var dataSourceItem = internal.findById(item.Id), dataItem = dataSourceItem;
-                        if (!dataSourceItem) {
-                            continue;
-                        }
-                        var acceptParams = {
-                            Name: item.Name,
-                            WebDescription: item.WebDescription,
-                            WebName: item.WebName,
-                            WebSequence: item.WebSequence,
-                            Prices: item.Prices
-                        };
-                        dataItem.accept(acceptParams);
-                        if (!updateDataSource) {
-                            dataItem.trigger("change");
-                        }
-                    }
-                    if (updateDataSource) {
-                        this.dataSource.trigger("change");
-                    }
-                    //this.dataSource.trigger("change");
-                };
-                MenuItemService.prototype.anyDirtyItems = function () {
-                    var internal = this;
-                    return this.dataSource.hasChanges();
-                };
-                return MenuItemService;
-            })();
-            Services.MenuItemService = MenuItemService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            var CategoryService = (function () {
-                function CategoryService(categories) {
-                    this.categories = categories;
-                }
-                CategoryService.prototype.findById = function (id) {
-                    for (var i = 0; i < this.categories.length; i++) {
-                        var c = this.categories[i];
-                        if (c.Id === id) {
-                            return c;
-                        }
-                    }
-                    return null;
-                };
-                CategoryService.prototype.findCategoriesByParentId = function (id) {
-                    var elements = $.grep(this.categories, function (category, index) {
-                        return category.ParentId === id;
-                    });
-                    return elements;
-                };
-                return CategoryService;
-            })();
-            Services.CategoryService = CategoryService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -9308,10 +9211,352 @@ var MyAndromeda;
                 MenuStatus.CanPublishField = "CanPublish";
                 MenuStatus.MessageField = "Message";
                 return MenuStatus;
-            })();
+            }());
             Services.MenuStatus = MenuStatus;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(PublishingService.Name, [
+                    function () {
+                        return new PublishingService({
+                            publishPanel: {
+                                mainButtonId: "#doesnotexist",
+                                publishPanelId: "#publishPanel",
+                                publishUrlPath: Menu.Settings.Routes.Publish
+                            }
+                        }, null);
+                    }
+                ]);
+            });
+            var PublishingService = (function () {
+                function PublishingService(options, menuservice) {
+                    var _this = this;
+                    var internal = this;
+                    this.options = options;
+                    this.menuService = menuservice;
+                    this.model = kendo.observable({
+                        publishThumbnails: true,
+                        publishMenu: true,
+                        publishNow: true,
+                        publishLater: false,
+                        publishOn: new Date(),
+                        minDate: new Date(),
+                        cancel: function () {
+                            $(options.publishPanel.publishPanelId).kendoMobileModalView("close");
+                        },
+                        publishNowClick: function () {
+                            internal.publishNow(true, true, new Date());
+                        },
+                        publishLaterClick: function () {
+                            var publishThumbs = internal.model.get("publishThumbnails"), publishMenu = internal.model.get("publishMenu"), publishOn = internal.model.get("publishOn");
+                            internal.publishNow(publishMenu, publishThumbs, publishOn);
+                        },
+                        publishThumbnailsClick: function () {
+                            internal.publishNow(false, true, new Date());
+                        }
+                    });
+                    this.model.bind("change", function (e) {
+                        if (e.field !== 'publishNow')
+                            return;
+                        var now = _this.model.get("publishNow");
+                        _this.model.set("publishLater", now === "later");
+                    });
+                    this.init();
+                }
+                PublishingService.prototype.publishNow = function (menu, thumbnails, date) {
+                    var internal = this, data = {
+                        menu: menu,
+                        thumbnails: thumbnails,
+                        dateUtc: null
+                    };
+                    if (this.menuService !== null && this.menuService.menuItemService !== null && this.menuService.menuItemService.anyDirtyItems()) {
+                        internal.closeWindow();
+                        alert("Please save the items before publish");
+                        return;
+                    }
+                    if (date > new Date()) {
+                        //toJson will change a local date time to UTC format that is accepted by the json parser in .NET
+                        data.dateUtc = date.toJSON();
+                    }
+                    $.ajax({
+                        url: internal.options.publishPanel.publishUrlPath,
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        cache: false,
+                        data: JSON.stringify(data),
+                        success: function (data) {
+                            internal.closeWindow();
+                        }
+                    });
+                };
+                PublishingService.prototype.openWindow = function () {
+                    var options = this.options.publishPanel;
+                    $(options.publishPanelId).kendoMobileModalView("open");
+                };
+                PublishingService.prototype.closeWindow = function () {
+                    var options = this.options.publishPanel;
+                    $(options.publishPanelId).kendoMobileModalView("close");
+                };
+                PublishingService.prototype.init = function () {
+                    var internal = this, options = this.options.publishPanel;
+                    $(options.publishPanelId).kendoMobileModalView();
+                    kendo.bind(options.publishPanelId, this.model);
+                    $(options.mainButtonId).on("click", function (e) {
+                        e.preventDefault();
+                        internal.openWindow();
+                    });
+                };
+                PublishingService.Name = "PublishingService";
+                return PublishingService;
+            }());
+            Services.PublishingService = PublishingService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(MenuToppingsFilterService.Name, [
+                    Services.MenuToppingsService.Name,
+                    function (menuToppingsService) {
+                        var instnance = new MenuToppingsFilterService(menuToppingsService);
+                        return instnance;
+                    }
+                ]);
+            });
+            var MenuToppingsFilterService = (function () {
+                function MenuToppingsFilterService(menuToppingsService) {
+                    var _this = this;
+                    this.menuToppingsService = menuToppingsService;
+                    this.dataSource = this.menuToppingsService.GetDataSource();
+                    this.ResetFiltersObservable = new Rx.Subject();
+                    this.model = {
+                        Name: "",
+                        ResetFilters: function () { _this.ResetFilters(); }
+                    };
+                }
+                MenuToppingsFilterService.prototype.ChangeNameFilter = function (name) {
+                    this.model.Name = name;
+                    this.Filter();
+                };
+                MenuToppingsFilterService.prototype.GetName = function () {
+                    return this.model.Name;
+                };
+                MenuToppingsFilterService.prototype.GetNameFilter = function () {
+                    var filter = {
+                        field: "Name",
+                        operator: "contains",
+                        value: this.model.Name
+                    };
+                    return filter;
+                };
+                MenuToppingsFilterService.prototype.Filter = function () {
+                    var filters = [];
+                    if (this.model.Name !== "") {
+                        var nameFilter = this.GetNameFilter();
+                        filters.push(nameFilter);
+                    }
+                    this.dataSource.filter(filters);
+                };
+                MenuToppingsFilterService.prototype.ResetFilters = function () {
+                    this.dataSource.filter([]);
+                    this.ResetFiltersObservable.onNext(true);
+                };
+                MenuToppingsFilterService.Name = "MenuToppingsFilterService ";
+                return MenuToppingsFilterService;
+            }());
+            Services.MenuToppingsFilterService = MenuToppingsFilterService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Services;
+        (function (Services) {
+            Menu.Angular.ServicesInitilizations.push(function (app) {
+                app.factory(MenuToppingsService.Name, [
+                    function () {
+                        var instnance = new MenuToppingsService();
+                        return instnance;
+                    }
+                ]);
+            });
+            var MenuToppingsService = (function () {
+                function MenuToppingsService() {
+                }
+                MenuToppingsService.prototype.GetDataSource = function () {
+                    var internal = this;
+                    if (this.dataSource) {
+                        return this.dataSource;
+                    }
+                    var routes = Menu.Settings.Routes.Toppings;
+                    var dataSourceGroup = [
+                        { field: "Name", dir: "" }
+                    ];
+                    this.dataSource = new kendo.data.DataSource({
+                        type: "aspnetmvc-ajax",
+                        batch: true,
+                        pageSize: 10,
+                        //group: dataSourceGroup,
+                        transport: {
+                            read: { url: routes.List },
+                            update: { url: routes.Update }
+                        },
+                        schema: {
+                            data: "Data",
+                            total: "Total",
+                            errors: "Errors",
+                            model: {
+                                id: "Id",
+                                UpdateAllDelivery: function (confirm) {
+                                    var item = this;
+                                    item.ToppingVarients.forEach(function (varient) {
+                                        var c = item.get("CollectionPrice"), d = item.get("DeliveryPrice"), s = item.get("DineInPrice");
+                                        varient.set("DeliveryPrice", d);
+                                        varient.trigger("change");
+                                    });
+                                    item.trigger("change");
+                                },
+                                UpdateAllCollection: function (confirm) {
+                                    var item = this;
+                                    item.ToppingVarients.forEach(function (varient) {
+                                        var c = item.get("CollectionPrice");
+                                        varient.set("CollectionPrice", c);
+                                        varient.trigger("change");
+                                    });
+                                },
+                                UpdateAllDineIn: function (confirm) {
+                                    var item = this;
+                                    item.ToppingVarients.forEach(function (varient) {
+                                        var s = item.get("DineInPrice");
+                                        varient.set("DineInPrice", s);
+                                        varient.trigger("change");
+                                    });
+                                },
+                                UpdateAllToppingPrices: function (confirm) {
+                                    var item = this;
+                                    console.log(item);
+                                    item.ToppingVarients.forEach(function (varient) {
+                                        var c = item.get("CollectionPrice"), d = item.get("DeliveryPrice"), s = item.get("DineInPrice");
+                                        varient.set("CollectionPrice", c);
+                                        varient.set("DeliveryPrice", d);
+                                        varient.set("DineInPrice", s);
+                                        varient.trigger("change");
+                                    });
+                                    item.trigger("change");
+                                },
+                                ColorStatus: function () {
+                                    var item = this;
+                                    if (this.dirty) {
+                                        return "#F29A00";
+                                    }
+                                    return "#A4E400";
+                                }
+                            }
+                        }
+                    });
+                    return this.dataSource;
+                };
+                MenuToppingsService.prototype.FindTopppings = function (predicate) {
+                    var data = this.dataSource.data();
+                    var filtered = data.filter(predicate);
+                    return filtered;
+                };
+                MenuToppingsService.Name = "ToppingsService";
+                return MenuToppingsService;
+            }());
+            Services.MenuToppingsService = MenuToppingsService;
+        })(Services = Menu.Services || (Menu.Services = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Menu;
+    (function (Menu) {
+        var Settings;
+        (function (Settings) {
+            var Routes = (function () {
+                function Routes() {
+                }
+                Routes.Toppings = {
+                    List: "",
+                    Update: ""
+                };
+                Routes.MenuItems = {
+                    ListMenuItems: "",
+                    SaveMenuItems: "",
+                    SaveImageUrl: "",
+                    RemoveImageUrl: "",
+                };
+                Routes.Ftp = {
+                    DownloadMenu: "",
+                    UploadMenu: "",
+                    Version: "",
+                    Delete: ""
+                };
+                Routes.Publish = "";
+                return Routes;
+            }());
+            Settings.Routes = Routes;
+            ;
+            ;
+            ;
+        })(Settings = Menu.Settings || (Menu.Settings = {}));
+    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reporting;
+    (function (Reporting) {
+        var Models;
+        (function (Models) {
+            var Result = (function () {
+                function Result(key, data) {
+                    this.key = key;
+                    if (data instanceof kendo.data.DataSource) {
+                        this.data = data;
+                    }
+                    else {
+                        this.CreateDataSource(data);
+                    }
+                }
+                Result.prototype.CreateDataSource = function (data) {
+                    var model = { data: [] };
+                    if (!data) {
+                        throw new Error("Data is missing");
+                    }
+                    if (data.length) {
+                        model.data = data;
+                    }
+                    else if (data.data) {
+                        //suggests that data is a data source scaffold instead. 
+                        model = data;
+                    }
+                    this.data = new kendo.data.DataSource(model);
+                };
+                Result.prototype.Bind = function (eventName, handler) {
+                    this.data.bind(eventName, handler);
+                };
+                return Result;
+            }());
+            Models.Result = Result;
+        })(Models = Reporting.Models || (Reporting.Models = {}));
+    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -9465,2121 +9710,10 @@ var MyAndromeda;
                 chainDailySummaryService.prototype.fetch = function () {
                 };
                 return chainDailySummaryService;
-            })();
+            }());
             Services.chainDailySummaryService = chainDailySummaryService;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reporting;
-    (function (Reporting) {
-        var Models;
-        (function (Models) {
-            var Result = (function () {
-                function Result(key, data) {
-                    this.key = key;
-                    if (data instanceof kendo.data.DataSource) {
-                        this.data = data;
-                    }
-                    else {
-                        this.CreateDataSource(data);
-                    }
-                }
-                Result.prototype.CreateDataSource = function (data) {
-                    var model = { data: [] };
-                    if (!data) {
-                        throw new Error("Data is missing");
-                    }
-                    if (data.length) {
-                        model.data = data;
-                    }
-                    else if (data.data) {
-                        //suggests that data is a data source scaffold instead. 
-                        model = data;
-                    }
-                    this.data = new kendo.data.DataSource(model);
-                };
-                Result.prototype.Bind = function (eventName, handler) {
-                    this.data.bind(eventName, handler);
-                };
-                return Result;
-            })();
-            Models.Result = Result;
-        })(Models = Reporting.Models || (Reporting.Models = {}));
-    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Controllers;
-        (function (Controllers) {
-            Menu.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(MenuItemsController.Name, [
-                    '$scope',
-                    function ($scope) {
-                        MenuItemsController.OnLoad($scope);
-                        MenuItemsController.SetupScope($scope);
-                    }
-                ]);
-            });
-            var MenuItemsController = (function () {
-                function MenuItemsController() {
-                }
-                MenuItemsController.OnLoad = function ($scope) {
-                    $scope.$on('$destroy', function () { });
-                };
-                MenuItemsController.SetupScope = function ($scope) {
-                    $scope.$on('$destroy', function () { });
-                };
-                MenuItemsController.Template = "Templates/MenuItems";
-                MenuItemsController.Name = "MenuItemsController";
-                MenuItemsController.Route = "/MenuItems";
-                return MenuItemsController;
-            })();
-            Controllers.MenuItemsController = MenuItemsController;
-        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Settings;
-        (function (Settings) {
-            var Routes = (function () {
-                function Routes() {
-                }
-                Routes.Toppings = {
-                    List: "",
-                    Update: ""
-                };
-                Routes.MenuItems = {
-                    ListMenuItems: "",
-                    SaveMenuItems: "",
-                    SaveImageUrl: "",
-                    RemoveImageUrl: "",
-                };
-                Routes.Ftp = {
-                    DownloadMenu: "",
-                    UploadMenu: "",
-                    Version: "",
-                    Delete: ""
-                };
-                Routes.Publish = "";
-                return Routes;
-            })();
-            Settings.Routes = Routes;
-            ;
-            ;
-            ;
-        })(Settings = Menu.Settings || (Menu.Settings = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Controllers;
-        (function (Controllers) {
-            Menu.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(MenuNavigationController.Name, [
-                    '$scope',
-                    Menu.Services.MenuNavigationService.Name,
-                    Menu.Services.PublishingService.Name,
-                    function ($scope, menuNavigationService, publishingService) {
-                        Menu.Logger.Notify("Menu navigation controller loaded");
-                        MenuNavigationController.ToolbarOptions($scope, publishingService);
-                        MenuNavigationController.OnLoad($scope, menuNavigationService);
-                    }
-                ]);
-            });
-            var MenuNavigationController = (function () {
-                function MenuNavigationController() {
-                }
-                MenuNavigationController.ToolbarOptions = function ($scope, publishingService) {
-                    publishingService.init();
-                    $scope.Publish = function () { publishingService.openWindow(); };
-                    $scope.ToolbarOptions = {
-                        items: [
-                            //{ type: "button", text: "Menu Items" },
-                            //{ type: "button", text: "Menu Sequencing" },
-                            //{ type: "button", text: "Toppings" },
-                            //{ type: "separator" },
-                            { type: "button", text: "Publish", click: function () { publishingService.openWindow(); } }
-                        ]
-                    };
-                };
-                MenuNavigationController.OnLoad = function ($scope, menuNavigationService) {
-                    $scope.$on("$destroy", function () { });
-                };
-                MenuNavigationController.Name = "MenuNavigationController";
-                return MenuNavigationController;
-            })();
-            Controllers.MenuNavigationController = MenuNavigationController;
-        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Controllers;
-        (function (Controllers) {
-            Menu.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(ToppingsFilterController.Name, [
-                    '$scope',
-                    '$timeout',
-                    Menu.Services.MenuToppingsService.Name,
-                    Menu.Services.MenuToppingsFilterService.Name,
-                    function ($scope, $timeout, menuToppingsService, menuToppingsFilterService) {
-                        Menu.Logger.Debug("Setting up ToppingsFilterController");
-                        ToppingsFilterController.OnLoad($scope);
-                        ToppingsFilterController.SetupScope($scope, $timeout, menuToppingsFilterService);
-                        Menu.Logger.Debug("Set up ToppingsFilterController");
-                    }
-                ]);
-            });
-            var ToppingsFilterController = (function () {
-                function ToppingsFilterController() {
-                }
-                ToppingsFilterController.OnLoad = function ($scope) {
-                    Menu.Logger.Notify("Toppings Filter Controller Loaded");
-                };
-                ToppingsFilterController.SetupScope = function ($scope, $timeout, menuToppingsFilterService) {
-                    $scope.Name = menuToppingsFilterService.GetName();
-                    $scope.$watch("Name", function (newValue, olderValue) {
-                        Menu.Logger.Debug("ToppingsFilterController : Name changed");
-                        if (newValue === olderValue) {
-                            return;
-                        }
-                        menuToppingsFilterService.ChangeNameFilter(newValue);
-                    });
-                    $scope.ResetFilters = function () {
-                        Menu.Logger.Debug("Reset button clicked");
-                        menuToppingsFilterService.ResetFilters();
-                    };
-                    var observable = menuToppingsFilterService.ResetFiltersObservable.subscribe(function () {
-                        $timeout(function () {
-                            $scope.Name = "";
-                        }, 0);
-                    });
-                    $scope.$on("$destroy", function () {
-                        observable.dispose();
-                    });
-                };
-                ToppingsFilterController.Name = "ToppingsFilterController";
-                return ToppingsFilterController;
-            })();
-            Controllers.ToppingsFilterController = ToppingsFilterController;
-        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(MenuToppingsFilterService.Name, [
-                    Services.MenuToppingsService.Name,
-                    function (menuToppingsService) {
-                        var instnance = new MenuToppingsFilterService(menuToppingsService);
-                        return instnance;
-                    }
-                ]);
-            });
-            var MenuToppingsFilterService = (function () {
-                function MenuToppingsFilterService(menuToppingsService) {
-                    var _this = this;
-                    this.menuToppingsService = menuToppingsService;
-                    this.dataSource = this.menuToppingsService.GetDataSource();
-                    this.ResetFiltersObservable = new Rx.Subject();
-                    this.model = {
-                        Name: "",
-                        ResetFilters: function () { _this.ResetFilters(); }
-                    };
-                }
-                MenuToppingsFilterService.prototype.ChangeNameFilter = function (name) {
-                    this.model.Name = name;
-                    this.Filter();
-                };
-                MenuToppingsFilterService.prototype.GetName = function () {
-                    return this.model.Name;
-                };
-                MenuToppingsFilterService.prototype.GetNameFilter = function () {
-                    var filter = {
-                        field: "Name",
-                        operator: "contains",
-                        value: this.model.Name
-                    };
-                    return filter;
-                };
-                MenuToppingsFilterService.prototype.Filter = function () {
-                    var filters = [];
-                    if (this.model.Name !== "") {
-                        var nameFilter = this.GetNameFilter();
-                        filters.push(nameFilter);
-                    }
-                    this.dataSource.filter(filters);
-                };
-                MenuToppingsFilterService.prototype.ResetFilters = function () {
-                    this.dataSource.filter([]);
-                    this.ResetFiltersObservable.onNext(true);
-                };
-                MenuToppingsFilterService.Name = "MenuToppingsFilterService ";
-                return MenuToppingsFilterService;
-            })();
-            Services.MenuToppingsFilterService = MenuToppingsFilterService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-///// <reference path="../../Scripts/typings/kendo/kendo.all.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reporting;
-    (function (Reporting) {
-        var Services;
-        (function (Services) {
-            "use strict";
-            var ReportingServiceWatcher = (function () {
-                function ReportingServiceWatcher(options) {
-                    var internal = this;
-                    this.options = options;
-                    if (!options.id) {
-                        throw new Error("Requires 'id' for the view model to bind to the element");
-                    }
-                    if (options.id) {
-                        this.element = $(options.id);
-                    }
-                    if (options.results) {
-                        this.results = options.results;
-                    }
-                    else {
-                        this.results = [];
-                    }
-                    this.viewModel = kendo.observable({
-                        resultCount: 0,
-                        max: new Date()
-                    });
-                    this.viewModel.bind("change", this.viewModelChagned);
-                }
-                ReportingServiceWatcher.prototype.viewModelChagned = function (e) {
-                    console.log("change on field :" + e.field);
-                };
-                ReportingServiceWatcher.prototype.Init = function () {
-                    var internal = this, element = $(this.element);
-                    if (this.results && this.results.length > 0) {
-                        this.results.forEach(function (item) {
-                            internal.AddResultToViewModel(item.key, item);
-                        });
-                    }
-                    if (!element || element.length == 0) {
-                        throw new Error("the element is not found:" + this.options.id);
-                    }
-                    //kendo.bind(element[0], this.viewModel);
-                    element.data("ReportingService", this);
-                    this.SetupChangeQueryOptions();
-                };
-                ReportingServiceWatcher.prototype.AddResult = function (key, result) {
-                    //already the type we want
-                    if (result instanceof Reporting.Models.Result) {
-                        this.AddResultToViewModel(key, result);
-                    }
-                    else {
-                        result = new Reporting.Models.Result(key, result);
-                        this.AddResultToViewModel(key, result);
-                    }
-                    return result;
-                };
-                ReportingServiceWatcher.prototype.TickAction = function () {
-                    var value = new Date();
-                    this.viewModel.set("today", value);
-                };
-                ReportingServiceWatcher.prototype.Tick = function () {
-                    var internal = this;
-                    this.liveUpdate = setInterval(function () {
-                        internal.TickAction();
-                    }, 1000);
-                };
-                ReportingServiceWatcher.prototype.StopTick = function () {
-                    clearInterval(this.liveUpdate);
-                };
-                ReportingServiceWatcher.prototype.SetupChangeQueryOptions = function () {
-                    var internal = this;
-                    $(this.element).on("click", ".k-button-change-date", function () {
-                        alert("change");
-                    });
-                };
-                ReportingServiceWatcher.prototype.Get = function (key) {
-                    return this.viewModel.get(key);
-                };
-                ReportingServiceWatcher.prototype.Set = function (key, value) {
-                    this.viewModel.set(key, value);
-                };
-                ReportingServiceWatcher.prototype.Bind = function (eventName, handler) {
-                    this.viewModel.bind(eventName, handler);
-                };
-                ReportingServiceWatcher.prototype.AddResultToViewModel = function (key, result) {
-                    var vm = this.viewModel;
-                    this.results.push(result);
-                    vm.set(key, result);
-                    vm.set("resultCount", this.results.length);
-                };
-                return ReportingServiceWatcher;
-            })();
-            Services.ReportingServiceWatcher = ReportingServiceWatcher;
-        })(Services = Reporting.Services || (Reporting.Services = {}));
-    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var GridExport;
-    (function (GridExport) {
-        var Services;
-        (function (Services) {
-            var KendoGridExcelExporter = (function () {
-                function KendoGridExcelExporter(options) {
-                    this.options = options;
-                }
-                KendoGridExcelExporter.prototype.getGrid = function () {
-                    return $(this.options.gridSelector).data("kendoGrid");
-                };
-                KendoGridExcelExporter.prototype.setupExcelEvents = function () {
-                    var internal = this;
-                    $(this.options.downloadSelector).on("click", function (e) {
-                        var grid = internal.getGrid();
-                        var currentGroup = grid.dataSource.group();
-                        if (currentGroup && currentGroup.length > 0) {
-                            alert(KendoGridExcelExporter.notSurportedMessage);
-                            e.preventDefault();
-                            return;
-                        }
-                        internal.exportExcel();
-                    });
-                    //ignore this.
-                    $(".k-button-show-orderType-then-payType").on("click", function (e) {
-                        var grid = internal.getGrid();
-                        var currentGroup = grid.dataSource.group();
-                        if (currentGroup && currentGroup.length > 0) {
-                            alert(KendoGridExcelExporter.alreadyGroupedItems);
-                            e.preventDefault();
-                            return;
-                        }
-                        grid.dataSource.group({
-                            field: "PayType", dir: "asc", aggregates: [
-                                { field: "PayType", aggregate: "count" },
-                                { field: "FinalPrice", aggregate: "min" },
-                                { field: "FinalPrice", aggregate: "max" },
-                                { field: "FinalPrice", aggregate: "sum" },
-                                { field: "FinalPrice", aggregate: "average" }
-                            ]
-                        });
-                    });
-                };
-                KendoGridExcelExporter.prototype.exportExcel = function () {
-                    var internal = this, grid = this.getGrid();
-                    var schemaTruncated = grid.columns.map(function (column, index) {
-                        return {
-                            title: column.title,
-                            field: column.field
-                        };
-                    });
-                    var title = this.options.title, model = JSON.stringify(schemaTruncated), data = JSON.stringify(grid.dataSource.view());
-                    //get the the pager 
-                    $(this.options.titleSelector).val(title);
-                    $(this.options.modelSelector).val(model);
-                    $(this.options.dataSelector).val(data);
-                };
-                KendoGridExcelExporter.prototype.init = function () {
-                    this.setupExcelEvents();
-                };
-                KendoGridExcelExporter.notSurportedMessage = "Please remove all groups before exporting. This feature is not supported.";
-                KendoGridExcelExporter.alreadyGroupedItems = "There the grid is already grouped by an item";
-                return KendoGridExcelExporter;
-            })();
-            Services.KendoGridExcelExporter = KendoGridExcelExporter;
-        })(Services = GridExport.Services || (GridExport.Services = {}));
-    })(GridExport = MyAndromeda.GridExport || (MyAndromeda.GridExport = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hubs;
-    (function (Hubs) {
-        var StoreHub = (function () {
-            function StoreHub(options) {
-                this.menuItemChangeEvents = [];
-                this.options = options;
-                this.connect();
-                if (StoreHub._storeHubInstance) {
-                    throw Error("The class has already been initialized. Use StoreHub.GetInstance");
-                }
-                var hubs = this.myAndromedaHubConnection.hubConnection.proxies, menuHub = hubs.storehub;
-                this.eventMap = {};
-                this.menuHub = menuHub;
-                this.setupEvents();
-            }
-            StoreHub.GetInstance = function (options) {
-                MyAndromeda.Logger.Notify("Get Store Hub");
-                if (StoreHub._storeHubInstance) {
-                    return StoreHub._storeHubInstance;
-                }
-                StoreHub._storeHubInstance = new StoreHub(options);
-                return StoreHub._storeHubInstance;
-            };
-            StoreHub.prototype.connect = function () {
-                this.myAndromedaHubConnection = Hubs.MyAndromedaHubConnection.GetInstance(this.options);
-                this.myAndromedaHubConnection.connect();
-            };
-            StoreHub.prototype.setupEvents = function () {
-                var internal = this;
-                this.menuHub.client.user = function (user) {
-                    internal.user = user;
-                    StoreHub.log("User:" + internal.user.Username);
-                };
-                this.menuHub.client.transactionLog = function (message) {
-                    if ($("#MenuFtpTransactionLog").length > 0) {
-                        $("#MenuFtpTransactionLog").append("<div>" + message + "</div>");
-                    }
-                };
-                this.menuHub.client.getStoreMenuVersion = function (data) {
-                    StoreHub.log("GetStoreMenuVersion");
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.ping = function (data) {
-                    StoreHub.log(data);
-                };
-                /* valid changes have been sent from the server */
-                this.menuHub.client.updateLocalItems = function (data) {
-                    StoreHub.log("local items need changing?");
-                    StoreHub.log(data);
-                    internal.menuItemChangeEvents.forEach(function (value, index) {
-                        value(data);
-                    });
-                };
-                this.menuHub.client.logFtp = function (data) {
-                    StoreHub.log("logftp");
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.storeInfo = function (data) {
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.menuInfo = function (data) {
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.onDebug = this.createEventMapping("onDebug");
-                this.menuHub.client.onNotifierDebug = this.createEventMapping("onNotifierDebug");
-                this.menuHub.client.onError = this.createEventMapping("onError");
-                this.menuHub.client.onNotifierError = this.createEventMapping("onNotifierError");
-                this.menuHub.client.onNotifyMail = this.createEventMapping("onNotifyMail");
-                this.menuHub.client.onNotify = this.createEventMapping("onNotify");
-                this.menuHub.client.onNotifierNotify = this.createEventMapping("onNotifierNotify");
-                this.menuHub.client.onNotifierSuccess = this.createEventMapping("onNotifierSuccess");
-                this.menuHub.client.checkingDatabaseEvent = function (data) {
-                    StoreHub.log("1. checkingDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.downloadingDatabaseEvent = function (data) {
-                    StoreHub.log("2. downloadingDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.downloadedDatabaseEvent = function (data) {
-                    StoreHub.log("3. downloadingDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                this.menuHub.client.extractedDatabaseEvent = function (data) {
-                    StoreHub.log("4. extractedDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                //opened a connection to both to compare altered data and versions
-                this.menuHub.client.comparingDatabaseEvent = function (data) {
-                    StoreHub.log("5. comparingDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                //database altered or version number is the same or lower 
-                this.menuHub.client.notChangedDatabaseEvent = function (data) {
-                    StoreHub.log("5.1  notChangedDatabaseEvent");
-                    StoreHub.log(data);
-                };
-                //database is newer - taking the ftp one. 
-                this.menuHub.client.copiedDatabaseEvent = function (data) {
-                    StoreHub.log("5.2. copiedDatabaseEvent");
-                };
-            };
-            StoreHub.prototype.createEventMapping = function (key) {
-                this.eventMap[key] = new Array();
-                var internal = this, action = function (data) {
-                    var dispatch = internal.eventMap[key];
-                    dispatch.forEach(function (listener) {
-                        listener(data);
-                    });
-                };
-                return action;
-            };
-            StoreHub.log = function (data) {
-                if (console && console.log) {
-                    try {
-                        console.log(data);
-                    }
-                    catch (e) { }
-                }
-            };
-            StoreHub.prototype.bind = function (types, listener) {
-                var _this = this;
-                if (types === StoreHub.MenuItemChangeEvent) {
-                    this.menuItemChangeEvents.push(listener);
-                    return;
-                }
-                types.split(" ").forEach(function (type) {
-                    var collection = _this.eventMap[type];
-                    if (collection) {
-                        collection.push(listener);
-                    }
-                    else {
-                        StoreHub.log("There is no type: " + type + " to bind to");
-                    }
-                });
-            };
-            StoreHub.prototype.getStoreMenuVersion = function (handler) {
-                this.menuHub.server.getStoreMenuVersion().done(function (data) {
-                    handler(data);
-                });
-            };
-            StoreHub.MenuItemChangeEvent = "MenuItemChangeEvent";
-            return StoreHub;
-        })();
-        Hubs.StoreHub = StoreHub;
-    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hubs;
-    (function (Hubs) {
-        var Services;
-        (function (Services) {
-            var MenuHubService = (function () {
-                function MenuHubService(options) {
-                    var internal = this;
-                    this.options = options;
-                    this.hub = Hubs.StoreHub.GetInstance(options); //new StoreHub(options);
-                    this.viewModel = kendo.observable({
-                        siteName: "",
-                        menuVersion: "",
-                        lastUpdated: "",
-                        updates: []
-                    });
-                }
-                MenuHubService.prototype.init = function () {
-                    kendo.bind(this.options.id, this.viewModel);
-                };
-                return MenuHubService;
-            })();
-            Services.MenuHubService = MenuHubService;
-        })(Services = Hubs.Services || (Hubs.Services = {}));
-    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hubs;
-    (function (Hubs) {
-        var MyAndromedaHubConnection = (function () {
-            function MyAndromedaHubConnection(options) {
-                this.options = options;
-                this.connect();
-            }
-            MyAndromedaHubConnection.GetInstance = function (options) {
-                if (MyAndromedaHubConnection._instance) {
-                    return MyAndromedaHubConnection._instance;
-                }
-                return (MyAndromedaHubConnection._instance = new MyAndromedaHubConnection(options));
-            };
-            MyAndromedaHubConnection.prototype.connect = function () {
-                MyAndromeda.Logger.Notify("Hub: Connect called");
-                if (this.connected) {
-                    MyAndromeda.Logger.Notify("already connected");
-                    return;
-                }
-                if (this.connecting) {
-                    MyAndromeda.Logger.Notify("already connecting");
-                    return;
-                }
-                if (this.setup) {
-                    MyAndromeda.Logger.Notify("already setup");
-                    return;
-                }
-                $.connection.hub.logging = true;
-                var internal = this, hubConnection = $.connection.hub;
-                //if (this.hubConnection)
-                //{
-                //    return this.hubConnection;
-                //}
-                this.hubConnection = hubConnection;
-                //setup route parameters for MyAndromeda 
-                if (!this.setupQueryString()) {
-                    return hubConnection;
-                }
-                ;
-                hubConnection.starting(function () {
-                    internal.connecting = true;
-                    MyAndromedaHubConnection.log("hub connection starting");
-                });
-                var transportType = 
-                //"webSockets";
-                "longPolling";
-                //if(document.URL.indexOf("localhost") >= 0){
-                //    transportType = "webSockets";
-                //}
-                hubConnection.start({
-                    //transport: transportType //['webSockets', 'longPolling'] 
-                    transport: transportType
-                }).done(function () {
-                    internal.connecting = false;
-                    internal.connected = true;
-                    MyAndromedaHubConnection.log("hub connection started!");
-                });
-                this.setup = true;
-                return hubConnection;
-            };
-            MyAndromedaHubConnection.prototype.setupQueryString = function () {
-                var connection = this.hubConnection;
-                if (!this.options.chainId) {
-                    return false;
-                }
-                connection.qs = {
-                    'externalSiteId': this.options.externalSiteId,
-                    'chainId': this.options.chainId
-                };
-                return true;
-            };
-            MyAndromedaHubConnection.log = function (data) {
-                if (console && console.log) {
-                    try {
-                        console.log(data);
-                    }
-                    catch (e) { }
-                }
-            };
-            return MyAndromedaHubConnection;
-        })();
-        Hubs.MyAndromedaHubConnection = MyAndromedaHubConnection;
-    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            Menu.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(MenuNavigationService.Name, [
-                    function () {
-                        var instance = new MenuNavigationService();
-                        return instance;
-                    }
-                ]);
-            });
-            var MenuNavigationService = (function () {
-                function MenuNavigationService() {
-                }
-                MenuNavigationService.Name = "MenuNavigationService";
-                return MenuNavigationService;
-            })();
-            Services.MenuNavigationService = MenuNavigationService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(PickThemeController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    WebOrdering.Services.WebOrderingThemeWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService, webOrderingThemeWebApiService) {
-                        PickThemeController.OnLoad($scope, $timeout, webOrderingWebApiService, webOrderingThemeWebApiService);
-                        PickThemeController.SetupScope($scope);
-                        PickThemeController.SetupSelection($scope, webOrderingWebApiService);
-                        PickThemeController.SetupCurrentSelection($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var PickThemeController = (function () {
-                function PickThemeController() {
-                }
-                PickThemeController.OnLoad = function ($scope, $timout, webOrderingWebApiService, webOrderingThemeWebApiService) {
-                    var isThemesBusySubscription = webOrderingThemeWebApiService.IsBusy.subscribe(function (value) {
-                        $timout(function () {
-                            $scope.IsThemesBusy = value;
-                        });
-                    });
-                    var isDataBusySubscription = webOrderingWebApiService.IsLoading.subscribe(function (value) {
-                        $timout(function () {
-                            $scope.IsDataBusy = value;
-                        });
-                    });
-                    $scope.ListViewTemplate = $("#ListViewTemplate").html();
-                    $scope.DataSource = webOrderingThemeWebApiService.GetThemeDataSource();
-                    $scope.HasPreviewTheme = false;
-                    $scope.HasCurrentTheme = false;
-                    $scope.SearchTemplates = function () {
-                        webOrderingThemeWebApiService.SearchText($scope.SearchText);
-                    };
-                    $scope.$on('$destroy', function () {
-                        isThemesBusySubscription.dispose();
-                    });
-                };
-                PickThemeController.SetupCurrentSelection = function ($scope, $timout, contextService) {
-                    var modelSubscription = contextService.ModelSubject.where(function (value) {
-                        return value !== null;
-                    }).subscribe(function (settings) {
-                        var s = settings;
-                        s.bind("change", function () {
-                            $timout(function () {
-                                //console.log("set current theme settings");
-                                console.log(settings.ThemeSettings);
-                                $scope.CurrentTheme = settings.ThemeSettings;
-                                $scope.HasCurrentTheme = true;
-                            });
-                        });
-                        console.log(settings.ThemeSettings);
-                        $scope.CurrentTheme = settings.ThemeSettings;
-                        $scope.HasCurrentTheme = true;
-                    });
-                    $scope.$on("$destroy", function () {
-                        modelSubscription.dispose();
-                    });
-                };
-                PickThemeController.SetupSelection = function ($scope, webOrderingWebApiService) {
-                    $scope.SelectTemplate = function (id) {
-                        var dataSource = $scope.DataSource;
-                        var previewItem = dataSource.data().find(function (item) {
-                            return item.Id === id;
-                        });
-                        $scope.HasPreviewTheme = true;
-                        $scope.SelectedTheme = previewItem;
-                    };
-                    $scope.SelectPreviewTheme = function (theme) {
-                        console.log(theme);
-                        webOrderingWebApiService.UpdateThemeSettings(theme);
-                    };
-                };
-                PickThemeController.SetupScope = function ($scope) {
-                    $scope.$on('$destroy', function () { });
-                };
-                PickThemeController.Name = "PickThemeController";
-                PickThemeController.Route = "/";
-                return PickThemeController;
-            })();
-            Controllers.PickThemeController = PickThemeController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Services;
-        (function (Services) {
-            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
-                app.service(WebOrderingWebApiService.Name, WebOrderingWebApiService);
-            });
-            var WebOrderingWebApiService = (function () {
-                function WebOrderingWebApiService($http, contextService) {
-                    var _this = this;
-                    this.Context = contextService;
-                    this.IsPublishLiveBusy = new Rx.BehaviorSubject(false);
-                    this.IsPublishPreviewBusy = new Rx.BehaviorSubject(false);
-                    this.IsLoading = new Rx.BehaviorSubject(false);
-                    this.IsSaving = new Rx.BehaviorSubject(false);
-                    if (!WebOrdering.Settings.AndromedaSiteId) {
-                        throw "Settings.AndromedaSiteId is undefined";
-                    }
-                    var readWebsiteSettings = kendo.format(WebOrdering.Settings.ReadRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
-                    var readStores = kendo.format(WebOrdering.Settings.ReadStoreRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
-                    this.IsLoading.onNext(true);
-                    this.watcher = new Rx.Subject();
-                    this.watcher.distinctUntilChanged(function (x) { return x.WebSiteId; }).subscribe(function (settings) {
-                        _this.Context.ModelSubject.onNext(settings);
-                    });
-                    this.Context.ModelSubject
-                        .where(function (e) { return e !== null; })
-                        .subscribe(function (v) { console.log(v.WebSiteName); });
-                    var promise = $http.get(readWebsiteSettings);
-                    promise.then(function (result) {
-                        //set defaults. 
-                        var nullOrUndefined = function (path) {
-                            return typeof (path) === "undefined" || path === null;
-                            return true;
-                        };
-                        if (!result.data.MenuPageSettings) {
-                            result.data.MenuPageSettings = {
-                                IsSingleToppingsOnlyEnabled: false,
-                                IsQuantityDropdownEnabled: true,
-                                IsThumbnailsEnabled: true
-                            };
-                        }
-                        if (nullOrUndefined(result.data.GeneralSettings.EnableDelivery)) {
-                            result.data.GeneralSettings.EnableDelivery = true;
-                        }
-                        if (nullOrUndefined(result.data.GeneralSettings.EnableCollection)) {
-                            result.data.GeneralSettings.EnableCollection = true;
-                        }
-                        return result;
-                    }).then(function (result) {
-                        //transfer pence to decimal so that the editors can work easier. 
-                        if (result.data.GeneralSettings.MinimumDeliveryAmount) {
-                            result.data.GeneralSettings.MinimumDeliveryAmount /= 100;
-                        }
-                        if (result.data.GeneralSettings.DeliveryCharge) {
-                            result.data.GeneralSettings.DeliveryCharge /= 100;
-                        }
-                        if (result.data.GeneralSettings.OptionalFreeDeliveryThreshold) {
-                            result.data.GeneralSettings.OptionalFreeDeliveryThreshold /= 100;
-                        }
-                        if (result.data.GeneralSettings.CardCharge) {
-                            result.data.GeneralSettings.CardCharge /= 100;
-                        }
-                        return result;
-                    }).then(function (result) {
-                        //may get rid of this bit some point soon. 
-                        var observable = kendo.observable(result.data);
-                        _this.Context.Model = observable;
-                        _this.Context.ModelSubject.onNext(observable);
-                        return result;
-                    }).then(function (result) {
-                        var storePromise = $http.get(readStores);
-                        storePromise.success(function (stores) {
-                            contextService.StoreSubject.onNext(stores);
-                        });
-                        return result;
-                    });
-                    promise.finally(function () {
-                        _this.IsLoading.onNext(false);
-                    });
-                }
-                WebOrderingWebApiService.prototype.UpdateThemeSettings = function (settings) {
-                    var s = settings;
-                    var m = this.Context.Model;
-                    m.set("ThemeSettings", settings);
-                    this.Update();
-                };
-                WebOrderingWebApiService.prototype.Publish = function () {
-                    var _this = this;
-                    var publish = kendo.format(WebOrdering.Settings.PublishRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
-                    if (!this.Context.Model.CustomerAccountSettings.get("IsEnable")) {
-                        if (!confirm("Are you sure you want to continue with customer account settings disabled? Continue to accept this responsibility, or cancel to apply that setting.")) {
-                            this.Context.Model.CustomerAccountSettings.set("IsEnable", true);
-                        }
-                    }
-                    var raw = this.GetRawModel();
-                    var promise = $.ajax({
-                        url: publish,
-                        type: "POST",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: raw
-                    });
-                    this.IsPublishLiveBusy.onNext(true);
-                    promise.always(function () {
-                        _this.IsPublishLiveBusy.onNext(false);
-                    });
-                };
-                WebOrderingWebApiService.prototype.Preview = function () {
-                    var _this = this;
-                    var preview = kendo.format(WebOrdering.Settings.PreviewRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
-                    var raw = this.GetRawModel();
-                    var promise = $.ajax({
-                        url: preview,
-                        type: "POST",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: raw
-                    });
-                    this.IsPublishPreviewBusy.onNext(true);
-                    promise.always(function () {
-                        _this.IsPublishPreviewBusy.onNext(false);
-                    });
-                };
-                WebOrderingWebApiService.prototype.Update = function () {
-                    var _this = this;
-                    var update = kendo.format(WebOrdering.Settings.UpdateRoute, WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId);
-                    console.log("sync");
-                    var raw = this.GetRawModel();
-                    var promise = $.ajax({
-                        url: update,
-                        type: "POST",
-                        contentType: 'application/json',
-                        dataType: "json",
-                        data: raw
-                    });
-                    this.IsSaving.onNext(true);
-                    promise.always(function () {
-                        _this.IsSaving.onNext(true);
-                    });
-                };
-                WebOrderingWebApiService.prototype.GetRawModel = function () {
-                    var newObject = JSON.parse(JSON.stringify(this.Context.Model));
-                    //jQuery.extend(true, {}, this.Context.Model);
-                    if (newObject.GeneralSettings.MinimumDeliveryAmount) {
-                        newObject.GeneralSettings.MinimumDeliveryAmount *= 100;
-                    }
-                    if (newObject.GeneralSettings.DeliveryCharge) {
-                        newObject.GeneralSettings.DeliveryCharge *= 100;
-                    }
-                    if (newObject.GeneralSettings.OptionalFreeDeliveryThreshold) {
-                        newObject.GeneralSettings.OptionalFreeDeliveryThreshold *= 100;
-                    }
-                    if (newObject.GeneralSettings.CardCharge) {
-                        newObject.GeneralSettings.CardCharge *= 100;
-                    }
-                    var raw = JSON.stringify(newObject);
-                    return raw;
-                };
-                WebOrderingWebApiService.Name = "webOrderingWebApiService";
-                return WebOrderingWebApiService;
-            })();
-            Services.WebOrderingWebApiService = WebOrderingWebApiService;
-        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Settings = (function () {
-            function Settings() {
-            }
-            Settings.AndromedaSiteId = 0;
-            Settings.WebSiteId = 0;
-            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Read
-            Settings.ReadRoute = "/api/{0}/AndroWebOrdering/{1}/Read";
-            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Update
-            Settings.UpdateRoute = "/api/{0}/AndroWebOrdering/{1}/Update";
-            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Publish
-            Settings.PublishRoute = "/api/{0}/AndroWebOrdering/{1}/Publish";
-            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Preview
-            Settings.PreviewRoute = "/api/{0}/AndroWebOrdering/{1}/Preview";
-            //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Stores/Read
-            Settings.ReadStoreRoute = "/api/{0}/AndroWebOrdering/{1}/Stores/Read";
-            return Settings;
-        })();
-        WebOrdering.Settings = Settings;
-        ;
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/rx/rx.d.ts" />
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Services;
-        (function (Services) {
-            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(WebOrderingThemeWebApiService.Name, [
-                    function () {
-                        WebOrdering.Logger.Notify("new WebOrderingThemeWebApiService");
-                        var instnance = new WebOrderingThemeWebApiService();
-                        return instnance;
-                    }
-                ]);
-            });
-            var WebOrderingThemeWebApiService = (function () {
-                function WebOrderingThemeWebApiService() {
-                    var _this = this;
-                    this.IsBusy = new Rx.BehaviorSubject(false);
-                    this.Search = new Rx.Subject();
-                    if (!WebOrdering.Settings.AndromedaSiteId) {
-                        throw "Settings.AndromedaSiteId is undefined";
-                    }
-                    //throttle input for 1 second. ie search will resume after the user stops typing.
-                    this.Search
-                        .throttle(1000)
-                        .subscribe(function (value) { return _this.SearcInternal(value); });
-                }
-                WebOrderingThemeWebApiService.prototype.GetThemeDataSource = function () {
-                    var _this = this;
-                    var route = kendo.format('/api/AndroWebOrderingTheme/{0}/List', WebOrdering.Settings.AndromedaSiteId);
-                    this.dataSource = new kendo.data.DataSource({
-                        transport: {
-                            read: route
-                        }
-                    });
-                    this.dataSource.bind("requestStart", function () { _this.IsBusy.onNext(true); });
-                    this.dataSource.bind("requestEnd", function () { _this.IsBusy.onNext(false); });
-                    return this.dataSource;
-                };
-                WebOrderingThemeWebApiService.prototype.SearchText = function (value) {
-                    this.Search.onNext(value);
-                };
-                WebOrderingThemeWebApiService.prototype.SearcInternal = function (value) {
-                    value || (value = "");
-                    value = value.trim();
-                    if (value.length === 0) {
-                        this.dataSource.filter([]);
-                        return;
-                    }
-                    var op = "contains";
-                    var filterFileName = {
-                        field: "FileName",
-                        operator: op,
-                        value: value
-                    };
-                    var filterInterName = {
-                        field: "InternalName",
-                        operator: op,
-                        value: value
-                    };
-                    var filterGroup = {
-                        filters: [filterFileName, filterInterName],
-                        logic: "or"
-                    };
-                    this.dataSource.filter([
-                        filterGroup
-                    ]);
-                };
-                WebOrderingThemeWebApiService.Name = "WebOrderingThemeWebApiService";
-                return WebOrderingThemeWebApiService;
-            })();
-            Services.WebOrderingThemeWebApiService = WebOrderingThemeWebApiService;
-        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        "use strict";
-        var Logger = (function () {
-            function Logger() {
-                this.UseNotify = true;
-                this.UseDebug = true;
-                this.UseError = true;
-            }
-            Logger.Notify = function (o) {
-                if (logger.UseNotify) {
-                    console.log(o);
-                }
-            };
-            Logger.Debug = function (o) {
-                if (logger.UseDebug) {
-                    console.log(o);
-                }
-            };
-            Logger.Error = function (o) {
-                if (logger.UseError) {
-                    console.log(o);
-                }
-            };
-            Logger.SettingUpController = function (name, state) {
-                if (logger.UseNotify) {
-                    console.log("setting up controller - " + name + " : " + state);
-                }
-            };
-            Logger.SettingUpService = function (name, state) {
-                if (logger.UseNotify) {
-                    console.log("setting up service - " + name + " : " + state);
-                }
-            };
-            Logger.AllowDebug = function (value) {
-                logger.UseDebug = value;
-            };
-            Logger.AllowError = function (value) {
-                logger.UseError = value;
-            };
-            return Logger;
-        })();
-        WebOrdering.Logger = Logger;
-        var logger = new Logger();
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Services;
-        (function (Services) {
-            WebOrdering.Angular.ServicesInitilizations.push(function (app) {
-                app.factory(ContextService.Name, [
-                    function () {
-                        var instnance = new ContextService();
-                        return instnance;
-                    }
-                ]);
-            });
-            var contextServiceModule = angular.module("ContextServiceModule", []);
-            var ContextService = (function () {
-                function ContextService() {
-                    this.Model = null;
-                    this.ModelSubject = new Rx.BehaviorSubject(null);
-                    this.StoreSubject = new Rx.BehaviorSubject([]);
-                }
-                ContextService.Name = "contextService";
-                return ContextService;
-            })();
-            Services.ContextService = ContextService;
-            contextServiceModule.service("contextService", ContextService);
-        })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(SiteDetailsController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        SiteDetailsController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
-                        /* going to leave kendo to manage the observable object */
-                        SiteDetailsController.SetupKendoMvvm($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var SiteDetailsController = (function () {
-                function SiteDetailsController() {
-                }
-                SiteDetailsController.OnLoad = function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                    $scope.SaveChanges = function () {
-                        if ($scope.SiteDetailsValidator.validate()) {
-                            webOrderingWebApiService.Update();
-                        }
-                    };
-                    $scope.HasWebsiteLogo = false;
-                    $scope.HasMobileLogo = false;
-                    $scope.TempWebsiteLogoPath = "";
-                    $scope.TempMobileLogoPath = "";
-                };
-                SiteDetailsController.SetupUploaders = function ($scope, $timeout, contextService) {
-                    if (!$scope.MainImageUpload) {
-                        alert("MainImageUpload hasn't been created. Pester Matt");
-                    }
-                    if (!$scope.MobileImageUpload) {
-                        alert("MobileImageUpload hasn't been created. Pester Matt");
-                    }
-                    var webSiteImageUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "website");
-                    $scope.MainImageUpload.setOptions({
-                        async: {
-                            saveUrl: webSiteImageUploadRoute,
-                            autoUpload: true
-                        },
-                        showFileList: false,
-                        multiple: false
-                    });
-                    var mobileImageUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "mobile");
-                    $scope.MobileImageUpload.setOptions({
-                        async: {
-                            saveUrl: mobileImageUploadRoute,
-                            autoUpload: true
-                        },
-                        showFileList: false,
-                        multiple: false
-                    });
-                    var FaviconUploadRoute = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadLogo/{2}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, "favicon");
-                    $scope.FaviconImageUpload.setOptions({
-                        async: {
-                            saveUrl: FaviconUploadRoute,
-                            autoUpload: true
-                        },
-                        showFileList: false,
-                        multiple: false
-                    });
-                    $scope.MainImageUpload.bind("success", function (result) {
-                        WebOrdering.Logger.Notify(result);
-                        var observableObject = contextService.Model.SiteDetails;
-                        observableObject.set("WebsiteLogoPath", result.response.Url);
-                        var r = Math.floor(Math.random() * 99999) + 1;
-                        $timeout(function () {
-                            $scope.TempWebsiteLogoPath = result.response.Url + "?k=" + r;
-                            $scope.HasWebsiteLogo = true;
-                        });
-                    });
-                    $scope.MobileImageUpload.bind("success", function (result) {
-                        WebOrdering.Logger.Notify(result);
-                        var observableObject = contextService.Model.SiteDetails;
-                        observableObject.set("MobileLogoPath", result.response.Url);
-                        var r = Math.floor(Math.random() * 99999) + 1;
-                        $timeout(function () {
-                            $scope.TempMobileLogoPath = result.response.Url + "?k=" + r;
-                            $scope.HasMobileLogo = true;
-                        });
-                    });
-                    $scope.FaviconImageUpload.bind("success", function (result) {
-                        console.log(result);
-                        var observableObject = contextService.Model.SiteDetails;
-                        observableObject.set("FaviconPath", result.response.Url);
-                        var r = Math.floor(Math.random() * 99999) + 1;
-                        $timeout(function () {
-                            $scope.TempFaviconLogoPath = result.response.Url + "?k=" + r;
-                            $scope.HasFaviconLogo = true;
-                        });
-                    });
-                };
-                SiteDetailsController.SetupKendoMvvm = function ($scope, $timeout, contextService) {
-                    var _this = this;
-                    var settingsSubscription = contextService.ModelSubject
-                        .where(function (e) { return e !== null; })
-                        .subscribe(function (webSiteSettings) {
-                        var viewElement = $("#SiteDetailsController");
-                        kendo.bind(viewElement, webSiteSettings.SiteDetails);
-                        $scope.WebSiteSettings = webSiteSettings;
-                        $scope.SiteDetails = webSiteSettings.SiteDetails;
-                        //added 500ms timeout as there are random issues. 
-                        $timeout(function () {
-                            _this.SetupUploaders($scope, $timeout, contextService);
-                            var r = Math.floor(Math.random() * 99999) + 1;
-                            if (webSiteSettings.SiteDetails.WebsiteLogoPath && webSiteSettings.SiteDetails.WebsiteLogoPath !== null) {
-                                $scope.TempWebsiteLogoPath = webSiteSettings.SiteDetails.WebsiteLogoPath + "?k=" + r;
-                            }
-                            if (webSiteSettings.SiteDetails.MobileLogoPath && webSiteSettings.SiteDetails.MobileLogoPath !== null) {
-                                $scope.TempMobileLogoPath = webSiteSettings.SiteDetails.MobileLogoPath + "?k=" + r;
-                            }
-                            if (webSiteSettings.SiteDetails.FaviconPath && webSiteSettings.SiteDetails.FaviconPath !== null) {
-                                $scope.TempFaviconLogoPath = webSiteSettings.SiteDetails.FaviconPath + "?k=" + r;
-                            }
-                            $scope.HasWebsiteLogo = webSiteSettings.SiteDetails.WebsiteLogoPath && webSiteSettings.SiteDetails.WebsiteLogoPath.length > 0;
-                            $scope.HasMobileLogo = webSiteSettings.SiteDetails.MobileLogoPath && webSiteSettings.SiteDetails.MobileLogoPath.length > 0;
-                            $scope.HasFaviconLogo = webSiteSettings.SiteDetails.FaviconPath && webSiteSettings.SiteDetails.FaviconPath.length > 0;
-                        }, 500, true);
-                    });
-                    $scope.$on('$destroy', function () {
-                        settingsSubscription.dispose();
-                    });
-                };
-                SiteDetailsController.Name = "SiteDetailsController";
-                return SiteDetailsController;
-            })();
-            Controllers.SiteDetailsController = SiteDetailsController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-/// <reference path="MyAndromeda.Menu.App.ts" />
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(CarouselController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        CarouselController.OnLoad($scope, $timeout, contextService, webOrderingWebApiService);
-                        /* going to leave kendo to manage the observable object */
-                        CarouselController.SetupCarousels($scope, $timeout, contextService);
-                    }
-                ]);
-            });
-            var CarouselController = (function () {
-                function CarouselController() {
-                }
-                CarouselController.OnLoad = function ($scope, $timout, contextService, webOrderingWebApiService) {
-                    /* Add image auto upload */
-                    $scope.ShowCarousel = true;
-                    $scope.ShowHtmlEditor = false;
-                    $scope.ShowImageEditor = false;
-                    $scope.SaveChanges = function () {
-                        var data = $scope.CarouselBlocks;
-                        data.forEach(function (block) {
-                            console.log("sync block " + block.Carousel.Name);
-                            /* this important otherwise the local data source does not update the main object */
-                            //block.DataSource.sync();
-                            //block.Carousel.h
-                        });
-                        webOrderingWebApiService.Update();
-                    };
-                    /* These are setup depending on the task ... create / edit */
-                    $scope.CancelItem = function () { };
-                    $scope.SaveItem = function () { };
-                };
-                CarouselController.CreateGuid = function () {
-                    var S4 = function () {
-                        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-                    };
-                    // then to call it, plus stitch in '4' in the third group
-                    var guid = (S4() + S4() + "-" + S4() + "-4" + S4().substr(0, 3) + "-" + S4() + "-" + S4() + S4() + S4()).toLowerCase();
-                    return guid;
-                };
-                CarouselController.CreateItem = function (type) {
-                    return new kendo.data.Model({
-                        Id: CarouselController.CreateGuid(),
-                        Type: type,
-                        ImageUrl: "",
-                        Description: "",
-                        HTML: ""
-                    });
-                };
-                CarouselController.LoadImageEditor = function ($scope, $timout, carousel, item) {
-                    $scope.ShowImageEditor = true;
-                    $scope.ShowCarousel = false;
-                    $scope.ShowHtmlEditor = false;
-                    $scope.HasImageSlideUrl = item.ImageUrl;
-                    kendo.unbind("#ImageTemplate");
-                    kendo.bind("#ImageTemplate", item);
-                    //part of the scope again.
-                    var upload = $scope.CarouselImageUpload;
-                    var carouselImageUploadUrl = kendo.format("/api/{0}/AndroWebOrdering/{1}/UploadCarouselImage/{2}/{3}", WebOrdering.Settings.AndromedaSiteId, WebOrdering.Settings.WebSiteId, carousel.Name, item.Id);
-                    WebOrdering.Logger.Notify("carouselImageUploadUrl" + carouselImageUploadUrl);
-                    upload.setOptions({
-                        async: {
-                            saveUrl: carouselImageUploadUrl,
-                            autoUpload: true
-                        },
-                        showFileList: false,
-                        multiple: false
-                    });
-                    upload.unbind("success");
-                    upload.bind("success", function (result) {
-                        console.log(result.response);
-                        console.log(result.response.Url);
-                        var r = Math.floor(Math.random() * 99999) + 1;
-                        item.set("ImageUrl", result.response.Url + "?k=" + r);
-                        $timout(function () {
-                            $scope.HasImageSlideUrl = true;
-                            $scope.BindCarouselsList();
-                        });
-                    });
-                };
-                CarouselController.LoadHtmlEditor = function ($scope, item) {
-                    $scope.ShowCarousel = false;
-                    $scope.ShowHtmlEditor = true;
-                    $scope.ShowImageEditor = false;
-                    kendo.unbind("#HtmlTemplate");
-                    kendo.bind("#HtmlTemplate", item);
-                };
-                CarouselController.ResetForm = function ($scope, $timeout, contextService) {
-                    $timeout(function () {
-                        $scope.ShowCarousel = true;
-                        $scope.ShowHtmlEditor = false;
-                        $scope.ShowImageEditor = false;
-                    });
-                    $scope.BindCarouselsList();
-                };
-                CarouselController.SetupCarousels = function ($scope, $timeout, contextService) {
-                    var _this = this;
-                    var actionsTemplate = $("#EditButtonTemplate").html();
-                    $scope.EditCarouselItem = function (carouselName, carouselItemId) {
-                        console.log("clicked on a item");
-                        var s = kendo.format("index: {0}; item: {1}", carouselName, carouselItemId);
-                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
-                        var c = carousels[0];
-                        //find the carousel item 
-                        var m = c.DataSource.view().find(function (item) { return item.Id == carouselItemId; });
-                        $scope.HtmlBeforeEdit = m.HTML;
-                        switch (m.Type.toLowerCase()) {
-                            case "image":
-                                _this.LoadImageEditor($scope, $timeout, c.Carousel, m);
-                                break;
-                            case "html":
-                                _this.LoadHtmlEditor($scope, m);
-                                break;
-                            default: throw kendo.format("{0} type is not supported", m.Type);
-                        }
-                        $scope.SaveItem = function () {
-                            //(c.DataSource.view().find((item: Models.ICarouselItem) => { return item.Id == carouselItemId; })).ImageUrl += "?k=" + r;
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                            $scope.SaveChanges();
-                        };
-                        $scope.CancelItem = function (Id) {
-                            (c.DataSource.view().find(function (item) { return item.Id == carouselItemId; })).HTML = $scope.HtmlBeforeEdit;
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                            $scope.HtmlBeforeEdit = "";
-                        };
-                    };
-                    $scope.CreateImageCarouselItem = function (carouselName) {
-                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
-                        var c = carousels[0];
-                        var newCarouselItem = CarouselController.CreateItem("image");
-                        //c.DataSource.add(newCarouselItem);
-                        $scope.SaveItem = function () {
-                            c.DataSource.add(newCarouselItem);
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                            $scope.SaveChanges();
-                        };
-                        $scope.CancelItem = function () {
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                        };
-                        CarouselController.LoadImageEditor($scope, $timeout, c.Carousel, newCarouselItem);
-                    };
-                    $scope.CreateHtmlCarouselItem = function (carouselName) {
-                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
-                        var c = carousels[0];
-                        var newCarouselItem = CarouselController.CreateItem("Html");
-                        $scope.SaveItem = function () {
-                            c.DataSource.add(newCarouselItem);
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                            $scope.SaveChanges();
-                        };
-                        $scope.CancelItem = function () {
-                            CarouselController.ResetForm($scope, $timeout, contextService);
-                        };
-                        CarouselController.LoadHtmlEditor($scope, newCarouselItem);
-                    };
-                    $scope.RemoveCarouselItem = function (carouselName, carouselItemId) {
-                        var carousels = $scope.CarouselBlocks.filter(function (e) { return e.Carousel.Name == carouselName; });
-                        var c = carousels[0];
-                        var m = c.DataSource.view().find(function (item) { return item.Id == carouselItemId; });
-                        //remove from data source
-                        c.DataSource.remove(m);
-                        $scope.SaveChanges();
-                    };
-                    $scope.BindCarouselsList = function () {
-                        var toolbar = $("#CarouselHeaderTemplate").html();
-                        var editTemplate = $("#CarouselItemEditTemplate").html();
-                        var descriptionTemplate = $("#DescriptionTemplate").html();
-                        var settingsSubscription = contextService.ModelSubject
-                            .where(function (e) { return e !== null; })
-                            .subscribe(function (websiteSettings) {
-                            $timeout(function () {
-                                var carousels = websiteSettings.Home.Carousels;
-                                var carouselEditors = carousels.map(function (carousel, index) {
-                                    var dataSource = new kendo.data.DataSource({
-                                        data: carousel.Items,
-                                        schema: {
-                                            model: {
-                                                id: "Id"
-                                            }
-                                        }
-                                    });
-                                    var model = {
-                                        Carousel: carousel,
-                                        DataSource: dataSource,
-                                        GridOptions: {
-                                            name: carousel.Name,
-                                            toolbar: [
-                                                {
-                                                    name: "add-button",
-                                                    template: toolbar
-                                                }
-                                            ],
-                                            columns: [
-                                                {
-                                                    field: "Type",
-                                                    title: "Type",
-                                                    width: "120px"
-                                                },
-                                                {
-                                                    field: "Description",
-                                                    title: "Description",
-                                                    template: descriptionTemplate
-                                                },
-                                                {
-                                                    title: "Actions",
-                                                    template: editTemplate,
-                                                    width: "120px"
-                                                }
-                                            ],
-                                            dataSource: dataSource
-                                        }
-                                    };
-                                    //dataSource.bind("change", () => {
-                                    //    websiteSettings.Home.Carousels                            
-                                    //});
-                                    return model;
-                                });
-                                console.log("setup carousels:" + carouselEditors.length);
-                                $scope.CarouselBlocks = carouselEditors;
-                            });
-                        });
-                        $scope.$on('$destroy', function () {
-                            settingsSubscription.dispose();
-                        });
-                    };
-                    $scope.BindCarouselsList();
-                };
-                CarouselController.Name = "CarouselController";
-                return CarouselController;
-            })();
-            Controllers.CarouselController = CarouselController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.WebOrdering.App.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var WebOrdering;
-    (function (WebOrdering) {
-        var Controllers;
-        (function (Controllers) {
-            WebOrdering.Angular.ControllersInitilizations.push(function (app) {
-                app.controller(StatusController.Name, [
-                    '$scope', '$timeout',
-                    WebOrdering.Services.ContextService.Name,
-                    WebOrdering.Services.WebOrderingWebApiService.Name,
-                    function ($scope, $timeout, contextService, webOrderingWebApiService) {
-                        StatusController.OnLoad($scope, $timeout, webOrderingWebApiService);
-                    }
-                ]);
-            });
-            var StatusController = (function () {
-                function StatusController() {
-                }
-                StatusController.OnLoad = function ($scope, $timout, webOrderingWebApiService) {
-                    $scope.SaveChanges = function () {
-                        webOrderingWebApiService.Update();
-                    };
-                    $scope.PublishChanges = function () {
-                        webOrderingWebApiService.Publish();
-                    };
-                    $scope.PreviewChanges = function () {
-                        webOrderingWebApiService.Preview();
-                    };
-                    webOrderingWebApiService.IsSaving.subscribe(function (e) {
-                        $timout(function () {
-                            $scope.Saving = e;
-                        });
-                    });
-                    webOrderingWebApiService.IsPublishPreviewBusy.subscribe(function (e) {
-                        $timout(function () {
-                            $scope.PublishPreviewBusy = e;
-                        });
-                    });
-                    webOrderingWebApiService.IsPublishLiveBusy.subscribe(function (e) {
-                        $timout(function () {
-                            $scope.PublishLiveBusy = e;
-                        });
-                    });
-                    //webOrderingWebApiService.IsPreviewReady.subscribe((busy) => {
-                    //    $scope.PreviewWindow.refresh({
-                    //        //content: {
-                    //        //    url: webOrderingWebApiService.Context.Model.SiteDetails.DomainName + "?q" + Math.random() 
-                    //        //}
-                    //    });
-                    //    $scope.PreviewWindow.open();
-                    //    $scope.PreviewWindow.center();
-                    //});
-                    //webOrderingWebApiService.IsWebOrderingBusy.subscribe((busy) => {
-                    //    $timout(() => {
-                    //        if (busy) {
-                    //            if (!$scope.Modal) { return; }
-                    //            var m = <any>$scope.Modal;
-                    //            m.open();
-                    //        }
-                    //        else {
-                    //            if (!$scope.Modal) { return; }
-                    //            var m = <any>$scope.Modal;
-                    //            m.close();
-                    //        }
-                    //        $scope.IsBusy = busy;
-                    //    });
-                    //});
-                };
-                StatusController.Name = "StatusController";
-                return StatusController;
-            })();
-            Controllers.StatusController = StatusController;
-        })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
-    })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Controllers;
-        (function (Controllers) {
-            var FtpController = (function () {
-                function FtpController() {
-                }
-                FtpController.SetupScope = function ($scope, $timeout, ftpService) {
-                    $scope.DeleteLocalFile = function () {
-                        var c = confirm("Are you sure you want to delete the current version? Thumbnails will not be effected.");
-                        if (c) {
-                            ftpService.DeleteLocalFile();
-                        }
-                    };
-                    $scope.DownloadFromFtp = function () { return ftpService.StartFtpDownload(); };
-                    $scope.UploadToFtp = function () { return ftpService.StartFtpUpload(); };
-                    $scope.CheckDbVersion = function () { return ftpService.GetVersion(); };
-                    //FTP download status 
-                    ftpService.FtpDownloadBusy.subscribe(function (busy) {
-                        $timeout(function () { $scope.DownloadBusy = busy; });
-                    });
-                    ftpService.FtpDownloadErrors.subscribe(function (error) {
-                        $timeout(function () { $scope.Errors = error; });
-                    });
-                    //FTP upload status
-                    ftpService.FtpUploadBusy.subscribe(function (busy) {
-                        $timeout(function () { $scope.UploadBusy = busy; });
-                    });
-                    ftpService.FtpUploadErrors.subscribe(function (error) {
-                        $timeout(function () { $scope.Errors = error; });
-                    });
-                    //FTP access status
-                    ftpService.LocalAccessVersion.subscribe(function (versionModel) {
-                        $timeout(function () {
-                            $scope.Version = versionModel.Version;
-                            $scope.UpdatedOn = versionModel.UpdatedOn;
-                            $scope.LastDownloaded = versionModel.LastDownloaded;
-                        });
-                    });
-                    var a = ftpService.FtpUploadBusy, b = ftpService.FtpDownloadBusy, c = ftpService.LocalAccessVersionBusy, d = ftpService.DeleteBusy;
-                    var anyBusy = Rx.Observable.combineLatest(a, b, c, d, function (o1, o2, o3, o4) {
-                        return o1 || o2 || o3 || o4;
-                    });
-                    anyBusy.subscribe(function (busy) {
-                        $timeout(function () {
-                            $scope.BlockAccess = busy;
-                        });
-                    });
-                    $scope.CheckDbVersion();
-                };
-                FtpController.Name = "FtpController";
-                return FtpController;
-            })();
-            Controllers.FtpController = FtpController;
-        })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Services;
-        (function (Services) {
-            var FtpService = (function () {
-                function FtpService($http) {
-                    this.$http = $http;
-                    this.FtpDownloadBusy = new Rx.BehaviorSubject(false);
-                    this.FtpDownloadErrors = new Rx.Subject();
-                    this.FtpUploadBusy = new Rx.BehaviorSubject(false);
-                    this.FtpUploadErrors = new Rx.Subject();
-                    this.LocalAccessVersion = new Rx.Subject();
-                    this.LocalAccessVersionBusy = new Rx.BehaviorSubject(false);
-                    this.DeleteBusy = new Rx.BehaviorSubject(false);
-                }
-                FtpService.prototype.ValidateRoute = function (route) {
-                    route || (route = "");
-                    if (route.length === 0) {
-                        throw "The route locations have not been set.";
-                    }
-                };
-                FtpService.prototype.GetVersion = function () {
-                    var _this = this;
-                    var route = Menu.Settings.Routes.Ftp.Version;
-                    this.ValidateRoute(route);
-                    var promise = this.$http.post(route, {});
-                    this.LocalAccessVersionBusy.onNext(true);
-                    promise.success(function (data, status, headers, config) {
-                        _this.LocalAccessVersion.onNext(data);
-                    });
-                    promise.finally(function () { _this.LocalAccessVersionBusy.onNext(false); });
-                    return promise;
-                };
-                FtpService.prototype.StartFtpDownload = function () {
-                    var _this = this;
-                    var route = Menu.Settings.Routes.Ftp.DownloadMenu;
-                    this.ValidateRoute(route);
-                    this.FtpDownloadBusy.onNext(true);
-                    var promise = this.$http.post(route, {});
-                    promise.then(function (result) {
-                        var versionPromise = _this.GetVersion();
-                        return versionPromise;
-                    }).finally(function () {
-                        _this.FtpDownloadBusy.onNext(false);
-                    });
-                };
-                FtpService.prototype.StartFtpUpload = function () {
-                    var _this = this;
-                    var route = Menu.Settings.Routes.Ftp.UploadMenu;
-                    this.ValidateRoute(route);
-                    this.FtpUploadBusy.onNext(true);
-                    var promise = this.$http.post(route, {});
-                    promise.finally(function () {
-                        _this.FtpUploadBusy.onNext(false);
-                    });
-                };
-                FtpService.prototype.DeleteLocalFile = function () {
-                    var _this = this;
-                    var route = Menu.Settings.Routes.Ftp.Delete;
-                    this.ValidateRoute(route);
-                    this.DeleteBusy.onNext(true);
-                    var promise = this.$http.post(route, {});
-                    promise.finally(function () {
-                        _this.DeleteBusy.onNext(false);
-                    });
-                };
-                FtpService.Name = "FtpControllerService";
-                return FtpService;
-            })();
-            Services.FtpService = FtpService;
-        })(Services = Menu.Services || (Menu.Services = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="MyAndromeda.Menu.Controllers.FtpController.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Menu;
-    (function (Menu) {
-        var Modules;
-        (function (Modules) {
-            Modules.MenuFtpModuleName = "MenuFtpModule";
-            var FtpModule = angular.module(Modules.MenuFtpModuleName, [
-                "kendo.directives"
-            ]);
-            FtpModule.factory(Menu.Services.FtpService.Name, [
-                '$http',
-                function ($http) {
-                    var instance = new Menu.Services.FtpService($http);
-                    return instance;
-                }
-            ]);
-            FtpModule.controller(Menu.Controllers.FtpController.Name, [
-                '$scope',
-                '$timeout',
-                Menu.Services.FtpService.Name,
-                function ($scope, $timeout, ftpService) {
-                    Menu.Controllers.FtpController.SetupScope($scope, $timeout, ftpService);
-                }
-            ]);
-        })(Modules = Menu.Modules || (Menu.Modules = {}));
-    })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Loyalty;
-    (function (Loyalty) {
-        Loyalty.ServicesName = "LoyaltyServices";
-        var servicesModule = angular.module(Loyalty.ServicesName, []);
-        var Services;
-        (function (Services) {
-            var LoyaltyService = (function () {
-                function LoyaltyService($http) {
-                    this.$http = $http;
-                    /* data messaging */
-                    // all types that have not been used yet. 
-                    this.AllLoyaltyTypeList = new Rx.Subject();
-                    // store loyalty types that have been used 
-                    this.StoreLoyalties = new Rx.Subject();
-                    this.LoyaltyProvider = new Rx.Subject();
-                    /* monitor network */
-                    this.ListLoyaltyTypesBusy = new Rx.BehaviorSubject(false);
-                    this.ListBusy = new Rx.BehaviorSubject(false);
-                    this.GetBusy = new Rx.BehaviorSubject(false);
-                    this.UpdateBusy = new Rx.BehaviorSubject(false);
-                }
-                LoyaltyService.prototype.ListLoyaltyTypes = function () {
-                    var _this = this;
-                    var partialRoute = "/api/{0}/loyalty/types";
-                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId);
-                    var promise = this.$http.get(route);
-                    this.ListLoyaltyTypesBusy.onNext(true);
-                    promise.success(function (data) {
-                        _this.AllLoyaltyTypeList.onNext(data);
-                    });
-                    promise.finally(function () {
-                        _this.ListLoyaltyTypesBusy.onNext(false);
-                    });
-                };
-                LoyaltyService.prototype.List = function () {
-                    var _this = this;
-                    var partialRoute = "/api/{0}/loyalty/list";
-                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId);
-                    var promise = this.$http.get(route);
-                    this.ListBusy.onNext(true);
-                    promise.success(function (data) {
-                        _this.StoreLoyalties.onNext(data);
-                    });
-                    promise.finally(function () {
-                        _this.ListBusy.onNext(false);
-                    });
-                };
-                LoyaltyService.prototype.Get = function (name) {
-                    var _this = this;
-                    var partialRoute = "/api/{0}/loyalty/get/{1}";
-                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId, name);
-                    var promise = this.$http.get(route);
-                    this.GetBusy.onNext(true);
-                    promise.success(function (data) {
-                        _this.LoyaltyProvider.onNext(data);
-                    });
-                    promise.finally(function () { _this.GetBusy.onNext(false); });
-                };
-                LoyaltyService.prototype.Update = function (model) {
-                    var _this = this;
-                    var partialRoute = "/api/{0}/loyalty/update/{1}";
-                    var route = kendo.format(partialRoute, Loyalty.Settings.AndromedaSiteId, model.ProviderName);
-                    var promise = this.$http.post(route, model);
-                    this.UpdateBusy.onNext(true);
-                    promise.success(function (data) { _this.UpdateBusy.onNext(false); });
-                    promise.finally(function () { _this.UpdateBusy.onNext(false); });
-                };
-                return LoyaltyService;
-            })();
-            Services.LoyaltyService = LoyaltyService;
-            var loyaltyService = "loyaltyService";
-            servicesModule.service(loyaltyService, LoyaltyService);
-        })(Services = Loyalty.Services || (Loyalty.Services = {}));
-    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="Loyalty.Services.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Loyalty;
-    (function (Loyalty) {
-        Loyalty.ControllersName = "LoyaltyControllers";
-        var controllersModule = angular.module(Loyalty.ControllersName, [
-            Loyalty.ServicesName
-        ]);
-        Loyalty.StartController = "StartController";
-        controllersModule.controller(Loyalty.StartController, function ($scope, $timeout, loyaltyService) {
-            loyaltyService.ListLoyaltyTypes();
-            loyaltyService.List();
-            $scope.ShowAddList = false;
-            $scope.ShowEditList = false;
-            var allTypesSubscription = loyaltyService.AllLoyaltyTypeList.subscribe(function (list) {
-                $timeout(function () {
-                    $scope.AvailableLoyaltyTypeNames = list;
-                    $scope.ShowAddList = list.length > 0;
-                });
-            });
-            var currentStoreLoyalties = loyaltyService.StoreLoyalties.subscribe(function (list) {
-                $timeout(function () {
-                    $scope.CurrentLoyaltyTypes = list;
-                    $scope.ShowEditList = list.length > 0;
-                });
-            });
-            $scope.$on("$destroy", function () {
-                allTypesSubscription.dispose();
-                currentStoreLoyalties.dispose();
-            });
-        });
-        Loyalty.EditLoyaltyController = "EditLoyaltyController";
-        controllersModule.controller(Loyalty.EditLoyaltyController, function ($scope, $timeout, $routeParams, loyaltyService) {
-            $scope.SaveBusy = false;
-            $scope.Currency = kendo.toString(1.00, "c");
-            $scope.Currency10 = kendo.toString(10.00, "c");
-            //lets explicitly look for this one:
-            $scope.ProviderAvailable = false;
-            loyaltyService.Get($routeParams.providerName);
-            var modelAvailableSubscription = loyaltyService.LoyaltyProvider.subscribe(function (provider) {
-                $timeout(function () {
-                    $scope.Name = provider.ProviderName;
-                    $scope.ProviderLoyalty = provider;
-                    $scope.Model = provider.Configuration;
-                    $scope.ProviderAvailable = true;
-                    if ($scope.Model.MinimumPointsBeforeAvailable > $scope.Model.MaximumObtainablePoints &&
-                        $scope.Model.MinimumPointsBeforeAvailable && $scope.Model.MaximumObtainablePoints) {
-                        alert("Minimum points needed before spending is available cannot be lower than the maximum points that a user can have. Correcting.");
-                        $scope.Model.MinimumPointsBeforeAvailable = $scope.Model.MaximumObtainablePoints;
-                    }
-                });
-            });
-            var saveBusySubscription = loyaltyService.UpdateBusy.subscribe(function (value) {
-                $timeout(function () {
-                    $scope.SaveBusy = value;
-                });
-            });
-            $scope.SetDefaults = function () {
-                $scope.Model || ($scope.Model = {
-                    RoundUp: true
-                });
-                var m = $scope.Model;
-                if (!confirm("Setting defaults will wipe any existing change")) {
-                    return;
-                }
-                m.Enabled = true;
-                m.AutoSpendPointsOverThisPeak = null;
-                m.AwardOnRegiration = 500;
-                m.AwardPointsPerPoundSpent = 10;
-                m.MaximumPercentThatCanBeClaimed = 1; /* 100% */
-                m.MaximumValueThatCanBeClaimed = 10.00; /* 10.00 */
-                m.MinimumPointsBeforeAvailable = null;
-                m.PointValue = 100;
-                //more defaults 
-                m.MaximumObtainablePoints = null;
-                m.MinimumOrderTotalAfterLoyalty = null;
-            };
-            $scope.IsAutoSpendPointsOverThisPeakEnabled = function () {
-                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
-                    return false;
-                }
-                var m = $scope.Model;
-                if (m.AutoSpendPointsOverThisPeak === null) {
-                    return false;
-                }
-                var t = (m.AutoSpendPointsOverThisPeak >= 0);
-                return t;
-            };
-            $scope.IsMinimumPointsBeforeAvailableEnabled = function () {
-                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
-                    return false;
-                }
-                var m = $scope.Model;
-                if (m.MinimumPointsBeforeAvailable === null) {
-                    return false;
-                }
-                var t = m.MinimumPointsBeforeAvailable >= 0;
-                return t;
-            };
-            $scope.IsMaximumObtainablePointsEnabled = function () {
-                if (typeof ($scope.Model) === 'undefined' || $scope.Model === null) {
-                    return false;
-                }
-                var m = $scope.Model;
-                if (m.MaximumObtainablePoints === null) {
-                    return false;
-                }
-                var t = m.MaximumObtainablePoints >= 0;
-                return t;
-            };
-            $scope.Save = function () {
-                var validator = $scope.AndromedaLoyaltyValidator;
-                if (validator.validate()) {
-                    loyaltyService.Update($scope.ProviderLoyalty);
-                }
-            };
-            $scope.IsMaximumAndMinimumRulesInvalid = function () {
-                var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
-                var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
-                if (!maxValue || !minValue) {
-                    return false;
-                }
-                if (minValue <= maxValue) {
-                    return false;
-                }
-                return true;
-            };
-            $scope.IsMaximumAndMinimumRulesEqual = function () {
-                var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
-                var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
-                if (!maxValue || !minValue) {
-                    return false;
-                }
-                if (maxValue == minValue) {
-                    return true;
-                }
-                return false;
-            };
-            $scope.$watch("Model.MaximumObtainablePoints", function () {
-                MyAndromeda.Logger.Notify("Model.MaximumObtainablePoints changed");
-                if (!$scope.MaximumObtainablePointsNumericTextBox) {
-                    MyAndromeda.Logger.Notify("cant find numeric text box");
-                    return;
-                }
-                if ($scope.MinimumPointsBeforeAvailableNumericTextBox) {
-                    var value = $scope.MaximumObtainablePointsNumericTextBox.value();
-                    if ($scope.MinimumPointsBeforeAvailableNumericTextBox.value() >
-                        $scope.MaximumObtainablePointsNumericTextBox.value()) {
-                        $scope.MaximumObtainablePointsNumericTextBox.value($scope.MinimumPointsBeforeAvailableNumericTextBox.value());
-                    }
-                    MyAndromeda.Logger.Notify("set max");
-                    if (value) {
-                        $scope.MinimumPointsBeforeAvailableNumericTextBox.max(value);
-                    }
-                    else {
-                        $scope.MinimumPointsBeforeAvailableNumericTextBox.max(null);
-                    }
-                }
-            });
-            //$scope.$watch("Model.MinimumPointsBeforeAvailable", () => {
-            //    Logger.Notify("Model.MinimumPointsBeforeAvailable changed");
-            //    if (!$scope.MinimumPointsBeforeAvailableNumericTextBox) {
-            //        Logger.Notify("cant find numeric text box");
-            //        return;
-            //    }
-            //    if ($scope.Model.MaximumObtainablePoints) {
-            //        Logger.Notify("set max");
-            //        var minimumPointsBeforeAvailableNumericTextBox = $scope.MinimumPointsBeforeAvailableNumericTextBox;
-            //        var maximumObtainablePointsNumericTextBox = $scope.MaximumObtainablePointsNumericTextBox;
-            //        if (minimumPointsBeforeAvailableNumericTextBox.value()) {
-            //            maximumObtainablePointsNumericTextBox.max(minimumPointsBeforeAvailableNumericTextBox.value());
-            //        } else {
-            //            maximumObtainablePointsNumericTextBox.max(null);
-            //        }
-            //    }
-            //});
-            $scope.$watch("Model.PointValue", function () {
-                if (!$scope.AwardingPointsNumericTextBox) {
-                    return;
-                }
-                if ($scope.Model.PointValue) {
-                    console.log("update points");
-                    var numericPicker = $scope.AwardingPointsNumericTextBox;
-                    numericPicker.max($scope.Model.PointValue);
-                }
-            });
-            $scope.ValueOf = function (points) {
-                points || (points = 0);
-                if (!$scope.Model) {
-                    return "";
-                }
-                //£1 = pointValue
-                var pointValue = $scope.Model.PointValue;
-                if (!pointValue) {
-                    return "";
-                }
-                var worth = (1.00 / pointValue) * points;
-                return kendo.toString(worth, "c"); //$1,234.57
-            };
-            $scope.DisplayAsCurrency = function (monies) {
-                monies || (monies = 0);
-                return kendo.toString(monies, "c");
-            };
-            $scope.$on("$destroy", function () {
-                modelAvailableSubscription.dispose();
-                saveBusySubscription.dispose();
-            });
-        });
-    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="Loyalty.Services.ts" />
-/// <reference path="Loyalty.Controllers.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Loyalty;
-    (function (Loyalty) {
-        Loyalty.LoyaltyName = "MyAndromedaLoyalty";
-        Loyalty.Settings = {
-            AndromedaSiteId: ""
-        };
-        var loyaltyModule = angular.module(Loyalty.LoyaltyName, [
-            'ngRoute',
-            'ngAnimate',
-            "kendo.directives",
-            Loyalty.ServicesName,
-            Loyalty.ControllersName
-        ]);
-        loyaltyModule.config(function ($routeProvider) {
-            $routeProvider.when('/', {
-                templateUrl: "start.html",
-                controller: Loyalty.StartController
-            });
-            $routeProvider.when("/edit/:providerName", {
-                templateUrl: "edit.html",
-                controller: Loyalty.EditLoyaltyController
-            });
-        });
-        loyaltyModule.run(function ($templateCache) {
-            console.log("Loyalty Started");
-            angular.element('script[type="text/template"]').each(function (i, element) {
-                $templateCache.put(element.id, element.innerHTML);
-            });
-        });
-        Loyalty.Start = function (element) {
-            angular.bootstrap(element, [Loyalty.LoyaltyName]);
-        };
-    })(Loyalty = MyAndromeda.Loyalty || (MyAndromeda.Loyalty = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -11700,11 +9834,2199 @@ var MyAndromeda;
                     return contentChart;
                 };
                 return chainGridDetailSumarryService;
-            })();
+            }());
             Services.chainGridDetailSumarryService = chainGridDetailSumarryService;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reporting;
+    (function (Reporting) {
+        var Services;
+        (function (Services) {
+            var dailySummaryDataService = (function () {
+                function dailySummaryDataService(options) {
+                    this.options = options;
+                    this.initDataSource();
+                }
+                dailySummaryDataService.prototype.initDataSource = function () {
+                    var internal = this;
+                    this.dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read: {
+                                url: internal.options.url,
+                                data: internal.options.data,
+                                type: "POST",
+                                dataType: "json"
+                            }
+                        },
+                        schema: {
+                            model: {
+                                fields: {
+                                    "Date": { "type": "date" }
+                                }
+                            },
+                            data: function (result) {
+                                return $.map(result.Data, function (element, index) {
+                                    var p = element.Performance.NumOrdersLT30Mins;
+                                    var t = element.Combined.OrderCount;
+                                    element.Performance.NumOrdersLT30MinsPercentage = p / t;
+                                    return element;
+                                });
+                            },
+                            total: function (result) { return result.Data.length; }
+                        },
+                        aggregate: [
+                            { field: "Combined.OrderCount", aggregate: "sum" },
+                            { field: "Combined.OrderCount", aggregate: "average" },
+                            { field: "Combined.OrderCount", aggregate: "max" },
+                            { field: "Combined.OrderCount", aggregate: "min" },
+                            { field: "Performance.AvgDoorTime", aggregate: "average" },
+                            { field: "Performance.AvgDoorTime", aggregate: "max" },
+                            { field: "Performance.AvgDoorTime", aggregate: "min" },
+                            { field: "Performance.AvgOutTheDoor", aggregate: "average" },
+                            { field: "Performance.AvgOutTheDoor", aggregate: "max" },
+                            { field: "Performance.AvgOutTheDoor", aggregate: "min" },
+                            { field: "Performance.AvgMakeTime", aggregate: "average" },
+                            { field: "Performance.AvgMakeTime", aggregate: "max" },
+                            { field: "Performance.AvgMakeTime", aggregate: "min" },
+                            { field: "Performance.AvgRackTime", aggregate: "average" },
+                            { field: "Performance.AvgRackTime", aggregate: "max" },
+                            { field: "Performance.AvgRackTime", aggregate: "min" },
+                            { field: "Performance.NumOrdersLT30Mins", aggregate: "sum" },
+                            { field: "Performance.NumOrdersLT30Mins", aggregate: "average" }
+                        ]
+                    });
+                };
+                dailySummaryDataService.prototype.bind = function (eventName, handler) {
+                    this.dataSource.bind(eventName, handler);
+                };
+                return dailySummaryDataService;
+            }());
+            Services.dailySummaryDataService = dailySummaryDataService;
+        })(Services = Reporting.Services || (Reporting.Services = {}));
+    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reporting;
+    (function (Reporting) {
+        var Services;
+        (function (Services) {
+            var dailyPerformanceService = (function () {
+                function dailyPerformanceService(options) {
+                    //console.log("new dailyPerformanceService");
+                    this.options = options;
+                    this.dashboardSalesService = new Services.dailySummaryDataService(options);
+                    this.bound = false;
+                }
+                dailyPerformanceService.prototype.bindViewModel = function () {
+                    //console.log("try bind");
+                    if (this.bound) {
+                        return;
+                    }
+                    var element = $(this.options.elementId);
+                    //console.log("bind");
+                    kendo.bind(element, this.viewModel);
+                    this.bound = true;
+                };
+                dailyPerformanceService.prototype.setupResults = function () {
+                    var dataSource = this.dashboardSalesService.dataSource, result = this.dashboardSalesService.result;
+                    var orderCount = null, doorTime = null, outDoorTime = null, makeTime = null, rackTime = null, less30Mins = null;
+                    try {
+                        var aggs = this.dashboardSalesService.dataSource.aggregates();
+                        orderCount = aggs["Combined.OrderCount"];
+                        doorTime = aggs["Performance.AvgDoorTime"];
+                        outDoorTime = aggs["Performance.AvgOutTheDoor"];
+                        makeTime = aggs["Performance.AvgMakeTime"];
+                        rackTime = aggs["Performance.AvgRackTime"];
+                        less30Mins = aggs["Performance.NumOrdersLT30Mins"];
+                        less30Mins.percent = function () {
+                            var sum = less30Mins.sum;
+                            var total = orderCount.sum;
+                            return sum / total;
+                        };
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                    this.viewModel = kendo.observable({
+                        dataSource: dataSource,
+                        orderCount: orderCount,
+                        doorTime: doorTime,
+                        outDoorTime: outDoorTime,
+                        makeTime: makeTime,
+                        rackTime: rackTime,
+                        less30Mins: less30Mins,
+                        showCharts: function () {
+                            return dataSource.total() > 1;
+                        }
+                    });
+                    this.bindViewModel();
+                    kendo.ui.progress($(this.options.elementId), false);
+                };
+                dailyPerformanceService.prototype.init = function () {
+                    var internal = this;
+                    var element = $(this.options.elementId);
+                    kendo.ui.progress(element, true);
+                    element.data("Reporting.DailySummaryService", this);
+                    internal.dashboardSalesService.dataSource.fetch($.proxy(this.setupResults, internal));
+                };
+                return dailyPerformanceService;
+            }());
+            Services.dailyPerformanceService = dailyPerformanceService;
+        })(Services = Reporting.Services || (Reporting.Services = {}));
+    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reporting;
+    (function (Reporting) {
+        var Services;
+        (function (Services) {
+            var Filter = (function () {
+                function Filter(from, to, dayRange) {
+                    this.from = from;
+                    this.to = to;
+                    this.dayRange = dayRange;
+                }
+                return Filter;
+            }());
+            var ReportingSalesResult = (function () {
+                function ReportingSalesResult(name, from, to, dayRange, routeData) {
+                    this.name = name;
+                    this.filter = new Filter(from, to, dayRange);
+                    this.routeData = routeData;
+                }
+                ReportingSalesResult.prototype.InitDataSource = function () {
+                    var internal = this;
+                    this.dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read: function (options) {
+                                var url = internal.routeData.urlFormat, filter = internal.filter;
+                                var destination = kendo.format(url, filter.from.toJSON(), filter.to.toJSON());
+                            }
+                        },
+                        schema: {
+                            model: {
+                                fields: {
+                                    "Day": { "type": "date" },
+                                    "Total": { "type": "number" },
+                                    "Count": { "type": "number" },
+                                    "Average": { "type": "number" },
+                                    "Min": { "type": "number" },
+                                    "Max": { "type": "number" }
+                                }
+                            }
+                        }
+                    });
+                };
+                ReportingSalesResult.prototype.ReactToDateChange = function () {
+                    var internal = this, service = $("#dashboardreport").data("ReportingService");
+                    service.Bind("change", function (e) {
+                        if (e.field !== "from") {
+                            return;
+                        }
+                        var dateChange = service.Get("from");
+                        var from = new Date();
+                        var to = dateChange;
+                        from.setDate(dateChange.getDate() - internal.filter.dayRange);
+                        internal.filter.from = from;
+                        internal.filter.to = to;
+                    });
+                };
+                ReportingSalesResult.prototype.InitReactions = function () {
+                    this.ReactToDateChange();
+                };
+                ReportingSalesResult.prototype.Init = function () {
+                    this.InitDataSource();
+                    this.InitReactions();
+                };
+                return ReportingSalesResult;
+            }());
+            Services.ReportingSalesResult = ReportingSalesResult;
+        })(Services = Reporting.Services || (Reporting.Services = {}));
+    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+///// <reference path="../../Scripts/typings/kendo/kendo.all.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reporting;
+    (function (Reporting) {
+        var Services;
+        (function (Services) {
+            "use strict";
+            var ReportingServiceWatcher = (function () {
+                function ReportingServiceWatcher(options) {
+                    var internal = this;
+                    this.options = options;
+                    if (!options.id) {
+                        throw new Error("Requires 'id' for the view model to bind to the element");
+                    }
+                    if (options.id) {
+                        this.element = $(options.id);
+                    }
+                    if (options.results) {
+                        this.results = options.results;
+                    }
+                    else {
+                        this.results = [];
+                    }
+                    this.viewModel = kendo.observable({
+                        resultCount: 0,
+                        max: new Date()
+                    });
+                    this.viewModel.bind("change", this.viewModelChagned);
+                }
+                ReportingServiceWatcher.prototype.viewModelChagned = function (e) {
+                    console.log("change on field :" + e.field);
+                };
+                ReportingServiceWatcher.prototype.Init = function () {
+                    var internal = this, element = $(this.element);
+                    if (this.results && this.results.length > 0) {
+                        this.results.forEach(function (item) {
+                            internal.AddResultToViewModel(item.key, item);
+                        });
+                    }
+                    if (!element || element.length == 0) {
+                        throw new Error("the element is not found:" + this.options.id);
+                    }
+                    //kendo.bind(element[0], this.viewModel);
+                    element.data("ReportingService", this);
+                    this.SetupChangeQueryOptions();
+                };
+                ReportingServiceWatcher.prototype.AddResult = function (key, result) {
+                    //already the type we want
+                    if (result instanceof Reporting.Models.Result) {
+                        this.AddResultToViewModel(key, result);
+                    }
+                    else {
+                        result = new Reporting.Models.Result(key, result);
+                        this.AddResultToViewModel(key, result);
+                    }
+                    return result;
+                };
+                ReportingServiceWatcher.prototype.TickAction = function () {
+                    var value = new Date();
+                    this.viewModel.set("today", value);
+                };
+                ReportingServiceWatcher.prototype.Tick = function () {
+                    var internal = this;
+                    this.liveUpdate = setInterval(function () {
+                        internal.TickAction();
+                    }, 1000);
+                };
+                ReportingServiceWatcher.prototype.StopTick = function () {
+                    clearInterval(this.liveUpdate);
+                };
+                ReportingServiceWatcher.prototype.SetupChangeQueryOptions = function () {
+                    var internal = this;
+                    $(this.element).on("click", ".k-button-change-date", function () {
+                        alert("change");
+                    });
+                };
+                ReportingServiceWatcher.prototype.Get = function (key) {
+                    return this.viewModel.get(key);
+                };
+                ReportingServiceWatcher.prototype.Set = function (key, value) {
+                    this.viewModel.set(key, value);
+                };
+                ReportingServiceWatcher.prototype.Bind = function (eventName, handler) {
+                    this.viewModel.bind(eventName, handler);
+                };
+                ReportingServiceWatcher.prototype.AddResultToViewModel = function (key, result) {
+                    var vm = this.viewModel;
+                    this.results.push(result);
+                    vm.set(key, result);
+                    vm.set("resultCount", this.results.length);
+                };
+                return ReportingServiceWatcher;
+            }());
+            Services.ReportingServiceWatcher = ReportingServiceWatcher;
+        })(Services = Reporting.Services || (Reporting.Services = {}));
+    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+//module MyAndromeda {
+//    module Reporting {
+//        export class SalesListDataService {
+//        }
+//        export class SalesListService
+//        {
+//            constructor() {
+//            }
+//        }
+//    }
+//}
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reports;
+    (function (Reports) {
+        var ChainDashboard;
+        (function (ChainDashboard) {
+            var app = angular.module("ChainDashboard.Config", [
+                "ui.router",
+                "ngAnimate"
+            ]);
+            app.config(function ($stateProvider, $urlRouterProvider) {
+                var app = {
+                    abstract: true,
+                    url: "/",
+                    templateUrl: "dashboard-app-template.html"
+                };
+                var appChainSalesDashboard = {
+                    url: "/sales-dashboard",
+                    views: {
+                        "summary": {
+                            templateUrl: "chain-sales-dashboard-summary.html",
+                            controller: "chainSalesDashboardSummaryController"
+                        },
+                        "detail": {
+                            templateUrl: "chain-sales-dashboard-detail.html",
+                            controller: "chainSalesDashboardDetailController"
+                        }
+                    }
+                };
+                var appStoreSalesDashboard = {
+                    url: "/store-sales-dashboard/:storeId",
+                    views: {
+                        "summary": {
+                            templateUrl: "store-sales-dashboard-summary.html",
+                            controller: "storeSalesDashboardSummaryController"
+                        },
+                        "detail": {
+                            templateUrl: "store-sales-dashboard-detail.html",
+                            controller: "storeSalesDashboardDetailController"
+                        }
+                    },
+                    onEnter: function ($stateParams, groupedStoreResultsService) {
+                        groupedStoreResultsService.LoadStore($stateParams.storeId);
+                    },
+                    cache: false
+                };
+                var appChainSalesDataWarehouse = {
+                    url: "/chain-sales-live",
+                    views: {
+                        "summary": {
+                            templateUrl: "store-sales-day-dashboard-summary.html",
+                            controller: "chainTodaysSalesSummaryController"
+                        },
+                        "detail": {
+                            templateUrl: "store-sales-day-dashboard-detail.html",
+                            controller: "chainTodaysSalesDetailController"
+                        }
+                    }
+                };
+                var appStoreSalesLive = {
+                    url: "/store-sales-live/:storeId",
+                    views: {
+                        "summary": {
+                            templateUrl: "store-sales-day-dashboard-summary.html",
+                            controller: "storeSalesDayDashboardSummaryController"
+                        },
+                    },
+                    onEnter: function ($stateParams, groupedStoreResultsService) {
+                        groupedStoreResultsService.LoadStore($stateParams.storeId);
+                    },
+                    cache: false
+                };
+                var storeMapDashboard = {
+                    url: "/store-map-live/:storeId",
+                    views: {
+                        "summary": {
+                            templateUrl: "store-sales-map.summary.html",
+                            controller: "storeMapDashboardSummaryController"
+                        },
+                        "detail": {
+                            templateUrl: "store-sales-map.detail.html",
+                            controller: "storeMapDashboardDetailController"
+                        }
+                    },
+                    onEnter: function ($stateParams, groupedStoreResultsService) {
+                        groupedStoreResultsService.LoadStore($stateParams.storeId);
+                    },
+                    cache: false
+                };
+                //$stateProvider.state("app", app);
+                $stateProvider.state("chain-sales-dashboard", appChainSalesDashboard);
+                $stateProvider.state("chain-sales-data-warehouse", appChainSalesDataWarehouse);
+                $stateProvider.state("store-sales-dashboard", appStoreSalesDashboard);
+                $stateProvider.state("store-sales-live", appStoreSalesLive);
+                $stateProvider.state("store-map-live", storeMapDashboard);
+                $urlRouterProvider.otherwise("/sales-dashboard");
+            });
+            app.run(function ($templateCache) {
+                MyAndromeda.Logger.Notify("WebHooks Started");
+                angular
+                    .element('script[type="text/ng-template"]')
+                    .each(function (i, element) {
+                    $templateCache.put(element.id, element.innerHTML);
+                });
+            });
+        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
+    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reports;
+    (function (Reports) {
+        var ChainDashboard;
+        (function (ChainDashboard) {
+            var app = angular.module("ChainDashboard.StoreMap", ["ChainDashboard.Services"]);
+            app.controller("storeMapDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
+                MyAndromeda.Logger.Notify("Starting storeSalesDayDashboardSummaryController");
+                $scope.currency = valueFormater.Currency;
+                $scope.store = groupedStoreResultsService.StoreData;
+                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
+                    MyAndromeda.Logger.Notify("set store");
+                    $timeout(function () {
+                        $scope.store = store;
+                    });
+                });
+                if (groupedStoreResultsService.StoreData == null) {
+                    MyAndromeda.Logger.Notify("load store data");
+                    groupedStoreResultsService.LoadStore($stateParams.storeId);
+                }
+            });
+            app.controller("storeMapDashboardDetailController", function ($scope, $timeout, $stateParams, orderService, dashboardQueryContext, valueFormater) {
+                $scope.currency = valueFormater.CurrencyDecimal;
+                //var dataSource = orderService.ListOrders($stateParams.storeId);
+                var dataSource = orderService.ListOrdersForMap(1885, dashboardQueryContext.Query.FromObj, dashboardQueryContext.Query.ToObj);
+                dashboardQueryContext.Changed.throttle(300).subscribe(function () {
+                    dataSource.read();
+                });
+                var getMap = function () {
+                    return $scope.myMap;
+                };
+                var selectMarker = function (e) {
+                    var marker = e.marker;
+                    var dataItem = marker.dataItem;
+                    MyAndromeda.Logger.Notify(dataItem);
+                    $timeout(function () {
+                        $scope.highlightedOrder = dataItem;
+                    });
+                };
+                var mapOptions = {
+                    markerClick: selectMarker,
+                    center: [0, 0],
+                    zoom: 2,
+                    layers: [
+                        {
+                            type: "tile",
+                            urlTemplate: "http://#= subdomain #.tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png",
+                            subdomains: ["a", "b", "c"],
+                            attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
+                        },
+                        {
+                            type: "marker",
+                            dataSource: dataSource,
+                            locationField: "Customer.GeoLocation"
+                        }
+                    ],
+                };
+                $scope.mapOptions = mapOptions;
+            });
+        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
+    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reports;
+    (function (Reports) {
+        var ChainDashboard;
+        (function (ChainDashboard) {
+            var app = angular.module("ChainDashboard.Services", []);
+            var DashboardQueryContext = (function () {
+                function DashboardQueryContext() {
+                    this.Changed = new Rx.BehaviorSubject(false);
+                    var today = new Date();
+                    var thirtyDaysAgo = new Date();
+                    this.Query = {
+                        FromObj: new Date(thirtyDaysAgo.setDate(-30)),
+                        ToObj: today
+                    };
+                    this.Changed.onNext(true);
+                }
+                return DashboardQueryContext;
+            }());
+            ChainDashboard.DashboardQueryContext = DashboardQueryContext;
+            var GroupedDataWarehouseStoreResultsService = (function () {
+                function GroupedDataWarehouseStoreResultsService($http) {
+                    this.ChainData = null;
+                    this.ChainDataObservable = new Rx.BehaviorSubject(null);
+                    this.$http = $http;
+                }
+                GroupedDataWarehouseStoreResultsService.prototype.LoadChain = function (chainId, query) {
+                    var _this = this;
+                    var route = kendo.format("/chain-data-warehouse/{0}", chainId);
+                    var data = query !== null ? this.CreateQueryObj(query) : {};
+                    var promise = this.$http.post(route, data);
+                    promise.then(function (result) {
+                        _this.ChainData = result.data;
+                        _this.ChainDataObservable.onNext(_this.ChainData);
+                    });
+                    return this.ChainDataObservable.asObservable();
+                };
+                GroupedDataWarehouseStoreResultsService.prototype.CreateQueryObj = function (query) {
+                    var f = kendo.toString(query.FromObj, "u");
+                    var t = kendo.toString(query.ToObj, "u");
+                    MyAndromeda.Logger.Notify(f);
+                    MyAndromeda.Logger.Notify(t);
+                    return {
+                        From: f,
+                        To: t
+                    };
+                };
+                GroupedDataWarehouseStoreResultsService.prototype.CreaateTotals = function (name, allOrders) {
+                    var totals = {
+                        Cancelled: 0,
+                        CancelledValue: 0,
+                        Completed: 0,
+                        CompletedValue: 0,
+                        OutForDelivery: 0,
+                        OutForDeliveryValue: 0,
+                        Oven: 0,
+                        OvenValue: 0,
+                        ReadyToDispatch: 0,
+                        ReadyToDispatchValue: 0,
+                        Received: 0,
+                        ReceivedValue: 0,
+                        Total: 0,
+                        TotalValue: 0,
+                        FutureOrder: 0,
+                        FutureOrderValue: 0,
+                        /* pie chart values */
+                        Collection: 0,
+                        CollectionValue: 0,
+                        Delivery: 0,
+                        DeliveryValue: 0,
+                        InStore: 0,
+                        InStoreValue: 0,
+                        /* */
+                        Name: "",
+                        Data: new kendo.data.DataSource(),
+                        AcsApplicationData: new kendo.data.DataSource({
+                            group: [
+                                {
+                                    field: "ApplicationId"
+                                }
+                            ]
+                        }),
+                        OccasionData: new kendo.data.DataSource()
+                    };
+                    var k = [];
+                    allOrders.subscribe(function (order) {
+                        k.push(order);
+                        totals.Total++;
+                        totals.TotalValue += order.FinalPrice;
+                        totals.Name = name;
+                        switch (order.OrderType.toLocaleLowerCase()) {
+                            case "collection": {
+                                totals.Collection++;
+                                totals.CollectionValue += order.FinalPrice;
+                                break;
+                            }
+                            case "delivery": {
+                                totals.Delivery++;
+                                totals.DeliveryValue += order.FinalPrice;
+                                break;
+                            }
+                            default: {
+                                totals.InStore++;
+                                totals.InStoreValue += order.FinalPrice;
+                            }
+                        }
+                        switch (order.Status) {
+                            //Order has been received by the store
+                            case 1: {
+                                totals.Received++;
+                                totals.ReceivedValue += order.FinalPrice;
+                                break;
+                            }
+                            //Order is in oven
+                            case 2: {
+                                totals.Oven++;
+                                totals.OvenValue += order.FinalPrice;
+                                break;
+                            }
+                            //Order is ready for dispatch
+                            case 3: {
+                                totals.ReadyToDispatch++;
+                                totals.ReadyToDispatchValue += order.FinalPrice;
+                                break;
+                            }
+                            //Order is out for delivery
+                            case 4: {
+                                totals.OutForDelivery++;
+                                totals.OutForDeliveryValue += order.FinalPrice;
+                                break;
+                            }
+                            //Order has been completed
+                            case 5: {
+                                totals.Completed++;
+                                totals.CompletedValue += order.FinalPrice;
+                                break;
+                            }
+                            //Order has been canceled
+                            case 6: {
+                                totals.Cancelled++;
+                                totals.CancelledValue += order.FinalPrice;
+                                break;
+                            }
+                            //Future Order
+                            case 8: {
+                                totals.FutureOrder++;
+                                totals.FutureOrderValue += order.FinalPrice;
+                                break;
+                            }
+                        }
+                    });
+                    totals.AcsApplicationData.data(k);
+                    totals.Data.data(k);
+                    totals.OccasionData.data([
+                        { OrderType: "Collection", Count: totals.Collection, Sum: totals.CollectionValue },
+                        { OrderType: "Delivery", Count: totals.Delivery, Sum: totals.DeliveryValue },
+                        { OrderType: "Dine in", Count: totals.InStore, Sum: totals.InStoreValue }
+                    ]);
+                    return totals;
+                };
+                return GroupedDataWarehouseStoreResultsService;
+            }());
+            ChainDashboard.GroupedDataWarehouseStoreResultsService = GroupedDataWarehouseStoreResultsService;
+            var GroupedStoreResultsService = (function () {
+                function GroupedStoreResultsService(groupedStoreResultsDataService, dashboardQueryContext) {
+                    var _this = this;
+                    this.ChainData = null;
+                    this.StoreData = null;
+                    this.dashboardQueryContext = dashboardQueryContext;
+                    this.groupedStoreResultsDataService = groupedStoreResultsDataService;
+                    this.ChainDataObservable = new Rx.BehaviorSubject(null);
+                    this.StoreObservable = new Rx.BehaviorSubject(null);
+                    var throttled = dashboardQueryContext.Changed.where(function (e) { return e; }).throttle(700);
+                    throttled.select(function () {
+                        var promise = _this.groupedStoreResultsDataService.GetDailyAllStoreData(ChainDashboard.settings.chainId, _this.dashboardQueryContext.Query);
+                        return promise;
+                    }).subscribe(function (e) {
+                        //load stuff; 
+                        e.then(function (dataResult) {
+                            _this.ChainData = dataResult.data;
+                            _this.ChainDataObservable.onNext(dataResult.data);
+                        });
+                    });
+                    this.ChainDataObservable.subscribe(function (data) {
+                    });
+                    throttled.where(function () { return _this.StoreData !== null; }).select(function () {
+                        var promise = _this.groupedStoreResultsDataService.GetDailySingleStoreData(ChainDashboard.settings.chainId, _this.StoreData.StoreId, _this.dashboardQueryContext.Query);
+                        return promise;
+                    }).subscribe(function (e) {
+                        e.then(function (dataResult) {
+                            _this.StoreData = dataResult.data;
+                            _this.StoreObservable.onNext(_this.StoreData);
+                        });
+                    });
+                }
+                GroupedStoreResultsService.prototype.LoadStore = function (andromedaSiteId) {
+                    var _this = this;
+                    if (this.ChainData == null) {
+                        var promise = this.groupedStoreResultsDataService
+                            .GetDailySingleStoreData(ChainDashboard.settings.chainId, andromedaSiteId, this.dashboardQueryContext.Query);
+                        promise.then(function (dataResult) {
+                            _this.StoreData = dataResult.data;
+                            _this.StoreObservable.onNext(_this.StoreData);
+                        });
+                    }
+                    else {
+                        var store = this.ChainData.Data.filter(function (e) { return e.StoreId == andromedaSiteId; });
+                        this.StoreData = store[0];
+                        this.StoreObservable.onNext(this.StoreData);
+                    }
+                };
+                return GroupedStoreResultsService;
+            }());
+            ChainDashboard.GroupedStoreResultsService = GroupedStoreResultsService;
+            var GroupedStoreResultsDataService = (function () {
+                function GroupedStoreResultsDataService($http) {
+                    this.$http = $http;
+                }
+                GroupedStoreResultsDataService.prototype.CreateQueryObj = function (query) {
+                    var f = kendo.toString(query.FromObj, "u");
+                    var t = kendo.toString(query.ToObj, "u");
+                    MyAndromeda.Logger.Notify(f);
+                    MyAndromeda.Logger.Notify(t);
+                    return {
+                        From: f,
+                        To: t
+                    };
+                };
+                GroupedStoreResultsDataService.prototype.GetDailyAllStoreData = function (chainId, query) {
+                    var route = kendo.format("/chain-data/{0}", chainId);
+                    var queryBody = this.CreateQueryObj(query);
+                    var promise = this.$http.post(route, queryBody);
+                    return promise;
+                };
+                GroupedStoreResultsDataService.prototype.GetDailySingleStoreData = function (chainId, andromedaSiteId, query) {
+                    var route = kendo.format("/chain-data/{0}/store/{1}", chainId, andromedaSiteId);
+                    var queryBody = this.CreateQueryObj(query);
+                    var promise = this.$http.post(route, queryBody);
+                    return promise;
+                };
+                return GroupedStoreResultsDataService;
+            }());
+            ChainDashboard.GroupedStoreResultsDataService = GroupedStoreResultsDataService;
+            var ChartOptions = (function () {
+                function ChartOptions() {
+                }
+                ChartOptions.prototype.DataWareHouseOccasionChart = function () {
+                    var options = {
+                        theme: "bootstrap",
+                        legend: {
+                            position: "top"
+                        },
+                        seriesDefaults: {
+                            labels: {
+                                template: "#= category # - #= kendo.format('{0:P}', percentage)#",
+                                //position: "outsideEnd",
+                                visible: true,
+                                background: "transparent"
+                            },
+                            type: "pie"
+                        },
+                        series: [
+                            {
+                                name: "Count", categoryField: "OrderType", field: "Count",
+                                labels: {
+                                    template: "#=category# - #= dataItem.Count# order(s)\n#= kendo.toString(dataItem.Sum, 'c') #"
+                                }
+                            }
+                        ]
+                    };
+                    return options;
+                };
+                ChartOptions.prototype.DataWareHouseAcsApplicationChart = function () {
+                    var options = {
+                        theme: "bootstrap",
+                        legend: {
+                            position: "top"
+                        },
+                        categoryAxis: [
+                            {
+                                field: "WantedTime",
+                                type: "date",
+                                baseUnit: "months"
+                            }
+                        ],
+                        valueAxis: [
+                            {
+                                title: "Sales",
+                                name: "Sales",
+                                labels: {
+                                    template: "#= kendo.toString(value, 'c') #"
+                                },
+                            },
+                        ],
+                        series: [
+                            { name: "Sales", field: "FinalPrice", type: "column", axis: "Sales", aggregate: "sum", stack: { group: "Sales" } },
+                        ]
+                    };
+                    return options;
+                };
+                ChartOptions.prototype.WeekChart = function () {
+                    var options = {
+                        theme: "bootstrap",
+                        legend: {
+                            position: "top"
+                        },
+                        categoryAxis: [
+                            {
+                                field: "WeekOfYear",
+                                baseUnitStep: "auto",
+                            }
+                        ],
+                        valueAxis: [
+                            {
+                                title: "Sales",
+                                name: "Sales",
+                                labels: {
+                                    template: "#= kendo.toString(value / 100, 'c') #"
+                                }
+                            },
+                            { title: "Orders", name: "Orders" }
+                        ],
+                        //seriesDefaults: { type: "radarLine" },
+                        series: [
+                            { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales" },
+                            { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders" },
+                            { name: "Delivery", field: "Delivery.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
+                            { name: "Collection", field: "Collection.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
+                            { name: "Carry out", field: "CarryOut.NetSales", type: "area", axis: "Sales", aggregate: "sum" }
+                        ]
+                    };
+                    return options;
+                };
+                ChartOptions.prototype.DayChart = function (baseUnit) {
+                    var options = {
+                        theme: "bootstrap",
+                        legend: {
+                            position: "top"
+                        },
+                        categoryAxis: [
+                            {
+                                field: "CreateTimeStamp",
+                                //baseUnitStep: "auto",
+                                type: "date",
+                                baseUnit: baseUnit,
+                                baseUnitStep: 1,
+                                autoBaseUnitSteps: {
+                                    days: [1],
+                                    weeks: [],
+                                    months: []
+                                },
+                                weekStartDay: 1,
+                            }
+                        ],
+                        valueAxis: [
+                            {
+                                title: "Sales", name: "Sales",
+                                labels: {
+                                    template: "#= kendo.toString(value / 100, 'c') #"
+                                }
+                            },
+                            { title: "Orders", name: "Orders" }
+                        ],
+                        //seriesDefaults: { type: "radarLine" },
+                        series: [
+                            { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
+                            { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders", aggregate: "sum" },
+                            { name: "Delivery", field: "Delivery.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
+                            { name: "Collection", field: "Collection.NetSales", type: "area", axis: "Sales", aggregate: "sum" },
+                            { name: "Carry out", field: "CarryOut.NetSales", type: "area", axis: "Sales", aggregate: "sum" }
+                        ]
+                    };
+                    if (baseUnit == "days") {
+                        var category = options.categoryAxis[0];
+                        category.labels = {
+                            step: 3,
+                            format: "d/M"
+                        };
+                    }
+                    if (baseUnit == "months") {
+                        var category = options.categoryAxis[0];
+                        category.labels = {
+                            dateFormats: {
+                                days: "d/M"
+                            }
+                        };
+                    }
+                    return options;
+                };
+                return ChartOptions;
+            }());
+            ChainDashboard.ChartOptions = ChartOptions;
+            var ValueFormater = (function () {
+                function ValueFormater() {
+                }
+                ValueFormater.prototype.Currency = function (value) {
+                    var x = value / 100;
+                    return kendo.toString(x, "c");
+                };
+                ValueFormater.prototype.CurrencyDecimal = function (value) {
+                    return kendo.toString(value, "c");
+                };
+                ValueFormater.prototype.DateFormat = function (value) {
+                    return kendo.toString(value, "g");
+                };
+                return ValueFormater;
+            }());
+            ChainDashboard.ValueFormater = ValueFormater;
+            app.service("dashboardQueryContext", DashboardQueryContext);
+            app.service("groupedStoreResultsDataService", GroupedStoreResultsDataService);
+            app.service("groupedStoreResultsService", GroupedStoreResultsService);
+            app.service("valueFormater", ValueFormater);
+            app.service("chartOptions", ChartOptions);
+            app.service("groupedDataWarehouseStoreResultsService", GroupedDataWarehouseStoreResultsService);
+        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
+    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reports;
+    (function (Reports) {
+        var ChainDashboard;
+        (function (ChainDashboard) {
+            var app = angular.module("ChainDashboard.Today", ["ChainDashboard.Services"]);
+            app.controller("chainTodaysSalesSummaryController", function ($scope, $stateParams, $timeout, dashboardQueryContext, chartOptions, groupedDataWarehouseStoreResultsService, valueFormater) {
+                //only work with 5;
+                //var observable = groupedDataWarehouseStoreResultsService
+                //    .LoadChain(settings.chainId)
+                //    .where(e => e !== null);
+                var observable = groupedDataWarehouseStoreResultsService
+                    .LoadChain(ChainDashboard.settings.chainId, null)
+                    .where(function (e) { return e !== null; });
+                var changeSubscription = dashboardQueryContext.Changed.throttle(700).subscribe(function (b) {
+                    groupedDataWarehouseStoreResultsService
+                        .LoadChain(ChainDashboard.settings.chainId, dashboardQueryContext.Query);
+                });
+                observable.subscribe(function (data) {
+                    var allOrders = Rx.Observable.from(data.Stores).selectMany(function (store) { return Rx.Observable.from(store.Orders); });
+                    var r = groupedDataWarehouseStoreResultsService.CreaateTotals(data.Name, allOrders);
+                    $timeout(function () {
+                        $scope.summary = r;
+                    });
+                });
+                $scope.occasionChartOptions = chartOptions.DataWareHouseOccasionChart();
+                $scope.acsChartOptions = chartOptions.DataWareHouseAcsApplicationChart();
+                $scope.currency = valueFormater.CurrencyDecimal;
+            });
+            app.controller("chainTodaysSalesDetailController", function ($scope, $stateParams, $timeout, dashboardQueryContext, chartOptions, groupedDataWarehouseStoreResultsService, valueFormater) {
+                var observable = groupedDataWarehouseStoreResultsService
+                    .LoadChain(5, null)
+                    .where(function (e) { return e !== null; });
+                observable.subscribe(function (data) {
+                    var summaries = [];
+                    //var allOrders = Rx.Observable.from(data.Stores).selectMany((store) => Rx.Observable.from(store.Orders));
+                    var stores = Rx.Observable.from(data.Stores);
+                    stores.subscribe(function (store) {
+                        var allOrders = Rx.Observable.from(store.Orders);
+                        var r = groupedDataWarehouseStoreResultsService.CreaateTotals(store.Name, allOrders);
+                        summaries.push(r);
+                    });
+                    $timeout(function () {
+                        $scope.summaries = summaries;
+                    });
+                });
+                $scope.currency = valueFormater.CurrencyDecimal;
+            });
+            app.controller("storeSalesDayDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
+                MyAndromeda.Logger.Notify("Starting storeSalesDayDashboardSummaryController");
+                $scope.currency = valueFormater.Currency;
+                $scope.store = groupedStoreResultsService.StoreData;
+                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
+                    MyAndromeda.Logger.Notify("set store");
+                    $timeout(function () {
+                        $scope.store = store;
+                    });
+                });
+                if (groupedStoreResultsService.StoreData == null) {
+                    MyAndromeda.Logger.Notify("load store data");
+                    //ignore store 
+                    groupedStoreResultsService.LoadStore($stateParams.storeId);
+                }
+            });
+        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
+    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../../scripts/typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="myandromeda.reports.chaindashboard.models.d.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Reports;
+    (function (Reports) {
+        var ChainDashboard;
+        (function (ChainDashboard) {
+            var app = angular.module("ChainDashboard", [
+                "MyAndromeda.Resize",
+                "MyAndromeda.Progress",
+                "MyAndromeda.Data.Orders",
+                "ChainDashboard.Services",
+                "ChainDashboard.StoreMap",
+                "ChainDashboard.Today",
+                "ChainDashboard.Config",
+                "kendo.directives",
+                "oitozero.ngSweetAlert",
+                "ngAnimate"
+            ]);
+            app.controller("chainSalesDashboardSummaryController", function ($scope, $timeout, groupedStoreResultsService, valueFormater, chartOptions) {
+                $scope.hi = "hi ho";
+                $scope.data = [];
+                $scope.currency = valueFormater.Currency;
+                var radarOptions = {
+                    legend: {
+                        position: "top"
+                    },
+                    categoryAxis: [
+                        {
+                            field: "WeekOfYear",
+                            baseUnitStep: "auto",
+                        }
+                    ],
+                    valueAxis: [
+                        { title: "Sales", name: "Sales" },
+                        { title: "Orders", name: "Orders" }
+                    ],
+                    //seriesDefaults: { type: "radarLine" },
+                    series: [
+                        { name: "Sales", field: "Total.NetSales", type: "area", axis: "Sales" },
+                        { name: "Order Count", field: "Total.OrderCount", type: "column", axis: "Orders" }
+                    ]
+                };
+                $scope.weekChartOptions = chartOptions.WeekChart();
+                $scope.dayChartOptions = chartOptions.DayChart("days");
+                $scope.weekChartOptions = chartOptions.DayChart("weeks");
+                $scope.monthChartOptions = chartOptions.DayChart("months");
+                var salesWeekData = new kendo.data.DataSource({});
+                var salesMonthData = new kendo.data.DataSource({
+                    group: [
+                        { field: "CreatedTimeStamp" }
+                    ],
+                    schema: {
+                        model: {
+                            fields: {
+                                CreatedTimeStamp: {
+                                    type: "date"
+                                }
+                            }
+                        }
+                    }
+                });
+                $scope.radarOptions = radarOptions;
+                $scope.salesDayData = salesMonthData;
+                $scope.salesWeekData = salesWeekData;
+                groupedStoreResultsService.ChainDataObservable.where(function (e) { return e !== null; }).subscribe(function (chainResult) {
+                    $timeout(function () {
+                        $scope.data = chainResult;
+                        $scope.storeCount = chainResult.Data.length;
+                        MyAndromeda.Logger.Notify("$scope.data :");
+                        MyAndromeda.Logger.Notify(chainResult);
+                        Rx.Observable.from(chainResult.WeekData).maxBy(function (e) { return e.Total.NetSales; }).subscribe(function (max) {
+                            MyAndromeda.Logger.Notify("$scope.bestWeek");
+                            MyAndromeda.Logger.Notify(max[0]);
+                            $scope.bestWeek = max[0];
+                        });
+                        var dayData = [];
+                        var dayDataObservable = Rx.Observable.from(chainResult.Data).flatMap(function (e) { return Rx.Observable.fromArray(e.DailyData); });
+                        dayDataObservable.subscribe(function (o) {
+                            dayData.push(o);
+                        });
+                        MyAndromeda.Logger.Notify("day data");
+                        MyAndromeda.Logger.Notify(dayData);
+                        salesWeekData.data(chainResult.WeekData);
+                        salesMonthData.data(dayData);
+                    });
+                });
+            });
+            app.controller("chainSalesDashboardDetailController", function ($scope, $timeout, $state, groupedStoreResultsService, valueFormater) {
+                $scope.data = [];
+                $scope.currency = valueFormater.Currency;
+                $scope.select = function (store) {
+                    groupedStoreResultsService.StoreData = store;
+                    $state.go("store-sales-dashboard", { storeId: store.StoreId });
+                };
+                groupedStoreResultsService.ChainDataObservable.subscribe(function (data) {
+                    $scope.data = data;
+                });
+            });
+            app.controller("storeSalesDashboardSummaryController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, valueFormater) {
+                $scope.currency = valueFormater.Currency;
+                $scope.store = groupedStoreResultsService.StoreData;
+                groupedStoreResultsService.StoreObservable.subscribe(function (store) {
+                    MyAndromeda.Logger.Notify("set store");
+                    $timeout(function () {
+                        $scope.store = store;
+                    });
+                });
+                if (groupedStoreResultsService.StoreData == null) {
+                    MyAndromeda.Logger.Notify("load store data");
+                    groupedStoreResultsService.LoadStore($stateParams.storeId);
+                }
+            });
+            app.controller("storeSalesDashboardDetailController", function ($scope, $timeout, $stateParams, groupedStoreResultsService, groupedStoreResultsDataService, dashboardQueryContext, chartOptions, valueFormater) {
+                $scope.storeWeekOptions = chartOptions.WeekChart();
+                $scope.storeDailyOptions = chartOptions.DayChart("days");
+                $scope.storeWeeklyOptions = chartOptions.DayChart("weeks");
+                $scope.storeMonthlyOptions = chartOptions.DayChart("months");
+                var weekDataSource = new kendo.data.DataSource({});
+                var dailyDataSource = new kendo.data.DataSource({
+                    schema: {
+                        model: {
+                            fields: {
+                                CreateTimeStamp: {
+                                    type: "date"
+                                }
+                            }
+                        }
+                    }
+                });
+                $scope.storeWeekData = weekDataSource;
+                $scope.dailyDataSource = dailyDataSource;
+                var storeObservable = groupedStoreResultsService.StoreObservable.where(function (e) { return e !== null; }).subscribe(function (store) {
+                    MyAndromeda.Logger.Notify("reload charts");
+                    $timeout(function () {
+                        $scope.store = store;
+                        weekDataSource.data(store.WeekData);
+                        dailyDataSource.data(store.DailyData);
+                    });
+                });
+            });
+            app.directive("dashboardAppFilter", function () {
+                return {
+                    controller: function ($scope, dashboardQueryContext) {
+                        $scope.query = dashboardQueryContext.Query;
+                        //dashboardQueryContext.Query.ToObj
+                        $scope.$watch('query.ToObj', function () {
+                            MyAndromeda.Logger.Notify("changes");
+                            dashboardQueryContext.Changed.onNext(true);
+                        });
+                        $scope.$watch('query.FromObj', function () {
+                            MyAndromeda.Logger.Notify("changes");
+                            dashboardQueryContext.Changed.onNext(true);
+                        });
+                        $scope.today = function () {
+                            dashboardQueryContext.Query.FromObj = new Date();
+                        };
+                        $scope.createPdf = function () {
+                            MyAndromeda.Logger.Notify("hi");
+                            var region = $(".pdfRegion");
+                            kendo.drawing.drawDOM(region)
+                                .then(function (group) {
+                                // Render the result as a PDF file
+                                return kendo.drawing.exportPDF(group, {
+                                    creator: "Andromeda",
+                                    keywords: "Chain,Report",
+                                    date: new Date(),
+                                    landscape: false,
+                                    subject: "Report",
+                                    title: "Chain",
+                                    paperSize: "auto",
+                                    margin: { left: "1cm", top: "1cm", right: "1cm", bottom: "1cm" }
+                                });
+                            })
+                                .done(function (data) {
+                                // Save the PDF file
+                                kendo.saveAs({
+                                    dataURI: data,
+                                    fileName: "Dashboard.pdf",
+                                });
+                            });
+                        };
+                    },
+                    restrict: "E",
+                    templateUrl: "dashboard-app-filter.html"
+                };
+            });
+            ChainDashboard.settings = {
+                chainId: 0
+            };
+            function setupChainDashboard(id) {
+                var element = document.getElementById(id);
+                angular.bootstrap(element, ["ChainDashboard"]);
+            }
+            ChainDashboard.setupChainDashboard = setupChainDashboard;
+            ;
+        })(ChainDashboard = Reports.ChainDashboard || (Reports.ChainDashboard = {}));
+    })(Reports = MyAndromeda.Reports || (MyAndromeda.Reports = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Start;
+    (function (Start) {
+        var app = angular.module("MyAndromeda.Start.Config", [
+            "MyAndromeda.Start.Controllers",
+            "ui.router",
+            "ngAnimate"
+        ]);
+        app.config(function ($stateProvider, $urlRouterProvider) {
+            MyAndromeda.Logger.Notify("set start config");
+            var app = {
+                abstract: true,
+                url: "/chain",
+                template: '<div ui-view="main"></div>'
+            };
+            var appChainList = {
+                url: "/list",
+                views: {
+                    "main": {
+                        templateUrl: "chain-list.html",
+                        controller: "chainListController"
+                    },
+                },
+                cache: false
+            };
+            //var appChainsStoreList: ng.ui.IState = {
+            //    url: "/:chainId",
+            //    views: {
+            //        "main": {
+            //            templateUrl: "store-list.html",
+            //            controller: "storeListController"
+            //        }
+            //    },
+            //    cache: false
+            //};
+            $stateProvider.state("chain", app);
+            $stateProvider.state("chain.list", appChainList);
+            //$stateProvider.state("start-chain-store", appChainsStoreList);
+            $urlRouterProvider.otherwise("/chain/list");
+        });
+        app.run(function ($templateCache) {
+            MyAndromeda.Logger.Notify("Started config");
+            angular
+                .element('script[type="text/ng-template"]')
+                .each(function (i, element) {
+                $templateCache.put(element.id, element.innerHTML);
+            });
+        });
+    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Start;
+    (function (Start) {
+        var controllers = angular.module("MyAndromeda.Start.Controllers", ["MyAndromeda.Start.Services", "kendo.directives"]);
+        controllers.controller("chainListController", function ($scope, userChainDataService) {
+            var chainActionTemplate = $("#chain-actions-template").html();
+            var storeTemplate = $("#chain-template").html();
+            MyAndromeda.Logger.Notify("store template");
+            MyAndromeda.Logger.Notify(storeTemplate);
+            var chainListOptionsDataSource = new kendo.data.TreeListDataSource({
+                //data: [
+                //    { Id: 1, Name: "test", ParentId: null },
+                //    { Id: 2, Name: "test 2", ParentId: 1 }
+                //],
+                schema: {
+                    model: {
+                        id: "Id",
+                        parentId: "ParentId",
+                        fields: {
+                            Name: {
+                                field: "Name", type: "string"
+                            },
+                            StoreCount: { field: "StoreCount", type: "number" },
+                            ParentId: { field: "ParentId", nullable: true },
+                        },
+                        StoreCountLabel: function () {
+                            var model = this;
+                            if (model.ChildChainCount > 0) {
+                                var chainTotal = model.ChildStoreCount + model.StoreCount;
+                                return model.StoreCount + "/" + chainTotal;
+                            }
+                            return "" + model.StoreCount;
+                        },
+                        expanded: true
+                    }
+                }
+            });
+            var chainListOptions = {
+                sortable: true,
+                editable: false,
+                filterable: {},
+                //autoBind: false,
+                resizable: true,
+                dataSource: chainListOptionsDataSource,
+                columns: [
+                    //{ title: "Actions", width: 170, template: chainActionTemplate, filterable: false }
+                    { field: "Name", title: "Name", template: storeTemplate },
+                ]
+            };
+            var chainsPromise = userChainDataService.List();
+            chainsPromise.then(function (callback) {
+                MyAndromeda.Logger.Notify("chain call back data");
+                var data = callback.data;
+                chainListOptionsDataSource.data(data);
+                var dataSourceData = chainListOptionsDataSource.data();
+                MyAndromeda.Logger.Notify(dataSourceData);
+            }).catch(function () {
+                alert("Something went wrong");
+            });
+            $scope.chainListOptions = chainListOptions;
+        });
+        controllers.directive("chainGrid", function () {
+            return {
+                name: "chainGrid",
+                controller: "storeListController",
+                restrict: "E",
+                scope: {
+                    chain: "="
+                },
+                templateUrl: "store-list.html"
+            };
+        });
+        controllers.controller("storeListController", function ($scope, $timeout, userStoreDataService) {
+            var chain = $scope.chain;
+            var status = {
+                hasStores: false,
+                hideStores: true
+            };
+            $scope.status = status;
+            var storeListDataSource = new kendo.data.DataSource({
+                transport: {
+                    read: function (options) {
+                        var promise = userStoreDataService.ListStoresByChainId(chain.Id);
+                        promise.then(function (callback) {
+                            options.success(callback.data);
+                            if (callback.data.length > 0) {
+                                $timeout(function () {
+                                    status.hasStores = true;
+                                });
+                            }
+                        });
+                    }
+                },
+                sort: [
+                    { field: "Name", dir: "asc" }
+                ],
+                serverSorting: false,
+                serverFiltering: false,
+                serverPaging: false
+            });
+            storeListDataSource.read();
+            var storeTemplate = $("#store-list-template").html();
+            var storeListOptions = {
+                autoBind: true,
+                sortable: true,
+                dataSource: storeListDataSource,
+                filterable: {
+                    mode: "row"
+                },
+                columns: [
+                    { title: "Name", field: "Name", width: 200 },
+                    { title: "Actions", template: storeTemplate }
+                ]
+            };
+            $scope.storeListOptions = storeListOptions;
+        });
+    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Start;
+    (function (Start) {
+        var Services;
+        (function (Services) {
+            var services = angular.module("MyAndromeda.Start.Services", []);
+            var UserChainDataService = (function () {
+                function UserChainDataService($http) {
+                    this.$http = $http;
+                }
+                UserChainDataService.prototype.List = function () {
+                    var getChains = this.$http.get("/user/chains");
+                    return getChains;
+                };
+                return UserChainDataService;
+            }());
+            Services.UserChainDataService = UserChainDataService;
+            var UserStoreDataService = (function () {
+                function UserStoreDataService($http) {
+                    this.$http = $http;
+                }
+                UserStoreDataService.prototype.ListStores = function () {
+                    var route = "/user/stores";
+                    var getStores = this.$http.get(route);
+                    return getStores;
+                };
+                UserStoreDataService.prototype.ListStoresByChainId = function (chainId) {
+                    var route = kendo.format("/user/chains/{0}", chainId);
+                    var getChains = this.$http.get(route);
+                    return getChains;
+                };
+                return UserStoreDataService;
+            }());
+            Services.UserStoreDataService = UserStoreDataService;
+            services.service("userChainDataService", UserChainDataService);
+            services.service("userStoreDataService", UserStoreDataService);
+        })(Services = Start.Services || (Start.Services = {}));
+    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Start;
+    (function (Start) {
+        var start = angular.module("MyAndromeda.Start", [
+            "ngAnimate",
+            "MyAndromeda.Start.Config",
+            "MyAndromeda.Hr"
+        ]);
+        function setupStart(id) {
+            var element = document.getElementById(id);
+            angular.bootstrap(element, ["MyAndromeda.Start"]);
+        }
+        Start.setupStart = setupStart;
+        ;
+    })(Start = MyAndromeda.Start || (MyAndromeda.Start = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Store;
+    (function (Store) {
+        var Services;
+        (function (Services) {
+            var storeService = (function () {
+                function storeService(routes) {
+                    this.routes = routes;
+                }
+                storeService.prototype.get = function (id, callback) {
+                    var internal = this;
+                    var route = {
+                        type: "POST",
+                        dataType: "json",
+                        success: function (data) {
+                            callback(data);
+                        }
+                    };
+                    if (typeof (id) === "string") {
+                        $.ajax($.extend({}, route, {
+                            url: internal.routes.getByExternalId
+                        }));
+                    }
+                    if (typeof (id) === "number") {
+                        $.ajax($.extend({}, route, {
+                            url: internal.routes.getById
+                        }));
+                    }
+                };
+                storeService.prototype.getStores = function (chainId, callback) {
+                    var internal = this;
+                };
+                return storeService;
+            }());
+            Services.storeService = storeService;
+        })(Services = Store.Services || (Store.Services = {}));
+    })(Store = MyAndromeda.Store || (MyAndromeda.Store = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Config", [
+                "ui.router",
+                "kendo.directives", "oitozero.ngSweetAlert",
+                "MyAndromeda.Store.OpeningHours.Controllers",
+                "MyAndromeda.Store.OpeningHours.Services",
+                "MyAndromeda.Store.OpeningHours.Directives"
+            ]);
+            app.config(function ($stateProvider, $urlRouterProvider) {
+                var start = {
+                    url: '/:andromedaSiteId',
+                    controller: "OpeningHoursController",
+                    templateUrl: "OpeningHours-template.html"
+                };
+                $stateProvider.state("opening-hours", start);
+                $urlRouterProvider.otherwise("/" + OpeningHours.settings.andromedaSiteId);
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Controllers", []);
+            app.controller("OpeningHoursController", function ($scope, SweetAlert, storeOccasionSchedulerService) {
+                var schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
+                $scope.schedulerOptions = schedulerOptions;
+                $scope.clearAll = function () {
+                    SweetAlert.swal({
+                        title: "Are you sure?",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        closeOnConfirm: false
+                    }, function (isConfirm) {
+                        MyAndromeda.Logger.Notify("confirm:" + isConfirm);
+                        if (isConfirm) {
+                            storeOccasionSchedulerService.ClearAllTasks().then(function () {
+                                var scheduler = $scope.OccasionScheduler;
+                                scheduler.dataSource.data([]);
+                                SweetAlert.swal("Deleted!", "All times have been deleted", "success");
+                            });
+                        }
+                        else {
+                            MyAndromeda.Logger.Notify("alert cancel");
+                        }
+                    });
+                };
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var app = angular.module("MyAndromeda.Store.OpeningHours.Directives", []);
+            app.directive("occasionTaskEditor", function () {
+                return {
+                    name: "occasionTaskEditor",
+                    scope: {
+                        task: "=task",
+                    },
+                    templateUrl: "occasionTaskEditor.html",
+                    controller: function ($scope) {
+                        var task = $scope.task;
+                        MyAndromeda.Logger.Notify("Occasion task editor - started");
+                        MyAndromeda.Logger.Notify("Occasion task");
+                        MyAndromeda.Logger.Notify(task);
+                        var occasionOptions = {
+                            //dataSource: [
+                            //    Models.occasionDefinitions.Delivery,
+                            //    Models.occasionDefinitions.Collection,
+                            //    Models.occasionDefinitions.DineIn
+                            //],
+                            dataSource: new kendo.data.DataSource({
+                                data: [
+                                    OpeningHours.Models.occasionDefinitions.Delivery,
+                                    OpeningHours.Models.occasionDefinitions.Collection,
+                                    OpeningHours.Models.occasionDefinitions.DineIn
+                                ]
+                            }),
+                            valuePrimitive: true,
+                            dataTextField: "Name",
+                            dataValueField: "Name",
+                            //ignoreCase: true,
+                            autoBind: true
+                        };
+                        $scope.titleChanged = function () {
+                        };
+                        $scope.occasionOptions = occasionOptions;
+                    }
+                };
+            });
+            app.directive("repeatWeeklyEditor", function () {
+                return {
+                    name: "repeatWeeklyEditor",
+                    templateUrl: "repeatWeeklyEditor.html",
+                    scoppe: {
+                        task: "=task"
+                    },
+                    controller: function ($scope) {
+                        var task = $scope.task;
+                        MyAndromeda.Logger.Notify("repeatWeeklyEditor started: " + task);
+                        var partialRecurrenceRule = "FREQ=WEEKLY;BYDAY=";
+                        var recurrenceRule = task.recurrenceRule;
+                        var rule = {
+                            Monday: false,
+                            Tuesday: false,
+                            Wednesday: false,
+                            Thursday: false,
+                            Friday: false,
+                            Saturday: false,
+                            Sunday: false
+                        };
+                        var parseRuleToRecurrence = function () {
+                            var recurrence = partialRecurrenceRule;
+                            //MO,TU,WE,TH,FR,SA,SU
+                            var hasDays = false;
+                            var add = function (day) {
+                                recurrence += (hasDays ? "," + day : day);
+                                hasDays = true;
+                            };
+                            if (rule.Monday) {
+                                add("MO");
+                            }
+                            if (rule.Tuesday) {
+                                add("TU");
+                            }
+                            if (rule.Wednesday) {
+                                add("WE");
+                            }
+                            if (rule.Thursday) {
+                                add("TH");
+                            }
+                            if (rule.Friday) {
+                                add("FR");
+                            }
+                            if (rule.Saturday) {
+                                add("SA");
+                            }
+                            if (rule.Sunday) {
+                                add("SU");
+                            }
+                            return recurrence;
+                        };
+                        var parseRecurrenceToRule = function () {
+                            var a = recurrenceRule.split(partialRecurrenceRule);
+                            MyAndromeda.Logger.Notify("Split");
+                            MyAndromeda.Logger.Notify(a);
+                            var b = a[1];
+                            var c = b.split(",");
+                            c.forEach(function (day) {
+                                switch (day) {
+                                    case "MO":
+                                        rule.Monday = true;
+                                        break;
+                                    case "TU":
+                                        rule.Tuesday = true;
+                                        break;
+                                    case "WE":
+                                        rule.Wednesday = true;
+                                        break;
+                                    case "TH":
+                                        rule.Thursday = true;
+                                        break;
+                                    case "FR":
+                                        rule.Friday = true;
+                                        break;
+                                    case "SA":
+                                        rule.Saturday = true;
+                                        break;
+                                    case "SU":
+                                        rule.Sunday = true;
+                                        break;
+                                }
+                            });
+                        };
+                        parseRecurrenceToRule();
+                        $scope.rule = rule;
+                        $scope.ruleChanged = function () {
+                            MyAndromeda.Logger.Notify("rule changed");
+                            var newRule = parseRuleToRecurrence();
+                            MyAndromeda.Logger.Notify(newRule);
+                            task.set("recurrenceRule", newRule);
+                            //task.recurrenceRule = newRule;
+                        };
+                    }
+                };
+            });
+            app.directive("occasionTask", function () {
+                return {
+                    name: "occasionTask",
+                    scope: {
+                        task: "=task"
+                    },
+                    templateUrl: "occasionTask.html",
+                    controller: function ($scope, $element) {
+                        var task = $scope.task;
+                        var occasionTypeIsString = typeof (task.Occasions) === "string" ? true : false;
+                        var occasionIsArray = typeof (task.Occasions) === "object" ? true : false;
+                        var state = {
+                            occasions: task.Occasions,
+                        };
+                        var extra = {
+                            hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                            startTime: kendo.toString(task.start, "HH:mm"),
+                            endTime: kendo.toString(task.end, "HH:mm"),
+                            allDay: task.isAllDay
+                        };
+                        var definitions = OpeningHours.Models.occasionDefinitions;
+                        var getColor = function (name) {
+                            switch (name) {
+                                case definitions.Delivery.Name: return OpeningHours.Models.occasionDefinitions.Delivery.Colour;
+                                case definitions.Collection.Name: return OpeningHours.Models.occasionDefinitions.Collection.Colour;
+                                case definitions.DineIn.Name: return OpeningHours.Models.occasionDefinitions.DineIn.Colour;
+                            }
+                        };
+                        $scope.getColour = getColor;
+                        $scope.state = state;
+                        $scope.extra = extra;
+                        var topElement = $($element).closest(".k-event");
+                        MyAndromeda.Logger.Notify("occasions");
+                        MyAndromeda.Logger.Notify(task.Occasions);
+                        var twoColors = "repeating-linear-gradient(\n                        45deg,\n                        {0},\n                        {0} 10px,\n                        {1} 10px,\n                        {1} 20px\n                    )";
+                        var threeColors = "repeating-linear-gradient(\n                        45deg,\n                        {0},\n                        {0} 10px,\n                        {1} 10px,\n                        {1} 20px,\n                        {2} 20px,\n                        {2} 30px\n                    )";
+                        twoColors =
+                            kendo.format(twoColors, definitions.Delivery.Colour, definitions.Collection.Colour);
+                        threeColors =
+                            kendo.format(threeColors, definitions.Delivery.Colour, definitions.Collection.Colour, definitions.DineIn.Colour);
+                        if (task.Occasions.length == 2) {
+                            topElement.css({
+                                "background": twoColors,
+                            });
+                        }
+                        else if (task.Occasions.length === 3) {
+                            topElement.css({
+                                "background": threeColors,
+                            });
+                        }
+                        //var popover = topElement.popover({
+                        //    title: "Task preview",
+                        //    placement: "auto",
+                        //    html: true,
+                        //    content: "please wait",
+                        //    trigger: "click"
+                        //}).on("show.bs.popover", function () {
+                        //    let html = topElement.html();
+                        //    popover.attr('data-content', html);
+                        //    var current = $(this);
+                        //    setTimeout(() => { current.popover('hide'); }, 5000)
+                        //});
+                        //$scope.$on('$destroy', function () {
+                        //    popover.hide();
+                        //});
+                    }
+                };
+            });
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var Models;
+            (function (Models) {
+                Models.occasionDefinitions = {
+                    Delivery: {
+                        Name: "Delivery", Colour: "#d9534f"
+                    },
+                    Collection: {
+                        Name: "Collection", Colour: "#d9edf7"
+                    },
+                    DineIn: {
+                        Name: "Dine In", Colour: "#f2dede"
+                    }
+                };
+                function getSchedulerDataSourceSchema() {
+                    var model = {
+                        id: "Id",
+                        fields: {
+                            Id: {
+                                type: "string",
+                                nullable: true
+                            },
+                            title: { from: "Title", validation: { required: true } },
+                            start: { type: "date", from: "Start" },
+                            end: { type: "date", from: "End" },
+                            startTimezone: { from: "StartTimezone" },
+                            endTimezone: { from: "EndTimezone" },
+                            description: { from: "Description" },
+                            recurrenceId: { from: "RecurrenceId" },
+                            recurrenceRule: { from: "RecurrenceRule", defaultValue: "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA,SU" },
+                            recurrenceException: { from: "RecurrenceException" },
+                            isAllDay: { type: "boolean", from: "IsAllDay" },
+                            Occasions: {
+                                defaultValue: ["Delivery", "Collection"]
+                            }
+                        }
+                    };
+                    return model;
+                }
+                Models.getSchedulerDataSourceSchema = getSchedulerDataSourceSchema;
+                ;
+            })(Models = OpeningHours.Models || (OpeningHours.Models = {}));
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            var Services;
+            (function (Services) {
+                var app = angular.module("MyAndromeda.Store.OpeningHours.Services", []);
+                var StoreOccasionAvailabilityService = (function () {
+                    function StoreOccasionAvailabilityService(scheduler) {
+                        this.scheduler = scheduler;
+                    }
+                    StoreOccasionAvailabilityService.prototype.GetTasksInRange = function (start, end) {
+                        var occurences = this.scheduler.occurrencesInRange(start, end);
+                        var allDay = this.scheduler.dataSource.data().filter(function (e) {
+                            var task = e;
+                            if (!task.isAllDay) {
+                                return false;
+                            }
+                            var startOnSameDay = task.start.toDateString() == start.toDateString();
+                            if (startOnSameDay) {
+                                return true;
+                            }
+                            var endsOnSameDay = task.end.toDateString() == end.toDateString();
+                            if (endsOnSameDay) {
+                                return true;
+                            }
+                            return false;
+                        });
+                        var all = occurences.concat(allDay);
+                        return all;
+                    };
+                    StoreOccasionAvailabilityService.prototype.GetTasksByResource = function (start, end, task) {
+                        var context = {
+                            start: start,
+                            end: end,
+                            task: task
+                        };
+                        var currentTasks = this.GetTasksInRange(start, end)
+                            .filter(function (e) { return e.Id !== task.Id && e.RecurrenceId !== task.Id; });
+                        var startCheck = start.toLocaleTimeString();
+                        var endCheck = end.toLocaleTimeString();
+                        MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+                        MyAndromeda.Logger.Notify(context);
+                        MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
+                        MyAndromeda.Logger.Notify(currentTasks);
+                        //which occasion(s) are causing a problem.
+                        var matchedOccurences = [];
+                        var taskResources = task.Occasions
+                            ? task.Occasions
+                            : [];
+                        MyAndromeda.Logger.Notify("check resources: ");
+                        MyAndromeda.Logger.Notify(task);
+                        MyAndromeda.Logger.Notify(taskResources);
+                        var map = currentTasks.map(function (e) {
+                            return {
+                                task: e,
+                                occasion: e.Occasions
+                            };
+                        });
+                        Rx.Observable.fromArray(map).where(function (e) {
+                            for (var i = 0; i < e.occasion.length; i++) {
+                                var compareOccasion = e.occasion[i];
+                                for (var k = 0; k < taskResources.length; k++) {
+                                    var occasion = taskResources[k];
+                                    if (occasion.indexOf(compareOccasion) > -1) {
+                                        MyAndromeda.Logger.Notify("task objection: " + e.task.title);
+                                        MyAndromeda.Logger.Notify(e.task);
+                                        return true;
+                                    }
+                                }
+                            }
+                            return false;
+                        }).subscribe(function (overlaped) {
+                            matchedOccurences.push(overlaped.task);
+                        });
+                        MyAndromeda.Logger.Notify("occurrences: " + matchedOccurences.length);
+                        return matchedOccurences;
+                    };
+                    StoreOccasionAvailabilityService.prototype.IsOccasionAvailable = function (start, end, task) {
+                        return this.GetTasksByResource(start, end, task);
+                    };
+                    StoreOccasionAvailabilityService.prototype.IsValid = function (start, end) {
+                        var hours = Math.abs(end.getTime() - start.getTime()) / 36e5;
+                        MyAndromeda.Logger.Notify("Task length: " + hours);
+                        return (hours < 24);
+                    };
+                    return StoreOccasionAvailabilityService;
+                }());
+                var StoreOccasionSchedulerService = (function () {
+                    function StoreOccasionSchedulerService($http, uuidService, SweetAlert) {
+                        this.$http = $http;
+                        this.uuidService = uuidService;
+                        this.SweetAlert = SweetAlert;
+                    }
+                    StoreOccasionSchedulerService.prototype.ClearAllTasks = function () {
+                        var route = "/api/chain/{0}/store/{1}/remove-occasions";
+                        route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
+                        var promise = this.$http.post(route, {});
+                        return promise;
+                    };
+                    StoreOccasionSchedulerService.prototype.CreateDataSource = function () {
+                        var _this = this;
+                        var schema = {
+                            data: "Data",
+                            total: "Total",
+                            model: OpeningHours.Models.getSchedulerDataSourceSchema()
+                        };
+                        var dataSource = new kendo.data.SchedulerDataSource({
+                            batch: false,
+                            transport: {
+                                read: function (options) {
+                                    MyAndromeda.Logger.Notify("Scheduler read");
+                                    var route = "/api/chain/{0}/store/{1}/Occasions";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
+                                    var promise = _this.$http.post(route, options.data);
+                                    promise.then(function (callback) {
+                                        options.success(callback.data);
+                                    });
+                                },
+                                update: function (options) {
+                                    MyAndromeda.Logger.Notify("Scheduler update");
+                                    var route = "/api/chain/{0}/store/{1}/update-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
+                                    var promise = _this.$http.post(route, options.data);
+                                    promise.then(function (callback) {
+                                        options.success();
+                                    });
+                                },
+                                create: function (options) {
+                                    MyAndromeda.Logger.Notify("Scheduler create");
+                                    MyAndromeda.Logger.Notify(options.data);
+                                    var route = "/api/chain/{0}/store/{1}/update-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
+                                    var promise = _this.$http.post(route, options.data);
+                                    promise.then(function (callback) {
+                                        MyAndromeda.Logger.Notify("Create response:");
+                                        MyAndromeda.Logger.Notify(callback.data);
+                                        options.success(callback.data);
+                                    });
+                                },
+                                destroy: function (options) {
+                                    var route = "/api/chain/{0}/store/{1}/delete-occasion";
+                                    route = kendo.format(route, OpeningHours.settings.chainId, OpeningHours.settings.andromedaSiteId);
+                                    var promise = _this.$http.post(route, options.data);
+                                    promise.then(function (callback) {
+                                        options.success(callback.data);
+                                    });
+                                }
+                            },
+                            schema: schema
+                        });
+                        return dataSource;
+                    };
+                    StoreOccasionSchedulerService.prototype.CreateResources = function () {
+                        var resources = [
+                            {
+                                title: "Occasion",
+                                field: "Occasions",
+                                multiple: true,
+                                dataSource: [
+                                    {
+                                        text: OpeningHours.Models.occasionDefinitions.Delivery.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.Delivery.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.Delivery.Colour
+                                    },
+                                    {
+                                        text: OpeningHours.Models.occasionDefinitions.Collection.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.Collection.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.Collection.Colour
+                                    },
+                                    {
+                                        text: OpeningHours.Models.occasionDefinitions.DineIn.Name,
+                                        value: OpeningHours.Models.occasionDefinitions.DineIn.Name,
+                                        color: OpeningHours.Models.occasionDefinitions.DineIn.Colour
+                                    }
+                                ]
+                            },
+                        ];
+                        return resources;
+                    };
+                    StoreOccasionSchedulerService.prototype.CreateScheduler = function () {
+                        var _this = this;
+                        var uuidService = this.uuidService;
+                        var dataSource = this.CreateDataSource();
+                        var schedulerOptions = {
+                            date: new Date(),
+                            majorTick: 60,
+                            minorTickCount: 1,
+                            workWeekStart: 0,
+                            workWeekEnd: 6,
+                            allDaySlot: true,
+                            dataSource: dataSource,
+                            timezone: "Etc/UTC",
+                            currentTimeMarker: {
+                                useLocalTimezone: false
+                            },
+                            editable: {
+                                template: "<occasion-task-editor task='dataItem'></occasion-task-editor>",
+                                editRecurringMode: "series"
+                            },
+                            pdf: {
+                                fileName: "Opening hours",
+                                title: "Opening hours"
+                            },
+                            eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
+                            allDayEventTemplate: "<occasion-task task='dataItem' all-day='\"true\"'></occasion-task>",
+                            //toolbar: ["pdf"],
+                            showWorkHours: false,
+                            resources: this.CreateResources(),
+                            views: [
+                                { type: "week", selected: true, showWorkHours: false }
+                            ],
+                            resize: function (e) {
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsValid(e.start, e.end)) {
+                                    MyAndromeda.Logger.Notify("too long");
+                                    this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                                    e.preventDefault();
+                                }
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    MyAndromeda.Logger.Notify("cancel resize");
+                                    this.wrapper.find(".k-marquee-color").addClass("invalid-slot");
+                                    e.preventDefault();
+                                }
+                            },
+                            resizeEnd: function (e) {
+                                MyAndromeda.Logger.Notify("resize-end");
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsValid(e.start, e.end)) {
+                                    MyAndromeda.Logger.Notify("cancel resize");
+                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+                                    e.preventDefault();
+                                    return;
+                                }
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    MyAndromeda.Logger.Notify("cancel resize");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            },
+                            move: function (e) {
+                                MyAndromeda.Logger.Notify("move-start");
+                                MyAndromeda.Logger.Notify(e);
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    this.wrapper.find(".k-event-drag-hint").addClass("invalid-slot");
+                                }
+                            },
+                            moveEnd: function (e) {
+                                MyAndromeda.Logger.Notify("move-end");
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.start, e.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    MyAndromeda.Logger.Notify("cancel move");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            },
+                            add: function (e) {
+                                MyAndromeda.Logger.Notify("add");
+                                MyAndromeda.Logger.Notify(e);
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsValid(e.event.start, e.event.end)) {
+                                    MyAndromeda.Logger.Notify("cancel add");
+                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+                                    e.preventDefault();
+                                    return;
+                                }
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    MyAndromeda.Logger.Notify("cancel add");
+                                    //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
+                                    _this.SweetAlert.swal("Sorry", "A occasion already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            },
+                            save: function (e) {
+                                MyAndromeda.Logger.Notify("save");
+                                MyAndromeda.Logger.Notify(e);
+                                var ev = e.event;
+                                if (ev.Occasions) {
+                                    var o = ev.Occasions.length;
+                                    if (o.length === 0) {
+                                        _this.SweetAlert.swal("occasions", "Please add at least one occasion", "information");
+                                    }
+                                }
+                                var tester = new StoreOccasionAvailabilityService(e.sender);
+                                if (!tester.IsValid(e.event.start, e.event.end)) {
+                                    MyAndromeda.Logger.Notify("cancel save");
+                                    _this.SweetAlert.swal("Sorry", "The maximum length of the occasion is 24 hours", "error");
+                                    e.preventDefault();
+                                    return;
+                                }
+                                var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
+                                if (occasionsInSpace.length > 0) {
+                                    MyAndromeda.Logger.Notify("cancel save");
+                                    _this.SweetAlert.swal("Sorry", "A task already exists for this occasion in this range.", "error");
+                                    e.preventDefault();
+                                }
+                            }
+                        };
+                        return schedulerOptions;
+                    };
+                    return StoreOccasionSchedulerService;
+                }());
+                Services.StoreOccasionSchedulerService = StoreOccasionSchedulerService;
+                app.service("storeOccasionSchedulerService", StoreOccasionSchedulerService);
+            })(Services = OpeningHours.Services || (OpeningHours.Services = {}));
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Stores;
+    (function (Stores) {
+        var OpeningHours;
+        (function (OpeningHours) {
+            OpeningHours.settings = {
+                chainId: 0,
+                andromedaSiteId: 0
+            };
+            var app = angular.module("MyAndromeda.Stores.OpeningHours", [
+                "MyAndromeda.Store.OpeningHours.Config",
+                "MyAndromeda.Core",
+                "MyAndromeda.Resize",
+                "MyAndromeda.Progress",
+                "ngAnimate",
+                "ui.bootstrap"
+            ]);
+            app.run(function ($templateCache) {
+                MyAndromeda.Logger.Notify("Started Opening Hours");
+                angular
+                    .element('script[type="text/ng-template"]')
+                    .each(function (i, element) {
+                    $templateCache.put(element.id, element.innerHTML);
+                });
+            });
+            function boostrap(element, chainId, andromedaSiteId) {
+                OpeningHours.settings.chainId = chainId;
+                OpeningHours.settings.andromedaSiteId = andromedaSiteId;
+                var e = $(element);
+                angular.bootstrap(e, ["MyAndromeda.Stores.OpeningHours"]);
+            }
+            OpeningHours.boostrap = boostrap;
+        })(OpeningHours = Stores.OpeningHours || (Stores.OpeningHours = {}));
+    })(Stores = MyAndromeda.Stores || (MyAndromeda.Stores = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Users;
+    (function (Users) {
+        var Models;
+        (function (Models) {
+            var User = (function () {
+                function User(id, userName, firstName, surName, roles) {
+                    this.Id = id;
+                    this.Username = userName;
+                    this.FirstName = firstName;
+                    this.SurName = surName;
+                    if (roles) {
+                        this.Roles = roles;
+                    }
+                }
+                return User;
+            }());
+            Models.User = User;
+        })(Models = Users.Models || (Users.Models = {}));
+    })(Users = MyAndromeda.Users || (MyAndromeda.Users = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+//module MyAndromeda
+//{
+//    export module Services
+//    {
+//        export class UserService implements IUserService {
+//            private serviceRoutes: IUserServiceRoutes;
+//            public dataSource: kendo.data.DataSource;
+//            constructor(serviceRoutes: IUserServiceRoutes)
+//            {
+//                this.serviceRoutes = serviceRoutes;
+//            }
+//            public findById(id: number): IUser {
+//                var internal = this;
+//                var user = <IUser>internal.dataSource.data().find(function (item, index, source) {
+//                    return item.Id === id;
+//                });
+//                return user;
+//            }
+//            public findByUserName(userName: string): IUser {
+//                var internal = this;
+//                var user = <IUser>internal.dataSource.data().find(function (item, index, source) {
+//                    return item.UserName === userName;
+//                });
+//                return user;
+//            }
+//            private initDataSource() : void {
+//                var internal = this;
+//                var data = {
+//                    __RequestVerificationToken: internal.serviceRoutes.antifrorgeryToken
+//                };
+//                this.dataSource = new kendo.data.DataSource({
+//                    transport: {
+//                        read: internal.serviceRoutes.read,
+//                        data: data
+//                    }
+//                });
+//            } 
+//            public init(): void {
+//                this.initDataSource();
+//            }
+//        }
+//    }
+//}
+//interface IUserServiceRoutes
+//{
+//    read: string;
+//    antifrorgeryToken: string;
+//    //readByChain: string;
+//    //readByStore: string;
+//} 
 var MyAndromeda;
 (function (MyAndromeda) {
     var Validation;
@@ -11877,7 +12199,7 @@ var MyAndromeda;
                 'password1234567890'
             ];
             return PasswordValidator;
-        })();
+        }());
         Validation.PasswordValidator = PasswordValidator;
     })(Validation = MyAndromeda.Validation || (MyAndromeda.Validation = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -11902,7 +12224,7 @@ var MyAndromeda;
             };
             MyAndromedaValidation.ActiveValidators = new Array();
             return MyAndromedaValidation;
-        })();
+        }());
         Validation.MyAndromedaValidation = MyAndromedaValidation;
         /* automatically hook up all forms with a validator */
         $(function () {
@@ -12017,577 +12339,371 @@ var MyAndromeda;
                 VoucherListService.ActiveLabel = "Active";
                 VoucherListService.InActiveLabel = "Inactive";
                 return VoucherListService;
-            })();
+            }());
             Services.VoucherListService = VoucherListService;
         })(Services = Vouchers.Services || (Vouchers.Services = {}));
     })(Vouchers = MyAndromeda.Vouchers || (MyAndromeda.Vouchers = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../general/resizemodule.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
-    var Chain;
-    (function (Chain) {
-        var Services;
-        (function (Services) {
-            var chainService = (function () {
-                function chainService(chainServiceRoutes) {
-                    this.chainServiceRoutes = chainServiceRoutes;
-                }
-                chainService.prototype.get = function (id, callback) {
-                    var internal = this, route = {
-                        type: "POST",
-                        dataType: "json",
-                        data: { id: id },
-                        success: function (data) {
-                            callback(data);
-                        }
-                    };
-                    $.ajax($.extend({}, route, {
-                        url: internal.chainServiceRoutes.getById
-                    }));
-                };
-                return chainService;
-            })();
-            Services.chainService = chainService;
-        })(Services = Chain.Services || (Chain.Services = {}));
-    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Store;
-    (function (Store) {
-        var Services;
-        (function (Services) {
-            var storeService = (function () {
-                function storeService(routes) {
-                    this.routes = routes;
-                }
-                storeService.prototype.get = function (id, callback) {
-                    var internal = this;
-                    var route = {
-                        type: "POST",
-                        dataType: "json",
-                        success: function (data) {
-                            callback(data);
-                        }
-                    };
-                    if (typeof (id) === "string") {
-                        $.ajax($.extend({}, route, {
-                            url: internal.routes.getByExternalId
-                        }));
-                    }
-                    if (typeof (id) === "number") {
-                        $.ajax($.extend({}, route, {
-                            url: internal.routes.getById
-                        }));
-                    }
-                };
-                storeService.prototype.getStores = function (chainId, callback) {
-                    var internal = this;
-                };
-                return storeService;
-            })();
-            Services.storeService = storeService;
-        })(Services = Store.Services || (Store.Services = {}));
-    })(Store = MyAndromeda.Store || (MyAndromeda.Store = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reporting;
-    (function (Reporting) {
-        var Services;
-        (function (Services) {
-            var Filter = (function () {
-                function Filter(from, to, dayRange) {
-                    this.from = from;
-                    this.to = to;
-                    this.dayRange = dayRange;
-                }
-                return Filter;
-            })();
-            var ReportingSalesResult = (function () {
-                function ReportingSalesResult(name, from, to, dayRange, routeData) {
-                    this.name = name;
-                    this.filter = new Filter(from, to, dayRange);
-                    this.routeData = routeData;
-                }
-                ReportingSalesResult.prototype.InitDataSource = function () {
-                    var internal = this;
-                    this.dataSource = new kendo.data.DataSource({
-                        transport: {
-                            read: function (options) {
-                                var url = internal.routeData.urlFormat, filter = internal.filter;
-                                var destination = kendo.format(url, filter.from.toJSON(), filter.to.toJSON());
-                            }
-                        },
-                        schema: {
-                            model: {
-                                fields: {
-                                    "Day": { "type": "date" },
-                                    "Total": { "type": "number" },
-                                    "Count": { "type": "number" },
-                                    "Average": { "type": "number" },
-                                    "Min": { "type": "number" },
-                                    "Max": { "type": "number" }
-                                }
-                            }
-                        }
-                    });
-                };
-                ReportingSalesResult.prototype.ReactToDateChange = function () {
-                    var internal = this, service = $("#dashboardreport").data("ReportingService");
-                    service.Bind("change", function (e) {
-                        if (e.field !== "from") {
-                            return;
-                        }
-                        var dateChange = service.Get("from");
-                        var from = new Date();
-                        var to = dateChange;
-                        from.setDate(dateChange.getDate() - internal.filter.dayRange);
-                        internal.filter.from = from;
-                        internal.filter.to = to;
-                    });
-                };
-                ReportingSalesResult.prototype.InitReactions = function () {
-                    this.ReactToDateChange();
-                };
-                ReportingSalesResult.prototype.Init = function () {
-                    this.InitDataSource();
-                    this.InitReactions();
-                };
-                return ReportingSalesResult;
-            })();
-            Services.ReportingSalesResult = ReportingSalesResult;
-        })(Services = Reporting.Services || (Reporting.Services = {}));
-    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-//module MyAndromeda
-//{
-//    export module Services
-//    {
-//        export class UserService implements IUserService {
-//            private serviceRoutes: IUserServiceRoutes;
-//            public dataSource: kendo.data.DataSource;
-//            constructor(serviceRoutes: IUserServiceRoutes)
-//            {
-//                this.serviceRoutes = serviceRoutes;
-//            }
-//            public findById(id: number): IUser {
-//                var internal = this;
-//                var user = <IUser>internal.dataSource.data().find(function (item, index, source) {
-//                    return item.Id === id;
-//                });
-//                return user;
-//            }
-//            public findByUserName(userName: string): IUser {
-//                var internal = this;
-//                var user = <IUser>internal.dataSource.data().find(function (item, index, source) {
-//                    return item.UserName === userName;
-//                });
-//                return user;
-//            }
-//            private initDataSource() : void {
-//                var internal = this;
-//                var data = {
-//                    __RequestVerificationToken: internal.serviceRoutes.antifrorgeryToken
-//                };
-//                this.dataSource = new kendo.data.DataSource({
-//                    transport: {
-//                        read: internal.serviceRoutes.read,
-//                        data: data
-//                    }
-//                });
-//            } 
-//            public init(): void {
-//                this.initDataSource();
-//            }
-//        }
-//    }
-//}
-//interface IUserServiceRoutes
-//{
-//    read: string;
-//    antifrorgeryToken: string;
-//    //readByChain: string;
-//    //readByStore: string;
-//} 
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Users;
-    (function (Users) {
-        var Models;
-        (function (Models) {
-            var User = (function () {
-                function User(id, userName, firstName, surName, roles) {
-                    this.Id = id;
-                    this.Username = userName;
-                    this.FirstName = firstName;
-                    this.SurName = surName;
-                    if (roles) {
-                        this.Roles = roles;
-                    }
-                }
-                return User;
-            })();
-            Models.User = User;
-        })(Models = Users.Models || (Users.Models = {}));
-    })(Users = MyAndromeda.Users || (MyAndromeda.Users = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="../../scripts/typings/signalr/signalr.d.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hubs;
-    (function (Hubs) {
-        var SynchronizationHub = (function () {
-            function SynchronizationHub(options) {
-                this.options = options;
-                var hubs = $.connection, hub = hubs.hub, cloudHub = hubs.cloudSynchronizationHub;
-                cloudHub.client.ping = function (date) {
-                    SynchronizationHub.log("ping fired");
-                    SynchronizationHub.log(date);
-                };
-                cloudHub.client.startedSynchronization = function (data) {
-                    SynchronizationHub.log("started fired");
-                };
-                cloudHub.client.completedSynchronization = function (data) {
-                    SynchronizationHub.log("completed fired");
-                };
-                cloudHub.client.errorSynchronization = function (data) {
-                    SynchronizationHub.log("error fired");
-                };
-                cloudHub.client.skippedSynchronization = function (data) {
-                    SynchronizationHub.log("skip fired");
-                };
-                //if (!cloudHub) { cloudHub = this.produceConnection(); }
-                this.client = cloudHub.client;
-                this.connect();
-                //hub.start()
-                //    .done(function () {
-                //        SynchronizationHub.log("connected");
-                //    })
-                //    .fail(function () {
-                //        SynchronizationHub.log("connection failed");
-                //    });
-            }
-            SynchronizationHub.log = function (data) {
-                if (console && console.log) {
-                    try {
-                        console.log(data);
-                    }
-                    catch (e) { }
-                }
-            };
-            SynchronizationHub.prototype.connect = function () {
-                this.myAndromedaHubConnection = Hubs.MyAndromedaHubConnection.GetInstance(this.options);
-                this.myAndromedaHubConnection.connect();
-            };
-            SynchronizationHub.STARTED = "started";
-            SynchronizationHub.COMPLETED = "completed";
-            SynchronizationHub.ERROR = "error";
-            return SynchronizationHub;
-        })();
-        Hubs.SynchronizationHub = SynchronizationHub;
-        var SynchronizationHubService = (function () {
-            function SynchronizationHubService(options) {
-                this.options = options;
-                this.hub = new SynchronizationHub(options);
-                this.viewModel = kendo.observable({
-                    started: [],
-                    completed: [],
-                    errors: []
+    var WebHooks;
+    (function (WebHooks) {
+        var Tests;
+        (function (Tests) {
+            var moduleName = "MyAndromeda.WebHook.Tests";
+            var m = angular.module(moduleName, [
+                "MyAndromeda.Resize",
+                "MyAndromeda.Progress",
+                "ngRoute",
+                "ngAnimate",
+                "kendo.directives"
+            ]);
+            m.run(function ($templateCache) {
+                MyAndromeda.Logger.Notify("WebHook tests Started");
+                angular.element('script[type="text/template"]').each(function (i, element) {
+                    $templateCache.put(element.id, element.innerHTML);
                 });
-            }
-            SynchronizationHubService.prototype.initEvents = function () {
-                var internal = this, hub = this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronizationhub, client = hub.client;
-                client.startedSynchronization = function (data) {
-                    SynchronizationHub.log("started fired");
-                    var models = internal.viewModel.get("started");
-                    models.push(data);
+            });
+            m.config(function ($routeProvider) {
+                $routeProvider.when('/', {
+                    templateUrl: "start.html",
+                    controller: "StartController"
+                });
+                $routeProvider.when('/store-status/:andromedaSiteId', {
+                    templateUrl: "store-status.html",
+                    controller: "StoreStatusController"
+                });
+                $routeProvider.when('/order-status/:andromedaSiteId', {
+                    templateUrl: "order-status.html",
+                    controller: "OrderStatusController"
+                });
+                $routeProvider.when('/menu-version/:andromedaSiteId', {
+                    templateUrl: "menu-version.html",
+                    controller: "MenuVersionController"
+                });
+                $routeProvider.when('/delivery-time/:andromedaSiteId', {
+                    templateUrl: "delivery-time.html",
+                    controller: "DeliveryTimeController"
+                });
+            });
+            m.controller("DeliveryTimeController", function ($scope, $routeParams, webHookTestService, progressService) {
+                var settings = {
+                    Edt: null
                 };
-                client.completedSynchronization = function (data) {
-                    SynchronizationHub.log("completed fired");
-                    var models = internal.viewModel.get("completed");
-                    models.push(data);
-                };
-                client.errorSynchronization = function (data) {
-                    SynchronizationHub.log("error fired");
-                    var models = internal.viewModel.get("errors");
-                    models.push(data);
-                };
-                client.tasks = function (data) {
-                    var models = internal.viewModel.get("started");
-                    models.push({
-                        Note: "Checking how many tasks",
-                        TimeStamp: new Date(),
-                        Count: data
+                $scope.settings = settings;
+                $scope.send = function (value) {
+                    progressService.Show();
+                    var request = webHookTestService.DeliveryTime({
+                        AndromedaSiteId: $routeParams.andromedaSiteId,
+                        Source: "test",
+                        Edt: settings.Edt
+                    });
+                    Rx.Observable.fromPromise(request).subscribe(function () {
+                        $scope.settings.messages = "Sent! No problems.";
+                        progressService.Hide();
+                    }, function (ex) {
+                        $scope.settings.messages = "Error";
+                        progressService.Hide();
+                    }, function () {
+                        progressService.Hide();
                     });
                 };
-            };
-            SynchronizationHubService.prototype.init = function () {
-                kendo.bind(this.options.id, this.viewModel);
-                this.initEvents();
-            };
-            return SynchronizationHubService;
-        })();
-        Hubs.SynchronizationHubService = SynchronizationHubService;
-    })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-//module MyAndromeda {
-//    module Reporting {
-//        export class SalesListDataService {
-//        }
-//        export class SalesListService
-//        {
-//            constructor() {
-//            }
-//        }
-//    }
-//}
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reporting;
-    (function (Reporting) {
-        var Services;
-        (function (Services) {
-            var dailySummaryDataService = (function () {
-                function dailySummaryDataService(options) {
-                    this.options = options;
-                    this.initDataSource();
-                }
-                dailySummaryDataService.prototype.initDataSource = function () {
-                    var internal = this;
-                    this.dataSource = new kendo.data.DataSource({
-                        transport: {
-                            read: {
-                                url: internal.options.url,
-                                data: internal.options.data,
-                                type: "POST",
-                                dataType: "json"
+            });
+            m.controller("MenuVersionController", function ($scope, $routeParams, webHookTestService, progressService) {
+                var settings = {
+                    Version: null
+                };
+                $scope.settings = settings;
+                $scope.send = function (value) {
+                    progressService.Show();
+                    var request = webHookTestService.MenuVersion({
+                        AndromedaSiteId: $routeParams.andromedaSiteId,
+                        Source: "test",
+                        Version: settings.Version
+                    });
+                    Rx.Observable.fromPromise(request).subscribe(function () {
+                        $scope.settings.messages = "Sent! No problems.";
+                        progressService.Hide();
+                    }, function (ex) {
+                        $scope.settings.messages = "Error";
+                        progressService.Hide();
+                    }, function () {
+                        progressService.Hide();
+                    });
+                };
+            });
+            m.controller("StartController", function ($scope, $http, $timeout, resizeService, progressService) {
+                MyAndromeda.Logger.Notify("start");
+                var resizeSubscription = resizeService.ResizeObservable.subscribe(function (e) {
+                    //do i have anything to resize
+                });
+                var dataSource = new kendo.data.DataSource({
+                    "transport": {
+                        "read": { "url": "/api/Store" },
+                    },
+                    "schema": { "errors": "Errors" }
+                });
+                $scope.storeDataSource = dataSource;
+                $scope.settings = {
+                    AndromedaSiteId: null
+                };
+            });
+            m.controller("StoreStatusController", function ($scope, $routeParams, webHookTestService, progressService) {
+                var element = document.getElementById("WebhookTest");
+                progressService.Create(element);
+                $scope.settings = {};
+                $scope.send = function (value) {
+                    progressService.Show();
+                    var request = webHookTestService.OnlineStateTest({
+                        AndromedaSiteId: $routeParams.andromedaSiteId,
+                        Online: value,
+                        Source: "test"
+                    });
+                    Rx.Observable.fromPromise(request).subscribe(function () {
+                        $scope.settings.messages = "Sent! No problems.";
+                        progressService.Hide();
+                    }, function (ex) {
+                        $scope.settings.messages = "Error";
+                        progressService.Hide();
+                    }, function () {
+                        progressService.Hide();
+                    });
+                };
+            });
+            m.controller("OrderStatusController", function ($scope, $routeParams, progressService, webHookTestService) {
+                var orderDataSource = new kendo.data.DataSource({
+                    "transport": {
+                        "read": {
+                            "url": "/api/GprsOrders",
+                            "data": {
+                                andromedaSiteId: $routeParams.andromedaSiteId
                             }
-                        },
-                        schema: {
-                            model: {
-                                fields: {
-                                    "Date": { "type": "date" }
-                                }
-                            },
-                            data: function (result) {
-                                return $.map(result.Data, function (element, index) {
-                                    var p = element.Performance.NumOrdersLT30Mins;
-                                    var t = element.Combined.OrderCount;
-                                    element.Performance.NumOrdersLT30MinsPercentage = p / t;
-                                    return element;
-                                });
-                            },
-                            total: function (result) { return result.Data.length; }
-                        },
-                        aggregate: [
-                            { field: "Combined.OrderCount", aggregate: "sum" },
-                            { field: "Combined.OrderCount", aggregate: "average" },
-                            { field: "Combined.OrderCount", aggregate: "max" },
-                            { field: "Combined.OrderCount", aggregate: "min" },
-                            { field: "Performance.AvgDoorTime", aggregate: "average" },
-                            { field: "Performance.AvgDoorTime", aggregate: "max" },
-                            { field: "Performance.AvgDoorTime", aggregate: "min" },
-                            { field: "Performance.AvgOutTheDoor", aggregate: "average" },
-                            { field: "Performance.AvgOutTheDoor", aggregate: "max" },
-                            { field: "Performance.AvgOutTheDoor", aggregate: "min" },
-                            { field: "Performance.AvgMakeTime", aggregate: "average" },
-                            { field: "Performance.AvgMakeTime", aggregate: "max" },
-                            { field: "Performance.AvgMakeTime", aggregate: "min" },
-                            { field: "Performance.AvgRackTime", aggregate: "average" },
-                            { field: "Performance.AvgRackTime", aggregate: "max" },
-                            { field: "Performance.AvgRackTime", aggregate: "min" },
-                            { field: "Performance.NumOrdersLT30Mins", aggregate: "sum" },
-                            { field: "Performance.NumOrdersLT30Mins", aggregate: "average" }
-                        ]
-                    });
-                };
-                dailySummaryDataService.prototype.bind = function (eventName, handler) {
-                    this.dataSource.bind(eventName, handler);
-                };
-                return dailySummaryDataService;
-            })();
-            Services.dailySummaryDataService = dailySummaryDataService;
-        })(Services = Reporting.Services || (Reporting.Services = {}));
-    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Reporting;
-    (function (Reporting) {
-        var Services;
-        (function (Services) {
-            var dailyPerformanceService = (function () {
-                function dailyPerformanceService(options) {
-                    //console.log("new dailyPerformanceService");
-                    this.options = options;
-                    this.dashboardSalesService = new Services.dailySummaryDataService(options);
-                    this.bound = false;
-                }
-                dailyPerformanceService.prototype.bindViewModel = function () {
-                    //console.log("try bind");
-                    if (this.bound) {
-                        return;
-                    }
-                    var element = $(this.options.elementId);
-                    //console.log("bind");
-                    kendo.bind(element, this.viewModel);
-                    this.bound = true;
-                };
-                dailyPerformanceService.prototype.setupResults = function () {
-                    var dataSource = this.dashboardSalesService.dataSource, result = this.dashboardSalesService.result;
-                    var orderCount = null, doorTime = null, outDoorTime = null, makeTime = null, rackTime = null, less30Mins = null;
-                    try {
-                        var aggs = this.dashboardSalesService.dataSource.aggregates();
-                        orderCount = aggs["Combined.OrderCount"];
-                        doorTime = aggs["Performance.AvgDoorTime"];
-                        outDoorTime = aggs["Performance.AvgOutTheDoor"];
-                        makeTime = aggs["Performance.AvgMakeTime"];
-                        rackTime = aggs["Performance.AvgRackTime"];
-                        less30Mins = aggs["Performance.NumOrdersLT30Mins"];
-                        less30Mins.percent = function () {
-                            var sum = less30Mins.sum;
-                            var total = orderCount.sum;
-                            return sum / total;
-                        };
-                    }
-                    catch (e) {
-                        console.log(e);
-                    }
-                    this.viewModel = kendo.observable({
-                        dataSource: dataSource,
-                        orderCount: orderCount,
-                        doorTime: doorTime,
-                        outDoorTime: outDoorTime,
-                        makeTime: makeTime,
-                        rackTime: rackTime,
-                        less30Mins: less30Mins,
-                        showCharts: function () {
-                            return dataSource.total() > 1;
                         }
+                    }
+                });
+                var acsDataSource = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: function () { return "/api/acs/list/" + $routeParams.andromedaSiteId; },
+                            "type": "GET"
+                        }
+                    }
+                });
+                var element = document.getElementById("WebhookTest");
+                progressService.Create(element);
+                var settings = {
+                    Status: null,
+                    StatusDescription: null
+                };
+                $scope.orderDataSource = orderDataSource;
+                $scope.acsDataSource = acsDataSource;
+                $scope.settings = settings;
+                //jQuery(function () { jQuery("#Order_id").kendoComboBox({ 
+                //"dataSource": { "transport": { "read": { "url": "/api/GprsOrders", "data": filterOrders }, "prefix": "" }, "serverFiltering": true, "filter": [], "schema": { "errors": "Errors" } }, "dataTextField": "RamesesOrderNum", "dataValueField": "RamesesOrderNum", "cascadeFrom": "andromedaSiteId" }); });
+                $scope.send = function (value) {
+                    progressService.Show();
+                    var request = webHookTestService.OrderStatusTest({
+                        AndromedaSiteId: $routeParams.andromedaSiteId,
+                        ExternalOrderId: $scope.settings.Order.ExternalOrderRef,
+                        //ExternalAcsApplicationId: $scope.settings.AcsApplication.ExternalApplicationId,
+                        AcsApplicationId: $scope.settings.AcsApplication ? $scope.settings.AcsApplication.Id : null,
+                        Source: "test",
+                        Status: settings.Status,
+                        StatusDescription: settings.StatusDescription
                     });
-                    this.bindViewModel();
-                    kendo.ui.progress($(this.options.elementId), false);
+                    Rx.Observable.fromPromise(request).subscribe(function () {
+                        $scope.settings.messages = "Sent! No problems.";
+                        progressService.Hide();
+                    }, function (ex) {
+                        $scope.settings.messages = "Error";
+                        progressService.Hide();
+                    }, function () {
+                        progressService.Hide();
+                    });
                 };
-                dailyPerformanceService.prototype.init = function () {
-                    var internal = this;
-                    var element = $(this.options.elementId);
-                    kendo.ui.progress(element, true);
-                    element.data("Reporting.DailySummaryService", this);
-                    internal.dashboardSalesService.dataSource.fetch($.proxy(this.setupResults, internal));
+            });
+            var WebHookTestService = (function () {
+                function WebHookTestService($http) {
+                    this.orderStatusUrl = "/web-hooks/store/orders/update-order-status";
+                    this.storeStatusUrl = "/web-hooks/store/update-status";
+                    this.updateDeliveryTime = "/web-hooks/store/update-estimated-delivery-time";
+                    this.updateMenuChange = "/web-hooks/store/update-menu";
+                    this.$http = $http;
+                    MyAndromeda.Logger.Notify("Where am i");
+                }
+                WebHookTestService.prototype.OnlineStateTest = function (model) {
+                    var promise = this.$http.post(this.storeStatusUrl, model);
+                    return promise;
                 };
-                return dailyPerformanceService;
-            })();
-            Services.dailyPerformanceService = dailyPerformanceService;
-        })(Services = Reporting.Services || (Reporting.Services = {}));
-    })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));
+                WebHookTestService.prototype.OrderStatusTest = function (model) {
+                    var promise = this.$http.post(this.orderStatusUrl, model);
+                    return promise;
+                };
+                WebHookTestService.prototype.MenuVersion = function (model) {
+                    var promise = this.$http.post(this.updateMenuChange, model);
+                    return promise;
+                };
+                WebHookTestService.prototype.DeliveryTime = function (model) {
+                    var promise = this.$http.post(this.updateDeliveryTime, model);
+                    return promise;
+                };
+                return WebHookTestService;
+            }());
+            Tests.WebHookTestService = WebHookTestService;
+            m.service("webHookTestService", WebHookTestService);
+            //"Store Online Status", "EDT", "Menu Version", "Order Status"
+            function Setup(id) {
+                var element = document.getElementById(id);
+                angular.bootstrap(element, [moduleName]);
+            }
+            Tests.Setup = Setup;
+        })(Tests = WebHooks.Tests || (WebHooks.Tests = {}));
+    })(WebHooks = MyAndromeda.WebHooks || (MyAndromeda.WebHooks = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="../general/resizemodule.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
-    var KendoExtensions;
-    (function (KendoExtensions) {
-        var EditorTools;
-        (function (EditorTools) {
-            var emailEditorService = (function () {
-                //public static editorOptions = {
-                //    tools: [
-                //        "bold", "italic", "underline",
-                //        "justifyLeft", "justifyCenter", "justifyRight", "justifyFull",
-                //        "insertUnorderedList", "insertOrderedList",
-                //        "indent", "outdent",
-                //        "createLink", "unlink",
-                //        {
-                //            name: "tokenTool",
-                //            tooltip: "Add tokens",
-                //            template  
-                //        }
-                //    ]
-                //};
-                function emailEditorService(options) {
-                    this.options = options;
-                    this.element = $(options.elementId);
-                    //document.getElementById(options.elementId);
-                    this.fieldsTemplate = $(options.fieldsTemplateId);
-                    //document.getElementById(options.fieldsTemplateId);
+    var WebHooks;
+    (function (WebHooks) {
+        var moduleName = "MyAndromeda.WebHooks";
+        var m = angular.module(moduleName, [
+            "MyAndromeda.Resize",
+            "MyAndromeda.Progress",
+            "ngRoute",
+            "ngAnimate",
+            "kendo.directives"
+        ]);
+        m.run(function ($templateCache) {
+            MyAndromeda.Logger.Notify("WebHooks Started");
+            angular.element('script[type="text/template"]').each(function (i, element) {
+                $templateCache.put(element.id, element.innerHTML);
+            });
+        });
+        m.config(function ($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: "start.html",
+                controller: "StartControler"
+            });
+        });
+        m.controller("StartControler", function ($scope, $timeout, resizeService, progressService, webHookService, webHookTypes) {
+            MyAndromeda.Logger.Notify("start");
+            var resizeSubscription = resizeService.ResizeObservable.subscribe(function (e) {
+                //do i have anything to resize
+            });
+            var element = document.getElementById("WebHooks");
+            progressService.Create(element).Show();
+            var globalSettings = null;
+            var settingsPromise = webHookService.Read();
+            var settingsObservable = Rx.Observable
+                .fromPromise(settingsPromise);
+            var refresh = function (settings) {
+                globalSettings = settings;
+                MyAndromeda.Logger.Notify("settings:");
+                MyAndromeda.Logger.Notify(globalSettings);
+                $scope.webHookTypes = webHookTypes;
+                var t = Rx.Observable.fromArray(webHookTypes);
+                t.subscribe(function (setting) {
+                    MyAndromeda.Logger.Notify(setting);
+                    //prepare the settings
+                    if (!globalSettings[setting.Key]) {
+                        globalSettings[setting.Key] = [];
+                    }
+                }, function (ex) { }, function () {
+                    $timeout(function () {
+                        MyAndromeda.Logger.Notify("new settings");
+                        MyAndromeda.Logger.Notify(globalSettings);
+                        $scope.settings = globalSettings;
+                        progressService.Hide();
+                    });
+                });
+            };
+            $scope.getGroupNameFromKey = function (key) {
+                var find = webHookTypes.filter(function (e) { return e.Key === key; });
+                if (find.length === 0) {
+                    return key + " not found";
                 }
-                //confirm all the elements are set
-                emailEditorService.prototype.checkIntegrity = function () {
-                    if (!this.element) {
-                        throw new Error("The element for the editor is not known");
-                    }
-                    if (!this.fieldsTemplate) {
-                        throw new Error("the template for the field selection is not known");
-                    }
-                    if (!this.options.editorOptions) {
-                        throw new Error("the editor options are not set");
-                    }
+                return find[0].Name;
+            };
+            $scope.add = function (key) {
+                MyAndromeda.Logger.Notify("add to: " + key);
+                var group = $scope.settings[key];
+                var model = {
+                    Name: "Default",
+                    CallBackUrl: "",
+                    RequestHeaders: {},
+                    Enabled: true
                 };
-                emailEditorService.prototype.eventChangeTokenSelected = function (dropwDown, e) {
-                    var dataItem = dropwDown.dataItem(e.item.index());
-                    this.currentTemplate = dataItem.value;
-                };
-                emailEditorService.prototype.setupFieldsTemplate = function () {
-                    var internal = this;
-                    var dropDown = $("#ToolsInsertToken").kendoDropDownList({
-                        dataSource: this.options.tokenOptions,
-                        dataTextField: "text",
-                        dataValueField: "value",
-                        optionLabel: "Select"
-                    }).data("kendoDropDownList");
-                    dropDown.bind("select", function (e) {
-                        internal.eventChangeTokenSelected(dropDown, e);
-                        //$.proxy(internal, "eventChangeTokenSelected", [dropDown, e]);
-                    });
-                };
-                emailEditorService.prototype.insertTemplate = function () {
-                    var template = this.currentTemplate + "&nbsp;";
-                    if (!template) {
-                        alert("Please select a token first");
-                    }
-                    this.getEditor().paste(template, {});
-                };
-                emailEditorService.prototype.setupInsertButton = function () {
-                    var internal = this;
-                    var button = $(".k-insert-token-button").on("click", function (e) {
-                        e.preventDefault();
-                        internal.insertTemplate();
-                    });
-                };
-                emailEditorService.prototype.manageSelection = function (e) {
-                    //var range = this.getEditor().getRange();
-                    //var selection = this.getEditor().getSelection();
-                    var r = this.getEditor();
-                    var a = 0;
-                };
-                emailEditorService.prototype.setupEditor = function () {
-                    var internal = this;
-                    var editorElememt = $(this.element);
-                    var editor = editorElememt.kendoEditor(this.options.editorOptions).data("kendoEditor");
-                    editor.bind("select", function (e) {
-                        internal.manageSelection(e);
-                    });
-                };
-                emailEditorService.prototype.init = function () {
-                    //validate internal
-                    this.checkIntegrity();
-                    this.setupEditor();
-                    this.setupFieldsTemplate();
-                    this.setupInsertButton();
-                };
-                emailEditorService.prototype.getEditor = function () {
-                    return $(this.element).data("kendoEditor");
-                };
-                emailEditorService.prototype.selected = function () {
-                    return this.getEditor().selectedHtml();
-                };
-                //about range http://www.quirksmode.org/dom/range_intro.html
-                emailEditorService.prototype.selectedRange = function () {
-                    return this.getEditor().getRange();
-                };
-                return emailEditorService;
-            })();
-            EditorTools.emailEditorService = emailEditorService;
-        })(EditorTools = KendoExtensions.EditorTools || (KendoExtensions.EditorTools = {}));
-    })(KendoExtensions = MyAndromeda.KendoExtensions || (MyAndromeda.KendoExtensions = {}));
+                group.push(model);
+            };
+            $scope.update = function () {
+                progressService.Show();
+                var promise = webHookService.Update(globalSettings);
+                Rx.Observable.fromPromise(promise).subscribe(function () { }, function (ex) {
+                    progressService.Hide();
+                }, function () {
+                    progressService.Hide();
+                });
+            };
+            $scope.remove = function (key, subscription) {
+                var group = globalSettings[key];
+                globalSettings[key] = group.filter(function (e) { return e !== subscription; });
+            };
+            settingsObservable
+                .subscribe(function (response) {
+                MyAndromeda.Logger.Notify(response.data);
+                //settings = response.data;
+                refresh(response.data);
+            }, function (ex) {
+                MyAndromeda.Logger.Error(ex);
+            }, function () {
+            });
+        });
+        var WebHookService = (function () {
+            function WebHookService($http) {
+                this.$http = $http;
+                MyAndromeda.Logger.Notify("Where am i");
+            }
+            WebHookService.prototype.Read = function () {
+                var route = WebHookService.readRoute + WebHookService.acsApplicationId;
+                var promise = this.$http.get(route);
+                return promise;
+            };
+            WebHookService.prototype.Update = function (data) {
+                var route = WebHookService.updateRoute + WebHookService.acsApplicationId;
+                var promise = this.$http.post(route, data);
+                return promise;
+            };
+            WebHookService.readRoute = "";
+            WebHookService.updateRoute = "";
+            WebHookService.acsApplicationId = "";
+            return WebHookService;
+        }());
+        WebHooks.WebHookService = WebHookService;
+        m.service("webHookService", WebHookService);
+        //"Store Online Status", "EDT", "Menu Version", "Order Status"
+        var storeStatus = { Key: "StoreOnlineStatus", Name: "Store Online Status" };
+        var estimatedDeliveryTime = { Key: "Edt", Name: "EDT" };
+        var menuVersion = { Key: "MenuVersion", Name: "Menu Version" };
+        var menuItems = { Key: "MenuItems", Name: "Menu Items" };
+        var orderStatus = { Key: "OrderStatus", Name: "Order Status" };
+        var bringg = { Key: "BringUpdates", Name: "Bringg" };
+        var bringgEta = { Key: "BringEtaUpdates", Name: "Bringg ETA" };
+        var webHookTypes = [
+            storeStatus,
+            estimatedDeliveryTime,
+            menuVersion,
+            menuItems,
+            orderStatus,
+            bringg,
+            bringgEta
+        ];
+        m.constant("webHookTypes", webHookTypes);
+        function Setup(id) {
+            var element = document.getElementById(id);
+            angular.bootstrap(element, [moduleName]);
+        }
+        WebHooks.Setup = Setup;
+    })(WebHooks = MyAndromeda.WebHooks || (MyAndromeda.WebHooks = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 //# sourceMappingURL=MyAndromeda.App.All.js.map

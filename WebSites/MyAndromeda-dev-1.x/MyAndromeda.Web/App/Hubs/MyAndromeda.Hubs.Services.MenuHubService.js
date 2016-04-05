@@ -20,7 +20,7 @@ var MyAndromeda;
                     kendo.bind(this.options.id, this.viewModel);
                 };
                 return MenuHubService;
-            })();
+            }());
             Services.MenuHubService = MenuHubService;
         })(Services = Hubs.Services || (Hubs.Services = {}));
     })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));

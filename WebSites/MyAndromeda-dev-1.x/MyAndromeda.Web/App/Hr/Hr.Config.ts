@@ -99,16 +99,17 @@
         }
 
         var hrStoreEmployeeCreate: ng.ui.IState = {
-            url: "/create/",
+            url: "/create",
             views: {
                 //use the 'main' view area of the 'hr' state. 
                 "main@hr": {
-                    templateUrl: "employee-edit.html",
+                    templateUrl: "employee-create.html",
                     controller: "employeeEditController"
                 }
             },
             onEnter: () => {
                 Logger.Notify("Entering employee create");
+
             },
             cache: false
         };
@@ -121,12 +122,15 @@
         $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
         $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
 
-
+        $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+        //reuse edit details for create
+        $stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
         $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
         $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
         $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
         $stateProvider.state("hr.store-list.edit-employee.documents", hrStoreEmployeeDocuments);
-        $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+
+        //$stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
 
     });
 

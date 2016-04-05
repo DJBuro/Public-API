@@ -91,9 +91,9 @@ module MyAndromeda.Data.Services
                                 var lat = model.Customer.Latitude;
                                 var long = model.Customer.Longitude;
 
-                                return [0, 0];
+                                //return [0, 0];
 
-                                if (!lat) { return null; }
+                                if (!lat) { return [0, 0]; }
                                 return [lat, long];
                             }
                         },
@@ -198,9 +198,9 @@ module MyAndromeda.Data.Services
                                 var lat = model.Customer.Latitude;
                                 var long = model.Customer.Longitude;
 
-                                return [0, 0];
+                                //return [0, 0];
 
-                                if (!lat) { return null; }
+                                if (!lat) { [0, 0] }
                                 return [lat, long];
                             }
                         },

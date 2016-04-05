@@ -37,7 +37,7 @@ var MyAndromeda;
                 };
                 MenuNavigationController.Name = "MenuNavigationController";
                 return MenuNavigationController;
-            })();
+            }());
             Controllers.MenuNavigationController = MenuNavigationController;
         })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

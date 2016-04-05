@@ -1,4 +1,20 @@
-﻿module MyAndromeda.Hr.KendoThings {
+﻿//if (!template) {
+//    fileEntry = that._prepareDefaultFileEntryTemplate(name, data);
+//} else {
+//    templateData = that._prepareTemplateData(name, data);
+//    template = kendo.template(template);
+//    fileEntry = $('<li class=\'k-file\'>' + template(templateData) + '</li>');
+//    fileEntry.find('.k-upload-action').addClass('k-button k-button-bare');
+//    that.angular('compile', function () {
+//        return {
+//            elements: fileEntry,
+//            data: [templateData]
+//        };
+//    });
+//}
+
+
+module MyAndromeda.Hr.KendoThings {
 
     var extend = $.extend,
         Logger = MyAndromeda.Logger,
@@ -55,8 +71,8 @@
                     department = searchDepartments[0];
                 }
 
-                Logger.Notify("department:");
-                Logger.Notify(department);
+                //Logger.Notify("department:");
+                //Logger.Notify(department);
                 var obj = {
                     text: template({
                         text: kendo.htmlEncode(kGetter(resource.dataTextField)(data[dataIndex])),
@@ -315,7 +331,7 @@
             });
             if (that.options.editable.create !== false) {
                 that.element.on('dblclick' + NS, '.k-scheduler-WeekOverViewview .k-scheduler-content td', function (e) {
-                    Logger.Notify("edit mode");
+                    //Logger.Notify("edit mode");
                     var offset = $(e.currentTarget).offset();
 
 
@@ -462,8 +478,8 @@
             }
 
             var resources = this.groupedResources;
-            Logger.Notify("Grouped resources:");
-            Logger.Notify(resources);
+            //Logger.Notify("Grouped resources:");
+            //Logger.Notify(resources);
 
             var rows;
             if (resources.length) {
@@ -476,8 +492,7 @@
                         });
                     }
                     rows = this._createRowsLayout(resources, inner, this.groupHeaderTemplate);
-                    console.log("rows: ");
-                    console.log(rows);
+                    
                 } else {
                     columns = this._createColumnsLayout(resources, columns, this.groupHeaderTemplate);
                 }
@@ -797,10 +812,10 @@
                     var cells = tableRow.children;
                     var cellMultiplier = 0;
 
-                    Logger.Notify("group: ");
-                    Logger.Notify(group);
-                    Logger.Notify("collection: " + collection);
-                    Logger.Notify(collection);
+                    //Logger.Notify("group: ");
+                    //Logger.Notify(group);
+                    //Logger.Notify("collection: " + collection);
+                    //Logger.Notify(collection);
 
                     tableRow.setAttribute('role', 'row');
 
@@ -928,8 +943,8 @@
 
             if (resource) {
                 var view: Array<MyAndromeda.Hr.Models.IEmployeeTask> = resource.dataSource.view();
-                Logger.Notify("resource view");
-                Logger.Notify(view);
+                //Logger.Notify("resource view");
+                //Logger.Notify(view);
 
                 /* sort by department */
                 view = view.sort((a, b) => {

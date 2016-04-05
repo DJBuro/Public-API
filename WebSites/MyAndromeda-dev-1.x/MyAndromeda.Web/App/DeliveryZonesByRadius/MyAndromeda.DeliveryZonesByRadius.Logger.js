@@ -41,7 +41,7 @@ var MyAndromeda;
                 logger.UseError = value;
             };
             return Logger;
-        })();
+        }());
         DeliveryZonesByRadius.Logger = Logger;
         var logger = new Logger();
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));

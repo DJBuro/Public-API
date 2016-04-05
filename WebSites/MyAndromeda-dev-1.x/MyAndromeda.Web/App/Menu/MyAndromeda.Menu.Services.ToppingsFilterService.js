@@ -54,7 +54,7 @@ var MyAndromeda;
                 };
                 MenuToppingsFilterService.Name = "MenuToppingsFilterService ";
                 return MenuToppingsFilterService;
-            })();
+            }());
             Services.MenuToppingsFilterService = MenuToppingsFilterService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

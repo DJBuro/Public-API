@@ -25,7 +25,7 @@ var MyAndromeda;
                 };
                 Routes.Publish = "";
                 return Routes;
-            })();
+            }());
             Settings.Routes = Routes;
             ;
             ;

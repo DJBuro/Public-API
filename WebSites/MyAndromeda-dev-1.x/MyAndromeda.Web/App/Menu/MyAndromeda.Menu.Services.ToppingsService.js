@@ -95,7 +95,7 @@ var MyAndromeda;
                 };
                 MenuToppingsService.Name = "ToppingsService";
                 return MenuToppingsService;
-            })();
+            }());
             Services.MenuToppingsService = MenuToppingsService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

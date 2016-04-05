@@ -117,7 +117,7 @@ var MyAndromeda;
                     return contentChart;
                 };
                 return chainGridDetailSumarryService;
-            })();
+            }());
             Services.chainGridDetailSumarryService = chainGridDetailSumarryService;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));

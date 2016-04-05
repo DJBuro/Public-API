@@ -200,7 +200,7 @@ var MyAndromeda;
                 };
                 MenuService.Name = "MenuService";
                 return MenuService;
-            })();
+            }());
             Services.MenuService = MenuService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

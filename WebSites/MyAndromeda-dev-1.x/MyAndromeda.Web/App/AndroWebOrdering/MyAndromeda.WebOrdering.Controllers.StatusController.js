@@ -70,7 +70,7 @@ var MyAndromeda;
                 };
                 StatusController.Name = "StatusController";
                 return StatusController;
-            })();
+            }());
             Controllers.StatusController = StatusController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

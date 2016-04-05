@@ -236,6 +236,7 @@
                     title: "Opening hours"
                 },
                 eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
+                allDayEventTemplate: `<occasion-task task='dataItem' all-day='"true"'></occasion-task>`,
                 //toolbar: ["pdf"],
                 showWorkHours: false,
                 resources: this.CreateResources(),

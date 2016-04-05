@@ -67,13 +67,16 @@
         });
     </script>
     <script type="text/ng-template" id="occasionTask.html">
-        <span class="label label-success">{{::extra.hours |  number:1 }} h</span>
-        <span class="label label-info">{{::extra.startTime}} - {{::extra.endTime}}</span>
 
-        <span class="label label-default" ng-repeat="occasion in state.occasions">
+        <div ng-if="!extra.allDay" class="label label-success">{{::extra.hours |  number:1 }} h</div>
+        <div ng-if="!extra.allDay" class="label label-info">
+            <i class="fa fa-clock-o"></i> {{::extra.startTime}} - {{::extra.endTime}}
+        </div>
+
+        <div class="label label-default" ng-repeat="occasion in state.occasions">
             <i class="fa fa-cutlery" style="color:{{::getColour(occasion)}} "></i>
             {{::occasion | limitTo: 2 }}
-        </span>
+        </div>
 
         <div ng-if="task.title">
             <span class="label label-default">{{::task.title}}</span>
@@ -105,7 +108,7 @@
                                 <div class="col-sm-6">
                                     <div class="label label-default">Title:</div>
 
-                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
+                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" ng-change="task.set('dirty', true)" />
                                     <div style="margin-top:2em">
                                         <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
                                     </div>
@@ -160,8 +163,8 @@
                             <repeat-weekly-editor task="task"></repeat-weekly-editor>
 
                             @*<div data-container-for="recurrenceRule">
-                                <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
-                            </div>*@
+                                    <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -175,7 +178,7 @@
         <div class="label label-default">Repeat on these days:</div>
         <div>
             <label>
-                <input type="checkbox" ng-model="rule.Monday" ng-change="ruleChanged()"  />
+                <input type="checkbox" ng-model="rule.Monday" ng-change="ruleChanged()" />
                 Mon
             </label>
             <label>
@@ -195,7 +198,7 @@
                 Fri
             </label>
 
-            
+
         </div>
         <div class="label label-default">Weekend:</div>
         <div>

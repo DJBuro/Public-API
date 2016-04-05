@@ -150,7 +150,7 @@ var MyAndromeda;
                 chainDailySummaryService.prototype.fetch = function () {
                 };
                 return chainDailySummaryService;
-            })();
+            }());
             Services.chainDailySummaryService = chainDailySummaryService;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));

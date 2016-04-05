@@ -48,7 +48,7 @@ var MyAndromeda;
                 };
                 ToppingsFilterController.Name = "ToppingsFilterController";
                 return ToppingsFilterController;
-            })();
+            }());
             Controllers.ToppingsFilterController = ToppingsFilterController;
         })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

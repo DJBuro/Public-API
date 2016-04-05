@@ -17,7 +17,7 @@ var MyAndromeda;
                 this.dataSource = dataSource;
             }
             return TokenDataService;
-        })();
+        }());
         Marketing.TokenDataService = TokenDataService;
         var MarketingEventService = (function () {
             function MarketingEventService($http) {
@@ -74,7 +74,7 @@ var MyAndromeda;
                 return promise;
             };
             return MarketingEventService;
-        })();
+        }());
         Marketing.MarketingEventService = MarketingEventService;
         var RecipientService = (function () {
             function RecipientService($http) {
@@ -86,7 +86,7 @@ var MyAndromeda;
                 return promise;
             };
             return RecipientService;
-        })();
+        }());
         Marketing.RecipientService = RecipientService;
         Marketing.m.service("recipientService", RecipientService);
         Marketing.m.service("marketingEventService", MarketingEventService);

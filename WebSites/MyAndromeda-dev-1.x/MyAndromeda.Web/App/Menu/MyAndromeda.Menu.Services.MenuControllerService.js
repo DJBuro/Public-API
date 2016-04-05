@@ -314,7 +314,7 @@ var MyAndromeda;
                 MenuControllerService.MaxLengthMessage = "The max length for the field is {0} characters. Current count: {1}";
                 MenuControllerService.EditingNewItemMessage = "You are navigating away from the current item, please save changes or press cancel to the current item.";
                 return MenuControllerService;
-            })();
+            }());
             Services.MenuControllerService = MenuControllerService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

@@ -23,7 +23,7 @@ var MyAndromeda;
                 kendo.ui.progress($($element), false);
             };
             return ProgressService;
-        })();
+        }());
         Services.ProgressService = ProgressService;
         m.factory("progressService", function () {
             return new ProgressService();

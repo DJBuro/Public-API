@@ -39,7 +39,7 @@ var MyAndromeda;
                 };
                 HomePageController.Name = "HomePageController";
                 return HomePageController;
-            })();
+            }());
             Controllers.HomePageController = HomePageController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

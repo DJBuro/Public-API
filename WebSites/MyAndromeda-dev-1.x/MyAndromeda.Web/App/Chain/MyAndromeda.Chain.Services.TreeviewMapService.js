@@ -63,7 +63,7 @@ var MyAndromeda;
                     map.zoom(3);
                 };
                 return TreeviewMapService;
-            })();
+            }());
             var TreeviewChainService = (function () {
                 function TreeviewChainService(data) {
                     var internal = this;
@@ -102,7 +102,7 @@ var MyAndromeda;
                     this.mapService = new TreeviewMapService(this.kendoTreeView);
                 }
                 return TreeviewChainService;
-            })();
+            }());
             Services.TreeviewChainService = TreeviewChainService;
         })(Services = Chain.Services || (Chain.Services = {}));
     })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));

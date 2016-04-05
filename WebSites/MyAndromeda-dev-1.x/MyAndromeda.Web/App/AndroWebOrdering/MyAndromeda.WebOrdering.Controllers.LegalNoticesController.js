@@ -38,7 +38,7 @@ var MyAndromeda;
                 };
                 LegalNoticesController.Name = "LegalNoticesController";
                 return LegalNoticesController;
-            })();
+            }());
             Controllers.LegalNoticesController = LegalNoticesController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

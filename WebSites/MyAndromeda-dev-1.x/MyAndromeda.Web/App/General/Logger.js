@@ -39,7 +39,7 @@ var MyAndromeda;
             logger.UseError = value;
         };
         return Logger;
-    })();
+    }());
     MyAndromeda.Logger = Logger;
     var logger = new Logger();
 })(MyAndromeda || (MyAndromeda = {}));

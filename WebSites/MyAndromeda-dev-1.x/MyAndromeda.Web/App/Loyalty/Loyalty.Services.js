@@ -68,7 +68,7 @@ var MyAndromeda;
                     promise.finally(function () { _this.UpdateBusy.onNext(false); });
                 };
                 return LoyaltyService;
-            })();
+            }());
             Services.LoyaltyService = LoyaltyService;
             var loyaltyService = "loyaltyService";
             servicesModule.service(loyaltyService, LoyaltyService);

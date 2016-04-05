@@ -24,7 +24,7 @@ var MyAndromeda;
                     return elements;
                 };
                 return CategoryService;
-            })();
+            }());
             Services.CategoryService = CategoryService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

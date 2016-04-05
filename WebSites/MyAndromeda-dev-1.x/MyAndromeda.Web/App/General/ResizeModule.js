@@ -17,7 +17,7 @@ var MyAndromeda;
                 });
             }
             return ResizeService;
-        })();
+        }());
         Services.ResizeService = ResizeService;
         m.service("resizeService", ResizeService);
         m.run(function (resizeService) {

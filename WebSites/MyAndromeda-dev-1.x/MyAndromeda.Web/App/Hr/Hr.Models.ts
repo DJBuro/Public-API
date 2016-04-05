@@ -199,6 +199,7 @@
         RecurrenceId: string;
         RecurrenceRule: string;
         RecurrenceException: string;
+        isAllDay: boolean;
         IsAllDay: boolean;
         EmployeeId: string;
         AndromedaSiteId: number;

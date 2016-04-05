@@ -26,15 +26,15 @@
   //mixin to temporarily make this position absolute  
   //so it doesn't conflict with other divs
 
-  position:absolute;
-  z-index: 10;
+  //position:absolute;
+  //z-index: 10;
 }
 
 
 //GLOBAL TRANSITION CLASS
 #masterUI {
 	.transition(all 1s); 
-    position:relative;
+    //position:relative;
     //if using child transition animations, #
     //they should all be under this time value, keyframe animations are different
 }
@@ -48,23 +48,31 @@
 
 #masterUI.ng-enter {
     .list-page {
-  		.fadeInRight;
+  		.fadeIn;
         .tempAbs;
 
   	}
     .edit-page{
-        .fadeInRight;
+        .fadeIn;
+        .tempAbs;
+    }
+    .default-transition{
+        .fadeIn;
         .tempAbs;
     }
 }
 
 #masterUI.ng-leave {
   	.list-page {
-  		.fadeOutLeft;
+  		.fadeOut;
         .tempAbs;
   	}
     .edit-page{
-        .fadeOutLeft;
+        .fadeOut;
+        .tempAbs;
+    }
+    .default-transition{
+        .fadeIn;
         .tempAbs;
     }
 }

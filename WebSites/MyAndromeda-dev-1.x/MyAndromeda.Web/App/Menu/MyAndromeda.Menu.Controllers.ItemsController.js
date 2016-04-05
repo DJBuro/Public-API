@@ -26,7 +26,7 @@ var MyAndromeda;
                 MenuItemsController.Name = "MenuItemsController";
                 MenuItemsController.Route = "/MenuItems";
                 return MenuItemsController;
-            })();
+            }());
             Controllers.MenuItemsController = MenuItemsController;
         })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

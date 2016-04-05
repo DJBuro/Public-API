@@ -48,7 +48,7 @@ var MyAndromeda;
                 };
                 AnalyticsController.Name = "AnalyticsController";
                 return AnalyticsController;
-            })();
+            }());
             Controllers.AnalyticsController = AnalyticsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

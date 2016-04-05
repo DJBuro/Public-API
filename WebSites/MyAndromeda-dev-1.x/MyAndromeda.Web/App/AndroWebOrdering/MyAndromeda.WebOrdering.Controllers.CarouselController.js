@@ -236,7 +236,7 @@ var MyAndromeda;
                 };
                 CarouselController.Name = "CarouselController";
                 return CarouselController;
-            })();
+            }());
             Controllers.CarouselController = CarouselController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

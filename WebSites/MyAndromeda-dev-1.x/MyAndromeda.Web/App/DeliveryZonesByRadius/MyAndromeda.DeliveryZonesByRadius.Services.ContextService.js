@@ -21,7 +21,7 @@ var MyAndromeda;
                 }
                 ContextService.Name = "ContextService";
                 return ContextService;
-            })();
+            }());
             Services.ContextService = ContextService;
         })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));

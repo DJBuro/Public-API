@@ -41,7 +41,7 @@ var MyAndromeda;
                 logger.UseError = value;
             };
             return Logger;
-        })();
+        }());
         WebOrdering.Logger = Logger;
         var logger = new Logger();
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

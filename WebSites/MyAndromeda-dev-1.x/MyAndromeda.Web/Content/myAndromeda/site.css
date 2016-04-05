@@ -3001,6 +3001,9 @@ footer {
 .form-group .k-textbox {
   width: 100%;
 }
+.k-upload-files {
+  line-height: normal !important;
+}
 /*!
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
@@ -5791,17 +5794,12 @@ Copyright (c) 2014 Daniel Eden
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
 }
-.tempAbs {
-  position: absolute;
-  z-index: 10;
-}
 #masterUI {
   -ms-transition: all 1s;
   -webkit-transition: all 1s;
   -moz-transition: all 1s;
   -o-transition: all 1s;
   transition: all 1s;
-  position: relative;
 }
 .list-page {
   -webkit-animation-duration: 1s;
@@ -5824,32 +5822,28 @@ Copyright (c) 2014 Daniel Eden
   animation-fill-mode: both;
 }
 #masterUI.ng-enter .list-page {
-  -webkit-animation-name: fadeInRight;
-  animation-name: fadeInRight;
-  position: absolute;
-  z-index: 10;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 #masterUI.ng-enter .edit-page {
-  -webkit-animation-name: fadeInRight;
-  animation-name: fadeInRight;
-  position: absolute;
-  z-index: 10;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+#masterUI.ng-enter .default-transition {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 #masterUI.ng-leave .list-page {
-  -webkit-animation-name: fadeOutLeft;
-  -moz-animation-name: fadeOutLeft;
-  -o-animation-name: fadeOutLeft;
-  animation-name: fadeOutLeft;
-  position: absolute;
-  z-index: 10;
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
 }
 #masterUI.ng-leave .edit-page {
-  -webkit-animation-name: fadeOutLeft;
-  -moz-animation-name: fadeOutLeft;
-  -o-animation-name: fadeOutLeft;
-  animation-name: fadeOutLeft;
-  position: absolute;
-  z-index: 10;
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+#masterUI.ng-leave .default-transition {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
 }
 .task {
   border-left: 4px solid #226666;

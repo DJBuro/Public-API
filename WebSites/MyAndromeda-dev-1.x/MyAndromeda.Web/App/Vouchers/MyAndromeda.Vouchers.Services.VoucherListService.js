@@ -96,7 +96,7 @@ var MyAndromeda;
                 VoucherListService.ActiveLabel = "Active";
                 VoucherListService.InActiveLabel = "Inactive";
                 return VoucherListService;
-            })();
+            }());
             Services.VoucherListService = VoucherListService;
         })(Services = Vouchers.Services || (Vouchers.Services = {}));
     })(Vouchers = MyAndromeda.Vouchers || (MyAndromeda.Vouchers = {}));

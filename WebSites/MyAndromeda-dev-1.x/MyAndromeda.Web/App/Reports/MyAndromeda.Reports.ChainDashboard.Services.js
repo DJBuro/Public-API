@@ -17,7 +17,7 @@ var MyAndromeda;
                     this.Changed.onNext(true);
                 }
                 return DashboardQueryContext;
-            })();
+            }());
             ChainDashboard.DashboardQueryContext = DashboardQueryContext;
             var GroupedDataWarehouseStoreResultsService = (function () {
                 function GroupedDataWarehouseStoreResultsService($http) {
@@ -160,7 +160,7 @@ var MyAndromeda;
                     return totals;
                 };
                 return GroupedDataWarehouseStoreResultsService;
-            })();
+            }());
             ChainDashboard.GroupedDataWarehouseStoreResultsService = GroupedDataWarehouseStoreResultsService;
             var GroupedStoreResultsService = (function () {
                 function GroupedStoreResultsService(groupedStoreResultsDataService, dashboardQueryContext) {
@@ -211,7 +211,7 @@ var MyAndromeda;
                     }
                 };
                 return GroupedStoreResultsService;
-            })();
+            }());
             ChainDashboard.GroupedStoreResultsService = GroupedStoreResultsService;
             var GroupedStoreResultsDataService = (function () {
                 function GroupedStoreResultsDataService($http) {
@@ -240,7 +240,7 @@ var MyAndromeda;
                     return promise;
                 };
                 return GroupedStoreResultsDataService;
-            })();
+            }());
             ChainDashboard.GroupedStoreResultsDataService = GroupedStoreResultsDataService;
             var ChartOptions = (function () {
                 function ChartOptions() {
@@ -389,7 +389,7 @@ var MyAndromeda;
                     return options;
                 };
                 return ChartOptions;
-            })();
+            }());
             ChainDashboard.ChartOptions = ChartOptions;
             var ValueFormater = (function () {
                 function ValueFormater() {
@@ -405,7 +405,7 @@ var MyAndromeda;
                     return kendo.toString(value, "g");
                 };
                 return ValueFormater;
-            })();
+            }());
             ChainDashboard.ValueFormater = ValueFormater;
             app.service("dashboardQueryContext", DashboardQueryContext);
             app.service("groupedStoreResultsDataService", GroupedStoreResultsDataService);

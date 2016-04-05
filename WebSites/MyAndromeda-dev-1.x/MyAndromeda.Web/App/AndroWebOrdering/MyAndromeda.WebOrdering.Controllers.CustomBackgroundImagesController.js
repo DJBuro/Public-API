@@ -109,7 +109,7 @@ var MyAndromeda;
                 };
                 CustomBackgroundImagesController.Name = "CustomBackgroundImagesController";
                 return CustomBackgroundImagesController;
-            })();
+            }());
             Controllers.CustomBackgroundImagesController = CustomBackgroundImagesController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

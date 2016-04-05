@@ -2,7 +2,75 @@
 module MyAndromeda.Hr.Directives {
     var app = angular.module("MyAndromeda.Hr.Directives", []);
 
+    app.directive("fileUpload", () => {
+        return {
+            name: "fileUpload",
+            templateUrl: "file-upload.html",
+            scope: {
+                name: '=name',
+                size: '=size',
+                files: '=files',
+                control: '=control'
+            },
+            controller: ($scope, $element: ng.IAugmentedJQuery) => {
+                let name = $scope.name,
+                    size = $scope.size,
+                    files = $scope.files,
+                    control: kendo.ui.Upload = $scope.control;
 
+                let state = {
+                    percentage: 0,
+                    complete : false
+                };
+
+                $scope.state = state;
+
+                Logger.Notify("file-upload.html");
+                Logger.Notify(name);
+                Logger.Notify(size);
+                Logger.Notify(files);
+                Logger.Notify("upload control?");
+                Logger.Notify(control);
+
+                var bind = null, unBind = null;
+
+                let onProgress = (e: kendo.ui.UploadProgressEvent) => {
+                    
+                    Logger.Notify("Upload progress :: " + e.percentComplete + "% :: ");
+                    Logger.Notify("files:");
+                    Logger.Notify(e.files);
+                    state.percentage = e.percentComplete;
+                }
+                let onSuccess = (e: kendo.ui.UploadSuccessEvent) => {
+                    Logger.Notify("Success :: " + e.operation);
+                    //$element.addClass("k-file-success");
+                    $($element).find(".alert").addClass("alert-success").removeClass("alert-info");
+
+                    unBind();
+                };
+                let onError = (e: kendo.ui.UploadErrorEvent) => {
+                    Logger.Notify("Error :: " + e.operation);
+
+                    $($element).find(".alert").addClass("alert-error").removeClass("alert-info");
+
+
+                    unBind();
+                };
+
+                bind = () => {
+                    control.bind("complete", onSuccess);
+                    control.bind("progress", onProgress);
+                    control.bind("error", onError);
+                };
+                unBind = () => {
+                    control.unbind("complete", onSuccess);
+                    control.unbind("progress", onProgress);
+                    control.unbind("error", onError);
+                };       
+                bind();
+            }
+        };
+    });
     app.directive("employeePic", () => {
 
         return {

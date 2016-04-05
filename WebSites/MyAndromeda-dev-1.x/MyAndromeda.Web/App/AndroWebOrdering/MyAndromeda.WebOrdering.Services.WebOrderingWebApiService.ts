@@ -45,8 +45,6 @@ module MyAndromeda.WebOrdering.Services {
                 //set defaults. 
                 var nullOrUndefined = (path) => {
                     return typeof (path) === "undefined" || path === null;
-                        
-                    return true;
                 };
 
                 if (!result.data.MenuPageSettings) {

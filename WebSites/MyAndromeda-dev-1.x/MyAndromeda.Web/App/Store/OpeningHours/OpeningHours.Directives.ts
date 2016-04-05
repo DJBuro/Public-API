@@ -39,7 +39,9 @@
                     
                 };
 
-
+                $scope.titleChanged = () => {
+                    
+                };
                 $scope.occasionOptions = occasionOptions;
             }
         };
@@ -128,7 +130,8 @@
                     let newRule = parseRuleToRecurrence();
                     Logger.Notify(newRule);
 
-                    task.recurrenceRule = newRule;
+                    task.set("recurrenceRule", newRule);
+                    //task.recurrenceRule = newRule;
                 };
             }
 
@@ -140,7 +143,7 @@
         return {
             name: "occasionTask",
             scope: {
-                task: "=task",
+                task: "=task"
             },
             templateUrl: "occasionTask.html",
             controller: ($scope, $element) => {
@@ -157,7 +160,8 @@
                 var extra = {
                     hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                     startTime: kendo.toString(task.start, "HH:mm"),
-                    endTime: kendo.toString(task.end, "HH:mm")
+                    endTime: kendo.toString(task.end, "HH:mm"),
+                    allDay: task.isAllDay
                 };
 
                 var definitions = Models.occasionDefinitions;

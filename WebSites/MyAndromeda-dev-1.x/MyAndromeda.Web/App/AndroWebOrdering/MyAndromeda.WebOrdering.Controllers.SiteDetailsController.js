@@ -129,7 +129,7 @@ var MyAndromeda;
                 };
                 SiteDetailsController.Name = "SiteDetailsController";
                 return SiteDetailsController;
-            })();
+            }());
             Controllers.SiteDetailsController = SiteDetailsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

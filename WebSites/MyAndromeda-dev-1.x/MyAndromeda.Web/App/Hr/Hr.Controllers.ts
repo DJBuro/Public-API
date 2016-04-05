@@ -18,12 +18,12 @@
         employeeServiceState.ChainId.onNext($stateParams.chainId);
         employeeServiceState.AndromedaSiteId.onNext($stateParams.andromedaSiteId);
 
-        employeeService.Saved.subscribe((saved) => {
-            if (saved)
-            {
-                SweetAlert.swal("Saved!", "", "success");
-            }
-        });
+        //employeeService.Saved.subscribe((saved) => {
+        //    if (saved)
+        //    {
+        //        SweetAlert.swal("Saved!", "", "success");
+        //    }
+        //});
 
         let employeeGridDataSource = employeeService.StoreEmployeeDataSource;
 
@@ -106,7 +106,9 @@
 
     app.controller("employeeEditController", (
         $element,
-        $scope, $stateParams, $timeout,
+        $scope, $stateParams,
+        $timeout,
+        $state: angular.ui.IStateService,
         SweetAlert,
         progressService: MyAndromeda.Services.ProgressService,
         employeeService: Services.EmployeeService,
@@ -129,6 +131,7 @@
 
         let getOrCreateEmployee = (): any => {
             let employeeId: string = $stateParams.id;
+            
             if (!employeeId)
             {
                 let modelCreator = kendo.data.Model.define(Models.employeeDataSourceSchema);
@@ -206,18 +209,59 @@
 
             progressService.ShowProgress($element);
 
-            var sync = employeeService.Save(employee);
             
-            sync.then(() => {
-                progressService.HideProgress($element);
 
-                Logger.Notify("Sync done");
-                var name = employee.get("ShortName");
-                SweetAlert.swal("Saved!", name + " has been saved.", "success");
+            Logger.Notify("$state");
+            Logger.Notify("$state.current");
+            Logger.Notify($state.current);
+            Logger.Notify("$state.$current");
+            Logger.Notify($state.$current);
+            let isCreatePage = $state.is("hr.store-list.create-employee.details");
+            Logger.Notify("is create page:" + isCreatePage);
+            if (isCreatePage) {
+                let sync = employeeService.Save(employee);
+                sync.then(() => {
+                    progressService.HideProgress($element);
 
-                employeeServiceState.EmployeeUpdated.onNext(<any>employee);
-            });
+                    var name = employee.get("ShortName");
+                    //SweetAlert.swal("Created!", name + " has been added.", "success");
+                    SweetAlert.swal({
+                        title: "Employee Created",
+                        text: "Return to the list or add more detail to the employee e.g. documents?",
+                        type: "success",
+                        showCancelButton: true,
+                        //confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Continue editing",
+                        cancelButtonText: "Back to the list",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    }, (continueEditing) => {
+                        if (continueEditing) {
+                            $state.go("hr.store-list.edit-employee.details", { id: employee.id });
+                            return
+                        } 
+                        $state.go("hr.store-list.employee-list", { id: employee.id });
+                    });
+
+                });
+            }
+            if (!isCreatePage) {
+                Logger.Notify("THIS is the edit page");
+                let sync = employeeService.Save(employee);
+                sync.then(() => {
+                    progressService.HideProgress($element);
+
+                    Logger.Notify("Sync done");
+                    var name = employee.get("ShortName");
+                    SweetAlert.swal("Saved!", name + " has been saved.", "success");
+
+                    employeeServiceState.EmployeeUpdated.onNext(<any>employee);
+                });
+            }
+
+            
         };
+
         let getProfilePic = (employee: Models.IEmployee) => {
             let route = "/content/profile-picture.jpg";
 
@@ -265,6 +309,7 @@
 
         $scope.save = save;
         $scope.profilePicture = getProfilePic;
+        $scope.fileTemplate = `<file-upload name='name' size='size' files='files' control='profilePicUploader'></file-upload>`;
     });
 
     app.controller("employeeEditSchedulerController", (

@@ -19,7 +19,7 @@ var MyAndromeda;
             //api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/Stores/Read
             Settings.ReadStoreRoute = "/api/{0}/AndroWebOrdering/{1}/Stores/Read";
             return Settings;
-        })();
+        }());
         WebOrdering.Settings = Settings;
         ;
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

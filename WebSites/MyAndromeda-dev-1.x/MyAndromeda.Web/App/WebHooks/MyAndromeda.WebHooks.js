@@ -115,7 +115,7 @@ var MyAndromeda;
             WebHookService.updateRoute = "";
             WebHookService.acsApplicationId = "";
             return WebHookService;
-        })();
+        }());
         WebHooks.WebHookService = WebHookService;
         m.service("webHookService", WebHookService);
         //"Store Online Status", "EDT", "Menu Version", "Order Status"

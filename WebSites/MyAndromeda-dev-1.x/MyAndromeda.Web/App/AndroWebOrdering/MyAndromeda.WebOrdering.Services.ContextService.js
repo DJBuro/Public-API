@@ -22,7 +22,7 @@ var MyAndromeda;
                 }
                 ContextService.Name = "contextService";
                 return ContextService;
-            })();
+            }());
             Services.ContextService = ContextService;
             contextServiceModule.service("contextService", ContextService);
         })(Services = WebOrdering.Services || (WebOrdering.Services = {}));

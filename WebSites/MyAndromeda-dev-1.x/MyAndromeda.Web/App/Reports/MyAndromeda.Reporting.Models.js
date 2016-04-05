@@ -32,7 +32,7 @@ var MyAndromeda;
                     this.data.bind(eventName, handler);
                 };
                 return Result;
-            })();
+            }());
             Models.Result = Result;
         })(Models = Reporting.Models || (Reporting.Models = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));

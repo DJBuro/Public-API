@@ -11,7 +11,7 @@ var MyAndromeda;
             }
             WebOrderingApp.ApplicationName = "WebOrderingApplication";
             return WebOrderingApp;
-        })();
+        }());
         WebOrdering.WebOrderingApp = WebOrderingApp;
         var Angular = (function () {
             function Angular() {
@@ -47,7 +47,7 @@ var MyAndromeda;
             Angular.ServicesInitilizations = [];
             Angular.ControllersInitilizations = [];
             return Angular;
-        })();
+        }());
         WebOrdering.Angular = Angular;
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
 })(MyAndromeda || (MyAndromeda = {}));

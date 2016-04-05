@@ -46,7 +46,7 @@ var MyAndromeda;
                 MenuStatus.CanPublishField = "CanPublish";
                 MenuStatus.MessageField = "Message";
                 return MenuStatus;
-            })();
+            }());
             Services.MenuStatus = MenuStatus;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

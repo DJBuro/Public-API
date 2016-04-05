@@ -15,7 +15,7 @@ var MyAndromeda;
                     }
                 }
                 return User;
-            })();
+            }());
             Models.User = User;
         })(Models = Users.Models || (Users.Models = {}));
     })(Users = MyAndromeda.Users || (MyAndromeda.Users = {}));

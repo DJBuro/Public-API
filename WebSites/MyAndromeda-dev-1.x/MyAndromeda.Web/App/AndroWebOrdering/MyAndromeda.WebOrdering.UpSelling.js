@@ -68,7 +68,7 @@ var MyAndromeda;
                 //set by cshtml 
                 UpSellDataService.GetMemuRoute = "";
                 return UpSellDataService;
-            })();
+            }());
             UpSelling.UpSellDataService = UpSellDataService;
             upSellModule.service("upSellDataService", UpSellDataService);
         })(UpSelling = WebOrdering.UpSelling || (WebOrdering.UpSelling = {}));

@@ -70,7 +70,7 @@ var MyAndromeda;
                     return this.dataSource.hasChanges();
                 };
                 return MenuItemService;
-            })();
+            }());
             Services.MenuItemService = MenuItemService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

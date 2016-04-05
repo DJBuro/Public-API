@@ -44,7 +44,7 @@ var MyAndromeda;
                 };
                 SEOSettingsController.Name = "SEOSettingsController";
                 return SEOSettingsController;
-            })();
+            }());
             Controllers.SEOSettingsController = SEOSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

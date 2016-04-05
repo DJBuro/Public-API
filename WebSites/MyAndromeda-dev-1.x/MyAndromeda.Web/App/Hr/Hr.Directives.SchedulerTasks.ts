@@ -78,9 +78,9 @@
                 });
 
                 var extra = {
-                    hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                    hours: task.isAllDay ? 24 : Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                     startTime: kendo.toString(task.start, "HH:mm"),
-                    endTime: kendo.toString(task.end, "HH:mm")
+                    endTime: kendo.toString(task.end, "HH:mm"),
                 };
 
                 $scope.extra = extra;
@@ -159,10 +159,13 @@
                     popover.hide();
                 });
 
+                Logger.Notify("is all day?" + task.isAllDay);
+
                 var extra = {
-                    hours: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
+                    hours: task.isAllDay ? 24: Math.abs(task.end.getTime() - task.start.getTime()) / 36e5,
                     startTime: kendo.toString(task.start, "HH:mm"),
-                    endTime: kendo.toString(task.end, "HH:mm")
+                    endTime: kendo.toString(task.end, "HH:mm"),
+                    isAllDay: task.isAllDay
                 };
 
                 $scope.extra = extra;

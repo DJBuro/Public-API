@@ -22,7 +22,7 @@ var MyAndromeda;
                     }));
                 };
                 return chainService;
-            })();
+            }());
             Services.chainService = chainService;
         })(Services = Chain.Services || (Chain.Services = {}));
     })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));

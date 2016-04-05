@@ -114,7 +114,7 @@ var MyAndromeda;
                 };
                 DeliveryZonesByRadiusWebApiService.Name = "DeliveryZonesByRadiusWebApiService";
                 return DeliveryZonesByRadiusWebApiService;
-            })();
+            }());
             Services.DeliveryZonesByRadiusWebApiService = DeliveryZonesByRadiusWebApiService;
         })(Services = DeliveryZonesByRadius.Services || (DeliveryZonesByRadius.Services = {}));
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));

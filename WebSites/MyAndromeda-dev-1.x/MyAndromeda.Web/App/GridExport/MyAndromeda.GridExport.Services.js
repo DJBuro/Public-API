@@ -63,7 +63,7 @@ var MyAndromeda;
                 KendoGridExcelExporter.notSurportedMessage = "Please remove all groups before exporting. This feature is not supported.";
                 KendoGridExcelExporter.alreadyGroupedItems = "There the grid is already grouped by an item";
                 return KendoGridExcelExporter;
-            })();
+            }());
             Services.KendoGridExcelExporter = KendoGridExcelExporter;
         })(Services = GridExport.Services || (GridExport.Services = {}));
     })(GridExport = MyAndromeda.GridExport || (MyAndromeda.GridExport = {}));

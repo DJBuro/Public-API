@@ -14,7 +14,7 @@ var MyAndromeda;
                 Positioning.INTO = "into";
                 Positioning.REPLACE = "replace";
                 return Positioning;
-            })();
+            }());
             var MenuOrderingControllerService = (function () {
                 function MenuOrderingControllerService(options) {
                     var internal = this;
@@ -324,7 +324,7 @@ var MyAndromeda;
                     this.displayWindow();
                 };
                 return MenuOrderingControllerService;
-            })();
+            }());
             Services.MenuOrderingControllerService = MenuOrderingControllerService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

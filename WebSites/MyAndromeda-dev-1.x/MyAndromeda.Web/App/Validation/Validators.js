@@ -19,7 +19,7 @@ var MyAndromeda;
             };
             MyAndromedaValidation.ActiveValidators = new Array();
             return MyAndromedaValidation;
-        })();
+        }());
         Validation.MyAndromedaValidation = MyAndromedaValidation;
         /* automatically hook up all forms with a validator */
         $(function () {

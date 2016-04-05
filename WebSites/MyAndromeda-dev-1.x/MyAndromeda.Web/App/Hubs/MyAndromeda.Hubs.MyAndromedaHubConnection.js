@@ -80,7 +80,7 @@ var MyAndromeda;
                 }
             };
             return MyAndromedaHubConnection;
-        })();
+        }());
         Hubs.MyAndromedaHubConnection = MyAndromedaHubConnection;
     })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
 })(MyAndromeda || (MyAndromeda = {}));

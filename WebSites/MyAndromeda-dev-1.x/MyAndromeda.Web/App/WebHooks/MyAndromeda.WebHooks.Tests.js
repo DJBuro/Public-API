@@ -203,7 +203,7 @@ var MyAndromeda;
                     return promise;
                 };
                 return WebHookTestService;
-            })();
+            }());
             Tests.WebHookTestService = WebHookTestService;
             m.service("webHookTestService", WebHookTestService);
             //"Store Online Status", "EDT", "Menu Version", "Order Status"

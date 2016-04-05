@@ -30,6 +30,7 @@
         isAllDay: boolean;
         IsAllDay: boolean;
         Occasions: Array<string>;
+        set: (field: string, value: any) => void;
     }
 
 

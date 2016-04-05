@@ -98,7 +98,7 @@ var MyAndromeda;
                 };
                 PublishingService.Name = "PublishingService";
                 return PublishingService;
-            })();
+            }());
             Services.PublishingService = PublishingService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

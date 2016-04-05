@@ -170,7 +170,7 @@ var MyAndromeda;
                 'password1234567890'
             ];
             return PasswordValidator;
-        })();
+        }());
         Validation.PasswordValidator = PasswordValidator;
     })(Validation = MyAndromeda.Validation || (MyAndromeda.Validation = {}));
 })(MyAndromeda || (MyAndromeda = {}));

@@ -54,7 +54,7 @@ var MyAndromeda;
                 ToppingsController.Route = "/";
                 ToppingsController.Template = function () { return $("#MenuTemplate").html(); };
                 return ToppingsController;
-            })();
+            }());
             Controllers.ToppingsController = ToppingsController;
         })(Controllers = Menu.Controllers || (Menu.Controllers = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

@@ -71,7 +71,7 @@ var MyAndromeda;
                 };
                 WebOrderingThemeWebApiService.Name = "WebOrderingThemeWebApiService";
                 return WebOrderingThemeWebApiService;
-            })();
+            }());
             Services.WebOrderingThemeWebApiService = WebOrderingThemeWebApiService;
         })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

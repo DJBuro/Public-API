@@ -59,7 +59,7 @@ var MyAndromeda;
                 };
                 TripAdvisorSettingsController.Name = "TripAdvisorSettingsController";
                 return TripAdvisorSettingsController;
-            })();
+            }());
             Controllers.TripAdvisorSettingsController = TripAdvisorSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

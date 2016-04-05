@@ -14,7 +14,7 @@ var MyAndromeda;
                     return getChains;
                 };
                 return UserChainDataService;
-            })();
+            }());
             Services.UserChainDataService = UserChainDataService;
             var UserStoreDataService = (function () {
                 function UserStoreDataService($http) {
@@ -31,7 +31,7 @@ var MyAndromeda;
                     return getChains;
                 };
                 return UserStoreDataService;
-            })();
+            }());
             Services.UserStoreDataService = UserStoreDataService;
             services.service("userChainDataService", UserChainDataService);
             services.service("userStoreDataService", UserStoreDataService);

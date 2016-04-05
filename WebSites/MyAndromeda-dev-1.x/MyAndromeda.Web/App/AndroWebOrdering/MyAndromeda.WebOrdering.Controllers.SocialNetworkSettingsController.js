@@ -67,7 +67,7 @@ var MyAndromeda;
                 };
                 SocialNetworkSettingsController.Name = "SocialNetworkSettingsController";
                 return SocialNetworkSettingsController;
-            })();
+            }());
             Controllers.SocialNetworkSettingsController = SocialNetworkSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

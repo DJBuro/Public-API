@@ -11,7 +11,7 @@ var MyAndromeda;
                     this.dayRange = dayRange;
                 }
                 return Filter;
-            })();
+            }());
             var ReportingSalesResult = (function () {
                 function ReportingSalesResult(name, from, to, dayRange, routeData) {
                     this.name = name;
@@ -63,7 +63,7 @@ var MyAndromeda;
                     this.InitReactions();
                 };
                 return ReportingSalesResult;
-            })();
+            }());
             Services.ReportingSalesResult = ReportingSalesResult;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));

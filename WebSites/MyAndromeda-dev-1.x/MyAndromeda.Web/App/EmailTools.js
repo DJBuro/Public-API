@@ -101,7 +101,7 @@ var MyAndromeda;
                     return this.getEditor().getRange();
                 };
                 return emailEditorService;
-            })();
+            }());
             EditorTools.emailEditorService = emailEditorService;
         })(EditorTools = KendoExtensions.EditorTools || (KendoExtensions.EditorTools = {}));
     })(KendoExtensions = MyAndromeda.KendoExtensions || (MyAndromeda.KendoExtensions = {}));

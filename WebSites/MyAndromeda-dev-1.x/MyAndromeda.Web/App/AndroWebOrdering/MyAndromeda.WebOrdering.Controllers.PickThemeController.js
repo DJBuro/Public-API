@@ -85,7 +85,7 @@ var MyAndromeda;
                 PickThemeController.Name = "PickThemeController";
                 PickThemeController.Route = "/";
                 return PickThemeController;
-            })();
+            }());
             Controllers.PickThemeController = PickThemeController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

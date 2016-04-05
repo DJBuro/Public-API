@@ -15,7 +15,7 @@ var MyAndromeda;
             //api/{AndromedaSiteId}/DeliveryZonesByRadius/Update
             Settings.UpdateRoute = "/api/{0}/DeliveryZonesByRadius/Update";
             return Settings;
-        })();
+        }());
         DeliveryZonesByRadius.Settings = Settings;
         ;
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));

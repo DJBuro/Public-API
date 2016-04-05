@@ -73,7 +73,7 @@ var MyAndromeda;
                 };
                 FacebookCrawlerSettingsController.Name = "FacebookCrawlerSettingsController";
                 return FacebookCrawlerSettingsController;
-            })();
+            }());
             Controllers.FacebookCrawlerSettingsController = FacebookCrawlerSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

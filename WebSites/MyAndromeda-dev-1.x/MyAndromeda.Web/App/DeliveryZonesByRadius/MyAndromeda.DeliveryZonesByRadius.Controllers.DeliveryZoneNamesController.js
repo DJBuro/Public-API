@@ -112,7 +112,7 @@ var MyAndromeda;
                 };
                 DeliveryZoneNamesController.Name = "DeliveryZoneNamesController";
                 return DeliveryZoneNamesController;
-            })();
+            }());
             Controllers.DeliveryZoneNamesController = DeliveryZoneNamesController;
         })(Controllers = DeliveryZonesByRadius.Controllers || (DeliveryZonesByRadius.Controllers = {}));
     })(DeliveryZonesByRadius = MyAndromeda.DeliveryZonesByRadius || (MyAndromeda.DeliveryZonesByRadius = {}));

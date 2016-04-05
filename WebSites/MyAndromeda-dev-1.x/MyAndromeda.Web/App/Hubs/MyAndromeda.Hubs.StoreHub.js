@@ -143,7 +143,7 @@ var MyAndromeda;
             };
             StoreHub.MenuItemChangeEvent = "MenuItemChangeEvent";
             return StoreHub;
-        })();
+        }());
         Hubs.StoreHub = StoreHub;
     })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
 })(MyAndromeda || (MyAndromeda = {}));

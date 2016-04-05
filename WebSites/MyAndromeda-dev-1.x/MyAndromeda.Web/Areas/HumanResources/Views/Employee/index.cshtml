@@ -1,6 +1,6 @@
 ﻿<!-- Views -->
 <script type="text/ng-template" id="employee-list.html">
-    <div class="list-page">
+    <div class="list-page default-transition">
         <div class="row">
             <div class="col-sm-12">
                 <nav class="navbar navbar-default">
@@ -21,7 +21,7 @@
                         </ul>
                         <div class="nav navbar-nav navbar-right">
                             <div class="navbar-form form-group">
-                                <a class="btn btn-default" ui-sref="chain.list">Back to list</a>
+                                <a class="btn btn-default" ui-sref="chain.list">Back to chain list</a>
                             </div>
                         </div>
                     </div>
@@ -53,44 +53,86 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="employee-edit.html">
-    <div class="edit-page">
 
-        <div class="list-group" ng-if="employee">
+<script type="text/ng-template" id="employee-create.html">
+    <form kendo-validator="validator">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="btn-group">
+                    <a class="btn btn-success" ng-click="save(employee)">Create</a>
+                    <a class="btn btn-default" ui-sref="hr.store-list.employee-list">Back to employee list</a>
+                </div>
+
+            </div>
+            <div class="panel-body">
+
+                <div ui-view="editor-main"></div>
+
+            </div>
+        </div>
+    </form>
+</script>
+<script type="text/ng-template" id="employee-edit.html">
+    <div class="edit-page default-transition">
+
+        <div class="list-group" ng-if="employee.Id">
             <div class="list-group-item">
                 <employee-pic employee='employee'></employee-pic>
             </div>
         </div>
-
-        <nav class="navbar navbar-default">
+        
+        <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
+                <div class="navbar-header">
+
+                </div>
+                <div class="nav navbar-nav navbar-right text-right">
+
+                    <button type="button" class="hidden-sm hidden-md hidden-lg btn btn-info" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <i>&nbsp;</i>
+                </div>
+
                 <div class="collapse navbar-collapse">
+
                     <ul class="nav navbar-nav">
                         <li ui-sref-active="active">
                             <a ui-sref="hr.store-list.edit-employee.details">Details</a>
                         </li>
                         <li ui-sref-active="active">
-                            <a ui-sref="hr.store-list.edit-employee.documents">Documents <span class="badge">{{employee.Documents.length}}</span></a>
+                            <a ui-sref="hr.store-list.edit-employee.documents">
+                                Documents <span class="badge">{{employee.Documents.length}}</span>
+                            </a>
                         </li>
                         <li ui-sref-active="active">
                             <a ui-sref="hr.store-list.edit-employee.schedule">Schedule</a>
                         </li>
                     </ul>
-                    <div class="nav navbar-nav navbar-right">
-                        <div class="navbar-form form-group">
-                            <a class="btn btn-success" ng-click="save(employee)">Save</a>
-                            <a class="btn btn-default" ui-sref="hr.store-list">Back to list</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </nav>
 
 
         <form kendo-validator="validator">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="btn-group">
+                        <a class="btn btn-success" ng-click="save(employee)">Save</a>
+                        <a class="btn btn-default" ui-sref="hr.store-list.employee-list">Back to employee list</a>
+                    </div>
 
-            <div ui-view="editor-main"></div>
+                </div>
+                <div class="panel-body">
 
+                    <div ui-view="editor-main"></div>
+
+                </div>
+            </div>
+
+            
         </form>
     </div>
 </script>
@@ -244,12 +286,14 @@
 </script>
 
 <script type="text/html" id="employee-list-header-template">
-    <a class="btn btn-primary" ui-sref="hr.store-list.create-employee">Add Employee</a>
+    <a class="btn btn-primary" ui-sref="hr.store-list.create-employee.details">Add Employee</a>
 </script>
+
+
 
 <script type="text/ng-template" id="employee-edit-schedule.html">
 
-    <div ng-if="employee.Id">
+    <div ng-if="employee.Id" class="default-transition">
         <div kendo-scheduler k-options="schedulerOptions">
         </div>
     </div>
@@ -271,8 +315,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12">
-                    <h6>{{extra.startTime}} - {{extra.endTime}} <span class="label label-success">{{extra.hours}} hr</span></h6>
+                <div class="col-sm-12" >
+                    <h6>
+                        {{extra.startTime}} - {{extra.endTime}}
+                        <span ng-if="!extra.isAllDay" class="label label-success">{{extra.hours}} hr</span>
+                        <span ng-if="extra.isAllDay" class="label label-success">All Day</span>
+                    </h6>
                 </div>
             </div>
 
@@ -290,8 +338,9 @@
         <div class="container-fluid">
 
             <div class="row">
-                <span class="label label-success">{{extra.hours | number: 1 }} h</span>
-                <span class="label label-default">{{extra.startTime}}-{{extra.endTime}} </span>
+                <span class="label" ng-class="{ 'label-default': task.isAllDay, 'label-success' : !task.isAllDay }">{{extra.hours | number: 1 }} h</span>
+                <span ng-if="!task.isAllDay" class="label label-default">{{extra.startTime}}-{{extra.endTime}} </span>
+                <span ng-if="task.isAllDay" class="label label-default">All day </span>
             </div>
 
         </div>
@@ -352,8 +401,8 @@
                             <div ng-if="employee.Id"
                                  class="row form-group">
                                 <div class="col-sm-12" ng-if="!status.uploading">
-                                    <div class="employee-photo-large" style="display:flex;justify-content:center;align-items:center;height:200px">
-                                        <img style="width:100%;height:auto" class="img-responsive" ng-src="{{profilePicture(employee)}}" />
+                                    <div style="display:flex;justify-content:center;align-items:center;height:200px">
+                                        <img style="max-height:100%" class="img-rounded img-responsive" ng-src="{{profilePicture(employee)}}" />
                                     </div>
                                 </div>
                             </div>
@@ -362,10 +411,11 @@
                                 <div class="row form-group">
                                     <div class="col-sm-12">
                                         <input name="files"
-                                               kendo-upload
+                                               kendo-upload="profilePicUploader"
                                                type="file"
                                                k-upload="onUploading"
                                                k-success="onUploadSuccess"
+                                               k-template="fileTemplate"
                                                k-async="{ saveUrl: saveRoute(), autoUpload: true }" />
                                     </div>
                                 </div>
@@ -535,10 +585,9 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="label label-default">Employee:</div>
-                                
+
                                 <select kendo-drop-down-list
                                         ng-model="task.EmployeeId"
-                                       
                                         k-data-text-field="'ShortName'"
                                         k-data-value-field="'Id'"
                                         k-data-source="dataSources.storeEmployeeDataSource"
@@ -558,15 +607,15 @@
                         </div>
                         <br />
                         <div class="row" ng-if="(task.TaskType == 'Need cover' || task.TaskType == 'Covering Shift')">
-                            
-                                <div class="col-sm-6">
-                                    <div class="label label-default">Title:</div>
 
-                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
-                                    <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
-                                </div>
-                                
-                            
+                            <div class="col-sm-6">
+                                <div class="label label-default">Title:</div>
+
+                                <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" />
+                                <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -579,7 +628,7 @@
                     <div class="panel-heading">Repeat rota on different days</div>
                     <div class="panel-body">
                         <div class="label label-default">Repeat</div>
-                        <div data-container-for="recurrenceRule" >
+                        <div data-container-for="recurrenceRule">
                             <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
                         </div>
                     </div>
@@ -598,5 +647,18 @@
             </employee-docs>
         </div>
 
+    </div>
+</script>
+
+<script type="text/ng-template" id="file-upload.html">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class='alert alert-info' style="margin-bottom:0;">
+                <span style="overflow: hidden;-ms-text-overflow: ellipsis;-o-text-overflow: ellipsis;text-overflow: ellipsis;display: block">
+                    {{::name}}
+                </span>
+                <div class="label label-info"><i ng-if="state.percentage == 100" class="fa fa-check-circle"></i> {{state.percentage}} %</div>
+            </div>
+        </div>
     </div>
 </script>

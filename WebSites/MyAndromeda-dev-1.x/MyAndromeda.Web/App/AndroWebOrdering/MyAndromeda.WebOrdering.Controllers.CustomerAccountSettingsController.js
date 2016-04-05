@@ -38,7 +38,7 @@ var MyAndromeda;
                 };
                 CustomerAccountSettingsController.Name = "CustomerAccountSettingsController";
                 return CustomerAccountSettingsController;
-            })();
+            }());
             Controllers.CustomerAccountSettingsController = CustomerAccountSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

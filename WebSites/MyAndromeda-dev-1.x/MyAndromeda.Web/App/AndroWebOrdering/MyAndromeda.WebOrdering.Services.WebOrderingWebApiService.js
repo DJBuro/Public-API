@@ -34,7 +34,6 @@ var MyAndromeda;
                         //set defaults. 
                         var nullOrUndefined = function (path) {
                             return typeof (path) === "undefined" || path === null;
-                            return true;
                         };
                         if (!result.data.MenuPageSettings) {
                             result.data.MenuPageSettings = {
@@ -162,7 +161,7 @@ var MyAndromeda;
                 };
                 WebOrderingWebApiService.Name = "webOrderingWebApiService";
                 return WebOrderingWebApiService;
-            })();
+            }());
             Services.WebOrderingWebApiService = WebOrderingWebApiService;
         })(Services = WebOrdering.Services || (WebOrdering.Services = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

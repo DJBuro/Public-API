@@ -91,7 +91,7 @@ var MyAndromeda;
                     vm.set("resultCount", this.results.length);
                 };
                 return ReportingServiceWatcher;
-            })();
+            }());
             Services.ReportingServiceWatcher = ReportingServiceWatcher;
         })(Services = Reporting.Services || (Reporting.Services = {}));
     })(Reporting = MyAndromeda.Reporting || (MyAndromeda.Reporting = {}));

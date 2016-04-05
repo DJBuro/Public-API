@@ -50,7 +50,7 @@ var MyAndromeda;
             SynchronizationHub.COMPLETED = "completed";
             SynchronizationHub.ERROR = "error";
             return SynchronizationHub;
-        })();
+        }());
         Hubs.SynchronizationHub = SynchronizationHub;
         var SynchronizationHubService = (function () {
             function SynchronizationHubService(options) {
@@ -93,7 +93,7 @@ var MyAndromeda;
                 this.initEvents();
             };
             return SynchronizationHubService;
-        })();
+        }());
         Hubs.SynchronizationHubService = SynchronizationHubService;
     })(Hubs = MyAndromeda.Hubs || (MyAndromeda.Hubs = {}));
 })(MyAndromeda || (MyAndromeda = {}));

@@ -8,7 +8,7 @@ var MyAndromeda;
                 function thumbItem() {
                 }
                 return thumbItem;
-            })();
+            }());
             Models.thumbItem = thumbItem;
         })(Models = Menu.Models || (Menu.Models = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

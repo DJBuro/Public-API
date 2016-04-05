@@ -17,7 +17,7 @@ var MyAndromeda;
                 }
                 MenuNavigationService.Name = "MenuNavigationService";
                 return MenuNavigationService;
-            })();
+            }());
             Services.MenuNavigationService = MenuNavigationService;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

@@ -10,7 +10,7 @@ var MyAndromeda;
             }
             MenuApp.ApplicationName = "MenuApplication";
             return MenuApp;
-        })();
+        }());
         Menu.MenuApp = MenuApp;
         var Angular = (function () {
             function Angular() {
@@ -45,7 +45,7 @@ var MyAndromeda;
             Angular.ServicesInitilizations = [];
             Angular.ControllersInitilizations = [];
             return Angular;
-        })();
+        }());
         Menu.Angular = Angular;
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));
 })(MyAndromeda || (MyAndromeda = {}));

@@ -177,6 +177,8 @@ module MyAndromeda.Hr.Services {
                     var tester = new EmployeeAvailabilityTestService(e.sender);
 
                     if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+                        e.event.set("dirty", true);
+
                         return;
                     }
 
@@ -202,6 +204,8 @@ module MyAndromeda.Hr.Services {
 
                     var tester = new EmployeeAvailabilityTestService(e.sender);
                     if (tester.IsWorkAvailable(e.start, e.end, e.event)) {
+
+                        e.event.set("dirty", true);
                         return;
                     }
 
@@ -232,6 +236,8 @@ module MyAndromeda.Hr.Services {
 
                         e.preventDefault();
                     }
+
+                    e.event.set("dirty", true);
                 }
 
 

@@ -16,7 +16,7 @@ var MyAndromeda;
                     return promise;
                 };
                 return DriverService;
-            })();
+            }());
             Services.DriverService = DriverService;
             m.service("driverService", DriverService);
         })(Services = Data.Services || (Data.Services = {}));

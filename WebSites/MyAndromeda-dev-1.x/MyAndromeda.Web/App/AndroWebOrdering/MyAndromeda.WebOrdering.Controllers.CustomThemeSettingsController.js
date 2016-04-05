@@ -109,7 +109,7 @@ var MyAndromeda;
                 };
                 CustomThemeSettingsController.Name = "CustomThemeSettingsController";
                 return CustomThemeSettingsController;
-            })();
+            }());
             Controllers.CustomThemeSettingsController = CustomThemeSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));

@@ -173,7 +173,7 @@ var MyAndromeda;
                 menuFilterController.RESETFILTER = [];
                 menuFilterController.SORTFILTER = [];
                 return menuFilterController;
-            })();
+            }());
             Services.menuFilterController = menuFilterController;
         })(Services = Menu.Services || (Menu.Services = {}));
     })(Menu = MyAndromeda.Menu || (MyAndromeda.Menu = {}));

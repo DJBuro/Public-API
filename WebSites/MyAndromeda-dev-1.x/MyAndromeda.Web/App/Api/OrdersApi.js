@@ -53,9 +53,9 @@ var MyAndromeda;
                                         var model = this;
                                         var lat = model.Customer.Latitude;
                                         var long = model.Customer.Longitude;
-                                        return [0, 0];
+                                        //return [0, 0];
                                         if (!lat) {
-                                            return null;
+                                            return [0, 0];
                                         }
                                         return [lat, long];
                                     }
@@ -142,9 +142,9 @@ var MyAndromeda;
                                         var model = this;
                                         var lat = model.Customer.Latitude;
                                         var long = model.Customer.Longitude;
-                                        return [0, 0];
+                                        //return [0, 0];
                                         if (!lat) {
-                                            return null;
+                                            [0, 0];
                                         }
                                         return [lat, long];
                                     }
@@ -160,7 +160,7 @@ var MyAndromeda;
                     return this.$http.post(route, change);
                 };
                 return OrderService;
-            })();
+            }());
             Services.OrderService = OrderService;
             m.service("orderService", OrderService);
         })(Services = Data.Services || (Data.Services = {}));

@@ -32,7 +32,7 @@ var MyAndromeda;
                     var internal = this;
                 };
                 return storeService;
-            })();
+            }());
             Services.storeService = storeService;
         })(Services = Store.Services || (Store.Services = {}));
     })(Store = MyAndromeda.Store || (MyAndromeda.Store = {}));

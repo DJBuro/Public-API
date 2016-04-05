@@ -117,7 +117,7 @@ var MyAndromeda;
                     EnableFacebookLogin: true
                 };
                 return GeneralSettingsController;
-            })();
+            }());
             Controllers.GeneralSettingsController = GeneralSettingsController;
         })(Controllers = WebOrdering.Controllers || (WebOrdering.Controllers = {}));
     })(WebOrdering = MyAndromeda.WebOrdering || (MyAndromeda.WebOrdering = {}));
