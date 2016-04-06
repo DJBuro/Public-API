@@ -87,7 +87,7 @@ namespace OrderTracking.WebService.Reconcile
 
         public static void ReconTrackers(ref IList<Tracker> trackers)
         {
-            //http://gps.andromedagps.com/Trackers.asmx
+            //http://debug/Trackers.asmx
             //androGps
             var gpsGateWs = new AndroGps.Trackers();
 

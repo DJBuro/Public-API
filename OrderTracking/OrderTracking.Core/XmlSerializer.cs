@@ -35,8 +35,9 @@ namespace OrderTracking.Core
                 tracker.Id = null;
                 tracker.Store = null;
                 tracker.Coordinates.Id = null;
+                tracker.Apn = null;
 
-                if(tracker.Driver !=null)
+                if (tracker.Driver !=null)
                 {
                     tracker.Driver.Trackers = null;
                     tracker.Driver.Store = null;
@@ -44,7 +45,6 @@ namespace OrderTracking.Core
                     tracker.Driver.Id = null;
                 }
             }
-
 
             return trackers;
         }
