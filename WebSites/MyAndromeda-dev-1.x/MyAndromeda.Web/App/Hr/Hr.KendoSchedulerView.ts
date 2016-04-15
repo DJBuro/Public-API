@@ -24,6 +24,7 @@ module MyAndromeda.Hr.KendoThings {
         kDate: any = k.date,
         kAttr: any = k.attr,
         kGetter: any = k.getter,
+        kSetter: any = k.setter,
         kTemplate: any = k.Template,
         KUserEvents: any = k.UserEvents,
         getDate = k.date.getDate,
@@ -53,40 +54,45 @@ module MyAndromeda.Hr.KendoThings {
         var resource = resources[0];
         if (resource) {
             var configuration = [];
-            var data = resource.dataSource.view();
+            var view = resource.dataSource.view();
 
-            data = data.sort((a, b) => {
-                let aValue = a.Department ? a.Department : "NA",
-                    bValue = b.Department ? b.Department : "NA";
+            var tmp = new kData.Query(view).sort([
+                { field: "Department", dir: "desc" },
+                { field: "id", dir: "asc" }
+            ]).toArray();
 
-                return aValue.length - bValue.length;
-            });
+            for (var dataIndex = 0; dataIndex < tmp.length; dataIndex++) {
 
-            for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
-                var dataItem: Models.IEmployeeTask = data[dataIndex];
+                var dataItem: Models.IEmployeeTask = tmp[dataIndex];
                 let things = Models.departments;
-                let searchDepartments = things.filter(e=> e.text === dataItem.Department);
-                var department = { text: 'None', majorColour: "#000", minorColour: "#000" };
+                let searchDepartments = things.filter(e => e.text === dataItem.Department);
+
+                let department = { text: 'None', majorColour: "#000", minorColour: "#000" };
                 if (searchDepartments.length > 0) {
                     department = searchDepartments[0];
                 }
 
-                //Logger.Notify("department:");
-                //Logger.Notify(department);
-                var obj = {
-                    text: template({
-                        text: kendo.htmlEncode(kGetter(resource.dataTextField)(data[dataIndex])),
+                let textLabel = kGetter(resource.dataTextField)(tmp[dataIndex]);
+                let value = kGetter(resource.dataValueField)(tmp[dataIndex]);
+                let resourceValues = {
+                    text: kendo.htmlEncode(textLabel),
 
-                        majorColor: department.majorColour,
-                        minorColor: department.minorColour,
-                        employee: dataItem,
-                        field: resource.field,
-                        title: resource.title,
-                        name: resource.name,
-                        value: kGetter(resource.dataValueField)(data[dataIndex])
-                    }),
-                    className: 'k-slot-cell k-thingy'
+                    majorColor: department.majorColour,
+                    minorColor: department.minorColour,
+                    employee: dataItem,
+                    field: resource.field,
+                    title: resource.title,
+                    name: resource.name,
+                    value: value
                 };
+                ///Logger.Notify("Resource values");
+                //Logger.Notify(resourceValues);
+
+                var obj = {
+                    text: template(resourceValues),
+                    className: kendo.format('k-slot-cell k-thingy {0}', department.text)
+                };
+
                 obj[name] = createLayoutConfiguration(name, resources.slice(1), inner, template);
                 configuration.push(obj);
             }
@@ -107,9 +113,12 @@ module MyAndromeda.Hr.KendoThings {
         NUMBER_OF_COLUMNS = 7,
         NUMBER_OF_ROWS = 1,
         MORE_BUTTON_TEMPLATE = kendo.template(`<div style="width:#=width#px;left:#=left#px;top:#=top#px;height:20px" class="k-more-events k-button">
-    <span style="height:20px; margin-top:0" class="label label-success">#=count#...</span>
-</div>`),
-        DAY_TEMPLATE = kendo.template('<span class="k-link k-nav-day">#:kendo.toString(date, "dd")#</span>'),
+            <span style="height:20px; margin-top:0" class="label label-success">#=count#...</span>
+        </div>`),
+        DAY_TEMPLATE = kendo.template(`<span class="k-link k-nav-day">
+            #:kendo.toString(date, "dd")#
+            r: #:kendo.toString(resourceTypes.EmployeeId)#
+        </span>`),
         EVENT_WRAPPER_STRING = '<div role="gridcell" aria-selected="false" data-#=ns#uid="#=uid#"' + '#if (resources[0]) { #' + 'style="background-color:#=resources[0].color #; border-color: #=resources[0].color#"' + 'class="k-event#=inverseColor ? " k-event-inverse" : ""#"' + '#} else {#' + 'class="k-event"' + '#}#' + '>' + '<span class="k-event-actions">' + '# if(data.tail || data.middle) {#' + '<span class="k-icon k-i-arrow-w"></span>' + '#}#' + '# if(data.isException()) {#' + '<span class="k-icon k-i-exception"></span>' + '# } else if(data.isRecurring()) {#' + '<span class="k-icon k-i-refresh"></span>' + '#}#' + '</span>' + '{0}' + '<span class="k-event-actions">' + '#if (showDelete) {#' + '<a href="\\#" class="k-link k-event-delete"><span class="k-icon k-si-close"></span></a>' + '#}#' + '# if(data.head || data.middle) {#' + '<span class="k-icon k-i-arrow-e"></span>' + '#}#' + '</span>' + '# if(resizable && !data.tail && !data.middle) {#' + '<span class="k-resize-handle k-resize-w"></span>' + '#}#' + '# if(resizable && !data.head && !data.middle) {#' + '<span class="k-resize-handle k-resize-e"></span>' + '#}#' + '</div>',
         EVENT_TEMPLATE = kendo.template('<div title="#=title.replace(/"/g,"&\\#34;")#">' + '<div class="k-event-template">#:title#</div>' + '</div>');
 
@@ -178,6 +187,7 @@ module MyAndromeda.Hr.KendoThings {
                 var lastGroupIndex = this.groups.length - 1;
                 var vertical = this._isVerticallyGrouped();
                 var group = this.groups[groupIndex];
+
                 if (!continuousSlot && vertical) {
                     continuousSlot = group[reverse ? 'lastSlot' : 'firstSlot']();
                     groupIndex += reverse ? -1 : 1;
@@ -211,13 +221,18 @@ module MyAndromeda.Hr.KendoThings {
                     classes += ' k-other-month';
                 }
                 html += '<td ';
+
                 if (classes !== '') {
                     html += 'class="' + classes + '"';
                 }
                 html += '>';
+                let resourceTemp = resources();
+                
+
                 html += content({
                     date: startDate,
-                    resources: resources
+                    resources: resources,
+                    resourceTypes: resourceTemp
                 });
                 html += '</td>';
                 that._slotIndices[kDate.getDate(startDate).getTime()] = startIdx + cellIdx;
@@ -290,23 +305,6 @@ module MyAndromeda.Hr.KendoThings {
                 var offset = $(e.currentTarget).offset();
                 var slot = that._slotByPosition(offset.left, offset.top);
                 e.preventDefault();
-                //alert("popup :)");
-
-                //console.log(slot);
-                //let slotElement = slot.element;
-                //var popover = $(slotElement).popover({
-                //    title: "Tasks",
-                //    placement: "auto",
-                //    html: true,
-                //    content: "please wait"
-                //}).on("show.bs.popover", function () {
-                //    console.log("show popover");
-                //    let html = $(slotElement).contents().html();
-                //    popover.attr('data-content', html);
-                //    var current = $(this);
-                //    setTimeout(() => { current.popover('hide'); }, 5000);
-                //});
-                //popover.popover("show");
 
                 that.trigger('navigate', {
                     view: 'day',
@@ -585,6 +583,7 @@ module MyAndromeda.Hr.KendoThings {
             var eventCount = startSlot.eventCount;
             var events = SchedulerView.collidingEvents(slotRange.events(), startIndex, endIndex);
             var rightOffset = startIndex !== endIndex ? 5 : 4;
+
             events.push({
                 element: element,
                 start: startIndex,
@@ -599,6 +598,7 @@ module MyAndromeda.Hr.KendoThings {
                     rowEvents[j].element[0].style.top = eventTop;
                 }
             }
+
             if (rows.length > eventCount) {
                 for (var slotIndex = startIndex; slotIndex <= endIndex; slotIndex++) {
                     var collection = slotRange.collection;
@@ -636,45 +636,57 @@ module MyAndromeda.Hr.KendoThings {
                 element.appendTo(this.content);
             }
         },
-        //_slotByPosition: function (x, y) {
-        //    let content = this.content;
-        //    if (!content) {
-        //        content = $("div.k-scheduler-content");
-        //    }
-
-        //    var offset = content.offset();
-
-        //    x -= offset.left;
-        //    y -= offset.top;
-        //    y += content[0].scrollTop;
-        //    x += content[0].scrollLeft;
-        //    x = Math.ceil(x);
-        //    y = Math.ceil(y);
-
-        //    for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
-        //        var slot = this.groups[groupIndex].daySlotByPosition(x, y);
-        //        if (slot) {
-        //            return slot;
-        //        }
-        //    }
-        //    return null;
-        //},
+        
         _slotByPosition: function (x, y) {
             var offset = this.content.offset();
+
             x -= offset.left;
             y -= offset.top;
             y += this.content[0].scrollTop;
             x += this.content[0].scrollLeft;
+
             x = Math.ceil(x);
             y = Math.ceil(y);
+
             for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
                 var slot = this.groups[groupIndex].daySlotByPosition(x, y);
+                //Logger.Notify("slot by position:");
+                //Logger.Notify(slot);
                 if (slot) {
                     return slot;
                 }
             }
             return null;
         },
+        _resourceBySlot: function (slot) {
+            var resources = this.groupedResources;
+            var result = {};
+
+
+            if (resources.length) {
+                var resourceIndex = slot.groupIndex;
+                for (var idx = resources.length - 1; idx >= 0; idx--) {
+                    var resource = resources[idx];
+
+                    var view = resource.dataSource.view();
+
+                    var tmp = new kData.Query(view).sort([
+                        { field: "Department", dir: "desc" },
+                        { field: "id", dir: "asc" }
+                    ]).toArray();
+
+                    var value = this._resourceValue(resource, tmp[resourceIndex % resource.dataSource.total()]);
+                    if (resource.multiple) {
+                        value = [value];
+                    }
+                    var setter = kSetter(resource.field); // kendo.setter(resource.field);
+                    setter(result, value);
+                    resourceIndex = Math.floor(resourceIndex / resource.dataSource.total());
+                }
+            }
+            return result;
+        },
+
         _createResizeHint: function (range) {
             var left = range.startSlot().offsetLeft;
             var top = range.start.offsetTop;
@@ -720,69 +732,6 @@ module MyAndromeda.Hr.KendoThings {
                 this._moveHint = this._moveHint.add(hint);
             }
         },
-        //_positionEvent: function (slotRange, element, group) {
-        //    var eventHeight = this.options.eventHeight;
-        //    var startSlot = slotRange.start;
-        //    if (slotRange.start.offsetLeft > slotRange.end.offsetLeft) {
-        //        startSlot = slotRange.end;
-        //    }
-        //    var startIndex = slotRange.start.index;
-        //    var endIndex = slotRange.end.index;
-        //    var eventCount = startSlot.eventCount;
-        //    var events = SchedulerView.collidingEvents(slotRange.events(), startIndex, endIndex);
-        //    var rightOffset = startIndex !== endIndex ? 5 : 4;
-        //    events.push({
-        //        element: element,
-        //        start: startIndex,
-        //        end: endIndex
-        //    });
-        //    var rows = SchedulerView.createRows(events);
-        //    for (var idx = 0, length = Math.min(rows.length, eventCount); idx < length; idx++) {
-        //        var rowEvents = rows[idx].events;
-        //        var eventTop = startSlot.offsetTop + startSlot.firstChildHeight + idx * eventHeight + 3 * idx + 'px';
-        //        for (var j = 0, eventLength = rowEvents.length; j < eventLength; j++) {
-        //            rowEvents[j].element[0].style.top = eventTop;
-        //        }
-        //    }
-        //    if (rows.length > eventCount) {
-        //        for (var slotIndex = startIndex; slotIndex <= endIndex; slotIndex++) {
-        //            var collection = slotRange.collection;
-        //            var slot = collection.at(slotIndex);
-        //            if (slot.more) {
-        //                return;
-        //            }
-
-        //            slot.more = $(MORE_BUTTON_TEMPLATE({
-        //                ns: kendo.ns,
-        //                start: slotIndex,
-        //                end: slotIndex,
-        //                width: slot.clientWidth - 2,
-        //                left: slot.offsetLeft + 2,
-        //                top: slot.offsetTop + slot.firstChildHeight + eventCount * eventHeight + 3 * eventCount,
-        //                count: rows.length
-        //            }));
-
-        //            this.content[0].appendChild(slot.more[0]);
-        //        }
-        //    } else {
-        //        slotRange.addEvent({
-        //            element: element,
-        //            start: startIndex,
-        //            end: endIndex,
-        //            groupIndex: startSlot.groupIndex
-        //        });
-        //        element[0].style.width = slotRange.innerWidth() - rightOffset + 'px';
-        //        element[0].style.left = startSlot.offsetLeft + 2 + 'px';
-        //        element[0].style.height = eventHeight + 'px';
-        //        group._continuousEvents.push({
-        //            element: element,
-        //            uid: element.attr(kAttr('uid')),
-        //            start: slotRange.start,
-        //            end: slotRange.end
-        //        });
-        //        element.appendTo(this.content);
-        //    }
-        //},
         _groups: function () {
             var groupCount = this._groupCount();
             var columnCount = NUMBER_OF_COLUMNS;
@@ -863,16 +812,16 @@ module MyAndromeda.Hr.KendoThings {
         render: function (events) {
             this.content.children('.k-event,.k-more-events,.k-events-container').remove();
             this._groups();
-            events = new kData.Query(events).sort([
-                {
-                    field: 'start',
-                    dir: 'asc'
-                },
-                {
-                    field: 'end',
-                    dir: 'desc'
-                }
-            ]).toArray();
+            //events = new kData.Query(events).sort([
+            //    {
+            //        field: 'start',
+            //        dir: 'asc'
+            //    },
+            //    {
+            //        field: 'end',
+            //        dir: 'desc'
+            //    }
+            //]).toArray();
             var resources = this.groupedResources;
             if (resources.length) {
                 this._renderGroups(events, resources, 0, 1);
@@ -943,33 +892,23 @@ module MyAndromeda.Hr.KendoThings {
 
             if (resource) {
                 var view: Array<MyAndromeda.Hr.Models.IEmployeeTask> = resource.dataSource.view();
-                //Logger.Notify("resource view");
-                //Logger.Notify(view);
-
-                /* sort by department */
-                view = view.sort((a, b) => {
-                    let aValue = a.Department ? a.Department : "NA",
-                        bValue = b.Department ? b.Department : "NA";
-
-                    return aValue.length - bValue.length;
-                });
+                view = new kData.Query(view).sort([
+                    { field: "Department", dir: "desc" },
+                    { field: "id", dir: "asc" }
+                ]).toArray();
 
                 for (var itemIdx = 0; itemIdx < view.length; itemIdx++) {
-                    var value = this._resourceValue(resource, view[itemIdx]);
+                    var resourceType = this._resourceValue(resource, view[itemIdx]);
 
-                    //MyAndromeda.Logger.Notify("group operator:");
-                    //MyAndromeda.Logger.Notify(SchedulerView.groupEqFilter(value));
+                    //resource type should be employee id 
+                    //Logger.Notify("resource type: " + resourceType + " data: ");
 
+                    //filter events by employee id
                     var tmp = new kData.Query(events).filter({
                         field: resource.field,
-                        operator: SchedulerView.groupEqFilter(value)
+                        operator: SchedulerView.groupEqFilter(resourceType)
                     }).toArray();
 
-                    //tmp = tmp.sort((a, b) => {
-                    //    let aValue = a.Department, bValue = b.Department;
-                    //    return aValue.length - bValue.length;
-                    //});
-                   
                     if (resources.length > 1) {
                         offset = this._renderGroups(tmp, resources.slice(1), offset++, columnLevel + 1);
                     } else {

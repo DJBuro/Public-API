@@ -12,6 +12,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
         public static EmployeeRecordModel ToViewModel(this EmployeeRecord dbItem)
         {
             EmployeeRecordModel result = null;
+
             if (string.IsNullOrWhiteSpace(dbItem.Data))
             {
                 dbItem.Data = "{}";
@@ -20,7 +21,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
             {
                 var converter = new ExpandoObjectConverter();    
 
-                var model = JsonConvert.DeserializeObject<EmployeeRecordModel>(dbItem.Data, converter);
+                EmployeeRecordModel model = JsonConvert.DeserializeObject<EmployeeRecordModel>(dbItem.Data, converter);
                 
                 model.Id = dbItem.Id;
                 model.Name = dbItem.Name;
@@ -37,7 +38,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
 
         public static void UpdateProperties(this EmployeeRecord dbItem, EmployeeRecordModel model)
         {
-            var data = JsonConvert.SerializeObject(model);
+            string data = JsonConvert.SerializeObject(model);
 
             dbItem.Data = data;
             dbItem.Deleted = model.Deleted;

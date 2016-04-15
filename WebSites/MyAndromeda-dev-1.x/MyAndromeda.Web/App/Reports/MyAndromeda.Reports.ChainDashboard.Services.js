@@ -290,7 +290,7 @@ var MyAndromeda;
                                 name: "Sales",
                                 labels: {
                                     template: "#= kendo.toString(value, 'c') #"
-                                }
+                                },
                             },
                         ],
                         series: [
@@ -308,7 +308,7 @@ var MyAndromeda;
                         categoryAxis: [
                             {
                                 field: "WeekOfYear",
-                                baseUnitStep: "auto"
+                                baseUnitStep: "auto",
                             }
                         ],
                         valueAxis: [
@@ -350,7 +350,7 @@ var MyAndromeda;
                                     weeks: [],
                                     months: []
                                 },
-                                weekStartDay: 1
+                                weekStartDay: 1,
                             }
                         ],
                         valueAxis: [

@@ -7,9 +7,9 @@ namespace MyAndromeda.Identity
     /// <summary>
     /// implement lots of interface on Microsoft.AspNet.Identity.I.....
     /// </summary>
-    public class User : IUser
+    public class MyAndromedaIdentityUser : IUser
     {
-        public User(string id, string userName) 
+        public MyAndromedaIdentityUser(string id, string userName) 
         {
             this.Id = id;
             this.UserName = userName;

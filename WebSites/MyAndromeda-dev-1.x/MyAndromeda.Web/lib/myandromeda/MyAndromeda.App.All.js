@@ -4490,7 +4490,7 @@ var MyAndromeda;
     (function (Hr) {
         var KendoThings;
         (function (KendoThings) {
-            var extend = $.extend, Logger = MyAndromeda.Logger, k = kendo, ui = kendo.ui, kData = kendo.data, kDate = k.date, kAttr = k.attr, kGetter = k.getter, kTemplate = k.Template, KUserEvents = k.UserEvents, getDate = k.date.getDate, 
+            var extend = $.extend, Logger = MyAndromeda.Logger, k = kendo, ui = kendo.ui, kData = kendo.data, kDate = k.date, kAttr = k.attr, kGetter = k.getter, kSetter = k.setter, kTemplate = k.Template, KUserEvents = k.UserEvents, getDate = k.date.getDate, 
             //SchedulerMonthView = ui.MonthView,
             SchedulerView = ui.SchedulerView, MS_PER_DAY = kDate.MS_PER_DAY, MS_PER_MINUTE = kDate.MS_PER_MINUTE, NS = ".kendoTimelineWeekView";
             function shiftArray(array, idx) {
@@ -4512,33 +4512,36 @@ var MyAndromeda;
                 var resource = resources[0];
                 if (resource) {
                     var configuration = [];
-                    var data = resource.dataSource.view();
-                    data = data.sort(function (a, b) {
-                        var aValue = a.Department ? a.Department : "NA", bValue = b.Department ? b.Department : "NA";
-                        return aValue.length - bValue.length;
-                    });
-                    for (var dataIndex = 0; dataIndex < data.length; dataIndex++) {
-                        var dataItem = data[dataIndex];
+                    var view = resource.dataSource.view();
+                    var tmp = new kData.Query(view).sort([
+                        { field: "Department", dir: "desc" },
+                        { field: "id", dir: "asc" }
+                    ]).toArray();
+                    for (var dataIndex = 0; dataIndex < tmp.length; dataIndex++) {
+                        var dataItem = tmp[dataIndex];
                         var things = Hr.Models.departments;
                         var searchDepartments = things.filter(function (e) { return e.text === dataItem.Department; });
                         var department = { text: 'None', majorColour: "#000", minorColour: "#000" };
                         if (searchDepartments.length > 0) {
                             department = searchDepartments[0];
                         }
-                        //Logger.Notify("department:");
-                        //Logger.Notify(department);
+                        var textLabel = kGetter(resource.dataTextField)(tmp[dataIndex]);
+                        var value = kGetter(resource.dataValueField)(tmp[dataIndex]);
+                        var resourceValues = {
+                            text: kendo.htmlEncode(textLabel),
+                            majorColor: department.majorColour,
+                            minorColor: department.minorColour,
+                            employee: dataItem,
+                            field: resource.field,
+                            title: resource.title,
+                            name: resource.name,
+                            value: value
+                        };
+                        ///Logger.Notify("Resource values");
+                        //Logger.Notify(resourceValues);
                         var obj = {
-                            text: template({
-                                text: kendo.htmlEncode(kGetter(resource.dataTextField)(data[dataIndex])),
-                                majorColor: department.majorColour,
-                                minorColor: department.minorColour,
-                                employee: dataItem,
-                                field: resource.field,
-                                title: resource.title,
-                                name: resource.name,
-                                value: kGetter(resource.dataValueField)(data[dataIndex])
-                            }),
-                            className: 'k-slot-cell k-thingy'
+                            text: template(resourceValues),
+                            className: kendo.format('k-slot-cell k-thingy {0}', department.text)
                         };
                         obj[name] = createLayoutConfiguration(name, resources.slice(1), inner, template);
                         configuration.push(obj);
@@ -4552,7 +4555,7 @@ var MyAndromeda;
              * Month view
              * ***********************************************************
              */
-            var NUMBER_OF_COLUMNS = 7, NUMBER_OF_ROWS = 1, MORE_BUTTON_TEMPLATE = kendo.template("<div style=\"width:#=width#px;left:#=left#px;top:#=top#px;height:20px\" class=\"k-more-events k-button\">\n    <span style=\"height:20px; margin-top:0\" class=\"label label-success\">#=count#...</span>\n</div>"), DAY_TEMPLATE = kendo.template('<span class="k-link k-nav-day">#:kendo.toString(date, "dd")#</span>'), EVENT_WRAPPER_STRING = '<div role="gridcell" aria-selected="false" data-#=ns#uid="#=uid#"' + '#if (resources[0]) { #' + 'style="background-color:#=resources[0].color #; border-color: #=resources[0].color#"' + 'class="k-event#=inverseColor ? " k-event-inverse" : ""#"' + '#} else {#' + 'class="k-event"' + '#}#' + '>' + '<span class="k-event-actions">' + '# if(data.tail || data.middle) {#' + '<span class="k-icon k-i-arrow-w"></span>' + '#}#' + '# if(data.isException()) {#' + '<span class="k-icon k-i-exception"></span>' + '# } else if(data.isRecurring()) {#' + '<span class="k-icon k-i-refresh"></span>' + '#}#' + '</span>' + '{0}' + '<span class="k-event-actions">' + '#if (showDelete) {#' + '<a href="\\#" class="k-link k-event-delete"><span class="k-icon k-si-close"></span></a>' + '#}#' + '# if(data.head || data.middle) {#' + '<span class="k-icon k-i-arrow-e"></span>' + '#}#' + '</span>' + '# if(resizable && !data.tail && !data.middle) {#' + '<span class="k-resize-handle k-resize-w"></span>' + '#}#' + '# if(resizable && !data.head && !data.middle) {#' + '<span class="k-resize-handle k-resize-e"></span>' + '#}#' + '</div>', EVENT_TEMPLATE = kendo.template('<div title="#=title.replace(/"/g,"&\\#34;")#">' + '<div class="k-event-template">#:title#</div>' + '</div>');
+            var NUMBER_OF_COLUMNS = 7, NUMBER_OF_ROWS = 1, MORE_BUTTON_TEMPLATE = kendo.template("<div style=\"width:#=width#px;left:#=left#px;top:#=top#px;height:20px\" class=\"k-more-events k-button\">\n            <span style=\"height:20px; margin-top:0\" class=\"label label-success\">#=count#...</span>\n        </div>"), DAY_TEMPLATE = kendo.template("<span class=\"k-link k-nav-day\">\n            #:kendo.toString(date, \"dd\")#\n            r: #:kendo.toString(resourceTypes.EmployeeId)#\n        </span>"), EVENT_WRAPPER_STRING = '<div role="gridcell" aria-selected="false" data-#=ns#uid="#=uid#"' + '#if (resources[0]) { #' + 'style="background-color:#=resources[0].color #; border-color: #=resources[0].color#"' + 'class="k-event#=inverseColor ? " k-event-inverse" : ""#"' + '#} else {#' + 'class="k-event"' + '#}#' + '>' + '<span class="k-event-actions">' + '# if(data.tail || data.middle) {#' + '<span class="k-icon k-i-arrow-w"></span>' + '#}#' + '# if(data.isException()) {#' + '<span class="k-icon k-i-exception"></span>' + '# } else if(data.isRecurring()) {#' + '<span class="k-icon k-i-refresh"></span>' + '#}#' + '</span>' + '{0}' + '<span class="k-event-actions">' + '#if (showDelete) {#' + '<a href="\\#" class="k-link k-event-delete"><span class="k-icon k-si-close"></span></a>' + '#}#' + '# if(data.head || data.middle) {#' + '<span class="k-icon k-i-arrow-e"></span>' + '#}#' + '</span>' + '# if(resizable && !data.tail && !data.middle) {#' + '<span class="k-resize-handle k-resize-w"></span>' + '#}#' + '# if(resizable && !data.head && !data.middle) {#' + '<span class="k-resize-handle k-resize-e"></span>' + '#}#' + '</div>', EVENT_TEMPLATE = kendo.template('<div title="#=title.replace(/"/g,"&\\#34;")#">' + '<div class="k-event-template">#:title#</div>' + '</div>');
             var monthViewOptions = {
                 //calculateDateRange: function () {
                 //    var selectedDate = this.options.date,
@@ -4654,9 +4657,11 @@ var MyAndromeda;
                             html += 'class="' + classes + '"';
                         }
                         html += '>';
+                        var resourceTemp = resources();
                         html += content({
                             date: startDate,
-                            resources: resources
+                            resources: resources,
+                            resourceTypes: resourceTemp
                         });
                         html += '</td>';
                         that._slotIndices[kDate.getDate(startDate).getTime()] = startIdx + cellIdx;
@@ -4728,22 +4733,6 @@ var MyAndromeda;
                         var offset = $(e.currentTarget).offset();
                         var slot = that._slotByPosition(offset.left, offset.top);
                         e.preventDefault();
-                        //alert("popup :)");
-                        //console.log(slot);
-                        //let slotElement = slot.element;
-                        //var popover = $(slotElement).popover({
-                        //    title: "Tasks",
-                        //    placement: "auto",
-                        //    html: true,
-                        //    content: "please wait"
-                        //}).on("show.bs.popover", function () {
-                        //    console.log("show popover");
-                        //    let html = $(slotElement).contents().html();
-                        //    popover.attr('data-content', html);
-                        //    var current = $(this);
-                        //    setTimeout(() => { current.popover('hide'); }, 5000);
-                        //});
-                        //popover.popover("show");
                         that.trigger('navigate', {
                             view: 'day',
                             date: slot.startDate()
@@ -5061,26 +5050,6 @@ var MyAndromeda;
                         element.appendTo(this.content);
                     }
                 },
-                //_slotByPosition: function (x, y) {
-                //    let content = this.content;
-                //    if (!content) {
-                //        content = $("div.k-scheduler-content");
-                //    }
-                //    var offset = content.offset();
-                //    x -= offset.left;
-                //    y -= offset.top;
-                //    y += content[0].scrollTop;
-                //    x += content[0].scrollLeft;
-                //    x = Math.ceil(x);
-                //    y = Math.ceil(y);
-                //    for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
-                //        var slot = this.groups[groupIndex].daySlotByPosition(x, y);
-                //        if (slot) {
-                //            return slot;
-                //        }
-                //    }
-                //    return null;
-                //},
                 _slotByPosition: function (x, y) {
                     var offset = this.content.offset();
                     x -= offset.left;
@@ -5091,11 +5060,36 @@ var MyAndromeda;
                     y = Math.ceil(y);
                     for (var groupIndex = 0; groupIndex < this.groups.length; groupIndex++) {
                         var slot = this.groups[groupIndex].daySlotByPosition(x, y);
+                        //Logger.Notify("slot by position:");
+                        //Logger.Notify(slot);
                         if (slot) {
                             return slot;
                         }
                     }
                     return null;
+                },
+                _resourceBySlot: function (slot) {
+                    var resources = this.groupedResources;
+                    var result = {};
+                    if (resources.length) {
+                        var resourceIndex = slot.groupIndex;
+                        for (var idx = resources.length - 1; idx >= 0; idx--) {
+                            var resource = resources[idx];
+                            var view = resource.dataSource.view();
+                            var tmp = new kData.Query(view).sort([
+                                { field: "Department", dir: "desc" },
+                                { field: "id", dir: "asc" }
+                            ]).toArray();
+                            var value = this._resourceValue(resource, tmp[resourceIndex % resource.dataSource.total()]);
+                            if (resource.multiple) {
+                                value = [value];
+                            }
+                            var setter = kSetter(resource.field); // kendo.setter(resource.field);
+                            setter(result, value);
+                            resourceIndex = Math.floor(resourceIndex / resource.dataSource.total());
+                        }
+                    }
+                    return result;
                 },
                 _createResizeHint: function (range) {
                     var left = range.startSlot().offsetLeft;
@@ -5142,67 +5136,6 @@ var MyAndromeda;
                         this._moveHint = this._moveHint.add(hint);
                     }
                 },
-                //_positionEvent: function (slotRange, element, group) {
-                //    var eventHeight = this.options.eventHeight;
-                //    var startSlot = slotRange.start;
-                //    if (slotRange.start.offsetLeft > slotRange.end.offsetLeft) {
-                //        startSlot = slotRange.end;
-                //    }
-                //    var startIndex = slotRange.start.index;
-                //    var endIndex = slotRange.end.index;
-                //    var eventCount = startSlot.eventCount;
-                //    var events = SchedulerView.collidingEvents(slotRange.events(), startIndex, endIndex);
-                //    var rightOffset = startIndex !== endIndex ? 5 : 4;
-                //    events.push({
-                //        element: element,
-                //        start: startIndex,
-                //        end: endIndex
-                //    });
-                //    var rows = SchedulerView.createRows(events);
-                //    for (var idx = 0, length = Math.min(rows.length, eventCount); idx < length; idx++) {
-                //        var rowEvents = rows[idx].events;
-                //        var eventTop = startSlot.offsetTop + startSlot.firstChildHeight + idx * eventHeight + 3 * idx + 'px';
-                //        for (var j = 0, eventLength = rowEvents.length; j < eventLength; j++) {
-                //            rowEvents[j].element[0].style.top = eventTop;
-                //        }
-                //    }
-                //    if (rows.length > eventCount) {
-                //        for (var slotIndex = startIndex; slotIndex <= endIndex; slotIndex++) {
-                //            var collection = slotRange.collection;
-                //            var slot = collection.at(slotIndex);
-                //            if (slot.more) {
-                //                return;
-                //            }
-                //            slot.more = $(MORE_BUTTON_TEMPLATE({
-                //                ns: kendo.ns,
-                //                start: slotIndex,
-                //                end: slotIndex,
-                //                width: slot.clientWidth - 2,
-                //                left: slot.offsetLeft + 2,
-                //                top: slot.offsetTop + slot.firstChildHeight + eventCount * eventHeight + 3 * eventCount,
-                //                count: rows.length
-                //            }));
-                //            this.content[0].appendChild(slot.more[0]);
-                //        }
-                //    } else {
-                //        slotRange.addEvent({
-                //            element: element,
-                //            start: startIndex,
-                //            end: endIndex,
-                //            groupIndex: startSlot.groupIndex
-                //        });
-                //        element[0].style.width = slotRange.innerWidth() - rightOffset + 'px';
-                //        element[0].style.left = startSlot.offsetLeft + 2 + 'px';
-                //        element[0].style.height = eventHeight + 'px';
-                //        group._continuousEvents.push({
-                //            element: element,
-                //            uid: element.attr(kAttr('uid')),
-                //            start: slotRange.start,
-                //            end: slotRange.end
-                //        });
-                //        element.appendTo(this.content);
-                //    }
-                //},
                 _groups: function () {
                     var groupCount = this._groupCount();
                     var columnCount = NUMBER_OF_COLUMNS;
@@ -5266,16 +5199,16 @@ var MyAndromeda;
                 render: function (events) {
                     this.content.children('.k-event,.k-more-events,.k-events-container').remove();
                     this._groups();
-                    events = new kData.Query(events).sort([
-                        {
-                            field: 'start',
-                            dir: 'asc'
-                        },
-                        {
-                            field: 'end',
-                            dir: 'desc'
-                        }
-                    ]).toArray();
+                    //events = new kData.Query(events).sort([
+                    //    {
+                    //        field: 'start',
+                    //        dir: 'asc'
+                    //    },
+                    //    {
+                    //        field: 'end',
+                    //        dir: 'desc'
+                    //    }
+                    //]).toArray();
                     var resources = this.groupedResources;
                     if (resources.length) {
                         this._renderGroups(events, resources, 0, 1);
@@ -5340,25 +5273,19 @@ var MyAndromeda;
                     var resource = resources[0];
                     if (resource) {
                         var view = resource.dataSource.view();
-                        //Logger.Notify("resource view");
-                        //Logger.Notify(view);
-                        /* sort by department */
-                        view = view.sort(function (a, b) {
-                            var aValue = a.Department ? a.Department : "NA", bValue = b.Department ? b.Department : "NA";
-                            return aValue.length - bValue.length;
-                        });
+                        view = new kData.Query(view).sort([
+                            { field: "Department", dir: "desc" },
+                            { field: "id", dir: "asc" }
+                        ]).toArray();
                         for (var itemIdx = 0; itemIdx < view.length; itemIdx++) {
-                            var value = this._resourceValue(resource, view[itemIdx]);
-                            //MyAndromeda.Logger.Notify("group operator:");
-                            //MyAndromeda.Logger.Notify(SchedulerView.groupEqFilter(value));
+                            var resourceType = this._resourceValue(resource, view[itemIdx]);
+                            //resource type should be employee id 
+                            //Logger.Notify("resource type: " + resourceType + " data: ");
+                            //filter events by employee id
                             var tmp = new kData.Query(events).filter({
                                 field: resource.field,
-                                operator: SchedulerView.groupEqFilter(value)
+                                operator: SchedulerView.groupEqFilter(resourceType)
                             }).toArray();
-                            //tmp = tmp.sort((a, b) => {
-                            //    let aValue = a.Department, bValue = b.Department;
-                            //    return aValue.length - bValue.length;
-                            //});
                             if (resources.length > 1) {
                                 offset = this._renderGroups(tmp, resources.slice(1), offset++, columnLevel + 1);
                             }
@@ -5437,31 +5364,45 @@ var MyAndromeda;
     (function (Hr) {
         var Models;
         (function (Models) {
+            Models.taskNames = {
+                Shift: "Normal Shift",
+                CoveringShift: "Covering Shift",
+                NeedCover: "Need Cover",
+                UnplannedLeave: "Unplanned leave",
+                PlannedLeave: "Planned leave"
+            };
+            Models.taskValues = {
+                Shift: "Shift",
+                CoveringShift: "Covering Shift",
+                NeedCover: "Need cover",
+                UnplannedLeave: "Unplanned",
+                PlannedLeave: "Holiday"
+            };
             Models.taskTypes = [
                 {
-                    text: "Normal Shift",
-                    value: "Shift",
+                    text: Models.taskNames.Shift,
+                    value: Models.taskValues.Shift,
                     color: "#ffffff"
                 },
                 {
-                    text: "Need cover",
-                    value: "Need cover",
+                    text: Models.taskNames.NeedCover,
+                    value: Models.taskValues.NeedCover,
                     color: "#d9534f"
                 },
                 {
-                    text: "Covering Shift",
-                    value: "Covering Shift",
+                    text: Models.taskNames.CoveringShift,
+                    value: Models.taskValues.CoveringShift,
                     color: "#d9edf7"
                 },
                 {
-                    text: "Unplanned leave",
-                    value: "Unplanned",
-                    color: "#f2dede"
+                    text: Models.taskNames.UnplannedLeave,
+                    value: Models.taskValues.UnplannedLeave,
+                    color: "#d9534f"
                 },
                 {
-                    text: "Planned leave",
-                    value: "Holiday",
-                    color: "#fcf8e3"
+                    text: Models.taskNames.PlannedLeave,
+                    value: Models.taskValues.PlannedLeave,
+                    color: "#f0ad4e"
                 }
             ];
             Models.departments = [
@@ -5546,6 +5487,9 @@ var MyAndromeda;
                     Phone: {
                         type: "string",
                         nullable: false
+                    },
+                    DateOfBirth: {
+                        type: "Date"
                     },
                     DirtyHack: {
                         type: "string",
@@ -5677,6 +5621,17 @@ var MyAndromeda;
                     var _this = this;
                     var route = "hr/{0}/employees/{1}/update";
                     route = kendo.format(route, this.chainId, this.andromedaSiteId);
+                    MyAndromeda.Logger.Notify("DOB - ");
+                    if (model.DateOfBirth) {
+                        var offsetMiliseconds = new Date().getTimezoneOffset() * 60000;
+                        var a = kendo.toString(model.DateOfBirth, "Y");
+                        MyAndromeda.Logger.Notify(model.DateOfBirth);
+                        MyAndromeda.Logger.Notify(a);
+                        //Logger.Notify(b);
+                        MyAndromeda.Logger.Notify(offsetMiliseconds);
+                        model.DateOfBirth = new Date(model.DateOfBirth.getTime() + offsetMiliseconds);
+                        MyAndromeda.Logger.Notify(model.DateOfBirth);
+                    }
                     var promise = this.$http.post(route, model);
                     this.Saved.onNext(false);
                     Rx.Observable.fromPromise(promise).subscribe(function (callback) {
@@ -5896,59 +5851,6 @@ var MyAndromeda;
     (function (Hr) {
         var Services;
         (function (Services) {
-            var EmployeeAvailabilityTestService = (function () {
-                function EmployeeAvailabilityTestService(scheduler) {
-                    this.scheduler = scheduler;
-                }
-                EmployeeAvailabilityTestService.prototype.GetTasksInRange = function (start, end) {
-                    var occurences = this.scheduler.occurrencesInRange(start, end);
-                    return occurences;
-                };
-                EmployeeAvailabilityTestService.prototype.CheckTasksByEmployee = function (start, end, task) {
-                    var context = {
-                        start: start,
-                        end: end,
-                        task: task
-                    };
-                    var startCheck = start.toLocaleTimeString();
-                    var endCheck = end.toLocaleTimeString();
-                    //only interested in current employee, which is not the current task
-                    var currentTasks = this.GetTasksInRange(start, end);
-                    MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
-                    MyAndromeda.Logger.Notify(currentTasks);
-                    currentTasks = currentTasks.filter(function (e) { return e.id !== task.id; });
-                    MyAndromeda.Logger.Notify("Tasks in range after removing self: " + currentTasks.length);
-                    currentTasks = currentTasks.filter(function (e) { return e.EmployeeId === task.EmployeeId; });
-                    MyAndromeda.Logger.Notify("Tasks in range - by employee: " + currentTasks.length);
-                    MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
-                    MyAndromeda.Logger.Notify(context);
-                    MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
-                    return currentTasks.length === 0;
-                };
-                EmployeeAvailabilityTestService.prototype.IsDurationValid = function (start, end) {
-                    //hours
-                    var duration = Math.abs(end.getTime() - start.getTime()) / 36e5;
-                    if (duration < 0.1) {
-                        return false;
-                    }
-                    return true;
-                };
-                EmployeeAvailabilityTestService.prototype.IsWorkAvailable = function (start, end, task) {
-                    return this.CheckTasksByEmployee(start, end, task);
-                };
-                return EmployeeAvailabilityTestService;
-            }());
-            Services.EmployeeAvailabilityTestService = EmployeeAvailabilityTestService;
-        })(Services = Hr.Services || (Hr.Services = {}));
-    })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-/// <reference path="hr.services.ts" />
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Hr;
-    (function (Hr) {
-        var Services;
-        (function (Services) {
             var app = angular.module("MyAndromeda.Hr.Services.Scheduler", [
                 "MyAndromeda.Hr.Services"
             ]);
@@ -6030,9 +5932,9 @@ var MyAndromeda;
                         minorTickCount: 1,
                         workWeekStart: 0,
                         workWeekEnd: 6,
-                        allDaySlot: true,
+                        allDaySlot: false,
                         dataSource: dataSource,
-                        timezone: "Europe/London",
+                        timezone: "Etc/UTC",
                         currentTimeMarker: {
                             useLocalTimezone: false
                         },
@@ -6127,8 +6029,18 @@ var MyAndromeda;
                             e.preventDefault();
                         },
                         add: function (e) {
-                            MyAndromeda.Logger.Notify("add");
+                            MyAndromeda.Logger.Notify("team scheduler - add - run");
                             MyAndromeda.Logger.Notify(e);
+                            var tester = new Services.EmployeeAvailabilityTestService(e.sender);
+                            MyAndromeda.Logger.Notify("test all day validation");
+                            var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
+                                _this.SweetAlert.swal("Sorry", invalidReason, "error");
+                            });
+                            if (!validSelection) {
+                                MyAndromeda.Logger.Notify("cancel add");
+                                e.preventDefault();
+                                return;
+                            }
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
                             if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                                 MyAndromeda.Logger.Notify("cancel add");
@@ -6140,6 +6052,15 @@ var MyAndromeda;
                             MyAndromeda.Logger.Notify("save");
                             MyAndromeda.Logger.Notify(e);
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
+                            MyAndromeda.Logger.Notify("test all day validation");
+                            var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
+                                _this.SweetAlert.swal("Sorry", invalidReason, "error");
+                            });
+                            if (!validSelection) {
+                                MyAndromeda.Logger.Notify("cancel add");
+                                e.preventDefault();
+                                return;
+                            }
                             if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                                 MyAndromeda.Logger.Notify("cancel save");
                                 _this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
@@ -6165,9 +6086,9 @@ var MyAndromeda;
                         minorTickCount: 1,
                         workWeekStart: 0,
                         workWeekEnd: 6,
-                        allDaySlot: true,
+                        allDaySlot: false,
                         dataSource: dataSource,
-                        timezone: "Europe/London",
+                        //timezone: "Etc/UTC",
                         currentTimeMarker: {
                             useLocalTimezone: false
                         },
@@ -6225,9 +6146,18 @@ var MyAndromeda;
                             }
                         },
                         add: function (e) {
-                            MyAndromeda.Logger.Notify("add");
+                            MyAndromeda.Logger.Notify("team scheduler - add - run");
                             MyAndromeda.Logger.Notify(e);
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
+                            MyAndromeda.Logger.Notify("test all day validation");
+                            var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
+                                _this.SweetAlert.swal("Sorry", invalidReason, "error");
+                            });
+                            if (!validSelection) {
+                                MyAndromeda.Logger.Notify("cancel add");
+                                e.preventDefault();
+                                return;
+                            }
                             if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                                 MyAndromeda.Logger.Notify("cancel add");
                                 //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
@@ -6236,9 +6166,15 @@ var MyAndromeda;
                             }
                         },
                         save: function (e) {
-                            MyAndromeda.Logger.Notify("save");
+                            MyAndromeda.Logger.Notify("team scheduler - save - run");
                             MyAndromeda.Logger.Notify(e);
                             var tester = new Services.EmployeeAvailabilityTestService(e.sender);
+                            var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
+                                _this.SweetAlert.swal("Sorry", invalidReason, "error");
+                            });
+                            if (!validSelection) {
+                                e.preventDefault();
+                            }
                             if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                                 MyAndromeda.Logger.Notify("cancel save");
                                 _this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
@@ -6257,6 +6193,78 @@ var MyAndromeda;
             }());
             Services.EmployeeSchedulerService = EmployeeSchedulerService;
             app.service("employeeSchedulerService", EmployeeSchedulerService);
+        })(Services = Hr.Services || (Hr.Services = {}));
+    })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="hr.services.ts" />
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Hr;
+    (function (Hr) {
+        var Services;
+        (function (Services) {
+            var EmployeeAvailabilityTestService = (function () {
+                function EmployeeAvailabilityTestService(scheduler) {
+                    this.scheduler = scheduler;
+                }
+                EmployeeAvailabilityTestService.prototype.GetTasksInRange = function (start, end) {
+                    var occurences = this.scheduler.occurrencesInRange(start, end);
+                    return occurences;
+                };
+                EmployeeAvailabilityTestService.prototype.CheckTasksByEmployee = function (start, end, task) {
+                    var context = {
+                        start: start,
+                        end: end,
+                        task: task
+                    };
+                    var startCheck = start.toLocaleTimeString();
+                    var endCheck = end.toLocaleTimeString();
+                    //only interested in current employee, which is not the current task
+                    var currentTasks = this.GetTasksInRange(start, end);
+                    MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
+                    MyAndromeda.Logger.Notify(currentTasks);
+                    currentTasks = currentTasks.filter(function (e) { return e.id !== task.id; });
+                    MyAndromeda.Logger.Notify("Tasks in range after removing self: " + currentTasks.length);
+                    currentTasks = currentTasks.filter(function (e) { return e.EmployeeId === task.EmployeeId; });
+                    MyAndromeda.Logger.Notify("Tasks in range - by employee: " + currentTasks.length);
+                    MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+                    MyAndromeda.Logger.Notify(context);
+                    MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
+                    return currentTasks.length === 0;
+                };
+                EmployeeAvailabilityTestService.prototype.IsDurationValid = function (start, end) {
+                    //hours
+                    var duration = Math.abs(end.getTime() - start.getTime()) / 36e5;
+                    if (duration < 0.1) {
+                        return false;
+                    }
+                    return true;
+                };
+                EmployeeAvailabilityTestService.prototype.IsWorkAvailable = function (start, end, task) {
+                    return this.CheckTasksByEmployee(start, end, task);
+                };
+                EmployeeAvailabilityTestService.prototype.IsAllDayValid = function (task, invalid) {
+                    var msg = "A shift cannot be all day";
+                    MyAndromeda.Logger.Notify("test if all day");
+                    if (task.isAllDay) {
+                        MyAndromeda.Logger.Notify("it is all day - " + task.TaskType);
+                        var shift = Hr.Models.taskValues.Shift;
+                        var coveringShift = Hr.Models.taskValues.CoveringShift;
+                        switch (task.TaskType) {
+                            case Hr.Models.taskValues.Shift:
+                            case Hr.Models.taskValues.NeedCover:
+                            case Hr.Models.taskValues.CoveringShift: {
+                                MyAndromeda.Logger.Notify("invalid");
+                                invalid(msg);
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                };
+                return EmployeeAvailabilityTestService;
+            }());
+            Services.EmployeeAvailabilityTestService = EmployeeAvailabilityTestService;
         })(Services = Hr.Services || (Hr.Services = {}));
     })(Hr = MyAndromeda.Hr || (MyAndromeda.Hr = {}));
 })(MyAndromeda || (MyAndromeda = {}));
@@ -11316,6 +11324,11 @@ var MyAndromeda;
             app.controller("OpeningHoursController", function ($scope, SweetAlert, storeOccasionSchedulerService) {
                 var schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
                 $scope.schedulerOptions = schedulerOptions;
+                $scope.create = function () {
+                    var scheduler = $scope.OccasionScheduler;
+                    var startDate = scheduler.date();
+                    scheduler.addEvent({});
+                };
                 $scope.clearAll = function () {
                     SweetAlert.swal({
                         title: "Are you sure?",
@@ -11646,18 +11659,18 @@ var MyAndromeda;
                             .filter(function (e) { return e.Id !== task.Id && e.RecurrenceId !== task.Id; });
                         var startCheck = start.toLocaleTimeString();
                         var endCheck = end.toLocaleTimeString();
-                        MyAndromeda.Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
-                        MyAndromeda.Logger.Notify(context);
-                        MyAndromeda.Logger.Notify("Tasks in range: " + currentTasks.length);
-                        MyAndromeda.Logger.Notify(currentTasks);
+                        //Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+                        //Logger.Notify(context);
+                        //Logger.Notify("Tasks in range: " + currentTasks.length);
+                        //Logger.Notify(currentTasks);
                         //which occasion(s) are causing a problem.
                         var matchedOccurences = [];
                         var taskResources = task.Occasions
                             ? task.Occasions
                             : [];
-                        MyAndromeda.Logger.Notify("check resources: ");
-                        MyAndromeda.Logger.Notify(task);
-                        MyAndromeda.Logger.Notify(taskResources);
+                        //Logger.Notify("check resources: ");
+                        //Logger.Notify(task);
+                        //Logger.Notify(taskResources);
                         var map = currentTasks.map(function (e) {
                             return {
                                 task: e,
@@ -11670,8 +11683,8 @@ var MyAndromeda;
                                 for (var k = 0; k < taskResources.length; k++) {
                                     var occasion = taskResources[k];
                                     if (occasion.indexOf(compareOccasion) > -1) {
-                                        MyAndromeda.Logger.Notify("task objection: " + e.task.title);
-                                        MyAndromeda.Logger.Notify(e.task);
+                                        //Logger.Notify("task objection: " + e.task.title);
+                                        //Logger.Notify(e.task);
                                         return true;
                                     }
                                 }
@@ -11680,7 +11693,7 @@ var MyAndromeda;
                         }).subscribe(function (overlaped) {
                             matchedOccurences.push(overlaped.task);
                         });
-                        MyAndromeda.Logger.Notify("occurrences: " + matchedOccurences.length);
+                        //Logger.Notify("occurrences: " + matchedOccurences.length);
                         return matchedOccurences;
                     };
                     StoreOccasionAvailabilityService.prototype.IsOccasionAvailable = function (start, end, task) {
@@ -11710,7 +11723,8 @@ var MyAndromeda;
                         var schema = {
                             data: "Data",
                             total: "Total",
-                            model: OpeningHours.Models.getSchedulerDataSourceSchema()
+                            model: OpeningHours.Models.getSchedulerDataSourceSchema(),
+                            timezone: "Etc/UTC",
                         };
                         var dataSource = new kendo.data.SchedulerDataSource({
                             batch: false,
@@ -11798,8 +11812,11 @@ var MyAndromeda;
                             allDaySlot: true,
                             dataSource: dataSource,
                             timezone: "Etc/UTC",
+                            //timezone: "Etc/UTC",
+                            //timezone: "Etc/Universal",
+                            showWorkHours: false,
                             currentTimeMarker: {
-                                useLocalTimezone: false
+                                useLocalTimezone: true
                             },
                             editable: {
                                 template: "<occasion-task-editor task='dataItem'></occasion-task-editor>",
@@ -11812,7 +11829,6 @@ var MyAndromeda;
                             eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
                             allDayEventTemplate: "<occasion-task task='dataItem' all-day='\"true\"'></occasion-task>",
                             //toolbar: ["pdf"],
-                            showWorkHours: false,
                             resources: this.CreateResources(),
                             views: [
                                 { type: "week", selected: true, showWorkHours: false }
@@ -11886,7 +11902,11 @@ var MyAndromeda;
                             },
                             save: function (e) {
                                 MyAndromeda.Logger.Notify("save");
-                                MyAndromeda.Logger.Notify(e);
+                                MyAndromeda.Logger.Notify(e.event);
+                                MyAndromeda.Logger.Notify("start time");
+                                MyAndromeda.Logger.Notify(e.event.start);
+                                MyAndromeda.Logger.Notify("end time");
+                                MyAndromeda.Logger.Notify(e.event.end);
                                 var ev = e.event;
                                 if (ev.Occasions) {
                                     var o = ev.Occasions.length;

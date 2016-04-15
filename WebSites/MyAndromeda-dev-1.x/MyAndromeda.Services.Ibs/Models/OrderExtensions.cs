@@ -17,7 +17,8 @@ namespace MyAndromeda.Services.Ibs.Models
 
             if (wantedTime < DateTime.Now)
             {
-                var future = DateTime.Now.AddMinutes(5);
+                var future = 
+                    DateTime.Now.AddMinutes(5);
 
                 wantedTime = future;
 

@@ -45,11 +45,11 @@
             let startCheck = start.toLocaleTimeString();
             let endCheck = end.toLocaleTimeString();
 
-            Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
-            Logger.Notify(context);
-            Logger.Notify("Tasks in range: " + currentTasks.length);
+            //Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
+            //Logger.Notify(context);
+            //Logger.Notify("Tasks in range: " + currentTasks.length);
 
-            Logger.Notify(currentTasks);
+            //Logger.Notify(currentTasks);
 
             //which occasion(s) are causing a problem.
             let matchedOccurences: Models.IOccasionTask[] = [];
@@ -58,9 +58,9 @@
                 ? task.Occasions
                 : [];
 
-            Logger.Notify("check resources: ");
-            Logger.Notify(task);
-            Logger.Notify(taskResources);
+            //Logger.Notify("check resources: ");
+            //Logger.Notify(task);
+            //Logger.Notify(taskResources);
 
             let map = currentTasks.map(e=> {
                 return {
@@ -78,8 +78,8 @@
                         let occasion = taskResources[k];
 
                         if (occasion.indexOf(compareOccasion) > -1) {
-                            Logger.Notify("task objection: " + e.task.title);
-                            Logger.Notify(e.task);
+                            //Logger.Notify("task objection: " + e.task.title);
+                            //Logger.Notify(e.task);
                             return true;
                         }
                     }
@@ -90,7 +90,7 @@
                 matchedOccurences.push(overlaped.task);
             });
 
-            Logger.Notify("occurrences: " + matchedOccurences.length);
+            //Logger.Notify("occurrences: " + matchedOccurences.length);
 
             return matchedOccurences;
         }
@@ -121,12 +121,13 @@
         }
 
         private CreateDataSource() {
-            let schema: kendo.data.DataSourceSchema = {
+            let schema: any = {
                 data: "Data",
                 total: "Total",
-                model: Models.getSchedulerDataSourceSchema()
+                model: Models.getSchedulerDataSourceSchema(),
+                timezone: "Etc/UTC",
             };
-
+            
             let dataSource = new kendo.data.SchedulerDataSource({
                 batch: false,
                 transport: {
@@ -224,8 +225,11 @@
                 allDaySlot: true,
                 dataSource: dataSource,
                 timezone: "Etc/UTC",
+                //timezone: "Etc/UTC",
+                //timezone: "Etc/Universal",
+                showWorkHours: false,
                 currentTimeMarker: {
-                    useLocalTimezone: false
+                    useLocalTimezone: true
                 },
                 editable: {
                     template: "<occasion-task-editor task='dataItem'></occasion-task-editor>",
@@ -238,7 +242,7 @@
                 eventTemplate: "<occasion-task task='dataItem'></occasion-task>",
                 allDayEventTemplate: `<occasion-task task='dataItem' all-day='"true"'></occasion-task>`,
                 //toolbar: ["pdf"],
-                showWorkHours: false,
+                
                 resources: this.CreateResources(),
                 views: [
                     { type: "week", selected: true, showWorkHours: false }
@@ -327,7 +331,13 @@
                     }
                 },
                 save: (e) => {
-                    Logger.Notify("save"); Logger.Notify(e);
+                    Logger.Notify("save");
+                    Logger.Notify(e.event);
+
+                    Logger.Notify("start time");
+                    Logger.Notify(e.event.start);
+                    Logger.Notify("end time");
+                    Logger.Notify(e.event.end);
 
                     let ev: any = e.event;
                     if (ev.Occasions)

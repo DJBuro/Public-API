@@ -12,7 +12,7 @@ var MyAndromeda;
                         sortable: true,
                         columns: [{
                                 field: "Name",
-                                title: "Store Name"
+                                title: "Store Name",
                             }]
                     };
                     contextService.StoreSubject.subscribe(function (stores) {

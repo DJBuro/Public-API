@@ -18,6 +18,7 @@ using MyAndromeda.Framework.Dates;
 namespace MyAndromeda.Web.Controllers.Api.Store
 {
     [RoutePrefix("api/chain/{chainId}/store")]
+    [Authorize]
     public class StoreController : ApiController
     {
         private readonly IMyAndromedaLogger logger;
@@ -115,11 +116,10 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
             DataSourceRequest request = JsonConvert.DeserializeObject<DataSourceRequest>(content);
 
-            var occasions = await this.storeOccasionTimes
+            MyAndromeda.Data.Model.AndroAdmin.StoreOccasionTime[] occasions = await this.storeOccasionTimes
                 .Where(e => e.Store.AndromedaSiteId == andromedaSiteId)
                 .Where(e=> !e.Deleted)
                 .ToArrayAsync();
-
 
             await this.androAdminDbContext.SaveChangesAsync();
 
@@ -138,10 +138,10 @@ namespace MyAndromeda.Web.Controllers.Api.Store
         {
             string content = await this.Request.Content.ReadAsStringAsync();
 
-            StoreOccasionTimeModel model = JsonConvert.DeserializeObject<StoreOccasionTimeModel>(content);
+            StoreOccasionTimeModel model = JsonConvert.DeserializeObject<StoreOccasionTimeUpdateModel>(content);
 
-            model.Start = this.dateServices.ConvertToLocalFromUtc(model.Start).GetValueOrDefault();
-            model.End = this.dateServices.ConvertToLocalFromUtc(model.End).GetValueOrDefault();
+            //model.Start = this.dateServices.ConvertToLocalFromUtc(model.Start).GetValueOrDefault();
+            //model.End = this.dateServices.ConvertToLocalFromUtc(model.End).GetValueOrDefault();
 
             var storeEntity = await this.stores.FirstOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
             var occasionEntity = await this.storeOccasionTimes.FirstOrDefaultAsync(e => e.Id == model.Id);
@@ -155,8 +155,6 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
             occasionEntity.DataVersion = this.androAdminDbContext.GetNextDataVersionForEntity();
             occasionEntity.Update(model);
-
-            model = occasionEntity.ToViewModel();
 
             try
             {
@@ -180,7 +178,8 @@ namespace MyAndromeda.Web.Controllers.Api.Store
 
                 throw;
             }
-            
+
+            model = occasionEntity.ToViewModel();
 
             return new DataSourceResult()
             {

@@ -63,7 +63,7 @@ var MyAndromeda;
                         "summary": {
                             templateUrl: "store-sales-day-dashboard-summary.html",
                             controller: "storeSalesDayDashboardSummaryController"
-                        }
+                        },
                     },
                     onEnter: function ($stateParams, groupedStoreResultsService) {
                         groupedStoreResultsService.LoadStore($stateParams.storeId);

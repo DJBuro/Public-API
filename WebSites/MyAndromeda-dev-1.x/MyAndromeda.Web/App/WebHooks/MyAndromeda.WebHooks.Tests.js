@@ -94,7 +94,7 @@ var MyAndromeda;
                 });
                 var dataSource = new kendo.data.DataSource({
                     "transport": {
-                        "read": { "url": "/api/Store" }
+                        "read": { "url": "/api/Store" },
                     },
                     "schema": { "errors": "Errors" }
                 });

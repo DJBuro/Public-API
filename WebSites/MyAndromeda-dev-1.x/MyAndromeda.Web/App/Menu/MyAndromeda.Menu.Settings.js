@@ -15,7 +15,7 @@ var MyAndromeda;
                     ListMenuItems: "",
                     SaveMenuItems: "",
                     SaveImageUrl: "",
-                    RemoveImageUrl: ""
+                    RemoveImageUrl: "",
                 };
                 Routes.Ftp = {
                     DownloadMenu: "",

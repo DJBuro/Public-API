@@ -54,7 +54,7 @@ var MyAndromeda;
                             dataSource: dataSource,
                             locationField: "Customer.GeoLocation"
                         }
-                    ]
+                    ],
                 };
                 $scope.mapOptions = mapOptions;
             });

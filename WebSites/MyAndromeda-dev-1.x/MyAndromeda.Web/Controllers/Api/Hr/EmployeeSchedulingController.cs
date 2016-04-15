@@ -16,13 +16,13 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
     [RoutePrefix("hr/{chainId}/employees/{andromedaSiteId}/schedule")]
     public class EmployeeSchedulingController : ApiController 
     {
-        private readonly MyAndromeda.Data.DataWarehouse.Models.DataWarehouseDbContext dataWareHouseDbContext;
+        private readonly DataWarehouseDbContext dataWareHouseDbContext;
 
         private readonly IMyAndromedaLogger logger;
 
         private readonly DbSet<EmployeeSchedule> employeeScheduleTable;
 
-        public EmployeeSchedulingController(MyAndromeda.Data.DataWarehouse.Models.DataWarehouseDbContext dataWareHouseDbContext, IMyAndromedaLogger logger)
+        public EmployeeSchedulingController(DataWarehouseDbContext dataWareHouseDbContext, IMyAndromedaLogger logger)
         { 
             this.logger = logger;
             this.dataWareHouseDbContext = dataWareHouseDbContext;
@@ -89,7 +89,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                 model.Id = Guid.NewGuid();
             }
 
-            var entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
+            EmployeeSchedule entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
             if (entity == null)
             {
                 entity = model.CreateEntiyFromModel();
@@ -119,7 +119,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             Models.EmployeeScheduleModel model = JsonConvert.DeserializeObject<Models.EmployeeScheduleModel>(content);
 
-            var entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
+            EmployeeSchedule entity = await this.employeeScheduleTable.FirstOrDefaultAsync(e => e.Id == model.Id);
 
             if (entity != null) 
             {
@@ -128,7 +128,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             await this.dataWareHouseDbContext.SaveChangesAsync();
 
-            return entity;
+            return entity.ToModel();
         }
 
     }

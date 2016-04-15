@@ -59,9 +59,9 @@ var MyAndromeda;
                                         }
                                         return [lat, long];
                                     }
-                                }
+                                },
                             }
-                        }
+                        },
                     });
                     dataSource.bind("change", function () {
                         MyAndromeda.Logger.Notify(dataSource.data());
@@ -148,7 +148,7 @@ var MyAndromeda;
                                         }
                                         return [lat, long];
                                     }
-                                }
+                                },
                             }
                         },
                         sort: sort

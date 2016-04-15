@@ -68,6 +68,8 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
         }
     }
 
+
+
     public class EmployeeScheduleModel : ISchedulerEvent
     {
         public Guid? Id { get; set; }
@@ -115,17 +117,21 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
         }
 
         //[JsonProperty("start")]
-        public DateTime Start
+        private DateTime start;
+
+
+        public virtual DateTime Start
         {
-            get;
-            set;
+            get { return this.start; }
+            set { this.start = new DateTime(value.Ticks, DateTimeKind.Utc); }
         }
 
+        private DateTime end;
         //[JsonProperty("end")]
-        public DateTime End
+        public virtual DateTime End
         {
-            get;
-            set;
+            get { return this.end; }
+            set { this.end = new DateTime(value.Ticks, DateTimeKind.Utc); }
         }
 
         //[JsonProperty("startTimezone")]

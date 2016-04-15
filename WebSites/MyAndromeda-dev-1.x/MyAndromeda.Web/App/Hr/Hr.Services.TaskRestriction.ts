@@ -53,6 +53,29 @@ module MyAndromeda.Hr.Services {
         public IsWorkAvailable(start, end, task): boolean {
             return this.CheckTasksByEmployee(start, end, task);
         }
+
+        public IsAllDayValid(task: Models.IEmployeeTask, invalid: (message) => void): boolean {
+            const msg = "A shift cannot be all day";
+            Logger.Notify("test if all day");
+
+            if (task.isAllDay) {
+                Logger.Notify("it is all day - " + task.TaskType);
+
+                let shift = Models.taskValues.Shift;
+                let coveringShift = Models.taskValues.CoveringShift;
+                
+                switch (task.TaskType) {
+                    case Models.taskValues.Shift:
+                    case Models.taskValues.NeedCover:
+                    case Models.taskValues.CoveringShift: {
+                        Logger.Notify("invalid");
+                        invalid(msg);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 
 

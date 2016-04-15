@@ -80,7 +80,7 @@
                 <employee-pic employee='employee'></employee-pic>
             </div>
         </div>
-        
+
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            
+
         </form>
     </div>
 </script>
@@ -315,7 +315,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12" >
+                <div class="col-sm-12">
                     <h6>
                         {{extra.startTime}} - {{extra.endTime}}
                         <span ng-if="!extra.isAllDay" class="label label-success">{{extra.hours}} hr</span>
@@ -337,10 +337,16 @@
           }">
         <div class="container-fluid">
 
-            <div class="row">
-                <span class="label" ng-class="{ 'label-default': task.isAllDay, 'label-success' : !task.isAllDay }">{{extra.hours | number: 1 }} h</span>
-                <span ng-if="!task.isAllDay" class="label label-default">{{extra.startTime}}-{{extra.endTime}} </span>
+            <div class="row" data-name="{{::employee.ShortName}}">
+                <span ng-if="!task.isAllDay" class="label label-default">{{::extra.startTime}}-{{::extra.endTime}} </span>
+                <span ng-if="!task.isAllDay" class="label" ng-class="{
+                      'label-default': task.isAllDay,
+                      'label-success' : !task.isAllDay }">{{::extra.hours | number: 1 }}h</span>
+
+
                 <span ng-if="task.isAllDay" class="label label-default">All day </span>
+
+                <span ng-if="task.isAllDay" class="label label-default">{{::task.TaskType}}</span>
             </div>
 
         </div>
@@ -366,7 +372,7 @@
                                     <div class="input-group">
                                         <span class="input-group-addon" style="width:40px"><i class="fa fa-child"></i></span>
                                         <input type="text" class="form-control" ng-model="employee.ShortName" id="employee.ShortName" name="employee.ShortName"
-                                               placeholder="Short-Name" required>
+                                               placeholder="Short-Name" required data-required-msg="Employee name (first name/nickname) is required">
                                     </div>
                                     <span class="k-invalid-msg" data-for="employee.ShortName"></span>
                                 </div>
@@ -378,7 +384,7 @@
                                     <div class="input-group">
                                         <span class="input-group-addon" style="width:40px"><i class="fa fa-phone"></i></span>
                                         <input type="text" class="form-control" ng-model="employee.Phone" id="employee.Phone" name="employee.Phone"
-                                               placeholder="land/mobile number" required>
+                                               placeholder="land/mobile number" required data-required-msg="Employee phone number is required">
                                     </div>
                                     <span class="col-sm-12 k-invalid-msg" data-for="employee.Phone"></span>
                                 </div>
@@ -392,7 +398,7 @@
                                             <i class="fa fa-envelope-o"></i>
                                         </span>
                                         <input type="email" class="form-control" ng-model="employee.Email" id="employee.Email" name="employee.Email"
-                                               placeholder="e.g. myname@example.net" required>
+                                               placeholder="e.g. myname@example.net" required data-required-msg="Employee email is required">
                                     </div>
                                     <span class="k-invalid-msg" data-for="employee.Email"></span>
                                 </div>
@@ -444,6 +450,7 @@
                             </label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="employee.Name" class="k-textbox" id="employee.Name" name="employee.Name"
+                                       data-required-msg="Enter a name for the employee"
                                        placeholder="Enter full employee name" required />
                             </div>
                         </div>
@@ -451,16 +458,22 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="birthday">Birthday</label>
                             <div class="col-sm-8 col-md-6">
-                                <input type="date" kendo-date-picker k-ng-model="employee.DateOfBirth" id="employee.DateOfBirth" name="employee.DateOfBirth"
+                                <input kendo-date-picker 
+                                       ng-model="dateString"
+                                       k-ng-model="employee.DateOfBirth" 
+                                       id="employee.DateOfBirth" 
+                                       name="employee.DateOfBirth"
                                        placeholder="Select a date of birth" />
                             </div>
+                            <div class="col-sm-12">DOB: {{dateString}}</div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="gender">Gender</label>
                             <div class="col-sm-8">
                                 <select kendo-drop-down-list
-                                        ng-model="employee.Gender" id="employee.Gender" name="employee.Gender">
+                                        ng-model="employee.Gender"
+                                         id="employee.Gender" name="employee.Gender">
                                     <option value="Male" selected>Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -470,7 +483,8 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3" for="employee.Department">Department</label>
                             <div class="col-sm-8">
-                                <select kendo-drop-down-list
+                                <select kendo-drop-down-list required
+                                        data-required-msg="Select a department from the list"
                                         ng-model="employee.Department" id="employee.Department" name="employee.Department">
                                     <option value="Front of house" selected>Front of house</option>
                                     <option value="Kitchen">Kitchen</option>
@@ -559,7 +573,9 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-6">
-                                <label><input type="checkbox" ng-model="task.isAllDay" /> All day?</label>
+                                <label>
+                                    <input type="checkbox" ng-model="task.isAllDay" /> All day?
+                                </label>
                             </div>
                         </div>
                         <div class="row" ng-if="!task.isAllDay">

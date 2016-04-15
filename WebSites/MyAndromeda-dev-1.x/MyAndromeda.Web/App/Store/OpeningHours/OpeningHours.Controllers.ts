@@ -7,6 +7,14 @@
         let schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
 
         $scope.schedulerOptions = schedulerOptions;
+
+        $scope.create = () => {
+            let scheduler: kendo.ui.Scheduler = $scope.OccasionScheduler;
+            let startDate = scheduler.date();
+            scheduler.addEvent({});
+
+            
+        }
         $scope.clearAll = () => {
            
 

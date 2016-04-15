@@ -29,7 +29,7 @@ var MyAndromeda;
                     categoryAxis: [
                         {
                             field: "WeekOfYear",
-                            baseUnitStep: "auto"
+                            baseUnitStep: "auto",
                         }
                     ],
                     valueAxis: [
@@ -177,7 +177,7 @@ var MyAndromeda;
                                 // Save the PDF file
                                 kendo.saveAs({
                                     dataURI: data,
-                                    fileName: "Dashboard.pdf"
+                                    fileName: "Dashboard.pdf",
                                 });
                             });
                         };

@@ -9,6 +9,7 @@ using MyAndromeda.Logging;
 using MyAndromeda.Web.Controllers.Api.Hr.Models;
 using Newtonsoft.Json;
 using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Framework.Dates;
 
 namespace MyAndromeda.Web.Controllers.Api.Hr
 {
@@ -23,11 +24,14 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         private readonly DbSet<EmployeeStoreLinkRecord> linkRecords;
 
         private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.Store> storeRecords;
+        private readonly IDateServices dateServices;
 
         public EmployeeFileController(IMyAndromedaLogger logger,
+            IDateServices dateServices,
             MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext,
             DataWarehouseDbContext dbContext) 
         {
+            this.dateServices = dateServices;
             this.androAdminDbContext = androAdminDbContext;
             this.dbContext = dbContext;
             this.employeeTable = this.dbContext.Set<EmployeeRecord>();
@@ -39,7 +43,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         [HttpGet]
         [Route("list")]
-        public async Task<List<EmployeeRecordModel>> List([FromUri]int andromedaSiteId) 
+        public async Task<List<EmployeeRecordModel>> List([FromUri]int andromedaSiteId)
         {
             IQueryable<EmployeeRecord> query = this.employeeTable
                 .Where(e => e.EmployeeStoreLinkRecords.Any(r => r.AndromedaSiteId == andromedaSiteId));
@@ -50,25 +54,13 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                 .Select((record) => record.ToViewModel())
                 .ToList();
 
-            //var models2 = models.Select((r) => r as dynamic);
-
-
-            //var k = JsonConvert.SerializeObject(models);
-            //var k2 = JsonConvert.SerializeObject(models2);
-
-            //var converters = new List<Newtonsoft.Json.JsonConverter>();
-
-            //var k3 = JsonConvert.SerializeObject(models2, new JsonSerializerSettings() { 
-            //    CheckAdditionalContent=true,
-            //    Converters = converters
-            //});
-
-
-            //var response = Request.CreateResponse(HttpStatusCode.OK, k2, Configuration.Formatters.JsonFormatter);
+            // i dislike multiple regions editing the datetiem. 
+            models.ForEach((model) => {
+                //convert to local time 
+                model.DateOfBirth = this.dateServices.ConvertToLocalFromUtc(model.DateOfBirth).GetValueOrDefault();
+            });
 
             return models; 
-
-            //return response;
         }
 
         [HttpGet]
@@ -86,12 +78,11 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
         [HttpPost]
         [Route("update")]
-        public async Task<EmployeeRecordModel> Update(
-            [FromUri]
-            int andromedaSiteId,
-            [FromBody]
-            EmployeeRecordModel model) 
+        public async Task<EmployeeRecordModel> Update([FromUri] int andromedaSiteId) 
         {
+            string content = await this.Request.Content.ReadAsStringAsync();
+            var model = JsonConvert.DeserializeObject< EmployeeRecordModel>(content);
+
             IQueryable<EmployeeRecord> query = this.employeeTable
                             .Where(e => e.EmployeeStoreLinkRecords.Any(K => K.AndromedaSiteId == andromedaSiteId))
                             .Where(e => e.Id == model.Id);
@@ -108,13 +99,15 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
             {
                 dbItem.UpdateProperties(model);
             }
-
             
-            EmployeeRecordModel vm = dbItem.ToViewModel();
+            EmployeeRecordModel result = dbItem.ToViewModel();
+
+
+            result.DateOfBirth = dateServices.ConvertToLocalFromUtc(result.DateOfBirth).GetValueOrDefault();
 
             await this.dbContext.SaveChangesAsync();
 
-            return vm;
+            return result;
         }
 
         [HttpPost]
@@ -133,6 +126,7 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
                 await this.dbContext.SaveChangesAsync();
 
                 result = dbRecord.ToViewModel();
+                result.DateOfBirth = dateServices.ConvertToLocalFromUtc(result.DateOfBirth).GetValueOrDefault();
             }
             catch (Exception ex)
             {
@@ -149,11 +143,6 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         [Route("get-store")]
         public async Task<IEnumerable<object>> ListStores([FromUri]int andromedaSiteId)
         {
-            //get all stores related to any employee 
-            //var employees = await this.linkRecords
-            //    .Where(e=> e.EmployeeRecord.EmployeeStoreLinkRecords.Any(k => k.AdromedaSiteId == andromedaSiteId))
-            //    .Select(e=> e.AdromedaSiteId).Distinct().ToArrayAsync();
-
             var stores = await this.storeRecords
                 .Where(e => e.AndromedaSiteId == andromedaSiteId)
                 .Select(e => new

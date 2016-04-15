@@ -23,6 +23,7 @@ module MyAndromeda.Hr.Services {
                     dataSource: <any>[]
                 }
 
+
                 if (employee) {
                     part.dataSource = [employee];
                     return part;
@@ -105,9 +106,9 @@ module MyAndromeda.Hr.Services {
                 minorTickCount: 1,
                 workWeekStart: 0,
                 workWeekEnd: 6,
-                allDaySlot: true,
+                allDaySlot: false,
                 dataSource: dataSource,
-                timezone: "Europe/London",
+                timezone: "Etc/UTC",
                 currentTimeMarker: {
                     useLocalTimezone: false
                 },
@@ -216,7 +217,21 @@ module MyAndromeda.Hr.Services {
                     e.preventDefault();
                 },
                 add: (e) => {
-                    Logger.Notify("add"); Logger.Notify(e);
+                    Logger.Notify("team scheduler - add - run");
+                    Logger.Notify(e);
+
+                    var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    Logger.Notify("test all day validation");
+                    let validSelection = tester.IsAllDayValid(<any>e.event, (invalidReason) => {
+                        this.SweetAlert.swal("Sorry", invalidReason, "error");
+                    });
+
+                    if (!validSelection) {
+                        Logger.Notify("cancel add");
+                        e.preventDefault();
+                        return;
+                    }
 
                     var tester = new EmployeeAvailabilityTestService(e.sender);
                     if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
@@ -230,6 +245,18 @@ module MyAndromeda.Hr.Services {
                     Logger.Notify("save"); Logger.Notify(e);
 
                     var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    Logger.Notify("test all day validation");
+                    let validSelection = tester.IsAllDayValid(<any>e.event, (invalidReason) => {
+                        this.SweetAlert.swal("Sorry", invalidReason, "error");
+                    });
+
+                    if (!validSelection) {
+                        Logger.Notify("cancel add");
+                        e.preventDefault();
+                        return;
+                    }
+
                     if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                         Logger.Notify("cancel save");
                         this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");
@@ -265,10 +292,10 @@ module MyAndromeda.Hr.Services {
                 minorTickCount: 1,
                 workWeekStart: 0,
                 workWeekEnd: 6,
-                allDaySlot: true,
+                allDaySlot: false,
 
                 dataSource: dataSource,
-                timezone: "Europe/London",
+                //timezone: "Etc/UTC",
                 currentTimeMarker: {
                     useLocalTimezone: false
                 },
@@ -281,6 +308,7 @@ module MyAndromeda.Hr.Services {
                 toolbar: ["pdf"],
                 showWorkHours: false,
                 resources: this.GetResources(stores, employee),
+               
                 views: [
                     { type: "day", showWorkHours: false },
                     { type: "week", selected: true, showWorkHours: false },
@@ -331,9 +359,22 @@ module MyAndromeda.Hr.Services {
                     }
                 },
                 add: (e) => {
-                    Logger.Notify("add"); Logger.Notify(e);
+                    Logger.Notify("team scheduler - add - run");
+                    Logger.Notify(e);
 
                     var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    Logger.Notify("test all day validation");
+                    let validSelection = tester.IsAllDayValid(<any>e.event, (invalidReason) => {
+                        this.SweetAlert.swal("Sorry", invalidReason, "error");
+                    });
+
+                    if (!validSelection) {
+                        Logger.Notify("cancel add");
+                        e.preventDefault();
+                        return;
+                    }
+
                     if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                         Logger.Notify("cancel add");
                         //SweetAlert.swal("Sorry!", name + " has been saved.", "success");
@@ -343,9 +384,18 @@ module MyAndromeda.Hr.Services {
                     }
                 },
                 save: (e) => {
-                    Logger.Notify("save"); Logger.Notify(e);
+                    Logger.Notify("team scheduler - save - run"); Logger.Notify(e);
 
                     var tester = new EmployeeAvailabilityTestService(e.sender);
+
+                    let validSelection = tester.IsAllDayValid(<any>e.event, (invalidReason) => {
+                        this.SweetAlert.swal("Sorry", invalidReason, "error");
+                    });
+
+                    if (!validSelection) {
+                        e.preventDefault();
+                    }
+
                     if (!tester.IsWorkAvailable(e.event.start, e.event.end, e.event)) {
                         Logger.Notify("cancel save");
                         this.SweetAlert.swal("Sorry", "The employee already has a job in this range", "error");

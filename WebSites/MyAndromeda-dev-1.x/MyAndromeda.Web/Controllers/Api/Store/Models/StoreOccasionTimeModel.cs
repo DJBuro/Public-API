@@ -6,10 +6,35 @@ using System.Web;
 
 namespace MyAndromeda.Web.Controllers.Api.Store.Models
 {
+    public class StoreOccasionTimeUpdateModel : StoreOccasionTimeModel
+    {
+        public override DateTime Start
+        {
+            get
+            {
+                return base.Start;
+            }
+            set
+            {
+                base.start = new DateTime(value.Ticks, DateTimeKind.Utc);
+            }
+        }
+
+        public override DateTime End
+        {
+            get
+            {
+                return base.end;
+            }
+            set
+            {
+                base.end = new DateTime(value.Ticks, DateTimeKind.Utc);
+            }
+        }
+    }
+
     public class StoreOccasionTimeModel
     {
-        public DateTime End { get; set; }
-
         public Guid? Id { get; set; }
 
         public bool IsAllDay { get; set; }
@@ -20,7 +45,19 @@ namespace MyAndromeda.Web.Controllers.Api.Store.Models
 
         public string RecurrenceRule { get; set; }
 
-        public DateTime Start { get; set; }
+        protected DateTime start;
+        public virtual DateTime Start
+        {
+            get { return this.start; }
+            set { this.start = new DateTime(value.Ticks, DateTimeKind.Utc); } 
+        }
+
+        protected DateTime end;
+        public virtual DateTime End
+        {
+            get { return this.end; }
+            set { this.end = new DateTime(value.Ticks, DateTimeKind.Utc); }
+        }
 
         public string Title { get; set; }
 

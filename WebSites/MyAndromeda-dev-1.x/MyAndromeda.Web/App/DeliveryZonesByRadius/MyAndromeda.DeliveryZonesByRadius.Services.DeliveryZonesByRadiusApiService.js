@@ -57,7 +57,7 @@ var MyAndromeda;
                         type: "POST",
                         contentType: 'application/json',
                         dataType: "json",
-                        data: raw
+                        data: raw,
                     });
                     promise.done(function (result) {
                         var postcodeArea = result;

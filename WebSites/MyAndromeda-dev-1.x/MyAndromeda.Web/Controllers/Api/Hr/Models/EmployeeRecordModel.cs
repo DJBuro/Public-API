@@ -20,7 +20,12 @@ namespace MyAndromeda.Web.Controllers.Api.Hr.Models
 
         public string Phone { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
+        private DateTime dob;
+        public DateTime DateOfBirth {
+
+            get { return this.dob; }
+            set { this.dob = DateTime.SpecifyKind(value, DateTimeKind.Utc); }
+        }
 
         public string Gender { get; set; }
 

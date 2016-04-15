@@ -19,7 +19,7 @@
         Phone?: string;
 
         Gender?: string;
-        DateOfBirth?: string;
+        DateOfBirth?: Date;
         Department?: string;
         PrimaryRole?: string;
         Roles: string[];
@@ -41,31 +41,48 @@
         color: string;         
     }
 
+    export var taskNames = {
+        Shift: "Normal Shift",
+        CoveringShift: "Covering Shift",
+        NeedCover: "Need Cover",
+        UnplannedLeave: "Unplanned leave", 
+        PlannedLeave: "Planned leave"
+    };
+    export var taskValues = {
+        Shift: "Shift",
+        CoveringShift: "Covering Shift",
+        NeedCover: "Need cover",
+        UnplannedLeave: "Unplanned",
+        PlannedLeave: "Holiday"
+
+    };
+
+
     export var taskTypes: Array<ITaskType> = [
         {
-            text: "Normal Shift",
-            value: "Shift",
+            text: taskNames.Shift,
+            value: taskValues.Shift,
             color: "#ffffff"
         },
         {
-            text: "Need cover",
-            value: "Need cover",
+            text: taskNames.NeedCover,
+            value: taskValues.NeedCover,
             color: "#d9534f"
         },
         {
-            text: "Covering Shift",
-            value: "Covering Shift",
+            text: taskNames.CoveringShift,
+            value: taskValues.CoveringShift,
             color: "#d9edf7"
         },
         {
-            text: "Unplanned leave",
-            value: "Unplanned",
-            color: "#f2dede"
+            text: taskNames.UnplannedLeave,
+            value: taskValues.UnplannedLeave,
+            color: "#d9534f"
         },
         {
-            text: "Planned leave",
-            value: "Holiday",
-            color: "#fcf8e3"
+            text: taskNames.PlannedLeave,
+            value: taskValues.PlannedLeave,
+            color: "#f0ad4e"
         }
     ];
 
@@ -176,6 +193,9 @@
             Phone: {
                 type: "string",
                 nullable: false
+            },
+            DateOfBirth: {
+                type: "Date"
             },
             DirtyHack: {
                 type: "string",

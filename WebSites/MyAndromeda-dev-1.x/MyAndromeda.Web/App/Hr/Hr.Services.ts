@@ -148,11 +148,26 @@
             return sync;
         }
 
-        private Update(model, onSuccess: (data) => void, onError: (data) => void)
+        private Update(model: Models.IEmployee, onSuccess: (data) => void, onError: (data) => void)
         {
             let route = "hr/{0}/employees/{1}/update";
             route = kendo.format(route, this.chainId, this.andromedaSiteId);
 
+            Logger.Notify("DOB - ");
+            if (model.DateOfBirth) {
+                var offsetMiliseconds = new Date().getTimezoneOffset() * 60000;
+                var a = kendo.toString(model.DateOfBirth, "Y");
+
+                Logger.Notify(model.DateOfBirth);
+                Logger.Notify(a);
+                //Logger.Notify(b);
+                Logger.Notify(offsetMiliseconds);
+
+                model.DateOfBirth = new Date(model.DateOfBirth.getTime() + offsetMiliseconds);
+
+                Logger.Notify(model.DateOfBirth);
+            }
+            
             let promise = this.$http.post(route, model);
 
             this.Saved.onNext(false);
@@ -166,6 +181,7 @@
                 onSuccess(callBackData);
 
                 this.Saved.onNext(true);
+
             }, (error) => {
                 Logger.Error(error);
                 this.Error.onNext("Updating Failed");
