@@ -26,20 +26,20 @@ namespace OrderTracking.WebService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://geocode.androtechnology.co.uk/GeoCode.asmx")]
-        public string OrderTracking_WebService_AndroGeoCode_GeoCode {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://gpsgate.androcloudservices.com/gps/Trackers.asmx")]
+        public string OrderTracking_WebService_AndroGps_Trackers {
             get {
-                return ((string)(this["OrderTracking_WebService_AndroGeoCode_GeoCode"]));
+                return ((string)(this["OrderTracking_WebService_AndroGps_Trackers"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://gpsgate.androcloudservices.com/gps/trackers.asmx")]
-        public string OrderTracking_WebService_AndroGps_Trackers {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx")]
+        public string OrderTracking_WebService_AndroGeoCode_GeoCode {
             get {
-                return ((string)(this["OrderTracking_WebService_AndroGps_Trackers"]));
+                return ((string)(this["OrderTracking_WebService_AndroGeoCode_GeoCode"]));
             }
         }
     }

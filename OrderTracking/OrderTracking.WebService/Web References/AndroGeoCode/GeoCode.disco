@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
-  <contractRef ref="http://geocode.androtechnology.co.uk/GeoCode.asmx?wsdl" docRef="http://geocode.androtechnology.co.uk/GeoCode.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
-  <soap address="http://geocode.androtechnology.co.uk/GeoCode.asmx" xmlns:q1="http://gps.andromedagps.com" binding="q1:GeoCodeSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-  <soap address="http://geocode.androtechnology.co.uk/GeoCode.asmx" xmlns:q2="http://gps.andromedagps.com" binding="q2:GeoCodeSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <contractRef ref="http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx?wsdl" docRef="http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx" xmlns:q1="http://gps.andromedagps.com" binding="q1:GeoCodeSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx" xmlns:q2="http://gps.andromedagps.com" binding="q2:GeoCodeSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
 </discovery>

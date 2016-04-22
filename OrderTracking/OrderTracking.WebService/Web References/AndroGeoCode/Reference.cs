@@ -140,9 +140,21 @@ namespace OrderTracking.WebService.AndroGeoCode {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://gps.andromedagps.com")]
     public partial class Coordinates {
         
+        private long idField;
+        
         private float longitudeField;
         
         private float latitudeField;
+        
+        /// <remarks/>
+        public long Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+            }
+        }
         
         /// <remarks/>
         public float Longitude {

@@ -177,10 +177,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://geocode.androtechnology.co.uk/GeoCode.asmx">
+    <WebReferenceUrl Include="http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AndroGeoCode\</RelPath>
-      <UpdateFromURL>http://geocode.androtechnology.co.uk/GeoCode.asmx</UpdateFromURL>
+      <UpdateFromURL>http://androadmin.androcloudservices.com/geocoding/GeoCode.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
