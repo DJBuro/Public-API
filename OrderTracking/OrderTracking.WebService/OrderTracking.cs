@@ -293,7 +293,7 @@ namespace OrderTracking
 
                     if (results.Success)
                     {
-                        IList<Tracker> trackers = account.GetTrackers();
+                        List<Tracker> trackers = (List<Tracker>)account.GetTrackers();
 
                         foreach (var driver in drivers)
                         {
@@ -568,7 +568,7 @@ namespace OrderTracking
                         order.TicketNumber = ticketNumber;
                         order.ExtraInformation = extraInformation;
 
-                        var ordStatus = new OrderStatus
+                        OrderStatus ordStatus = new OrderStatus
                                             {
                                                 Order = order,
                                                 Processor = orderProcessor,
@@ -580,7 +580,7 @@ namespace OrderTracking
 
                         foreach (var item in orderItems)
                         {
-                            var ordItem = new Item { Name = item.Name, Quantity = item.Quantity, Order = order };
+                            Item ordItem = new Item { Name = item.Name, Quantity = item.Quantity, Order = order };
                             order.Items.Add(ordItem);
                         }
 
@@ -601,7 +601,7 @@ namespace OrderTracking
                                                TownCity = customerDetails.TownCity
                                            };
 
-                        var cusOrder = new CustomerOrder(order, customer);
+                        CustomerOrder cusOrder = new CustomerOrder(order, customer);
                         customer.CustomerOrders.Add(cusOrder);
 
                         if (account.GpsEnabled && coordinates != null)
@@ -768,7 +768,7 @@ namespace OrderTracking
                     if (order != null && order.Id != null)
                     {
                         // Get the status 1 (order taken) status updates for this order - there should only be one
-                        IList<OrderStatus> orderStatuses = OrderStatusDao.GetByOrder(order.Id.Value);
+                        List<OrderStatus> orderStatuses = (List<OrderStatus>)OrderStatusDao.GetByOrder(order.Id.Value);
 
                         // Did we successfully get the order taken date/time?                
                         if (orderStatuses != null && orderStatuses.Count == 1)

@@ -85,7 +85,7 @@ namespace OrderTracking.WebService.Reconcile
             }         
         }
 
-        public static void ReconTrackers(ref IList<Tracker> trackers)
+        public static void ReconTrackers(ref List<Tracker> trackers)
         {
             //http://debug/Trackers.asmx
             //androGps

@@ -5,6 +5,7 @@ using OrderTracking.Dao;
 using OrderTracking.Dao.Domain;
 using OrderTracking.WebService.Dao;
 using OrderTracking.WebService.Gps;
+using System.Collections;
 
 namespace OrderTracking
 {
@@ -193,7 +194,12 @@ namespace OrderTracking
                     {
                         if (driver.Trackers != null && driver.Trackers.Count > 0)
                         {
-                            var tracker = (Tracker)driver.Trackers[0];
+                            // Get the first tracker
+                            Tracker tracker = null;
+                            IEnumerator enumerator = driver.Trackers.GetEnumerator();
+                            if (enumerator.MoveNext()) tracker = (Tracker)enumerator.Current;
+
+                        //    var tracker = (Tracker)driver.Trackers.ToArray()[0];
 
                             var tracker2 = trackers.Find(c => c.Name == tracker.Name);
 
@@ -229,7 +235,12 @@ namespace OrderTracking
                     if (orders == null) continue;
                     foreach (var order in orders)
                     {
-                        var customerOrder = (CustomerOrder)order.CustomerOrder[0];
+                        // Get the first customer order
+                        CustomerOrder customerOrder = null;
+                        IEnumerator enumerator = order.CustomerOrder.GetEnumerator();
+                        if (enumerator.MoveNext()) customerOrder = (CustomerOrder)enumerator.Current;
+
+                      //  var customerOrder = (CustomerOrder)order.CustomerOrder[0];
                         
                         if(driver.Deliveries == null)
                         {
@@ -277,7 +288,12 @@ namespace OrderTracking
                     if (storeMapData.OutStandingDeliveries == null)
                         storeMapData.OutStandingDeliveries = new List<Delivery>();
 
-                    var orderStatus = (OrderStatus) order.OrderStatus[0];
+                    // Get the first customer order
+                    OrderStatus orderStatus = null;
+                    IEnumerator enumerator = order.OrderStatus.GetEnumerator();
+                    if (enumerator.MoveNext()) orderStatus = (OrderStatus)enumerator.Current;
+
+                    //var orderStatus = (OrderStatus) order.OrderStatus[0];
                     
                     // Get the despatched date/time
                     long orderDispatchedTicks = 0;
@@ -301,7 +317,12 @@ namespace OrderTracking
         {
             var ord = OrderDao.FindByExternalId(order.ExternalOrderId, store);
 
-            var orderStatus = (OrderStatus)ord.OrderStatus[0];
+            // Get the first customer order
+            OrderStatus orderStatus = null;
+            IEnumerator enumerator = ord.OrderStatus.GetEnumerator();
+            if (enumerator.MoveNext()) orderStatus = (OrderStatus)enumerator.Current;
+
+     //       var orderStatus = (OrderStatus)ord.OrderStatus[0];
 
             //only updates orders with a driver;
             if (orderStatus.Status.Id != 4) return;

@@ -160,17 +160,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Andromeda\Rameses Web Components\OrderTracking\OrderTracking.Dao.NHibernate\OrderTracking.Dao.NHibernate.csproj">
+      <Project>{2f969ad7-048e-4616-b204-6047ff999f6c}</Project>
+      <Name>OrderTracking.Dao.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Andromeda\Rameses Web Components\OrderTracking\OrderTracking.Dao\OrderTracking.Dao.csproj">
+      <Project>{f8f436ba-aedc-421e-b90c-e2c5e191dc73}</Project>
+      <Name>OrderTracking.Dao</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OrderTracking.Core\OrderTracking.Core.csproj">
       <Project>{12850896-12E9-4192-9672-4BC602B513DC}</Project>
       <Name>OrderTracking.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OrderTracking.Dao.NHibernate\OrderTracking.Dao.NHibernate.csproj">
-      <Project>{2F969AD7-048E-4616-B204-6047FF999F6C}</Project>
-      <Name>OrderTracking.Dao.NHibernate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OrderTracking.Dao\OrderTracking.Dao.csproj">
-      <Project>{F8F436BA-AEDC-421E-B90C-E2C5E191DC73}</Project>
-      <Name>OrderTracking.Dao</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Model\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

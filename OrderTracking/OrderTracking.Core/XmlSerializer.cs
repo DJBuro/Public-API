@@ -8,7 +8,7 @@ namespace OrderTracking.Core
     {
         public static Driver XmlSerialize(this Driver driver)
         {
-            return TranslateDriver(driver);           
+            return TranslateDriver(driver);
         }
 
         public static IList<Order> XmlSerialize(this IList<Order> orders)
@@ -37,7 +37,7 @@ namespace OrderTracking.Core
                 tracker.Coordinates.Id = null;
                 tracker.Apn = null;
 
-                if (tracker.Driver !=null)
+                if (tracker.Driver != null)
                 {
                     tracker.Driver.Trackers = null;
                     tracker.Driver.Store = null;
@@ -53,15 +53,15 @@ namespace OrderTracking.Core
         private static Driver TranslateDriver(Driver driver)
         {
             var drive = new Driver
-                            {
-                                Id = null,
-                                Name = driver.Name,
-                                Vehicle = driver.Vehicle,
-                                ExternalDriverId = driver.ExternalDriverId,
-                                DriverOrder = TranslateOrdersForDriver(driver.DriverOrder),
-                                Trackers = TranslateTrackerForDriver(driver.Trackers),
-                                Store = null
-                            };
+            {
+                Id = null,
+                Name = driver.Name,
+                Vehicle = driver.Vehicle,
+                ExternalDriverId = driver.ExternalDriverId,
+                DriverOrder = TranslateOrdersForDriver(driver.DriverOrder),
+                Trackers = TranslateTrackerForDriver(driver.Trackers),
+                Store = null
+            };
 
             return drive;
         }
@@ -89,7 +89,7 @@ namespace OrderTracking.Core
                     item.Id = null;
                     item.Order = null;
                 }
-                
+
                 arrayList.Add(list);
             }
 
@@ -133,8 +133,8 @@ namespace OrderTracking.Core
         {
             order.Id = null;
             order.Store = null;
-            
-            
+
+
             foreach (CustomerOrder customerOrder in order.CustomerOrder)
             {
                 customerOrder.Id = null;
@@ -147,7 +147,7 @@ namespace OrderTracking.Core
             foreach (Item item in order.Items)
             {
                 item.Id = null;
-               item.Order = null;
+                item.Order = null;
             }
 
             foreach (OrderStatus orderStatus in order.OrderStatus)
@@ -158,7 +158,7 @@ namespace OrderTracking.Core
 
             return order;
         }
-        
+
         #endregion
 
 

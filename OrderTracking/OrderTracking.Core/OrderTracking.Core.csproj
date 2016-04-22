@@ -61,8 +61,8 @@
     <Compile Include="XmlSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OrderTracking.Dao\OrderTracking.Dao.csproj">
-      <Project>{F8F436BA-AEDC-421E-B90C-E2C5E191DC73}</Project>
+    <ProjectReference Include="..\..\..\..\Andromeda\Rameses Web Components\OrderTracking\OrderTracking.Dao\OrderTracking.Dao.csproj">
+      <Project>{f8f436ba-aedc-421e-b90c-e2c5e191dc73}</Project>
       <Name>OrderTracking.Dao</Name>
     </ProjectReference>
   </ItemGroup>
