@@ -44,7 +44,7 @@ namespace MyAndromeda.Web.Services
         
         public void AddOpeningTime(string day, TimeSpan startTimeSpan, TimeSpan endTimeSpan, ModelStateDictionary modelState)
         {
-            var allOpenTimes = this.GetOpenTimes();
+            OpeningTimesForTheWeek allOpenTimes = this.GetOpenTimes();
 
             var model = new TimeSpanBlock()
             {
@@ -54,7 +54,7 @@ namespace MyAndromeda.Web.Services
                 EndTime = endTimeSpan.Hours.ToString("00") + ":" + endTimeSpan.Minutes.ToString("00")
             };
 
-            var validModel = OpeningTimesHelper.CheckNewOpeningTime(allOpenTimes, day, startTimeSpan, endTimeSpan, (failure) => {
+            bool validModel = OpeningTimesHelper.CheckNewOpeningTime(allOpenTimes, day, startTimeSpan, endTimeSpan, (failure) => {
                 modelState.AddModelError("StartTime", failure);
             });
 
@@ -77,11 +77,11 @@ namespace MyAndromeda.Web.Services
 
             this.openTimes = new OpeningTimesForTheWeek();
 
-            var models = this.openingHoursDataAccess.ListBySiteId(this.currentSite.SiteId);
+            IEnumerable<TimeSpanBlock> models = this.openingHoursDataAccess.ListBySiteId(this.currentSite.SiteId);
 
             foreach (var model in models) 
             {
-                var key = model.Day;
+                string key = model.Day;
 
                 if(!this.openTimes.ContainsKey(key))
                 {
@@ -102,19 +102,19 @@ namespace MyAndromeda.Web.Services
         public void DeleteOpeningTime(int id)
         {
             this.openingHoursDataAccess.DeleteById(this.currentSite.SiteId, id);
-            this.Sync("Deleted a opening time.");
+            this.Sync(action: "Deleted a opening time.");
         }
 
         public void DeleteAllTimesForDay(string day)
         {
             this.openingHoursDataAccess.DeleteBySiteIdDay(this.currentSite.SiteId, day);
-            this.Sync("Deleted opening times for the day.");
+            this.Sync(action: "Deleted opening times for the day.");
         }
 
         public void AddOpeningTime(TimeSpanBlock timeSpanBlock)
         {
             this.openingHoursDataAccess.Add(this.currentSite.SiteId, timeSpanBlock);
-            this.Sync("Added a opening time.");
+            this.Sync(action: "Added a opening time.");
         }
 
         private void Sync(string action)

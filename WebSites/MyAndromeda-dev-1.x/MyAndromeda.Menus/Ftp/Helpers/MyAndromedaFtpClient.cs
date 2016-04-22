@@ -27,10 +27,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public MyAndromedaFtpClient(NetworkCredential credentials)
         {
             if (credentials == null)
-                throw new ArgumentNullException("credentials");
+                throw new ArgumentNullException(paramName: "credentials");
 
             this.Credentials = credentials;
-            this.UsePassive = MenuFtpSettings.TransferMode.Equals("Passive", StringComparison.InvariantCultureIgnoreCase);
+            this.UsePassive = MenuFtpSettings.TransferMode.Equals(value: "Passive", comparisonType: StringComparison.InvariantCultureIgnoreCase);
         }
 
         public MyAndromedaFtpClient(): this(new NetworkCredential(MenuFtpSettings.UserName, MenuFtpSettings.Password))
@@ -52,10 +52,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public IEnumerable<FtpDirectoryInfo> GetDirectories(Uri directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
@@ -72,13 +72,13 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         /// </returns>
         public IEnumerable<FtpFileInfo> GetFiles(Uri directory)
         {
-            var result = Enumerable.Empty<FtpFileInfo>();
+            IEnumerable<FtpFileInfo> result = Enumerable.Empty<FtpFileInfo>();
 
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
@@ -89,7 +89,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
             }
             catch (WebException e) 
             {
-                if (!e.Message.Contains("550")) {
+                if (!e.Message.Contains(value: "550")) {
                     throw e;
                 }
                 
@@ -108,7 +108,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public Stream OpenRead(FtpFileInfo file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             //var stream = this.CreateClient().OpenRead(file.Uri);
             //return new FtpStream(stream, file.Length);
@@ -128,10 +128,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public Stream OpenRead(Uri file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             file = this.NormalizeUri(file);
 
@@ -168,7 +168,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         {
             if (file == null)
             {
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
             }
 
             return this.OpenWrite(file.Uri);
@@ -185,12 +185,12 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         {
             if (file == null)
             {
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
             }
 
             if (file.Scheme != Uri.UriSchemeFtp)
             {
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
             }
 
             file = this.NormalizeUri(file);
@@ -208,7 +208,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void DeleteFile(FtpFileInfo file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             this.DeleteFile(file.Uri);
         }
@@ -220,10 +220,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void DeleteFile(Uri file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             file = this.NormalizeUri(file);
 
@@ -234,16 +234,16 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void RenameFile(Uri file, Uri renameTo) 
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             if (renameTo == null)
-                throw new ArgumentNullException("renameTo");
+                throw new ArgumentNullException(paramName: "renameTo");
 
             if (renameTo.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "renameTo");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "renameTo");
 
             using (this.CreateRenameRequest(file, renameTo, WebRequestMethods.Ftp.Rename)) 
             { }
@@ -256,10 +256,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void CreateDirectory(Uri directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
@@ -274,7 +274,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void DeleteDirectory(FtpDirectoryInfo directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             this.DeleteDirectory(directory.Uri);
         }
@@ -286,10 +286,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public void DeleteDirectory(Uri directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
@@ -307,10 +307,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public FtpFileInfo GetFileInfo(Uri file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             file = this.NormalizeUri(file);
 
@@ -330,10 +330,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public FtpDirectoryInfo GetDirectoryInfo(Uri directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
@@ -350,17 +350,17 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public bool FileExists(Uri file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             file = this.NormalizeUri(file);
 
-            var folder = new Uri(file, "./");
-            var files = this.GetFiles(folder);
+            var folder = new Uri(file, relativeUri: "./");
+            IEnumerable<FtpFileInfo> files = this.GetFiles(folder);
 
-            var uris = files.Select(e => this.NormalizeUri(e.Uri).AbsoluteUri);
+            IEnumerable<string> uris = files.Select(e => this.NormalizeUri(e.Uri).AbsoluteUri);
 
             return
                 uris.Any(f => file.AbsoluteUri.Equals(f));
@@ -377,14 +377,14 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         public bool DirectoryExists(Uri directory)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             directory = this.NormalizeUri(directory);
 
-            var directories = this.GetDirectories(new Uri(directory, "./"));
+            IEnumerable<FtpDirectoryInfo> directories = this.GetDirectories(new Uri(directory, relativeUri: "./"));
 
             return directories.Any(dir => this.NormalizeUri(dir.Uri).AbsoluteUri == directory.AbsoluteUri);
         }
@@ -400,10 +400,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         private IEnumerable<FtpFileSystemInfo> GetFileSystemInfos(Uri directory, FtpFileSystemInfoType type)
         {
             if (directory == null)
-                throw new ArgumentNullException("directory");
+                throw new ArgumentNullException(paramName: "directory");
 
             if (directory.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The directory isn't a valid FTP URI", "directory");
+                throw new ArgumentException(message: "The directory isn't a valid FTP URI", paramName: "directory");
 
             using (var response = (this.CreateResponse(directory, WebRequestMethods.Ftp.ListDirectoryDetails)))
             {
@@ -413,7 +413,7 @@ namespace MyAndromeda.Menus.Ftp.Helpers
                     {
                         string all = reader.ReadToEnd();
 
-                        var infos = GetFileSystemInfosFromResponseFirst(all, directory).ToArray();
+                        FtpFileSystemInfo[] infos = GetFileSystemInfosFromResponseFirst(all, directory).ToArray();
 
                         if (infos.Length == 0) 
                         {
@@ -436,14 +436,13 @@ namespace MyAndromeda.Menus.Ftp.Helpers
                 }
             }
 
-            throw new InvalidOperationException("Method should not reach this code!");
+            throw new InvalidOperationException(message: "Method should not reach this code!");
         }
 
 
         public IEnumerable<FtpFileSystemInfo> GetFileSystemInfosFromResponseFirst(string block, Uri directory) 
         {
-            var regex = new Regex(@"^(?<FileOrDirectory>[d-])(?<Attributes>[rwxts-]{3}){3}\s+\d{1,}\s+.*?(?<FileSize>\d{1,})\s+(?<Date>\w+\s+\d{1,2}\s+(?:\d{4})?)(?<YearOrTime>\d{1,2}:\d{2})?\s+(?<Name>.+?)\s?$",
-                            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+            var regex = new Regex(pattern: @"^(?<FileOrDirectory>[d-])(?<Attributes>[rwxts-]{3}){3}\s+\d{1,}\s+.*?(?<FileSize>\d{1,})\s+(?<Date>\w+\s+\d{1,2}\s+(?:\d{4})?)(?<YearOrTime>\d{1,2}:\d{2})?\s+(?<Name>.+?)\s?$", options: RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
             MatchCollection matches = regex.Matches(block);
 
             var infos = matches.Cast<Match>()
@@ -468,9 +467,11 @@ namespace MyAndromeda.Menus.Ftp.Helpers
 
         public IEnumerable<FtpFileSystemInfo> GetFileSystemInfosFromDos(string block, Uri directory)
         {
-            var regex = new Regex(@"(?<Date>\d+-\d+-\d+\s+\d+:\d+\w+)\s+((?<FileSize>\d*)\s+(?<Name>.*)\s?$ | (?<Directory><DIR>)\s+(?<Name>.*)\s?$)",
-            //var regex = new Regex(@"(?<Date>\d+-\d+-\d+\s+\d+:\d+\w+)\s+(?<FileSize>\d*)\s+(?<Name>.*)\s?$",
-                            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+            var regex = new Regex(
+                pattern: @"(?<Date>\d+-\d+-\d+\s+\d+:\d+\w+)\s+((?<FileSize>\d*)\s+(?<Name>.*)\s?$ | (?<Directory><DIR>)\s+(?<Name>.*)\s?$)", 
+                options:
+                        //var regex = new Regex(@"(?<Date>\d+-\d+-\d+\s+\d+:\d+\w+)\s+(?<FileSize>\d*)\s+(?<Name>.*)\s?$",
+                        RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
             MatchCollection matches = regex.Matches(block);
 
@@ -504,10 +505,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         private DateTime GetTimeStamp(Uri file)
         {
             if (file == null)
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
 
             if (file.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
 
             file = this.NormalizeUri(file);
 
@@ -528,11 +529,11 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         {
             if (file == null)
             {
-                throw new ArgumentNullException("file");
+                throw new ArgumentNullException(paramName: "file");
             }
             if (file.Scheme != Uri.UriSchemeFtp)
             {
-                throw new ArgumentException("The file isn't a valid FTP URI", "file");
+                throw new ArgumentException(message: "The file isn't a valid FTP URI", paramName: "file");
             }
 
             file = this.NormalizeUri(file);
@@ -555,16 +556,16 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         {
             if (requestUri == null)
             {
-                throw new ArgumentNullException("requestUri");
+                throw new ArgumentNullException(paramName: "requestUri");
             }
             if (requestUri.Scheme != Uri.UriSchemeFtp)
             {
-                throw new ArgumentException("The request URI isn't a valid FTP URI", "requestUri");
+                throw new ArgumentException(message: "The request URI isn't a valid FTP URI", paramName: "requestUri");
             }
 
             requestUri = this.NormalizeUri(requestUri);
 
-            var request = this.CreateRequest(requestUri, requestMethod).GetResponse();
+            WebResponse request = this.CreateRequest(requestUri, requestMethod).GetResponse();
             var response = request as FtpWebResponse;
 
             return response;
@@ -574,11 +575,11 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         {
             if (requestUri == null)
             {
-                throw new ArgumentNullException("requestUri");
+                throw new ArgumentNullException(paramName: "requestUri");
             }
             if (requestUri.Scheme != Uri.UriSchemeFtp)
             {
-                throw new ArgumentException("The request URI isn't a valid FTP URI", "requestUri");
+                throw new ArgumentException(message: "The request URI isn't a valid FTP URI", paramName: "requestUri");
             }
 
             requestUri = this.NormalizeUri(requestUri);
@@ -608,10 +609,10 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         private FtpWebRequest CreateRequest(Uri requestUri, string requestMethod)
         {
             if (requestUri == null)
-                throw new ArgumentNullException("requestUri");
+                throw new ArgumentNullException(paramName: "requestUri");
 
             if (requestUri.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The request URI isn't a valid FTP URI", "requestUri");
+                throw new ArgumentException(message: "The request URI isn't a valid FTP URI", paramName: "requestUri");
 
             requestUri = this.NormalizeUri(requestUri);
 
@@ -646,16 +647,18 @@ namespace MyAndromeda.Menus.Ftp.Helpers
         private Uri NormalizeUri(Uri uri)
         {
             if (uri == null)
-                throw new ArgumentNullException("uri");
+                throw new ArgumentNullException(paramName: "Uri");
 
             if (uri.Scheme != Uri.UriSchemeFtp)
-                throw new ArgumentException("The URI isn't a valid FTP URI", "uri");
+                throw new ArgumentException(message: "The URI isn't a valid FTP URI", paramName: "uri");
 
             string path = uri.AbsoluteUri;
 
             //Cut the "ftp://" off
             path = path.Substring(6);
-            path = path.Replace("//", "/").Replace(@"\\", "/").Replace(@"\", "/");
+            path = path.Replace(oldValue: "//", newValue: "/")
+                .Replace(oldValue: @"\\", newValue: "/")
+                .Replace(oldValue: @"\", newValue: "/");
 
             return new Uri("ftp://" + path);
         }

@@ -50,7 +50,7 @@ namespace MyAndromeda.Web.Services.Settings
         {
             get
             {
-                var value = Convert.ToBoolean(this.AppSettings[RunFtpPublishingKey]);
+                bool value = Convert.ToBoolean(this.AppSettings[RunFtpPublishingKey]);
                 return value;
             }
             set

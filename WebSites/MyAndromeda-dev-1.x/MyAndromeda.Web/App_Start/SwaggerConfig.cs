@@ -2,7 +2,7 @@ using System.Web.Http;
 using WebActivatorEx;
 using MyAndromeda.Web;
 using Swashbuckle.Application;
-using System.Linq;
+
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
 namespace MyAndromeda.Web
@@ -16,8 +16,6 @@ namespace MyAndromeda.Web
             GlobalConfiguration.Configuration 
                 .EnableSwagger(c =>
                     {
-                        
-
                         // By default, the service root url is inferred from the request used to access the docs.
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
@@ -112,15 +110,11 @@ namespace MyAndromeda.Web
                         // complex Schema, use a Schema filter.
                         //
                         //c.MapType<ProductType>(() => new Schema { type = "integer", format = "int32" });
-                        //
+
                         // If you want to post-modify "complex" Schemas once they've been generated, across the board or for a
                         // specific type, you can wire up one or more Schema filters.
                         //
                         //c.SchemaFilter<ApplySchemaVendorExtensions>();
-
-                        // Set this flag to omit schema property descriptions for any type properties decorated with the
-                        // Obsolete attribute 
-                        //c.IgnoreObsoleteProperties();
 
                         // In a Swagger 2.0 document, complex types are typically declared globally and referenced by unique
                         // Schema Id. By default, Swashbuckle does NOT use the full type name in Schema Ids. In most cases, this
@@ -129,6 +123,15 @@ namespace MyAndromeda.Web
                         // need to opt out of this behavior to avoid Schema Id conflicts.
                         //
                         //c.UseFullTypeNameInSchemaIds();
+
+                        // Alternatively, you can provide your own custom strategy for inferring SchemaId's for
+                        // describing "complex" types in your API.
+                        //  
+                        //c.SchemaId(t => t.FullName.Contains('`') ? t.FullName.Substring(0, t.FullName.IndexOf('`')) : t.FullName);
+
+                        // Set this flag to omit schema property descriptions for any type properties decorated with the
+                        // Obsolete attribute 
+                        //c.IgnoreObsoleteProperties();
 
                         // In accordance with the built in JsonSerializer, Swashbuckle will, by default, describe enums as integers.
                         // You can change the serializer behavior by configuring the StringToEnumConverter globally or for a given
@@ -162,7 +165,7 @@ namespace MyAndromeda.Web
                         // with the same path (sans query string) and HTTP method. You can workaround this by providing a
                         // custom strategy to pick a winner or merge the descriptions for the purposes of the Swagger docs 
                         //
-                        c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+                        //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                         // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.

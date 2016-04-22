@@ -54,7 +54,7 @@ namespace MyAndromeda.Web.Controllers
             return base.Redirect(returnUrl);
         }
 
-        public RedirectToRouteResult RedirectToAction(string p, string p1, object p2)
+        public new RedirectToRouteResult RedirectToAction(string p, string p1, object p2)
         {
             return base.RedirectToAction(p, p1, p2);
         }
@@ -80,7 +80,7 @@ namespace MyAndromeda.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(model.Email)) 
             {
-                this.ModelState.AddModelError("Email", Translator.T("Please enter a valid username"));
+                this.ModelState.AddModelError(key: "Email", errorMessage: Translator.T(text: "Please enter a valid username"));
                 return View(model);
             }
 
@@ -88,7 +88,7 @@ namespace MyAndromeda.Web.Controllers
 
             if (user == null) 
             {
-                this.ModelState.AddModelError("Email" , Translator.T("Please enter a valid username"));
+                this.ModelState.AddModelError(key: "Email", errorMessage: Translator.T(text: "Please enter a valid username"));
                 return View(model);
             }
 
@@ -97,9 +97,9 @@ namespace MyAndromeda.Web.Controllers
 
             await email.SendAsync();
 
-            this.notifier.Notify(Translator.T("A password reset link has been sent to your email address. This link will be valid for 12 more hours"));
+            this.notifier.Notify(Translator.T(text: "A password reset link has been sent to your email address. This link will be valid for 12 more hours"));
             
-            return RedirectToAction("LogOn");
+            return RedirectToAction(actionName: "LogOn");
         }
 
         [AllowAnonymous, HttpGet]
@@ -109,16 +109,16 @@ namespace MyAndromeda.Web.Controllers
 
             if (User.Identity.IsAuthenticated && workContext.CurrentUser.Available) 
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
 
             if (!this.passwordResetService.VerifyCode(code)) 
             {
-                this.notifier.Error(Translator.T("Your email reset link has expired. Please generate another."));
-                return RedirectToAction("ForgottenPassword");
+                this.notifier.Error(Translator.T(text: "Your email reset link has expired. Please generate another."));
+                return RedirectToAction(actionName: "ForgottenPassword");
             }
 
-            var userName = this.passwordResetService.GetUserNameFromText(code);
+            string userName = this.passwordResetService.GetUserNameFromText(code);
             var model = new ResetPasswordModel()
             {
                 Email = userName,
@@ -132,9 +132,9 @@ namespace MyAndromeda.Web.Controllers
         [ActionName("ResetPassword")]
         public async Task<ActionResult> ResetPasswordPost(ResetPasswordModel model) 
         {
-            model.CheckNull("model");
-            model.Email.CheckNull("Email");
-            model.Code.CheckNull("Code");
+            model.CheckNull(argumentName: "model");
+            model.Email.CheckNull(argumentName: "Email");
+            model.Code.CheckNull(argumentName: "Code");
 
             if (string.IsNullOrWhiteSpace(model.Password))
             {
@@ -142,8 +142,8 @@ namespace MyAndromeda.Web.Controllers
             }
             if (!this.passwordResetService.VerifyCode(model.Code)) 
             {
-                this.notifier.Error(Translator.T("Your email reset link has expired. Generate another from the login page"));
-                return RedirectToAction("LogOn");
+                this.notifier.Error(Translator.T(text: "Your email reset link has expired. Generate another from the login page"));
+                return RedirectToAction(actionName: "LogOn");
             }
 
             var passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.Password).ToArray();
@@ -152,7 +152,7 @@ namespace MyAndromeda.Web.Controllers
             {
                 foreach (var error in passwordErrors) 
                 {
-                    this.ModelState.AddModelError("Password", Translator.T(error));
+                    this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
                 }
 
                 return View(model);
@@ -161,7 +161,7 @@ namespace MyAndromeda.Web.Controllers
             var user = this.userDataService.GetByUserName(model.Email);
             this.membershipProvider.ChangePassword(model.Email, string.Empty, model.Password);
 
-            this.notifier.Notify(Translator.T("Your password has been changed and you can now login with the new password"));
+            this.notifier.Notify(Translator.T(text: "Your password has been changed and you can now login with the new password"));
             var notificationEmail = new Models.Emails.ResetPasswordNotificationEmail() 
             {
                 Email = model.Email,
@@ -170,7 +170,7 @@ namespace MyAndromeda.Web.Controllers
 
             await notificationEmail.SendAsync();
 
-            return RedirectToAction("LogOn"); 
+            return RedirectToAction(actionName: "LogOn"); 
         }
 
         //
@@ -185,7 +185,7 @@ namespace MyAndromeda.Web.Controllers
                 return View(model);
             }
             
-            Logger.Debug("Validating User {0}", model.UserName);
+            Logger.Debug(format: "Validating User {0}", args: new object[] { model.UserName });
             if (membershipProvider.ValidateUser(model.UserName, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
@@ -200,7 +200,7 @@ namespace MyAndromeda.Web.Controllers
                 return result;
             }
     
-            ModelState.AddModelError("", Translator.T("The credentials supplied were incorrect."));
+            ModelState.AddModelError(key: string.Empty, errorMessage: Translator.T(text: "The credentials supplied were incorrect."));
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -213,7 +213,7 @@ namespace MyAndromeda.Web.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return this.RedirectToAction(actionName: "Index", controllerName: "Home");
         }
         
         [Authorize]
@@ -234,7 +234,7 @@ namespace MyAndromeda.Web.Controllers
         [ActionName("ChangePassword")]
         public ActionResult ChangePasswordPost(ChangePasswordModel model)
         {
-            var passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
+            string[] passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
 
             if (passwordErrors.Length > 0)
             {
@@ -279,45 +279,6 @@ namespace MyAndromeda.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
-        //#region Status Codes
-        //private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        //{
-        //    // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-        //    // a full list of status codes.
-        //    switch (createStatus)
-        //    {
-        //        case MembershipCreateStatus.DuplicateUserName:
-        //            return "User name already exists. Please enter a different user name.";
-
-        //        case MembershipCreateStatus.DuplicateEmail:
-        //            return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
-
-        //        case MembershipCreateStatus.InvalidPassword:
-        //            return "The password provided is invalid. Please enter a valid password value.";
-
-        //        case MembershipCreateStatus.InvalidEmail:
-        //            return "The e-mail address provided is invalid. Please check the value and try again.";
-
-        //        case MembershipCreateStatus.InvalidAnswer:
-        //            return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-        //        case MembershipCreateStatus.InvalidQuestion:
-        //            return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-        //        case MembershipCreateStatus.InvalidUserName:
-        //            return "The user name provided is invalid. Please check the value and try again.";
-
-        //        case MembershipCreateStatus.ProviderError:
-        //            return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-        //        case MembershipCreateStatus.UserRejected:
-        //            return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-
-        //        default:
-        //            return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
-        //    }
-        //}
-        //#endregion
+        
     }
 }

@@ -15,8 +15,10 @@ namespace MyAndromeda.Core.Sync
         /// <param name="task">Task<T> method to execute</param>
         public static void RunSync(Func<Task> task)
         {
-            var oldContext = SynchronizationContext.Current;
+            SynchronizationContext oldContext = SynchronizationContext.Current;
+
             var synch = new ExclusiveSynchronizationContext();
+
             SynchronizationContext.SetSynchronizationContext(synch);
             synch.Post(async _ =>
             {
@@ -33,7 +35,7 @@ namespace MyAndromeda.Core.Sync
                 {
                     synch.EndMessageLoop();
                 }
-            }, null);
+            }, state: null);
             synch.BeginMessageLoop();
 
             SynchronizationContext.SetSynchronizationContext(oldContext);
@@ -47,7 +49,7 @@ namespace MyAndromeda.Core.Sync
         /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
-            var oldContext = SynchronizationContext.Current;
+            SynchronizationContext oldContext = SynchronizationContext.Current;
             var synch = new ExclusiveSynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(synch);
             T ret = default(T);
@@ -76,13 +78,13 @@ namespace MyAndromeda.Core.Sync
         {
             private bool done;
             public Exception InnerException { get; set; }
-            readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
-            readonly Queue<Tuple<SendOrPostCallback, object>> items =
-                new Queue<Tuple<SendOrPostCallback, object>>();
+
+            readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(initialState: false);
+            readonly Queue<Tuple<SendOrPostCallback, object>> items = new Queue<Tuple<SendOrPostCallback, object>>();
 
             public override void Send(SendOrPostCallback d, object state)
             {
-                throw new NotSupportedException("We cannot send to our same thread");
+                throw new NotSupportedException(message: "We cannot send to our same thread");
             }
 
             public override void Post(SendOrPostCallback d, object state)
@@ -96,7 +98,7 @@ namespace MyAndromeda.Core.Sync
 
             public void EndMessageLoop()
             {
-                Post(_ => done = true, null);
+                Post(_ => done = true, state: null);
             }
 
             public void BeginMessageLoop()
@@ -116,7 +118,7 @@ namespace MyAndromeda.Core.Sync
                         task.Item1(task.Item2);
                         if (InnerException != null) // the method threw an exeption
                         {
-                            throw new AggregateException("AsyncHelpers.Run method threw an exception.", InnerException);
+                            throw new AggregateException(message: "AsyncHelpers.Run method threw an exception.", innerException: InnerException);
                         }
                     }
                     else

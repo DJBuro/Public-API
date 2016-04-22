@@ -10,11 +10,26 @@
 
         $scope.create = () => {
             let scheduler: kendo.ui.Scheduler = $scope.OccasionScheduler;
-            let startDate = scheduler.date();
-            scheduler.addEvent({});
+            //let startDate = scheduler.date();
+            //scheduler.addEvent({});
+            let s: any = scheduler;
+            let view = s._selectedView; 
+            let start = view._startDate; 
 
-            
-        }
+            //Logger.Notify("slot:");
+            //Logger.Notify(slot);
+
+
+            //let resourceInfo = s._resourceBySlot(0, 0);
+            //Logger.Notify("resourceInfo");
+            //Logger.Notify(resourceInfo);
+
+            scheduler.addEvent({
+                start: start,
+                end: start
+            });
+        };
+        
         $scope.clearAll = () => {
            
 

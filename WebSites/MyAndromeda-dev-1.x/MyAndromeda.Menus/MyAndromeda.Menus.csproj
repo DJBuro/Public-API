@@ -112,9 +112,9 @@
       <HintPath>..\packages\System.Monad.1.5.0\lib\net40\System.Monad.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.FtpClient, Version=1.0.5281.14359, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Net.FtpClient.1.0.5281.14359\lib\net40\System.Net.FtpClient.dll</HintPath>
+    <Reference Include="System.Net.FtpClient, Version=1.0.5824.34026, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.FtpClient.1.0.5824.34026\lib\net40\System.Net.FtpClient.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
@@ -193,6 +193,7 @@
     <Compile Include="Ftp\IMenuFtpService.cs" />
     <Compile Include="Ftp\IMenuZipService.cs" />
     <Compile Include="Ftp\Helpers\MyAndromedaFtpClient.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Handlers\MenuLoadedHandler.cs" />
     <Compile Include="Handlers\NotifyWebHooksForMenuItems.cs" />
     <Compile Include="Jobs\PublishMenuJob.cs" />

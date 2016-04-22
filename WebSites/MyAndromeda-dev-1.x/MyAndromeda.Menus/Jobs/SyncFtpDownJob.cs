@@ -15,16 +15,16 @@ namespace MyAndromeda.Menus.Jobs
 {
     public class SyncFtpDownJob : Job
     {
-        public static TimeSpan Timeout
+        public static new TimeSpan Timeout
         {
-            get { return TimeSpan.FromMinutes(4); }
+            get { return TimeSpan.FromMinutes(value: 4); }
         }
 
         public const string JobName = "Ftp Menu Sync job";
 
         public SyncFtpDownJob(TimeSpan interval, TimeSpan timeout) : base(JobName, interval, timeout)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("new {0}", JobName));
+            System.Diagnostics.Trace.WriteLine(string.Format(format: "new {0}", arg0: JobName));
         }
 
         public override Task Execute()
@@ -34,7 +34,7 @@ namespace MyAndromeda.Menus.Jobs
 
         public void Run() 
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Starting: {0}", JobName));
+            System.Diagnostics.Trace.WriteLine(string.Format(format: "Starting: {0}", arg0: JobName));
             
             var taskValidator = DependencyResolver.Current.GetService<IValidTaskService>();
 
@@ -44,18 +44,18 @@ namespace MyAndromeda.Menus.Jobs
 
             using (var ftpMenuService = DependencyResolver.Current.GetService<IFtpMenuManagerService>())
             {
-                var sitesToFetch = ftpMenuService
+                SiteMenu[] sitesToFetch = ftpMenuService
                     .GetQueueToDownload()
                     .ToArray();
 
                 LogStartOfTasks(sitesToFetch);
 
-                var taskList = sitesToFetch.Select(e => StartNewTask(e)).ToArray();
+                Task<bool>[] taskList = sitesToFetch.Select(e => StartNewTask(e)).ToArray();
                 
                 Task.WaitAll(taskList);
 
-                var failedCount = taskList.Where(e => !e.Result).Count();
-                var completeCount = taskList.Where(e => e.Result).Count();
+                int failedCount = taskList.Where(e => !e.Result).Count();
+                int completeCount = taskList.Where(e => e.Result).Count();
 
                 LogCompletion(completeCount, failedCount);
             }
@@ -64,13 +64,13 @@ namespace MyAndromeda.Menus.Jobs
         private static Task<bool> StartNewTask(SiteMenu siteMenu)
         {
             var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
+            CancellationToken token = tokenSource.Token;
 
-            var task = Task.Factory.StartNew(() =>
+            Task<bool> task = Task.Factory.StartNew(() =>
             {
-                var result = false;
+                bool result = false;
 
-                var service = DependencyResolver.Current.GetService<IFtpMenuManagerService>();
+                IFtpMenuManagerService service = DependencyResolver.Current.GetService<IFtpMenuManagerService>();
 
                 try
                 {

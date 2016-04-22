@@ -24,7 +24,9 @@ namespace MyAndromeda.Menus.Ftp
         void UnzipFile(int andromedaId, string fileToUnZip, string fileToUnZipTo);
     }
 
+#pragma warning disable JustCode_CSharp_TypeFileNameMismatch // Types not matching file names
     public class MenuZipService : IMenuZipService
+#pragma warning restore JustCode_CSharp_TypeFileNameMismatch // Types not matching file names
     {
         private readonly IMyAndromedaLogger logger;
 
@@ -40,7 +42,7 @@ namespace MyAndromeda.Menus.Ftp
             {
                 if (!File.Exists(fileToZip)) 
                 {
-                    this.logger.Debug("Menu not found {0}", fileToZip);
+                    this.logger.Debug(format: "Menu not found {0}", args: new object[] { fileToZip });
                     return;
                 }
 
@@ -72,12 +74,12 @@ namespace MyAndromeda.Menus.Ftp
                 {
                     if (!zip.Check())
                     {
-                        throw new Exception("Zip check failed");
+                        throw new Exception(message: "Zip check failed");
                     }
 
                     foreach (var file in zip.ArchiveFileData)
                     {
-                        if (file.FileName.IndexOf("menu", StringComparison.InvariantCultureIgnoreCase) < 0)
+                        if (file.FileName.IndexOf(value: "menu", comparisonType: StringComparison.InvariantCultureIgnoreCase)< 0)
                         {
                             continue;
                         }
@@ -97,8 +99,17 @@ namespace MyAndromeda.Menus.Ftp
 
         private void Init() 
         {
-            string x64Path = Path.Combine(HostingEnvironment.MapPath("~"), "App_Data", "7zip", "7z64.dll");
-            string x86Path = Path.Combine(HostingEnvironment.MapPath("~"), "App_Data", "7zip", "7z86.dll");
+            string x64Path = Path.Combine(
+                HostingEnvironment.MapPath(virtualPath: "~"), 
+                path2: "App_Data", 
+                path3: "7zip", 
+                path4: "7z64.dll");
+
+            string x86Path = Path.Combine(
+                HostingEnvironment.MapPath(virtualPath: "~"), 
+                path2: "App_Data", 
+                path3: "7zip", 
+                path4: "7z86.dll");
 
             if (IntPtr.Size == 8) //x64
             {
@@ -108,7 +119,7 @@ namespace MyAndromeda.Menus.Ftp
                 }
                 else
                 {
-                    throw new IOException(string.Format("dll path does not exist {0}", x64Path));
+                    throw new IOException(string.Format(format: "dll path does not exist {0}", arg0: x64Path));
                 }
             }
             else //x86 ... probably 
@@ -119,7 +130,7 @@ namespace MyAndromeda.Menus.Ftp
                 }
                 else
                 {
-                    throw new IOException(string.Format("dll path does not exist {0}", x86Path));
+                    throw new IOException(string.Format(format: "dll path does not exist {0}", arg0: x86Path));
                 }
             }
         }

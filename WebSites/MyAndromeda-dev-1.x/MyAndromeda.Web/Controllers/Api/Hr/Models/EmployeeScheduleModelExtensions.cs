@@ -1,6 +1,5 @@
 ﻿using Kendo.Mvc.UI;
 using MyAndromeda.Data.DataWarehouse.Models;
-using MyAndromeda.Data.DataWarehouse.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

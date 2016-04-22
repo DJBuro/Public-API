@@ -2,7 +2,6 @@
 using System.Linq;
 using AndroAdminDataAccess.Domain.WebOrderingSetup;
 using MyAndromeda.Data.DataWarehouse.Models;
-using AndroAdminDataAccess.Domain.WebOrderingSetup;
 using MyAndromeda.Data.Model.AndroAdmin;
 
 namespace MyAndromeda.SendGridService.Models

@@ -9,7 +9,6 @@ using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Logging;
 using MyAndromedaDataAccess.Domain.Menus.Items;
-using MyAndromedaDataAccess.Domain.Menus.Items;
 using Newtonsoft.Json;
 
 namespace MyAndromeda.Data.AcsServices

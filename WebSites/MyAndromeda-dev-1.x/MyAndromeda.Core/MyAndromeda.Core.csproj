@@ -106,7 +106,7 @@
     <Compile Include="IDelay.cs" />
     <Compile Include="IDependency.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IEnrolementService.cs" />
+    <Compile Include="Services\IEnrolmentService.cs" />
     <Compile Include="Site\IEnrolmentLevel.cs" />
     <Compile Include="Site\ISite.cs" />
     <Compile Include="Sync\AsyncHelpers.cs" />

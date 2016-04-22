@@ -18,7 +18,7 @@ namespace MyAndromeda.Web.Controllers
             this.loginService = loginService;
         }
 
-        public RedirectToRouteResult RedirectToAction(string p, string p1, object p2)
+        public new RedirectToRouteResult RedirectToAction(string p, string p1, object p2)
         {
             return base.RedirectToAction(p, p1, p2);
         }

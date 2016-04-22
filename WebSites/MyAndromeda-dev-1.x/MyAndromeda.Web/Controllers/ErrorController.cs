@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Logging;
@@ -10,7 +8,7 @@ namespace MyAndromeda.Web.Controllers
 {
     public class ErrorController : Controller
     {
-        private readonly IMyAndromedaLogger logger; 
+        private readonly IMyAndromedaLogger logger;
         private readonly INotifier notifier;
 
         public ErrorController(IMyAndromedaLogger logger, INotifier notifier)
@@ -21,13 +19,13 @@ namespace MyAndromeda.Web.Controllers
 
         public ActionResult Index(string message)
         {
-            MyAndromeda.Web.Models.ErrorModel error = new MyAndromeda.Web.Models.ErrorModel();
+            var error = new MyAndromeda.Web.Models.ErrorModel();
             error.Message = message;
 
             return View(error);
         }
 
-        public ActionResult Test() 
+        public ActionResult Test()
         {
             logger.Debug("Debug Line");
             notifier.Notify("Debug line added");
@@ -46,10 +44,10 @@ namespace MyAndromeda.Web.Controllers
             return View();
         }
 
-        public ActionResult Test2() 
+        public ActionResult Test2()
         {
-            logger.Error("Going to kick off an error");
-            throw new Exception("I kicked myself");
+            logger.Error(message: "Going to kick off an error");
+            throw new Exception(message: "I kicked myself");
 
             return View();
         }

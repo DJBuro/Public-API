@@ -39,7 +39,9 @@ namespace MyAndromeda.Menus.Ftp
         FtpMenuContext CopyMenuUp(int andromedaId, DateTime publishDate, string version);
     }
 
+#pragma warning disable JustCode_CSharp_TypeFileNameMismatch // Types not matching file names
     public class MenuFtpService : IMenuFtpService
+#pragma warning restore JustCode_CSharp_TypeFileNameMismatch // Types not matching file names
     {
         public const string FtpPathFormat = "Menus/{0}/{1}";
 
@@ -84,7 +86,7 @@ namespace MyAndromeda.Menus.Ftp
             ftpClient.InternetProtocolVersions = FtpIpVersion.IPv4;
             //https://netftp.codeplex.com/discussions/535879
             ftpClient.StaleDataCheck = false;
-            var mode = MenuFtpSettings.TransferMode;
+            string mode = MenuFtpSettings.TransferMode;
             //ftpClient.DataConnectionType = mode.Equals("Passive", StringComparison.InvariantCultureIgnoreCase) ?
             //    //FtpDataConnectionType.PASVEX :
             //    //FtpDataConnectionType.EPSV :
@@ -106,7 +108,7 @@ namespace MyAndromeda.Menus.Ftp
         {
             var eventContext = new DatabaseUpdatedEventContext(andromedaId);
             
-            var ftpMenuContext = this.DownloadMenu(eventContext);
+            FtpMenuContext ftpMenuContext = this.DownloadMenu(eventContext);
 
             return ftpMenuContext;
         }
@@ -127,20 +129,20 @@ namespace MyAndromeda.Menus.Ftp
                 ev.CheckingDatabasePublishTime(eventContext);
             }
 
-            var ftpContext = GetFtpMenuContext(andromedaId);
+            FtpMenuContext ftpContext = GetFtpMenuContext(andromedaId);
 
             using (var ftpClient = CreateClient()) 
             { 
-                var ftpItemFile = FtpClientDownload.FindMenuItem(ftpClient, ftpContext, startPath, ftpEvents, eventContext,
-                    failure: (ex) => LogFailureAction(ftpClient, "Find menu publish file failed", ex, eventContext),
-                    success: (path) => LogSuccessAction("find menu publish file folder succeeded", path)
+                FtpListItem ftpItemFile = FtpClientDownload.FindMenuItem(ftpClient, ftpContext, startPath, ftpEvents, eventContext,
+                    failure: (ex) => LogFailureAction(ftpClient, where: "Find menu publish file failed", ex: ex, eventContext: eventContext),
+                    success: (path) => LogSuccessAction(message: "find menu publish file folder succeeded", path: path)
                 );
 
                 if (ftpItemFile == null) { return DateTime.MinValue; }
 
-                var dateStringValue = FtpClientDownload.ReadFileToString(ftpClient, ftpItemFile,
-                    failure: (ex) => LogFailureAction(ftpClient, "Read menu publish file failed", ex, eventContext),
-                    success: (date) => LogSuccessAction("Read FTP Date succeeded", date));
+                string dateStringValue = FtpClientDownload.ReadFileToString(ftpClient, ftpItemFile,
+                    failure: (ex) => LogFailureAction(ftpClient, where: "Read menu publish file failed", ex: ex, eventContext: eventContext),
+                    success: (date) => LogSuccessAction(message: "Read FTP Date succeeded", path: date));
 
                 DateTime parsedValue;
 
@@ -155,12 +157,12 @@ namespace MyAndromeda.Menus.Ftp
 
         public FtpMenuContext CopyMenuUp(int andromedaId, DateTime publishDate, string version)
         {
-            DatabaseUpdatedEventContext eventContext = new DatabaseUpdatedEventContext(andromedaId)
+            var eventContext = new DatabaseUpdatedEventContext(andromedaId)
             { 
                 Version = version
             };
 
-            var ftpContext = GetFtpMenuContext(andromedaId);
+            FtpMenuContext ftpContext = GetFtpMenuContext(andromedaId);
 
             //zip process
             FtpClientUpload.ZipProcess(ftpContext, this.MenuZipService, this.zipEvents, eventContext);
@@ -168,12 +170,12 @@ namespace MyAndromeda.Menus.Ftp
             //ftp process
             if (this.UploadMenu(publishDate, version, eventContext))
             {
-                this.logger.Debug("Menu published to ftp successfully");
+                this.logger.Debug(message: "Menu published to ftp successfully");
                 ftpContext.HasUpdatedMenu = true;
             }
             else 
             {
-                this.logger.Error("Menu didn't publish to ftp successfully");
+                this.logger.Error(message: "Menu didn't publish to ftp successfully");
                 ftpContext.HasUpdatedMenu = false;
             }
 
@@ -184,8 +186,8 @@ namespace MyAndromeda.Menus.Ftp
         private FtpMenuContext DownloadMenu(DatabaseUpdatedEventContext eventContext) 
         {
             //ftpListener.AndromedaId = eventContext.AndromedaId;
-            var ftpContext = GetFtpMenuContext(eventContext.AndromedaId);
-            var connectionStringContext = GetConnectionStringContext(eventContext.AndromedaId);
+            FtpMenuContext ftpContext = GetFtpMenuContext(eventContext.AndromedaId);
+            MenuConnectionStringContext connectionStringContext = GetConnectionStringContext(eventContext.AndromedaId);
 
             foreach (var ev in this.events)
             {
@@ -195,9 +197,9 @@ namespace MyAndromeda.Menus.Ftp
             using (var ftpClient = CreateClient()) 
             { 
 
-                var folder = FtpClientDownload.FindMenuFolder(ftpClient, ftpContext, startPath, ftpEvents, eventContext,
-                    failure: (ex) => LogFailureAction(ftpClient, string.Format("Find menu 'folder' failed for {0}", eventContext.AndromedaId), ex, eventContext),
-                    success: (path) => LogSuccessAction("find menu folder succeeded", path)
+                FtpListItem folder = FtpClientDownload.FindMenuFolder(ftpClient, ftpContext, startPath, ftpEvents, eventContext,
+                    failure: (ex) => LogFailureAction(ftpClient, string.Format(format: "Find menu 'folder' failed for {0}", arg0: eventContext.AndromedaId), ex, eventContext),
+                    success: (path) => LogSuccessAction(message: "find menu folder succeeded", path: path)
                 );
 
                 //return if not found
@@ -207,9 +209,9 @@ namespace MyAndromeda.Menus.Ftp
                     return ftpContext;
                 }
 
-                var menuFile = FtpClientDownload.FindMenuItem(ftpClient, ftpContext, folder.FullName, ftpEvents, eventContext,
-                    failure: (ex) => LogFailureAction(ftpClient, string.Format("Find menu 'file' failed for {0}", eventContext.AndromedaId), ex, eventContext),
-                    success: (path) => LogSuccessAction("find menu item succeeded", path)
+                FtpListItem menuFile = FtpClientDownload.FindMenuItem(ftpClient, ftpContext, folder.FullName, ftpEvents, eventContext,
+                    failure: (ex) => LogFailureAction(ftpClient, string.Format(format: "Find menu 'file' failed for {0}", arg0: eventContext.AndromedaId), ex, eventContext),
+                    success: (path) => LogSuccessAction(message: "find menu item succeeded", path: path)
                 );
 
                 if (menuFile == null)
@@ -227,8 +229,8 @@ namespace MyAndromeda.Menus.Ftp
                     menuFile,
                     events, 
                     eventContext,
-                    failure: (ex) => LogFailureAction(ftpClient, "Download the menu file", ex, eventContext),
-                    success: (path) => LogSuccessAction("Write the menu file locally succeeded", path)
+                    failure: (ex) => LogFailureAction(ftpClient, where: "Download the menu file", ex: ex, eventContext: eventContext),
+                    success: (path) => LogSuccessAction(message: "Write the menu file locally succeeded", path: path)
                 );
 
                 foreach (var ftpEvent in this.ftpEvents)
@@ -243,8 +245,8 @@ namespace MyAndromeda.Menus.Ftp
                     pathToExtract,
                     zipEvents,
                     eventContext,
-                    failure: (ex) => LogFailureAction(ftpClient, "Extraction of zip", ex, eventContext),
-                    success: (path) => LogSuccessAction("Extraction completed", path));
+                    failure: (ex) => LogFailureAction(ftpClient, where: "Extraction of zip", ex: ex, eventContext: eventContext),
+                    success: (path) => LogSuccessAction(message: "Extraction completed", path: path));
             }
 
             return ftpContext;
@@ -257,7 +259,7 @@ namespace MyAndromeda.Menus.Ftp
 
             if (string.IsNullOrWhiteSpace(version)) 
             {
-                throw new ArgumentException("version is missing");
+                throw new ArgumentException(message: "version is missing");
             }
 
             bool failed = false;
@@ -272,13 +274,13 @@ namespace MyAndromeda.Menus.Ftp
 
             Action<string> logCompletedPath = (path) => {
                 
-                this.logger.Debug("Path uploaded successfully: {0}.", path);
-                this.logger.Debug("AndromedaId: {0}; Version: {1}; PublishDate: {2}", eventContext.AndromedaId, version, publishDate.ToString("yyyy-MM-dd"));
+                this.logger.Debug(format: "Path uploaded successfully: {0}.", args: new object[] { path });
+                this.logger.Debug(format: "AndromedaId: {0}; Version: {1}; PublishDate: {2}", args: new object[] { eventContext.AndromedaId, version, publishDate.ToString("yyyy-MM-dd") });
 
                 failed = false;
             };
 
-            var ftpContext = GetFtpMenuContext(eventContext.AndromedaId);
+            FtpMenuContext ftpContext = GetFtpMenuContext(eventContext.AndromedaId);
 
             int retryCount = 5;
 
@@ -297,7 +299,7 @@ namespace MyAndromeda.Menus.Ftp
                             (finalPath) => logCompletedPath(finalPath));
 
                         if (!failed) { i = 0; }
-                        if (failed) { Thread.Sleep(300); }
+                        if (failed) { Thread.Sleep(millisecondsTimeout: 300); }
                     }
                 }   
 
@@ -306,7 +308,7 @@ namespace MyAndromeda.Menus.Ftp
 
             if (!failed) 
             {
-                this.logger.Debug("Start updating version file");
+                this.logger.Debug(message: "Start updating version file");
 
                 string failedMsg = "Upload Version File. Reties left: {0}";
                 for (var i = retryCount; i > 0; i--)
@@ -322,7 +324,7 @@ namespace MyAndromeda.Menus.Ftp
                     
                         //keep retrying until failed == false
                         if (!failed) { i = 0; }
-                        if (failed) { Thread.Sleep(300); }
+                        if (failed) { Thread.Sleep(millisecondsTimeout: 300); }
                     }
                 }
 
@@ -331,7 +333,7 @@ namespace MyAndromeda.Menus.Ftp
 
             if (!failed) 
             {
-                this.logger.Debug("Start updating publish date file");
+                this.logger.Debug(message: "Start updating publish date file");
 
                 string publishFailedMessage = "Upload Published File. Reties left: {0}"; 
                 for (var i = retryCount; i > 0; i--)
@@ -346,7 +348,7 @@ namespace MyAndromeda.Menus.Ftp
                             (path) => logCompletedPath(path));
                     
                         if (!failed) { i = 0; }
-                        if (failed) { Thread.Sleep(300); }
+                        if (failed) { Thread.Sleep(millisecondsTimeout: 300); }
                     }
                 }
 
@@ -360,9 +362,9 @@ namespace MyAndromeda.Menus.Ftp
 
         private void LogFailureAction(FtpClient client, string where, Exception ex, DatabaseUpdatedEventContext eventContext)
         {
-            this.logger.Error("Menu (check publish date) FTP Error - Connection with: [host: {0}, username: {1}, password: [removed]]",
-                client.Host,
-                client.Credentials.UserName);
+            this.logger.Error(
+                format: "Menu (check publish date) FTP Error - Connection with: [host: {0}, username: {1}, password: [removed]]", 
+                args: new object[] { client.Host, client.Credentials.UserName });
 
             this.logger.Error(where);
             this.logger.Error(ex);
@@ -383,7 +385,7 @@ namespace MyAndromeda.Menus.Ftp
         {
             MenuConnectionStringContext connectionStringContext = GetConnectionStringContext(andromediaId);
 
-            FtpMenuContext ftpMenuContext = new FtpMenuContext();
+            var ftpMenuContext = new FtpMenuContext();
 
             ftpMenuContext.AndromedaId = andromediaId;
             ftpMenuContext.ExpectedMenuPath = connectionStringContext.LocalFullPath;

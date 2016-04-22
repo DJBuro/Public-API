@@ -56,7 +56,7 @@ namespace MyAndromeda.Web.Services
                 return controller.RedirectToAction("Index", "Chains", new { });
 
             //go here second if applicable 
-            var accessibleSiteList = this.userSitesDataService.GetSitesDirectlyLinkedToTheUser(myAndromedaUser.Id).ToArray();
+            Data.Domain.Site[] accessibleSiteList = this.userSitesDataService.GetSitesDirectlyLinkedToTheUser(myAndromedaUser.Id).ToArray();
 
             if (accessibleSiteList.Length == 0)
             {
@@ -68,7 +68,7 @@ namespace MyAndromeda.Web.Services
                 // Does the user have access to a single site?
                 if (accessibleSiteList.Length == 1)
                 {
-                    var site = accessibleSiteList.First();
+                    Data.Domain.Site site = accessibleSiteList.First();
 
                     return controller.RedirectToAction("Index", "Store", new { Area = "Reporting", ChainId = site.ChainId, ExternalSiteId = site.ExternalSiteId });
                     //return controller.RedirectToAction("Index", "Site", new { id = site.CustomerSiteId, chainId = site.ChainId });

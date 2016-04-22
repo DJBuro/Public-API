@@ -13,7 +13,7 @@ namespace MyAndromeda.Data.MenuDatabase.Services
     {
 
 
-        void SaveChanges();
+        new void SaveChanges();
 
         IEnumerable<Menu.n_PricesRow> ListPrices(Func<Menu.n_PricesRow, bool> query = null);
         IEnumerable<Menu.t_MenuRow> ListStructure(Func<Menu.t_MenuRow, bool> query = null);

@@ -46,6 +46,23 @@
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptOutFile>Scripts/MyAndromeda.App.All.js</TypeScriptOutFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+    <PublishDatabases>false</PublishDatabases>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'test1|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptOutFile>Scripts/MyAndromeda.App.All.js</TypeScriptOutFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -192,8 +209,8 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.Storage.6.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=5.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.5.0.2\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Monads">
@@ -246,7 +263,7 @@
       <HintPath>..\packages\Ninject.Web.WebApi.WebHost.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.3.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -270,7 +287,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Swashbuckle.Core.5.2.2\lib\net40\Swashbuckle.Core.dll</HintPath>
+      <HintPath>..\packages\Swashbuckle.Core.5.3.2\lib\net40\Swashbuckle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -279,9 +296,9 @@
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Net.FtpClient, Version=1.0.5281.14359, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Net.FtpClient.1.0.5281.14359\lib\net40\System.Net.FtpClient.dll</HintPath>
+    <Reference Include="System.Net.FtpClient, Version=1.0.5824.34026, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.FtpClient.1.0.5824.34026\lib\net40\System.Net.FtpClient.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -366,8 +383,8 @@
       <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+      <HintPath>..\packages\WebActivatorEx.2.1.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WebBackgrounder">
       <HintPath>..\packages\WebBackgrounder.0.2.0\lib\net40\WebBackgrounder.dll</HintPath>
@@ -431,6 +448,10 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\rx-angular\rx.angular.d.ts" />
     <Content Include="App\angular2.txt" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\kendo\2016.1.112\Black\editor.png" />
     <Content Include="Content\kendo\2016.1.112\Black\imagebrowser.png" />
     <Content Include="Content\kendo\2016.1.112\Black\indeterminate.gif" />
@@ -785,16 +806,18 @@
       <DependentUpon>scheduling.css</DependentUpon>
     </Content>
     <Content Include="Content\No_image_available.png" />
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\profile-picture.jpg" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="js\jquery.Jcrop.min.js">
+      <DependentUpon>jquery.Jcrop.js</DependentUpon>
+    </Content>
+    <Content Include="js\jquery.jcrop.preview.js">
+      <DependentUpon>jquery.Jcrop.js</DependentUpon>
+    </Content>
     <Content Include="lib\autofill\autofill-event.js" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
@@ -812,8 +835,13 @@
     <Content Include="Scripts\angular-message-format.min.js" />
     <Content Include="Scripts\angular-messages.js" />
     <Content Include="Scripts\angular-messages.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-parse-ext.js" />
+    <Content Include="Scripts\angular-parse-ext.min.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
     <Content Include="Scripts\angular-sanitize.js" />
     <Content Include="Scripts\angular-sanitize.min.js" />
     <Content Include="Scripts\angular-scenario.js" />
@@ -826,8 +854,34 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-parse-ext.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\angular-message-format.min.js.map" />
+    <Content Include="Scripts\angular-loader.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-aria.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-et.js" />
@@ -1572,6 +1626,8 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\kendoExtensions\kendoExtensions.js" />
     <Content Include="Areas\Store\Views\Store\ShowEct.cshtml" />
     <Content Include="Areas\Store\Views\Store\ChangeEct.cshtml" />
@@ -1710,9 +1766,6 @@
     <Content Include="Content\myAndromeda\Less\clearfix.css.map">
       <DependentUpon>Clearfix.css</DependentUpon>
     </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Scripts\kendo\2016.1.112\angular.min.js" />
     <Content Include="Scripts\kendo\2016.1.112\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="Scripts\kendo\2016.1.112\cultures\kendo.culture.af.min.js" />
@@ -2134,6 +2187,13 @@
     <Content Include="Scripts\kendo\2016.1.112\cultures\kendo.culture.zu.min.js" />
     <Content Include="Scripts\kendo\2016.1.112\jquery.min.js" />
     <Content Include="Scripts\kendo\2016.1.112\jszip.min.js" />
+    <None Include="Properties\PublishProfiles\Beta-MyAndromeda-North - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Beta-MyAndromeda-West - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Live-MyAndromeda-North - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Live-MYandromeda-West - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Test-MyAndromeda-North - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Test-MyAndromeda-West - Web Deploy.pubxml" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\kendo\2016.1.112\kendo.all-vsdoc.js" />
     <None Include="Scripts\kendo\2016.1.112\kendo.all.min.intellisense.js" />
     <Content Include="Scripts\kendo\2016.1.112\kendo.all.min.js" />
@@ -2544,6 +2604,7 @@
     <Compile Include="Controllers\Api\NotificationController.cs" />
     <Compile Include="Controllers\Api\PublishMenuController.cs" />
     <Compile Include="Controllers\Api\Reporting\OrdersController.cs" />
+    <Compile Include="Controllers\Api\Status.cs" />
     <Compile Include="Controllers\Api\Store\Models\StoreOccasionTimeModel.cs" />
     <Compile Include="Controllers\Api\User\ChainAndStoreController.cs" />
     <Compile Include="Controllers\Api\WebHooks\WebHookNotificationApiController.cs" />
@@ -2552,7 +2613,7 @@
     <Compile Include="Controllers\Api\GprsOrdersController.cs" />
     <Compile Include="Controllers\Api\MenuController.cs" />
     <Compile Include="Controllers\Api\Store\StoreController.cs" />
-    <Compile Include="Controllers\Api\TestWebApiController.cs" />
+    <Compile Include="Controllers\TestWebApiController.cs" />
     <Compile Include="Controllers\Api\WebOrdering\AndroWebOrderingController.cs" />
     <Compile Include="Controllers\ChainsController.cs" />
     <Compile Include="Controllers\DebugController.cs" />
@@ -2572,6 +2633,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Handlers\LogHandler.cs" />
     <Compile Include="Helper\OpeningTimesHelper.cs" />
     <Compile Include="Helper\SettingsHelper.cs" />
@@ -2598,9 +2660,9 @@
     <Compile Include="Services\ServiceDelay.cs" />
     <Compile Include="Services\Settings\IBackgroundTaskSettingsService.cs" />
     <Compile Include="Services\StoreOpeningTimesService.cs" />
-    <Compile Include="ViewModels\Api\ILoyaltyProvider.cs" />
+    <Compile Include="ViewModels\Api\LoyaltyProviderViewModel.cs" />
     <Compile Include="ViewModels\ChainListViewModel.cs" />
-    <Compile Include="ViewModels\ChianUpdateCultureViewModel.cs" />
+    <Compile Include="ViewModels\ChainUpdateCultureViewModel.cs" />
     <Compile Include="ViewModels\StoreViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2972,8 +3034,6 @@
     <Content Include="Content\myAndromeda\Less\menueditor.css.map">
       <DependentUpon>menueditor.css</DependentUpon>
     </Content>
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
     <None Include="Content\myAndromeda\Less\menueditor.less" />
     <Content Include="Content\myAndromeda\Less\menueditor.css">
       <DependentUpon>menueditor.less</DependentUpon>
@@ -3045,14 +3105,6 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <None Include="Properties\PublishProfiles\Azure-live.pubxml" />
-    <None Include="Properties\PublishProfiles\Beta.pubxml" />
-    <None Include="Properties\PublishProfiles\dev-web-01.pubxml" />
-    <None Include="Properties\PublishProfiles\local.pubxml" />
     <TypeScriptCompile Include="App\Reports\MyAndromeda.Reporting.Services.ChainOverview.ts" />
     <Content Include="css\AndroWebOrdering.css" />
     <Content Include="css\jquery.Jcrop.css" />
@@ -3060,16 +3112,9 @@
     <Content Include="favicon.ico" />
     <Content Include="fountain-small.jpg" />
     <Content Include="js\jquery.Jcrop.js" />
-    <Content Include="js\jquery.Jcrop.min.js" />
-    <Content Include="js\jquery.jcrop.preview.js" />
     <Content Include="js\jquery.min.js" />
     <Content Include="lib\myandromeda\MyAndromeda.App.All.js" />
     <Content Include="red-leaf.jpg" />
-    <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-route.min.js" />
-    <Content Include="Scripts\angular.js" />
-    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\Hubs\HubSource.js" />
     <Content Include="Scripts\app\Hubs\HubSource.min.js">
       <DependentUpon>HubSource.js</DependentUpon>
@@ -3098,35 +3143,11 @@
     <Content Include="Scripts\jcrop\jquery.min.js" />
     <Content Include="Content\red-leaf.jpg" />
     <Content Include="Scripts\app\Reporting\ChainOverview.js" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-Dev - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-Dev - Web Deploy.pubxml" />
     <Content Include="Scripts\app\Validation\PasswordStrength.js.map" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-gprs - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-gprs - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-Live - GPRS.pubxml" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-Test - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\MyAndromeda-Test - Web Deploy.pubxml">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Scripts\angular-route.min.js.map" />
-    <Content Include="Scripts\angular.min.js.map" />
     <None Include="Properties\PublishProfiles\MyAndromeda.pubxml" />
     <None Include="Properties\PublishProfiles\MyAndromeda__beta.pubxml" />
-    <None Include="Properties\PublishProfiles\Staging-MyAndromeda - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\Staging-MyAndromeda - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\MyAndromeda-Staging - Web Deploy.pubxml" />
     <Content Include="Properties\webjobs-list.json" />
-    <Content Include="Scripts\angular-touch.min.js.map" />
-    <Content Include="Scripts\angular-sanitize.min.js.map" />
-    <Content Include="Scripts\angular-resource.min.js.map" />
-    <Content Include="Scripts\angular-messages.min.js.map" />
-    <Content Include="Scripts\angular-message-format.min.js.map" />
-    <Content Include="Scripts\angular-loader.min.js.map" />
-    <Content Include="Scripts\angular-cookies.min.js.map" />
-    <Content Include="Scripts\angular-aria.min.js.map" />
-    <Content Include="Scripts\angular-animate.min.js.map" />
-    <None Include="Scripts\jquery-2.1.3.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.3.js" />
-    <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -3136,7 +3157,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\jquery-2.1.3.min.map" />
     <Content Include="Scripts\kendo\2016.1.112\jquery.min.map" />
     <Content Include="Scripts\kendo\2016.1.112\kendo.all.min.js.map" />
     <Content Include="Scripts\kendo\2016.1.112\kendo.angular.min.js.map" />
@@ -4437,7 +4457,7 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile>~/lib/myandromeda/MyAndromeda.App.All.js</TypeScriptOutFile>
     <TypeScriptOutDir />
@@ -4447,9 +4467,24 @@
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'GPRS-Live|AnyCPU'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile>~/lib/myandromeda/MyAndromeda.App.All.js</TypeScriptOutFile>
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" Label="SlowCheetah" />
-  <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.10\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.10\tools\webjobs.targets')" />
+  <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.11\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.11\tools\webjobs.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

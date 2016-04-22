@@ -13,6 +13,7 @@ namespace MyAndromeda.Web.Handlers
     {
         public LogHandler()
         {
+
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(

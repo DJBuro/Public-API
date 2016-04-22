@@ -191,13 +191,14 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
             orderHeader.DestinationDevice = viewModel.DestinationDevice;
             orderHeader.CustomerAddressID = viewModel.CustomerAddressID;
             orderHeader.ACSServer = viewModel.ACSServer;
-            if (orderHeader.Customer.Contacts.Where(e=>e.ContactType.Name.Equals("Mobile",StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault()!=null)
+
+            if (orderHeader.Customer.Contacts.Where(e=>e.ContactType.Name.Equals(value: "Mobile", comparisonType: StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault()!=null)
             {
-                orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals("Mobile", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault().Value = viewModel.Customer.Mobile;
+                orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals(value: "Mobile", comparisonType: StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault().Value = viewModel.Customer.Mobile;
             }
-            if (orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals("Email", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault() != null)
+            if (orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals(value: "Email", comparisonType: StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault() != null)
             {
-                orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals("Email", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault().Value = viewModel.Customer.Email;
+                orderHeader.Customer.Contacts.Where(e => e.ContactType.Name.Equals(value: "Email", comparisonType: StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault().Value = viewModel.Customer.Email;
             }
         }
 
@@ -276,7 +277,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
                 viewModel.OrderLines = new List<OrderLineDAO>();
                 foreach (Data.DataWarehouse.Models.OrderLine line in oh.OrderLines)
                 {
-                    OrderLineDAO orderlineObj = new OrderLineDAO();
+                    var orderlineObj = new OrderLineDAO();
                     orderlineObj.Modifiers = new List<modifier>();
                     orderlineObj.ID = line.ID;
                     orderlineObj.OrderHeaderID = line.OrderHeaderID;
@@ -292,7 +293,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
                         //this should be ToViewModel
                         foreach (Data.DataWarehouse.Models.modifier modifierObj in line.modifiers)
                         {
-                            modifier obj = new modifier();
+                            var obj = new modifier();
                             obj.ID = modifierObj.ID;
                             obj.OrderLineID = modifierObj.OrderLineID;
                             obj.ProductID = modifierObj.ProductID;
@@ -306,7 +307,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
 
                     orderlineObj.Price = ((decimal)line.Price.GetValueOrDefault() +
                         //modifier price is the total, quantity x price ... ignore the semantics 
-                        line.modifiers.Sum(m => (decimal)m.Price.GetValueOrDefault(0) * (decimal)line.Qty.GetValueOrDefault(0)));
+                        line.modifiers.Sum(m => (decimal)m.Price.GetValueOrDefault(defaultValue: 0) * (decimal)line.Qty.GetValueOrDefault(defaultValue: 0)));
                     orderlineObj.Price = orderlineObj.Price / 100;
 
                     viewModel.OrderLines.Add(orderlineObj);
@@ -318,7 +319,7 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
                 viewModel.UsedVouchers = new List<UsedVoucher>();
                 foreach (Data.DataWarehouse.Models.UsedVoucher uv in oh.UsedVouchers)
                 {
-                    UsedVoucher uvo = new UsedVoucher();
+                    var uvo = new UsedVoucher();
                     uvo.CustomerId = uv.CustomerId;
                     uvo.OrderId = uv.OrderId;
                     uvo.VoucherId = uv.VoucherId;
@@ -326,13 +327,13 @@ namespace MyAndromeda.Web.Areas.OrderManagement.Models
                     uvo.Voucher.Id = uv.Voucher.Id;
                     uvo.Voucher.Code = uv.Voucher.VoucherCode;
                     uvo.Voucher.Description = uv.Voucher.Description;
-                    uvo.Voucher.Occasions = uv.Voucher.Occasion != null ? new List<string>(uv.Voucher.Occasion.Split(',')) : new List<string>();
+                    uvo.Voucher.Occasions = uv.Voucher.Occasion != null ? new List<string>(uv.Voucher.Occasion.Split(separator: new char[] { ',' })) : new List<string>();
                     uvo.Voucher.MinimumOrderAmount = uv.Voucher.MinimumOrderAmount;
                     uvo.Voucher.MaxRepetitions = uv.Voucher.MaxRepetitions;
                     uvo.Voucher.Combinable = uv.Voucher.Combinable;
                     uvo.Voucher.StartDateTime = uv.Voucher.StartDateTime;
                     uvo.Voucher.EndDataTime = uv.Voucher.EndDataTime;
-                    uvo.Voucher.AvailableOnDays = uv.Voucher.AvailableOnDays != null ? new List<string>(uv.Voucher.AvailableOnDays.Split(',')) : new List<string>();
+                    uvo.Voucher.AvailableOnDays = uv.Voucher.AvailableOnDays != null ? new List<string>(uv.Voucher.AvailableOnDays.Split(separator: new char[] { ',' })) : new List<string>();
                     uvo.Voucher.StartTimeOfDayAvailable = uv.Voucher.StartTimeOfDayAvailable;
                     uvo.Voucher.EndTimeOfDayAvailable = uv.Voucher.EndTimeOfDayAvailable;
                     uvo.Voucher.IsActive = !uv.Voucher.Removed;

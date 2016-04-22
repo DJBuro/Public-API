@@ -16,7 +16,7 @@ namespace MyAndromeda.Menus.Jobs
     public class SyncThumbnailUpJob : Job 
     {
         public SyncThumbnailUpJob(TimeSpan interval, TimeSpan timeout)
-            : base("Ftp Menu Sync job", interval, timeout)
+            : base(name: "FTP Menu Sync job", interval: interval, timeout: timeout)
         {
         }
 
@@ -31,9 +31,9 @@ namespace MyAndromeda.Menus.Jobs
     {
         public const string TaskName = "Ftp Menu Sync job";
 
-        public static TimeSpan Timeout 
+        public static new TimeSpan Timeout
         {
-            get { return TimeSpan.FromMinutes(4); }
+            get { return TimeSpan.FromMinutes(value: 4); }
         }
 
         public SyncFtpUpJob(TimeSpan interval, TimeSpan timeout) : base(SyncFtpUpJob.TaskName, interval, timeout)
@@ -49,9 +49,9 @@ namespace MyAndromeda.Menus.Jobs
 
         public void Run()
         {
-            Trace.WriteLine("Sync Ftp Upload Job.");
+            Trace.WriteLine(message: "Sync Ftp Upload Job.");
             
-            var ftpEvents = DependencyResolver.Current.GetServices<IFtpEvents>();
+            IEnumerable<IFtpEvents> ftpEvents = DependencyResolver.Current.GetServices<IFtpEvents>();
 
             LogFtpStart(ftpEvents);
 
@@ -61,12 +61,12 @@ namespace MyAndromeda.Menus.Jobs
 
                 LogFtpTaskStatus(sitesToFetch, ftpEvents);
 
-                var taskList = sitesToFetch.Select(siteMenu => CreatePublishMenuTask(siteMenu)).ToArray();
+                Task<bool>[] taskList = sitesToFetch.Select(siteMenu => CreatePublishMenuTask(siteMenu)).ToArray();
 
                 Task.WaitAll(taskList.ToArray());
 
-                var completed = taskList.Where(e => e.Result).Count();
-                var failed = taskList.Where(e => !e.Result).Count();
+                int completed = taskList.Where(e => e.Result).Count();
+                int failed = taskList.Where(e => !e.Result).Count();
 
                 LogCompletion(ftpEvents, completed, failed);     
             }
@@ -75,11 +75,11 @@ namespace MyAndromeda.Menus.Jobs
 
         private static Task<bool> CreatePublishMenuTask(SiteMenu siteMenu)
         {
-            var task = Task.Factory.StartNew<bool>(() =>
+            Task<bool> task = Task.Factory.StartNew<bool>(() =>
             {
                 bool taskResult = false;
-                var ftpEvents = DependencyResolver.Current.GetServices<IFtpEvents>();
-                var events = DependencyResolver.Current.GetServices<IAccessDatabaseEvent>();
+                IEnumerable<IFtpEvents> ftpEvents = DependencyResolver.Current.GetServices<IFtpEvents>();
+                IEnumerable<IAccessDatabaseEvent> events = DependencyResolver.Current.GetServices<IAccessDatabaseEvent>();
 
                 LogFtpTaskStart(siteMenu, ftpEvents, events);
 
@@ -92,7 +92,7 @@ namespace MyAndromeda.Menus.Jobs
                     try
                     {
                         //individualService.PublishTask(siteMenu.AndromediaId, siteMenu, true);
-                        var result = individualService.UploadMenu(siteMenu.AndromediaId);
+                        Context.Ftp.FtpMenuContext result = individualService.UploadMenu(siteMenu.AndromediaId);
                         //individualService.PublishTask(siteMenu.AndromediaId, siteMenu, false);
 
                         if (result.HasUpdatedMenu.GetValueOrDefault())
@@ -130,7 +130,7 @@ namespace MyAndromeda.Menus.Jobs
         {
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), "Upload ftp Job started");
+                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), message: "Upload ftp Job started");
             }
         }
 
@@ -138,7 +138,7 @@ namespace MyAndromeda.Menus.Jobs
         {
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(new DatabaseUpdatedEventContext(0), string.Format("Upload ftp Job completed; {0} completed; {1} failed", completed, failed));
+                ev.TransactionLog(new DatabaseUpdatedEventContext(0), string.Format(format: "Upload ftp Job completed; {0} completed; {1} failed", arg0: completed, arg1: failed));
             }
         }
 
@@ -148,7 +148,7 @@ namespace MyAndromeda.Menus.Jobs
 
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("Ftp upload bits to process: {0}", sitesToFetch.Length));
+                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "Ftp upload bits to process: {0}", arg0: sitesToFetch.Length));
             }
         }
 
@@ -158,8 +158,8 @@ namespace MyAndromeda.Menus.Jobs
 
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(eventContext, string.Format("Task Started: {0}", siteMenu.AndromediaId));
-                ev.TransactionLog(eventContext, string.Format("{0}: Begin publishing", siteMenu.AndromediaId));
+                ev.TransactionLog(eventContext, string.Format(format: "Task Started: {0}", arg0: siteMenu.AndromediaId));
+                ev.TransactionLog(eventContext, string.Format(format: "{0}: Begin publishing", arg0: siteMenu.AndromediaId));
             }
 
             //foreach (var ev in events)
@@ -173,13 +173,13 @@ namespace MyAndromeda.Menus.Jobs
         {
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("{0}: exception", siteMenu.AndromediaId));
+                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "{0}: exception", arg0: siteMenu.AndromediaId));
 
                 while (ex != null)
                 {
-                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("Exception for {0}: {1}", siteMenu.AndromediaId, ex.Message));
-                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("Exception source {0}: {1}", siteMenu.AndromediaId, ex.Source));
-                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("Exception source {0}: {1}", siteMenu.AndromediaId, ex.StackTrace));
+                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "Exception for {0}: {1}", arg0: siteMenu.AndromediaId, arg1: ex.Message));
+                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "Exception source {0}: {1}", arg0: siteMenu.AndromediaId, arg1: ex.Source));
+                    ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "Exception source {0}: {1}", arg0: siteMenu.AndromediaId, arg1: ex.StackTrace));
 
                     ex = ex.InnerException;
                 }
@@ -195,7 +195,7 @@ namespace MyAndromeda.Menus.Jobs
 
             foreach (var ev in ftpEvents)
             {
-                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format("Task Completed: {0}", siteMenu.AndromediaId));
+                ev.TransactionLog(new DatabaseUpdatedEventContext(ExpectedUserRoles.Administrator), string.Format(format: "Task Completed: {0}", arg0: siteMenu.AndromediaId));
             }
         }
     }
