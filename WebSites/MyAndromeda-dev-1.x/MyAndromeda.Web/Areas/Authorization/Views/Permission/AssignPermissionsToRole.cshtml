@@ -33,10 +33,6 @@
         {
             <div class="group">
                 <div class="clearfix">
-                    @*                    <div class="header">
-                            <h3>@group.Key</h3>
-                        </div>*@
-
                     <div class="table-wrapper">
                         @(Html.Kendo().Grid(group.OrderBy(e => e.Name))
                 .Name(group.Key.Replace(" ", "-") + "permissions")
@@ -71,7 +67,7 @@
 {
     <script type="text/javascript">
         $(function () {
-            $(".table-wrapper").on("change", ".selectAll", function (e) {
+            $(".table-wrapper").on("click", ".selectAll", function (e) {
                 var checkbox = $(this);
                 var gridWrapper = checkbox.closest(".table-wrapper");
                 var checkBoxes = gridWrapper.find("table tbody input[type=checkbox]:enabled");
