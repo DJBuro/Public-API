@@ -45,9 +45,9 @@ if (Model.WorkContext.CurrentUser.AccessibleChains.Any())
             items.Add().Text(translator.T("Chain Reports")).Action("index", "Reports", new { Area = "ChainReporting" })
                     .Items(chainMenuItems =>
                     {
-                        chainMenuItems.Add().Text("hi").Action("index", "Dashboard", new { Area = "ChainReporting" });
-                            //chainMenuItems.Add().Text("Map").Action("map", "Reporting", new { Area = "ChainReporting" });
-                        });
+                        //chainMenuItems.Add().Text("hi").Action("index", "Dashboard", new { Area = "ChainReporting" });
+                        //chainMenuItems.Add().Text("Map").Action("map", "Reporting", new { Area = "ChainReporting" });
+                    });
 
         }
     }
@@ -178,22 +178,21 @@ if (reportingFeature && userPermission)
             //.Action("Index", "DailyReporting", new { Area = "Reporting" })
             .Items(reportingItems =>
             {
-                bool gprsRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature);
+                bool acsRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature);
                 bool ramesesRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
 
                 if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllOrdersReport))
                 {
                     reportingItems.Add().Text("All Orders").Action("Index", "DailyReporting", new { Area = "Reporting" });
                 }
-                if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
                 {
                     reportingItems.Add().Text("Online Orders").Action("Index", "Store", new { Area = "Reporting" });
                 }
-                if ((ramesesRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
                 {
                     reportingItems.Add().Text("In Store Orders").Action("InStore", "Store", new { Area = "Reporting" });
                 }
-
                 if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewPerformanceReport))
                 {
                     reportingItems.Add().Text("Performance").Action("ServiceTime", "DailyReporting", new { Area = "Reporting" });
@@ -202,15 +201,15 @@ if (reportingFeature && userPermission)
                 {
                     reportingItems.Add().Text("Delivery Time").Action("Index", "DeliveryPerformance", new { Area = "Reporting" });
                 }
-                if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewProductReport))
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewProductReport))
                 {
                     reportingItems.Add().Text("Products").Action("Index", "Product", new { Area = "Reporting" });
                 }
-                if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerReports))
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerReports))
                 {
                     reportingItems.Add().Text("Customers").Action("Index", "Customer", new { Area = "Reporting" });
                 }
-                if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewVoucherReport))
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewVoucherReport))
                 {
                     reportingItems.Add().Text("Vouchers").Action("Index", "Voucher", new { Area = "Reporting" });
                 }
@@ -220,10 +219,7 @@ if (reportingFeature && userPermission)
                     reportingItems.Add().Text("Map").Action("Index", "Map", new { Area = "Reporting" });
                 }
 
-                if ((ramesesRole || gprsRole) && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerLoyaltyReport))
-                {
-                    reportingItems.Add().Text("Loyalty").Action("Index", "CustomerLoyalty", new { Area = "Reporting" });
-                }
+
 
             });
 }
@@ -267,41 +263,41 @@ if (storeCanAccessMenu && userCanAccessMenu)
                             </div>
                             @*<div class="col-sm-6">
 
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div class="panel-title">
-                                            <i class="fa fa-sort-amount-asc"></i> @translator.T("Web sequencing")
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <i class="fa fa-sort-amount-asc"></i> @translator.T("Web sequencing")
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+
+                                            @translator.T("Organise the order of items")
+                                            <br />
+                                            @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.EditStoreMenu))
+                                            {
+                                                <a class="k-button k-button-link" href="@Url.Action("Hierarchy", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit sequence")</a>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    @translator.T("you are not authorized to edit the menu sequence")
+                                                </span>
+                                            }
                                         </div>
                                     </div>
-                                    <div class="panel-body">
 
-                                        @translator.T("Organise the order of items")
-                                        <br />
-                                        @if (authorizer.Authorize(MenuPermisssinos.UserPermissions.EditStoreMenu))
-                                        {
-                                            <a class="k-button k-button-link" href="@Url.Action("Hierarchy", "MenuNavigation", new { Area = "Menu" })">@translator.T("Edit sequence")</a>
-                                        }
-                                        else
-                                        {
-                                            <span>
-                                                @translator.T("you are not authorized to edit the menu sequence")
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-
-                            </div>*@
+                                </div>*@
                         </div>
                     </div>
                     @*@if (authorizer.Authorize(MenuPermisssinos.UserPermissions.ViewToppings))
-                    {
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a class="k-button" href="@Url.Action("Index", "Modifiers", new { Area = "Menu" })">Matt's secret modifiers - a ghost town ... like many parts of My Andromeda.</a>
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="k-button" href="@Url.Action("Index", "Modifiers", new { Area = "Menu" })">Matt's secret modifiers - a ghost town ... like many parts of My Andromeda.</a>
 
+                                </div>
                             </div>
-                        </div>
-                    }*@
+                        }*@
 
                 </div>
 
@@ -386,6 +382,11 @@ if (storeCanAccessMenu && userCanAccessMenu)
 
 
             testItems.Add().Text("Web hooks - doorbell").Action("WebHooks", "Debug", new { Area = "" });
+
+            if (authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewCustomerLoyaltyReport))
+            {
+                testItems.Add().Text("Loyalty").Action("Index", "CustomerLoyalty", new { Area = "Reporting" });
+            }
 
             if (workContext.CurrentSite.Available)
             {

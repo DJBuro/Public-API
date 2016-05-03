@@ -123,6 +123,14 @@ namespace MyAndromeda.Web.Areas.Reporting
             PermissionType = PermissionType.UserRole
         };
 
+        public static Permission ViewBetaReports = new Permission()
+        {
+            Name = "View beta reports",
+            Description = "Current beta reports",
+            Category = Category,
+            PermissionType = PermissionType.UserRole
+        };
+
         public IEnumerable<Permission> GetPermissions()
         {
             //yield return ViewReports;
@@ -138,6 +146,7 @@ namespace MyAndromeda.Web.Areas.Reporting
             yield return ViewProductReport;
             yield return ViewVoucherReport;
             yield return ViewCustomerLoyaltyReport;
+            yield return ViewBetaReports;
 
             yield break;
         }
@@ -207,6 +216,12 @@ namespace MyAndromeda.Web.Areas.Reporting
                 new PermissionStereotype()
                 {
                     Permission = ViewMap,
+                    AllowRoles = new [] {
+                        ExpectedUserRoles.Experimental
+                    }
+                },
+                new PermissionStereotype() {
+                    Permission = ViewBetaReports,
                     AllowRoles = new [] {
                         ExpectedUserRoles.Experimental
                     }

@@ -1,4 +1,4 @@
-﻿/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
+﻿/// <reference path="../../scripts/typings/rx/rx.d.ts" />
 
 module MyAndromeda.Menu.Services {
     Angular.ServicesInitilizations.push((app) => {

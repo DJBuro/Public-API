@@ -49,7 +49,7 @@
                 c = ftpService.LocalAccessVersionBusy,
                 d = ftpService.DeleteBusy;
 
-            var anyBusy = Rx.Observable.combineLatest(a,b,c,d, function(o1,o2,o3,o4) {
+            var anyBusy = Rx.Observable.combineLatest(a,b,c,d, (o1,o2,o3,o4) => {
                 return o1 || o2 || o3 || o4;
             });
 

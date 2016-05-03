@@ -30,8 +30,8 @@ namespace MyAndromeda.Services.Media
             {
                 var ms = new MemoryStream();
                 stream.CopyTo(ms);
-                stream.Seek(0, SeekOrigin.Begin);
-                ms.Seek(0, SeekOrigin.Begin);
+                stream.Seek(offset: 0, loc: SeekOrigin.Begin);
+                ms.Seek(offset: 0, loc: SeekOrigin.Begin);
 
                 return ms;
             };

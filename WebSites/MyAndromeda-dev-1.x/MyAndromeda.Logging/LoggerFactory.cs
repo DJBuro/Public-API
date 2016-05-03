@@ -20,7 +20,7 @@ namespace MyAndromeda.Logging
             }
             catch (Exception e) 
             {
-                System.Diagnostics.Trace.WriteLine("logger cannot be created");
+                System.Diagnostics.Trace.WriteLine(message: "logger cannot be created");
                 System.Diagnostics.Trace.WriteLine(e.Message);
             }
 

@@ -22,6 +22,16 @@ namespace MyAndromeda.Core.Authorization
         public const string RamesesStoreEnrollment = "Rameses store";
 
         /// <summary>
+        /// Reports based on the data on the order headers in the data warehouse.
+        /// </summary>
+        public const string AcsReports = "ACS Reports";
+
+        /// <summary>
+        /// Reports based on the data 
+        /// </summary>
+        public const string RamesesAmsReports = "Rameses (AMS) Reports"; 
+
+        /// <summary>
         /// This enrollment contains every feature that a GPRS store can make use of. 
         /// </summary>
         public const string GprsStore = "GPRS store";

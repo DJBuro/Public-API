@@ -35,9 +35,9 @@ namespace MyAndromeda.Menus.Jobs
             return new Task(this.Run);
         }
 
-        public static TimeSpan Interval
+        public static new TimeSpan Interval
         {
-            get { return TimeSpan.FromSeconds(15); }
+            get { return TimeSpan.FromSeconds(value: 15); }
         }
 
         //public static TimeSpan Timeout

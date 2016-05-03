@@ -108,7 +108,7 @@ module MyAndromeda.Hubs {
 
         initEvents(): void {
             var internal = this,
-                hub = <any>this.hub.myAndromedaHubConnection.hubConnection.proxies.cloudsynchronizationhub,
+                hub = <any>this.hub.myAndromedaHubConnection.hubConnection.proxies["cloudsynchronizationhub"],
                 client = hub.client;
 
             client.startedSynchronization = function (data) {

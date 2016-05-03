@@ -8,49 +8,72 @@
 @if (authorizer.Authorize(Permissions.UserPermissions.ViewFtpToolbar))
 {
     <div id="FtpWrapper" ng-controller="FtpController">
+
         <div class="row">
-            <div class="col-xs-8">
-                <div class="space">
-                    <button class="k-button" ng-click="DeleteLocalFile()" ng-disabled="BlockAccess" title="Click here to delete the local file">
-                        <span ng-show="DeleteBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></span>
-                        <i class="fa fa-trash-o"></i>
-                        Delete local menu version
-                    </button>
+            <div class="col-sm-8">
 
-                    <button class="k-button" ng-click="CheckDbVersion()" ng-disabled="BlockAccess" title="Click here to reload the menu version">
-                        <span ng-show="VersionBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></span>
-                        <i class="fa fa-info-circle"></i>
-                        Check menu version
-                    </button>
-
-                    <button class="k-button" ng-click="UploadToFtp()" ng-disabled="BlockAccess" title="Click here to push the menu back to the ftp.">
-                        <span ng-show="UploadBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></span>
-                        <i class="fa fa-cloud-upload"></i>
-                        Try to backup
-                    </button>
-
-                    <button class="k-button k-primary" ng-click="DownloadFromFtp()" title="Click here to fetch the newest version of the menu from the FTP.">
-                        <span ng-show="DownloadBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></span>
-                        <i ng-hide="DownloadBusy" class="fa fa-download"></i>
-                        Try to get latest
-                    </button>
-                </div>
-            </div>
-            <div class="col-xs-4">
-                <div class="space">
-                    <div>
-                        <b>Access 97 Menu Detail (Rameses)</b>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">Admin - Debug bar</div>
                     </div>
-                    <div>Version: <i>{{Version}}</i></div>
-                    <div>Updated on: <i>{{UpdatedOn}}</i></div>
-                    <div><i>Last download: {{LastDownloaded}}</i></div>
+                    <div class="panel-body">
+
+                        <div >
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span class="btn-group">
+                                        <a class="btn btn-default" ng-click="DeleteLocalFile()" ng-disabled="BlockAccess" title="Click here to delete the local file">
+                                            <i ng-show="DeleteBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
+                                            <i class="fa fa-trash-o"></i>
+                                            Delete local menu
+                                            <span class="badge badge-info">{{Version}}</span>
+                                        </a>
+
+                                        <a class="btn btn-default" ng-click="CheckDbVersion()" ng-disabled="BlockAccess" title="Click here to reload the menu version">
+                                            <i ng-show="VersionBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
+                                            <i class="fa fa-info-circle"></i>
+                                            Check menu version
+                                        </a>
+
+                                        <a class="btn btn-default" ng-click="UploadToFtp()" ng-disabled="BlockAccess" title="Click here to push the menu back to the ftp.">
+                                            <i ng-show="UploadBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
+                                            <i class="fa fa-cloud-upload"></i>
+                                            Try to backup
+                                            <span class="badge badge-info">{{Version}}</span>
+                                        </a>
+
+                                        <a class="btn btn-primary" ng-click="DownloadFromFtp()" title="Click here to fetch the newest version of the menu from the FTP.">
+                                            <i ng-show="DownloadBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
+                                            <i ng-hide="DownloadBusy" class="fa fa-download"></i>
+                                            Try to get latest
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    {{Errors}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title">Rameses Menu - Access 97</div>
+                    </div>
+                    <div class="panel-body">
+                        <div>Version: {{Version}} </div>
+                        <div>Updated on: {{UpdatedOn}}</div>
+                        <div>Last download: {{LastDownloaded}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                {{Errors}}
-            </div>
+
         </div>
     </div>
 }

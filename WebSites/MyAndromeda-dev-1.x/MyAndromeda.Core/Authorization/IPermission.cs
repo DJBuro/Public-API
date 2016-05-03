@@ -14,26 +14,4 @@ namespace MyAndromeda.Core.Authorization
         //PermissionType PermissionType { get; set; }
     }
 
-    public enum PermissionType
-    {
-        Unknown,
-        UserRole,
-        StoreEnrolement
-    }
-
-    public class PermissionGroup
-    {
-        public PermissionGroup() 
-        {
-            this.StorePermissions = Enumerable.Empty<IPermission>();
-            this.UserPermissions = Enumerable.Empty<IPermission>();
-        }
-
-        public IEnumerable<IPermission> StorePermissions { get; set; }
-        public IEnumerable<IPermission> UserPermissions { get; set; } 
-
-
-
-        //chain permissions ? 
-    }
 }

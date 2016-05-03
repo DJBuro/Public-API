@@ -19,7 +19,7 @@ namespace MyAndromeda.Web.Controllers
 
         public ActionResult Index(string message)
         {
-            var error = new MyAndromeda.Web.Models.ErrorModel();
+            var error = new Models.ErrorModel();
             error.Message = message;
 
             return View(error);
@@ -27,19 +27,19 @@ namespace MyAndromeda.Web.Controllers
 
         public ActionResult Test()
         {
-            logger.Debug("Debug Line");
-            notifier.Notify("Debug line added");
+            logger.Debug(message: "Debug Line");
+            notifier.Notify(message: "Debug line added");
 
-            logger.Error("Error Line");
-            notifier.Notify("Error line added");
+            logger.Error(message: "Error Line");
+            notifier.Notify(message: "Error line added");
 
-            logger.Fatal("Fatal Line");
-            notifier.Notify("Fatal line added");
+            logger.Fatal(message: "Fatal Line");
+            notifier.Notify(message: "Fatal line added");
 
-            logger.Info("Info Line");
-            notifier.Notify("Info line added");
+            logger.Info(message: "Info Line");
+            notifier.Notify(message: "Info line added");
 
-            System.Diagnostics.Trace.WriteLine("debug lines written");
+            System.Diagnostics.Trace.WriteLine(message: "debug lines written");
 
             return View();
         }
@@ -47,9 +47,10 @@ namespace MyAndromeda.Web.Controllers
         public ActionResult Test2()
         {
             logger.Error(message: "Going to kick off an error");
+
             throw new Exception(message: "I kicked myself");
 
-            return View();
+            //return View();
         }
 
     }

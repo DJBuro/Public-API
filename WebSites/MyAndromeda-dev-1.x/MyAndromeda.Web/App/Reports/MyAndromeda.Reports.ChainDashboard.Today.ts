@@ -1,4 +1,5 @@
-﻿module MyAndromeda.Reports.ChainDashboard {
+﻿/// <reference path="../../scripts/typings/rx/rx-lite.d.ts" />
+module MyAndromeda.Reports.ChainDashboard {
 
     var app = angular.module("ChainDashboard.Today", ["ChainDashboard.Services"]);
 

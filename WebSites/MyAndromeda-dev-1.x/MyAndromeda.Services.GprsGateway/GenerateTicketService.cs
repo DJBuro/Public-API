@@ -5,6 +5,7 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using System.Threading.Tasks;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Logging;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Services.GprsGateway
 {
@@ -19,7 +20,7 @@ namespace MyAndromeda.Services.GprsGateway
 
         public async Task<string> Generate(Store store, OrderHeader order)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.StartOrEndOfOrder();
 
             try
@@ -46,16 +47,16 @@ namespace MyAndromeda.Services.GprsGateway
  
 
  
-        private async Task<string> BuildUpComments(OrderHeader order)
+        private Task<string> BuildUpComments(OrderHeader order)
         {
-            var directions = "";
+            string directions = string.Empty;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             
             sb.Append(order.CookingInstructions);
             sb.EndOfPart(TicketDepth.SegmentChild);
             
-            if (order.OrderType.Equals("Collection", StringComparison.InvariantCultureIgnoreCase)) 
+            if (order.OrderType.Equals(value: "Collection", comparisonType: StringComparison.InvariantCultureIgnoreCase)) 
             {
                 sb.Append(string.Empty);
                 sb.EndOfPart(TicketDepth.SegmentChild);
@@ -79,44 +80,44 @@ namespace MyAndromeda.Services.GprsGateway
 
             sb.EndOfPart(TicketDepth.Segment);
 
-            return sb.ToString();
+            return Task.FromResult(sb.ToString());
         }
  
-        private async Task<string> BuildUpDetailSegment(OrderHeader order)
+        private Task<string> BuildUpDetailSegment(OrderHeader order)
         {
-            var orderedAt = order.TimeStamp.ToString("g");
-            var wantedAt = order.OrderWantedTime.GetValueOrDefault().ToString("g");
-            var acceptedFor = order.OrderWantedTime.GetValueOrDefault().ToString("g");
+            string orderedAt = order.TimeStamp.ToString(format: "g");
+            string wantedAt = order.OrderWantedTime.GetValueOrDefault().ToString(format: "g");
+            string acceptedFor = order.OrderWantedTime.GetValueOrDefault().ToString(format: "g");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append(orderedAt).EndOfPart(TicketDepth.SegmentChild);
             sb.Append(wantedAt).EndOfPart(TicketDepth.SegmentChild);
             sb.Append(acceptedFor).EndOfPart(TicketDepth.SegmentChild);
             sb.EndOfPart(TicketDepth.Segment);
 
-            return sb.ToString();
+            return Task.FromResult(sb.ToString());
         }
  
         private async Task<string> BuildUpChargesSegment(OrderHeader order)
         {
-            StringBuilder sb = new StringBuilder();
-            var charges = await order.OrderPayments.LoadAsync();
+            var sb = new StringBuilder();
+            ICollection<OrderPayment> charges = await order.OrderPayments.LoadAsync();
 
-            var deliveryCharge = order.DeliveryCharge;
-            sb.Append(string.Format("{0:0.00}", deliveryCharge));
+            decimal deliveryCharge = order.DeliveryCharge;
+            sb.Append(string.Format(format: "{0:0.00}", arg0: deliveryCharge));
             sb.EndOfPart(TicketDepth.SegmentChild);
 
-            var paymentCharge = (charges.Sum(e => e.PaymentCharge) / 100);
-            sb.Append(string.Format("{0:0.00}", paymentCharge));
+            int? paymentCharge = (charges.Sum(e => e.PaymentCharge) / 100);
+            sb.Append(string.Format(format: "{0:0.00}", arg0: paymentCharge));
             sb.EndOfPart(TicketDepth.SegmentChild);
 
-            var discountRows = await order.OrderDiscounts.LoadAsync();
-            var discount = discountRows.Sum(e => ((decimal)e.DiscountAmount) / 100);
-            sb.Append(string.Format("{0:0.00}", discount));
+            ICollection<OrderDiscount> discountRows = await order.OrderDiscounts.LoadAsync();
+            decimal discount = discountRows.Sum(e => ((decimal)e.DiscountAmount) / 100);
+            sb.Append(string.Format(format: "{0:0.00}", arg0: discount));
             sb.EndOfPart(TicketDepth.SegmentChild);
 
-            var finalFinalPrice = order.FinalPrice + order.DeliveryCharge;
+            decimal finalFinalPrice = order.FinalPrice + order.DeliveryCharge;
             sb.Append(finalFinalPrice.ToString());
             sb.EndOfPart(TicketDepth.SegmentChild);
 
@@ -125,13 +126,13 @@ namespace MyAndromeda.Services.GprsGateway
             return sb.ToString();
         }
  
-        private async Task<string> BuildHeaderSegment(Store store, OrderHeader order)
+        private Task<string> BuildHeaderSegment(Store store, OrderHeader order)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             //should already be part of the result hence the lack of await. 
-            var customer = order.Customer;
-            var addresss = order.CustomerAddress;
+            Customer customer = order.Customer;
+            CustomerAddress addresss = order.CustomerAddress;
 
             string storeAddress = this.BuildStoreAddress(store);
 
@@ -140,17 +141,17 @@ namespace MyAndromeda.Services.GprsGateway
             sb.Append(order.OrderType).EndOfPart(TicketDepth.SegmentChild);
             sb.EndOfPart(TicketDepth.Segment);
 
-            return sb.ToString();
+            return Task.FromResult(sb.ToString());
         }
  
         private async Task<string> BuildCustomerSegment(OrderHeader order, Customer customer, CustomerAddress address)
         {
             if (address == null) { return "".EndOfPart(TicketDepth.SegmentChild); }
 
-            var contacts = await customer.Contacts.LoadAsync();
-            var phone = contacts.FirstOrDefault(e => e.ContactType.Name.Equals("Mobile", StringComparison.InvariantCultureIgnoreCase));
+            ICollection<Contact> contacts = await customer.Contacts.LoadAsync();
+            Contact phone = contacts.FirstOrDefault(e => e.ContactType.Name.Equals(value: "Mobile", comparisonType: StringComparison.InvariantCultureIgnoreCase));
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             
             //part 1 
             sb.Append(customer.FirstName);
@@ -170,9 +171,9 @@ namespace MyAndromeda.Services.GprsGateway
             }
 
             //part 3a
-            if (order.OrderType.IndexOf("Collection", StringComparison.InvariantCultureIgnoreCase) >= 0) 
+            if (order.OrderType.IndexOf(value: "Collection", comparisonType: StringComparison.InvariantCultureIgnoreCase)>= 0) 
             {
-                sb.Append("Collecting...");
+                sb.Append(value: "Collecting...");
                 sb.EndOfPart(TicketDepth.SegmentChild);
                 sb.EndOfPart(TicketDepth.Segment);
 
@@ -232,9 +233,9 @@ namespace MyAndromeda.Services.GprsGateway
 
         private string BuildStoreAddress(Store store) 
         {
-            var address = store.Address;
+            Data.Model.AndroAdmin.Address address = store.Address;
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (!string.IsNullOrWhiteSpace(address.RoadNum) || !string.IsNullOrWhiteSpace(address.RoadName))
             {
@@ -271,9 +272,9 @@ namespace MyAndromeda.Services.GprsGateway
 
         private async Task<string> BuildUpLineItemSegment(OrderHeader order)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
-            var orderLines = await order.OrderLines.LoadAsync();
+            ICollection<OrderLine> orderLines = await order.OrderLines.LoadAsync();
             
             foreach(var orderline in orderLines)
             {
@@ -287,7 +288,7 @@ namespace MyAndromeda.Services.GprsGateway
 
         private async Task<string> BuildUpLineItem(OrderLine orderLine) 
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             //part 1 
             sb.Append(orderLine.Cat1 ?? "");
@@ -299,7 +300,7 @@ namespace MyAndromeda.Services.GprsGateway
             sb.StartNewLine();
             sb.EndOfPart(TicketDepth.SegmentChild);
             //part 2 
-            sb.Append(orderLine.Qty.GetValueOrDefault(1).ToString());
+            sb.Append(orderLine.Qty.GetValueOrDefault(defaultValue: 1).ToString());
             sb.EndOfPart(TicketDepth.SegmentChild);
             //part 3
             sb.Append(orderLine.Description);
@@ -319,20 +320,20 @@ namespace MyAndromeda.Services.GprsGateway
 
         private async Task<string> BuildUpModifiers(OrderLine orderLine) 
         {
-            var modifiers = await orderLine.modifiers.LoadAsync();
+            ICollection<modifier> modifiers = await orderLine.modifiers.LoadAsync();
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             foreach (var modifier in modifiers.Where(e=> !e.Removed.GetValueOrDefault()))
             {
                 //todo 
-                sb.AppendFormat("+{0} X {1}", modifier.Qty, modifier.Description);
+                sb.AppendFormat(format: "+{0} X {1}", arg0: modifier.Qty, arg1: modifier.Description);
                 sb.EndOfPart(TicketDepth.ContentChild);
             }
 
             foreach (var modifier in modifiers.Where(e => e.Removed.GetValueOrDefault()))
             {
-                sb.AppendFormat("-{0} X {1}", modifier.Qty, modifier.Description);
+                sb.AppendFormat(format: "-{0} X {1}", arg0: modifier.Qty, arg1: modifier.Description);
                 sb.EndOfPart(TicketDepth.ContentChild);
             }
 

@@ -34,8 +34,8 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
             if (!authorizer.Authorize(UserRolesUserPermissions.ViewUserRoleDefinitions))
                 return new HttpUnauthorizedResult();
 
-            var role = this.userRoleDataService.Get(name);
-            var rolePermissions = this.permissionManager.GetEffectivePermissionsForRole(role);
+            IUserRole role = this.userRoleDataService.Get(name);
+            System.Collections.Generic.IEnumerable<IPermission> rolePermissions = this.permissionManager.GetEffectivePermissionsForRole(role);
 
             var viewModel = new UpdatePermissisonsViewModel();
             

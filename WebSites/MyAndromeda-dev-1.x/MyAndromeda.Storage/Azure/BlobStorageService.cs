@@ -8,6 +8,7 @@ using MyAndromeda.Configuration;
 using System.Threading.Tasks;
 using MyAndromeda.Storage.Models;
 using System.Collections.Generic;
+using MyAndromeda.Logging;
 
 namespace MyAndromeda.Storage.Azure
 {
@@ -17,15 +18,17 @@ namespace MyAndromeda.Storage.Azure
         private readonly CloudStorageAccount storageAccount;
 
         private readonly string containerName;
-        private readonly string accountName; 
-        
-        public BlobStorageService() 
+        private readonly string accountName;
+        private readonly IMyAndromedaLogger logger;
+
+        public BlobStorageService(IMyAndromedaLogger logger) 
         {
+            this.logger = logger;
             this.containerName = AzureBlobStorage.ContainerName;//WebConfigurationManager.AppSettings["AzureMenuCloudContainer"].ToString(); 
             this.accountName = AzureBlobStorage.AccountName;
             
             this.credentials = new StorageCredentials(accountName.ToLower(), AzureBlobStorage.Password);
-            this.storageAccount = new CloudStorageAccount(credentials, true); 
+            this.storageAccount = new CloudStorageAccount(credentials, useHttps: true); 
         }
 
         public void RenameBlobs(string from, string to)
@@ -153,6 +156,7 @@ namespace MyAndromeda.Storage.Azure
                 }
                 catch (Exception ex)
                 {
+                    this.logger.Error(ex);
                     fileDeletedSuccessfully = false;
                 }                
             }
@@ -186,7 +190,9 @@ namespace MyAndromeda.Storage.Azure
             blobBlock.UploadFromStream(stream);
         }
 
-        private string contentPath; 
+        private string contentPath;
+       
+
         public string ContentPath(string hostAddress, string contentPathFormat, string externalSiteId)
         {
             if (!string.IsNullOrWhiteSpace(this.contentPath))

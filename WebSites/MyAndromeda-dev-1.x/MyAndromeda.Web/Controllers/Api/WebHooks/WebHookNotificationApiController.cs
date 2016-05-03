@@ -13,6 +13,7 @@ using System.Web.Http;
 using Newtonsoft.Json;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Services.WebHooks;
+using MyAndromeda.Data.DataWarehouse.Models;
 
 namespace MyAndromeda.Web.Controllers.Api.WebHooks
 {
@@ -146,7 +147,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-estimated-delivery-time")]
         public async Task<HttpResponseMessage> UpdateDeliveryTime(OutgoingWebHookUpdateDeliveryTime model)
         {
-            this.logger.Info("web-hooks/store/update-estimated-delivery-time hit");
+            this.logger.Info(message: "web-hooks/store/update-estimated-delivery-time hit");
             //this.Flavor = WebHookType.OrderEta;
 
             try
@@ -166,7 +167,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-menu")]
         public async Task<HttpResponseMessage> MenuChange(OutgoingWebHookMenuChange model)
         {
-            this.logger.Info("web-hooks/store/update-menu hit");
+            this.logger.Info(message: "web-hooks/store/update-menu hit");
             //this.Flavor = WebHookType.MenuChange;
 
             try
@@ -186,7 +187,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-menu-items")]
         public async Task<HttpResponseMessage> MenuItemsChanged(OutgoingWebHookMenuItemsChanged model) 
         {
-            this.logger.Info("web-hooks/store/update-menu-items hit");
+            this.logger.Info(message: "web-hooks/store/update-menu-items hit");
             //this.Flavor = WebHookType.MenuItemChange | WebHookType.MenuChange;
 
             try
@@ -206,7 +207,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/orders/update-order-status")]
         public async Task<HttpResponseMessage> OrderStatusChange(OutgoingWebHookOrderStatusChange model)
         {
-            this.logger.Info("web-hooks/store/orders/update-order-status hit");
+            this.logger.Info(message: "web-hooks/store/orders/update-order-status hit");
             //this.Flavor = WebHookType.OrderStatus;
 
             try
@@ -217,13 +218,13 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
             if (string.IsNullOrWhiteSpace(model.ExternalOrderId) && !model.RamesesOrderNum.HasValue) 
             {
-                var message = "External Order Id OR RamesesOrderNum is required: " + model.Source;
+                string message = "External Order Id OR RamesesOrderNum is required: " + model.Source;
                 this.logger.Error(message);
 
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
             }
 
-            var query = this.orderHeaderDataService.List();
+            IQueryable<OrderHeader> query = this.orderHeaderDataService.List();
 
             if (!string.IsNullOrWhiteSpace(model.ExternalOrderId))
             {
@@ -251,8 +252,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
 
             if (orderHeaders.Length > 1) 
             {
-                var obj = JsonConvert.SerializeObject(model);
-                var message = "The order brought back too many records!!!!! " + obj;
+                string obj = JsonConvert.SerializeObject(model);
+                string message = "The order brought back too many records!!!!! " + obj;
 
                 this.logger.Error(message);
                 this.logger.Error(query.ToTraceQuery());
@@ -260,8 +261,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
             }
             if (orderHeaders.Length == 0)
             {
-                var obj = JsonConvert.SerializeObject(model); 
-                var message = "No order could be found using external Order id: " + obj;
+                string obj = JsonConvert.SerializeObject(model); 
+                string message = "No order could be found using external Order id: " + obj;
                 this.logger.Error(message);
 
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
@@ -284,7 +285,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/bringg/update")]
         public async Task<HttpResponseMessage> BringMessage([FromBody]OutgoingWebHookBringg model) 
         {
-            this.logger.Info("web-hooks/bringg/update hit");
+            this.logger.Info(message: "web-hooks/bringg/update hit");
             //this.Flavor = WebHookType.BringgUpdate;
 
             try
@@ -305,7 +306,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/bringg/update-eta")]
         public async Task<HttpResponseMessage> BringgEtaMessage(BringOutgoingEtaWebHook model) 
         {
-            this.logger.Info("web-hooks/bringg/update-eta hit");
+            this.logger.Info(message: "web-hooks/bringg/update-eta hit");
             //this.Flavor = WebHookType.BringgEtaUpdate;
 
             try

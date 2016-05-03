@@ -8,7 +8,7 @@
         private connecting: boolean;
         private setup: boolean;
 
-        public hubConnection: HubConnection;
+        public hubConnection: SignalR.Hub.Connection;
 
         public static GetInstance(options: Models.IHubParameters): MyAndromedaHubConnection {
             if (MyAndromedaHubConnection._instance) { return MyAndromedaHubConnection._instance; }
@@ -22,7 +22,7 @@
             this.connect();
         }
 
-        public connect(): HubConnection
+        public connect(): SignalR.Hub.Connection
         {
 
             Logger.Notify("Hub: Connect called");
@@ -52,7 +52,7 @@
 
             this.hubConnection = hubConnection;
             //setup route parameters for MyAndromeda 
-            if (!this.setupQueryString()) { return hubConnection; };
+            if (!this.setupQueryString()) { return this.hubConnection; };
             
             hubConnection.starting(() => {
                 internal.connecting = true;

@@ -29,7 +29,7 @@
             }
 
             var hubs = this.myAndromedaHubConnection.hubConnection.proxies,
-                menuHub = <any>hubs.storehub;
+                menuHub = <any>hubs["storehub"];
 
             this.eventMap = {};
             this.menuHub = menuHub;

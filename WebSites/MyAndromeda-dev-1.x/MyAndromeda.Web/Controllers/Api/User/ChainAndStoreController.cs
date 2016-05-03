@@ -5,33 +5,47 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Data.Entity;
+using MyAndromeda.Framework.Authorization;
+using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Data.Model.MyAndromeda;
+using MyAndromeda.Logging;
 
 namespace MyAndromeda.Web.Controllers.Api.User
 {
     public class ChainAndStoreController : ApiController
     {
-        readonly ICurrentUser currentUser; 
-        readonly MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDataContext;
+        readonly ICurrentUser currentUser;
+        readonly AndroAdminDbContext androAdminDataContext;
+        readonly MyAndromedaDbContext myAndromedaDataContext;
+        readonly IMyAndromedaLogger logger;
+        readonly IAuthorizer authorizer;
 
-        public ChainAndStoreController(ICurrentUser currentUser,
-            MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDataContext)
-        { 
+        public ChainAndStoreController(
+            IAuthorizer authorizer,
+            ICurrentUser currentUser,
+            AndroAdminDbContext androAdminDataContext,
+            MyAndromedaDbContext myAndromedaDataContext)
+        {
+            this.authorizer = authorizer;
+            this.logger = logger;
+            this.myAndromedaDataContext = myAndromedaDataContext;
             this.androAdminDataContext = androAdminDataContext;
             this.currentUser = currentUser;
         }
 
         [HttpGet]
         [Route("user/chains")]
-        public async Task<IEnumerable<ChainModel>> List() 
+        public async Task<IEnumerable<ChainModel>> List()
         {
-            var usersChains = this.currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
+            int[] usersChains = this.currentUser.FlattenedChains.Select(e => e.Id).ToArray();
 
-            var chainsQuery = this.androAdminDataContext.Chains
+            IOrderedQueryable<Chain> chainsQuery = this.androAdminDataContext.Chains
                 .Where(e => usersChains.Contains(e.Id))
-                .OrderBy(e=> e.Name);
+                .OrderBy(e => e.Name);
 
             var projectionQuery = chainsQuery
-                .Select(e => new { 
+                .Select(e => new
+                {
                     Id = e.Id,
                     e.Name,
                     StoreCount = e.Stores.Count,
@@ -43,23 +57,35 @@ namespace MyAndromeda.Web.Controllers.Api.User
 
             var projectionResult = await projectionQuery.ToArrayAsync();
 
-            var result = projectionResult.Select(e => new ChainModel
-            {  
+            List<ChainModel> result = projectionResult.Select(e => new ChainModel
+            {
                 Id = e.Id,
                 Name = e.Name,
                 StoreCount = e.StoreCount,
                 ChildChainCount = projectionResult.Count(chain => chain.ParentId == e.Id),
                 ChildStoreCount = CountRecursivelyChildStores(
-                        projectionResult, 
+                        projectionResult,
                         e,
                         d => d.Id,
-                        id => projectionResult.Where(d=> d.ParentId == id),
+                        id => projectionResult.Where(d => d.ParentId == id),
                         d => d.StoreCount),
-                //, d => d.ParentId == e.Id, d => d.StoreCount), 
-                //projectionResult.Select(e=> e.ParentId == )
-                ParentId = e.ParentId == 0 
-                            ? new Nullable<int>() 
+
+                ParentId = e.ParentId == 0
+                            ? new int?()
                             : e.ParentId
+            }).ToList();
+
+            result.ForEach((item) =>
+            {
+                if (item.ParentId.HasValue)
+                {
+                    bool parentExists = result.Any(e => e.Id == item.ParentId.GetValueOrDefault());
+
+                    if (!parentExists)
+                    {
+                        item.ParentId = null;
+                    }
+                }
             });
 
             return result;
@@ -67,14 +93,14 @@ namespace MyAndromeda.Web.Controllers.Api.User
         }
 
         private int CountRecursivelyChildStores<A>(
-            IEnumerable<A> allModels,         
+            IEnumerable<A> allModels,
             A model,
-            Func<A, int> idFunc,                              //current node in the chain 
+            Func<A, int> idFunc,                    //current node in the chain 
             Func<int, IEnumerable<A>> childrenFunc, //results from all models
-            Func<A, int> sum) 
+            Func<A, int> sum)
         {
-            var total = 0;
-            var children = childrenFunc(idFunc(model));
+            int total = 0;
+            IEnumerable<A> children = childrenFunc(idFunc(model));
             foreach (var item in children)
             {
                 total += sum(item);
@@ -87,54 +113,168 @@ namespace MyAndromeda.Web.Controllers.Api.User
         [Route("user/chains/{chainId}")]
         public async Task<IEnumerable<StoreModel>> ListStores([FromUri]int chainId)
         {
-            var usersChains = this.currentUser.FlattenedChains.ToArray();
-            
-            if(!usersChains.Any(e=> e.Id == chainId))
+            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+
+            if (!usersChains.Any(e => e.Id == chainId))
             {
-                throw new Exception("Chain is inaccessible");
+                throw new Exception(message: "Chain is inaccessible");
             }
 
-            var storesQuery = this.androAdminDataContext.Stores
+            IOrderedQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> storesQuery = this.androAdminDataContext.Stores
                 .Where(e => e.ChainId == chainId)
-                .OrderBy(e=> e.Name);
+                .OrderBy(e => e.Name);
 
-            var projection = storesQuery.Select(e => new StoreModel() { 
-                AndromedaSiteId = e.AndromedaSiteId,
-                Name = e.Name,
-                ExternalSiteId = e.ExternalId,
-                HasRameses = e.StoreDevices.Count == 0 || e.StoreDevices.Any(storeDevice => storeDevice.Device.Name == "Rameses") 
-            });
+            IQueryable<StoreModel> projection = storesQuery.CreateStoreModelProjection();
+            //    storesQuery.Select(e => new StoreModel() { 
+            //    Id = e.Id,
+            //    AndromedaSiteId = e.AndromedaSiteId,
+            //    Name = e.Name,
+            //    ChainId = e.ChainId,
+            //    ChainName = e.Chain.Name,
+            //    ExternalSiteId = e.ExternalId,
+            //    HasRameses = e.StoreDevices.Count == 0 || e.StoreDevices.Any(storeDevice => storeDevice.Device.Name == "Rameses")
+            //});
 
-            var results = await projection.ToArrayAsync();
+            List<StoreModel> results = await projection.ToListAsync();
+
+            int[] storeIds = results.Select(e => e.Id).ToArray();
+            List<StoreEnrollmentQueryModel> enrollments = await this.myAndromedaDataContext.StoreEnrolments
+                .QueryByStoreIds(storeIds)
+                .CreateStoreEnrollmentProjection()
+                .ToListAsync();
+
+            results.FillInStoreWithEnrollments(enrollments);
 
             return results;
         }
 
+        [HttpGet]
+        [Route("user/stores/findById/{andromedaSiteId}")]
+        public async Task<IEnumerable<StoreModel>> FindStoresByAndromedaSiteId([FromUri] int andromedaSiteId)
+        {
+            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+            int[] chainIds = usersChains.Select(e => e.Id).ToArray();
+
+            IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> storesQuery =
+                this.androAdminDataContext.Stores
+                    .Where(e => e.AndromedaSiteId == andromedaSiteId)
+                    .QueryStoreWithChainIds(chainIds);
+
+            IQueryable<StoreModel> projection = storesQuery.CreateStoreModelProjection();
+            
+            List<StoreModel> results = await projection.ToListAsync();
+
+            int[] storeIds = results.Select(e => e.Id).ToArray();
+
+            List<StoreEnrollmentQueryModel> enrollments = await this.myAndromedaDataContext.StoreEnrolments
+                .QueryByStoreIds(storeIds)
+                .CreateStoreEnrollmentProjection()
+                .ToListAsync();
+
+            results.FillInStoreWithEnrollments(enrollments);
+
+            return results;
+        }
+
+        [HttpGet]
+        [Route("user/stores/find/{name}")]
+        public async Task<IEnumerable<StoreModel>> FindStores([FromUri]string name)
+        {
+            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+            int[] chainIds = usersChains.Select(e => e.Id).ToArray();
+
+            IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> storesQuery =
+                this.androAdminDataContext.Stores
+                .QueryStoreWithChainIds(chainIds)
+                .QueryByStoreName(name);
+
+            IQueryable<StoreModel> projection = storesQuery.CreateStoreModelProjection();
+
+            List<StoreModel> results = await projection.ToListAsync();
+
+            int[] storeIds = results.Select(e => e.Id).ToArray();
+
+            List<StoreEnrollmentQueryModel> enrollments = await this.myAndromedaDataContext.StoreEnrolments
+                .QueryByStoreIds(storeIds)
+                .CreateStoreEnrollmentProjection()
+                .ToListAsync();
+
+            results.FillInStoreWithEnrollments(enrollments);
+
+            return results;
+        }
 
     }
 
-    public class ChainModel 
+    public static class Extensions
     {
-        public string Name { get; set; }
+        public static IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> QueryStoreWithChainId(this IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> query, int chainId)
+        {
+            return query
+                .Where(e => e.ChainId == chainId)
+                .OrderBy(e => e.Name);
+        }
 
-        public int StoreCount { get; set; }
 
-        public int? ParentId { get; set; }
 
-        public int Id { get; set; }
+        public static IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> QueryStoreWithChainIds(this IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> query, int[] chainIds)
+        {
+            return query
+                .Where(e => chainIds.Contains(e.ChainId))
+                .OrderBy(e => e.Name);
+        }
 
-        public int ChildChainCount { get; set; }
+        public static IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> QueryByStoreName(this IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> query, string name)
+        {
+            return query.Where(e => e.Name.Contains(name) || e.ClientSiteName.Contains(name) || e.ExternalSiteName.Contains(name));
+        }
 
-        public int ChildStoreCount { get; set; }
+        public static IQueryable<StoreModel> CreateStoreModelProjection(this IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> query)
+        {
+            return query.Select(e => new StoreModel()
+            {
+                Id = e.Id,
+                AndromedaSiteId = e.AndromedaSiteId,
+                Name = e.Name,
+                ExternalSiteId = e.ExternalId,
+                ChainId = e.ChainId,
+                ChainName = e.Chain.Name,
+                HasRameses = e.StoreDevices.Count == 0 || e.StoreDevices.Any(storeDevice => storeDevice.Device.Name == "Rameses")
+            });
+        }
+
+        public static IQueryable<StoreEnrolment> QueryByStoreIds(this IQueryable<StoreEnrolment> query, int[] storeIds)
+        {
+            return query
+                .Where(e => e.Active && storeIds.Any(k => k == e.StoreId));
+        }
+        public static IQueryable<StoreEnrollmentQueryModel> CreateStoreEnrollmentProjection(this IQueryable<StoreEnrolment> query)
+        {
+            return query
+                //.Where(e=> e.Active)
+                .Select(e => new StoreEnrollmentQueryModel()
+                {
+                    Name = e.EnrolmentLevel.Name,
+                    StoreId = e.StoreId
+                });
+        }
+
+        public static void FillInStoreWithEnrollments(this IEnumerable<StoreModel> stores, List<StoreEnrollmentQueryModel> enrollements)
+        {
+
+            foreach (var store in stores)
+            {
+                List<StoreEnrollmentQueryModel> storeEnrollments = enrollements.Where(e => e.StoreId == store.Id).ToList();
+
+                store.StoreEnrollments = storeEnrollments.Select(e => new StoreEnrollment()
+                {
+                    Name = e.Name
+                }).ToList();
+
+            }
+
+        }
+
     }
 
-    public class StoreModel 
-    {
-        public string Name { get; set; }
-
-        public string ExternalSiteId { get; set; }
-
-        public int AndromedaSiteId { get; set; }
-        public bool HasRameses { get; set; }
-    }
 }

@@ -1,6 +1,7 @@
 using System.Linq;
 using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
+using System.Data.Entity;
 
 namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
 {
@@ -15,10 +16,9 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
 
         public void UpdateStoreEnrolment(ISite site, IEnrolmentLevel enrolment)
         {
-            this.ClearEnrolements(site);
-
-            var table = this.dbContext.StoreEnrolments;
-            var enrolmentModel = table.Create();
+           
+            DbSet<StoreEnrolment> table = this.dbContext.StoreEnrolments;
+            StoreEnrolment enrolmentModel = table.Create();
 
             enrolmentModel.Active = true;
             enrolmentModel.EnrolmentLevelId = enrolment.Id;
@@ -31,9 +31,9 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
 
         public void ClearEnrolements(ISite site)
         {
-            var table = this.dbContext.StoreEnrolments;
-            var query = table.Where(e => e.StoreId == site.Id);
-            var results = query.ToArray();
+            DbSet<StoreEnrolment> table = this.dbContext.StoreEnrolments;
+            IQueryable<StoreEnrolment> query = table.Where(e => e.StoreId == site.Id);
+            StoreEnrolment[] results = query.ToArray();
 
             foreach (var result in results)
             {

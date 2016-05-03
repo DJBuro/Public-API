@@ -14,15 +14,14 @@
     { 
         <div>
             @(Html.Kendo()
-            .DropDownListFor(e => e.SelectedOptionId)
+            .MultiSelectFor(e => e.SelectedOptionId)
             //.Name("SelectedEnrolment")
-            .OptionLabel("Select")
+            //.OptionLabel("Select")
             .DataTextField("Name")
             .DataValueField("Id")
             .HtmlAttributes(new { style = "width: 100%" })
             .Height(300)
-            
-            .Template("<div><b>#:Name#</b></div>#if(data.Description){#<div>#:data.Description#</div>#}#")
+            .ItemTemplate("<div><b>#:Name#</b></div>#if(data.Description){#<div>#:data.Description#</div>#}#")
             .BindTo(Model.Options.Select(e => new { e.Id, e.Name, e.Description }))
         )
         </div>

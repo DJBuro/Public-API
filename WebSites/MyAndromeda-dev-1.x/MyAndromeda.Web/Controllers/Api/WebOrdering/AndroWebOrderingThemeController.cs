@@ -35,7 +35,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
         [Route("api/AndroWebOrderingTheme/{AndromedaSiteId}/Get/{Id}")]
         public ThemeSettings Get(int id) 
         {
-            var model = this.androWebOrderingWebSiteService
+            ThemeSettings model = this.androWebOrderingWebSiteService
                 .ListThemes(e => e.Id == id)
                 .Select(s => new ThemeSettings
                         {
@@ -72,8 +72,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
         private string RemoteLocationPath()
         {
-            var host = this.siteMediaSevice.GetMediaServerWithDefault(-1).Address;
-            var remoteLocation = this.storageService.RemoteLocation(host);
+            string host = this.siteMediaSevice.GetMediaServerWithDefault(-1).Address;
+            string remoteLocation = this.storageService.RemoteLocation(host);
             return remoteLocation;
         }
     }

@@ -2,18 +2,18 @@
 
 @{
     var translator = Html.GetTranslator();
-    
+
     ViewBag.Title = translator.T("Log On");
                 //Layout = "~/Views/Shared/_LogonLayout.cshtml";
 }
 
 @if (this.User.Identity.IsAuthenticated)
 {
-    <div class="bg-warning">
-        <p class="warning ">
-            You are currently logged in but not authorised to visit this section. Feel free to login as someone else... or continue to navigate to another page via the menu.
-        </p>
-    </div>
+<div class="bg-warning">
+    <p class="warning ">
+        You are currently logged in but not authorised to visit this section. Feel free to login as someone else... or continue to navigate to another page via the menu.
+    </p>
+</div>
 }
 
 <div class="row">
@@ -33,21 +33,21 @@
         <div class="col-xs-12">
             @using (Html.BeginForm())
             {
-                <div class="form-group">
-                        @Html.LabelFor(m => m.UserName)
-                        <input type="text" id="@Html.NameFor(e => e.UserName)" name="@Html.NameFor(e => e.UserName)" class="form-control"/>
-                        @Html.ValidationMessageFor(m => m.UserName)
-                </div>
-                <div class="form-group">
-                        @Html.LabelFor(m => m.Password)
-                        <input type="password" id="@Html.NameFor(e => e.Password)" name="@Html.NameFor(e => e.Password)" class="form-control" />
-                        @Html.ValidationMessageFor(m => m.Password)
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="@translator.T("Log On")" class="k-primary k-button" />
-                <a class="k-button" title="Follow this link to reset your email" href="@Url.Action("ForgottenPassword")">@translator.T("Forgotten Password?")</a>
-                </div>
-                
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserName)
+                <input type="text" id="@Html.NameFor(e => e.UserName)" name="@Html.NameFor(e => e.UserName)" class="form-control" />
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                <input type="password" id="@Html.NameFor(e => e.Password)" name="@Html.NameFor(e => e.Password)" class="form-control" />
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@translator.T(" Log On")" class="k-primary k-button" />
+                <a class="k-button" title="Follow this link to reset your email" href="@Url.Action(" ForgottenPassword")">@translator.T("Forgotten Password?")</a>
+            </div>
+
             }
         </div>
     </div>
@@ -57,8 +57,8 @@
         </div>
         <p>
             Check which browsers work well with this site:
-                <br />
-            <a class="k-button" href="@Url.Action("BrowserSupport", "Home")">Browser Support</a>
+            <br />
+            <a class="k-button" href="@Url.Action(" BrowserSupport", "Home" )">Browser Support</a>
         </p>
         @*<div class="header">
             <h3>Mobile Reporting</h3>
@@ -68,12 +68,12 @@
         <a href="http://dev-androreports.Andromeda.local/" target="_blank">
 
             @(Html.Kendo().QRCode()
-                .Name("MyAndromedaUrl")
-                .Size(180)
-                .Value("http://dev-androreports.Andromeda.local:80/")
-                .Color("#e15613")
-                .Border(boder => boder.Color("#000").Width(5))
-                .Background("transparent")
+            .Name("MyAndromedaUrl")
+            .Size(180)
+            .Value("http://dev-androreports.Andromeda.local:80/")
+            .Color("#e15613")
+            .Border(boder => boder.Color("#000").Width(5))
+            .Background("transparent")
             )
         </a>*@
     </div>

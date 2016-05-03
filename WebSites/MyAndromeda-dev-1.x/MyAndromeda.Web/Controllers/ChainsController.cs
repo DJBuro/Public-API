@@ -11,6 +11,7 @@ using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Web.ViewModels;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Web.Controllers
 {
@@ -54,11 +55,11 @@ namespace MyAndromeda.Web.Controllers
             if (chains.Length == 1) 
             {
                 var chain = chains.Single();
-                return RedirectToAction("Index", "Reports", new { ChainId = chain.Id, Area = "ChainReporting" });    
+                return RedirectToAction(actionName: "Index", controllerName: "Reports", routeValues: new { ChainId = chain.Id, Area = "ChainReporting" });    
             }
 
-            var chainIds = currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
-            var chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
+            int[] chainIds = currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
+            Dictionary<int, Data.Domain.Site[]> chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
 
             foreach (var storeList in chainStoreList) 
             {

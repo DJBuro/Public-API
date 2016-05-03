@@ -64,8 +64,8 @@ namespace MyAndromeda.Authorization
 
         public ChainAndSiteAuthorization AuthorizedForChainAndStore()
         {
-            var chainAvailable = this.workContext.CurrentChain.Available;
-            var siteAvailable = this.workContext.CurrentChain.Available;
+            bool chainAvailable = this.workContext.CurrentChain.Available;
+            bool siteAvailable = this.workContext.CurrentChain.Available;
 
             var state = new ChainAndSiteAuthorization()
             {
@@ -88,7 +88,7 @@ namespace MyAndromeda.Authorization
 
         public bool Authorize(Permission permission)
         {
-            var permissions = this.CurrentEffectivePermissions;
+            PermissionGroup permissions = this.CurrentEffectivePermissions;
             bool valid = false;
             
             if (permission.PermissionType == PermissionType.StoreEnrolement) 
@@ -107,17 +107,14 @@ namespace MyAndromeda.Authorization
                 {
                     if (this.workContext.CurrentSite.Available)
                     { 
-                        this.logging.Debug("Store:{0} - {1} does not have permission for : {2}", 
-                            this.workContext.CurrentSite.AndromediaSiteId,
-                            this.workContext.CurrentSite.Site.ExternalName, 
-                            permission.Name);
+                        this.logging.Debug(format: "Store:{0} - {1} does not have permission for : {2}", args: new object[] { this.workContext.CurrentSite.AndromediaSiteId, this.workContext.CurrentSite.Site.ExternalName, permission.Name });
                     }
                 }
                 if (permission.PermissionType == PermissionType.UserRole) 
                 {
                     if (this.workContext.CurrentUser.Available)
                     { 
-                        this.logging.Debug("User: {0} does not have permission for : {1}", this.workContext.CurrentUser.User.Username, permission.Name);
+                        this.logging.Debug(format: "User: {0} does not have permission for : {1}", args: new object[] { this.workContext.CurrentUser.User.Username, permission.Name });
                     }
                 }
             }
@@ -127,7 +124,7 @@ namespace MyAndromeda.Authorization
 
         public bool AuthorizeAny(params Permission[] anyPermission)
         {
-            var permissions = this.CurrentEffectivePermissions;
+            PermissionGroup permissions = this.CurrentEffectivePermissions;
 
             bool valid = false;
 
@@ -135,8 +132,10 @@ namespace MyAndromeda.Authorization
             { 
                 valid = anyPermission
                     .Where(e => e.PermissionType == PermissionType.StoreEnrolement)
-                    .Any(exist => permissions.StorePermissions
-                        .Any(e => e.Name == exist.Name && e.Category == exist.Category)
+                    .Any(exist => 
+                        permissions
+                            .StorePermissions
+                                .Any(e => e.Name == exist.Name && e.Category == exist.Category)
                     );
             }
 
@@ -149,9 +148,7 @@ namespace MyAndromeda.Authorization
 
             if (!valid)
             {
-                this.logging.Debug("User: {0} does not have permission for any: {1}",
-                    this.workContext.CurrentUser.User.Username,
-                    string.Join(", ", anyPermission.Select(e => e.Name)));
+                this.logging.Debug(format: "User: {0} does not have permission for any: {1}", args: new object[] { this.workContext.CurrentUser.User.Username, string.Join(", ", anyPermission.Select(e => e.Name)) });
             }
 
             return valid;
@@ -159,28 +156,26 @@ namespace MyAndromeda.Authorization
 
         public bool AuthorizeAll(params Permission[] requiedPermissions)
         {
-            var permissions = this.CurrentEffectivePermissions;
+            PermissionGroup permissions = this.CurrentEffectivePermissions;
             bool valid = true;
             //var valid = requiedPermissions.All(exist => permissions.Any(e => e.Name == exist.Name && e.Category == exist.Category));
 
             if(requiedPermissions.Any(e=> e.PermissionType == PermissionType.StoreEnrolement))
             {
-                var requiredStorePermissions = requiedPermissions.Where(e => e.PermissionType == PermissionType.StoreEnrolement).ToArray();
+                Permission[] requiredStorePermissions = requiedPermissions.Where(e => e.PermissionType == PermissionType.StoreEnrolement).ToArray();
 
                 valid = valid && requiredStorePermissions.All(exist => permissions.StorePermissions.Any(e => e.Name == exist.Name && e.Category == exist.Category));
             }
             if (requiedPermissions.Any(e => e.PermissionType == PermissionType.UserRole)) 
             {
-                var requiredUserPermission = requiedPermissions.Where(e => e.PermissionType == PermissionType.UserRole).ToArray();
+                Permission[] requiredUserPermission = requiedPermissions.Where(e => e.PermissionType == PermissionType.UserRole).ToArray();
 
                 valid = valid && requiredUserPermission.All(exist => permissions.UserPermissions.Any(e => e.Name == exist.Name && e.Category == exist.Category));
             }
 
             if (!valid)
             {
-                this.logging.Debug("User: {0} does not have permission for all of: {1}",
-                    this.workContext.CurrentUser.User.Username,
-                    string.Join(", ", requiedPermissions.Select(e => e.Name)));
+                this.logging.Debug(format: "User: {0} does not have permission for all of: {1}", args: new object[] { this.workContext.CurrentUser.User.Username, string.Join(", ", requiedPermissions.Select(e => e.Name)) });
             }
 
             return valid;

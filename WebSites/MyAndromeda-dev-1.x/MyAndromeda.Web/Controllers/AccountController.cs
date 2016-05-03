@@ -49,7 +49,7 @@ namespace MyAndromeda.Web.Controllers
 
         public ITranslator Translator { get; private set; }
 
-        public RedirectResult Redirect(string returnUrl)
+        public new RedirectResult Redirect(string returnUrl)
         {
             return base.Redirect(returnUrl);
         }

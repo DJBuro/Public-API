@@ -168,6 +168,7 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+    <Compile Include="Authorization\ChainAndSiteAuthorization.cs" />
     <Compile Include="Authorization\ICoreStoreEnrollments.cs" />
     <Compile Include="Authorization\IAuthorizer.cs" />
     <Compile Include="Authorization\IMyAndromedaRegistrationSettings.cs" />
@@ -262,7 +263,6 @@
     <Folder Include="DataAccess\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

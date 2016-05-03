@@ -137,7 +137,7 @@ module MyAndromeda.Marketing {
                     $body = $(element).contents().find('body');
                 });
 
-                attrs.$observe("dynamicContent", (val) => {
+                attrs.$observe("dynamicContent", (val: any) => {
                     $body.html(val);
                 });
             }

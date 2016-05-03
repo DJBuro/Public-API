@@ -115,6 +115,10 @@
       <Project>{f1c66ee6-d9cc-4437-9d47-cbd32b6132ce}</Project>
       <Name>MyAndromeda.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.Logging\MyAndromeda.Logging.csproj">
+      <Project>{865B78BD-51B5-4B1D-9BC7-CFB814EBE1EE}</Project>
+      <Name>MyAndromeda.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

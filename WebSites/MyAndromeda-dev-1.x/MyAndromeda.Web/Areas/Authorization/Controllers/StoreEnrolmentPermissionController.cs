@@ -9,6 +9,7 @@ using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Core.Services;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework;
+using System.Collections.Generic;
 
 namespace MyAndromeda.Web.Areas.Authorization.Controllers
 {
@@ -16,6 +17,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
     {
         private readonly IPermissionManager permissionManager;
         private readonly IEnrolmentService enrolementService;
+
         private readonly ISiteDataService siteDataService;
         private readonly INotifier notifier;
         private readonly IAuthorizer authorizer;
@@ -50,7 +52,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var levels = enrolementService.ListEnrolmentLevels();
+            IEnumerable<Core.Site.IEnrolmentLevel> levels = enrolementService.ListEnrolmentLevels();
 
             return View(levels);
         }
@@ -83,10 +85,10 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return this.View(viewModel);
             }
 
-            enrolementService.CreateORUpdate(viewModel);
-            this.notifier.Notify(string.Format("Create: {0}", viewModel.Name));
+            enrolementService.CreateOrUpdate(viewModel);
+            this.notifier.Notify(string.Format(format: "Create: {0}", arg0: viewModel.Name));
 
-            return RedirectToAction("Levels");
+            return RedirectToAction(actionName: "Levels");
         }
 
         public ActionResult EditEnrolement(int storeId) 
@@ -97,15 +99,15 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var store = this.siteDataService.List(e => e.Id == storeId).SingleOrDefault();
-            var currentPermissions = this.permissionManager.GetEffectivePermissionsForSite(store);
+            Data.Domain.Site store = this.siteDataService.List(e => e.Id == storeId).SingleOrDefault();
+            IEnumerable<Core.Authorization.IPermission> currentPermissions = this.permissionManager.GetEffectivePermissionsForSite(store);
 
-            ViewModels.StoreEnrolmentViewModel enrolementModel = new ViewModels.StoreEnrolmentViewModel() 
+            var enrolementModel = new StoreEnrolmentViewModel() 
             { 
                 StoreId = storeId,
                 Site = store,
                 Options = enrolementService.ListEnrolmentLevels(),
-                SelectedOptionId = enrolementService.GetEnrolmentLevels(store).Select(e => e.Id).FirstOrDefault(),
+                SelectedOptionId = enrolementService.GetEnrolmentLevels(store).Select(e => e.Id).ToArray(),
                 CurrentPermissions = currentPermissions
             };
 
@@ -114,7 +116,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
 
         [HttpPost]
         [ActionName("EditEnrolement")]
-        public ActionResult EditEnrolementPost(ViewModels.StoreEnrolmentViewModel viewModel) 
+        public ActionResult EditEnrolementPost(StoreEnrolmentViewModel viewModel) 
         {
             if (!authorizer.Authorize(SiteEnrollmentUserPermissions.EditSiteEnrollment))
             {
@@ -122,27 +124,32 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var store = this.siteDataService.List(e => e.Id == viewModel.StoreId).SingleOrDefault();
+            Data.Domain.Site store = this.siteDataService.List(e => e.Id == viewModel.StoreId).SingleOrDefault();
+
             viewModel.Site = store;
             viewModel.Options = enrolementService.ListEnrolmentLevels();  
 
             if (!this.ModelState.IsValid) 
             {
-                var currentPermissions = this.permissionManager.GetEffectivePermissionsForSite(store);
+                IEnumerable<Core.Authorization.IPermission> currentPermissions = this.permissionManager.GetEffectivePermissionsForSite(store);
                 
                 viewModel.CurrentPermissions = currentPermissions;
                 return this.View(viewModel);
             }
 
-            if (viewModel.SelectedOptionId > 0) 
+            enrolementService.RemoveStoreEnrollments(store);
+
+            if (viewModel.SelectedOptionId.Length > 0 )
             {
-                var level = viewModel.Options.FirstOrDefault(e=> e.Id == viewModel.SelectedOptionId);
-                enrolementService.UpdateSitesEnrolment(store, level);
+                foreach (var selected in viewModel.SelectedOptionId) { 
+                    Core.Site.IEnrolmentLevel level = viewModel.Options.FirstOrDefault(e => e.Id == selected);
+                    enrolementService.AddStoreEnrolment(store, level);
+                }
             }
 
-            this.notifier.Notify("Saved");
+            this.notifier.Notify(message: "Saved");
 
-            return RedirectToAction("EditEnrolement", new { storeId = store.Id });
+            return RedirectToAction(actionName: "EditEnrolement", routeValues: new { storeId = store.Id });
             //return RedirectToAction("Index", "Site", new { externalSiteId = viewModel.Site.ExternalSiteId, ChainId = viewModel.Site.ChainId, Area = "Store" });
         }
 
@@ -155,13 +162,13 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var enrollment = this.enrolementService.GetEnrolmentLevel(name);
+            Core.Site.IEnrolmentLevel enrollment = this.enrolementService.GetEnrolmentLevel(name);
 
             if (enrollment != null) { this.enrolementService.Delete(enrollment); }
 
-            this.notifier.Notify(translator.T("The enrollment has been deleted."));
+            this.notifier.Notify(translator.T(text: "The enrollment has been deleted."));
 
-            return RedirectToAction("Levels");
+            return RedirectToAction(actionName: "Levels");
         }
     }
 }

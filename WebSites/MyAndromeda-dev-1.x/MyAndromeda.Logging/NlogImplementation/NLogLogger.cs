@@ -12,7 +12,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         private readonly IMyAndromedaLoggingMessageEvent[] loggingEvents;
         private readonly Logger logger;
 
-        private Type context;
+        private readonly Type context;
 
         public MyAndromedaNLogger(Type type)
         {
@@ -31,14 +31,14 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnDebug(message);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Debug, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Debug, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
             //this.logger.Debug(message);
         }
 
         public void Debug(string format, params object[] args)
         {
-            var message = string.Format(format, args);
+            string message = string.Format(format, args);
             this.Debug(message);
         }
 
@@ -49,7 +49,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnError(message);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Error, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Error, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Error(message);
@@ -62,7 +62,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnFatal(message);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
             //this.logger.Fatal(message);
         }
@@ -74,7 +74,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnInfo(message);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Info, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Info(message);
@@ -87,7 +87,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnError(exception);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Error, context.FullName, exception.Message);
+            var logEvent = new LogEventInfo(LogLevel.Error, context.FullName, exception.Message);
             logEvent.Exception = exception;
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
@@ -106,7 +106,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnFatal(exception);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, exception.Message);
+            var logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, exception.Message);
             logEvent.Exception = exception;
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
@@ -124,7 +124,7 @@ namespace MyAndromeda.Logging.NlogImplementation
             }
 
             string message = string.Format(format, args);
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Info, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Info, context.FullName, message);
 
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
         }
@@ -136,7 +136,7 @@ namespace MyAndromeda.Logging.NlogImplementation
                 ev.OnInfo(message);
             }
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Trace, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Trace, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             this.logger.Trace(message);
@@ -151,7 +151,7 @@ namespace MyAndromeda.Logging.NlogImplementation
 
             string message = string.Format(format, args);
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Trace, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Trace, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
             //this.logger.Trace(format, args);
         }
@@ -176,7 +176,7 @@ namespace MyAndromeda.Logging.NlogImplementation
 
             string message = string.Format(format, args);
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Warn, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Warn, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Trace(format, args);
@@ -191,7 +191,7 @@ namespace MyAndromeda.Logging.NlogImplementation
 
             string message = string.Format(format, args);
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Error, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Error, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Error(format, args);
@@ -206,7 +206,7 @@ namespace MyAndromeda.Logging.NlogImplementation
 
             string message = string.Format(format, args);
 
-            LogEventInfo logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, message);
+            var logEvent = new LogEventInfo(LogLevel.Fatal, context.FullName, message);
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Fatal(format, args);
@@ -340,7 +340,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsInfoEnabled)
             {
-                this.Log(LogLevel.Info, "{0}", message);
+                this.Log(LogLevel.Info, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -352,7 +352,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsDebugEnabled)
             {
-                this.Log(LogLevel.Debug, "{0}", message);
+                this.Log(LogLevel.Debug, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -398,7 +398,7 @@ namespace MyAndromeda.Logging.NlogImplementation
 
         public void Error(Exception exception)
         {
-            this.Error("A exception occurred", exception);
+            this.Error(format: "A exception occurred", args: new object[] { exception });
         }
 
         /// <summary>
@@ -409,7 +409,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsFatalEnabled)
             {
-                this.Log(LogLevel.Fatal, "{0}", message);
+                this.Log(LogLevel.Fatal, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -439,7 +439,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsErrorEnabled)
             {
-                this.Log(LogLevel.Error, "{0}", message);
+                this.Log(LogLevel.Error, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -544,7 +544,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsTraceEnabled)
             {
-                this.Log(LogLevel.Trace, "{0}", message);
+                this.Log(LogLevel.Trace, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -596,7 +596,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         {
             if (this.IsWarnEnabled)
             {
-                this.Log(LogLevel.Warn, "{0}", message);
+                this.Log(LogLevel.Warn, format: "{0}", args: new object[] { message });
             }
         }
 
@@ -637,7 +637,7 @@ namespace MyAndromeda.Logging.NlogImplementation
         /// <param name="args">The argsuments.</param>
         private void Log(LogLevel level, string format, params object[] args)
         {
-            var le = new LogEventInfo(level, this.nlogLogger.Name, null, format, args);
+            var le = new LogEventInfo(level, this.nlogLogger.Name, formatProvider: null, message: format, parameters: args);
             this.nlogLogger.Log(typeof(NLogLogger), le);
         }
 
@@ -647,10 +647,10 @@ namespace MyAndromeda.Logging.NlogImplementation
         /// <param name="level">The log level.</param>
         /// <param name="exception">The exception.</param>
         /// <param name="format">The message format.</param>
-        /// <param name="args">The argsuments.</param>
+        /// <param name="args">The arguments.</param>
         private void Log(LogLevel level, Exception exception, string format, params object[] args)
         {
-            var le = new LogEventInfo(level, this.nlogLogger.Name, null, format, args, exception);
+            var le = new LogEventInfo(level, this.nlogLogger.Name, formatProvider: null, message: format, parameters: args, exception: exception);
             this.nlogLogger.Log(typeof(NLogLogger), le);
         }
     }

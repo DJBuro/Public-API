@@ -1,5 +1,7 @@
-﻿/// <reference path="../../scripts/typings/rx/rx.all.d.ts" />
+﻿
 /// <reference path="MyAndromeda.DeliveryZonesByRadius.App.ts" />
+/// <reference path="../../scripts/typings/rx/rx.d.ts" />
+
 module MyAndromeda.DeliveryZonesByRadius.Services {
     Angular.ServicesInitilizations.push((app) => {
         app.factory(DeliveryZonesByRadiusWebApiService.Name, [

@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="ApplicationUserManager.cs" />
     <Compile Include="MyAndromedaIdentityRole.cs" />
+    <Compile Include="MyAndromedaIdentityRoleStore.cs" />
     <Compile Include="MyAndromedaIdentityUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

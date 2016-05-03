@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using MyAndromeda.Core;
 using System;
 using System.Linq;
 using MyAndromeda.Data.Domain;
@@ -13,20 +12,6 @@ using MyAndromeda.CloudSynchronization.Services;
 
 namespace MyAndromeda.Web.Services
 {
-    public interface IStoreOpeningTimesService : IDependency
-    {
-        void AddOpeningTime(string day, TimeSpan startTimeSpan, TimeSpan endTimeSpan, ModelStateDictionary modelState);
-
-        OpeningTimesForTheWeek GetOpenTimes();
-
-        void DeleteOpeningTime(int id);
-
-        void DeleteAllTimesForDay(string day);
-
-        void AddOpeningTime(TimeSpanBlock timeSpanBlock);
-
-    }
-
     public class StoreOpeningTimesService : IStoreOpeningTimesService
     {
         private readonly ICurrentSite currentSite;
@@ -50,19 +35,19 @@ namespace MyAndromeda.Web.Services
             {
                 Day = day,
                 OpenAllDay = false,
-                StartTime = startTimeSpan.Hours.ToString("00") + ":" + startTimeSpan.Minutes.ToString("00"),
-                EndTime = endTimeSpan.Hours.ToString("00") + ":" + endTimeSpan.Minutes.ToString("00")
+                StartTime = startTimeSpan.Hours.ToString(format: "00")+ ":" + startTimeSpan.Minutes.ToString(format: "00"),
+                EndTime = endTimeSpan.Hours.ToString(format: "00")+ ":" + endTimeSpan.Minutes.ToString(format: "00")
             };
 
             bool validModel = OpeningTimesHelper.CheckNewOpeningTime(allOpenTimes, day, startTimeSpan, endTimeSpan, (failure) => {
-                modelState.AddModelError("StartTime", failure);
+                modelState.AddModelError(key: "StartTime", errorMessage: failure);
             });
 
             if (validModel)
             {
                 //remove the open all day ... adding specific time slots
                 if (allOpenTimes.ContainsKey(day)) {
-                    var remove = this.openTimes[day].Where(e => e.OpenAllDay);
+                    IEnumerable<TimeSpanBlock> remove = this.openTimes[day].Where(e => e.OpenAllDay);
                     foreach (var item in remove) { this.DeleteOpeningTime(item.Id); }
                 }
 

@@ -1,6 +1,7 @@
 ﻿module MyAndromeda.Start
 {
     var app = angular.module("MyAndromeda.Start.Config", [
+        "MyAndromeda.Components.FindStore",
         "MyAndromeda.Start.Controllers",
         "ui.router",
         "ngAnimate"

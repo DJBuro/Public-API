@@ -102,6 +102,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Services\AccessDbMenuVersionDataService.cs" />
     <Compile Include="Services\IAccessGroupDataService.cs" />
     <Compile Include="Services\IQuickMenuDataService.cs" />
     <Compile Include="Services\WebOrderingService.cs" />
@@ -142,16 +143,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app_data\menu.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="app_data\readme.txt" />
-    <Content Include="CharcoalGrill Menu.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Menu.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="schema\menu.mdb" />
+    <Content Include="schema\readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyAndromeda.Core\MyAndromeda.Core.csproj">

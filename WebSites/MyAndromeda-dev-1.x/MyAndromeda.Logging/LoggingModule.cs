@@ -1,12 +1,6 @@
 ﻿using MyAndromeda.Logging.NlogImplementation;
 using Ninject.Extensions.Logging;
-using Ninject;
-using Ninject.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyAndromeda.Logging
 {
@@ -33,7 +27,7 @@ namespace MyAndromeda.Logging
                 }
                 catch (Exception e)
                 {
-                    System.Diagnostics.Trace.WriteLine("logger cannot be created");
+                    System.Diagnostics.Trace.WriteLine(message: "logger cannot be created");
                     System.Diagnostics.Trace.WriteLine(e.Message);
                 }
 

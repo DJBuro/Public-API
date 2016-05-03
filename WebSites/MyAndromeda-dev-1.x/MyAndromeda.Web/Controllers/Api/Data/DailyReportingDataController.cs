@@ -32,9 +32,9 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         [Route("chain-data/{chainId}/store/{andromedaSiteId}")]
         [HttpPost]
-        public async Task<GroupedStoreResults> Data([FromUri]int chainId, [FromUri]int andromedaSiteId, Query queryModel)
+        public async Task<GroupedStoreResults> Data([FromUri]int chainId, [FromUri]int andromedaSiteId, DailyReportingQuery queryModel)
         {
-            var store = await this.storeDataService.Table
+            StoreParams store = await this.storeDataService.Table
                 .Where(e => e.ChainId == chainId && e.AndromedaSiteId == andromedaSiteId)
                 .Select(e => new StoreParams
                 {
@@ -43,18 +43,18 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 })
                 .SingleOrDefaultAsync();
 
-            var storeQuery = new[] { store };
+            StoreParams[] storeQuery = new[] { store };
 
-            var data = await this.FetchData(storeQuery, queryModel);
+            IEnumerable<GroupedStoreResults> data = await this.FetchData(storeQuery, queryModel);
 
             return data.First();
         }
 
-        private async Task<IEnumerable<GroupedStoreResults>> FetchData(StoreParams[] storeData, Query queryModel)
+        private async Task<IEnumerable<GroupedStoreResults>> FetchData(StoreParams[] storeData, DailyReportingQuery queryModel)
         {
-            var storeIds = storeData.Select(e => e.AndromedaSiteId).ToArray();
+            int[] storeIds = storeData.Select(e => e.AndromedaSiteId).ToArray();
 
-            var dataQuery = this.dailySummaryDataService.Table
+            IQueryable<MyAndromeda.Data.DailyReporting.Model.CodeFirst.DailySummary> dataQuery = this.dailySummaryDataService.Table
                 .Where(e => storeIds.Any(id => id == e.NStoreId));
 
             if (queryModel != null)
@@ -70,7 +70,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
             }
 
             //daily data from the database
-            var dataQueryResults = await dataQuery.Select(e => new StoreSummaryModel
+            List<StoreSummaryModel> dataQueryResults = await dataQuery.Select(e => new StoreSummaryModel
             {
                 CreateTimeStamp = e.TheDate,
                 StoreId = e.NStoreId,
@@ -120,10 +120,10 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 e.WeekOfYear = this.dateServices.GetWeekOfYear(e.CreateTimeStamp, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
             });
 
-            var groupedQuery = dataQueryResults.GroupBy(e => e.StoreId);
+            IEnumerable<IGrouping<int?, StoreSummaryModel>> groupedQuery = dataQueryResults.GroupBy(e => e.StoreId);
 
             //grouped and summed by the range for each store 
-            var groupedResult = groupedQuery.Select(e => new GroupedStoreResults()
+            List<GroupedStoreResults> groupedResult = groupedQuery.Select(e => new GroupedStoreResults()
             {
                 StoreId = e.Key,
                 ExternalSiteName = storeData
@@ -212,17 +212,17 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         //[rout("Chain/{chainId}")]
         [Route("chain-data/{chainId}")]
         [HttpPost]
-        public async Task<ChainResult> Data([FromUri]int chainId, Query queryModel)
+        public async Task<ChainResult> Data([FromUri]int chainId, DailyReportingQuery queryModel)
         {
-            var chain = this.chainDataService.Get(chainId);
+            MyAndromeda.Data.Domain.Chain chain = this.chainDataService.Get(chainId);
 
             //var chain = this.chainDataService.Get(chainId);
-            var storeData = await this.storeDataService.Table
+            StoreParams[] storeData = await this.storeDataService.Table
                 .Where(e => e.ChainId == chainId)
                 .Select(e => new StoreParams { AndromedaSiteId = e.AndromedaSiteId, ExternalSiteName = e.ExternalSiteName })
                 .ToArrayAsync();
 
-            var groupedResult = (await this.FetchData(storeData, queryModel));
+            IEnumerable<GroupedStoreResults> groupedResult = (await this.FetchData(storeData, queryModel));
 
             var result = new ChainResult()
             {
@@ -310,115 +310,9 @@ namespace MyAndromeda.Web.Controllers.Api.Data
             //return groupedResult;
         }
 
-        public class ChainResult 
-        {
-            public int ChainId { get; set; }
-            public string ChainName { get; set; }
-
-            public List<GroupedStoreResults> Data { get; set; }
+        
 
 
-            public SummarySalesModelType Collection { get; set; }
-            public SummarySalesModelType Delivery { get; set; }
-            public SummarySalesModelType DineIn { get; set; }
-            public SummarySalesModelType CarryOut { get; set; }
-            public SummarySalesModelType Cancelled { get; set; }
-            public SummarySalesModelType Total { get; set; }
-
-            public List<StoreSummaryModel> WeekData { get; set; }
-        }
-
-        public class GroupedStoreResults
-        {
-            public int? StoreId { get; set; }
-            public string ExternalSiteName { get; set; }
-            public StoreSummaryModel[] DailyData { get; set; }
-
-            public SummarySalesModelType Collection { get; set; }
-            public SummarySalesModelType Delivery { get; set; }
-            public SummarySalesModelType DineIn { get; set; }
-            public SummarySalesModelType CarryOut { get; set; }
-            public SummarySalesModelType Cancelled { get; set; }
-            public SummarySalesModelType Total { get; set; }
-
-            public List<StoreSummaryModel> WeekData { get; set; }
-        }
-
-        public class StoreParams
-        {
-
-            public int AndromedaSiteId { get; set; }
-            public string ExternalSiteName { get; set; }
-
-            public string ExternalSiteId { get; set; }
-        }
-
-        public class Query
-        {
-            private DateTime? from;
-            public DateTime? From 
-            {
-                get { return this.from; }
-                set 
-                {
-                    if (value.HasValue ) 
-                    {
-                        this.from = new DateTime(value.Value.Year, value.Value.Month, value.Value.Day);
-                    }
-                    else
-                    {
-                        this.from = value;
-                    }
-                }
-            }
-
-            private DateTime? to;
-            public DateTime? To 
-            {
-                get { return this.to; }
-                set 
-                {
-                    if (value.HasValue)
-                    {
-                        this.to = new DateTime(value.Value.Year, value.Value.Month, value.Value.Day);
-                    }
-                    else 
-                    {
-                        this.to = value;
-                    }
-                }
-            }
-        }
-
-        public class StoreSummaryModel
-        {
-            public int? StoreId { get; set; }
-            public string ExternalSiteName { get; set; }
-
-            public SummarySalesModelType Collection { get; set; }
-            public SummarySalesModelType Delivery { get; set; }
-            public SummarySalesModelType DineIn { get; set; }
-            public SummarySalesModelType CarryOut { get; set; }
-            public SummarySalesModelType Cancelled { get; set; }
-            public SummarySalesModelType Total { get; set; }
-
-            public long? NetSales { get; set; }
-            public long? OrderCount { get; set; }
-
-            public long? AverageMakeTime { get; set; }
-            public long? RackTime { get; set; }
-            public long? AverageOutTheDoorTime { get; set; }
-
-            public long? AverageToTheDoorTime { get; set; }
-
-            public DateTime? CreateTimeStamp { get; set; }
-            public int WeekOfYear { get; set; }
-        }
-
-        public class SummarySalesModelType
-        {
-            public long? NetSales { get; set; }
-            public long? OrderCount { get; set; }
-        }
+        
     }
 }

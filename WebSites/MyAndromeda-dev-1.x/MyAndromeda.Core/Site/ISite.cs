@@ -8,18 +8,4 @@ namespace MyAndromeda.Core.Site
         int AndromediaSiteId { get; set; }
     }
 
-    public class SiteIds : ISite 
-    {
-        public int Id
-        {
-            get;
-            set;
-        }
-
-        public int AndromediaSiteId
-        {
-            get;
-            set;
-        }
-    }
 }

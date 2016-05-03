@@ -4,7 +4,6 @@ using System.Linq;
 using MyAndromeda.Core.Services;
 using MyAndromeda.Core.Site;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Permissions;
-using MyAndromeda.Core.Authorization;
 using MyAndromeda.Framework.Authorization;
 
 namespace MyAndromeda.Authorization.Services
@@ -21,8 +20,6 @@ namespace MyAndromeda.Authorization.Services
             this.storeEnrolmentDataSerice = storeEnrolmentDataSerice;
             this.enrolementDataService = enrolementDataService;
         }
-
-        
 
         public IEnumerable<IEnrolmentLevel> ListEnrolmentLevels()
         {
@@ -59,25 +56,28 @@ namespace MyAndromeda.Authorization.Services
 
         public IEnumerable<IEnrolmentLevel> GetEnrolmentLevels(ISite site)
         {
-            var dbEnrolments = this.enrolementDataService
+            IEnrolmentLevel[] dbEnrolments = this.enrolementDataService
                                    .Query(e => e.StoreEnrolments.Any(enrolment => enrolment.StoreId == site.Id))
                                    .ToArray();
 
-            var defaultStoreEnrolment = new[] { this.GetEnrolmentLevel("Default Store") };
+            IEnrolmentLevel[] defaultStoreEnrolment = new[] { this.GetEnrolmentLevel(name: "Default Store")};
 
             return dbEnrolments.Union(defaultStoreEnrolment);
         }
 
-        //public IEnumerable<IEnrolmentLevel> GetEnrolmentLevels(int storeId)
-        //{
-        //    //return this.enrolementDataService.Query(e => e.StoreEnrolments.Any(storeEnrolement => storeEnrolement.Active && storeEnrolement.StoreId == storeId)).ToArray();
-        //}
-        public void UpdateSitesEnrolment(ISite site, IEnrolmentLevel enrolmentLevel)
+
+        public void AddStoreEnrolment(ISite site, IEnrolmentLevel enrolmentLevel)
         {
             this.storeEnrolmentDataSerice.UpdateStoreEnrolment(site, enrolmentLevel);
         }
 
-        public void CreateORUpdate(IEnrolmentLevel enrolmenLevel)
+
+        public void RemoveStoreEnrollments(ISite site)
+        {
+            this.storeEnrolmentDataSerice.ClearEnrolements(site);
+        }
+
+        public void CreateOrUpdate(IEnrolmentLevel enrolmenLevel)
         {
             if (enrolmenLevel.Id > 0) 
             {
@@ -85,9 +85,10 @@ namespace MyAndromeda.Authorization.Services
                 return;
             }
 
-            var model = this.enrolementDataService.Create(enrolmenLevel.Name, enrolmenLevel.Description);
+            IEnrolmentLevel model = this.enrolementDataService.Create(enrolmenLevel.Name, enrolmenLevel.Description);
             enrolmenLevel.Id = model.Id;
         }
+
 
         public void Delete(IEnrolmentLevel enrollment)
         {

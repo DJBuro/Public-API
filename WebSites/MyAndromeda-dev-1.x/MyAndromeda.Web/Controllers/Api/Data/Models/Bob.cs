@@ -5,7 +5,7 @@ using System.Web;
 
 namespace MyAndromeda.Web.Controllers.Api.Data.Models
 {
-    public class Bob
+    public class MapResults
     {
         public int OrderCount { get; set; }
 
@@ -16,20 +16,4 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
         public OrderAddressViewModel OrderAddress { get; set; }
     }
 
-    public class OrderSummary 
-    {
-        public decimal FinalPrice { get; set; }
-        public DateTime OrderWantedTime { get; set; }
-    }
-
-    public class StoreOrdersSummary 
-    {
-        public int Total { get; set; }
-        public int Completed { get; set; }
-        public int Cancelled { get; set; }
-        public int ReceivedByStore { get; set; }
-        public int InOven { get; set; }
-        public int ReadyToDispatch { get; set; }
-        public int OutForDelivery { get; set; }
-    }
 }

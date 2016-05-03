@@ -6,9 +6,6 @@ using MyAndromeda.Core.Site;
 using MyAndromeda.Data;
 using MyAndromeda.Data.DataAccess.WebOrdering;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccess;
-using Domain = MyAndromedaDataAccess.Domain;
-using MyAndromedaDataAccessEntityFramework;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Core.Services;
 using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
@@ -28,7 +25,8 @@ namespace MyAndromeda.Framework.Contexts
         private readonly ICurrentUser currentUser;
         private readonly IWebOrderingWebSiteDataService webOrderingWebSiteDataService; 
 
-        public CurrentSite(ICurrentRequest currentRequest,
+        public CurrentSite(
+            ICurrentRequest currentRequest,
             IUserAccessDataService userAccessDataService,
             ICurrentUser currentUser,
             ISiteDataService siteDataService,
@@ -93,26 +91,26 @@ namespace MyAndromeda.Framework.Contexts
                 if (this.enrolmentLevels != null)
                     return this.enrolmentLevels;
 
-                var siteLevels = this.enrolmentService.GetEnrolmentLevels(this.Site);
+                IEnumerable<IEnrolmentLevel> siteLevels = this.enrolmentService.GetEnrolmentLevels(this.Site);
                 this.enrolmentLevels = siteLevels;
 
                 return enrolmentLevels;
             }
         }
 
-        private bool? _authorizedAtSiteLevel;
+        private bool? authorizedAtSiteLevel;
         public bool AuthorizedAtSiteLevel
         {
             get
             {
-                if (!_authorizedAtSiteLevel.HasValue) 
+                if (!this.authorizedAtSiteLevel.HasValue) 
                 {
                     if(!Available) 
                         return false;
-                    _authorizedAtSiteLevel = this.userAccessDataService.IsTheUserAssociatedWithStore(this.currentUser.User.Id, this.SiteId);
+                    this.authorizedAtSiteLevel = this.userAccessDataService.IsTheUserAssociatedWithStore(this.currentUser.User.Id, this.SiteId);
                 }
 
-                return _authorizedAtSiteLevel.GetValueOrDefault();
+                return this.authorizedAtSiteLevel.GetValueOrDefault();
             }
         }
 

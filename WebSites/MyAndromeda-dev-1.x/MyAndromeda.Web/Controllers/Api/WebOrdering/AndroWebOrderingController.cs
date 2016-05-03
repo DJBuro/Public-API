@@ -432,22 +432,22 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
 
-            var isdesktopBackgroundLogo = name.Equals("desktop", StringComparison.CurrentCultureIgnoreCase) ? true : false;
-            var logoName = isdesktopBackgroundLogo ? "desktopbackgroundimage" : "mobilebackgroundimage";
+            bool isdesktopBackgroundLogo = name.Equals(value: "desktop", comparisonType: StringComparison.CurrentCultureIgnoreCase)? true : false;
+            string logoName = isdesktopBackgroundLogo ? "desktopbackgroundimage" : "mobilebackgroundimage";
 
-            var file = provider.Contents.First();
-            var store = this.currentSite.Store;
-            var website = this.androWebOrderingWebSiteService.GetWebOrderingWebsite(e =>
+            HttpContent file = provider.Contents.First();
+            MyAndromeda.Data.Model.AndroAdmin.Store store = this.currentSite.Store;
+            MyAndromeda.Data.Model.AndroAdmin.AndroWebOrderingWebsite website = this.androWebOrderingWebSiteService.GetWebOrderingWebsite(e =>
                 e.Id == webOrderingWebsiteId &&
                 e.ACSApplication.ACSApplicationSites.Any(acsApplicationSites => acsApplicationSites.Store.Id == store.Id));
 
-            var stream = await file.ReadAsStreamAsync();
+            Stream stream = await file.ReadAsStreamAsync();
 
-            var folderPath = string.Format("websites/{0}/customthemesettings/{1}", website.Id, logoName);
-            var fileName = logoName + Path.GetExtension(file.Headers.ContentDisposition.FileName.Replace("\"", String.Empty));
-            var newExtension = ".png";
+            string folderPath = string.Format(format: "websites/{0}/customthemesettings/{1}", arg0: website.Id, arg1: logoName);
+            string fileName = logoName + Path.GetExtension(file.Headers.ContentDisposition.FileName.Replace(oldValue: "\"", newValue: string.Empty));
+            string newExtension = ".png";
             
-            var result = UploadImages(stream, folderPath, fileName, newExtension);
+            ThumbnailFileResult result = UploadImages(stream, folderPath, fileName, newExtension);
 
             return Request.CreateResponse<ThumbnailFileResult>(HttpStatusCode.Created, result);
         }
@@ -456,19 +456,19 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
         [Route("api/{AndromedaSiteId}/AndroWebOrdering/{webOrderingWebsiteId}/DeleteBackgroundImage/{name}")]
         public async Task<HttpResponseMessage> DeleteBackgroundImage(string name, int webOrderingWebsiteId)
         {
-            var store = this.currentSite.Store;
-            var website = this.androWebOrderingWebSiteService.GetWebOrderingWebsite(e =>
+            MyAndromeda.Data.Model.AndroAdmin.Store store = this.currentSite.Store;
+            MyAndromeda.Data.Model.AndroAdmin.AndroWebOrderingWebsite website = this.androWebOrderingWebSiteService.GetWebOrderingWebsite(e =>
                 e.Id == webOrderingWebsiteId &&
                 e.ACSApplication.ACSApplicationSites.Any(acsApplicationSites => acsApplicationSites.Store.Id == store.Id));
 
-            var isdesktopBackgroundLogo = name.Equals("desktop", StringComparison.CurrentCultureIgnoreCase) ? true : false;
-            var logoName = isdesktopBackgroundLogo ? "desktopbackgroundimage" : "mobilebackgroundimage";
+            bool isdesktopBackgroundLogo = name.Equals(value: "desktop", comparisonType: StringComparison.CurrentCultureIgnoreCase)? true : false;
+            string logoName = isdesktopBackgroundLogo ? "desktopbackgroundimage" : "mobilebackgroundimage";
 
 
-            var fileName = logoName + ".png";
-            var folderPath = string.Format("websites/{0}/customthemesettings/{1}/{2}", website.Id, logoName, fileName);
+            string fileName = logoName + ".png";
+            string folderPath = string.Format(format: "websites/{0}/customthemesettings/{1}/{2}", arg0: website.Id, arg1: logoName, arg2: fileName);
 
-            var isSuccess = mediaLibraryServiceProvider.DeleteFile(folderPath);
+            bool isSuccess = mediaLibraryServiceProvider.DeleteFile(folderPath);
             await Request.Content.ReadAsMultipartAsync();
          
             return Request.CreateResponse<bool>(isSuccess ? HttpStatusCode.OK : HttpStatusCode.NotFound, isSuccess);
@@ -481,11 +481,11 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
             sizeList = GetCarouselLogoSettings();
 
-            MemoryStream origin = new MemoryStream();
+            var origin = new MemoryStream();
             stream.CopyTo(origin);
-            origin.Seek(0, SeekOrigin.Begin);
+            origin.Seek(offset: 0, loc: SeekOrigin.Begin);
 
-            var filesReposonses = mediaLibraryServiceProvider
+            List<ThumbnailFileResult> filesReposonses = mediaLibraryServiceProvider
                 .ImportLogo(origin, folderPath, fileName, sizeList)
                 .OrderByDescending(e => e.Height).ToList();
 
@@ -494,15 +494,15 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
         private ThumbnailFileResult UploadSiteImages(Stream stream, string folderPath, string fileName, bool isWebsiteLogo)
         {
-            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
+            var sizeList = new List<LogoConfiguration>();
 
             sizeList = GetSiteLogoSettings(isWebsiteLogo);
 
-            MemoryStream origin = new MemoryStream();
+            var origin = new MemoryStream();
             stream.CopyTo(origin);
-            origin.Seek(0, SeekOrigin.Begin);
+            origin.Seek(offset: 0, loc: SeekOrigin.Begin);
 
-            var filesReposonses = mediaLibraryServiceProvider
+            List<ThumbnailFileResult> filesReposonses = mediaLibraryServiceProvider
                 .ImportLogo(origin, folderPath, fileName, sizeList)
                 .OrderByDescending(e => e.Height).ToList();
 
@@ -511,19 +511,19 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
 
         private ThumbnailFileResult UploadImages(Stream stream, string folderPath, string fileName, string newExtension)
         {
-            MemoryStream origin = new MemoryStream();
+            var origin = new MemoryStream();
 
             stream.CopyTo(origin);
-            origin.Seek(0, SeekOrigin.Begin);
+            origin.Seek(offset: 0, loc: SeekOrigin.Begin);
 
-            var filesReposonses = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, newExtension);
+            ThumbnailFileResult filesReposonses = mediaLibraryServiceProvider.ImportImage(origin, folderPath, fileName, newExtension);
 
             return filesReposonses;
         }
 
         private List<LogoConfiguration> GetCarouselLogoSettings()
         {
-            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
+            var sizeList = new List<LogoConfiguration>();
             //string webSiteLogoSettings = "450x150xMiddleLeft;320x320xMiddleCenter;130x130xMiddleCenter";
 
             //this will have to be popped out of the theme meta data eventually.
@@ -547,13 +547,13 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 return sizeList;
             }
 
-            sizeList.Add(new LogoConfiguration(970, 270, ContentAlignment.MiddleLeft));
+            sizeList.Add(new LogoConfiguration(width: 970, height: 270, alignment: ContentAlignment.MiddleLeft));
             return sizeList;
         }
 
         private List<LogoConfiguration> GetSiteLogoSettings(bool isWebSiteLogo)
         {
-            List<LogoConfiguration> sizeList = new List<LogoConfiguration>();
+            var sizeList = new List<LogoConfiguration>();
             string logoSettings = string.Empty;
 
             if (isWebSiteLogo)
@@ -580,16 +580,16 @@ namespace MyAndromeda.Web.Controllers.Api.WebOrdering
                 return sizeList;
             }
 
-            sizeList.Add(new LogoConfiguration(450, 150, ContentAlignment.MiddleLeft));
-            sizeList.Add(new LogoConfiguration(320, 320, ContentAlignment.MiddleCenter));
-            sizeList.Add(new LogoConfiguration(130, 130, ContentAlignment.MiddleCenter));
+            sizeList.Add(new LogoConfiguration(width: 450, height: 150, alignment: ContentAlignment.MiddleLeft));
+            sizeList.Add(new LogoConfiguration(width: 320, height: 320, alignment: ContentAlignment.MiddleCenter));
+            sizeList.Add(new LogoConfiguration(width: 130, height: 130, alignment: ContentAlignment.MiddleCenter));
 
             return sizeList;
         }
 
         private T ParseEnum<T>(string value)
         {
-            return (T)Enum.Parse(typeof(T), value, true);
+            return (T)Enum.Parse(typeof(T), value, ignoreCase: true);
         }
     }
 }

@@ -22,19 +22,9 @@ namespace MyAndromeda.Services.WebHooks
         {
             get
             {
-                string value = this.edt;// ?? (this.edt = ConfigurationManager.AppSettings[EdtEndpoint]);
-
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new NullReferenceException(EdtEndpoint, new Exception(message: "Is missing from the config file!"));
-                }
-
+                string value = this.edt;
                 return value;
             }
-            //set
-            //{
-            //    this.edt = value;
-            //}
         }
 
         private readonly string orderStatus = "web-hooks/store/orders/update-order-status";
@@ -42,19 +32,9 @@ namespace MyAndromeda.Services.WebHooks
         {
             get
             {
-                string value = this.orderStatus;// ?? (this.orderStatus = ConfigurationManager.AppSettings[OrderStatusEndpoint]);
-
-                //if (string.IsNullOrWhiteSpace(value))
-                //{
-                //    throw new NullReferenceException(OrderStatusEndpoint, new Exception(OrderStatusEndpoint + "Is missing from the config file!"));
-                //}
-
+                string value = this.orderStatus;
                 return value;
             }
-            //set
-            //{
-            //    this.orderStatus = value;
-            //}
         }
 
         private readonly string storeStatus = "web-hooks/store/update-status";
@@ -62,19 +42,9 @@ namespace MyAndromeda.Services.WebHooks
         {
             get 
             {
-                string value = this.storeStatus;// ?? (this.storeStatus = ConfigurationManager.AppSettings[StoreStatusEndpoint]);
-
-                //if (string.IsNullOrWhiteSpace(value))
-                //{
-                //    throw new NullReferenceException(StoreStatusEndpoint, new Exception(StoreStatusEndpoint + " Is missing from the config file!"));
-                //}
-
+                string value = this.storeStatus;
                 return value;
             }
-            //set
-            //{
-            //    this.storeStatus = value;
-            //}
         }
 
         private readonly string menuVersion = "web-hooks/store/update-menu";
@@ -82,19 +52,9 @@ namespace MyAndromeda.Services.WebHooks
         {
             get 
             {
-                string value = this.menuVersion;// ?? (this.menuVersion = ConfigurationManager.AppSettings[MenuVersionEndpoint]);
-
-                //if (string.IsNullOrWhiteSpace(value))
-                //{
-                //    throw new NullReferenceException(MenuVersionEndpoint, new Exception(MenuVersionEndpoint+ " Is missing from the config file!"));
-                //}
-
+                string value = this.menuVersion;
                 return value;
             }
-            //set
-            //{
-            //    this.menuVersion = value;
-            //}
         }
 
         private readonly string menuItemsChanged = "web-hooks/store/update-menu-items";
@@ -102,19 +62,9 @@ namespace MyAndromeda.Services.WebHooks
         {
             get
             {
-                string value = this.menuItemsChanged;// ?? (this.menuItemsChanged = ConfigurationManager.AppSettings[MenuItemsChangedEndpoint]);
-
-                //if (string.IsNullOrWhiteSpace(value))
-                //{
-                //    throw new NullReferenceException(MenuItemsChangedEndpoint, new Exception(MenuItemsChangedEndpoint + " Is missing from the config file!"));
-                //}
-
+                string value = this.menuItemsChanged;
                 return value;
             }
-            //set
-            //{
-            //    this.menuVersion = value;
-            //}
         }
 
         private readonly string bringgWebhookEndpoint = "web-hooks/bringg/update-eta";
@@ -122,14 +72,18 @@ namespace MyAndromeda.Services.WebHooks
         {
             get
             {
-                string value = this.bringgWebhookEndpoint;// ?? (this.bringgWebhookEndpoint = ConfigurationManager.AppSettings[BringgEndpointKey]);
-
-                //if (string.IsNullOrWhiteSpace(value))
-                //{
-                //    throw new NullReferenceException(BringgEndpointKey, new Exception(message: "Is missing from the config file!"));
-                //}
-
+                string value = this.bringgWebhookEndpoint;
                 return value;
+            }
+        }
+
+        private readonly string bringEtaWebhookEndpoint = "web-hooks/bringg/update-eta";
+
+        public string BringgEtaEndpoint
+        {
+            get
+            {
+                return this.bringEtaWebhookEndpoint;
             }
         }
 

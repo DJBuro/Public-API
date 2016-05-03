@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.ServiceModel.Web;
 using System.IO;
@@ -8,7 +6,6 @@ using System.Net;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using AndroCloudHelper;
 using System.Configuration;
 
 namespace AndroCloudHelper
@@ -31,7 +28,7 @@ namespace AndroCloudHelper
 
         public static DataTypes GetDataTypes()
         {
-            DataTypes dataTypes = new DataTypes();
+            var dataTypes = new DataTypes();
 
             // Figure out what type of data was submitted to us
             if (WebOperationContext.Current.IncomingRequest.ContentType == null)
@@ -43,11 +40,11 @@ namespace AndroCloudHelper
             {
                 string contentTypeUpper = WebOperationContext.Current.IncomingRequest.ContentType.ToUpper();
 
-                if (contentTypeUpper.Contains("APPLICATION/XML"))
+                if (contentTypeUpper.Contains(value: "APPLICATION/XML"))
                 {
                     dataTypes.SubmittedDataType = DataTypeEnum.XML;
                 }
-                else if (contentTypeUpper.Contains("APPLICATION/JSON"))
+                else if (contentTypeUpper.Contains(value: "APPLICATION/JSON"))
                 {
                     dataTypes.SubmittedDataType = DataTypeEnum.JSON;
                 }
@@ -66,11 +63,11 @@ namespace AndroCloudHelper
             {
                 string acceptsTypeUpper = WebOperationContext.Current.IncomingRequest.Accept.ToUpper();
 
-                if (acceptsTypeUpper.Contains("APPLICATION/XML"))
+                if (acceptsTypeUpper.Contains(value: "APPLICATION/XML"))
                 {
                     dataTypes.WantsDataType = DataTypeEnum.XML;
                 }
-                else if (acceptsTypeUpper.Contains("APPLICATION/JSON"))
+                else if (acceptsTypeUpper.Contains(value: "APPLICATION/JSON"))
                 {
                     dataTypes.WantsDataType = DataTypeEnum.JSON;
                 }
@@ -85,7 +82,7 @@ namespace AndroCloudHelper
 
         public static DataTypes GetDataTypes(HttpContextBase httpContext)
         {
-            DataTypes dataTypes = new DataTypes();
+            var dataTypes = new DataTypes();
 
             // Figure out what type of data was submitted to us
             if (httpContext.Request.ContentType == null || httpContext.Request.ContentType == "")
@@ -97,11 +94,11 @@ namespace AndroCloudHelper
             {
                 string contentTypeUpper = httpContext.Request.ContentType.ToUpper();
 
-                if (contentTypeUpper.Contains("APPLICATION/XML"))
+                if (contentTypeUpper.Contains(value: "APPLICATION/XML"))
                 {
                     dataTypes.SubmittedDataType = DataTypeEnum.XML;
                 }
-                else if (contentTypeUpper.Contains("APPLICATION/JSON"))
+                else if (contentTypeUpper.Contains(value: "APPLICATION/JSON"))
                 {
                     dataTypes.SubmittedDataType = DataTypeEnum.JSON;
                 }
@@ -249,7 +246,7 @@ namespace AndroCloudHelper
             if (OperationContext.Current != null)
             {
                 MessageProperties messageProperties = OperationContext.Current.IncomingMessageProperties;
-                RemoteEndpointMessageProperty endpointProperty = (RemoteEndpointMessageProperty)messageProperties[RemoteEndpointMessageProperty.Name];
+                var endpointProperty = (RemoteEndpointMessageProperty)messageProperties[RemoteEndpointMessageProperty.Name];
 
                 result = endpointProperty.Address;// +":" + endpointProperty.Port.ToString();
             }
@@ -306,7 +303,7 @@ namespace AndroCloudHelper
             WebOperationContext.Current.OutgoingResponse.StatusCode = HttpStatusCode.BadRequest;
 
             // Generate the error XML/JSON
-            Response errorResponse = new Response(error, dataTypes.WantsDataType);
+            var errorResponse = new Response(error, dataTypes.WantsDataType);
             return errorResponse.ResponseText;
         }
 
@@ -330,7 +327,7 @@ namespace AndroCloudHelper
 
             // Are we in debug mode?
             string debugMode = ConfigurationManager.AppSettings["DebugMode"];
-            if (debugMode != null && debugMode.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+            if (debugMode != null && debugMode.Equals(value: "true", comparisonType: StringComparison.InvariantCultureIgnoreCase))
             {
                 // Return the full error details
                 responseText =
@@ -343,7 +340,7 @@ namespace AndroCloudHelper
             else
             {
                 // Return an unhelpful "there was an error" error :)
-                Response errorResponse = new Response(Errors.InternalError, dataTypes.WantsDataType);
+                var errorResponse = new Response(Errors.InternalError, dataTypes.WantsDataType);
                 responseText = errorResponse.ResponseText;
             }
 
@@ -377,9 +374,9 @@ namespace AndroCloudHelper
         /// <returns>A String containing the results of decoding the specified sequence of bytes.</returns>
         public static string DecodeFrom64(string encodedData)
         {
-            byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
+            byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
 
-            string returnValue = System.Text.Encoding.UTF8.GetString(encodedDataAsBytes);
+            string returnValue = Encoding.UTF8.GetString(encodedDataAsBytes);
 
             return returnValue;
         }

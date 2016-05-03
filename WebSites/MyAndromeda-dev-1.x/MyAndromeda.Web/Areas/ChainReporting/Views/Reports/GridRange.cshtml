@@ -21,18 +21,22 @@
     var dailyUrl = Url.Action("Hourly", "DailyReporting", new { Area = "Reporting", ExternalSiteId = "EXTERNALSITEID" }); 
 }
 
-<div class="clearfix">
-    <div class="header">
-        <h3>Start: @displayFrom.ToString("dddd") @displayFrom.ToLongDateString() - End: @displayToday.ToString("dddd") @displayToday.ToLongDateString()
-        </h3>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Start: @displayFrom.ToString("ddd") @displayFrom.ToLongDateString() - End: @displayToday.ToString("ddd") @displayToday.ToLongDateString()
+        </div>
     </div>
 
-    @(Html.Kendo().Grid<MyAndromeda.Web.Areas.ChainReporting.ViewModels.StoreReportSet>()
+    <div class="panel-body">
+
+
+        @(Html.Kendo().Grid<MyAndromeda.Web.Areas.ChainReporting.ViewModels.StoreReportSet>()
     .Name(gridName)
     .Sortable()
     .Pageable()
     .Filterable()
-    .ColumnMenu(e=> e.Sortable(true).Filterable(true))
+    .ColumnMenu(e => e.Sortable(true).Filterable(true))
     //.Mobile(MobileMode.Auto)
     .Columns(cols =>
     {
@@ -82,8 +86,11 @@
             read.Data("SelectDay" + gridName);
         })
     )
-)
+        )
+    </div>
 </div>
+
+
 
 @using (Html.BeginScripts(Area.Foot))
 {

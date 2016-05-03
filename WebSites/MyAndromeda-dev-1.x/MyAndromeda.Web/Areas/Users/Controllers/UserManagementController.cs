@@ -39,7 +39,16 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         private readonly IUserRoleDataService userRoleDataService;
         private readonly IUserSitesDataService userSiteDataService;
 
-        public UserManagementController(IUserManagementService userManagementService, ICurrentUser currentUser, IUserChainsDataService userChainsDataService, IUserSitesDataService userSiteDataService, ICurrentChain currentChain, IChainDataService chainDataService, IUserDataService userDataService, INotifier notifier, IUserRoleDataService userRoleDataService, IAuthorizer authorizer, ITranslator translator)
+        public UserManagementController(
+            IUserManagementService userManagementService, 
+            ICurrentUser currentUser,
+            ICurrentChain currentChain,
+            IUserChainsDataService userChainsDataService, 
+            IUserSitesDataService userSiteDataService, 
+            IChainDataService chainDataService, 
+            IUserDataService userDataService, 
+            INotifier notifier, 
+            IUserRoleDataService userRoleDataService, IAuthorizer authorizer, ITranslator translator)
         {
             this.translator = translator;
             this.userManagementService = userManagementService;
@@ -79,7 +88,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!this.authorizer.Authorize(UserManagementUserPermissions.ListUsers))
             {
-                this.notifier.Error(translator.T("You do not have permission to create users"));
+                this.notifier.Error(translator.T(text: "You do not have permission to create users"));
                 return new HttpUnauthorizedResult();
             }
 
@@ -94,13 +103,13 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!this.authorizer.Authorize(UserManagementUserPermissions.ListUsers))
             {
-                this.notifier.Error(translator.T("You do not have permission to create users"));
+                this.notifier.Error(translator.T(text: "You do not have permission to create users"));
                 return new HttpUnauthorizedResult();
             }
 
             if ((viewModel.SelectedChainIds == null || viewModel.SelectedChainIds.Count == 0) && (viewModel.SelectedStoreIds == null || viewModel.SelectedStoreIds.Count == 0))
             {
-                this.notifier.Error(translator.T("A chain or store is needed for the user"));
+                this.notifier.Error(translator.T(text: "A chain or store is needed for the user"));
                 return this.View(viewModel);
             }
 
@@ -151,7 +160,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 }
             }
 
-            return this.RedirectToAction("EditRoles", new { UserId = model.Id });
+            return this.RedirectToAction(actionName: "EditRoles", routeValues: new { UserId = model.Id });
         }
 
 
@@ -160,7 +169,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!this.authorizer.Authorize(UserManagementUserPermissions.ListUsers))
             {
-                this.notifier.Error(translator.T("You do not have permission to create users"));
+                this.notifier.Error(translator.T(text: "You do not have permission to create users"));
                 return new HttpUnauthorizedResult();
             }
 
@@ -183,13 +192,13 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!this.authorizer.Authorize(UserManagementUserPermissions.ListUsers))
             {
-                this.notifier.Error(translator.T("You do not have permission to edit users"));
+                this.notifier.Error(translator.T(text: "You do not have permission to edit users"));
                 return new HttpUnauthorizedResult();
             }
 
             if ((viewModel.SelectedChainIds == null || viewModel.SelectedChainIds.Count == 0) && (viewModel.SelectedStoreIds == null || viewModel.SelectedStoreIds.Count == 0))
             {
-                this.notifier.Error(translator.T("A chain or store is needed for the user"));
+                this.notifier.Error(translator.T(text: "A chain or store is needed for the user"));
                 return this.View(viewModel);
             }
 
@@ -243,7 +252,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 }
             }
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(actionName: "Index");
         }
 
         private void RemoveSites(List<int> removedSites, int userId)
@@ -266,7 +275,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             foreach (int chainId in addedChains)
             {
-                var chain = chainDataService.Get(chainId);
+                Data.Domain.Chain chain = chainDataService.Get(chainId);
                 this.userChainsDataService.AddChainLinkToUser(chain, userId);
             }
         }
@@ -275,7 +284,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             foreach (int chainId in removedChains)
             {
-                var chain = chainDataService.Get(chainId);
+                Data.Domain.Chain chain = chainDataService.Get(chainId);
                 this.userChainsDataService.RemoveChainLinkToUser(userId, chain.Id);
             }
         }
@@ -291,26 +300,26 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             //cant add a user to a chain that the current user doesn't belong to first.
             if (!currentUser.FlattenedChains.Any(e => e.Id == chainId)) 
             {
-                this.notifier.Error(translator.T("You do not have permission to add users to this chain"));
+                this.notifier.Error(translator.T(text: "You do not have permission to add users to this chain"));
                 return new HttpUnauthorizedResult();
             }
 
-            var user = userDataService.Query(e => e.Id == userId).Single();
-            var chain = chainDataService.Get(chainId);
+            UserRecord user = userDataService.Query(e => e.Id == userId).Single();
+            Data.Domain.Chain chain = chainDataService.Get(chainId);
 
             this.userChainsDataService.AddChainLinkToUser(chain, userId);
 
-            this.notifier.Notify(string.Format(translator.T("{0} has been added to {1}"), user.Username, chain.Name));
+            this.notifier.Notify(string.Format(translator.T(text: "{0} has been added to {1}"), user.Username, chain.Name));
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
 
         public ActionResult EditRoles(int userId)
         {
-            var user = userDataService.QueryForUsers(e => e.Id == userId).Single();
-            var userRoles = userRoleDataService.ListRolesForUser(user.Id);
-            var allRoles = userRoleDataService.List();
-            var availableRoles = allRoles;
+            MyAndromedaUser user = userDataService.QueryForUsers(e => e.Id == userId).Single();
+            IEnumerable<IUserRole> userRoles = userRoleDataService.ListRolesForUser(user.Id);
+            IEnumerable<IUserRole> allRoles = userRoleDataService.List();
+            IEnumerable<IUserRole> availableRoles = allRoles;
             
             //var availableRoles = allRoles.Where(e => e.Name != ExpectedRoles.Administrator || e.Name != ExpectedRoles.SuperAdministrator);
 
@@ -335,7 +344,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 availableRoles = availableRoles.Where(e => e.Name != ExpectedUserRoles.StoreAdministrator);
             }
 
-            var viewModel = new ViewModels.UserRoleViewModel()
+            var viewModel = new UserRoleViewModel()
             {
                 AvailableRoles = availableRoles.ToArray(), 
                 //cannot add permissions higher than self ? - what about more modular roles 
@@ -350,10 +359,10 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         [ActionName("EditRoles")]
         public ActionResult EditRolesPost(int userId, ViewModels.UserRoleViewModel viewModel)
         {
-            var user = userDataService.QueryForUsers(e => e.Id == userId).Single();
+            MyAndromedaUser user = userDataService.QueryForUsers(e => e.Id == userId).Single();
 
-            var allRoles = userRoleDataService.List();
-            var availableRoles = allRoles;
+            IEnumerable<IUserRole> allRoles = userRoleDataService.List();
+            IEnumerable<IUserRole> availableRoles = allRoles;
             //var availableRoles = allRoles.Where(e => e.Name != ExpectedRoles.Administrator || e.Name != ExpectedRoles.SuperAdministrator);
 
             if (!authorizer.Authorize(UserManagementUserPermissions.AssignAdministratorRole))
@@ -374,26 +383,26 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 return this.View(viewModel);
             }
 
-            var selectedRoles = viewModel.SelectedRoles == null 
+            IEnumerable<IUserRole> selectedRoles = viewModel.SelectedRoles == null 
                 ? Enumerable.Empty<IUserRole>() 
                 : availableRoles.Where(e=> viewModel.SelectedRoles.Contains(e.Id));
 
             this.userRoleDataService.AddRolesToUser(userId, selectedRoles);
 
-            notifier.Notify(string.Format(translator.T("The roles have been added to {0}"), user.Username));
+            notifier.Notify(string.Format(translator.T(text: "The roles have been added to {0}"), user.Username));
 
-            return this.RedirectToAction("Index");
+            return this.RedirectToAction(actionName: "Index");
         }
 
         public ActionResult ChangePassword(int userId) 
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.ResetPassword)) 
             {
-                this.notifier.Error(translator.T("You do not have permissions to reset password"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to reset password"));
                 return new HttpUnauthorizedResult();
             }
             
-            var user = userDataService.QueryForUsers(e => e.Id == userId).Single();
+            MyAndromedaUser user = userDataService.QueryForUsers(e => e.Id == userId).Single();
 
             return View(user);
         }
@@ -403,13 +412,13 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.ResetPassword))
             {
-                this.notifier.Error(translator.T("You do not have permissions to reset this users password"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to reset this users password"));
                 return new HttpUnauthorizedResult();
             }
 
             this.userManagementService.ResetPassword(userId, password);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
 
         [HttpPost]
@@ -417,21 +426,21 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!this.authorizer.Authorize(UserManagementUserPermissions.CreateUsers))
             {
-                this.notifier.Error(translator.T("You do not have permissions to create add users"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to create add users"));
                 return new HttpUnauthorizedResult();
             }
 
-            var user = this.userDataService.GetByUserName(userName);
+            MyAndromedaUser user = this.userDataService.GetByUserName(userName);
             if (user == null)
             {
-                this.ModelState.AddModelError("userName", translator.T("No user exists with that user name"));
-                this.notifier.Notify(translator.T("No user exists with the username: ") + userName);
+                this.ModelState.AddModelError(key: "userName", errorMessage: translator.T(text: "No user exists with that user name"));
+                this.notifier.Notify(translator.T(text: "No user exists with the username: ")+ userName);
 
-                return RedirectToAction("Create");
+                return RedirectToAction(actionName: "Create");
             }
 
             this.userChainsDataService.AddChainLinkToUser(this.currentChain.Chain, user.Id);
-            this.notifier.Notify(string.Format(translator.T("The user '{0}' has been added to the chain"), userName));
+            this.notifier.Notify(string.Format(translator.T(text: "The user '{0}' has been added to the chain"), userName));
 
             var emailModel = new NewUserEmail() 
             {
@@ -445,13 +454,13 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 await emailModel.SendAsync();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
 
-        public async Task<JsonResult> Connections([DataSourceRequest]DataSourceRequest request, int? userId)
+        public JsonResult Connections([DataSourceRequest]DataSourceRequest request, int? userId)
         {
-            var userList = userChainsDataService.FindChainsDirectlyBelongingToUser(userId.Value);
-            var viewModels = userList.Select(e => new UserChainViewModel {
+            IEnumerable<Data.Domain.Chain> userList = userChainsDataService.FindChainsDirectlyBelongingToUser(userId.Value);
+            IEnumerable<UserChainViewModel> viewModels = userList.Select(e => new UserChainViewModel {
                 ChainId = e.Id,
                 Name = e.Name,
                 UserId = userId.GetValueOrDefault(0)
@@ -460,11 +469,10 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             return Json(viewModels.ToDataSourceResult(request, this.ModelState));
         }
 
-        public async Task<JsonResult> StoreConnections([DataSourceRequest]DataSourceRequest request, int? userId)
+        public JsonResult StoreConnections([DataSourceRequest]DataSourceRequest request, int? userId)
         {
-            //MyAndromedaDataAccess.Domain.Site[] siteList = currentUser.AccessibleSites;
-            var userList = userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId.Value);
-            var viewModels = userList.Select(e => new UserStoreViewModel
+            IEnumerable<Data.Domain.Site> userList = userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId.Value);
+            IEnumerable<UserStoreViewModel> viewModels = userList.Select(e => new UserStoreViewModel
             {
                 StoreId = e.Id,
                 Name = e.ClientSiteName,
@@ -477,7 +485,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
 
         public async Task<JsonResult> Roles([DataSourceRequest]DataSourceRequest request, int userId)
         {
-            var roles = this.userRoleDataService.ListRolesForUser(userId);
+            IEnumerable<IUserRole> roles = this.userRoleDataService.ListRolesForUser(userId);
 
             return Json(roles.ToDataSourceResult(request, this.ModelState, e => new RoleViewModel { Name = e.Name }));
         }
@@ -486,22 +494,22 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.RemoveUserFromChain))
             {
-                this.notifier.Error(translator.T("You do not have permissions to remove this user"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to remove this user"));
                 return new HttpUnauthorizedResult();
             }
 
             this.userChainsDataService.RemoveChainLinkToUser(userId, this.currentChain.Chain.Id);
 
-            this.notifier.Notify(this.translator.T("The user has been removed"));
+            this.notifier.Notify(this.translator.T(text: "The user has been removed"));
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
 
         public ActionResult RemoveUserComposite(string id) 
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.RemoveUserFromChain))
             {
-                this.notifier.Error(translator.T("You do not have permissions to remove this user"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to remove this user"));
                 return new HttpUnauthorizedResult();
             }
 
@@ -510,27 +518,27 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             var userId = Convert.ToInt32(parts[1]);
 
             this.userChainsDataService.RemoveChainLinkToUser(userId, chainId);
-            this.notifier.Notify(this.translator.T("The user has been removed"));
+            this.notifier.Notify(this.translator.T(text: "The user has been removed"));
 
-            return new HttpStatusCodeResult(200);
+            return new HttpStatusCodeResult(statusCode: 200);
         }
 
         public ActionResult RemoveUserStoreComposite(string id)
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.RemoveUserFromStore))
             {
-                this.notifier.Error(translator.T("You do not have permissions to remove this user"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to remove this user"));
                 return new HttpUnauthorizedResult();
             }
 
-            var parts = id.Split('|');
-            var storeId = Convert.ToInt32(parts[0]);
-            var userId = Convert.ToInt32(parts[1]);
+            string[] parts = id.Split('|');
+            int storeId = Convert.ToInt32(parts[0]);
+            int userId = Convert.ToInt32(parts[1]);
 
             this.userSiteDataService.RemoveStoreLinkToUser(userId, storeId);
-            this.notifier.Notify(this.translator.T("The user has been removed"));
+            this.notifier.Notify(this.translator.T(text: "The user has been removed"));
 
-            return new HttpStatusCodeResult(200);
+            return new HttpStatusCodeResult(statusCode: 200);
         }
 
         [ActionName("Enable")]
@@ -538,17 +546,17 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.RemoveUserFromChain))
             {
-                this.notifier.Error(translator.T("You do not have permissions to enable this user"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to enable this user"));
                 return new HttpUnauthorizedResult();
             }
 
-            var user = this.userDataService.GetByUserId(userId);
+            UserRecord user = this.userDataService.GetByUserId(userId);
 
             user.IsEnabled = true;
 
             this.userDataService.Update(user);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
 
         [ActionName("Disable")]
@@ -556,17 +564,17 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             if (!authorizer.Authorize(UserManagementUserPermissions.RemoveUserFromChain))
             {
-                this.notifier.Error(translator.T("You do not have permissions to enable this user"));
+                this.notifier.Error(translator.T(text: "You do not have permissions to enable this user"));
                 return new HttpUnauthorizedResult();
             }
 
-            var user = this.userDataService.GetByUserId(userId);
+            UserRecord user = this.userDataService.GetByUserId(userId);
 
             user.IsEnabled = false;
 
             this.userDataService.Update(user);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(actionName: "Index");
         }
     }
 }

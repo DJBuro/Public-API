@@ -8,6 +8,7 @@
         private currentTemplate: string;
         private editorOptions: kendo.ui.EditorOptions;
 
+
         //public static editorOptions = {
         //    tools: [
         //        "bold", "italic", "underline",

@@ -18,28 +18,17 @@ namespace MyAndromeda.Core.User.Events
         void UserStoreAccessChanged(UserEditContext context);
     }
 
-    public class UserEditContext
-    {
-        public UserEditContext(MyAndromedaUser user, bool isCancel)
-        {
-            this.User = user;
-            this.Cancel = isCancel;
-        }
-        public MyAndromedaUser User { get; set; }
-        public bool Cancel { get; set; }
-
-    }
-
     public static class Extensions
     {
         public static void Each<IUserUpdatedEvent>(this IEnumerable<IUserUpdatedEvent> items, 
-            Action<IUserUpdatedEvent> Eventaction, 
-            Action<Exception> ExceptionAction)
+            Action<IUserUpdatedEvent> eventAction, 
+            Action<Exception> exceptionAction)
         {
             if (items == null) return;
-            var cached = items;
+            IEnumerable<IUserUpdatedEvent> cached = items;
+
             foreach (var item in cached)
-                Eventaction(item);
+                eventAction(item);
         }
     }
 }

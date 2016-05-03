@@ -10,6 +10,7 @@ using MyAndromeda.SendGridService.MarketingEmails;
 using MyAndromeda.SendGridService.Models;
 using MyAndromeda.Web.Controllers.Api.GprsGateway;
 using Postal;
+using System.Net.Mail;
 
 namespace MyAndromeda.Web.Controllers
 {
@@ -101,12 +102,12 @@ namespace MyAndromeda.Web.Controllers
             };
 
             var postalEmailService = new EmailService();
-            var output = postalEmailService.CreateMailMessage(message);
+            MailMessage output = postalEmailService.CreateMailMessage(message);
 
-            var to = new[] { "matthew.green@androtech.com" };
+            string[] to = new[] { "matthew.green@androtech.com" };
             await emailCampaign.SendAsync(output.Body, to);
 
-            return RedirectToAction("TestCampaingEmail", new { AndromedaSiteId = andromedaSiteId });
+            return RedirectToAction(actionName: "TestCampaingEmail", routeValues: new { AndromedaSiteId = andromedaSiteId });
         }
 
 
@@ -133,7 +134,7 @@ namespace MyAndromeda.Web.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult User() 
+        public new ActionResult User()
         {
             if (!this.currentUser.Available)
                 return Content(UnavailableMessage);
@@ -185,7 +186,7 @@ namespace MyAndromeda.Web.Controllers
         {
             ListingController.TestOrder = order;
 
-            return RedirectToAction("TestOrder");
+            return RedirectToAction(actionName: "TestOrder");
         }
     }
 }

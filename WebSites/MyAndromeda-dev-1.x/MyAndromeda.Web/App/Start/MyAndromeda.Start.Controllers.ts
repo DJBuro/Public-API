@@ -107,6 +107,9 @@
                     promise.then((callback) => {
                         options.success(callback.data);
 
+                        Logger.Notify("callback");
+                        Logger.Notify(callback.data);
+
                         if (callback.data.length > 0) {
                             $timeout(() => {
                                 status.hasStores = true;
@@ -139,6 +142,16 @@
                 { title: "Name", field: "Name", width: 200 },
                 { title: "Actions", template: storeTemplate }
             ]
+        };
+
+        $scope.authorizeEnrolement = (store : any, enrolement: string[]) => {
+            Logger.Notify("authorize store?");
+
+            let enrolements: Array<{ Name: string }> = store.StoreEnrollments;
+            var found = false;
+            var show = enrolements.filter(e => enrolement.filter(k => k === e.Name).length > 0).length > 0;
+
+            return show;
         };
 
         $scope.storeListOptions = storeListOptions;

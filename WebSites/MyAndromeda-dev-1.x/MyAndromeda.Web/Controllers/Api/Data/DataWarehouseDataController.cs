@@ -37,7 +37,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         [HttpPost]
         public async Task<DataWarehouseChain> ChainData(
             [FromUri] int chainId,
-            [FromBody] MyAndromeda.Web.Controllers.Api.Data.DailyReportingDataController.Query queryModel) 
+            [FromBody] DailyReportingQuery queryModel) 
         {
             var chain = this.chainDataService.Get(chainId);
 
@@ -52,7 +52,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 .Select(e => new { e.ExternalDisplayName, e.Name, e.ExternalApplicationId, e.Id })
                 .ToArrayAsync();
 
-            var stores = await androAdminDbContext.Stores
+            DataWareHouseStore[] stores = await androAdminDbContext.Stores
                 .Where(e => e.ChainId == chainId)
                 .Select(e => new DataWareHouseStore()
                 { 
@@ -63,10 +63,10 @@ namespace MyAndromeda.Web.Controllers.Api.Data
                 })
                 .ToArrayAsync();
 
-            var applicationIds = applications.Select(e => e.Id).ToArray();
-            var storeExternalSiteIds = stores.Select(e => e.ExternalSiteId);
+            int[] applicationIds = applications.Select(e => e.Id).ToArray();
+            IEnumerable<string> storeExternalSiteIds = stores.Select(e => e.ExternalSiteId);
 
-            var orders = await this.dataWarehouseDbContext.OrderHeaders
+            DataWarehouseOrder[] orders = await this.dataWarehouseDbContext.OrderHeaders
                 .Where(e => applicationIds.Contains(e.ApplicationID))
                 .Where(e => storeExternalSiteIds.Contains(e.ExternalSiteID))
                 .Where(e => e.OrderPlacedTime >= queryModel.From)
@@ -100,7 +100,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         [Route("chain-data-warehouse/{chainId}")]
         [HttpPost]
-        private void StoreData(MyAndromeda.Web.Controllers.Api.Data.DailyReportingDataController.Query queryModel) 
+        private void StoreData(DailyReportingQuery queryModel) 
         {
             
         }

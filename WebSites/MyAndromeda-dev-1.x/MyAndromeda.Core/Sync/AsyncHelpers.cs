@@ -68,13 +68,15 @@ namespace MyAndromeda.Core.Sync
                 {
                     synch.EndMessageLoop();
                 }
-            }, null);
+            }, state: null);
             synch.BeginMessageLoop();
             SynchronizationContext.SetSynchronizationContext(oldContext);
             return ret;
         }
 
+#pragma warning disable JustCode_CSharp_InnerTypeFileNameMismatch // Inner types not matching file names
         private class ExclusiveSynchronizationContext : SynchronizationContext
+#pragma warning restore JustCode_CSharp_InnerTypeFileNameMismatch // Inner types not matching file names
         {
             private bool done;
             public Exception InnerException { get; set; }
@@ -133,5 +135,7 @@ namespace MyAndromeda.Core.Sync
                 return this;
             }
         }
+
+
     }
 }

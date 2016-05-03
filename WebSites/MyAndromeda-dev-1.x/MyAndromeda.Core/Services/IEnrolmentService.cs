@@ -36,12 +36,14 @@ namespace MyAndromeda.Core.Services
         /// </summary>
         /// <param name="site">The site.</param>
         /// <param name="enrolmentLevel">The enrolment level.</param>
-        void UpdateSitesEnrolment(ISite site, IEnrolmentLevel enrolmentLevel);
+        void AddStoreEnrolment(ISite site, IEnrolmentLevel enrolmentLevel);
+
+        void RemoveStoreEnrollments(ISite site);
 
         /// <summary>
         /// Creates or updates a enrolment.
         /// </summary>
         /// <param name="enrolmentLevel">The enrolment level.</param>
-        void CreateORUpdate(IEnrolmentLevel enrolmentLevel);
+        void CreateOrUpdate(IEnrolmentLevel enrolmentLevel);
     }
 }

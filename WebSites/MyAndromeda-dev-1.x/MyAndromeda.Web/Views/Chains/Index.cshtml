@@ -1,33 +1,22 @@
-﻿@using MyAndromeda.Authorization
+﻿@using MyAndromeda.Authorization;
+@using OrderManagementPermissions = MyAndromeda.Web.Areas.OrderManagement;
+@using WebsitePermissions = MyAndromeda.Web.Areas.AndroWebOrdering;
+@using HrPermissions = MyAndromeda.Web.Areas.HumanResources;
+@using ReportingPermissions = MyAndromeda.Web.Areas.Reporting;
 @model MyAndromeda.Web.ViewModels.ChainListViewModel
 
 @{
     var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+
+    bool showChainReportButton = authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewChainReports);
+    bool showBetaReportButton = authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewBetaReports);
+
 }
 
 <div id="StartApp">
     <div ui-view></div>
 </div>
-
-
-@*@(Html.Kendo().TabStrip()
-        .Name("FindChain")
-        .Items(items => {
-            items.Add().Text("Tree view")
-                .Selected(false)
-                .Enabled(false)
-                .Content(@<text>@Html.Partial("ChainTreeView", Model)</text>);
-            items.Add().Text("List view")
-                .Selected(true)
-                .Content(@<text>
-                    @Html.Partial("GridTreeView")
-                </text>);
-        })
-    )*@
-
-@*@Html.Partial("GridTreeView")*@
-
-@*@Html.Partial("Help")*@
 
 @using (Html.BeginScripts())
 {
@@ -38,7 +27,7 @@
     <script type="text/template" id="chain-actions-template">
         <a class="k-button" href="/ChainReporting/{{dataItem.Id}}/Reports">
             <i class="fa fa-bar-chart-o"></i>
-            Reports
+            @translator.T("Reports")
         </a>
     </script>
     <script type="text/template" id="chain-template">
@@ -59,6 +48,7 @@
     <div class="header">
         <h3>My Chains</h3>
     </div>
+    <find-store></find-store>
 
     <kendo-tree-list k-options="chainListOptions">
 
@@ -67,91 +57,154 @@
 
 <script type="text/template" id="store-list-template">
     @*<div>
-        {{dataItem.Name}}
+            {{dataItem.Name}}
     </div>*@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-sm-4">
-                <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        Admin
-                    </div>
-                    <div class="panel-body">
-                        <div class="btn-group">
-                            <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Orders">
-                                @translator.T("Orders")
-                            </a>
-                            <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/AndroWebOrdering/List">
-                                @translator.T("Websites")
-                            </a>
-                            <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : chain.Id, andromedaSiteId: dataItem.AndromedaSiteId})">
-                                @translator.T("Employees")
-                            </a>
-                        </div>
+            @{
+                //panel 1 permissions - admin
+                var showOrders = authorizer.Authorize(OrderManagementPermissions.UserPermissions.ViewOrderManagement);
+                var showWebsites = authorizer.Authorize(WebsitePermissions.UserPermissions.ViewWebsites);
+                var showEmployeess = authorizer.Authorize(HrPermissions.UserPermissions.ViewHrSection);
 
-                    </div>
-                </div>
+                //panel 2 permissions - store
+                var showStoreDetail = true;
+                var showMenu = Html.IsAuthorizedForAny(
+                    MyAndromeda.Web.Areas.Menu.UserPermissions.ViewStoreMenu,
+                    MyAndromeda.Web.Areas.Menu.UserPermissions.EditStoreMenu);
 
-            </div>
-            <div class="col-sm-4">
-                <div class="panel panel-warning">
-                    <div class="panel-heading">
-                        Store
-                    </div>
-                    <div class="panel-body">
-                        <div class="btn-group">
-                            <a class="btn btn-default btn-sm" href="/Chain/{{chain.Id}}/Store/{{dataItem.ExternalSiteId}}">
-                                @translator.T("Detail")
-                            </a>
+                //panel 3 permissions - reporting
+                //var showAcsReports = authorizer.Authorize(ReportingPermissions.UserReportingPermissions., ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
 
-                            <a class="btn btn-default btn-sm" href="/Menus/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/MenuNavigation">
-                                @translator.T("Menu")
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">Reporting</div>
-                    <div class="panel-body">
-                        <div class="btn-group">
+                var panel1 = showOrders || showWebsites || showEmployeess;
+                var panel2 = showStoreDetail || showMenu;
+                var panel3 = true;
+                var cols = 0;
 
-                            <a class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Store">
-                                @translator.T("Web")
-                            </a>
+                if (panel1) { cols++; }
+                if (panel2) { cols++; }
+                if (panel3) { cols++; }
 
-                            <a ng-if="dataItem.HasRameses"
-                               class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
-                                @translator.T("Rameses")
-                            </a>
+                var panelWidth = cols == 3 ? "col-sm-4" : cols == 2 ? "col-sm-6" : "col-sm-6";
+            }
+
+            @if (panel1)
+            {
+                <div class="@panelWidth">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            @translator.T("Admin")
 
                         </div>
+                        <div class="panel-body">
+                            <div class="btn-group">
+                                @if (showOrders)
+                                {
+                                    <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Orders">
+                                        @translator.T("Orders")
+                                    </a>
+                                }
+                                @if (showWebsites)
+                                {
+                                    <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/AndroWebOrdering/List">
+                                        @translator.T("Websites")
+                                    </a>
+                                }
+                                @if (showEmployeess)
+                                {
+                                    <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : chain.Id, andromedaSiteId: dataItem.AndromedaSiteId})">
+                                        @translator.T("Employees")
+                                    </a>
+                                }
+                            </div>
 
+                        </div>
+                    </div>
+
+                </div>
+            }
+            @if (panel2)
+            {
+                <div class="@panelWidth">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            @translator.T("Store")
+                        </div>
+                        <div class="panel-body">
+                            <div class="btn-group">
+                                <a class="btn btn-default btn-sm" href="/Chain/{{chain.Id}}/Store/{{dataItem.ExternalSiteId}}">
+                                    @translator.T("Details")
+                                </a>
+
+                                <a class="btn btn-default btn-sm" href="/Menus/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/MenuNavigation">
+                                    @translator.T("Menu")
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            }
+            @if (panel3)
+            {
+                <div class="@panelWidth">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-area-chart"></i>
+                            @translator.T("Reporting")
+                        </div>
+                        <div class="panel-body">
+                            <div class="btn-group">
 
-            </div>
+                                <a ng-if="authorizeEnrolement(dataItem, ['ACS Reports','GPRS store'])" class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/Store">
+                                    @translator.T("Web")
+                                </a>
 
+                                <a ng-if="authorizeEnrolement(dataItem, ['Rameses (AMS) Reports'])" class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
+                                    @translator.T("Rameses")
+                                </a>
+
+                                @*<a ng-if="dataItem.HasRameses" class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
+                                    @translator.T("Rameses")
+                                </a>*@
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
         </div>
     </div>
 </script>
 <script type="text/ng-template" id="store-list.html">
 
     <span class="btn-group" ng-if="status.hasStores">
-        <a class="btn btn-info btn-xs" ng-if="!status.hideStores" ng-click="status.hideStores = true">{{chain.Name}} - stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
-        <a class="btn btn-primary btn-xs" ng-if="status.hideStores" ng-click="status.hideStores = false">{{chain.Name}} - Stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
+        <a class="btn btn-info" ng-if="!status.hideStores" ng-click="status.hideStores = true">
+            {{chain.Name}} - Stores
+            <span class="badge">{{chain.StoreCountLabel()}}</span>
+        </a>
+        <a class="btn btn-primary" ng-if="status.hideStores" ng-click="status.hideStores = false">
+            {{chain.Name}} - Stores
+            <span class="badge">{{chain.StoreCountLabel()}}</span>
+        </a>
     </span>
 
     <span class="btn-group" ng-if="!status.hasStores">
-        <a class="btn btn btn-xs">{{chain.Name}} - stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
+        <a class="btn btn">{{chain.Name}} - stores <span class="badge">{{chain.StoreCountLabel()}}</span></a>
     </span>
 
     <span style="white-space:normal">
         <span class="btn-group pull-right" ng-if="status.hasStores">
-            <a class="btn btn-info btn-xs" href="/ChainReporting/{{chain.Id}}/Reports">Chain Reports</a>
-            <a class="btn btn-danger btn-xs" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">Beta Reports</a>
+            @if (showChainReportButton)
+            {
+                <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">Chain Reports</a>
+            }
+            @if (showBetaReportButton)
+            {
+                <a class="btn btn-danger" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">Beta Reports</a>
+            }
         </span>
     </span>
 
@@ -166,7 +219,6 @@
                     </kendo-grid>
                 </div>
             </div>
-
         </div>
     </div>
 

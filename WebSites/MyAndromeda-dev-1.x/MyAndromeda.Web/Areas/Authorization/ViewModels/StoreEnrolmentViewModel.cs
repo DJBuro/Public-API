@@ -14,7 +14,7 @@ namespace MyAndromeda.Web.Areas.Authorization.ViewModels
         public Site Site { get; set; }
 
         public IEnumerable<IEnrolmentLevel> Options { get; set; }
-        public int SelectedOptionId { get; set; }
+        public int[] SelectedOptionId { get; set; }
         
         public IEnumerable<IPermission> CurrentPermissions { get; set; }
     }

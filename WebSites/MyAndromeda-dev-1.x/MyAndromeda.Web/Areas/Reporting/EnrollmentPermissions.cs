@@ -52,9 +52,9 @@ namespace MyAndromeda.Web.Areas.Reporting
                     Permission = BasicAcsReportsFeature,
                     AllowRoles = new [] {
                         ExpectedStoreEnrollments.FullEnrollment,
-                        ExpectedStoreEnrollments.RamesesStoreEnrollment,
                         ExpectedStoreEnrollments.GprsStore,
-                        ExpectedStoreEnrollments.DefaultStoreEnrollment
+                        ExpectedStoreEnrollments.AcsReports
+                        //ExpectedStoreEnrollments.RamesesStoreEnrollment
                     }
                 },
 
@@ -62,7 +62,7 @@ namespace MyAndromeda.Web.Areas.Reporting
                     Permission = BasicRamesesReportsFeature,
                     AllowRoles = new [] {
                         ExpectedStoreEnrollments.FullEnrollment,
-                        ExpectedStoreEnrollments.RamesesStoreEnrollment
+                        ExpectedStoreEnrollments.RamesesAmsReports
                     }
                 }
             };

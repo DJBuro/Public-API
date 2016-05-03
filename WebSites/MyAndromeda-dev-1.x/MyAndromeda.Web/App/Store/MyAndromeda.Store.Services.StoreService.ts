@@ -1,4 +1,8 @@
 module MyAndromeda.Store.Services {
+
+
+
+    //obsolete  
     export class storeService implements Models.IStoreService {
         public routes: Models.IStoreServiceRoutes
         constructor(routes: Models.IStoreServiceRoutes) {
