@@ -17,16 +17,16 @@ namespace MyAndromeda.Services.WebHooks
         private const string BringgEndpointKey = "Webhooks.BringEndpoint";
         private const string BringgEtaEndpointKey = "Webhooks.BringEtaEndpoint";
 
-        private string edt;
+        private string edt = "web-hooks/store/update-estimated-delivery-time";
         public string Edt
         {
             get
             {
-                string value = this.edt ?? (this.edt = ConfigurationManager.AppSettings[EdtEndpoint]);
+                string value = this.edt;// ?? (this.edt = ConfigurationManager.AppSettings[EdtEndpoint]);
 
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new NullReferenceException(EdtEndpoint, new Exception("Is missing from the config file!"));
+                    throw new NullReferenceException(EdtEndpoint, new Exception(message: "Is missing from the config file!"));
                 }
 
                 return value;
@@ -37,7 +37,7 @@ namespace MyAndromeda.Services.WebHooks
             }
         }
 
-        private string orderStatus;
+        private string orderStatus = "web-hooks/store/orders/update-order-status";
         public string OrderStatus
         {
             get
@@ -57,12 +57,12 @@ namespace MyAndromeda.Services.WebHooks
             }
         }
 
-        private string storeStatus;
+        private string storeStatus = "web-hooks/store/update-status";
         public string StoreStatus
         {
             get 
             {
-                string value = this.storeStatus ?? (this.storeStatus = ConfigurationManager.AppSettings[StoreStatusEndpoint]);
+                string value = this.storeStatus;// ?? (this.storeStatus = ConfigurationManager.AppSettings[StoreStatusEndpoint]);
 
                 if (string.IsNullOrWhiteSpace(value))
                 {
@@ -77,7 +77,7 @@ namespace MyAndromeda.Services.WebHooks
             }
         }
 
-        private string menuVersion;
+        private string menuVersion = "web-hooks/store/update-menu";
         public string MenuVersion
         {
             get 
@@ -97,7 +97,7 @@ namespace MyAndromeda.Services.WebHooks
             }
         }
 
-        private string menuItemsChanged;
+        private string menuItemsChanged = "web-hooks/store/update-menu-items";
         public string MenuItemsChanged
         {
             get
@@ -117,16 +117,16 @@ namespace MyAndromeda.Services.WebHooks
             }
         }
 
-        private string bringgWebhookEndpoint;
+        private string bringgWebhookEndpoint = "web-hooks/bringg/update-eta";
         public string BringgEndpoint
         {
             get
             {
-                var value = this.bringgWebhookEndpoint ?? (this.bringgWebhookEndpoint = System.Configuration.ConfigurationManager.AppSettings[BringgEndpointKey]);
+                string value = this.bringgWebhookEndpoint ?? (this.bringgWebhookEndpoint = ConfigurationManager.AppSettings[BringgEndpointKey]);
 
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new NullReferenceException(BringgEndpointKey, new Exception("Is missing from the config file!"));
+                    throw new NullReferenceException(BringgEndpointKey, new Exception(message: "Is missing from the config file!"));
                 }
 
                 return value;
