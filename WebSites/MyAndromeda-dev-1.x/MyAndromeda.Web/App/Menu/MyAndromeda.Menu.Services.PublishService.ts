@@ -30,25 +30,23 @@
             this.model = kendo.observable({
                 publishThumbnails: true,
                 publishMenu: true,
-                publishNow: true,
+                publishNow: "now",
                 publishLater: false,
                 publishOn: new Date(),
                 minDate: new Date(),
                 cancel: function () {
                     $(options.publishPanel.publishPanelId).kendoMobileModalView("close")
                 },
-                publishNowClick: function () {
-                    internal.publishNow(true, true, new Date());
-                },
                 publishLaterClick: function () {
-                    var publishThumbs = internal.model.get("publishThumbnails"),
-                        publishMenu = internal.model.get("publishMenu"),
-                        publishOn = internal.model.get("publishOn");
+                    var publishThumbs: boolean = internal.model.get("publishThumbnails"),
+                        publishMenu: boolean = internal.model.get("publishMenu"),
+                        publishNowSelection: string = internal.model.get("publishNow"),
+                        publishOn = internal.model.get("publishOn"),
+                        publishNow = publishNowSelection.toLocaleLowerCase() === "now";
 
-                    internal.publishNow(publishMenu, publishThumbs, publishOn);
-                },
-                publishThumbnailsClick: function () {
-                    internal.publishNow(false, true, new Date());
+                    Logger.Notify("publish now" + publishNowSelection);
+
+                    internal.publishNow(publishNow, publishMenu, publishThumbs, publishOn);
                 }
             });
 
@@ -62,13 +60,15 @@
             this.init();
         }
 
-        public publishNow(menu: boolean, thumbnails: boolean, date: Date): void {
+        public publishNow(now: boolean, menu: boolean, thumbnails: boolean, date: Date): void {
             var internal = this,
                 data = {
                     menu: menu,
+                    now: now,
                     thumbnails: thumbnails,
                     dateUtc: null
                 };
+
             if (this.menuService !== null && this.menuService.menuItemService !== null && this.menuService.menuItemService.anyDirtyItems()) {
                 internal.closeWindow();
                 alert("Please save the items before publish");

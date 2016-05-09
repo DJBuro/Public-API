@@ -55,8 +55,10 @@ namespace Andromeda.OrderMonitoring.WindowsService
 
         public void ProcessOrders()
         {
-            eLog.WriteEntry("In Process Orders");
-            OrderMonitoringWindowsService serv = new OrderMonitoringWindowsService();
+            eLog.WriteEntry(message: "In Process Orders");
+
+            var serv = new OrderMonitoringWindowsService();
+
             double minutes = Convert.ToInt32(ConfigurationManager.AppSettings["OrderMonitoringMinutes"]);
             int bufferTimeInMinutes = Convert.ToInt32(ConfigurationManager.AppSettings["OrderMonitoringBufferTimeInMinutes"]);
             int status = Convert.ToInt32(ConfigurationManager.AppSettings["OrderMonitoringServiceStatus"]);
@@ -64,9 +66,10 @@ namespace Andromeda.OrderMonitoring.WindowsService
             List<Guid> list = serv.GetOrderIds(minutes, bufferTimeInMinutes, status);
 
             eLog.WriteEntry("Order Count: " + list.Count);
+
             if (list != null && list.Count > 0)
             {
-                OrderList orderList = new OrderList();
+                var orderList = new OrderList();
                 orderList.OrderIds = list;
                 orderList.Created = DateTime.UtcNow;
                 string postData = JsonConvert.SerializeObject(orderList);
@@ -89,8 +92,8 @@ namespace Andromeda.OrderMonitoring.WindowsService
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    var responseText = streamReader.ReadToEnd();
-                    eLog.WriteEntry("web-service Post Successful");
+                    string responseText = streamReader.ReadToEnd();
+                    eLog.WriteEntry(message: "web-service Post Successful");
                 }
             }
             catch (Exception ex)

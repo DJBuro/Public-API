@@ -77,6 +77,7 @@
         WebDescriptionCount: Function;
         Index: Function;
         ColorStatus: Function;
+        Dirty: () => boolean;
 
         ClearWebName: Function;
         ClearDescription: Function;

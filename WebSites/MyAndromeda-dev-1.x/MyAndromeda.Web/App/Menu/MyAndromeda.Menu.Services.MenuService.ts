@@ -89,6 +89,9 @@
                     if (this.dirty) { return "#F29A00"; }
                     return "#A4E400";
                 };
+                menuItem.Dirty = function() {
+                    return this.dirty;
+                };
                 menuItem.ClearWebName = function () {
                     var self = <kendo.data.ObservableObject> this;
                     self.set("WebName", "")
@@ -97,6 +100,14 @@
                     var self = <kendo.data.ObservableObject> this;
                     self.set("WebDescription", "");
                 };
+                menuItem.Enable = function () {
+                    var self = <kendo.data.ObservableObject>this;
+                    self.set("Enabled", true);
+                }
+                menuItem.Disable = function () {
+                    var self = <kendo.data.ObservableObject>this;
+                    self.set("Enabled", false);
+                }
 
                 if (menuItem.Thumbs == null) {
                     menuItem.Thumbs = new kendo.data.ObservableArray([]);

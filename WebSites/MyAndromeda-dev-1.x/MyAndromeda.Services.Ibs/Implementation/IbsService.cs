@@ -6,6 +6,7 @@ using MyAndromeda.Logging;
 using MyAndromeda.Services.Ibs.Acs;
 using MyAndromeda.Services.Ibs.Models;
 using System.Collections.Generic;
+using MyAndromeda.Services.Ibs.Checks;
 
 namespace MyAndromeda.Services.Ibs.Implementation
 {
@@ -23,7 +24,6 @@ namespace MyAndromeda.Services.Ibs.Implementation
         private readonly IAcsOrdersForIbsService acsOrdersForIbsService;
         private readonly IIbsStoreDevice ibsStoreDevice;
         private readonly IGetPaymentTypes getPaymentTypes;
-
         public IbsService(IIbsCacheSettings settings,
             ILoginService loginService,
             ILocationService locationService,
@@ -66,7 +66,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
             //var locations = await this.locationService.LoadLocationsAsync(token);
             //var location = locations.FirstOrDefault();
 
-            var storeSettings = await this.ibsStoreDevice.GetIbsStoreDeviceAsync(andromedaSiteId);
+            IbsStoreSettings storeSettings = await this.ibsStoreDevice.GetIbsStoreDeviceAsync(andromedaSiteId);
             var location = new LocationResult()
             {
                 LocationCode = storeSettings.LocationId
@@ -77,23 +77,23 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public async Task<CustomerResultModel> GetCustomerAsync(int andromedaSiteId, OrderHeader orderHeader) 
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
-            var email = orderHeader.Customer.Contacts == null || orderHeader.Customer.Contacts.Count == 0 
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
+            Contact email = orderHeader.Customer.Contacts == null || orderHeader.Customer.Contacts.Count == 0 
                 ? null 
                 : orderHeader.Customer.Contacts.First(e=> e.ContactTypeId == 0);
 
             if (email == null) { return null; }
 
             var customerRequest = new CustomerRequestModel() { Email = email.Value };
-            var result = await this.customerService.Get(andromedaSiteId, token, customerRequest);
+            CustomerResultModel result = await this.customerService.Get(andromedaSiteId, token, customerRequest);
 
             return result;
         }
 
         public async Task<CustomerResultModel> AddCustomerAsync(int andromedaSiteId, OrderHeader orderHeader) 
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
-            var email = orderHeader.Customer.Contacts.First(e => e.ContactTypeId == 0);
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
+            Contact email = orderHeader.Customer.Contacts.First(e => e.ContactTypeId == 0);
 
             var request = new AddCustomerRequestModel()
             {
@@ -108,7 +108,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public Task<AddOrderRequest> CreateOrderData(int andromedaSiteId, OrderHeader orderHeader, CustomerResultModel customer) 
         {
-            var model = this.createOrderService.CreateOrderRequestModelAsync(andromedaSiteId, orderHeader, customer);   
+            Task<AddOrderRequest> model = this.createOrderService.CreateOrderRequestModelAsync(andromedaSiteId, orderHeader, customer);   
 
             return model;
         }
@@ -126,25 +126,28 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public async Task<Locations> GetLocations(int andromedaSiteId)
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
 
-            var locations = await this.locationService.LoadLocationsAsync(andromedaSiteId, token);
+            Locations locations = await this.locationService.LoadLocationsAsync(andromedaSiteId, token);
 
             return locations;
         }
 
         public async Task<AddOrderResult> AddOrderAsync(int andromedaSiteId, OrderHeader orderHeader, CustomerResultModel customer, AddOrderRequest orderRequest)
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
-
-            var location = await this.GetLocationResult(andromedaSiteId);
             
-            var orderResult = await this.orderService.SendOrder(andromedaSiteId, token, location, customer, orderRequest);
+
+
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
+
+            LocationResult location = await this.GetLocationResult(andromedaSiteId);
+            
+            AddOrderResult orderResult = await this.orderService.SendOrder(andromedaSiteId, token, location, customer, orderRequest);
 
             //update acs
             await this.acsOrdersForIbsService.SaveSentOrderToIbsAsync(orderHeader, orderResult);
 
-            this.logger.Debug("IBS Order Created - {0}", orderResult.Id);
+            this.logger.Debug(format: "IBS Order Created - {0}", args: new object[] { orderResult.Id });
 
             return orderResult;
         }

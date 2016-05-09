@@ -373,15 +373,15 @@ namespace MyAndromeda.Services.Bringg
 
             model.Address = address;
 
-            LocalizationContext localizationContext = LocalizationContext.Create(store.UiCulture, store.TimeZoneInfoId);
-            IDateServices dateService = DateServicesFactory.CreateInstance(localizationContext);
+            //LocalizationContext localizationContext = LocalizationContext.Create(store.UiCulture, store.TimeZoneInfoId);
+            //IDateServices dateService = DateServicesFactory.CreateInstance(localizationContext);
 
-            DateTime utcScheduledForDateTime = dateService.ConvertToUtcFromLocal(orderHeader.OrderWantedTime).GetValueOrDefault();
-                //TimeZoneInfo.ConvertTimeToUtc(orderHeader.OrderWantedTime.GetValueOrDefault(), this.TimeZone);
+            //DateTime utcScheduledForDateTime = dateService.ConvertToUtcFromLocal(orderHeader.OrderWantedTime).GetValueOrDefault();
+            //TimeZoneInfo.ConvertTimeToUtc(orderHeader.OrderWantedTime.GetValueOrDefault(), this.TimeZone);
             //string utcScheduledForString = utcScheduledForDateTime.ToString(format: "yyyy-MM-ddTHH:mm:ss.fffZ");
 
 
-            model.ScheduledAt = utcScheduledForDateTime;
+            model.ScheduledAt = orderHeader.OrderWantedTime.GetValueOrDefault(); // utcScheduledForDateTime;
             model.TotalPrice = orderHeader.FinalPrice;
 
             if (orderHeader.paytype == "CARD")

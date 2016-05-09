@@ -7,6 +7,8 @@ using MyAndromeda.Framework.Dates;
 using MyAndromeda.Framework.Helpers;
 using MyAndromeda.Services.Ibs.Events;
 using MyAndromeda.Services.Ibs.Models;
+using MyAndromeda.Framework.Contexts;
+using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Ibs.Implementation
 {
@@ -14,18 +16,19 @@ namespace MyAndromeda.Services.Ibs.Implementation
     {
         //notifiers / logging events mostyl.
         private readonly IIbsOrderEvents[] events;
-
-        private readonly IDateServices dateServices;
         private readonly IIbsStoreDevice ibsStoreDevice;
+        private readonly IStoreDataService siteServices;
 
-
-        public CreateOrderService(IIbsOrderEvents[] events, IDateServices dateServices, DataWarehouseDbContext dataWarehouseDbContext, IIbsStoreDevice ibsStoreDevice)
+        public CreateOrderService(IIbsOrderEvents[] events, DataWarehouseDbContext dataWarehouseDbContext,
+            IStoreDataService siteServices,
+            IIbsStoreDevice ibsStoreDevice)
         {
+            this.TranslationTable = dataWarehouseDbContext.IbsRamesesTranslations;
+
+            this.siteServices = siteServices;
             this.ibsStoreDevice = ibsStoreDevice;
-            this.dateServices = dateServices;
             this.events = events;
 
-            this.TranslationTable = dataWarehouseDbContext.IbsRamesesTranslations;
             this.PaymentTypeTranslationTable = dataWarehouseDbContext.IbsPaymentTypeTranslations;
         }
 
@@ -40,18 +43,30 @@ namespace MyAndromeda.Services.Ibs.Implementation
             });
 
             //ibs device settings. 
-            var device = await ibsStoreDevice.GetIbsStoreDeviceAsync(andromedaSiteId);
+            IbsStoreSettings device = await ibsStoreDevice.GetIbsStoreDeviceAsync(andromedaSiteId);
 
             //ibs <-> rameses menu ids
-            var translationItems = await this.TranslationTable
+            IbsRamesesTranslation[] translationItems = await this.TranslationTable
                                              .Where(e => e.IbsCompanyId == device.CompanyCode)
                                              //.Select(e => new { e.PluNumber, e.RamesesMenuItemId })
                                              .ToArrayAsync();
 
             this.ValidateItemsAreAllThere(orderHeader, translationItems, customer);
 
+            var store = await this.siteServices.Table
+                .Where(e => e.AndromedaSiteId == andromedaSiteId)
+                .Select(e=> new {
+                    e.TimeZoneInfoId,
+                    e.UiCulture
+                })
+                .FirstOrDefaultAsync();
+
+
+            LocalizationContext localizationContext = LocalizationContext.Create(store.UiCulture, store.TimeZoneInfoId);
+            IDateServices dateServices = DateServicesFactory.CreateInstance(localizationContext);
+            
             //create a semi complete model
-            var model = orderHeader.TransformDraft(dateServices);
+            AddOrderRequest model = orderHeader.TransformDraft(dateServices);
 
             //customer number returned from create / get customer
             model.CustomerNo = customer.CustomerNumber;

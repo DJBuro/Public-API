@@ -11,6 +11,7 @@ using MyAndromeda.Menus.Services.Menu;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus.Services.Export;
 using MyAndromeda.WebApiClient.Syncing;
+using MyAndromeda.Data.Model.MyAndromeda;
 
 namespace MyAndromeda.Web.Areas.Menu.Controllers
 {
@@ -28,7 +29,12 @@ namespace MyAndromeda.Web.Areas.Menu.Controllers
         private readonly ISyncWebCallerController syncWebCallerController;
 
 
-        public MenuSyncController(IWorkContext workContext, IMyAndromedaLogger logger, ITranslator translator, INotifier notifer, IFtpMenuManagerService menuManagerService, 
+        public MenuSyncController(
+            IWorkContext workContext, 
+            IMyAndromedaLogger logger, 
+            ITranslator translator, 
+            INotifier notifer, 
+            IFtpMenuManagerService menuManagerService, 
             IPublishingMenuService publishingMenuService,
             ISyncWebCallerController syncWebCallerController)
         {
@@ -42,15 +48,16 @@ namespace MyAndromeda.Web.Areas.Menu.Controllers
             this.workContext = workContext;
         }
 
-        public async Task<ActionResult> Publish(bool? menu, bool? thumbnails, DateTime? dateUtc) 
+        public async Task<ActionResult> Publish(bool? now, bool? menu, bool? thumbnails, DateTime? dateUtc) 
         {
-            var andromedaId = this.workContext.CurrentSite.AndromediaSiteId;
-            var storeMenu = this.menuManagerService.GetMenu(andromedaId);
-            var userName = this.workContext.CurrentUser.User.Username;
+            int andromedaId = this.workContext.CurrentSite.AndromediaSiteId;
+            string userName = this.workContext.CurrentUser.User.Username;
+
+            SiteMenu storeMenu = this.menuManagerService.GetMenu(andromedaId);
 
             if (!menu.GetValueOrDefault() && !thumbnails.GetValueOrDefault())
             {
-                throw new ArgumentNullException("menu and thumbnails are null");
+                throw new ArgumentNullException(paramName: "menu and thumbnails are null");
             }
 
             this.publishingThumbnailMenuService.AddHistoryLog(storeMenu, userName,
@@ -73,50 +80,40 @@ namespace MyAndromeda.Web.Areas.Menu.Controllers
                 
                 if (menu.GetValueOrDefault() && thumbnails.GetValueOrDefault())
                 {
-                    this.notifer.Notify(translator.T("The menu and thumbnails are getting ready... Please wait.", dateUtc.GetValueOrDefault().ToLongDateString()), true);
+                    this.notifer.Notify(translator.T(originalTextFormat: "The menu and thumbnails are getting ready... Please wait.", textParams: new object[] { dateUtc.GetValueOrDefault().ToLongDateString() }), true);
                 }
                 else if (menu.GetValueOrDefault())
                 {
-                    this.notifer.Notify(translator.T("The menu has been queued to publish on {0}.", dateUtc.GetValueOrDefault().ToLongDateString()), true);
+                    this.notifer.Notify(translator.T(originalTextFormat: "The menu has been queued to publish on {0}.", textParams: new object[] { dateUtc.GetValueOrDefault().ToLongDateString() }), true);
                 }
                 else if (thumbnails.GetValueOrDefault())
                 {
-                    this.notifer.Notify(translator.T("The thumbnails have been queued to publish on {0}.", dateUtc.GetValueOrDefault().ToLongDateString()), true);
+                    this.notifer.Notify(translator.T(originalTextFormat: "The thumbnails have been queued to publish on {0}.", textParams: new object[] { dateUtc.GetValueOrDefault().ToLongDateString() }), true);
                 }
 
-                if (thumbnails.GetValueOrDefault()) { 
-                    //future publish 
-                    publishingThumbnailMenuService.PublishMenuLater(storeMenu, dateUtc.GetValueOrDefault(DateTime.UtcNow));
-                }
+
+                //if (thumbnails.GetValueOrDefault()) { 
+                //future publish 
+                //includes enabled/disabled items
+                publishingThumbnailMenuService.PublishMenuLater(storeMenu, dateUtc.GetValueOrDefault(DateTime.UtcNow));
+                //}
             }
             //publish now.
             else 
             {
-                if(menu.GetValueOrDefault() && thumbnails.GetValueOrDefault())
-                {
-                    this.notifer.Notify(translator.T("The menu and thumbnails are being prepared."), true);
-                }
-                else if (menu.GetValueOrDefault()) 
-                {
-                    this.notifer.Notify(translator.T("The menu data is now being prepared."), true);
-                }
-                else if (thumbnails.GetValueOrDefault())
-                {
-                    this.notifer.Notify(translator.T("The menu thumbnails are now being prepared."), true);
-                }
+                this.notifer.Notify(translator.T(text: "The recipe is being prepared."), notifyOthersInStore: true);
 
-                if(thumbnails.GetValueOrDefault())
+
+                if (await syncWebCallerController.RequestMenuSyncAsync(andromedaId))
                 {
-                    if (await syncWebCallerController.RequestMenuSyncAsync(andromedaId))
-                    {
-                        this.notifer.Notify(translator.T("The on-line menu is cooked and getting ready to deliver to your website or store.", true));
-                    }
-                    else 
-                    {
-                        this.notifer.Error(translator.T("Creating the on-line menu failed.", true));
-                    }
-                    //publishingThumbnailMenuService.PublishNow(storeMenu);
+                    this.notifer.Notify(translator.T(originalTextFormat: "The recipe is being cooked and will be delivered to your website shortly.", textParams: new object[] { true }));
                 }
+                else 
+                {
+                    this.notifer.Error(translator.T(originalTextFormat: "Creating the on-line menu failed.", textParams: new object[] { true }));
+                }
+                //publishingThumbnailMenuService.PublishNow(storeMenu);
+                
             }
 
             ////doesn't really matter if it is future or now... is managed on rameses 

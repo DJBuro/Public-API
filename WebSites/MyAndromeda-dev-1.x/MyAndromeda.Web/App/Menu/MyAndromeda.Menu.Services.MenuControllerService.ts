@@ -87,11 +87,12 @@ module MyAndromeda.Menu.Services {
                 listView._closeEditable(true);
             });
 
-            var changeHandler = function(e) {
+            var changeHandler = function (e: kendo.data.ObservableObjectSetEvent) {
                 var menuItem: Models.IMenuItemObservable = this,
                     webNameField = "WebName",
                     descriptionField = "WebDescription",
-                    webSequenceField = "WebSequence"; 
+                    webSequenceField = "WebSequence",
+                    enabledField = "Enabled"; 
 
                 console.log("change k");
                 console.log(e); 
@@ -104,6 +105,13 @@ module MyAndromeda.Menu.Services {
                     return;
                 }
 
+                if (e.field === enabledField) {
+                    var newVal = menuItem.get(enabledField);
+
+                    relatedItems.forEach((item) => {
+                        item.set(enabledField, newVal);
+                    });
+                }
                 if (e.field === webNameField)
                 {
                     var newVal = menuItem.get(webNameField);
@@ -189,6 +197,12 @@ module MyAndromeda.Menu.Services {
                 var menuItem = internal.menuService.menuItemService.findById(id);
 
                 menuItem.Enable();
+                
+                let all = internal.menuService.menuItemService.getRelatedItems([menuItem]);
+                all.forEach((item) => {
+                    item.Enable();
+                });
+
             });
             $(listViewId).on("click", ".k-button-disable",function(e) {
                 e.preventDefault();
@@ -198,6 +212,12 @@ module MyAndromeda.Menu.Services {
                 var menuItem = internal.menuService.menuItemService.findById(id);
 
                 menuItem.Disable();
+
+                let all = internal.menuService.menuItemService.getRelatedItems([menuItem]);
+
+                all.forEach((item) => {
+                    item.Disable();
+                });
             });
 
             //watch for any save event

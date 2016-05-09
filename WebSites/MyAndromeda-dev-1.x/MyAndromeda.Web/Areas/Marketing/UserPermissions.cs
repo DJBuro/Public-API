@@ -113,43 +113,81 @@ namespace MyAndromeda.Web.Areas.Marketing
                 new PermissionStereotype()
                 {
                     Permission = ViewEmailCampaigns,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 
                 new PermissionStereotype()
                 {
                     Permission = CreateCampaignEmails,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = EditCampaignEmails,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = DeleteCampaignEmails,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = SendCampaignEmails,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = ViewCampaignHistory,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = ChangeEmailSettings,
-                    AllowRoles = new[] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator, ExpectedUserRoles.ChainAdministrator, ExpectedUserRoles.StoreAdministrator }
+                    AllowRoles = new[] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator,
+                        ExpectedUserRoles.StoreAdministrator
+                    }
                 },
                 new PermissionStereotype()
                 {
                     Permission = ChangeEventMarketing,
-                    AllowRoles = new [] { ExpectedUserRoles.SuperAdministrator, ExpectedUserRoles.Administrator }
+                    AllowRoles = new [] {
+                        ExpectedUserRoles.SuperAdministrator,
+                        ExpectedUserRoles.Administrator
+                    }
                 }
             };
         }

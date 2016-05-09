@@ -6,6 +6,7 @@ using System.Monads;
 using System;
 using System.Linq;
 using MyAndromeda.Framework.Helpers;
+using MyAndromeda.Services.Ibs.Checks;
 
 namespace MyAndromeda.Services.Ibs.Implementation
 {
@@ -16,7 +17,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
 
         public OrderService(IIbsOrderEvents[] orderEvents, IbsGatewayService ibsGatewayService)
-        { 
+        {
             this.ibsGatewayService = ibsGatewayService;
             this.orderEvents = orderEvents;
         }

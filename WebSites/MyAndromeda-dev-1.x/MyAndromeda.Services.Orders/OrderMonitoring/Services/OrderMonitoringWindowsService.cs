@@ -13,7 +13,7 @@ namespace MyAndromeda.Services.Orders.OrderMonitoring.Services
 
         public OrderMonitoringWindowsService()
         {
-            this.orderMonitoringWindowsDataService = new MyAndromeda.Data.DataWarehouse.Services.Orders.OrderMonitoringWindowsDataService();
+            this.orderMonitoringWindowsDataService = new OrderMonitoringWindowsDataService();
         }
 
         public OrderMonitoringWindowsService(IOrderMonitoringWindowsDataService orderMonitoringWindowsDataService)

@@ -14,7 +14,7 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div class="panel-title">Admin - Debug bar</div>
+                        <div class="panel-title">Admin - Debug bar <span class="badge badge-info">{{Version}}</span></div>
                     </div>
                     <div class="panel-body">
 
@@ -26,7 +26,7 @@
                                             <i ng-show="DeleteBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
                                             <i class="fa fa-trash-o"></i>
                                             Delete local menu
-                                            <span class="badge badge-info">{{Version}}</span>
+                                            
                                         </a>
 
                                         <a class="btn btn-default" ng-click="CheckDbVersion()" ng-disabled="BlockAccess" title="Click here to reload the menu version">
@@ -34,12 +34,11 @@
                                             <i class="fa fa-info-circle"></i>
                                             Check menu version
                                         </a>
-
+                                        
                                         <a class="btn btn-default" ng-click="UploadToFtp()" ng-disabled="BlockAccess" title="Click here to push the menu back to the ftp.">
                                             <i ng-show="UploadBusy" class="fa fa-spinner fa-spin loading-spinner text-center"></i>
                                             <i class="fa fa-cloud-upload"></i>
                                             Try to backup
-                                            <span class="badge badge-info">{{Version}}</span>
                                         </a>
 
                                         <a class="btn btn-primary" ng-click="DownloadFromFtp()" title="Click here to fetch the newest version of the menu from the FTP.">

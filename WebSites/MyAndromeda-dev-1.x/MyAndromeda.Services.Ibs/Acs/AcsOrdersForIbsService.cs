@@ -28,15 +28,15 @@ namespace MyAndromeda.Services.Ibs.Acs
             this.orderHeaderDataService = orderHeaderDataService;
         }
 
-        public IQueryable<OrderHeader> AllOrders()
-        {
-            // TODO: Implement this method
-            throw new NotImplementedException();
-        }
+        //public IQueryable<OrderHeader> AllOrders()
+        //{
+        //    // TODO: Implement this method
+        //    throw new NotImplementedException();
+        //}
 
         public IQueryable<StoreDevice> IbsStores() 
         {
-            var query = this.androAdminDbContext.StoreDevices
+            IQueryable<StoreDevice> query = this.androAdminDbContext.StoreDevices
                             .Include(e => e.Store)
                             .Where(e => e.Device.Name == "IBS");
 
@@ -45,18 +45,18 @@ namespace MyAndromeda.Services.Ibs.Acs
 
         public IQueryable<OrderHeader> AllOrders(string[] externalSiteIds)
         {
-            var query = this.orderHeaderDataService
-            .OrderHeaders
-                            .Where(e => externalSiteIds.Contains(e.ExternalSiteID));
+            IQueryable<OrderHeader> query = this.orderHeaderDataService
+                .OrderHeaders
+                .Where(e => externalSiteIds.Contains(e.ExternalSiteID));
 
             return query;
         }
 
         public IQueryable<OrderHeader> ReadyOrders(string[] externalSiteIds)
         {
-            var query = this.AllOrders(externalSiteIds);
+            IQueryable<OrderHeader> query = this.AllOrders(externalSiteIds);
 
-            var readyOrdersQuery = query
+            IQueryable<OrderHeader> readyOrdersQuery = query
                                         .Where(e => e.Status == (int)UsefulOrderStatus.OrderIsInOven);
          
             return readyOrdersQuery;            
@@ -78,7 +78,7 @@ namespace MyAndromeda.Services.Ibs.Acs
             }
             catch (Exception ex)
             {
-                this.logger.Error("Could not save in datawarehouse");
+                this.logger.Error(message: "Could not save in datawarehouse");
                 this.logger.Error(ex);
                 throw;
             }

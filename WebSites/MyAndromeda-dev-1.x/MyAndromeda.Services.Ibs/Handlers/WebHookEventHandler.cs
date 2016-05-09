@@ -7,19 +7,22 @@ using MyAndromeda.Logging;
 using MyAndromeda.Services.WebHooks.Events;
 using MyAndromeda.Services.WebHooks.Models.Settings;
 using MyAndromeda.Services.WebHooks.Models;
+using MyAndromeda.Services.Ibs.Checks;
 
 namespace MyAndromeda.Services.Ibs.Handlers
 {
     public class WebHookEventHandler : IWebHooksEvent
     {
+        //private readonly IOrderCheckForIbsService orderCheckForIbsService;
         private readonly IMyAndromedaLogger logger;
         private readonly IIbsService ibsService;
         private readonly IOrderHeaderDataService orderHeaderDataService;
         private readonly IIbsStoreDevice ibsStoreDevice;
 
-        private readonly Task emptyTask = Task.FromResult(false);
+        private readonly Task emptyTask = Task.FromResult(result: true);
 
         public WebHookEventHandler(
+            //IOrderCheckForIbsService orderCheckForIbsService,
             IIbsService ibsService, 
             IOrderHeaderDataService orderHeaderDataService, 
             IMyAndromedaLogger logger ,
@@ -83,7 +86,7 @@ namespace MyAndromeda.Services.Ibs.Handlers
                 return;
             }
 
-            var orderHeader = await
+            Data.DataWarehouse.Models.OrderHeader orderHeader = await
                 orderHeaderDataService.OrderHeaders
                 //.AsNoTracking()
                 .Include(e => e.Customer)
@@ -100,22 +103,29 @@ namespace MyAndromeda.Services.Ibs.Handlers
                 return;
             }
 
-            var customer = await ibsService.GetCustomerAsync(model.AndromedaSiteId, orderHeader);
+            try
+            {
+                //if (this.orderCheckForIbsService.IsOrderProcessing(orderHeader.ID))
+                //{
+                //    return; 
+                //}
 
-            if (customer == null) { customer = await ibsService.AddCustomerAsync(model.AndromedaSiteId, orderHeader); }
+                //this.orderCheckForIbsService.AddOrderToBeProcessed(orderHeader.ID, model.AndromedaSiteId);
 
-            var createOrderRequest = await ibsService.CreateOrderData(model.AndromedaSiteId, orderHeader, customer);
+                Models.CustomerResultModel customer = await ibsService.GetCustomerAsync(model.AndromedaSiteId, orderHeader);
 
-            var createOrderResult = await this.ibsService.AddOrderAsync(model.AndromedaSiteId, orderHeader, customer, createOrderRequest);
+                if (customer == null) { customer = await ibsService.AddCustomerAsync(model.AndromedaSiteId, orderHeader); }
 
-            
-            //model.
-            //var createOrderRequest = ibsService.CreateOrderData(order, customer);
-            //var order = await this.GetOrderHeader(orderId);
-            //var customer = await ibsService.GetCustomerAsync(andromedaSiteId, order);
-            //if (customer == null) { customer = await ibsService.AddCustomerAsync(andromedaSiteId, order); }
+                Models.AddOrderRequest createOrderRequest = await ibsService.CreateOrderData(model.AndromedaSiteId, orderHeader, customer);
 
-            //this.ibsService.AddOrderAsync()
+                Models.AddOrderResult createOrderResult = await this.ibsService.AddOrderAsync(model.AndromedaSiteId, orderHeader, customer, createOrderRequest);
+
+            }
+            catch (Exception)
+            {
+                //this.orderCheckForIbsService.RemoveOrderFromProcessing(orderHeader.ID);
+                throw;
+            }
 
             return;
         }

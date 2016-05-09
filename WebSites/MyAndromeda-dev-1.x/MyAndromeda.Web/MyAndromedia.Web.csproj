@@ -923,6 +923,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\PublishProfiles\MyAndromeda-beta2 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -4365,10 +4366,6 @@
     <ProjectReference Include="..\MyAndromeda.WebApiClient\MyAndromeda.WebApiClient.csproj">
       <Project>{E7A8C9C4-B922-4F83-97B0-1D7467BFF93D}</Project>
       <Name>MyAndromeda.WebApiClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyAndromeda.WebJobsApplication\MyAndromeda.WebJobs.EventMarketing.csproj">
-      <Project>{4C26EBE3-05D6-40F8-AB0E-E6C780DFA39E}</Project>
-      <Name>MyAndromeda.WebJobs.EventMarketing</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyAndromedaDataAccessEntityFramework\MyAndromedaDataAccessEntityFramework\MyAndromeda.Data.csproj">
       <Project>{6b7d4b89-6fa5-4a65-a611-94f26de92361}</Project>

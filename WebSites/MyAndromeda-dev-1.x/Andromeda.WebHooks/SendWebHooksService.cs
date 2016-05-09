@@ -17,27 +17,30 @@ using Newtonsoft.Json;
 namespace MyAndromeda.Services.WebHooks
 {
 
-    public class SendWebHooksService : MyAndromeda.Services.WebHooks.ISendWebHooksService
+    public class SendWebHooksService : ISendWebHooksService
     {
         private readonly IMyAndromedaLogger logger;
-        private readonly IWebHooksEvent[] events;
+        private readonly IWebHooksEvent[] eventHandlers;
         private readonly IAcsApplicationDataService dataService;
 
-        public SendWebHooksService(IMyAndromedaLogger logger, IWebHooksEvent[] events, IAcsApplicationDataService dataService)
+        public SendWebHooksService(
+            IMyAndromedaLogger logger, 
+            IWebHooksEvent[] eventHandlers, 
+            IAcsApplicationDataService dataService)
         {
             this.dataService = dataService;
-            this.events = events;
+            this.eventHandlers = eventHandlers;
             this.logger = logger;
         }
 
         private async Task SendingActionHandlers<TModel>(TModel model, WebHookEnrolement enrollment)
             where TModel : IHook
         {
-            await this.events.ForEachAsync(async ev =>
+            await this.eventHandlers.ForEachAsync(async ev =>
             {
                 try
                 {
-                    this.logger.Debug("Notifying {0} - Sending handler {1}", ev.Name, enrollment.Name);
+                    this.logger.Debug(format: "Notifying {0} - Sending handler {1}", args: new object[] { ev.Name, enrollment.Name });
                     await ev.SendingRequestAsync(model.AndromedaSiteId, enrollment, model);
                 }
                 catch (Exception ex)
@@ -51,11 +54,11 @@ namespace MyAndromeda.Services.WebHooks
         private async Task SentActionHandlers<TModel>(TModel model, WebHookEnrolement enrollment)
             where TModel : IHook
         {
-            await this.events.ForEachAsync(async ev =>
+            await this.eventHandlers.ForEachAsync(async ev =>
             {
                 try
                 {
-                    this.logger.Debug("Notifying {0} - Sent handler {1}", ev.Name, enrollment.Name);
+                    this.logger.Debug(format: "Notifying {0} - Sent handler {1}", args: new object[] { ev.Name, enrollment.Name });
                     await ev.SentRequestAsync(model.AndromedaSiteId, enrollment, model);
                 }
                 catch (Exception ex)
@@ -69,10 +72,10 @@ namespace MyAndromeda.Services.WebHooks
         private async Task OnError<TModel>(TModel model, WebHookEnrolement enrolment, Exception ex)
              where TModel : IHook
         {
-            this.logger.Error("AndromedaSiteId: {0} - Failed task: {0} - {1}", model.AndromedaSiteId, enrolment.Name, enrolment.CallBackUrl);
+            this.logger.Error(format: "AndromedaSiteId: {0} - Failed task: {0} - {1}", args: new object[] { model.AndromedaSiteId, enrolment.Name, enrolment.CallBackUrl });
             this.logger.Error(ex);
 
-            await this.events.ForEachAsync(async ev =>
+            await this.eventHandlers.ForEachAsync(async ev =>
             {
                 try
                 {
@@ -106,7 +109,7 @@ namespace MyAndromeda.Services.WebHooks
             {
                 if (acsApplications.All(e => string.IsNullOrEmpty(e.WebHookSettings)))
                 {
-                    await this.events.ForEachAsync(async ev =>
+                    await this.eventHandlers.ForEachAsync(async ev =>
                     {
                         await ev.NoWebHooksAsync(model.AndromedaSiteId, model);
                     });
@@ -116,17 +119,17 @@ namespace MyAndromeda.Services.WebHooks
             }
             catch (Exception ex)
             {
-                this.logger.Error("Failed processing NoWebHooksAsync");
+                this.logger.Error(message: "Failed processing NoWebHooksAsync");
                 this.logger.Error(ex);
                 throw;
             }
             
             try
             {
-                this.logger.Info("webhooks warming up. Alert handlers");
+                this.logger.Info(message: "webhooks warming up. Alert handlers");
                 //notify events before sending this externally
                 //useful to attach other activities when someone happens. 
-                await this.events.ForEachAsync(async ev =>
+                await this.eventHandlers.ForEachAsync(async ev =>
                 {
                     try
                     {
@@ -142,7 +145,7 @@ namespace MyAndromeda.Services.WebHooks
             }
             catch (Exception ex)
             {
-                this.logger.Error("Failed processing BeforeDistributionAsync");
+                this.logger.Error(message: "Failed processing BeforeDistributionAsync");
                 this.logger.Error(ex);
                 throw;
             }
@@ -160,19 +163,19 @@ namespace MyAndromeda.Services.WebHooks
                             return; 
                         }
 
-                        var o = JsonConvert.DeserializeObject<WebhookSettings>(e.WebHookSettings);
+                        WebhookSettings webhookSettings = JsonConvert.DeserializeObject<WebhookSettings>(e.WebHookSettings);
 
-                        var webhooks = fetchEnrollments(o) ?? new List<WebHookEnrolement>();
+                        List<WebHookEnrolement> webhooks = fetchEnrollments(webhookSettings) ?? new List<WebHookEnrolement>();
 
                         try
                         {
                             await webhooks.Where(r => r.Enabled).ForEachAsync(async enrollment =>
                             {
-                                this.logger.Info("{0} - {1} start: SendingActionHandlers", e.Name, enrollment.Name);
+                                this.logger.Info(format: "{0} - {1} start: SendingActionHandlers", args: new object[] { e.Name, enrollment.Name });
                                 await this.SendingActionHandlers(model, enrollment);
-                                this.logger.Info("{0} - {1} start: CreateRequest", e.Name, enrollment.Name);
+                                this.logger.Info(format: "{0} - {1} start: CreateRequest", args: new object[] { e.Name, enrollment.Name });
                                 await this.CreateRequest(model, enrollment, OnError);
-                                this.logger.Info("{0} - {1} start: SentActionHandlers", e.Name, enrollment.Name);
+                                this.logger.Info(format: "{0} - {1} start: SentActionHandlers", args: new object[] { e.Name, enrollment.Name });
                                 await this.SentActionHandlers(model, enrollment);
                             });
                         }
@@ -186,15 +189,15 @@ namespace MyAndromeda.Services.WebHooks
             }
             catch (Exception ex)
             {
-                this.logger.Error("Failed processing each request");
+                this.logger.Error(message: "Failed processing each request");
                 this.logger.Error(ex);
                 throw;
             }
 
 
             //notify events after sending this externally
-            this.logger.Info("All webhooks completed. Alert handlers");
-            await this.events.ForEachAsync(async ev =>
+            this.logger.Info(message: "All webhooks completed. Alert handlers");
+            await this.eventHandlers.ForEachAsync(async ev =>
             {
                 try
                 {
@@ -202,7 +205,7 @@ namespace MyAndromeda.Services.WebHooks
                 }
                 catch (Exception ex)
                 {
-                    this.logger.Error("Failed processing: {0} - AfterDistributionAsync", ev.Name);
+                    this.logger.Error(format: "Failed processing: {0} - AfterDistributionAsync", args: new object[] { ev.Name });
                     this.logger.Error(ex);
                 }
             });
@@ -220,7 +223,7 @@ namespace MyAndromeda.Services.WebHooks
                 {
                     client.BaseAddress = new Uri(enrollment.CallBackUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
 
                     if (enrollment.RequestHeaders != null)
                     {
@@ -232,18 +235,16 @@ namespace MyAndromeda.Services.WebHooks
                         }
                     }
 
-
-
                     this.logger.Info("Created client. PostAsJson to: " + enrollment.CallBackUrl);
-                    var content = JsonConvert.SerializeObject(payload);
+                    string content = JsonConvert.SerializeObject(payload);
                     this.logger.Info("Content: " + content);
 
-                    HttpResponseMessage response = await client.PostAsJsonAsync<TModel>(enrollment.CallBackUrl, payload);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(enrollment.CallBackUrl, payload);
 
                     this.logger.Info("Response received for: " + enrollment.CallBackUrl);
                     if (!response.IsSuccessStatusCode)
                     {
-                        string message = string.Format("{0} - Could not call : {1}", enrollment.Name, enrollment.CallBackUrl);
+                        string message = string.Format(format: "{0} - Could not call : {1}", arg0: enrollment.Name, arg1: enrollment.CallBackUrl);
                         string responseMessage = await response.Content.ReadAsStringAsync();
 
                         this.logger.Error(message);
@@ -253,7 +254,7 @@ namespace MyAndromeda.Services.WebHooks
                     }
                     else
                     {
-                        this.logger.Debug("{0} Called webhook endpoint successfully", enrollment.CallBackUrl);
+                        this.logger.Debug(format: "{0} Called webhook endpoint successfully", args: new object[] { enrollment.CallBackUrl });
                     }
                 }
             }

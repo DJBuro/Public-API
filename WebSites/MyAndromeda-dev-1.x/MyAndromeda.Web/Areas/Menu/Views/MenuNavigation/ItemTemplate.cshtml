@@ -8,90 +8,149 @@
     var translator = @Html.GetTranslator();
 
     <script type="text/template" id="itemTemplate">
-        <div class="menu-item row" data-id="#:Id#">
+        <div class="menu-item " data-id="#:Id#">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="header #=Enabled?'enabled':'disabled'#" style="border-left-color: #:ColorStatus() #">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-8 col-xs-10">
+                                <div>
+                                    <h3>
+                                        #= DisplayName() #
+                                        #if(!Enabled){ #
+                                        (Disabled)
+                                        #}#
+                                    </h3>
+                                </div>
+                                <div>
+                                    # if(DisplayName() !== Name){ #
+                                    <div>(@translator.T("Store item name:") #: Name #)</div>
+                                    # } #
+                                    <div>
+                                        @translator.T("Web Section:") #:DisplayCategoryName#
+                                        # if ((Category1Name) || (Category2Name)) { #
+                                            # if(Category1Name) { #
+                                            <span> | @translator.T("Category1:") #: Category1Name #</span>
+                                            # } #
+                                            # if(Category2Name) { #
+                                            <span> | @translator.T("Category2:") #: Category2Name #</span>
+                                            # } #
+                                        # } #
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="header #=Enabled?'enabled':'disabled'#" style="border-left-color: #:ColorStatus() #">
-
-                <div class="col-sm-6 col-md-8 col-xs-10">
-                    <div>
-                        <h3>
-                            #= DisplayName() #
-                            #if(!Enabled){ #
-                            (Disabled)
-                            #}#
-                        </h3>
-                    </div>
-                    <div>
-                        # if(DisplayName() !== Name){ #
-                        <div>(@translator.T("Store item name:") #: Name #)</div>
-                        # } #
-                        <div>
-                            @translator.T("Web Section:") #:DisplayCategoryName#
-                            # if ((Category1Name) || (Category2Name)) { #
-                                # if(Category1Name) { #
-                                <span> | @translator.T("Category1:") #: Category1Name #</span>
-                                # } #
-                                # if(Category2Name) { #
-                                <span> | @translator.T("Category2:") #: Category2Name #</span>
-                                # } #
+                            # if(Prices) { #
+                            <div class="col-sm-2 col-md-2 hidden-xs">
+                                <div>
+                                    <div>Dine in: #: kendo.toString(Prices.Instore, "c") #</div>
+                                    <div>Delivery: #: kendo.toString(Prices.Delivery, "c") #</div>
+                                    <div>Collect: #: kendo.toString(Prices.Collection, "c") #</div>
+                                </div>
+                            </div>
                             # } #
+
+                            <div class="col-sm-2 text-right">
+                                @if (authorizer.Authorize(Permissions.UserPermissions.EditStoreMenu))
+                                {
+                                    <text>
+                                        <span class="btn-group">
+                                            <a class="btn btn-default k-button-edit">Edit</a>
+                                            # if(Enabled){ #
+                                            <a class="btn btn-default k-button-disable enable-button">Disable</a>
+                                            # } else { #
+                                            <a class="btn btn-danger k-button-enable disable-button">Enable</a>
+                                            # } #
+                                        </span>
+                                    </text>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div class="col-sm-2 hidden-xs">
+                    # if(Thumbs && Thumbs.length > 0) { #
+                        <div style="height:80px">
+                            <img align="right" src="#:Thumbs[Thumbs.length-1].Url#" alt="" class="menu-list-thumbnail img-responsive" />
+
+                        </div>
+                    # } #
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="row">
+                        #if (WebDescription) { #
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Web Description</div>
+                                </div>
+                                <div class="panel-body">
+                                    #= WebDescription #
+                                </div>
+                            </div>
+                        </div>
+                        # } #
+                        #if (Toppings && (Toppings.DefaultToppings || Toppings.OptionalToppings) && (Toppings.DefaultToppings.length > 0 || Toppings.OptionalToppings.length > 0)) { #
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Toppings</div>
+                                </div>
+                                <div class="panel-body">
+                                    Default :<br />
+                                    # for(var i = 0; i< Toppings.DefaultToppings.length; i++){ #
+                                    <span>#=Toppings.DefaultToppings[i].Name#</span># if(i< Toppings.DefaultToppings.length-1){ #,# } #
+                                    # } #
+                                    <br />
+                                    Optional:<br />
+                                    # for(var i = 0; i< Toppings.OptionalToppings.length; i++){ #
+                                    <span>#=Toppings.OptionalToppings[i].Name#</span># if(i< Toppings.OptionalToppings.length-1){ #,# } #
+                                    # } #
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        # } #
+                    </div>
+
+                </div>
+
+                <div class="col-sm-2">
+                    #if(Dirty()){#
+                    <br />
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                Edited
+                            </div>
+
+                        </div>
+                        <div class="panel-body text-center">
+                            <div class="fa fa-5x fa-warning"></div>
+                            <div>Don't forget to save changes.</div>
                         </div>
                     </div>
+                    #}#
+
                 </div>
 
-                <div class="col-sm-2 col-md-1 hidden-xs text-right">
-                    # if(Thumbs && Thumbs.length > 0) { #
-                    <img align="right" src="#:Thumbs[Thumbs.length-1].Url#" alt="" class="menu-list-thumbnail" />
-                    # } #
-                </div>
-
-                # if(Prices) { #
-                <div class="col-sm-3 col-md-2 hidden-xs text-right">
-                    <div>
-                        <div>Dine in: #: kendo.toString(Prices.Instore, "c") #</div>
-                        <div>Delivery: #: kendo.toString(Prices.Delivery, "c") #</div>
-                        <div>Collect: #: kendo.toString(Prices.Collection, "c") #</div>
-                    </div>
-                </div>
-                # } #
-
-                <div class="col-xs-2 col-sm-1">
-                    @if (authorizer.Authorize(Permissions.UserPermissions.EditStoreMenu))
-                    {
-                        <text>
-                            <a class="k-button k-button-edit" style="margin-bottom:1em;">Edit</a>
-                            # if(Enabled){ #
-                            <a class="k-button k-button-disable enable-button" style="">Disable</a>
-                            # } else { #
-                            <a class="k-button k-button-enable disable-button" style="">Enable</a>
-                            # } #
-                        </text>
-                    }
-                </div>
-                <div style="clear:both"></div>
             </div>
-            #if (WebDescription) { #
-            <div class="space">
-                Web Description:
-                #= WebDescription #
-            </div>
-            # } #
-            #if (Toppings && (Toppings.DefaultToppings || Toppings.OptionalToppings) && (Toppings.DefaultToppings.length > 0 || Toppings.OptionalToppings.length > 0)) { #
-            <div>
 
-                <div class="space">
-                    Default Toppings:<br />
-                    # for(var i = 0; i< Toppings.DefaultToppings.length; i++){ #
-                    <i>#=Toppings.DefaultToppings[i].Name#</i># if(i< Toppings.DefaultToppings.length-1){ #,# } #
-                    # } #
-                    <br />
-                    Optional Toppings:<br />
-                    # for(var i = 0; i< Toppings.OptionalToppings.length; i++){ #
-                    <i>#=Toppings.OptionalToppings[i].Name#</i># if(i< Toppings.OptionalToppings.length-1){ #,# } #
-                    # } #
-                </div>
-            </div>
-            # } #
+
+
+
+
+
+
         </div>
     </script>
 

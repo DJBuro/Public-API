@@ -15,10 +15,11 @@ namespace MyAndromeda.Services.Ibs.Models
             DateTime placedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderPlacedTime).GetValueOrDefault();
             DateTime wantedTime = dateServices.ConvertToLocalFromUtc(orderHeader.OrderWantedTime).GetValueOrDefault();
 
-            if (wantedTime < DateTime.Now)
+            DateTime localNow = dateServices.ConvertToLocalFromUtc(DateTime.UtcNow).GetValueOrDefault();
+
+            if (wantedTime < localNow)
             {
-                var future = 
-                    DateTime.Now.AddMinutes(5);
+                DateTime future = localNow.AddMinutes(value: 5);
 
                 wantedTime = future;
 
@@ -27,7 +28,7 @@ namespace MyAndromeda.Services.Ibs.Models
                 //model.WantedOrderYear = future.Year;
             }
 
-            string timeSlot = string.Format("{0:00}{1:00}", wantedTime.Hour, wantedTime.Minute);
+            string timeSlot = string.Format(format: "{0:00}{1:00}", arg0: wantedTime.Hour, arg1: wantedTime.Minute);
 
             var model = new AddOrderRequest()
             {

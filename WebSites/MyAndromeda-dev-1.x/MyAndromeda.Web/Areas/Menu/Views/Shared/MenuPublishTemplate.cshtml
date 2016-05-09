@@ -32,14 +32,15 @@
                     <div class="content" style="padding:1em">
                         <div>
                             <label>
-                                <input required name="publishNow" value="now" type="radio" data-bind="checked: publishNow" checked="checked" style="margin-right:1em" />
+                                <input name="publishNow" value="now" type="radio" data-bind="checked: publishNow" style="margin-right:1em" />
                                 @translator.T("Now")
                             </label>
-                            <br />
-                            <label>
-                                <input required name="publishNow" value="later" type="radio" data-bind="checked: publishNow" style="margin-right:1em" />
-                                @translator.T("Later")
-                            </label>
+@*
+    <br />
+    <label>
+        <input name="publishNow" value="later" type="radio" data-bind="checked: publishNow" style="margin-right:1em" />
+        @translator.T("Later")
+    </label>*@
                         </div>
                         <div data-bind="visible: publishLater">Publish Date</div>
                         <div data-bind="visible: publishLater">

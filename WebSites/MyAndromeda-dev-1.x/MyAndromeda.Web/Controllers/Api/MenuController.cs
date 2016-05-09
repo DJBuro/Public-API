@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using MyAndromeda.Data.AcsServices;
@@ -11,6 +10,7 @@ using MyAndromeda.Framework.Notification;
 using MyAndromeda.Menus.Services.Data;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.AcsServices.Context;
+using MyAndromeda.Data.Model.MyAndromeda;
 
 namespace MyAndromeda.Web.Controllers.Api
 {
@@ -66,14 +66,16 @@ namespace MyAndromeda.Web.Controllers.Api
 
             try
             {
-                this.logger.Debug("SaveMenuItemsBatch initiated;");
-                this.logger.DebugItems(model.Models, e => string.Format("Name: {0} - id: {1};", e.Name, e.Id));
+                this.logger.Debug(message: "SaveMenuItemsBatch initiated;");
+                this.logger.DebugItems(model.Models, e => string.Format(format: "Name: {0} - id: {1};", arg0: e.Name, arg1: e.Id));
 
-                var menu = this.menuContext.Menu;
+                SiteMenu menu = this.menuContext.Menu;
+
                 await this.menuItemService.UpdateMenuItemsBatchAsync(menu, model.Models, UpdateSection.Data);
 
-                var message = string.Format("Your changes to {0} items completed.", model.Models.Length);
-                this.notifier.Success(message, true);
+                string message = string.Format(format: "Your changes have been saved for later.", arg0: model.Models.Length);
+
+                this.notifier.Success(message, notifyOthersInStore: true);
 
                 return Json(new
                 {
@@ -85,7 +87,7 @@ namespace MyAndromeda.Web.Controllers.Api
             catch (Exception e) 
             {
 
-                this.notifier.Error("There was a error while saving. Please try again. Contact support if the problem still persists.", true); 
+                this.notifier.Error(message: "There was a error while saving. Please try again. Contact support if the problem still persists.", notifyOthersInStore: true); 
 
                 throw e;
             }
@@ -99,7 +101,7 @@ namespace MyAndromeda.Web.Controllers.Api
                 return Unauthorized();
             }
 
-            var menu = this.menuContext.Menu;
+            SiteMenu menu = this.menuContext.Menu;
             await this.menuItemService.UpdateMenuItemsBatchAsync(menu, model.Models, UpdateSection.Sequence);
 
             return Json(new

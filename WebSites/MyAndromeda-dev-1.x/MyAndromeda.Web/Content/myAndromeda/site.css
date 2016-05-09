@@ -2779,18 +2779,18 @@ footer {
 .menu-item .disabled h3 {
   color: #f53d52;
 }
-#main .disable-button {
-  background-color: #f53d52;
-  color: #a4e400;
-  border-color: #ea0d27;
-}
-#main .disable-button:hover {
-  background-color: #932531;
-  color: #a4e400;
-}
+/*#main
+{
+    .disable-button {
+        background-color:rgb(245, 61, 82); color:rgb(164, 228, 0);
+        border-color: rgb(234, 13, 39);
+    }
+    .disable-button:hover {
+        background-color:rgb(245, 61, 82) * 0.6;
+        color:rgb(164, 228, 0);
+    }
+}*/
 .menu-list-thumbnail {
-  height: 75px;
-  width: 75px;
   background-color: #fff;
   border: 0px solid #989898;
   border-radius: 2px;

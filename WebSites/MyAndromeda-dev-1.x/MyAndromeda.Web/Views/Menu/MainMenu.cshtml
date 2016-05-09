@@ -35,23 +35,7 @@ if (Model.AccessToManyChains())
             .Action("index", "Chains", new { Area = string.Empty });
 }
 
-if (Model.WorkContext.CurrentUser.AccessibleChains.Any())
-{
-    if (workContext.CurrentChain.Available)
-    {
-        if (authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewChainReports))
-        {
 
-            items.Add().Text(translator.T("Chain Reports")).Action("index", "Reports", new { Area = "ChainReporting" })
-                    .Items(chainMenuItems =>
-                    {
-                        //chainMenuItems.Add().Text("hi").Action("index", "Dashboard", new { Area = "ChainReporting" });
-                        //chainMenuItems.Add().Text("Map").Action("map", "Reporting", new { Area = "ChainReporting" });
-                    });
-
-        }
-    }
-}
 
 if (Model.AccessToManySites())
 {
@@ -169,12 +153,31 @@ if (Html.IsAuthorizedForAll(MarketingPermissions.MarketingFeatureEnrollment.Make
             });
 }
 
+if (Model.WorkContext.CurrentUser.AccessibleChains.Any())
+{
+    if (workContext.CurrentChain.Available)
+    {
+        if (authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewChainReports))
+        {
+
+            items.Add().Text(translator.T("Chain reports"))
+                    .Items(chainMenuItems =>
+                    {
+                        chainMenuItems.Add().Text("list").Action("index", "Reports", new { Area = "ChainReporting" });
+                            //chainMenuItems.Add().Text("hi").Action("index", "Dashboard", new { Area = "ChainReporting" });
+                            //chainMenuItems.Add().Text("Map").Action("map", "Reporting", new { Area = "ChainReporting" });
+                        });
+
+        }
+    }
+}
+
 bool reportingFeature = Html.IsAuthorizedForAny(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature, ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
 bool userPermission = Html.IsAuthorizedForAny(ReportingPermissions.UserReportingPermissions.ViewGprsReports, ReportingPermissions.UserReportingPermissions.ViewRamesesReports);
 
 if (reportingFeature && userPermission)
 {
-    items.Add().Text("Reporting")
+    items.Add().Text("Store Reports")
             //.Action("Index", "DailyReporting", new { Area = "Reporting" })
             .Items(reportingItems =>
             {
@@ -321,8 +324,8 @@ if (storeCanAccessMenu && userCanAccessMenu)
         .Items(authItems =>
         {
             authItems.Add()
-            .Text(translator.T("Email Report"))
-            .Action("Index", "EmailSummary", new { Area = "admin" });
+                .Text(translator.T("Email Report"))
+                .Action("Index", "EmailSummary", new { Area = "admin" });
 
             if (Html.IsAuthorizedFor(UserPermissions.ListUsers))
             {
