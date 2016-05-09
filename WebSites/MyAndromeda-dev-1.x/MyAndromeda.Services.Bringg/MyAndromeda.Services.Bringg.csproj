@@ -94,6 +94,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BringgSettingsService.cs" />
     <Compile Include="Services\BringgGetTaskService.cs" />
+    <Compile Include="Services\Checks\CheckOrderIsActiveForBringgService.cs" />
+    <Compile Include="Services\Checks\CheckOrdersFroBringg.cs" />
+    <Compile Include="Services\Checks\CheckUpdateDriverIsActiveForBringgService.cs" />
+    <Compile Include="Services\Checks\ICheckNewOrderIsActiveForBringgService.cs" />
+    <Compile Include="Services\Checks\ICheckOrdersForBringgDontDirectingInclude.cs" />
+    <Compile Include="Services\Checks\ICheckUpdateDriverIsActiveForBringgService.cs" />
     <Compile Include="Services\IBringgGetTaskService.cs" />
     <Compile Include="Services\IBringgSettingsService.cs" />
     <Compile Include="Services\Implementation\Encoder.cs" />

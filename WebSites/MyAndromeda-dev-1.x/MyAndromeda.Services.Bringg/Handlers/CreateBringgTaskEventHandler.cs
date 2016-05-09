@@ -7,19 +7,26 @@ using MyAndromeda.Logging;
 using MyAndromeda.Services.WebHooks.Events;
 using MyAndromeda.Services.WebHooks.Models;
 using MyAndromeda.Services.WebHooks.Models.Settings;
+using MyAndromeda.Services.Bringg.Services.Checks;
 
 namespace MyAndromeda.Services.Bringg.Handlers
 {
     public class CreateBringgTaskEventHandler : IWebHooksEvent 
     {
-        private readonly Task emptyTask = Task.FromResult(false);
+        private readonly Task emptyTask = Task.FromResult(result: false);
 
         private readonly IBringgService bringgSerivce;
         private readonly IMyAndromedaLogger logger;
         private readonly IOrderHeaderDataService orderHeaderDataService;
+        private readonly ICheckNewOrderIsActiveForBringgService checkNewOrderIsActiveForBringgService;
 
-        public CreateBringgTaskEventHandler(IBringgService bringgSerivce, IMyAndromedaLogger logger, IOrderHeaderDataService orderHeaderDataService)
+        public CreateBringgTaskEventHandler(
+            ICheckNewOrderIsActiveForBringgService checkNewOrderIsActiveForBringgService,
+            IBringgService bringgSerivce, 
+            IMyAndromedaLogger logger, 
+            IOrderHeaderDataService orderHeaderDataService)
         {
+            this.checkNewOrderIsActiveForBringgService = checkNewOrderIsActiveForBringgService;
             this.orderHeaderDataService = orderHeaderDataService;
             this.logger = logger;
             this.bringgSerivce = bringgSerivce;
@@ -67,6 +74,15 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 return;
             }
 
+            if (this.checkNewOrderIsActiveForBringgService.IsOrderProcessing(update.InternalOrderId.GetValueOrDefault()))
+            {
+                this.logger.Debug("{0} - store: {1} - The order already processing - {2}", update.InternalOrderId, update.AndromedaSiteId, update.ExternalOrderId);
+
+                return;
+            }
+
+            //passed the checks ... lets do some work. 
+
             Data.DataWarehouse.Models.OrderHeader orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == update.InternalOrderId);
 
             if (orderHeader.BringgTaskId.HasValue) 
@@ -109,7 +125,7 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 }
 
                 bool delivery = orderHeader.OrderType.ToLower().Equals(value: "DELIVERY", comparisonType: StringComparison.InvariantCultureIgnoreCase);
-                
+
                 if (!delivery) { return; }
 
                 this.logger.Debug("Try to use Bringg: " + andromedaSiteId);
@@ -119,8 +135,13 @@ namespace MyAndromeda.Services.Bringg.Handlers
             }
             catch (Exception e)
             {
+                this.checkNewOrderIsActiveForBringgService.RemoveOrderFromProcessing(orderHeader.ID);
                 this.logger.Error(e);
                 throw;
+            }
+            finally
+            {
+                this.checkNewOrderIsActiveForBringgService.RemoveOrderFromProcessing(orderHeader.ID);
             }
         }
 

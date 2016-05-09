@@ -14,6 +14,9 @@ namespace MyAndromeda.Services.Ibs.Handlers
     public class WebHookEventHandler : IWebHooksEvent
     {
         //private readonly IOrderCheckForIbsService orderCheckForIbsService;
+
+        private readonly ICheckOrderIsActiveForIbsService checkOrderForIbsService;
+
         private readonly IMyAndromedaLogger logger;
         private readonly IIbsService ibsService;
         private readonly IOrderHeaderDataService orderHeaderDataService;
@@ -23,6 +26,7 @@ namespace MyAndromeda.Services.Ibs.Handlers
 
         public WebHookEventHandler(
             //IOrderCheckForIbsService orderCheckForIbsService,
+            ICheckOrderIsActiveForIbsService checkOrderForIbsService,
             IIbsService ibsService, 
             IOrderHeaderDataService orderHeaderDataService, 
             IMyAndromedaLogger logger ,
@@ -30,6 +34,7 @@ namespace MyAndromeda.Services.Ibs.Handlers
             )
         {
 
+            this.checkOrderForIbsService = checkOrderForIbsService;
             this.ibsStoreDevice = ibsStoreDevice;
             this.logger = logger;
             this.orderHeaderDataService = orderHeaderDataService;
@@ -105,12 +110,12 @@ namespace MyAndromeda.Services.Ibs.Handlers
 
             try
             {
-                //if (this.orderCheckForIbsService.IsOrderProcessing(orderHeader.ID))
-                //{
-                //    return; 
-                //}
+                if (this.checkOrderForIbsService.IsOrderProcessing(orderHeader.ID))
+                {
+                    return;
+                }
 
-                //this.orderCheckForIbsService.AddOrderToBeProcessed(orderHeader.ID, model.AndromedaSiteId);
+                this.checkOrderForIbsService.AddOrderToBeProcessed(orderHeader.ID, model.AndromedaSiteId);
 
                 Models.CustomerResultModel customer = await ibsService.GetCustomerAsync(model.AndromedaSiteId, orderHeader);
 
@@ -121,10 +126,15 @@ namespace MyAndromeda.Services.Ibs.Handlers
                 Models.AddOrderResult createOrderResult = await this.ibsService.AddOrderAsync(model.AndromedaSiteId, orderHeader, customer, createOrderRequest);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //this.orderCheckForIbsService.RemoveOrderFromProcessing(orderHeader.ID);
+                //i don't trust the finally. :) 
+                this.checkOrderForIbsService.RemoveOrderFromProcessing(orderHeader.ID);
                 throw;
+            }
+            finally
+            {
+                this.checkOrderForIbsService.RemoveOrderFromProcessing(orderHeader.ID);
             }
 
             return;

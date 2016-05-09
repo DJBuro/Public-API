@@ -37,7 +37,7 @@ namespace MyAndromeda.Services.Bringg
         private readonly WebhookEndpointManger webhookEndpointManger;
         private readonly IWebApiClientContext webApiClientContext;
         private readonly IWorkContext workContext;
-
+        
 
         public BringgService(
             WebhookEndpointManger webhookEndpointManger,

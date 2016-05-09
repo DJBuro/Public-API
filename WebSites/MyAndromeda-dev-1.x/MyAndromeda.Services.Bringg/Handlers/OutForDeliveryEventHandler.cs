@@ -10,12 +10,13 @@ using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Services.WebHooks.Models;
 using MyAndromeda.Data.DataWarehouse;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
+using MyAndromeda.Services.Bringg.Services.Checks;
 
 namespace MyAndromeda.Services.Bringg.Handlers
 {
     public class OutForDeliveryEventHandler : IWebHooksEvent 
     {
-        private readonly Task emptyTask = Task.FromResult(result: false);
+        private readonly Task emptyTask = Task.FromResult(result: true);
 
         private readonly IBringgService bringgService;
         private readonly IMyAndromedaLogger logger;
@@ -23,13 +24,17 @@ namespace MyAndromeda.Services.Bringg.Handlers
         private readonly IOrderHeaderDataService orderHeaderDataService;
 
         private readonly INotifier notifier;
+        private readonly ICheckUpdateDriverIsActiveForBringgService checkUpdateDriverIsActiveForBringgService;
 
-        public OutForDeliveryEventHandler(IBringgService bringgService,
+        public OutForDeliveryEventHandler(
+            ICheckUpdateDriverIsActiveForBringgService checkUpdateDriverIsActiveForBringgService,
+            IBringgService bringgService,
             IMyAndromedaLogger logger,
             IStoreDataService storeDataService,
             INotifier notifier,
             IOrderHeaderDataService orderHeaderDataService) 
         {
+            this.checkUpdateDriverIsActiveForBringgService = checkUpdateDriverIsActiveForBringgService;
             this.orderHeaderDataService = orderHeaderDataService;
             this.notifier = notifier;
             this.storeDataService = storeDataService;
@@ -76,44 +81,51 @@ namespace MyAndromeda.Services.Bringg.Handlers
             {
                 return;
             }
-            
 
             try
             {
                 Data.DataWarehouse.Models.OrderHeader orderHeader = await this.orderHeaderDataService.OrderHeaders.SingleOrDefaultAsync(e => e.ID == modelType.InternalOrderId);
 
-                if (!orderHeader.BringgTaskId.HasValue) 
+                if (!orderHeader.BringgTaskId.HasValue)
                 {
                     this.logger.Debug(message: "Skipping adding driver - no task id");
                     return;
                 }
 
-                if (!orderHeader.OrderType.ToLower().Equals(value: "Delivery", comparisonType: StringComparison.InvariantCultureIgnoreCase)) 
+                if (!orderHeader.OrderType.ToLower().Equals(value: "Delivery", comparisonType: StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.logger.Debug(message: "Skipping order because it is not delivery");
                     return;
                 }
 
+                if (this.checkUpdateDriverIsActiveForBringgService.IsOrderProcessing(orderHeader.ID))
+                {
+                    this.logger.Debug(message: "Skipping order because it is already processing");
+                    return;
+                }
+
+                this.checkUpdateDriverIsActiveForBringgService.AddOrderToBeProcessed(orderHeader.ID, andromedaSiteId);
+
                 this.logger.Debug("Try to assign driver to bring task id:" + orderHeader.BringgTaskId.Value);
                 this.logger.Debug("Bags" + orderHeader.Bags.GetValueOrDefault());
-                
+
                 Data.Model.AndroAdmin.Store store = await this.storeDataService.Table.SingleOrDefaultAsync(e => e.AndromedaSiteId == andromedaSiteId);
 
                 await this.bringgService.AddOrderAsync(andromedaSiteId, orderHeader.ID, addNotes: true);
 
                 UpdateDriverResult result = await this.bringgService.UpdateDriverAsync(store.Id, modelType.InternalOrderId, modelType.ExternalOrderId);
 
-                switch (result) 
+                switch (result)
                 {
                     case UpdateDriverResult.CantFindOrderInWarehouse:
-                        throw new NullReferenceException(message: "Order"); 
+                        throw new NullReferenceException(message: "Order");
                     case UpdateDriverResult.NoBringgTaskId:
-                        throw new ArgumentNullException(paramName: "BringgTaskId"); 
+                        throw new ArgumentNullException(paramName: "BringgTaskId");
                     case UpdateDriverResult.NoDriverName:
                         throw new ArgumentNullException(paramName: "DriverName");
                     case UpdateDriverResult.NoDriverPhoneNumber:
                         throw new ArgumentNullException(paramName: "DriverPhoneNumber");
-                    case UpdateDriverResult.UnknownError :
+                    case UpdateDriverResult.UnknownError:
                         throw new Exception(message: "Unknown error from bringg");
                 }
 
@@ -123,7 +135,13 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 this.notifier.Error(message: "Failed to update driver");
                 this.logger.Error(message: "failed to update driver.");
                 this.logger.Error(ex);
+
+                this.checkUpdateDriverIsActiveForBringgService.RemoveOrderFromProcessing(modelType.InternalOrderId.GetValueOrDefault());
                 throw;
+            }
+            finally
+            {
+                this.checkUpdateDriverIsActiveForBringgService.RemoveOrderFromProcessing(modelType.InternalOrderId.GetValueOrDefault());
             }
 
             

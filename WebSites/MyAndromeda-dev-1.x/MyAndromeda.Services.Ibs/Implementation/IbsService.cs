@@ -101,7 +101,7 @@ namespace MyAndromeda.Services.Ibs.Implementation
                 Customer = orderHeader.Customer.Transform()
             };
 
-            var result = await this.customerService.Add(andromedaSiteId, token, request);
+            CustomerResultModel result = await this.customerService.Add(andromedaSiteId, token, request);
 
             return result;
         }
@@ -115,11 +115,11 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public async Task<MenuResult> GetMenuAsync(int andromedaSiteId)
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
             
-            var location = await this.GetLocationResult(andromedaSiteId);
+            LocationResult location = await this.GetLocationResult(andromedaSiteId);
             
-            var menu = await this.menuService.GetMenu(andromedaSiteId, token, location);
+            MenuResult menu = await this.menuService.GetMenu(andromedaSiteId, token, location);
 
             return menu;
         }
@@ -135,13 +135,12 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public async Task<AddOrderResult> AddOrderAsync(int andromedaSiteId, OrderHeader orderHeader, CustomerResultModel customer, AddOrderRequest orderRequest)
         {
-            
-
-
             TokenResult token = await this.GetTokenResult(andromedaSiteId);
 
             LocationResult location = await this.GetLocationResult(andromedaSiteId);
             
+
+
             AddOrderResult orderResult = await this.orderService.SendOrder(andromedaSiteId, token, location, customer, orderRequest);
 
             //update acs
@@ -154,9 +153,9 @@ namespace MyAndromeda.Services.Ibs.Implementation
 
         public async Task<IEnumerable<PaymentTypeModel>> GetPaymentTypes(int andromedaSiteId) 
         {
-            var token = await this.GetTokenResult(andromedaSiteId);
+            TokenResult token = await this.GetTokenResult(andromedaSiteId);
 
-            var location = await this.GetLocationResult(andromedaSiteId);
+            LocationResult location = await this.GetLocationResult(andromedaSiteId);
 
             IEnumerable<PaymentTypeModel> result = Enumerable.Empty<PaymentTypeModel>();
 

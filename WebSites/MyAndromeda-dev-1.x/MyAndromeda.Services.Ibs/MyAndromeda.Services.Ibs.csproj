@@ -93,7 +93,8 @@
   <ItemGroup>
     <Compile Include="Acs\AcsOrdersForIbsService.cs" />
     <Compile Include="Acs\IAcsOrdersForIbsService.cs" />
-    <Compile Include="Checks\OrderCheckService.cs" />
+    <Compile Include="Checks\ICheckOrderIsActiveForIbsService.cs" />
+    <Compile Include="Checks\CheckOrderForIbsService.cs" />
     <Compile Include="IGetPaymentTypes.cs" />
     <Compile Include="Implementation\CreateOrderService.cs" />
     <Compile Include="Handlers\NotifierEventHandler.cs" />
