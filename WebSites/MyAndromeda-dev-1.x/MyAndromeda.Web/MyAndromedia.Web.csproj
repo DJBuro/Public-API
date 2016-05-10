@@ -4206,6 +4206,7 @@
     <Folder Include="Content\themes\base\minified\images\" />
     <Folder Include="Controllers\Api\WebHooks\Models\" />
     <Folder Include="html\hr\employees\" />
+    <Folder Include="lib\KENDOUIMVC\" />
     <Folder Include="lib\kendo\" />
     <Folder Include="Models\Jobs\" />
     <Folder Include="Providers\" />
