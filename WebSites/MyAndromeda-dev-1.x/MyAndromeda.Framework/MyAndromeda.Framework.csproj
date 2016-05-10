@@ -168,6 +168,7 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
+    <Compile Include="Attributes\ReadOnlyDataAttribute.cs" />
     <Compile Include="Authorization\ChainAndSiteAuthorization.cs" />
     <Compile Include="Authorization\ICoreStoreEnrollments.cs" />
     <Compile Include="Authorization\IAuthorizer.cs" />

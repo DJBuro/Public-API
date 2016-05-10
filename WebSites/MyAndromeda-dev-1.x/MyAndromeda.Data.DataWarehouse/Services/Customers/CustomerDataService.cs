@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using MyAndromeda.Data.DataWarehouse.Models;
+using MyAndromeda.Framework.Attributes;
 
 namespace MyAndromeda.Data.DataWarehouse.Services.Customers
 {
@@ -10,7 +11,7 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Customers
     {
         private readonly DataWarehouseDbContext dataContext;
 
-        public CustomerDataService(DataWarehouseDbContext dataContext) 
+        public CustomerDataService([ReadOnlyData]DataWarehouseDbContext dataContext) 
         {
             this.dataContext = dataContext;
             this.Table = this.dataContext.Set<Customer>();

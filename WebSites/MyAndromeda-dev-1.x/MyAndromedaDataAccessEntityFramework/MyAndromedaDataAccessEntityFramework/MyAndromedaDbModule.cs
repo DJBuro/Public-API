@@ -14,6 +14,7 @@ namespace MyAndromeda.Data
             this.Bind<MyAndromedaDbContext>()
                 .To<MyAndromedaDbContext>()
                 .InRequestScope();
+
             this.Bind<AndroAdminDbContext>()
                 .To<AndroAdminDbContext>()
                 .InRequestScope();
