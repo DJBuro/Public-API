@@ -199,7 +199,9 @@
     <Compile Include="Jobs\PublishMenuJob.cs" />
     <Compile Include="Jobs\SyncFtpDownJob.cs" />
     <Compile Include="Jobs\SyncFtpUpJob.cs" />
+    <Compile Include="Jobs\SyncThumbnailUpJob.cs" />
     <Compile Include="MenuNinjectModule.cs" />
+    <Compile Include="Models\MenuJobModel.cs" />
     <Compile Include="Models\MenuStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Data\GetAcsAddressesService.cs" />
@@ -219,6 +221,7 @@
     <Compile Include="Services\Menu\IWebOrderingService.cs" />
     <Compile Include="Services\Menu\FtpMenuManagerService.cs" />
     <Compile Include="Services\Menu\PublishingMenuService.cs" />
+    <Compile Include="Services\Menu\ValidTaskService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyAndromeda.CloudSynchronization\MyAndromeda.CloudSynchronization.csproj">

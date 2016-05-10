@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Data.DailyReporting.Services;
-using Domain = MyAndromeda.Data.Domain;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Stores.Employees
 {
@@ -12,20 +12,22 @@ namespace MyAndromeda.Stores.Employees
         private readonly IStoreEmployeeOverviewService dailyReportingStoreEmployeeOverviewService;
         private readonly IStoreEmployeeDataService myAndromedaStoreEmployeeDataService;
         
-        public EmployeePullService(IStoreEmployeeOverviewService storeEmployeeOverviewService, IStoreEmployeeDataService myAndromedaStoreEmployeeDataService)
+        public EmployeePullService(
+            IStoreEmployeeOverviewService storeEmployeeOverviewService, 
+            IStoreEmployeeDataService myAndromedaStoreEmployeeDataService)
         {
             this.myAndromedaStoreEmployeeDataService = myAndromedaStoreEmployeeDataService;
             this.dailyReportingStoreEmployeeOverviewService = storeEmployeeOverviewService;
         }
 
-        public IEnumerable<Domain.Employee> GetOrUpdateEmployees(int andromedaSiteId)
+        public IEnumerable<EmployeeDomainModel> GetOrUpdateEmployees(int andromedaSiteId)
         {
             //store backup data
-            var readOnlyEmployeeList = this.dailyReportingStoreEmployeeOverviewService
+            Data.DailyReporting.Model.CodeFirst.Employee[] readOnlyEmployeeList = this.dailyReportingStoreEmployeeOverviewService
                                            .List(e => e.Nstoreid == andromedaSiteId && e.StrNiNum != "jj128655d" && e.StrEmployeeName != "Developer" && e.StrEmployeeName != "Internet")
                                            .ToArray();
 
-            var emplyeeFacadeList = readOnlyEmployeeList.Select(e => new StoreEmployee()
+            IEnumerable<StoreEmployee> emplyeeFacadeList = readOnlyEmployeeList.Select(e => new StoreEmployee()
             {
                 AndromedaSiteId = andromedaSiteId,
                 EmployeeId = e.NEmployeecode.GetValueOrDefault().ToString(),
@@ -44,8 +46,7 @@ namespace MyAndromeda.Stores.Employees
             });
 
             var employees = this.myAndromedaStoreEmployeeDataService.AddOrUpdate(andromedaSiteId, emplyeeFacadeList)
-
-                                .Select(e => new Domain.Employee() { EmployeeId = e.EmployeeId, AndromedaSiteId = andromedaSiteId, Firstname = e.Person.FirstName, Surname = e.Person.LastName, FullName = e.Person.FullName, Role = e.JobTitle, Phone = e.PhoneNumber, PayrollNumber = e.PayrollNumber, NationalInsuranceNumber = e.Person.NationallnsuranceNumber, DrivingLicenceNumber = e.Person.DrivingLicenceNumber });
+                .Select(e => new EmployeeDomainModel() { EmployeeId = e.EmployeeId, AndromedaSiteId = andromedaSiteId, Firstname = e.Person.FirstName, Surname = e.Person.LastName, FullName = e.Person.FullName, Role = e.JobTitle, Phone = e.PhoneNumber, PayrollNumber = e.PayrollNumber, NationalInsuranceNumber = e.Person.NationallnsuranceNumber, DrivingLicenceNumber = e.Person.DrivingLicenceNumber });
 
             return employees;
         }

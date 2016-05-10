@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Group
+    public class GroupDomainModel
     {
         public int Id { get; set;}
         public int? PartnerId { get; set; }

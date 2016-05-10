@@ -10,7 +10,8 @@ using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
 using Domain = MyAndromedaDataAccess.Domain;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -41,12 +42,12 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        public IEnumerable<Domain.Chain> GetChainsForUser(int userId)
+        public IEnumerable<ChainDomainModel> GetChainsForUser(int userId)
         {
             bool failedAtMyAndromeda = false;
             //bool failedAtAndroAdmin = false;
 
-            IEnumerable<Domain.Chain> chains = Enumerable.Empty<Domain.Chain>();
+            IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
 
             try
             {
@@ -109,7 +110,7 @@ namespace MyAndromeda.Data.DataAccess.Users
 
         public IEnumerable<AndroWebOrderingWebsite> GetAndroWebOrderingSitesForUser(int userId)
         {
-            IEnumerable<Domain.Chain> chainsResult = this.GetChainsForUser(userId);
+            IEnumerable<ChainDomainModel> chainsResult = this.GetChainsForUser(userId);
             IEnumerable<AndroWebOrderingWebsite> androWebOrderingSites = 
                 Enumerable.Empty<AndroWebOrderingWebsite>();
 
@@ -130,36 +131,36 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <param name="userId">The user id.</param>
         /// <param name="query">The query.</param>
         /// <returns></returns>
-        public IEnumerable<Domain.Chain> GetChainsForUser(int userId, Expression<Func<Chain, bool>> query = null)
+        public IEnumerable<ChainDomainModel> GetChainsForUser(int userId, Expression<Func<Chain, bool>> query = null)
         {
             if (query == null)
             {
                 query = (_) => true;
             }
 
-            IEnumerable<Domain.Chain> chains = Enumerable.Empty<Domain.Chain>();
+            IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
             //using (var androAdminDbContext = new Model.AndroAdmin.AndroAdminDbContext())
             {
                 IEnumerable<int> accessibleChains = Enumerable.Empty<int>();
                 //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
                 {
-                    var userChainsTable = this.myAndromedaDbContext.UserChains;
-                    var userChainsQuery = userChainsTable
+                    DbSet<UserChain> userChainsTable = this.myAndromedaDbContext.UserChains;
+                    IQueryable<int> userChainsQuery = userChainsTable
                                                          .Where(e => e.UserRecordId == userId)
                                                          .Select(e => e.ChainId);
 
-                    var userChainsResult = userChainsQuery.ToArray();
+                    int[] userChainsResult = userChainsQuery.ToArray();
 
                     accessibleChains = userChainsResult;
                 }
 
-                var chainTable = this.androAdminDbContext.Chains;
-                var chainQuery = chainTable
+                DbSet<Chain> chainTable = this.androAdminDbContext.Chains;
+                IQueryable<Chain> chainQuery = chainTable
                                            .Where(query)
                                            .Where(e => accessibleChains.Any(chainId => chainId == e.Id));
 
                 //top node on the chain structure 
-                var chainResult = chainQuery.ToArray();
+                Chain[] chainResult = chainQuery.ToArray();
 
                 if (chainResult.Length == 0)
                 {
@@ -177,7 +178,7 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// </summary>
         /// <param name="chain">The chain.</param>
         /// <param name="userId">The user id.</param>
-        public void AddChainLinkToUser(Domain.Chain chain, int userId)
+        public void AddChainLinkToUser(ChainDomainModel chain, int userId)
         {
             //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
             {
@@ -217,9 +218,9 @@ namespace MyAndromeda.Data.DataAccess.Users
             return myAndromedaUserusers;
         }
 
-        public IEnumerable<Domain.Chain> FindChainsDirectlyBelongingToUser(int userId)
+        public IEnumerable<ChainDomainModel> FindChainsDirectlyBelongingToUser(int userId)
         {
-            IEnumerable<Domain.Chain> chains = Enumerable.Empty<Domain.Chain>();
+            IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
 
             //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
             {
@@ -229,7 +230,7 @@ namespace MyAndromeda.Data.DataAccess.Users
                 //using (var androAdminDbContext = new Model.AndroAdmin.AndroAdminDbContext())
                 {
                     var chainsquery = this.androAdminDbContext.Chains.Where(chain => userChainsquery.Contains(chain.Id));
-                    var chainsResult = chainsquery.ToArray().Select(e => new Domain.Chain()
+                    var chainsResult = chainsquery.ToArray().Select(e => new ChainDomainModel()
                     {
                         Id = e.Id,
                         Name = e.Name,
@@ -260,9 +261,9 @@ namespace MyAndromeda.Data.DataAccess.Users
             }
         }
 
-        private IEnumerable<Domain.Chain> CreateHierarchyStructure(Chain[] results)
+        private IEnumerable<ChainDomainModel> CreateHierarchyStructure(Chain[] results)
         {
-            var chains = new List<Domain.Chain>(results.Length);
+            var chains = new List<ChainDomainModel>(results.Length);
 
             var linkTable = this.androAdminDbContext.ChainChains;
             var linkQuery = linkTable
@@ -279,7 +280,7 @@ namespace MyAndromeda.Data.DataAccess.Users
             //create a dictionary 
             var linkResult = linkQuery.ToDictionary(e => e.Key, e => e.ToArray());
 
-            Action<Domain.Chain> buildTree = null;
+            Action<ChainDomainModel> buildTree = null;
             buildTree = (node) =>
             {
                 if (!linkResult.ContainsKey(node.Id))
@@ -288,18 +289,18 @@ namespace MyAndromeda.Data.DataAccess.Users
                 }
 
                 var lookupByParentId = linkResult[node.Id];
-                var children = new List<Domain.Chain>(lookupByParentId.Length);
+                var children = new List<ChainDomainModel>(lookupByParentId.Length);
 
                 node.Items = children;
 
                 foreach (var lookup in lookupByParentId)
                 {
-                    var chain = new Domain.Chain()
+                    var chain = new ChainDomainModel()
                     {
                         Id = lookup.Id,
                         Name = lookup.Name,
                         Culture = lookup.Culture,
-                        Items = new List<Domain.Chain>()
+                        Items = new List<ChainDomainModel>()
                     };
 
                     children.Add(chain);
@@ -310,12 +311,12 @@ namespace MyAndromeda.Data.DataAccess.Users
 
             foreach (var result in results)
             {
-                var chain = new Domain.Chain()
+                var chain = new ChainDomainModel()
                 {
                     Id = result.Id,
                     Name = result.Name,
                     Culture = result.Culture,
-                    Items = Enumerable.Empty<Domain.Chain>()
+                    Items = Enumerable.Empty<ChainDomainModel>()
                 };
 
                 buildTree(chain);

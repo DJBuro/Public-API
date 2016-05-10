@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MyAndromedaDataAccessEntityFramework
+namespace MyAndromeda.Data
 {
     //public class EntityFrameworkDataAccessFactory : IDataAccessFactory
     //{

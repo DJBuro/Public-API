@@ -5,10 +5,11 @@ using System.Linq;
 using System.Data.Entity;
 using System.Web.Http;
 using MyAndromeda.Data.DailyReporting.Services;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using System.Threading.Tasks;
 using MyAndromeda.Data.DataAccess.Chains;
 using MyAndromeda.Framework.Dates;
+using MyAndromeda.Data.Domain;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Controllers.Api.Data
 {
@@ -214,7 +215,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         [HttpPost]
         public async Task<ChainResult> Data([FromUri]int chainId, DailyReportingQuery queryModel)
         {
-            MyAndromeda.Data.Domain.Chain chain = this.chainDataService.Get(chainId);
+            ChainDomainModel chain = this.chainDataService.Get(chainId);
 
             //var chain = this.chainDataService.Get(chainId);
             StoreParams[] storeData = await this.storeDataService.Table

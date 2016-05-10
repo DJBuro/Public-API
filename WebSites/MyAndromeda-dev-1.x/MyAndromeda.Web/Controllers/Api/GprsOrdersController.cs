@@ -1,5 +1,5 @@
-﻿using MyAndromeda.Data.DataWarehouse.Services.Orders;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+﻿using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;

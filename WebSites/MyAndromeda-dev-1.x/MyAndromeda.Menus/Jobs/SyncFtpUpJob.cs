@@ -7,26 +7,11 @@ using System.Web.Mvc;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Menus.Events;
 using MyAndromeda.Menus.Services.Menu;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 using WebBackgrounder;
 using MyAndromeda.Core.Authorization;
 
 namespace MyAndromeda.Menus.Jobs
 {
-    public class SyncThumbnailUpJob : Job 
-    {
-        public SyncThumbnailUpJob(TimeSpan interval, TimeSpan timeout)
-            : base(name: "FTP Menu Sync job", interval: interval, timeout: timeout)
-        {
-        }
-
-        public override Task Execute()
-        {
-            // TODO: Implement this method
-            throw new NotImplementedException();
-        }
-    }
-
     public class SyncFtpUpJob : Job
     {
         public const string TaskName = "Ftp Menu Sync job";

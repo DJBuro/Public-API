@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Linq;
-using MyAndromeda.Data.DataAccess;
+using MyAndromeda.Data.Domain;
 using MyAndromeda.Data.Model.AndroAdmin;
+using System.Collections.Generic;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess
+namespace MyAndromeda.Data.DataAccess
 {
     public class CountryDataAccess : ICountryDataAccess
     {
-        public string GetAll(out List<MyAndromeda.Data.Domain.Country> models)
+        public string GetAll(out List<CountryDomainModel> models)
         {
-            models = new List<MyAndromeda.Data.Domain.Country>();
+            models = new List<CountryDomainModel>();
 
             using (var entitiesContext = new AndroAdminDbContext())
             {
@@ -19,7 +19,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess
 
                 foreach (Country country in query)
                 {
-                    var model = new MyAndromeda.Data.Domain.Country()
+                    var model = new CountryDomainModel()
                     {
                         Id = country.Id,
                         CountryName = country.CountryName,

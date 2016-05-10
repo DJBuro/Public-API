@@ -13,6 +13,6 @@ namespace MyAndromeda.Web.Models.Emails
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public Chain Chain { get; set; }
+        public ChainDomainModel Chain { get; set; }
     }
 }

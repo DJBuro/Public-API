@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
 namespace MyAndromeda.Menus.Services.Menu
 {

@@ -5,11 +5,11 @@ using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.SendGridService.Models;
 using MyAndromeda.WebApiClient;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Postal;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Marketing
 {

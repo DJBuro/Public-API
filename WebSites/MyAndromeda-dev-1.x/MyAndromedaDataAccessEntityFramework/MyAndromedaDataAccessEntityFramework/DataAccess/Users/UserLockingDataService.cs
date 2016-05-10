@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {

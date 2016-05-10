@@ -5,9 +5,9 @@ using MyAndromeda.Authorization.Management;
 using MyAndromeda.Web.Areas.Authorization.ViewModels;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Core.Services;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Core.Authorization;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromeda.Web.Areas.Authorization.Controllers
 {

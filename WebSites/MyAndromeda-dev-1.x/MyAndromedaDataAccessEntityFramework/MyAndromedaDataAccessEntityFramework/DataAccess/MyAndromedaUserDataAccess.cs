@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess
+namespace MyAndromeda.Data.DataAccess
 {
     //public class MyAndromedaUserDataAccess : IMyAndromedaUserDataAccess
     //{
@@ -96,7 +96,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess
     //            {
     //                // Get the users sites
     //                //List<MyAndromedaDataAccess.Domain.Site> sites = null;
-    //                //MyAndromedaDataAccessEntityFramework.DataAccess.SitesDataAccess sitesDataAccess = new MyAndromedaDataAccessEntityFramework.DataAccess.SitesDataAccess();
+    //                //MyAndromeda.Data.DataAccess.SitesDataAccess sitesDataAccess = new MyAndromeda.Data.DataAccess.SitesDataAccess();
     //                //sitesDataAccess.GetByMyAndromedaUserId(entity.Id, out sites);
     //                // Build an object that we can return to the caller
     //                myAndromedaUser = new MyAndromedaDataAccess.Domain.MyAndromedaUser()

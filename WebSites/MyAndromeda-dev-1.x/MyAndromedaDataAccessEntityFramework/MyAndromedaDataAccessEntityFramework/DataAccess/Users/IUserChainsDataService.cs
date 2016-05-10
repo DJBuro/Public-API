@@ -6,6 +6,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.User;
 using Domain = MyAndromedaDataAccess.Domain;
 using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -16,7 +17,7 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        IEnumerable<Domain.Chain> GetChainsForUser(int userId);
+        IEnumerable<ChainDomainModel> GetChainsForUser(int userId);
 
         /// <summary>
         /// Gets the chains for user.
@@ -24,14 +25,14 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <param name="userId">The user id.</param>
         /// <param name="query">The query.</param>
         /// <returns></returns>
-        IEnumerable<Domain.Chain> GetChainsForUser(int userId, Expression<Func<Chain, bool>> query);
+        IEnumerable<ChainDomainModel> GetChainsForUser(int userId, Expression<Func<Chain, bool>> query);
 
         /// <summary>
         /// Adds the chain to user.
         /// </summary>
         /// <param name="chain">The chain.</param>
         /// <param name="userId">The user id.</param>
-        void AddChainLinkToUser(Domain.Chain chain, int userId);
+        void AddChainLinkToUser(ChainDomainModel chain, int userId);
 
         /// <summary>
         /// Finds the users belonging to chain.
@@ -45,7 +46,7 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        IEnumerable<Domain.Chain> FindChainsDirectlyBelongingToUser(int userId);
+        IEnumerable<ChainDomainModel> FindChainsDirectlyBelongingToUser(int userId);
 
         /// <summary>
         /// Removes the chain link to user.

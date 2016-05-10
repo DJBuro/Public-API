@@ -1,6 +1,6 @@
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.Model.MyAndromeda
+namespace MyAndromeda.Data.Model.MyAndromeda
 {
     public static class MenuDbExtensions
     {

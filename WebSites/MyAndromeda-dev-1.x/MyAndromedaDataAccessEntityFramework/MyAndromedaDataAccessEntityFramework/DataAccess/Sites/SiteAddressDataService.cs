@@ -3,7 +3,7 @@ using Domain = MyAndromeda.Data.Domain;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Data.DataAccess.Sites
 {
@@ -13,9 +13,9 @@ namespace MyAndromeda.Data.DataAccess.Sites
         {
         }
 
-        public Domain.Address GetSiteAddress(int storeId) 
+        public Domain.AddressDomainModel GetSiteAddress(int storeId) 
         {
-            Domain.Address address; 
+            Domain.AddressDomainModel address; 
             using (var dbContext = new AndroAdminDbContext()) 
             {
                 var table = dbContext.Addresses;
@@ -25,9 +25,9 @@ namespace MyAndromeda.Data.DataAccess.Sites
 
                 var result = query.Single();
 
-                address = new Domain.Address()
+                address = new Domain.AddressDomainModel()
                 {
-                    Country = new Domain.Country()
+                    Country = new Domain.CountryDomainModel()
                     {
                         CountryName = result.Country.CountryName,
                         Id = result.Country.Id,
@@ -59,9 +59,9 @@ namespace MyAndromeda.Data.DataAccess.Sites
             return address;
         }
 
-        public Domain.Address GetSiteAddressByExternalSiteId(string externalStoreId)
+        public Domain.AddressDomainModel GetSiteAddressByExternalSiteId(string externalStoreId)
         {
-            Domain.Address address;
+            Domain.AddressDomainModel address;
             using (var dbContext = new AndroAdminDbContext())
             {
                 var table = dbContext.Addresses;
@@ -71,9 +71,9 @@ namespace MyAndromeda.Data.DataAccess.Sites
 
                 var result = query.Single();
 
-                address = new Domain.Address()
+                address = new Domain.AddressDomainModel()
                 {
-                    Country = new Domain.Country()
+                    Country = new Domain.CountryDomainModel()
                     {
                         CountryName = result.Country.CountryName,
                         Id = result.Country.Id,

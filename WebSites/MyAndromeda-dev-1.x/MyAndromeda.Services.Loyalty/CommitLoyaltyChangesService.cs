@@ -7,7 +7,7 @@ using MyAndromeda.Data.AcsServices.Helpers;
 using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus.Services.Data;
-using MyAndromedaDataAccessEntityFramework.DataAccess;
+using MyAndromeda.Data.DataAccess;
 
 namespace MyAndromeda.Services.Loyalty
 {

@@ -7,7 +7,6 @@ using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Framework.Translation;
 using MyAndromeda.Web.Areas.Users.ViewModels;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Authorization;
@@ -18,6 +17,7 @@ using MyAndromeda.Core.Authorization;
 using Kendo.Mvc.UI;
 using MyAndromeda.Core.User;
 using System.Collections.Generic;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Web.Areas.Users.Controllers
 {
@@ -275,7 +275,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             foreach (int chainId in addedChains)
             {
-                Data.Domain.Chain chain = chainDataService.Get(chainId);
+                ChainDomainModel chain = chainDataService.Get(chainId);
                 this.userChainsDataService.AddChainLinkToUser(chain, userId);
             }
         }
@@ -284,7 +284,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
         {
             foreach (int chainId in removedChains)
             {
-                Data.Domain.Chain chain = chainDataService.Get(chainId);
+                ChainDomainModel chain = chainDataService.Get(chainId);
                 this.userChainsDataService.RemoveChainLinkToUser(userId, chain.Id);
             }
         }
@@ -305,7 +305,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             }
 
             UserRecord user = userDataService.Query(e => e.Id == userId).Single();
-            Data.Domain.Chain chain = chainDataService.Get(chainId);
+            ChainDomainModel chain = chainDataService.Get(chainId);
 
             this.userChainsDataService.AddChainLinkToUser(chain, userId);
 
@@ -459,7 +459,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
 
         public JsonResult Connections([DataSourceRequest]DataSourceRequest request, int? userId)
         {
-            IEnumerable<Data.Domain.Chain> userList = userChainsDataService.FindChainsDirectlyBelongingToUser(userId.Value);
+            IEnumerable<ChainDomainModel> userList = userChainsDataService.FindChainsDirectlyBelongingToUser(userId.Value);
             IEnumerable<UserChainViewModel> viewModels = userList.Select(e => new UserChainViewModel {
                 ChainId = e.Id,
                 Name = e.Name,
@@ -471,7 +471,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
 
         public JsonResult StoreConnections([DataSourceRequest]DataSourceRequest request, int? userId)
         {
-            IEnumerable<Data.Domain.Site> userList = userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId.Value);
+            IEnumerable<SiteDomainModel> userList = userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId.Value);
             IEnumerable<UserStoreViewModel> viewModels = userList.Select(e => new UserStoreViewModel
             {
                 StoreId = e.Id,
@@ -483,7 +483,7 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             return Json(viewModels.ToDataSourceResult(request, this.ModelState));
         }
 
-        public async Task<JsonResult> Roles([DataSourceRequest]DataSourceRequest request, int userId)
+        public JsonResult Roles([DataSourceRequest]DataSourceRequest request, int userId)
         {
             IEnumerable<IUserRole> roles = this.userRoleDataService.ListRolesForUser(userId);
 
@@ -513,9 +513,9 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            var parts = id.Split('|');
-            var chainId = Convert.ToInt32(parts[0]);
-            var userId = Convert.ToInt32(parts[1]);
+            string[] parts = id.Split('|');
+            int chainId = Convert.ToInt32(parts[0]);
+            int userId = Convert.ToInt32(parts[1]);
 
             this.userChainsDataService.RemoveChainLinkToUser(userId, chainId);
             this.notifier.Notify(this.translator.T(text: "The user has been removed"));

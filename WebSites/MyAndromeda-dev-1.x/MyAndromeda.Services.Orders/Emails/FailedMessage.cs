@@ -16,7 +16,7 @@ namespace MyAndromeda.Services.Orders.Emails
 
         public string Message { get; set; }
 
-        public MyAndromeda.Data.Domain.Site Site { get; set; }
+        public MyAndromeda.Data.Domain.SiteDomainModel Site { get; set; }
 
         public Store Store { get; set; }
 

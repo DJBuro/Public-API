@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.WebOrdering
+namespace MyAndromeda.Data.DataAccess.WebOrdering
 {
     public class WebOrderingThemeDataService : IWebOrderingThemeDataService
     {

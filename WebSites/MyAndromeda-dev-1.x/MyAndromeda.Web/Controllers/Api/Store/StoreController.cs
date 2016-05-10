@@ -10,10 +10,11 @@ using MyAndromeda.Data.Model;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
 using MyAndromeda.Web.Controllers.Api.Store.Models;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Dates;
+using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Controllers.Api.Store
 {
@@ -29,12 +30,13 @@ namespace MyAndromeda.Web.Controllers.Api.Store
         private readonly IDateServices dateServices;
 
         private readonly IStoreDataService storeDataService;
-        private readonly MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext;
+        private readonly AndroAdminDbContext androAdminDbContext;
         private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.StoreOccasionTime> storeOccasionTimes;
         private readonly DbSet<MyAndromeda.Data.Model.AndroAdmin.Store> stores;
         private readonly ISynchronizationTaskService acsSynchronizationTaskService;
 
-        public StoreController(IDateServices dateServices, INotifier notifier, IStoreDataService storeDataService, MyAndromeda.Data.Model.AndroAdmin.AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
+        public StoreController(IDateServices dateServices, INotifier notifier, IStoreDataService storeDataService, 
+            AndroAdminDbContext androAdminDbContext, ICurrentSite currentStore, ICurrentChain currentChain, IMyAndromedaLogger logger, ISynchronizationTaskService acsSynchronizationTaskService)
         {
             this.dateServices = dateServices;
             this.acsSynchronizationTaskService = acsSynchronizationTaskService;

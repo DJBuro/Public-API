@@ -3,7 +3,7 @@ using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess
+namespace MyAndromeda.Data.DataAccess
 {
     public interface IAcsApplicationDataService : IDependency 
     {

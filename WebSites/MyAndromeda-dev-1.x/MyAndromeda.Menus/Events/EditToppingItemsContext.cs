@@ -9,7 +9,7 @@ namespace MyAndromeda.Menus.Events
     {
         public EditToppingItemsContext(
             MyAndromedaUser editor, 
-            Site site, 
+            SiteDomainModel site, 
             IEnumerable<MyAndromedaTopping> toppings, 
             string section) 
         {
@@ -29,7 +29,7 @@ namespace MyAndromeda.Menus.Events
         /// Gets or sets the site.
         /// </summary>
         /// <value>The site.</value>
-        public Site Site { get; private set; }
+        public SiteDomainModel Site { get; private set; }
 
         /// <summary>
         /// Gets or sets the toppings.

@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using MyAndromeda.Framework.Notification;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Controllers
 {

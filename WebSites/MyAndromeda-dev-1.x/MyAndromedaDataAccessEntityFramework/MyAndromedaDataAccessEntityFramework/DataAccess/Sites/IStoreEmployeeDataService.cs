@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Sites
+namespace MyAndromeda.Data.DataAccess.Sites
 {
     public interface IStoreEmployeeDataService : IDependency
     {

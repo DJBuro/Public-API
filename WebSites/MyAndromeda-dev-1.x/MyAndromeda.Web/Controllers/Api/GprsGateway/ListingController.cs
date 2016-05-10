@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net;
 using System.Text;
 using MyAndromeda.Services.GprsGateway;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Controllers.Api.GprsGateway
 {

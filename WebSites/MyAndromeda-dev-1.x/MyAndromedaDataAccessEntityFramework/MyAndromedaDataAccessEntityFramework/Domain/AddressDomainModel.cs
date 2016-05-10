@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Address
+    public class AddressDomainModel
     {
         public string Long { get; set;}
 
@@ -66,6 +66,6 @@ namespace MyAndromeda.Data.Domain
 
         public int CountryId { get; set; }
 
-        public Country Country { get; set; }
+        public CountryDomainModel Country { get; set; }
     }
 }

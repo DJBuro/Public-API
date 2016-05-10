@@ -9,6 +9,7 @@ using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Web.Controllers.Api.User
 {
@@ -113,7 +114,7 @@ namespace MyAndromeda.Web.Controllers.Api.User
         [Route("user/chains/{chainId}")]
         public async Task<IEnumerable<StoreModel>> ListStores([FromUri]int chainId)
         {
-            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+            ChainDomainModel[] usersChains = this.currentUser.FlattenedChains.ToArray();
 
             if (!usersChains.Any(e => e.Id == chainId))
             {
@@ -152,7 +153,7 @@ namespace MyAndromeda.Web.Controllers.Api.User
         [Route("user/stores/findById/{andromedaSiteId}")]
         public async Task<IEnumerable<StoreModel>> FindStoresByAndromedaSiteId([FromUri] int andromedaSiteId)
         {
-            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+            ChainDomainModel[] usersChains = this.currentUser.FlattenedChains.ToArray();
             int[] chainIds = usersChains.Select(e => e.Id).ToArray();
 
             IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> storesQuery =
@@ -180,7 +181,7 @@ namespace MyAndromeda.Web.Controllers.Api.User
         [Route("user/stores/find/{name}")]
         public async Task<IEnumerable<StoreModel>> FindStores([FromUri]string name)
         {
-            MyAndromeda.Data.Domain.Chain[] usersChains = this.currentUser.FlattenedChains.ToArray();
+            ChainDomainModel[] usersChains = this.currentUser.FlattenedChains.ToArray();
             int[] chainIds = usersChains.Select(e => e.Id).ToArray();
 
             IQueryable<MyAndromeda.Data.Model.AndroAdmin.Store> storesQuery =

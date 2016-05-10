@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Country
+    public class CountryDomainModel
     {
         public virtual int Id { get; set; }
         public virtual string CountryName { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Core.Authorization;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
+namespace MyAndromeda.Data.DataAccess.Users
 {
     public interface IUserRoleDataService : IDependency
     {

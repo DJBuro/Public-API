@@ -5,7 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
+namespace MyAndromeda.Data.DataAccess.DeliveryZone
 {
     public class DeliveryZoneNameDataService : IDeliveryZoneNameDataService
     {

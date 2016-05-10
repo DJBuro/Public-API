@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Menu
+namespace MyAndromeda.Data.DataAccess.Menu
 {
     public class FtpUploadDataService : IFtpUploadDataService 
     {

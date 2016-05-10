@@ -124,6 +124,7 @@
     <Compile Include="Management\IPasswordStrengthService.cs" />
     <Compile Include="Management\IpRangeBlockingService.cs" />
     <Compile Include="Management\IResetPasswordService.cs" />
+    <Compile Include="Management\PasswordResetService.cs" />
     <Compile Include="Management\PermissionManager.cs" />
     <Compile Include="Services\CurrentPermissionService.cs" />
     <Compile Include="Services\EnrolmentService.cs" />

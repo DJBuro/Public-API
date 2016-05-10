@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MyAndromeda.Core.Authorization;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Permissions;
+using MyAndromeda.Data.DataAccess.Permissions;
 
 namespace MyAndromeda.Authorization.Services
 {

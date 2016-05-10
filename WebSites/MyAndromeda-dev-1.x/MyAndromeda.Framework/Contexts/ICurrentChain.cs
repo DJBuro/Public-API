@@ -1,9 +1,5 @@
-using System;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Domain;
-using System.Web.Routing;
-using System.Linq;
-using Domain = MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Framework.Contexts
 {
@@ -25,13 +21,13 @@ namespace MyAndromeda.Framework.Contexts
         /// Gets the chain.
         /// </summary>
         /// <value>The chain.</value>
-        Domain.Chain Chain { get; }
+        ChainDomainModel Chain { get; }
 
         /// <summary>
         /// Gets the sites belonging to chain.
         /// </summary>
         /// <value>The sites belonging to chain.</value>
-        Domain.Site[] SitesBelongingToChain { get; }
+        SiteDomainModel[] SitesBelongingToChain { get; }
 
 
     }

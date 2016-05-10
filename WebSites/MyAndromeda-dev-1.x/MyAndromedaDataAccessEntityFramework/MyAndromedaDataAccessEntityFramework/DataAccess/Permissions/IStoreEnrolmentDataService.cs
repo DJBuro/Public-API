@@ -4,7 +4,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
+namespace MyAndromeda.Data.DataAccess.Permissions
 {
     public interface IStoreEnrolmentDataService : IDependency
     {

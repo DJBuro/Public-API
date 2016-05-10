@@ -4,18 +4,11 @@ using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Logging;
 using MyAndromeda.Framework.Mvc;
 using MyAndromeda.Framework.Notification;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace MyAndromeda.Web.Services
 {
-    public interface ILoginService : IDependency
-    {
-        ActionResult LoggedIn(IRedirectController controller, string userName, string returnUrl);
-    }
-
     public class LoginService : ILoginService 
     {
         private readonly IMyAndromedaLogger logger;
@@ -56,7 +49,7 @@ namespace MyAndromeda.Web.Services
                 return controller.RedirectToAction("Index", "Chains", new { });
 
             //go here second if applicable 
-            Data.Domain.Site[] accessibleSiteList = this.userSitesDataService.GetSitesDirectlyLinkedToTheUser(myAndromedaUser.Id).ToArray();
+            Data.Domain.SiteDomainModel[] accessibleSiteList = this.userSitesDataService.GetSitesDirectlyLinkedToTheUser(myAndromedaUser.Id).ToArray();
 
             if (accessibleSiteList.Length == 0)
             {
@@ -68,7 +61,7 @@ namespace MyAndromeda.Web.Services
                 // Does the user have access to a single site?
                 if (accessibleSiteList.Length == 1)
                 {
-                    Data.Domain.Site site = accessibleSiteList.First();
+                    Data.Domain.SiteDomainModel site = accessibleSiteList.First();
 
                     return controller.RedirectToAction("Index", "Store", new { Area = "Reporting", ChainId = site.ChainId, ExternalSiteId = site.ExternalSiteId });
                     //return controller.RedirectToAction("Index", "Site", new { id = site.CustomerSiteId, chainId = site.ChainId });

@@ -6,9 +6,9 @@ using MyAndromeda.Core.Site;
 using MyAndromeda.Data;
 using MyAndromeda.Data.DataAccess.WebOrdering;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Core.Services;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Framework.Contexts
 {
@@ -147,9 +147,9 @@ namespace MyAndromeda.Framework.Contexts
         }
 
         
-        private MyAndromeda.Data.Domain.Site site;
+        private MyAndromeda.Data.Domain.SiteDomainModel site;
 
-        public MyAndromeda.Data.Domain.Site Site
+        public MyAndromeda.Data.Domain.SiteDomainModel Site
         {
             get
             {
@@ -219,7 +219,7 @@ namespace MyAndromeda.Framework.Contexts
             if (string.IsNullOrWhiteSpace(externalSiteId) && string.IsNullOrWhiteSpace(andromedaSiteIdText))
                 return;
 
-            MyAndromeda.Data.Domain.Site site = null;
+            MyAndromeda.Data.Domain.SiteDomainModel site = null;
             Store store = null;
 
             if(!string.IsNullOrWhiteSpace(externalSiteId))

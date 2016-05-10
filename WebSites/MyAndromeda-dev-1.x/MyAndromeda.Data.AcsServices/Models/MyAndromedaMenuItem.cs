@@ -81,7 +81,7 @@ namespace MyAndromeda.Data.AcsServices.Models
         /// Gets or sets the thumbs.
         /// </summary>
         /// <value>The thumbs.</value>
-        public IList<ThumbnailImage> Thumbs { get; set; }
+        public IList<ThumbnailImageDomainModel> Thumbs { get; set; }
 
         /// <summary>
         /// Gets or sets the prices.

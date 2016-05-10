@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using MyAndromeda.Core;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Menu
+namespace MyAndromeda.Data.DataAccess.Menu
 {
     public interface IMyAndromedaMenuSyncDataService : IDependency 
     {

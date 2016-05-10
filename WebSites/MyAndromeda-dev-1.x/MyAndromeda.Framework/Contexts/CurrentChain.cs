@@ -1,8 +1,8 @@
 using System.Linq;
 using MyAndromeda.Data.DataAccess.Chains;
-using Domain = MyAndromeda.Data.Domain;
 using System.Collections.Generic;
 using System.Web.Http.Routing;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Framework.Contexts
 {
@@ -20,14 +20,14 @@ namespace MyAndromeda.Framework.Contexts
             this.currentUser = currentUser;
         }
 
-        private Domain.Site[] sitesBelongingToChain;
+        private SiteDomainModel[] sitesBelongingToChain;
 
-        public Domain.Site[] SitesBelongingToChain
+        public SiteDomainModel[] SitesBelongingToChain
         {
             get
             {
                 if (!this.Available)
-                    return new Domain.Site[0];
+                    return new SiteDomainModel[0];
 
                 return sitesBelongingToChain ?? (sitesBelongingToChain = chainDataService.GetSiteList(this.Chain.Id).ToArray());
             }
@@ -56,9 +56,9 @@ namespace MyAndromeda.Framework.Contexts
             }
         }
 
-        private Domain.Chain chain;
+        private ChainDomainModel chain;
 
-        public Domain.Chain Chain
+        public ChainDomainModel Chain
         {
             get
             {
@@ -66,7 +66,7 @@ namespace MyAndromeda.Framework.Contexts
             }
         }
 
-        private Domain.Chain LoadChain() 
+        private ChainDomainModel LoadChain() 
         {
             if (!this.currentUser.Available)
                 return null; //not going to bother loading a chain for a context that is not logged in 

@@ -1,10 +1,10 @@
 using LukeSkywalker.IPNetwork;
 using MyAndromeda.Core.User;
+using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 
 namespace MyAndromeda.Authorization.Management
 {

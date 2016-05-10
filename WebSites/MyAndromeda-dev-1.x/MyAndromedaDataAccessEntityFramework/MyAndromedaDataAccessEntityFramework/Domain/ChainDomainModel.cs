@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Chain
+    public class ChainDomainModel
     {
         /// <summary>
         /// Gets or sets the id.
@@ -34,13 +34,13 @@ namespace MyAndromeda.Data.Domain
         /// Gets or sets the children.
         /// </summary>
         /// <value>The children.</value>
-        public IEnumerable<Chain> Items { get; set; }
+        public IEnumerable<ChainDomainModel> Items { get; set; }
 
         /// <summary>
         /// Gets or sets the stores.
         /// </summary>
         /// <value>The stores.</value>
-        public IEnumerable<Site> Stores { get; set; }
+        public IEnumerable<SiteDomainModel> Stores { get; set; }
 
         
     }

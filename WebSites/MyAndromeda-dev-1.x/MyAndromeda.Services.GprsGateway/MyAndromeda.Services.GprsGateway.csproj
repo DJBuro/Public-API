@@ -61,6 +61,7 @@
     <Compile Include="GenerateTicketService.cs" />
     <Compile Include="IGenerateTicketService.cs" />
     <Compile Include="INewOrderService.cs" />
+    <Compile Include="NewOrderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TicketDepth.cs" />
     <Compile Include="TicketExtensions.cs" />

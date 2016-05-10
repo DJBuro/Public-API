@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromeda.DeliveryZone.Services;
 using MyAndromeda.Framework.Contexts;
-using MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone;
+using MyAndromeda.Data.DataAccess.DeliveryZone;
 
 namespace MyAndromeda.DeliveryZone.Services
 {

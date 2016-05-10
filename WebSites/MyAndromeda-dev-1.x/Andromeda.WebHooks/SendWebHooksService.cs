@@ -3,7 +3,6 @@ using MyAndromeda.Logging;
 using MyAndromeda.Services.WebHooks.Events;
 using MyAndromeda.Services.WebHooks.Models;
 using MyAndromeda.Services.WebHooks.Models.Settings;
-using MyAndromedaDataAccessEntityFramework.DataAccess;
 using System;
 using System.Data.Entity;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using MyAndromeda.Data.DataAccess;
 
 namespace MyAndromeda.Services.WebHooks
 {

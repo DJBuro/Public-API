@@ -5,7 +5,7 @@ using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class SiteDetails
+    public class SiteDetailsDomainModel
     {
         public int Id { get; set; }
         public string LicenceKey { get; set; }
@@ -20,7 +20,7 @@ namespace MyAndromeda.Data.Domain
         public int EstDelivTime { get; set; }
         public string TimeZone { get; set; }
         public string Phone { get; set; }
-        public Address Address { get; set; }
+        public AddressDomainModel Address { get; set; }
         //public List<TimeSpanBlock> OpeningHours { get; set; }
         public string PaymentProvider { get; set; }
         public string PaymentClientId { get; set; }

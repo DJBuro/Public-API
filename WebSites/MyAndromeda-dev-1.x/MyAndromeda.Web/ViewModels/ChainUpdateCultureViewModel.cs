@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MyAndromeda.Data.Domain;
+﻿using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Web.ViewModels
 {
     public class ChainUpdateCultureViewModel
     {
         public string ReturnUrl { get; set; }
-        public Chain Chain { get; set; }
+        public ChainDomainModel Chain { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace MyAndromeda.Data.DataAccess
 {
     public interface ISiteDataAccess : IDependency
     {
-        Domain.Site GetById(int siteId);
+        Domain.SiteDomainModel GetById(int siteId);
 
         IEnumerable<int> GetAcsApplicationIds(int siteId);
         IEnumerable<string> GetExternalApplicationIds(int siteId);

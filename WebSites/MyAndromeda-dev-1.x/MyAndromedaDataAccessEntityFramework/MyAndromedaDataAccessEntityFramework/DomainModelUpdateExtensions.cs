@@ -178,9 +178,9 @@ namespace MyAndromeda.Data
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns></returns>
-        public static MyAndromeda.Data.Domain.Site ToDomainModel(this Model.AndroAdmin.Store entity)
+        public static MyAndromeda.Data.Domain.SiteDomainModel ToDomainModel(this Model.AndroAdmin.Store entity)
         {
-            var site = new MyAndromeda.Data.Domain.Site()
+            var site = new MyAndromeda.Data.Domain.SiteDomainModel()
             {
                 Id = entity.Id,
                 EstDelivTime = entity.EstimatedDeliveryTime.GetValueOrDefault(0),

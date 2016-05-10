@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Employee
+    [Obsolete]
+    public class EmployeeDomainModel
     {
         public string Key 
         {

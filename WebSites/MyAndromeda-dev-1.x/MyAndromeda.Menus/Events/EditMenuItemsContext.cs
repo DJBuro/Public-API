@@ -7,7 +7,7 @@ namespace MyAndromeda.Menus.Events
 {
     public class EditMenuItemsContext 
     {
-        public EditMenuItemsContext(MyAndromedaUser editor, Domain.Site site, IEnumerable<MyAndromedaMenuItem> items, string section) 
+        public EditMenuItemsContext(MyAndromedaUser editor, Domain.SiteDomainModel site, IEnumerable<MyAndromedaMenuItem> items, string section) 
         {
             this.Editor = editor;
             this.Site = site;
@@ -31,7 +31,7 @@ namespace MyAndromeda.Menus.Events
         /// Gets or sets the site.
         /// </summary>
         /// <value>The site.</value>
-        public Domain.Site Site { get; private set; }
+        public Domain.SiteDomainModel Site { get; private set; }
 
         /// <summary>
         /// Gets or sets the edited items.

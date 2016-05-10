@@ -9,7 +9,7 @@ using MyAndromeda.Data.Domain;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
+namespace MyAndromeda.Data.DataAccess.Users
 {
     public interface IUserSitesDataService : IDependency 
     {
@@ -18,9 +18,9 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        IEnumerable<Site> GetSitesDirectlyLinkedToTheUser(int userId);
+        IEnumerable<SiteDomainModel> GetSitesDirectlyLinkedToTheUser(int userId);
 
-        IEnumerable<Site> GetSitesDirectlyLinkedToTheUser(int userId, Expression<Func<Store, bool>> query);
+        IEnumerable<SiteDomainModel> GetSitesDirectlyLinkedToTheUser(int userId, Expression<Func<Store, bool>> query);
 
         /// <summary>
         /// Gets the sites for user.
@@ -28,7 +28,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
         /// <param name="userId">The user id.</param>
         /// <param name="chainId">The chain id.</param>
         /// <returns></returns>
-        IEnumerable<Site> GetSitesForUserAndChain(int userId, int chainId);
+        IEnumerable<SiteDomainModel> GetSitesForUserAndChain(int userId, int chainId);
 
         /// <summary>
         /// Gets the sites for user and chain.

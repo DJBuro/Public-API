@@ -1,4 +1,4 @@
-﻿using MyAndromedaDataAccessEntityFramework.DataAccess;
+﻿using MyAndromeda.Data.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;

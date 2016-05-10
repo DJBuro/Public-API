@@ -6,11 +6,11 @@ using MyAndromeda.Framework.Notification;
 using MyAndromeda.Logging;
 using MyAndromeda.Services.WebHooks.Events;
 using MyAndromeda.Services.WebHooks.Models.Settings;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Services.WebHooks.Models;
 using MyAndromeda.Data.DataWarehouse;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
 using MyAndromeda.Services.Bringg.Services.Checks;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Bringg.Handlers
 {
@@ -144,7 +144,6 @@ namespace MyAndromeda.Services.Bringg.Handlers
                 this.checkUpdateDriverIsActiveForBringgService.RemoveOrderFromProcessing(modelType.InternalOrderId.GetValueOrDefault());
             }
 
-            
         }
 
         public Task SendingRequestAsync<TModel>(int andromedaStoreId, WebHookEnrolement enrollment, TModel model) where TModel : IHook

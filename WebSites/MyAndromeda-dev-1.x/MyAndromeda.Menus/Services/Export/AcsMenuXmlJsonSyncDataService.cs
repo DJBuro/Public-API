@@ -6,9 +6,10 @@ using MyAndromeda.Data.AcsServices.Models;
 using MyAndromeda.Data.MenuDatabase.Services;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus.Services.Data;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
+using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Menu;
+using MyAndromeda.Data.Model.AndroAdmin;
 
 namespace MyAndromeda.Menus.Services.Export
 {
@@ -37,14 +38,14 @@ namespace MyAndromeda.Menus.Services.Export
             if (!dbMenuVersionDataService.IsAvailable(andromedaSiteId)) { return; }
 
             //otherwise do all this stuff.
-            var store = this.storeDataService.Get(e => e.AndromedaSiteId == andromedaSiteId);
-            var endpoints = await this.getAcsAddressesService.GetMenuEndpointsAsync(store);
+            Store store = this.storeDataService.Get(e => e.AndromedaSiteId == andromedaSiteId);
+            IEnumerable<string> endpoints = await this.getAcsAddressesService.GetMenuEndpointsAsync(store);
 
-            var currentMenu = await acsMenuServiceService.GetMenuDataFromEndpointsAsync(andromedaSiteId, store.ExternalId, endpoints);
+            MyAndromedaMenu currentMenu = await acsMenuServiceService.GetMenuDataFromEndpointsAsync(andromedaSiteId, store.ExternalId, endpoints);
             dynamic onlineMenu = await acsMenuServiceService.GetRawMenuDataFromEndpointsAsync(andromedaSiteId, endpoints);
 
-            var itemListDictionary = GetItemList(onlineMenu);
-            var toppingListDictionary = GetToppingList(onlineMenu);
+            dynamic itemListDictionary = GetItemList(onlineMenu);
+            dynamic toppingListDictionary = GetToppingList(onlineMenu);
 
             logger.Debug("Updating ACS menu item values for: {0})", andromedaSiteId);
             this.UpdateItems(
@@ -57,14 +58,14 @@ namespace MyAndromeda.Menus.Services.Export
                 toppingDictionary: toppingListDictionary,
                 mergedAndUpdatedMenu: currentMenu);
 
-            var json = JsonConvert.SerializeObject(onlineMenu);
+            dynamic json = JsonConvert.SerializeObject(onlineMenu);
             
             this.menuSyncSerivce.SyncActualMenu(andromedaSiteId, string.Empty, json, 0); 
         }
 
         private IDictionary<int, dynamic> GetItemList(dynamic onlineMenu) 
         {
-            Dictionary<int, dynamic> itemList = new Dictionary<int, dynamic>();
+            var itemList = new Dictionary<int, dynamic>();
 
             foreach (dynamic item in onlineMenu.Items) 
             {
@@ -92,7 +93,7 @@ namespace MyAndromeda.Menus.Services.Export
 
         private IDictionary<int, dynamic> GetToppingList(dynamic onlineMenu) 
         {
-            Dictionary<int, dynamic> itemList = new Dictionary<int, dynamic>();
+            var itemList = new Dictionary<int, dynamic>();
 
             foreach (var item in onlineMenu.Toppings) 
             {
@@ -140,7 +141,7 @@ namespace MyAndromeda.Menus.Services.Export
                     continue;
                 }
                 
-                var item = itemDictionary[menuItem.Id];
+                dynamic item = itemDictionary[menuItem.Id];
                 ////update name and description 
                 
                 //index is stupid for item names

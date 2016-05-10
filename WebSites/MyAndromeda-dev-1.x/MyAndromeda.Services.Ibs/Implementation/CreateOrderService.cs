@@ -8,7 +8,7 @@ using MyAndromeda.Framework.Helpers;
 using MyAndromeda.Services.Ibs.Events;
 using MyAndromeda.Services.Ibs.Models;
 using MyAndromeda.Framework.Contexts;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Ibs.Implementation
 {

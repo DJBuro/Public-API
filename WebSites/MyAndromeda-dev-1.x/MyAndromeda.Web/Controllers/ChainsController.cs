@@ -7,11 +7,11 @@ using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Translation;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Web.ViewModels;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Collections.Generic;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Controllers
 {
@@ -25,7 +25,6 @@ namespace MyAndromeda.Web.Controllers
         private readonly ICurrentUser currentUser;
 
         private readonly IChainDataService chainDataService;
-
         private readonly ISiteDataService siteDataService;
 
         public ChainsController(ICurrentChain currentChain,
@@ -59,7 +58,7 @@ namespace MyAndromeda.Web.Controllers
             }
 
             int[] chainIds = currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
-            Dictionary<int, Data.Domain.Site[]> chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
+            Dictionary<int, Data.Domain.SiteDomainModel[]> chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
 
             foreach (var storeList in chainStoreList) 
             {
@@ -67,7 +66,7 @@ namespace MyAndromeda.Web.Controllers
                 chain.Stores = storeList.Value;
             }
 
-            var model = new MyAndromeda.Web.ViewModels.ChainListViewModel() 
+            var model = new ChainListViewModel() 
             {
                 FlatternedChains = chains,
                 TreeViewChain = currentUser.AccessibleChains

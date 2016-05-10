@@ -12,7 +12,7 @@ namespace MyAndromedaDataAccess.Domain.Menus
         Json
     }
 
-    public class SiteMenu
+    public class SiteMenuDomainModel
     {
         Guid Id { get; set; }
         Guid SiteId { get; set; }

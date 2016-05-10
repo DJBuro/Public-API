@@ -181,6 +181,7 @@
     <Compile Include="Contexts\CurrentChain.cs" />
     <Compile Include="Contexts\CurrentRequest.cs" />
     <Compile Include="Contexts\CurrentSite.cs" />
+    <Compile Include="Contexts\CurrentUser.cs" />
     <Compile Include="Contexts\IApplicationSettings.cs" />
     <Compile Include="Contexts\ICurrentChain.cs" />
     <Compile Include="Contexts\ICurrentRequest.cs" />

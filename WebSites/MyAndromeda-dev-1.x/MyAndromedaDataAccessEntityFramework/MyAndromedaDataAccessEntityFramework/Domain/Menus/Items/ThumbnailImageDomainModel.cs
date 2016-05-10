@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MyAndromedaDataAccess.Domain.Menus.Items
 {
-    public class ThumbnailImage 
+    public class ThumbnailImageDomainModel 
     {
         public Guid Id { get; set; }
         public int Width { get; set; }

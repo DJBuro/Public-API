@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus.Events;
 using System.Net.Http;
 using MyAndromeda.Services.WebHooks.Extensions;
 using MyAndromeda.WebApiClient;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using System.Net;
-using MyAndromeda.Services.WebHooks.Models;
 
 namespace MyAndromeda.Services.WebHooks.Handlers
 {

@@ -42,7 +42,7 @@ namespace MyAndromeda.Framework.Contexts
         /// Gets the site.
         /// </summary>
         /// <value>The site.</value>
-        MyAndromeda.Data.Domain.Site Site { get; }
+        MyAndromeda.Data.Domain.SiteDomainModel Site { get; }
 
         /// <summary>
         /// Gets the store.

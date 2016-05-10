@@ -77,7 +77,7 @@ namespace MyAndromeda.Data.DataAccess.Menu
         /// <param name="menuItem">The menu item.</param>
         /// <param name="thumb">The thumb.</param>
         /// <returns></returns>
-        public MenuItemThumbnail AddThumbnailForMenuItem(MenuItem menuItem, ThumbnailImage thumb)
+        public MenuItemThumbnail AddThumbnailForMenuItem(MenuItem menuItem, ThumbnailImageDomainModel thumb)
         {
             return this.AddThumbnailForMenuItems(new[] { menuItem }, thumb);
         }
@@ -88,7 +88,7 @@ namespace MyAndromeda.Data.DataAccess.Menu
         /// <param name="menuItems">The menu items.</param>
         /// <param name="thumb">The thumb.</param>
         /// <returns></returns>
-        public MenuItemThumbnail AddThumbnailForMenuItems(IEnumerable<MenuItem> menuItems, ThumbnailImage thumb)
+        public MenuItemThumbnail AddThumbnailForMenuItems(IEnumerable<MenuItem> menuItems, ThumbnailImageDomainModel thumb)
         {
             var table = this.dbContext.MenuItemThumbnails;
             var entity = table.Create();

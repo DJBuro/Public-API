@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using MyAndromeda.Data.Domain;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,7 +8,7 @@ namespace MyAndromeda.Web.Models
     {
         public bool Editable { get; set; }
 
-        public SiteDetails SiteDetails { get; set; }
+        public SiteDetailsDomainModel SiteDetails { get; set; }
         //public List<Employee> Employees { get; set; }
         public Dictionary<string, List<TimeSpanBlock>> OpeningTimesByDay { get; set; }
         public string ErrorMessage { get; set; }
@@ -42,6 +39,6 @@ namespace MyAndromeda.Web.Models
        
         public int CountryId { get; set; }
 
-        public List<Country> Countries { get; set; }
+        public List<CountryDomainModel> Countries { get; set; }
     }
 }

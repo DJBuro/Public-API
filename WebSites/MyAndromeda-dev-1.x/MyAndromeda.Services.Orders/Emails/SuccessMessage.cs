@@ -37,7 +37,7 @@ namespace MyAndromeda.Services.Orders.Emails
         /// Gets or sets the site.
         /// </summary>
         /// <value>The site.</value>
-        public MyAndromeda.Data.Domain.Site Site { get; set; }
+        public MyAndromeda.Data.Domain.SiteDomainModel Site { get; set; }
 
         /// <summary>
         /// Gets or sets the order.

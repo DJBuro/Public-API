@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using MyAndromeda.Data.Model;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
+using MyAndromeda.Data.DataAccess.Menu;
 
 namespace MyAndromeda.Data.DataAccess.Menu
 {

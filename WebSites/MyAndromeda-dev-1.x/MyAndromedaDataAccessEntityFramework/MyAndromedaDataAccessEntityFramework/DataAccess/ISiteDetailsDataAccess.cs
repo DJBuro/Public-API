@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using MyAndromeda.Core;
-using Domain = MyAndromeda.Data.Domain;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess
 {
     public interface ISiteDetailsDataAccess : IDependency
     {
-        string GetBySiteId(int siteId, out Domain.SiteDetails siteDetails);
-        string Update(int siteId, Domain.SiteDetails siteDetails);
+        string GetBySiteId(int siteId, out SiteDetailsDomainModel siteDetails);
+        string Update(int siteId, SiteDetailsDomainModel siteDetails);
     }
 }

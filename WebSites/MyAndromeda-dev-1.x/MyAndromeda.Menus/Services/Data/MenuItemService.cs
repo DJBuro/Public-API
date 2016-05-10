@@ -174,7 +174,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// <param name="menu">The menu.</param>
         /// <param name="clientMenuItems">The client menu items.</param>
         /// <param name="thumbs">The thumbs.</param>
-        public void UpdateMenuItemThumbnailsOnly(SiteMenu menu, IEnumerable<MyAndromedaMenuItem> clientMenuItems, IEnumerable<ThumbnailImage> thumbs)
+        public void UpdateMenuItemThumbnailsOnly(SiteMenu menu, IEnumerable<MyAndromedaMenuItem> clientMenuItems, IEnumerable<ThumbnailImageDomainModel> thumbs)
         {
             var affectedDbMenuItems = Enumerable.Empty<MenuItem>();
 
@@ -191,7 +191,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// </summary>
         /// <param name="affectedDbMenuItems">The affected db menu items.</param>
         /// <param name="thumbs">The thumbs.</param>
-        private void UpdateThumbnailPart(IEnumerable<MenuItem> affectedDbMenuItems, IEnumerable<ThumbnailImage> thumbs) 
+        private void UpdateThumbnailPart(IEnumerable<MenuItem> affectedDbMenuItems, IEnumerable<ThumbnailImageDomainModel> thumbs) 
         {
             //clear relations
             this.ClearThumbnailsForItems(affectedDbMenuItems);
@@ -205,7 +205,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// </summary>
         /// <param name="menuItems">The menu items.</param>
         /// <param name="thumbs">The thumbs.</param>
-        private void UpdateMenuItemThumbnails(IEnumerable<MenuItem> menuItems, IEnumerable<ThumbnailImage> thumbs) 
+        private void UpdateMenuItemThumbnails(IEnumerable<MenuItem> menuItems, IEnumerable<ThumbnailImageDomainModel> thumbs) 
         {
             foreach (var thumb in thumbs)
             {
@@ -305,7 +305,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// <param name="attachToMenuItems">The attach to menu items.</param>
         /// <param name="thumbnail">The thumbnail.</param>
         /// <returns></returns>
-        public MenuItemThumbnail AddThumbnailToMenuItems(IEnumerable<MenuItem> attachToMenuItems, ThumbnailImage thumbnail)
+        public MenuItemThumbnail AddThumbnailToMenuItems(IEnumerable<MenuItem> attachToMenuItems, ThumbnailImageDomainModel thumbnail)
         {
             return this.myAndromedaMenuDataService.AddThumbnailForMenuItems(attachToMenuItems, thumbnail);
         }

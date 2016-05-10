@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Domain;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
+namespace MyAndromeda.Data.DataAccess.Users
 {
     public interface IUserAccessDataService : IDependency
     {
@@ -39,14 +39,14 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        IList<Chain> ListChainsUserCanAccess(int userId);
+        IList<ChainDomainModel> ListChainsUserCanAccess(int userId);
 
         /// <summary>
         /// Lists the stores user can access.
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns></returns>
-        IList<Site> ListStoresUserCanAccess(int userId);
+        IList<SiteDomainModel> ListStoresUserCanAccess(int userId);
     }
 }
 

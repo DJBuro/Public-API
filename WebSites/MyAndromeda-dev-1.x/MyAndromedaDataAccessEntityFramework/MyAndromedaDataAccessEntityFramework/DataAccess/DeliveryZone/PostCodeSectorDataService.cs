@@ -4,8 +4,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Data.Model;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
+namespace MyAndromeda.Data.DataAccess.DeliveryZone
 {
     public class PostCodeSectorDataService : IPostCodeSectorDataService
     {
@@ -69,10 +70,11 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
         public bool Delete(int deliveryZoneNameId)
         {
             bool isDeleted = true;
-            var existingDeliveryAreas = this.dataContext.PostCodeSectors.Where(e => e.DeliveryZoneId == deliveryZoneNameId).ToList();
+            List<PostCodeSector> existingDeliveryAreas = this.dataContext.PostCodeSectors.Where(e => e.DeliveryZoneId == deliveryZoneNameId).ToList();
+
             if (existingDeliveryAreas != null)
             {
-                int dataVersion = MyAndromeda.Data.Model.DataVersionHelper.GetNextDataVersion(this.dataContext);
+                int dataVersion = DataVersionHelper.GetNextDataVersion(this.dataContext);
                 foreach (PostCodeSector psector in existingDeliveryAreas)
                 {
                     isDeleted = (isDeleted && Delete(psector));
@@ -93,7 +95,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
 
         public PostCodeSector Get(System.Linq.Expressions.Expression<Func<PostCodeSector, bool>> predicate)
         {
-            var tableQuery = this.TableQuery.Where(predicate);
+            IQueryable<PostCodeSector> tableQuery = this.TableQuery.Where(predicate);
             return tableQuery.SingleOrDefault();
         }
 

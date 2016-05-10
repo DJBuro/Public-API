@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using MyAndromeda.Data.Model;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
+namespace MyAndromeda.Data.DataAccess.DeliveryZone
 {
     public class DeliveryZoneDataService : IDeliveryZoneDataService
     {
@@ -119,7 +119,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
             var existingDeliveryAreas = this.dataContext.DeliveryAreas.Where(e => e.StoreId == storeId).ToList();
             if (existingDeliveryAreas != null)
             {
-                int dataVersion = MyAndromeda.Data.Model.DataVersionHelper.GetNextDataVersion(this.dataContext);
+                int dataVersion = DataVersionHelper.GetNextDataVersion(this.dataContext);
                 this.dataContext.DeliveryAreas.Where(d => d.StoreId == storeId).ToList().ForEach(d => { d.Removed = true; d.DataVersion = dataVersion; });
 
                 this.dataContext.SaveChanges();

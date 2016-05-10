@@ -8,7 +8,6 @@ using MyAndromeda.Logging;
 using MyAndromeda.Menus.Context.Ftp;
 using MyAndromeda.Menus.Events;
 using MyAndromeda.Menus.Ftp;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 using System;
 using System.Collections.Generic;
 using System.IO;

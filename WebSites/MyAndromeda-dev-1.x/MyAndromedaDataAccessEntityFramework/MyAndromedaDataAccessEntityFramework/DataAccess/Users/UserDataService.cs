@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using MyAndromeda.Core.User;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
+namespace MyAndromeda.Data.DataAccess.Users
 {
     public class UserDataService : IUserDataService
     {

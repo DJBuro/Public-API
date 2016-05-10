@@ -114,9 +114,9 @@ namespace MyAndromeda.Data.AcsServices
         /// </summary>
         /// <param name="andromedaSiteId"></param>
         /// <returns></returns>
-        private Dictionary<int, IList<ThumbnailImage>> GetThumbnailList(int andromedaSiteId, string externalSiteId)
+        private Dictionary<int, IList<ThumbnailImageDomainModel>> GetThumbnailList(int andromedaSiteId, string externalSiteId)
         {
-            var thumbnailList = new Dictionary<int, IList<ThumbnailImage>>();
+            var thumbnailList = new Dictionary<int, IList<ThumbnailImageDomainModel>>();
 
             this.menuContext.Setup(andromedaSiteId, externalSiteId);
 
@@ -143,12 +143,12 @@ namespace MyAndromeda.Data.AcsServices
 
             foreach (var id in ids)
             {
-                thumbnailList.Add(id, new List<ThumbnailImage>());
+                thumbnailList.Add(id, new List<ThumbnailImageDomainModel>());
             }
 
             foreach (var thumb in relatedThumbnails)
             {
-                var thumbnailImage = new ThumbnailImage()
+                var thumbnailImage = new ThumbnailImageDomainModel()
                 {
                     Id = thumb.Id,
                     Alt = thumb.Alt,

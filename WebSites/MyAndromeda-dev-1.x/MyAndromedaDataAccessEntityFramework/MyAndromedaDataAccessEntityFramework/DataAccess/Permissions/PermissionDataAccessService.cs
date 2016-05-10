@@ -4,7 +4,7 @@ using System.Linq;
 using MyAndromeda.Core.Authorization;
 using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Permissions;
+using MyAndromeda.Data.DataAccess.Permissions;
 
 namespace MyAndromeda.Data.DataAccess.Permissions
 {

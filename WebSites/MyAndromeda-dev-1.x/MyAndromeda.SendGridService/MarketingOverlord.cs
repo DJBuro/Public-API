@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
 using MyAndromeda.SendGridService.MarketingApi;
@@ -10,11 +9,9 @@ using MyAndromeda.SendGridService.MarketingApi.Models.Recipients;
 using MyAndromeda.SendGridService.Models;
 using System.Data;
 using System.Data.Entity;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
-using Postal;
 using MyAndromeda.SendGridService.MarketingApi.Models.Template;
 using MyAndromeda.SendGridService.MarketingApi.Models;
-using MyAndromeda.Data.DataAccess.WebOrdering;
+
 namespace MyAndromeda.SendGridService
 {
     public class MarketingOverlord : IMarketingOverlord 

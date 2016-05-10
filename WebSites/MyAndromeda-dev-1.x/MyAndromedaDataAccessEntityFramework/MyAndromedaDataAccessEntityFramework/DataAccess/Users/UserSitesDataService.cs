@@ -7,7 +7,7 @@ using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.Domain;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -26,9 +26,9 @@ namespace MyAndromeda.Data.DataAccess.Users
             this.chainsDataAccessService = chainsDataAccessService;
         }
 
-        public IEnumerable<Site> GetSitesDirectlyLinkedToTheUser(int userId, Expression<Func<Store, bool>> query)
+        public IEnumerable<SiteDomainModel> GetSitesDirectlyLinkedToTheUser(int userId, Expression<Func<Store, bool>> query)
         {
-            IEnumerable<Site> sites;
+            IEnumerable<SiteDomainModel> sites;
             int[] accessibleStores;
             {
                 var userStoresTable = this.myAndromedaDbContext.UserStores;
@@ -47,14 +47,14 @@ namespace MyAndromeda.Data.DataAccess.Users
             return sites;
         }
 
-        public IEnumerable<Site> GetSitesDirectlyLinkedToTheUser(int userId)
+        public IEnumerable<SiteDomainModel> GetSitesDirectlyLinkedToTheUser(int userId)
         {
             return this.GetSitesDirectlyLinkedToTheUser(userId, e => true);
         }
 
-        public IEnumerable<Site> GetSitesForUserAndChain(int userId, int chainId)
+        public IEnumerable<SiteDomainModel> GetSitesForUserAndChain(int userId, int chainId)
         {
-            IEnumerable<Site> sites = Enumerable.Empty<Site>();
+            IEnumerable<SiteDomainModel> sites = Enumerable.Empty<SiteDomainModel>();
             var accessibleChains = this.chainsDataAccessService.GetChainsForUser(userId, e => e.Id == chainId);
 
             if (!accessibleChains.Any())

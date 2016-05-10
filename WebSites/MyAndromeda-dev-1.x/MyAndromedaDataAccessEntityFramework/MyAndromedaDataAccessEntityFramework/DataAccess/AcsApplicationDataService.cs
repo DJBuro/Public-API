@@ -1,6 +1,6 @@
 using System.Linq;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccessEntityFramework.DataAccess;
+using MyAndromeda.Data.DataAccess;
 
 namespace MyAndromeda.Data.DataAccess
 {

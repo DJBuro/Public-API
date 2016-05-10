@@ -4,9 +4,11 @@ using System.Linq;
 using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Logging;
 using MyAndromeda.Storage;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
+using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.Model.MyAndromeda;
+using MyAndromeda.Data.Domain;
+using System.Xml;
 
 namespace MyAndromeda.Menus.Services.Export
 {
@@ -52,16 +54,16 @@ namespace MyAndromeda.Menus.Services.Export
             //output object
             object conversion = null;
 
-            var mediaServer = this.menuMediaServerService.GetMediaServerWithDefault(andromediaSiteId);
-            var store = siteDataService
+            SiteMenuMediaServer mediaServer = this.menuMediaServerService.GetMediaServerWithDefault(andromediaSiteId);
+            SiteDomainModel store = siteDataService
                 .List(e => e.AndromedaSiteId == andromediaSiteId)
                 .SingleOrDefault();
             
             
-            var menu = this.menuDataService.GetMenu(andromediaSiteId);
+            SiteMenu menu = this.menuDataService.GetMenu(andromediaSiteId);
             logger.Debug("Translate menu: {0} (last updated: {1} {2})", menu.Id, menu.LastUpdatedUtc.GetValueOrDefault().ToShortDateString(), menu.LastUpdatedUtc.GetValueOrDefault().ToShortTimeString());
 
-            var thumbnails = this.menuItemThumbnailDataService.GetMenuItemThumbnails(menu.AndromediaId);
+            IQueryable<MenuItemThumbnail> thumbnails = this.menuItemThumbnailDataService.GetMenuItemThumbnails(menu.AndromediaId);
             
             var thumbnailList = thumbnails.Select(e => new {
                 ItemIds = e.MenuItems.Select(menuItem => menuItem.ItemId),
@@ -101,14 +103,14 @@ namespace MyAndromeda.Menus.Services.Export
 
             logger.Debug("Create the json from: {0}", menu.Id);
             
-            var json = JsonConvert.SerializeObject(conversion);
+            string json = JsonConvert.SerializeObject(conversion);
 
             logger.Debug("create the xml from: {0}", menu.Id);
             
-            var xml = JsonConvert.DeserializeXmlNode(json, "MenuThumbnails");
-            var xmlValue = xml.OuterXml;
+            XmlDocument xml = JsonConvert.DeserializeXmlNode(json, "MenuThumbnails");
+            string xmlValue = xml.OuterXml;
 
-            logger.Debug("Storing the sync data");
+            logger.Debug(message: "Storing the sync data");
 
             this.menuSyncSerivce.SyncMenuThumbnails(andromediaSiteId, xmlValue, json);
         }

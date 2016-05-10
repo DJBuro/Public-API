@@ -7,13 +7,13 @@ using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Translation;
 using MyAndromeda.Web.Models.Account;
 using MyAndromeda.Web.Services;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Framework.Mvc;
 using MyAndromeda.Authorization.Management;
 using System.Web;
 using System.Monads;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromeda.Web.Controllers
 {

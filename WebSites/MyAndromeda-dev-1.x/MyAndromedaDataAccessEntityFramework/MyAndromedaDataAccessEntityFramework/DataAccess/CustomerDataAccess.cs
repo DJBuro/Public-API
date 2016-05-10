@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess
+namespace MyAndromeda.Data.DataAccess
 {
     //public class CustomerDataAccess : ICustomerDataAccess 
     //{

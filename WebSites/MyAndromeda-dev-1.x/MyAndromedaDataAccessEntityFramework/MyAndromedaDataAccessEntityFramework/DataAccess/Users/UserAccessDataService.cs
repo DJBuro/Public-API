@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.Domain;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
+namespace MyAndromeda.Data.DataAccess.Users
 {
     public class UserAccessDataService : IUserAccessDataService
     {
@@ -22,7 +22,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
             this.userSiteDataService = userSiteDataService;
         }
 
-        public IList<Chain> ListChainsUserCanAccess(int userId)
+        public IList<ChainDomainModel> ListChainsUserCanAccess(int userId)
         {
             return this.userChainsDataServoce.GetChainsForUser(userId).ToList();
             //using (var dbContext = new Model.AndroAdmin.AndroAdminDbContext()) 
@@ -34,7 +34,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
             //}
         }
 
-        public IList<Site> ListStoresUserCanAccess(int userId)
+        public IList<SiteDomainModel> ListStoresUserCanAccess(int userId)
         {
             return this.userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId).ToList();
             //using (var dbContext = new Model.AndroAdmin.AndroAdminDbContext())
@@ -50,7 +50,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
         {
             int chainId;
 
-            var store = this.storeDataService.Get(e => e.Id == storeId);
+            Model.AndroAdmin.Store store = this.storeDataService.Get(e => e.Id == storeId);
 
             chainId = store.ChainId;
             
@@ -58,16 +58,16 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
             return this.IsTheUserAssociatedByChainAndStore(userId, chainId, storeId);
         }
 
-        private IEnumerable<Chain> FlatternChains(IEnumerable<Chain> accessibleChains)
+        private IEnumerable<ChainDomainModel> FlatternChains(IEnumerable<ChainDomainModel> accessibleChains)
         {
-            Func<IEnumerable<Chain>, IEnumerable<Chain>> flatern = null;
+            Func<IEnumerable<ChainDomainModel>, IEnumerable<ChainDomainModel>> flatern = null;
 
             flatern = (nodes) =>
             {
                 return nodes.SelectMany(e => flatern(e.Items)).Union(nodes);
             };
 
-            IEnumerable<Chain> all = accessibleChains.Union(accessibleChains.SelectMany(e => flatern(e.Items)));
+            IEnumerable<ChainDomainModel> all = accessibleChains.Union(accessibleChains.SelectMany(e => flatern(e.Items)));
 
             return all;
         }
@@ -75,9 +75,9 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
         public bool IsTheUserAssociatedWithTheChain(int userId, int chainId)
         {
             //get the entire structure that the user is allowed within 
-            IEnumerable<Chain> chains = this.userChainsDataServoce.GetChainsForUser(userId);
+            IEnumerable<ChainDomainModel> chains = this.userChainsDataServoce.GetChainsForUser(userId);
 
-            IEnumerable<Chain> flatListOfAllChains = this.FlatternChains(chains);
+            IEnumerable<ChainDomainModel> flatListOfAllChains = this.FlatternChains(chains);
 
             bool resultOfAny = flatListOfAllChains.Any(e => e.Id == chainId);
 
@@ -86,7 +86,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Users
 
         public bool IsTheUserAssociatedByChainAndStore(int userId, int chainId, int storeId)
         {
-            IEnumerable<Site> allStoresLinked = this.userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId);
+            IEnumerable<SiteDomainModel> allStoresLinked = this.userSiteDataService.GetSitesDirectlyLinkedToTheUser(userId);
 
             bool hardFactBelongsToStore = allStoresLinked.Any(e => e.Id == storeId);
             bool hardFactBelongsToChain = this.IsTheUserAssociatedWithTheChain(userId, chainId);

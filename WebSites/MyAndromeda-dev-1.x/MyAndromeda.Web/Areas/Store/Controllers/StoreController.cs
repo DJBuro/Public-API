@@ -10,13 +10,12 @@ using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Web.Models;
 using System.Web.Routing;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Logging;
 using MyAndromedaDataAccess.DataAccess;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromeda.Services.Ibs;
+using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Areas.Store.Controllers
 {
@@ -29,7 +28,6 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
         private readonly IUserAccessDataService userAccessDataService;
         private readonly ISiteDataService siteDataService;
         private readonly IStoreDataService storeDataService;
-
         private readonly ISiteDetailsDataAccess siteDetailsDataAccess;
         private readonly ICountryDataAccess countryDataAccess;
         private readonly IAddressDataAccess addressDataAccess;
@@ -223,7 +221,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
             siteModel = null;
 
             // Get the site details
-            SiteDetails siteDetails = null;
+            SiteDetailsDomainModel siteDetails = null;
             this.siteDetailsDataAccess.GetBySiteId(siteId, out siteDetails);
 
             if (siteDetails == null)
@@ -325,7 +323,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
             try
             {
                 
-                SiteDetails siteDetails = null;
+                SiteDetailsDomainModel siteDetails = null;
                 if (actionResult == null)
                 {
                     // Show the users name
@@ -340,7 +338,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
                 }
 
                 // Get a list of countries
-                List<MyAndromeda.Data.Domain.Country> countries = null;
+                List<CountryDomainModel> countries = null;
                 if (actionResult == null)
                 {
                     this.countryDataAccess.GetAll(out countries);
@@ -353,7 +351,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
 
                 if (actionResult == null)
                 {
-                    MyAndromeda.Web.Models.AddressModel addressModel = new MyAndromeda.Web.Models.AddressModel()
+                    AddressModel addressModel = new AddressModel()
                     {
                         Address = siteDetails.Address,
                         ClientSiteName = siteDetails.ClientSiteName,
@@ -423,7 +421,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
 
                 
                 // Get a list of countries
-                List<MyAndromeda.Data.Domain.Country> countries = null;
+                List<CountryDomainModel> countries = null;
                 if (actionResult == null)
                 {
                     this.countryDataAccess.GetAll(out countries);
@@ -434,7 +432,7 @@ namespace MyAndromeda.Web.Areas.Store.Controllers
                     }
                 }
 
-                SiteDetails siteDetails = null;
+                SiteDetailsDomainModel siteDetails = null;
                 this.siteDetailsDataAccess.GetBySiteId(store.Id, out siteDetails);
 
                 if (addressModel == null)

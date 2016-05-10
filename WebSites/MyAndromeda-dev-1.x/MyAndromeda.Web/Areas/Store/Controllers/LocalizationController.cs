@@ -7,8 +7,8 @@ using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Web.Areas.Store.Models;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using System.Globalization;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Areas.Store.Controllers
 {

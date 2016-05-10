@@ -4,7 +4,7 @@ using MyAndromeda.Framework;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Translation;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromeda.Web.Areas.Authorization.Controllers
 {

@@ -2644,6 +2644,7 @@
     <Compile Include="Areas\Users\Controllers\UserListingController.cs" />
     <Compile Include="Areas\Users\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Users\Services\IUserManagementService.cs" />
+    <Compile Include="Areas\Users\Services\UserManagementService.cs" />
     <Compile Include="Areas\Users\ViewModels\CreateEditUserViewModel.cs" />
     <Compile Include="Areas\Users\UserManagementUserPermissions.cs" />
     <Compile Include="Areas\Users\UsersAreaRegistration.cs" />
@@ -2759,6 +2760,7 @@
     <Compile Include="DebugPermissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Customer\CustomerService.cs" />
+    <Compile Include="Services\ILoginService.cs" />
     <Compile Include="Services\IStoreOpeningTimesService.cs" />
     <Compile Include="Services\KeepAliveJob.cs" />
     <Compile Include="Services\LoginService.cs" />

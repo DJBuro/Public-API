@@ -47,7 +47,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// <param name="menu">The menu.</param>
         /// <param name="clientMenuItems">The client menu items.</param>
         /// <param name="thumbs">The thumbs.</param>
-        void UpdateMenuItemThumbnailsOnly(SiteMenu menu, IEnumerable<MyAndromedaMenuItem> clientMenuItems, IEnumerable<ThumbnailImage> thumbs);
+        void UpdateMenuItemThumbnailsOnly(SiteMenu menu, IEnumerable<MyAndromedaMenuItem> clientMenuItems, IEnumerable<ThumbnailImageDomainModel> thumbs);
 
         /// <summary>
         /// Updates the row that the menu has changed.
@@ -67,7 +67,7 @@ namespace MyAndromeda.Menus.Services.Data
         /// <param name="attachToMenuItems">The attach to menu items.</param>
         /// <param name="thumb">The thumb.</param>
         /// <returns></returns>
-        MenuItemThumbnail AddThumbnailToMenuItems(IEnumerable<MenuItem> attachToMenuItems, ThumbnailImage thumb);
+        MenuItemThumbnail AddThumbnailToMenuItems(IEnumerable<MenuItem> attachToMenuItems, ThumbnailImageDomainModel thumb);
     }
 }
 

@@ -4,7 +4,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.Data;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.WebOrdering
+namespace MyAndromeda.Data.DataAccess.WebOrdering
 {
     public interface IWebOrderingThemeDataService : IDataProvider<AndroWebOrderingTheme>, IDependency
     {

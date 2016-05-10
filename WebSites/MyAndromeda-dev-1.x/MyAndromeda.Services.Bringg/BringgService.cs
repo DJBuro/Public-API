@@ -15,11 +15,11 @@ using MyAndromeda.Services.Bringg.Outgoing;
 using MyAndromeda.Services.Gprs;
 using MyAndromeda.Services.WebHooks;
 using MyAndromeda.WebApiClient;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net;
 using MyAndromeda.Framework.Contexts;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Bringg
 {
@@ -428,12 +428,12 @@ namespace MyAndromeda.Services.Bringg
 
         private Andromeda.GPSIntegration.Model.Customer CreateCustomer(MyAndromeda.Data.DataWarehouse.Models.Customer customer)
         {
-            var email = customer.Contacts
+            string email = customer.Contacts
                                 .Where(e => e.ContactTypeId == 0)
                                 .Select(e => e.Value)
                                 .FirstOrDefault();
 
-            var phone = customer.Contacts
+            string phone = customer.Contacts
                                 .Where(e => e.ContactTypeId == 1)
                                 .Select(e => e.Value)
                                 .FirstOrDefault();

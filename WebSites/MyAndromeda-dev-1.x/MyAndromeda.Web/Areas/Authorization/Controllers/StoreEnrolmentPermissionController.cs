@@ -5,11 +5,11 @@ using MyAndromeda.Authorization.Management;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Framework.Translation;
 using MyAndromeda.Web.Areas.Authorization.ViewModels;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Core.Services;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework;
 using System.Collections.Generic;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Web.Areas.Authorization.Controllers
 {
@@ -99,7 +99,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            Data.Domain.Site store = this.siteDataService.List(e => e.Id == storeId).SingleOrDefault();
+            Data.Domain.SiteDomainModel store = this.siteDataService.List(e => e.Id == storeId).SingleOrDefault();
             IEnumerable<Core.Authorization.IPermission> currentPermissions = this.permissionManager.GetEffectivePermissionsForSite(store);
 
             var enrolementModel = new StoreEnrolmentViewModel() 
@@ -124,7 +124,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
                 return new HttpUnauthorizedResult();
             }
 
-            Data.Domain.Site store = this.siteDataService.List(e => e.Id == viewModel.StoreId).SingleOrDefault();
+            Data.Domain.SiteDomainModel store = this.siteDataService.List(e => e.Id == viewModel.StoreId).SingleOrDefault();
 
             viewModel.Site = store;
             viewModel.Options = enrolementService.ListEnrolmentLevels();  

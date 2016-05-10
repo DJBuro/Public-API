@@ -3,7 +3,7 @@ using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
 using System.Data.Entity;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
+namespace MyAndromeda.Data.DataAccess.Permissions
 {
     public class StoreEnrolmentDataService : IStoreEnrolmentDataService
     {

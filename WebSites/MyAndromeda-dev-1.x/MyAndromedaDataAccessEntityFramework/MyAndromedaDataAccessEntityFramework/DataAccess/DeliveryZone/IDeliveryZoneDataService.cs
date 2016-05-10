@@ -5,7 +5,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.Data;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.DeliveryZone
+namespace MyAndromeda.Data.DataAccess.DeliveryZone
 {
     public interface IDeliveryZoneDataService : IDataProvider<DeliveryArea>, IDependency
     {

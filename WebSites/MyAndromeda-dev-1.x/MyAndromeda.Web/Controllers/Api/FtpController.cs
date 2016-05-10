@@ -10,7 +10,6 @@ using MyAndromeda.Data.MenuDatabase.Services;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Notification;
 using MyAndromeda.Menus.Services.Menu;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 using System.Threading.Tasks;
 using MyAndromeda.Data.MenuDatabase.Context;
 using MyAndromeda.Logging;

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MyAndromeda.Core;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Menus.Context.Ftp;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
 namespace MyAndromeda.Menus.Services.Menu
 {

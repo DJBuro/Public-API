@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using MyAndromeda.Data.Model.AndroAdmin;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess.Chains
 {
@@ -16,9 +17,9 @@ namespace MyAndromeda.Data.DataAccess.Chains
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<Domain.Site> GetSiteList(int chainId)
+        public IEnumerable<Domain.SiteDomainModel> GetSiteList(int chainId)
         {
-            IEnumerable<Domain.Site> sites;
+            IEnumerable<Domain.SiteDomainModel> sites;
         
             var table = this.dbContext.Stores.Include(e => e.Address);
 
@@ -30,7 +31,7 @@ namespace MyAndromeda.Data.DataAccess.Chains
             return sites;
         }
 
-        public void Update(Domain.Chain chain)
+        public void Update(ChainDomainModel chain)
         {
             var table = this.dbContext.Chains;
             var query = table.Where(e => chain.Id == e.Id);
@@ -42,14 +43,14 @@ namespace MyAndromeda.Data.DataAccess.Chains
             this.dbContext.SaveChanges();
         }
 
-        public Data.Domain.Chain Get(int chainId)
+        public ChainDomainModel Get(int chainId)
         {
-            Domain.Chain entity = null;
+            ChainDomainModel entity = null;
             var table = this.dbContext.Chains;
             var query = table.Where(e => e.Id == chainId).ToArray();
             var result = query.SingleOrDefault();
 
-            entity = new Domain.Chain()
+            entity = new Domain.ChainDomainModel()
             {
                 Id = result.Id,
                 Name = result.Name,
@@ -60,15 +61,15 @@ namespace MyAndromeda.Data.DataAccess.Chains
             return entity;
         }
 
-        public IEnumerable<Domain.Chain> List(Expression<Func<Chain, bool>> query)
+        public IEnumerable<ChainDomainModel> List(Expression<Func<Chain, bool>> query)
         {
-            IEnumerable<Domain.Chain> chains = Enumerable.Empty<Domain.Chain>();
+            IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
 
             var table = this.dbContext.Chains;
             var tableQuery = table.Where(query);
             var result = tableQuery.ToArray();
 
-            chains = result.Select(e => new Domain.Chain()
+            chains = result.Select(e => new ChainDomainModel()
             {
                 Id = e.Id,
                 Name = e.Name,

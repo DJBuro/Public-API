@@ -44,7 +44,7 @@ namespace MyAndromeda.Data.AcsServices.Models
             IDictionary<int, RawCategory> displayCategories,
             IDictionary<int, RawCategory> categories,
             IDictionary<int, MyAndromedaTopping> toppings,
-            IDictionary<int, IList<ThumbnailImage>> menuItemThumbnails)
+            IDictionary<int, IList<ThumbnailImageDomainModel>> menuItemThumbnails)
         {
             var memuItemIndex = item.Name.HasValue ? item.Name.Value : item.ItemName.GetValueOrDefault();
 
@@ -82,7 +82,7 @@ namespace MyAndromeda.Data.AcsServices.Models
             }
         }
 
-        public static void AddThumbnails(this MyAndromedaMenuItem item, ILookup<int, ThumbnailImage> lookup)
+        public static void AddThumbnails(this MyAndromedaMenuItem item, ILookup<int, ThumbnailImageDomainModel> lookup)
         {
             if (lookup[item.Id] != null)
             {

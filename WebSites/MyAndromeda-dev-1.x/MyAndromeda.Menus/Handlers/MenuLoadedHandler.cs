@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyAndromeda.Data.AcsServices.Events;
 using MyAndromeda.Data.AcsServices.Models;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
+using MyAndromeda.Data.DataAccess.Menu;
 
 namespace MyAndromeda.Menus.Handlers
 {

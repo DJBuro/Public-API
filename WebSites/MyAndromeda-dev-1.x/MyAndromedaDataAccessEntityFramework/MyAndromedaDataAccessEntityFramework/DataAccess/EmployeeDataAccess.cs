@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess
+namespace MyAndromeda.Data.DataAccess
 {
     //public class EmployeeDataAccess : IEmployeeDataAccess
     //{
@@ -14,10 +14,10 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess
     //            var query = from e in entitiesContext.Employees
     //                        where e.SiteId == siteId
     //                        select e;
-    //            List<MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Employee> entity = query.ToList();
+    //            List<MyAndromeda.Data.Model.AndroAdmin.Employee> entity = query.ToList();
     //            if (entity != null)
     //            {
-    //                foreach (MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Employee employeeEntity in entity)
+    //                foreach (MyAndromeda.Data.Model.AndroAdmin.Employee employeeEntity in entity)
     //                {
     //                    MyAndromedaDataAccess.Domain.Employee employee = new MyAndromedaDataAccess.Domain.Employee();
     //                    employee.Id = employeeEntity.Id;
@@ -41,7 +41,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess
     //                        where e.Id == employeeId &&
     //                              s.Id == siteId
     //                        select e;
-    //            MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Employee entity = query.FirstOrDefault();
+    //            MyAndromeda.Data.Model.AndroAdmin.Employee entity = query.FirstOrDefault();
     //            if (entity != null)
     //            {
     //                entitiesContext.Employees.Remove(entity);
@@ -55,7 +55,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess
     //        using (var entitiesContext = new AndroAdminDbContext())
     //        {
     //            // Create an object we can add
-    //            MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Employee entity = new MyAndromedaDataAccessEntityFramework.Model.AndroAdmin.Employee();
+    //            MyAndromeda.Data.Model.AndroAdmin.Employee entity = new MyAndromeda.Data.Model.AndroAdmin.Employee();
     //            entity.Firstname = employee.Firstname;
     //            entity.Surname = employee.Surname;
     //            entity.Role = employee.Role;

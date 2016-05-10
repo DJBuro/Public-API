@@ -4,7 +4,7 @@ using MyAndromeda.Core.Site;
 
 namespace MyAndromeda.Data.Domain
 {
-    public class Site : ISite
+    public class SiteDomainModel : ISite
     {
         public int Id { get; set; }
         public int AndromediaSiteId { get; set; }

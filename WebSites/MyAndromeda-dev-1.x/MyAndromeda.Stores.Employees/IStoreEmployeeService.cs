@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Core;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Stores.Employees
 {
@@ -15,6 +16,6 @@ namespace MyAndromeda.Stores.Employees
         /// </summary>
         /// <param name="andromedaSiteId">The Andromeda site id.</param>
         /// <returns></returns>
-        IEnumerable<MyAndromeda.Data.Domain.Employee> GetOrUpdateEmployees(int andromedaSiteId);
+        IEnumerable<EmployeeDomainModel> GetOrUpdateEmployees(int andromedaSiteId);
     }
 }

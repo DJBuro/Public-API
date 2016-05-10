@@ -1,14 +1,4 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Data.Entity;
-using System.Web.Http;
-using MyAndromeda.Data.DailyReporting.Services;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
-using System.Threading.Tasks;
-using MyAndromeda.Data.DataAccess.Chains;
-using MyAndromeda.Framework.Dates;
 
 namespace MyAndromeda.Web.Controllers.Api.Data
 {

@@ -3,7 +3,6 @@ using System.Linq;
 using AndroAdminDataAccess.Domain.WebOrderingSetup;
 using MyAndromeda.Data.DataAccess.WebOrdering;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccessEntityFramework.DataAccess.WebOrdering;
 
 namespace MyAndromeda.Services.WebOrdering.Services
 {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
+using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Menu
+namespace MyAndromeda.Data.DataAccess.Menu
 {
     public class MyAndromedaSiteMenuDataService : IMyAndromedaSiteMenuDataService 
     {

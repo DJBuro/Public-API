@@ -6,9 +6,8 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.Authorization;
 using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
+namespace MyAndromeda.Data.DataAccess.Permissions
 {
     public interface IPermissionDataAccessService : IDependency
     {
@@ -36,7 +35,7 @@ namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
         /// </summary>
         /// <param name="enrolementLevel">The enrolment level.</param>
         /// <param name="permissions">The permissions.</param>
-        void UpdateEnrolmentPermissions(MyAndromeda.Core.Site.IEnrolmentLevel enrolementLevel, IEnumerable<IPermission> permissions);
+        void UpdateEnrolmentPermissions(IEnrolmentLevel enrolementLevel, IEnumerable<IPermission> permissions);
 
         /// <summary>
         /// Gets all permissions.

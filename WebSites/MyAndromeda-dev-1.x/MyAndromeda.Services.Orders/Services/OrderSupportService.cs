@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Data.DataWarehouse.Services.Orders;
-using MyAndromeda.Services.Orders.Emails;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Services.Orders.Models;
 using MyAndromeda.Data.DataWarehouse.Models;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Orders.Services
 {

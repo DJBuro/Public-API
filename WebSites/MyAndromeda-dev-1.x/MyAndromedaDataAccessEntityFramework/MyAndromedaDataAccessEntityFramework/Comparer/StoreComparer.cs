@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.Comparer
+namespace MyAndromeda.Data.Comparer
 {
     public class StoreComparer : IEqualityComparer<Store>
     {

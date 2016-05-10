@@ -3,13 +3,13 @@ using System.Data.Entity;
 using System.Linq;
 using MyAndromeda.Data.DataAccess;
 using MyAndromeda.Data.Model.AndroAdmin;
-using Domain = MyAndromedaDataAccess.Domain;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess
 {
     public class SiteDetailsDataAccess : ISiteDetailsDataAccess
     {
-        public string GetBySiteId(int siteId, out Data.Domain.SiteDetails siteDetails)
+        public string GetBySiteId(int siteId, out SiteDetailsDomainModel siteDetails)
         {
             siteDetails = null;
 
@@ -23,7 +23,7 @@ namespace MyAndromeda.Data.DataAccess
                 if (entity != null)
                 {
                     // Create a serializable SiteDetails object
-                    siteDetails = new Data.Domain.SiteDetails();
+                    siteDetails = new SiteDetailsDomainModel();
                     siteDetails.Id = entity.Id;
                     siteDetails.CustomerSiteId = entity.CustomerSiteId;
                     siteDetails.ExternalSiteId = entity.ExternalId;
@@ -40,7 +40,7 @@ namespace MyAndromeda.Data.DataAccess
                     {
                         Address addressEntity = entity.Address;
 
-                        siteDetails.Address = new Data.Domain.Address();
+                        siteDetails.Address = new Data.Domain.AddressDomainModel();
                         siteDetails.Address.CountryId = addressEntity.Country.Id;
                         siteDetails.Address.County = addressEntity.County;
                         siteDetails.Address.Dps = addressEntity.DPS;
@@ -60,7 +60,7 @@ namespace MyAndromeda.Data.DataAccess
                         siteDetails.Address.RoadName = addressEntity.RoadName;
                         siteDetails.Address.RoadNum = addressEntity.RoadNum;
                         siteDetails.Address.Town = addressEntity.Town;
-                        siteDetails.Address.Country = new Data.Domain.Country()
+                        siteDetails.Address.Country = new Data.Domain.CountryDomainModel()
                         {
                             CountryName = addressEntity.Country.CountryName,
                             Id = addressEntity.Country.Id,
@@ -74,7 +74,7 @@ namespace MyAndromeda.Data.DataAccess
             return string.Empty;
         }
 
-        public string Update(int siteId, Data.Domain.SiteDetails siteDetails)
+        public string Update(int siteId, Data.Domain.SiteDetailsDomainModel siteDetails)
         {
             using (var entitiesContext = new AndroAdminDbContext())
             {

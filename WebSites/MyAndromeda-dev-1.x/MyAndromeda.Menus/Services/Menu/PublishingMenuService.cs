@@ -5,7 +5,6 @@ using MyAndromeda.CloudSynchronization.Services;
 using MyAndromeda.Data.DataAccess.Menu;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Menus.Services.Export;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
 namespace MyAndromeda.Menus.Services.Menu
 {

@@ -25,7 +25,7 @@ namespace MyAndromeda.Web.Areas.Authorization.Controllers
         public JsonResult ReadChains(int? parentId) 
         {
             var currentUser = workContextWrapper.Current.CurrentUser;
-            IEnumerable<Chain> chains = null;
+            IEnumerable<ChainDomainModel> chains = null;
             
             if(parentId.HasValue) 
             {

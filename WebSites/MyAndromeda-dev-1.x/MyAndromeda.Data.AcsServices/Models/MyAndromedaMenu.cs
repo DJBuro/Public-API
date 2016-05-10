@@ -13,7 +13,7 @@ namespace MyAndromeda.Data.AcsServices.Models
         private readonly Dictionary<int, RawCategory> displayCategories;
         private readonly Dictionary<int, MyAndromedaTopping> toppingsLookup;
 
-        public MyAndromedaMenu(RawMenu rawMenu, IDictionary<int, IList<ThumbnailImage>> menuItemThumbnails)
+        public MyAndromedaMenu(RawMenu rawMenu, IDictionary<int, IList<ThumbnailImageDomainModel>> menuItemThumbnails)
         {
             this.rawMenu = rawMenu;
             this.allCategories = rawMenu

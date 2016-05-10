@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Menu;
+using MyAndromeda.Data.DataAccess.Menu;
 
 namespace MyAndromeda.Data.DataAccess.Menu
 {

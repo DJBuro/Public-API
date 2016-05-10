@@ -7,8 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using MyAndromeda.Services.Loyalty.Points;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Framework.Helpers;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.Marketing
 {

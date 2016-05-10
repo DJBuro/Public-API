@@ -6,7 +6,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.Data;
 using MyAndromeda.Data.Model.AndroAdmin;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Sites
+namespace MyAndromeda.Data.DataAccess.Sites
 {
     public interface IStoreDataService: IDependency, IDataProvider<Store> 
     {

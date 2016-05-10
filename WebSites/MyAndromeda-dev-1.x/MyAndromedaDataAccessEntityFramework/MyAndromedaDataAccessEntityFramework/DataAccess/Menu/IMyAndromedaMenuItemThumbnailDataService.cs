@@ -24,9 +24,9 @@ namespace MyAndromeda.Data.DataAccess.Menu
         /// <param name="menuItem">The menu item.</param>
         /// <param name="thumb">The thumb.</param>
         /// <returns></returns>
-        MenuItemThumbnail AddThumbnailForMenuItem(MenuItem menuItem, ThumbnailImage thumb);
+        MenuItemThumbnail AddThumbnailForMenuItem(MenuItem menuItem, ThumbnailImageDomainModel thumb);
 
-        MenuItemThumbnail AddThumbnailForMenuItems(IEnumerable<MenuItem> menuItems, ThumbnailImage thumb);
+        MenuItemThumbnail AddThumbnailForMenuItems(IEnumerable<MenuItem> menuItems, ThumbnailImageDomainModel thumb);
 
         /// <summary>
         /// Clears the thumbnails for menu item.

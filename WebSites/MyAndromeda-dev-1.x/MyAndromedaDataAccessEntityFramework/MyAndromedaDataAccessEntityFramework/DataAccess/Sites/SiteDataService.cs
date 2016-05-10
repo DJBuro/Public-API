@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using MyAndromeda.Data.Domain;
 using MyAndromeda.Data.Model.AndroAdmin;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Data.DataAccess.Sites
 {
@@ -19,9 +19,9 @@ namespace MyAndromeda.Data.DataAccess.Sites
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<Site> List(Expression<Func<Store, bool>> query)
+        public IEnumerable<SiteDomainModel> List(Expression<Func<Store, bool>> query)
         {
-            IEnumerable<Site> sites;
+            IEnumerable<SiteDomainModel> sites;
 
             //using (var dbContext = new Model.AndroAdmin.AndroAdminDbContext())
             {

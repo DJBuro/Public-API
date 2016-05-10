@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MyAndromeda.Core.Services;
 using MyAndromeda.Core.Site;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Permissions;
 using MyAndromeda.Framework.Authorization;
+using MyAndromeda.Data.DataAccess.Permissions;
 
 namespace MyAndromeda.Authorization.Services
 {

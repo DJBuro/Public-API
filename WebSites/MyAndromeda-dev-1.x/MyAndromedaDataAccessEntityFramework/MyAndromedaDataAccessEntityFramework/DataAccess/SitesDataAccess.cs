@@ -60,9 +60,9 @@ namespace MyAndromeda.Data.DataAccess
             return answer;
         }
 
-        public Domain.Site GetById(int siteId)
+        public Domain.SiteDomainModel GetById(int siteId)
         {
-            Domain.Site site = null;
+            Domain.SiteDomainModel site = null;
             var table = this.dbContext.Stores.Include(e => e.Address);
             var query = table.Where(e => e.Id == siteId);
 

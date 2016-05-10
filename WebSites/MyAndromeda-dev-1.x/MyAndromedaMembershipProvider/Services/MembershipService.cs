@@ -8,9 +8,9 @@ using System.Web.Security;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
 using MyAndromeda.Framework.Translation;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Users;
 using MyAndromeda.Core.User.Events;
 using MyAndromeda.Core.User;
+using MyAndromeda.Data.DataAccess.Users;
 
 namespace MyAndromedaMembershipProvider.Services
 {

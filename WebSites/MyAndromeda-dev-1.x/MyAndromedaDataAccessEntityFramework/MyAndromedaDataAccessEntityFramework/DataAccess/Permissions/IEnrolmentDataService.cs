@@ -5,15 +5,14 @@ using System.Linq.Expressions;
 using MyAndromeda.Core;
 using MyAndromeda.Core.Site;
 using MyAndromeda.Data.Model.MyAndromeda;
-using MyAndromedaDataAccessEntityFramework.Model.MyAndromeda;
 
-namespace MyAndromedaDataAccessEntityFramework.DataAccess.Permissions
+namespace MyAndromeda.Data.DataAccess.Permissions
 {
     public interface IEnrolmentDataService : IDependency 
     {
         IEnumerable<IEnrolmentLevel> List();
 
-        IEnumerable<IEnrolmentLevel> Query(Expression<Func<MyAndromeda.Data.Model.MyAndromeda.EnrolmentLevel, bool>> query);
+        IEnumerable<IEnrolmentLevel> Query(Expression<Func<EnrolmentLevel, bool>> query);
 
         IEnrolmentLevel Create(string name, string description);
 

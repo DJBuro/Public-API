@@ -3,13 +3,14 @@ using System.Linq;
 using MyAndromeda.Data.Model;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromedaDataAccess.DataAccess;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Data.DataAccess
 {
     public class AddressDataAccess : IAddressDataAccess
     {
 
-        public string UpsertBySiteId(int siteId, Data.Domain.Address address)
+        public string UpsertBySiteId(int siteId, AddressDomainModel address)
         {
             using (var dbContext = new AndroAdminDbContext())
             {

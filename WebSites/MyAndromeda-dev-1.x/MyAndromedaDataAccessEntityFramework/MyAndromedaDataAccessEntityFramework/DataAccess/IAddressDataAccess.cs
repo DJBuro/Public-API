@@ -10,6 +10,6 @@ namespace MyAndromedaDataAccess.DataAccess
 {
     public interface IAddressDataAccess : IDependency
     {
-        string UpsertBySiteId(int siteId, Address address);
+        string UpsertBySiteId(int siteId, AddressDomainModel address);
     }
 }

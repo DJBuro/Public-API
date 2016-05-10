@@ -8,8 +8,8 @@ using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Logging;
 using MyAndromeda.Services.Orders.Events;
 using MyAndromeda.WebApiClient;
-using MyAndromedaDataAccessEntityFramework.DataAccess.Sites;
 using MyAndromeda.Services.WebHooks.Extensions;
+using MyAndromeda.Data.DataAccess.Sites;
 
 namespace MyAndromeda.Services.WebHooks.Handlers
 {

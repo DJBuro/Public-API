@@ -1,11 +1,11 @@
 ﻿using Kendo.Mvc.UI;
-using MyAndromedaDataAccessEntityFramework.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Kendo.Mvc.Extensions;
+using MyAndromeda.Data.DataAccess;
 
 namespace MyAndromeda.Web.Areas.Acs.Controllers
 {
