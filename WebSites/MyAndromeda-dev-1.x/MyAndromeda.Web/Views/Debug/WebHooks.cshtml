@@ -1,0 +1,170 @@
+﻿<div id="WebhookTest" class="row">
+    <div class="col-sm-6">
+        <div ng-view></div>
+    </div>
+    
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            MyAndromeda.WebHooks.Tests.Setup("WebhookTest")
+            //MyAndromeda.WebHooks.Tests.
+            //MyAndromeda.Setup("WebHooksTest");
+        });
+    </script>
+    <script id="start.html" type="text/template">
+        <div class="header">
+            <h3>Web Hooks - choose store</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Choose store</label>
+            <select kendo-combo-box
+                    k-placeholder="'Select store'"
+                    k-data-text-field="'ClientSiteName'"
+                    k-data-value-field="'AndromedaSiteId'"
+                    k-filter="'contains'"
+                    k-auto-bind="false"
+                    k-min-length="3"
+                    k-data-source="storeDataSource"
+                    k-ng-model="settings.Store"
+                    style="width: 100%"></select>
+        </div>
+
+        <div ng-if="settings.Store">
+            <a class="k-button" href="#/store-status/{{settings.Store.AndromedaSiteId}}">
+                Store Status
+            </a>
+            <a class="k-button" href="#/order-status/{{settings.Store.AndromedaSiteId}}">
+                Order Status
+            </a>
+            <a class="k-button" href="#/menu-version/{{settings.Store.AndromedaSiteId}}">
+                Menu Version 
+            </a>
+            <a class="k-button" href="#/delivery-time/{{settings.Store.AndromedaSiteId}}">
+                Delivery time
+            </a>
+        </div>
+    </script>
+    <script id="store-status.html" type="text/template">
+        <div class="header">
+            <h3>Web Hooks - Store Status</h3>
+            <a class="k-button" href="#/">Back</a>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="radio" value="true" ng-model="settings.Enabled" />
+                Enabled
+            </label>
+            <label>
+                <input type="radio" value="false" ng-model="settings.Enabled" />
+                Disabled
+            </label>
+        </div>
+        <div class="form-group">
+            <a class="k-button" ng-click="send(settings.Enabled)">Send Request</a>
+        </div>
+    </script>
+
+    <script id="order-status.html" type="text/template">
+        <div class="header">
+            <h3>Web Hooks - Order Status</h3>
+            <a class="k-button" href="#/">Back</a>
+        </div>
+        <div class="form-group">
+            <label>
+                Choose Status
+            </label>
+            <!--
+                Id	Description
+                0	Order Created
+                1	Order has been received by the store
+                2	Order is in oven
+                3	Order is ready for dispatch
+                4	Order is out for delivery
+                5	Order has been completed
+                6	Order has been cancelled
+                8	Future Order
+                9	Order Refused - Store Offline
+            -->
+            <label>
+                Created:
+                <input type="radio" ng-model="settings.Status" value="0" ng-click="settings.StatusDescription = 'Order Created'" />
+            </label>
+            <label>
+                Received:
+                <input type="radio" ng-model="settings.Status" value="1" ng-click="settings.StatusDescription = 'Order has been received by the store'" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Choose Order</label>
+            <select kendo-combo-box
+                    k-placeholder="'Select order'"
+                    k-data-text-field="'RamesesOrderNum'"
+                    k-data-value-field="'RamesesOrderNum'"
+                    k-filter="'contains'"
+                    k-auto-bind="false"
+                    k-min-length="3"
+                    k-data-source="orderDataSource"
+                    k-ng-model="settings.Order"
+                    style="width: 100%"></select>
+        </div>
+        <div class="form-group">
+            <label>Choose ACS Application</label>
+            
+            <select kendo-combo-box
+                    k-placeholder="'Select ACS Application'"
+                    k-data-text-field="'Name'"
+                    k-data-value-field="'ExternalApplicationId'"
+                    k-filter="'contains'"
+                    k-auto-bind="false"
+                    k-min-length="3"
+                    k-data-source="acsDataSource"
+                    k-ng-model="settings.AcsApplication"
+                    style="width: 100%"></select>
+        </div>
+        <div class="form-group">
+            <a class="k-button" ng-click="send(settings.Enabled)">Send Request</a>
+        </div>
+    </script>
+
+    <script id="delivery-time.html" type="text/template">
+        <div class="header">
+            <h3>Web Hooks - Store Status</h3>
+            <a class="k-button" href="#/">Back</a>
+        </div>
+        <div class="form-group">
+            <label>
+                Delivery Time change notification
+            </label>
+            <input class="k-textbox" ng-model="settings.Edt" />
+        </div>
+        <div class="form-group">
+            <a class="k-button" ng-click="send()">Send Request</a>
+        </div>
+    </script>
+
+    <script id="menu-version.html" type="text/template">
+        <div class="header">
+            <h3>Web Hooks - Menu version</h3>
+            <a class="k-button" href="#/">Back</a>
+        </div>
+        <div class="form-group">
+            <label>
+                Menu version change
+            </label>
+            <input class="k-textbox" ng-model="settings.Version" />
+        </div>
+        <div class="form-group">
+            <a class="k-button" ng-click="send()">Send Request</a>
+        </div>
+    </script>
+}

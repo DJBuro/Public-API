@@ -1,0 +1,28 @@
+﻿@{
+    var workContext = Html.GetWorkContext();    
+}
+<div class="header">
+    <h3>@workContext.CurrentUser.User.Username</h3>
+</div>
+
+<div>
+    <ul>
+        @foreach (var role in workContext.CurrentUser.Roles)
+        {
+            <li>
+                <div>
+                    <b>Role: @role.Name</b>
+                    <br />
+                    Permissions:
+                </div>
+                <ul>
+                    @foreach (var permission in role.EffectivePermissions.OrderBy(e => e.Category))
+                    { 
+                        <li>@permission.Name</li>
+                        <li>@permission.Category</li>
+                    }
+                </ul>
+            </li>    
+        }
+    </ul>
+</div>

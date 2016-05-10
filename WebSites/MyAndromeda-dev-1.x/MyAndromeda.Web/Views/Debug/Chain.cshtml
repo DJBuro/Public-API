@@ -1,0 +1,33 @@
+﻿@{
+    var workContext = Html.GetWorkContext();    
+}
+
+@helper RenderChain(MyAndromeda.Data.Domain.Chain chain)
+{
+    <div>
+        <a href="@Url.Action("Index", "Sites", new { ChainId = chain.Id })">
+        @chain.Name | @chain.Id</a>
+    </div>
+    
+    if(chain.Items.Count() > 0){
+        <ul>
+        @foreach(var child in chain.Items){
+            <li>@RenderChain(child)</li>          
+        }
+        </ul>
+    }
+}
+
+@if (workContext.CurrentChain.Available) { 
+    <div class="header">
+        <h3>Chain: @(workContext.CurrentChain.Available? workContext.CurrentChain.Chain.Name : "unavailable")</h3>
+        <h4>Id: @workContext.CurrentChain.Chain.Id</h4>
+    </div>
+    if (workContext.CurrentChain.Chain.Items.Count() > 0) { 
+    <div>
+        <ul>
+            <li>@RenderChain(workContext.CurrentChain.Chain)</li>
+        </ul>
+    </div>
+    }
+}

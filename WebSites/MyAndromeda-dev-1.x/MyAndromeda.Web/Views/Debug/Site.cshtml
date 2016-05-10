@@ -1,0 +1,35 @@
+﻿@{
+    var workContext = Html.GetWorkContext();    
+}
+<div class="header">
+    <h3>@workContext.CurrentSite.Site.ClientSiteName</h3>
+</div>
+
+<div class="content">
+    <ul>
+        <li>Andromeda Site Id: @workContext.CurrentSite.Site.AndromediaSiteId</li>
+        <li>Application Ids:
+            <ul>
+            @foreach (var application in workContext.CurrentSite.Store.ACSApplicationSites.Select(e => new { e.ACSApplication.Id, e.ACSApplication.Name, e.ACSApplication.ExternalApplicationId }))
+            {
+                <li>@application.Id - @application.Name - @application.ExternalApplicationId</li>    
+            }
+            </ul>
+        </li>
+
+
+        <li><b>Telephone: @workContext.CurrentSite.Site.PhoneNumber</b></li>
+    </ul>
+</div>
+
+<div class="header">
+    <h4>Enrolments</h4>
+</div>
+<div class="content">
+    <ul>
+        @foreach (var item in workContext.CurrentSite.EnrolmentLevels)
+        { 
+            <li>@item.Name</li>
+        }
+    </ul>
+</div>
