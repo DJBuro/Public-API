@@ -114,7 +114,7 @@
     <script type="text/html" id="ChainSiteTemplate">
         @(
         Html.Kendo()
-            .Grid<MyAndromeda.Data.Domain.Site>()
+            .Grid<MyAndromeda.Data.Domain.SiteDomainModel>()
             .Name("InternalSiteList_#=Id#")
         .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
         .Sortable()

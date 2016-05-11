@@ -1,4 +1,4 @@
-﻿@model MyAndromeda.Data.Domain.Site[]
+﻿@model MyAndromeda.Data.Domain.SiteDomainModel[]
 @{
     var valid = Model.Where(e=> !string.IsNullOrWhiteSpace(e.Longitude) && !string.IsNullOrWhiteSpace(e.Longitude)).ToArray();
     var coords = new

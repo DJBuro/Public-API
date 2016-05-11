@@ -2,7 +2,7 @@
     var workContext = Html.GetWorkContext();    
 }
 
-@helper RenderChain(MyAndromeda.Data.Domain.Chain chain)
+@helper RenderChain(MyAndromeda.Data.Domain.ChainDomainModel chain)
 {
     <div>
         <a href="@Url.Action("Index", "Sites", new { ChainId = chain.Id })">

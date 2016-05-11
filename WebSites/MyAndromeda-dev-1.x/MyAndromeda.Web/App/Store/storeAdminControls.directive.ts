@@ -60,7 +60,7 @@
                         <div class="panel-body">
                             <div class="btn-group">
                                 <a class="btn btn-default btn-sm" href="/Chain/{{store.ChainId}}/Store/{{store.ExternalSiteId}}">
-                                    "Details
+                                    Details
                                 </a>
 
                                 <a class="btn btn-default btn-sm" href="/Menus/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/MenuNavigation">
@@ -68,7 +68,6 @@
                                 </a>
                             </div>
                         </div>
-                 
                 `
         };
     });
