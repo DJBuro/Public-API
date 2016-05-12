@@ -42,6 +42,24 @@ namespace MyAndromeda.Logging.NlogImplementation
             this.Debug(message);
         }
 
+        public void Debug(string format, object arg0)
+        {
+            string message = string.Format(format, arg0);
+            this.Debug(message);
+        }
+
+        public void Debug(string format, object arg0, object arg1)
+        {
+            string message = string.Format(format, arg0, arg1);
+            this.Debug(message);
+        }
+
+        public void Debug(string format, object arg0, object arg1, object arg2)
+        {
+            string message = string.Format(format, arg0, arg1, arg2);
+            this.Debug(message);
+        }
+
         public void Error(string message)
         {
             foreach (var ev in this.loggingEvents)
@@ -129,6 +147,25 @@ namespace MyAndromeda.Logging.NlogImplementation
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
         }
 
+        public void Info(string format, object arg0)
+        {
+            string info = string.Format(format, arg0);
+            this.Info(info);
+        }
+
+        public void Info(string format, object arg0, object arg1)
+        {
+            string info = string.Format(format, arg0, arg1);
+            this.Info(info);
+        }
+
+        public void Info(string format, object arg0, object arg1, object arg2)
+        {
+            string info = string.Format(format, arg0, arg1, arg2);
+            this.Info(info);
+        }
+
+
         public void Trace(string message)
         {
             foreach (var ev in this.loggingEvents)
@@ -156,6 +193,26 @@ namespace MyAndromeda.Logging.NlogImplementation
             //this.logger.Trace(format, args);
         }
 
+
+        public void Trace(string format, object arg0)
+        {
+            string trace = string.Format(format, arg0);
+            this.Trace(trace);
+        }
+
+        public void Trace(string format, object arg0, object arg1)
+        {
+            string trace = string.Format(format, arg0, arg1);
+            this.Trace(trace);
+        }
+
+        public void Trace(string format, object arg0, object arg1, object arg2)
+        {
+            string trace = string.Format(format, arg0, arg1, arg2);
+            this.Trace(trace);
+        }
+
+
         public void Warn(string message)
         {
             foreach (var ev in this.loggingEvents)
@@ -182,6 +239,24 @@ namespace MyAndromeda.Logging.NlogImplementation
             //this.logger.Trace(format, args);
         }
 
+        public void Warn(string format, object arg0)
+        {
+            string warn = string.Format(format, arg0);
+            this.Warn(warn);
+        }
+
+        public void Warn(string format, object arg0, object arg1)
+        {
+            string warn = string.Format(format, arg0, arg1);
+            this.Warn(warn);
+        }
+
+        public void Warn(string format, object arg0, object arg1, object arg2)
+        {
+            string warn = string.Format(format, arg0, arg1);
+            this.Warn(warn);
+        }
+
         public void Error(string format, params object[] args)
         {
             foreach (var ev in this.loggingEvents)
@@ -197,6 +272,24 @@ namespace MyAndromeda.Logging.NlogImplementation
             //this.logger.Error(format, args);
         }
 
+        public void Error(string format, object arg0)
+        {
+            string error = string.Format(format, arg0);
+            this.Error(error);
+        }
+
+        public void Error(string format, object arg0, object arg1)
+        {
+            string error = string.Format(format, arg0, arg1);
+            this.Error(error);
+        }
+
+        public void Error(string format, object arg0, object arg1, object arg2)
+        {
+            string error = string.Format(format, arg0, arg1, arg2);
+            this.Error(error);
+        }
+
         public void Fatal(string format, params object[] args)
         {
             foreach (var ev in this.loggingEvents)
@@ -210,6 +303,24 @@ namespace MyAndromeda.Logging.NlogImplementation
             logger.Log(typeof(MyAndromedaNLogger), logEvent);
 
             //this.logger.Fatal(format, args);
+        }
+
+        public void Fatal(string format, object arg0)
+        {
+            string fatal = string.Format(format, arg0);
+            this.Fatal(fatal);
+        }
+
+        public void Fatal(string format, object arg0, object arg1)
+        {
+            string fatal = string.Format(format, arg0, arg1);
+            this.Fatal(fatal);
+        }
+
+        public void Fatal(string format, object arg0, object arg1, object arg2)
+        {
+            string fatal = string.Format(format, arg0, arg1, arg2);
+            this.Fatal(fatal);
         }
     }   
 
