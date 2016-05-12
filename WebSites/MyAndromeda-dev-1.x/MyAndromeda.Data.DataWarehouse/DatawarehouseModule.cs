@@ -22,16 +22,16 @@ namespace MyAndromeda.Data.DataWarehouse
                 .InRequestScope();
 
             //create a readonly strategy ... to talk to the secondary database for reporting. 
-            Bind<DataWarehouseDbContext>()
-                .ToMethod((c) => {
-                    var dataContext = new DataWarehouseDbContext();
-                    dataContext.Configuration.AutoDetectChangesEnabled = false;
+            //Bind<DataWarehouseDbContext>()
+            //    .ToMethod((c) => {
+            //        var dataContext = new DataWarehouseDbContext();
+            //        dataContext.Configuration.AutoDetectChangesEnabled = false;
 
-                    return dataContext;
-                })
-                .InRequestScope()
-                //see ReadOnlyDataAttribute
-                .WithMetadata(key: "Readonly", value: true);
+            //        return dataContext;
+            //    })
+            //    .InRequestScope()
+            //    //see ReadOnlyDataAttribute
+            //    .WithMetadata(key: "Readonly", value: true);
         }
     }
 }
