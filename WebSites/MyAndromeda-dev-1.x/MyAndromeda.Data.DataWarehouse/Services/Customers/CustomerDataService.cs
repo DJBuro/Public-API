@@ -11,7 +11,9 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Customers
     {
         private readonly DataWarehouseDbContext dataContext;
 
-        public CustomerDataService([ReadOnlyData]DataWarehouseDbContext dataContext) 
+        public CustomerDataService(
+            //[ReadOnlyData]
+            DataWarehouseDbContext dataContext) 
         {
             this.dataContext = dataContext;
             this.Table = this.dataContext.Set<Customer>();

@@ -16,6 +16,9 @@ namespace MyAndromeda.Services.Orders.Events
     {
         string Name { get; }
 
-        Task<WorkLevel> OrderStatusChangedAsync(int andromedaSiteId, OrderHeader orderHeader, MyAndromeda.Data.DataWarehouse.Models.OrderStatu oldStatus);
+        Task<WorkLevel> OrderStatusChangedAsync(
+            int andromedaSiteId, 
+            OrderHeader orderHeader,
+            OrderStatu oldStatus);
     }
 }
