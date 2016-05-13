@@ -46,7 +46,10 @@ namespace MyAndromeda.Web.Services
             //go here first - if applicable
             var chains = this.userChainsDataService.GetChainsForUser(myAndromedaUser.Id);
             if (chains.Any())
-                return controller.RedirectToAction("Index", "Chains", new { });
+            {
+                var resultRedController = controller.RedirectToAction("Index", "Chains", new { });
+                return resultRedController;
+            }
 
             //go here second if applicable 
             Data.Domain.SiteDomainModel[] accessibleSiteList = this.userSitesDataService.GetSitesDirectlyLinkedToTheUser(myAndromedaUser.Id).ToArray();

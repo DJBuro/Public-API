@@ -5,10 +5,11 @@ using MyAndromeda.Data.Model.MyAndromeda;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.Entity;
+using Microsoft.Owin;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MyAndromeda.Identity
 {
-
     public class MyAndromedaIdentityRoleStore : IQueryableRoleStore<MyAndromedaIdentityRole, int>
     {
         //to-do: fill me up
@@ -17,6 +18,15 @@ namespace MyAndromeda.Identity
         public MyAndromedaIdentityRoleStore(MyAndromedaDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+        
+        public static MyAndromedaIdentityRoleStore Create(
+            IdentityFactoryOptions<MyAndromedaIdentityRoleStore> options,
+            IOwinContext context)
+        {
+            var manager = new MyAndromedaIdentityRoleStore(context.Get<MyAndromedaDbContext>());
+
+            return manager;
         }
 
         public IQueryable<MyAndromedaIdentityRole> Roles

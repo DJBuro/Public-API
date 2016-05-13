@@ -15,6 +15,9 @@ using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.DataAccess.Users;
 using MyAndromedaMembershipProvider;
+using MyAndromeda.Web.Helper;
+using MyAndromeda.Web.Areas.Users.Services;
+using MyAndromeda.Framework.Services;
 
 namespace MyAndromeda.Web.Controllers
 {
@@ -22,22 +25,34 @@ namespace MyAndromeda.Web.Controllers
     {
         private readonly IWorkContext workContext;
         private readonly INotifier notifier;
-        
+
         private readonly IUserDataService userDataService;
         private readonly ILoginService loginServicee;
         private readonly IPasswordResetService passwordResetService;
         private readonly IPasswordStrengthService passwordStrengthService;
+        private readonly ISignInHelper signUpHelper;
+        private readonly IUserManagementService userManagementService;
         //private readonly MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider;
-        
-        public AccountController(IWorkContext workContext, IMyAndromedaLogger logger, INotifier notifier, ILoginService loginServicee, 
-            //MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider, 
-            ITranslator translator, IUserDataService userDataService, IPasswordResetService passwordResetService, IPasswordStrengthService passwordStrengthService)
+
+        public AccountController(IWorkContext workContext,
+            IMyAndromedaLogger logger,
+            INotifier notifier,
+            ILoginService loginServicee,
+            ISignInHelper signUpHelper,
+            IUserManagementService userManagementService,
+            // MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider, 
+            ITranslator translator,
+            IUserDataService userDataService,
+            IPasswordResetService passwordResetService,
+            IPasswordStrengthService passwordStrengthService)
         {
             this.passwordStrengthService = passwordStrengthService;
             this.workContext = workContext;
             this.passwordResetService = passwordResetService;
             this.userDataService = userDataService;
-            //this.membershipProvider = membershipProvider;
+            this.signUpHelper = signUpHelper;
+            this.userManagementService = userManagementService;
+            // this.membershipProvider = membershipProvider;
             this.loginServicee = loginServicee;
             this.notifier = notifier;
             this.Logger = logger;
@@ -72,16 +87,16 @@ namespace MyAndromeda.Web.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult ForgottenPassword() 
+        public ActionResult ForgottenPassword()
         {
             var model = new Models.Account.ForgottonPasswordModel();
             return View(model);
         }
 
         [AllowAnonymous, HttpPost, ActionName("ForgottenPassword"), ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgottenPasswordPost(Models.Account.ForgottonPasswordModel model) 
+        public async Task<ActionResult> ForgottenPasswordPost(Models.Account.ForgottonPasswordModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Email)) 
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
                 this.ModelState.AddModelError(key: "Email", errorMessage: Translator.T(text: "Please enter a valid username"));
                 return View(model);
@@ -89,7 +104,7 @@ namespace MyAndromeda.Web.Controllers
 
             var user = this.userDataService.GetByUserName(model.Email);
 
-            if (user == null) 
+            if (user == null)
             {
                 this.ModelState.AddModelError(key: "Email", errorMessage: Translator.T(text: "Please enter a valid username"));
                 return View(model);
@@ -101,21 +116,21 @@ namespace MyAndromeda.Web.Controllers
             await email.SendAsync();
 
             this.notifier.Notify(Translator.T(text: "A password reset link has been sent to your email address. This link will be valid for 12 more hours"));
-            
+
             return RedirectToAction(actionName: "LogOn");
         }
 
         [AllowAnonymous, HttpGet]
-        public ActionResult ResetPassword(string code) 
+        public ActionResult ResetPassword(string code)
         {
             code = HttpUtility.UrlDecode(code);
 
-            if (User.Identity.IsAuthenticated && workContext.CurrentUser.Available) 
+            if (User.Identity.IsAuthenticated && workContext.CurrentUser.Available)
             {
                 return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
 
-            if (!this.passwordResetService.VerifyCode(code)) 
+            if (!this.passwordResetService.VerifyCode(code))
             {
                 this.notifier.Error(Translator.T(text: "Your email reset link has expired. Please generate another."));
                 return RedirectToAction(actionName: "ForgottenPassword");
@@ -133,7 +148,7 @@ namespace MyAndromeda.Web.Controllers
 
         [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         [ActionName("ResetPassword")]
-        public async Task<ActionResult> ResetPasswordPost(ResetPasswordModel model) 
+        public async Task<ActionResult> ResetPasswordPost(ResetPasswordModel model)
         {
             model.CheckNull(argumentName: "model");
             model.Email.CheckNull(argumentName: "Email");
@@ -141,9 +156,9 @@ namespace MyAndromeda.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(model.Password))
             {
-                return View(model);   
+                return View(model);
             }
-            if (!this.passwordResetService.VerifyCode(model.Code)) 
+            if (!this.passwordResetService.VerifyCode(model.Code))
             {
                 this.notifier.Error(Translator.T(text: "Your email reset link has expired. Generate another from the login page"));
                 return RedirectToAction(actionName: "LogOn");
@@ -151,9 +166,9 @@ namespace MyAndromeda.Web.Controllers
 
             var passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.Password).ToArray();
 
-            if (passwordErrors.Length > 0) 
+            if (passwordErrors.Length > 0)
             {
-                foreach (var error in passwordErrors) 
+                foreach (var error in passwordErrors)
                 {
                     this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
                 }
@@ -162,10 +177,10 @@ namespace MyAndromeda.Web.Controllers
             }
 
             var user = this.userDataService.GetByUserName(model.Email);
-            this.membershipProvider.ChangePassword(model.Email, string.Empty, model.Password);
+            this.userManagementService.ResetPassword(user.Id, model.Password);
 
             this.notifier.Notify(Translator.T(text: "Your password has been changed and you can now login with the new password"));
-            var notificationEmail = new Models.Emails.ResetPasswordNotificationEmail() 
+            var notificationEmail = new Models.Emails.ResetPasswordNotificationEmail()
             {
                 Email = model.Email,
                 FirstName = user.Firstname
@@ -173,7 +188,7 @@ namespace MyAndromeda.Web.Controllers
 
             await notificationEmail.SendAsync();
 
-            return RedirectToAction(actionName: "LogOn"); 
+            return RedirectToAction(actionName: "LogOn");
         }
 
         //
@@ -181,28 +196,28 @@ namespace MyAndromeda.Web.Controllers
         [HttpPost, AllowAnonymous]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
-            ActionResult result; 
+            ActionResult result;
 
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            
+
             Logger.Debug(format: "Validating User {0}", args: new object[] { model.UserName });
-            if (membershipProvider.ValidateUser(model.UserName, model.Password))
+            if (signUpHelper.ValidateUser(model.UserName, model.Password))
             {
                 FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
 
                 result = this.loginServicee.LoggedIn(this as IRedirectController, model.UserName, returnUrl);
-                
-                if (result == null) 
+
+                if (result == null)
                 {
                     return View(model);
                 }
 
                 return result;
             }
-    
+
             ModelState.AddModelError(key: string.Empty, errorMessage: Translator.T(text: "The credentials supplied were incorrect."));
 
             // If we got this far, something failed, redisplay form
@@ -218,13 +233,14 @@ namespace MyAndromeda.Web.Controllers
 
             return this.RedirectToAction(actionName: "Index", controllerName: "Home");
         }
-        
+
         [Authorize]
         public ActionResult ChangePassword()
         {
-            var model = new ChangePasswordModel() { 
+            var model = new ChangePasswordModel()
+            {
                 NewPassword = string.Empty,
-                ConfirmPassword= string.Empty
+                ConfirmPassword = string.Empty
             };
 
             return View(model);
@@ -232,56 +248,56 @@ namespace MyAndromeda.Web.Controllers
 
         //
         // POST: /Account/ChangePassword
-        [Authorize]
-        [HttpPost]
-        [ActionName("ChangePassword")]
-        public ActionResult ChangePasswordPost(ChangePasswordModel model)
-        {
-            string[] passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
+        //[Authorize]
+        //[HttpPost]
+        //[ActionName("ChangePassword")]
+        //public ActionResult ChangePasswordPost(ChangePasswordModel model)
+        //{
+        //    string[] passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
 
-            if (passwordErrors.Length > 0)
-            {
-                foreach (var error in passwordErrors)
-                {
-                    this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
-                }
+        //    if (passwordErrors.Length > 0)
+        //    {
+        //        foreach (var error in passwordErrors)
+        //        {
+        //            this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
+        //        }
 
-                return View(model);
-            }
+        //        return View(model);
+        //    }
 
-            if (!ModelState.IsValid) { return View(model); }
+        //    if (!ModelState.IsValid) { return View(model); }
 
-            // ChangePassword will throw an exception rather
-            // than return false in certain failure scenarios.
-            bool changePasswordSucceeded;
-            try
-            {
-                //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-                //var user = this.membershipProvider.GetUserNameByEmail(User.Identity.Name);
-                changePasswordSucceeded = this.membershipProvider.ChangePassword(User.Identity.Name, string.Empty, model.NewPassword);
-            }
-            catch (Exception)
-            {
-                this.notifier.Error(message: "There was a problem setting your password. Please try again");
-                changePasswordSucceeded = false;
-            }
+        //    // ChangePassword will throw an exception rather
+        //    // than return false in certain failure scenarios.
+        //    bool changePasswordSucceeded;
+        //    try
+        //    {
+        //        //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+        //        //var user = this.membershipProvider.GetUserNameByEmail(User.Identity.Name);
+        //        changePasswordSucceeded = this.membershipProvider.ChangePassword(User.Identity.Name, string.Empty, model.NewPassword);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        this.notifier.Error(message: "There was a problem setting your password. Please try again");
+        //        changePasswordSucceeded = false;
+        //    }
 
-            if (changePasswordSucceeded)
-            {
-                this.notifier.Notify(message: "Your password has been successfully changed.");
-                model.ConfirmPassword = string.Empty;
-                model.NewPassword = string.Empty;
+        //    if (changePasswordSucceeded)
+        //    {
+        //        this.notifier.Notify(message: "Your password has been successfully changed.");
+        //        model.ConfirmPassword = string.Empty;
+        //        model.NewPassword = string.Empty;
 
-                return View(model);
-            }
-            else
-            {
-                ModelState.AddModelError(key: string.Empty, errorMessage: "The current password is incorrect or the new password is invalid.");
-            }
+        //        return View(model);
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError(key: string.Empty, errorMessage: "The current password is incorrect or the new password is invalid.");
+        //    }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-        
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
+
     }
 }

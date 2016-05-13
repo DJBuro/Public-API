@@ -8,6 +8,7 @@ using MyAndromeda.Framework;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Conventions;
+using MyAndromeda.Identity;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus;
 using MyAndromeda.Services.Orders.Events;
@@ -67,6 +68,7 @@ namespace MyAndromeda.Web.AppStart
             kernel.Load<MenuNinjectModule>();
             kernel.Load<DatawarehouseModule>();
             kernel.Load<MyAndromedaDbModule>();
+            kernel.Load<IdentityModule>();
 
             // kernel.Load<MembershipModule>();
             kernel.Load<LoggingModule>();
