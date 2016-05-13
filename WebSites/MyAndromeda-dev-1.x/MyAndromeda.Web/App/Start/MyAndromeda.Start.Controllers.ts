@@ -145,11 +145,9 @@
         };
 
         $scope.authorizeEnrolement = (store : any, enrolement: string[]) => {
-            Logger.Notify("authorize store?");
-
+            //Logger.Notify("authorize store?");
             let enrolements: Array<{ Name: string }> = store.StoreEnrollments;
-            var found = false;
-            var show = enrolements.filter(e => enrolement.filter(k => k === e.Name).length > 0).length > 0;
+            let show = enrolements.filter(e => enrolement.filter(k => k === e.Name).length > 0).length > 0;
 
             return show;
         };

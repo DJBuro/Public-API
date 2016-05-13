@@ -116,7 +116,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("api/{andromedaSiteId}/email-history/order/{orderId}")]
         public async Task<object> ListOrderHistory(Guid orderId) 
         {
-            var data = await this.dataService.Emails
+            MyAndromeda.Data.DataWarehouse.Models.Email data = await this.dataService.Emails
                 .Include(e=> e.EmailCategories)
                 .Include(e=> e.EmailHistories)
                 .Where(e => e.OrderHeaderId == orderId)

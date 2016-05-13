@@ -10,7 +10,8 @@
 
         var context = {
             Store: "",
-            Stores: []
+            Stores: [],
+            NoItems: false
         };
          
         let search = (text: string) => {
@@ -24,6 +25,7 @@
             if (searchString.trim().length === 0) {
                 $timeout(() => {
                     context.Stores = [];
+                    context.NoItems = false; // dont care about empty text field
                 });
 
                 return;
@@ -34,6 +36,7 @@
             storesPromise.then((results) => {
                 $timeout(() => {
                     context.Stores = results.data;
+                    context.NoItems = results.data.length === 0;
                 });
                 Logger.Notify("results");
                 Logger.Notify(results.data);
@@ -49,7 +52,8 @@
         return {
             name: "findStore",
             controller: "FindStoreController",
-            template: `<div class='panel panel-default'>
+            template: `
+                <div class='panel panel-default'>
                     <div class='panel-body'>
                         <div class="form-group has-feedback">
                             <div class="input-group">
@@ -64,7 +68,7 @@
                             </div>
                            
                         </div>
-
+                        <div ng-show="context.NoItems">There are no stores with this name</div>
                         <div ng-repeat="store in context.Stores"> 
                             <div class="row">
                                 <div class="col-sm-3">

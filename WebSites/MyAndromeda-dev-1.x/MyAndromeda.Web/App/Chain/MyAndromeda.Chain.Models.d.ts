@@ -22,6 +22,4 @@
     {
         getById: string;
     }
-
-   
  }

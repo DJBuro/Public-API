@@ -165,8 +165,20 @@
             items.Add()
                 .Text("Emails")
                 .Content(@<text>
+                    
+                    <div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title"></div>
+                            </div>
+                            <div class="panel-body">
 
-                    @Html.Partial("_List_EmailHistory")
+                                @Html.Partial("_List_EmailHistory")
+
+
+                            </div>
+                        </div>
+                    </div>
 
                 </text>);
 

@@ -1,5 +1,4 @@
-﻿/// <reference path="../Menu/MyAndromeda.Menu.Logger.ts" />
-/// <reference path="../../Scripts/typings/angularjs/angular-route.d.ts" />
+﻿/// <reference path="../../Scripts/typings/angularjs/angular-route.d.ts" />
 /// <reference path="../../Scripts/typings/angularjs/angular.d.ts" />
 
 module MyAndromeda.WebOrdering {
