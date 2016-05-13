@@ -2444,8 +2444,7 @@ var MyAndromeda;
             "MyAndromeda.Resize",
             "MyAndromeda.Data.Orders",
             "MyAndromeda.Data.Drivers"
-        ])
-            .controller('OrderDetailsController', [OrderDetailsController]);
+        ]);
         gridApp.run(function ($templateCache) {
             MyAndromeda.Logger.Notify("OrdersApp Started");
             angular.element('script[type="text/template"]').each(function (i, element) {
@@ -2464,15 +2463,30 @@ var MyAndromeda;
             OrderWantedTime: "<grid-order-wanted-time></grid-order-wanted-time>",
             OrderCustomer: "<grid-order-customer></grid-order-customer>"
         };
-        function OrderDetailsController() {
-            var vm = this;
-            var orderId = ''; //TODO: Get actual ID of order
-            var orderService;
-            vm.food = orderService.GetOrderFood(orderId);
-            vm.details = orderService.GetOrderDetails(orderId);
-            vm.payments = orderService.GetOrderPayment(orderId);
-            vm.status = orderService.GetOrderStatus(orderId);
-        }
+        ///need controllers. 
+        //function getFood(orderId: string) {
+        //    console.log(1);
+        //    //let orderService: Data.Services.OrderService;
+        //    //let food = orderService.GetOrderFood(orderId);
+        //}
+        //function getDetails(orderId: string) {
+        //    console.log(2);
+        //    //let orderService: Data.Services.OrderService;
+        //    //let details = orderService.GetOrderDetails(orderId);
+        //    //console.log(details);
+        //}
+        //function getPayments(orderId: string) {
+        //    console.log(3);
+        //    //let orderService: Data.Services.OrderService;
+        //    //let payment = orderService.GetOrderPayment(orderId);
+        //    //console.log(payment);
+        //}
+        //function getStatus(orderId: string) {
+        //    console.log(4);
+        //    //let orderService: Data.Services.OrderService;
+        //    //let status = orderService.GetOrderStatus(orderId);
+        //    //console.log(status);
+        //}
         gridApp.directive("ordersGrid", function () {
             return {
                 name: "ordersGrid",
@@ -2575,7 +2589,34 @@ var MyAndromeda;
             return function () { return r; };
         };
         gridApp.directive("gridOrderId", orderIdColumn());
-        gridApp.directive("gridOrderItemCount", orderColumn("gridOrderItemCount", "order-item-count-column.html"));
+        //todo: need to rename the directive to something better 
+        gridApp.directive("gridOrderItems", function () {
+            //usage <grid-order-item-count orderId="[an order ref]"></grid-order-item-count
+            return {
+                name: "gridOrderItems",
+                scope: { orderId: "=" },
+                templateUrl: "order-items.html",
+                controller: function ($scope, $timeout, orderService) {
+                    MyAndromeda.Logger.Notify("gridOrderItems controller");
+                    MyAndromeda.Logger.Notify("Scope Id:" + $scope.orderId);
+                    var orderId = $scope.orderId;
+                    //not found : 
+                    //http://localhost:50262/Debug/data/debug-orders/69540ecc-dfdc-49bf-bb01-f74efb009990/orders/food
+                    var promise = orderService.GetOrderFood(orderId);
+                    var context = {
+                        foodItems: []
+                    };
+                    promise.then(function (result) {
+                        MyAndromeda.Logger.Notify("food items data:");
+                        MyAndromeda.Logger.Notify(result.data);
+                        $timeout(function () {
+                            context.foodItems = result.data;
+                        });
+                    });
+                    $scope.context = context;
+                }
+            };
+        });
         gridApp.directive("gridOrderPlacedTime", orderColumn("gridOrderPlacedTime", "order-placed-time-column.html"));
         gridApp.directive("gridOrderWantedTime", orderColumn("gridOrderWantedTime", "order-wanted-time-column.html"));
         gridApp.directive("gridOrderCustomer", orderColumn("gridOrderCustomer", "order-customer-column.html"));
@@ -2613,14 +2654,7 @@ var MyAndromeda;
                             panes.push(pane);
                         };
                     }],
-                template: '<div class="tabbable">' +
-                    '<ul class="nav nav-tabs">' +
-                    '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
-                    '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
-                    '</li>' +
-                    '</ul>' +
-                    '<div class="tab-content" ng-transclude></div>' +
-                    '</div>',
+                template: "\n            <div class=\"tabbable\">\n                <ul class=\"nav nav-tabs\">\n                    <li ng-repeat=\"pane in panes\" ng-class=\"{active:pane.selected}\">\n                        <a href=\"\" ng-click=\"select(pane)\">{{pane.title}}</a>\n                    </li>\n                </ul>\n                <div class=\"tab-content\" ng-transclude></div>\n            </div>\n            ",
                 replace: true
             };
         });
@@ -2633,8 +2667,7 @@ var MyAndromeda;
                 link: function (scope, element, attrs, tabsCtrl) {
                     tabsCtrl.addPane(scope);
                 },
-                template: '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
-                    '</div>',
+                template: "<div class=\"tab-pane\" ng-class=\"{active: selected}\" ng-transclude>\n            </div>",
                 replace: true
             };
         });

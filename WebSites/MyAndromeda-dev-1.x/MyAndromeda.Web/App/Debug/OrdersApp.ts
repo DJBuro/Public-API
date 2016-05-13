@@ -41,6 +41,37 @@
         vm.payments = orderService.GetOrderPayment(orderId);
         vm.status = orderService.GetOrderStatus(orderId);
     }
+    ///need controllers. 
+    //function getFood(orderId: string) {
+    //    console.log(1);
+
+    //    //let orderService: Data.Services.OrderService;
+    //    //let food = orderService.GetOrderFood(orderId);
+    //}
+
+    //function getDetails(orderId: string) {
+    //    console.log(2);
+
+    //    //let orderService: Data.Services.OrderService;
+    //    //let details = orderService.GetOrderDetails(orderId);
+    //    //console.log(details);
+    //}
+
+    //function getPayments(orderId: string) {
+    //    console.log(3);
+
+    //    //let orderService: Data.Services.OrderService;
+    //    //let payment = orderService.GetOrderPayment(orderId);
+    //    //console.log(payment);
+    //}
+
+    //function getStatus(orderId: string) {
+    //    console.log(4);
+
+    //    //let orderService: Data.Services.OrderService;
+    //    //let status = orderService.GetOrderStatus(orderId);
+    //    //console.log(status);
+    //}
 
     gridApp.directive("ordersGrid", () => {
         return {
@@ -132,6 +163,8 @@
         };
     });
 
+   
+
     var orderColumn = (name, template) => {
         var a = {
             name: name,
@@ -175,7 +208,38 @@
     };
 
     gridApp.directive("gridOrderId", orderIdColumn());
-    gridApp.directive("gridOrderItemCount", orderColumn("gridOrderItemCount", "order-item-count-column.html"));
+
+    //todo: need to rename the directive to something better 
+    gridApp.directive("gridOrderItems", () => {
+        //usage <grid-order-item-count orderId="[an order ref]"></grid-order-item-count
+        return {
+            name: "gridOrderItems",
+            scope: { orderId: "=" },  
+            templateUrl: "order-items.html",
+            controller: ($scope, $timeout, orderService: MyAndromeda.Data.Services.OrderService) => {
+                Logger.Notify("gridOrderItems controller");
+                Logger.Notify("Scope Id:" + $scope.orderId);
+                let orderId: string = $scope.orderId;
+
+                //not found : 
+                //http://localhost:50262/Debug/data/debug-orders/69540ecc-dfdc-49bf-bb01-f74efb009990/orders/food
+                let promise = orderService.GetOrderFood(orderId);
+                let context = {
+                    foodItems : [] 
+                }; 
+                promise.then(result => {
+                    Logger.Notify("food items data:");
+                    Logger.Notify(result.data);
+                    $timeout(() => {
+                        context.foodItems = result.data;
+                    });
+                });
+
+                $scope.context = context;
+
+            }
+        };
+    });
     gridApp.directive("gridOrderPlacedTime", orderColumn("gridOrderPlacedTime", "order-placed-time-column.html"));
     gridApp.directive("gridOrderWantedTime", orderColumn("gridOrderWantedTime", "order-wanted-time-column.html"));
     gridApp.directive("gridOrderCustomer", orderColumn("gridOrderCustomer", "order-customer-column.html"));
@@ -220,15 +284,16 @@
                     panes.push(pane);
                 }
             }],
-            template:
-            '<div class="tabbable">' +
-            '<ul class="nav nav-tabs">' +
-            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
-            '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
-            '</li>' +
-            '</ul>' +
-            '<div class="tab-content" ng-transclude></div>' +
-            '</div>',
+            template:`
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="pane in panes" ng-class="{active:pane.selected}">
+                        <a href="" ng-click="select(pane)">{{pane.title}}</a>
+                    </li>
+                </ul>
+                <div class="tab-content" ng-transclude></div>
+            </div>
+            `,
             replace: true
         };
     });
@@ -242,8 +307,8 @@
                 tabsCtrl.addPane(scope);
             },
             template:
-            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
-            '</div>',
+            `<div class="tab-pane" ng-class="{active: selected}" ng-transclude>
+            </div>`,
             replace: true
         };
     });

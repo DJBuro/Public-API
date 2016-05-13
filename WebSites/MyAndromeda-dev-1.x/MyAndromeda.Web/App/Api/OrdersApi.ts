@@ -213,7 +213,7 @@ module MyAndromeda.Data.Services
             return dataSource;
         }
 
-        public GetOrderFood(orderId: string): any {
+        public GetOrderFood(orderId: string): ng.IHttpPromise<any[]> {
             let orderFoodUrl: string = kendo.format('data/debug-orders/{0}/orders/food', orderId);
             return this.$http.get(orderFoodUrl);
         }
@@ -228,7 +228,7 @@ module MyAndromeda.Data.Services
             return this.$http.get(orderPaymentUrl);
         }
 
-        public GetOrderStatus(orderId: string): any {
+        public GetOrderStatus(orderId: string): ng.IHttpPromise<any[]> {
             let orderStatusUrl: string = kendo.format('data/debug-orders/{0}/orders/status', orderId);
             return this.$http.get(orderStatusUrl);
         }
