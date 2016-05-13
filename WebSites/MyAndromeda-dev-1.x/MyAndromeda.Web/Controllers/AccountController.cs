@@ -14,6 +14,7 @@ using System.Monads;
 using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.DataAccess.Users;
+using MyAndromedaMembershipProvider;
 
 namespace MyAndromeda.Web.Controllers
 {

@@ -2270,6 +2270,22 @@ var MyAndromeda;
                     });
                     return dataSource;
                 };
+                OrderService.prototype.GetOrderFood = function (orderId) {
+                    var orderFoodUrl = kendo.format('data/debug-orders/{0}/orders/food', orderId);
+                    return this.$http.get(orderFoodUrl);
+                };
+                OrderService.prototype.GetOrderDetails = function (orderId) {
+                    var orderDetailsUrl = kendo.format('data/debug-orders/{0}/orders/details', orderId);
+                    return this.$http.get(orderDetailsUrl);
+                };
+                OrderService.prototype.GetOrderPayment = function (orderId) {
+                    var orderPaymentUrl = kendo.format('data/debug-orders/{0}/orders/payment', orderId);
+                    return this.$http.get(orderPaymentUrl);
+                };
+                OrderService.prototype.GetOrderStatus = function (orderId) {
+                    var orderStatusUrl = kendo.format('data/debug-orders/{0}/orders/status', orderId);
+                    return this.$http.get(orderStatusUrl);
+                };
                 OrderService.prototype.ChangeOrderStatus = function (andromedaSiteId, orderId, change) {
                     var route = kendo.format("/data/{0}/orders/{1}/updateStatus", andromedaSiteId, orderId);
                     return this.$http.post(route, change);
@@ -2447,6 +2463,29 @@ var MyAndromeda;
             OrderWantedTime: "<grid-order-wanted-time></grid-order-wanted-time>",
             OrderCustomer: "<grid-order-customer></grid-order-customer>"
         };
+        function getFood(orderId) {
+            console.log(1);
+            //let orderService: Data.Services.OrderService;
+            //let food = orderService.GetOrderFood(orderId);
+        }
+        function getDetails(orderId) {
+            console.log(2);
+            //let orderService: Data.Services.OrderService;
+            //let details = orderService.GetOrderDetails(orderId);
+            //console.log(details);
+        }
+        function getPayments(orderId) {
+            console.log(3);
+            //let orderService: Data.Services.OrderService;
+            //let payment = orderService.GetOrderPayment(orderId);
+            //console.log(payment);
+        }
+        function getStatus(orderId) {
+            console.log(4);
+            //let orderService: Data.Services.OrderService;
+            //let status = orderService.GetOrderStatus(orderId);
+            //console.log(status);
+        }
         gridApp.directive("ordersGrid", function () {
             return {
                 name: "ordersGrid",
@@ -2566,6 +2605,50 @@ var MyAndromeda;
                 //controller: ($scope) => {
                 //},
                 templateUrl: "order-detail-template.html"
+            };
+        });
+        gridApp.directive('tabs', function () {
+            return {
+                restrict: 'E',
+                transclude: true,
+                scope: {},
+                controller: ["$scope", function ($scope) {
+                        var panes = $scope.panes = [];
+                        $scope.select = function (pane) {
+                            angular.forEach(panes, function (pane) {
+                                pane.selected = false;
+                            });
+                            pane.selected = true;
+                        };
+                        this.addPane = function (pane) {
+                            if (panes.length == 0)
+                                $scope.select(pane);
+                            panes.push(pane);
+                        };
+                    }],
+                template: '<div class="tabbable">' +
+                    '<ul class="nav nav-tabs">' +
+                    '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
+                    '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
+                    '</li>' +
+                    '</ul>' +
+                    '<div class="tab-content" ng-transclude></div>' +
+                    '</div>',
+                replace: true
+            };
+        });
+        gridApp.directive('pane', function () {
+            return {
+                require: '^tabs',
+                restrict: 'E',
+                transclude: true,
+                scope: { title: '@' },
+                link: function (scope, element, attrs, tabsCtrl) {
+                    tabsCtrl.addPane(scope);
+                },
+                template: '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
+                    '</div>',
+                replace: true
             };
         });
         //order-wanted-time-column.html

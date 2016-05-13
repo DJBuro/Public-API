@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using MyAndromeda.Core;
 using MyAndromeda.Core.User;
-using MyAndromedaMembershipProvider.Services;
 using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Framework.Services;
 
 namespace MyAndromeda.Web.Areas.Users.Services
 {

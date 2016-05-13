@@ -5,7 +5,7 @@ using MyAndromeda.Core;
 using MyAndromeda.Core.User;
 using MyAndromeda.Data.Model.MyAndromeda;
 
-namespace MyAndromedaMembershipProvider.Services
+namespace MyAndromeda.Framework.Services
 {
     public interface IMembershipService : IDependency
     {

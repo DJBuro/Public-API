@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using MyAndromeda.Core;
 using MyAndromeda.Core.User;
 using MyAndromeda.Data.Model.MyAndromeda;
+using System.Threading.Tasks;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -35,12 +36,16 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <returns></returns>
         MyAndromedaUser GetByUserName(string userName);
 
+        Task<MyAndromedaUser> GetByUserNameAsync(string userName);
+
         /// <summary>
         /// Get user by Id
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         UserRecord GetByUserId(int userId);
+
+        Task<UserRecord> GetByUserIdAsync(int userId);
 
         /// <summary>
         /// Queries for users.

@@ -31,6 +31,37 @@
         OrderCustomer: "<grid-order-customer></grid-order-customer>"
     };
 
+    function getFood(orderId: string) {
+        console.log(1);
+
+        //let orderService: Data.Services.OrderService;
+        //let food = orderService.GetOrderFood(orderId);
+    }
+
+    function getDetails(orderId: string) {
+        console.log(2);
+
+        //let orderService: Data.Services.OrderService;
+        //let details = orderService.GetOrderDetails(orderId);
+        //console.log(details);
+    }
+
+    function getPayments(orderId: string) {
+        console.log(3);
+
+        //let orderService: Data.Services.OrderService;
+        //let payment = orderService.GetOrderPayment(orderId);
+        //console.log(payment);
+    }
+
+    function getStatus(orderId: string) {
+        console.log(4);
+
+        //let orderService: Data.Services.OrderService;
+        //let status = orderService.GetOrderStatus(orderId);
+        //console.log(status);
+    }
+
     gridApp.directive("ordersGrid", () => {
         return {
             name: "ordersGrid",
@@ -189,6 +220,54 @@
             templateUrl: "order-detail-template.html"
         };
     });
+    gridApp.directive('tabs', function () {
+        return {
+            restrict: 'E',
+            transclude: true,
+            scope: {},
+            controller: ["$scope", function ($scope) {
+                var panes = $scope.panes = [];
+
+                $scope.select = function (pane) {
+                    angular.forEach(panes, function (pane) {
+                        pane.selected = false;
+                    });
+                    pane.selected = true;
+                }
+
+                this.addPane = function (pane) {
+                    if (panes.length == 0) $scope.select(pane);
+                    panes.push(pane);
+                }
+            }],
+            template:
+            '<div class="tabbable">' +
+            '<ul class="nav nav-tabs">' +
+            '<li ng-repeat="pane in panes" ng-class="{active:pane.selected}">' +
+            '<a href="" ng-click="select(pane)">{{pane.title}}</a>' +
+            '</li>' +
+            '</ul>' +
+            '<div class="tab-content" ng-transclude></div>' +
+            '</div>',
+            replace: true
+        };
+    });
+    gridApp.directive('pane', function () {
+        return {
+            require: '^tabs',
+            restrict: 'E',
+            transclude: true,
+            scope: { title: '@' },
+            link: function (scope, element, attrs, tabsCtrl : any) {
+                tabsCtrl.addPane(scope);
+            },
+            template:
+            '<div class="tab-pane" ng-class="{active: selected}" ng-transclude>' +
+            '</div>',
+            replace: true
+        };
+    });
+
     
     //order-wanted-time-column.html
     //order-customer-column.html
@@ -220,5 +299,4 @@
         var element = document.getElementById(id);
         angular.bootstrap(element, ["MyAndromeda.Debug.OrdersApp"]);
     };
-
 }

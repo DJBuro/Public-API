@@ -10,10 +10,12 @@ using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Framework.Conventions;
 using MyAndromeda.Logging;
 using MyAndromeda.Menus;
+using MyAndromeda.Services.Orders.Events;
+using MyAndromeda.Services.WebHooks.Handlers;
 using MyAndromeda.SignalRHubs;
 using Ninject;
 using Ninject.Extensions.Conventions;
-using Ninject.Extensions.MyAndromeda;
+//using Ninject.Extensions.MyAndromeda;
 using Ninject.Web.Common;
 using Ninject.Web.Mvc.Filter;
 using Ninject.Web.Mvc.FilterBindingSyntax;
@@ -66,9 +68,9 @@ namespace MyAndromeda.Web.AppStart
             kernel.Load<DatawarehouseModule>();
             kernel.Load<MyAndromedaDbModule>();
 
-            kernel.Load<MembershipModule>();
+            // kernel.Load<MembershipModule>();
             kernel.Load<LoggingModule>();
-          
+
             //some reason the scanners need to be placed separately 
             kernel.Bind(scanner =>
             {

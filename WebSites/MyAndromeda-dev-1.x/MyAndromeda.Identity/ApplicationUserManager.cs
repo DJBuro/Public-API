@@ -1,24 +1,44 @@
 ﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Web.Mvc;
 using System.Threading.Tasks;
+using MyAndromeda.Core.User;
+using MyAndromeda.Data.DataAccess.Users;
+using System;
+using MyAndromeda.Framework.Services;
 
 namespace MyAndromeda.Identity
 {
-    public class ApplicationUserManager : UserManager<MyAndromedaIdentityUser>
+    public class ApplicationUserManager : UserManager<MyAndromedaIdentityUser, int>
     {
-        public ApplicationUserManager(IUserStore<MyAndromedaIdentityUser> store) : base(store)
+        public ApplicationUserManager(IUserStore<MyAndromedaIdentityUser, int> store) : base(store)
         {
         }
     }
 
-    public class UserStore : IUserStore<MyAndromedaIdentityUser>
+    public class UserStore : IUserStore<MyAndromedaIdentityUser, int>
     {
-        public Task CreateAsync(MyAndromedaIdentityUser user)
+        private readonly IUserDataService userDataService;
+        private readonly IMembershipService membershipService;
+
+        public UserStore()
         {
-            throw new NotImplementedException();
+            this.userDataService = DependencyResolver.Current.GetService<IUserDataService>();
+            this.membershipService = DependencyResolver.Current.GetService<IMembershipService>();
+        }
+
+        //public UserStore(IUserDataService userDataService, IMembershipService membershipService)
+        //{
+        //    this.membershipService = membershipService;
+        //    this.userDataService = userDataService;
+        //}
+
+        public async Task CreateAsync(MyAndromedaIdentityUser user)
+        {
+            var andromedaUser = new MyAndromedaUser();
+            andromedaUser.Username = user.UserName;
+            andromedaUser.Id = user.Id;
+            
+            membershipService.CreateUser(andromedaUser, user.Password);
         }
 
         public Task DeleteAsync(MyAndromedaIdentityUser user)
@@ -28,22 +48,32 @@ namespace MyAndromeda.Identity
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+
         }
 
-        public Task<MyAndromedaIdentityUser> FindByIdAsync(string userId)
+        public async Task<MyAndromedaIdentityUser> FindByIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            var user = await userDataService.GetByUserIdAsync(userId);
+            var andromedaIdentityUser = new MyAndromedaIdentityUser(userId, user.Username);
+             
+            andromedaIdentityUser.Password = user.Password;
+
+            return andromedaIdentityUser;
         }
 
-        public Task<MyAndromedaIdentityUser> FindByNameAsync(string userName)
+        public async Task<MyAndromedaIdentityUser> FindByNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            var user = await userDataService.GetByUserNameAsync(userName);
+            var andromedaIdentityUser = new MyAndromedaIdentityUser(user.Id, user.Username);
+            
+            return andromedaIdentityUser;
         }
 
-        public Task UpdateAsync(MyAndromedaIdentityUser user)
+        public async Task UpdateAsync(MyAndromedaIdentityUser user)
         {
-            throw new NotImplementedException();
+            var andromedaUser = membershipService.GetUser(user.UserName);
+
+            membershipService.UpdateUser(andromedaUser);
         }
     }
 }

@@ -114,9 +114,8 @@
     <Reference Include="itextsharp">
       <HintPath>..\packages\iTextSharp.5.5.4\lib\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Kendo.Mvc, Version=2015.3.1111.545, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\KENDOUIMVC\2016.1.112\Kendo.Mvc.dll</HintPath>
+    <Reference Include="Kendo.Mvc">
+      <HintPath>lib\KENDOUIMVC\2016.1.112\Kendo.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
@@ -327,9 +326,9 @@
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -2672,11 +2671,16 @@
     <Compile Include="Controllers\Api\Data\DailyReportingDataController.cs" />
     <Compile Include="Controllers\Api\Data\DataQuery.cs" />
     <Compile Include="Controllers\Api\Data\DataWarehouseDataController.cs" />
+    <Compile Include="Controllers\Api\Data\Models\DebugOrderViewModel.cs" />
     <Compile Include="Controllers\Api\Data\DriverViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\Bob.cs" />
     <Compile Include="Controllers\Api\Data\Models\DailyReportingQuery.cs" />
     <Compile Include="Controllers\Api\Data\Models\DataWareHouseStore.cs" />
     <Compile Include="Controllers\Api\Data\Models\GroupedStoreResults.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderDetailsViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderPaymentViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderFoodViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderStatusViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\OrderSummary.cs" />
     <Compile Include="Controllers\Api\Data\Models\StoreOrdersSummary.cs" />
     <Compile Include="Controllers\Api\Data\Models\StoreParams.cs" />
@@ -4293,6 +4297,10 @@
     <ProjectReference Include="..\MyAndromeda.Framework\MyAndromeda.Framework.csproj">
       <Project>{2B31AEE8-90B9-4A5C-89A5-AE7EB12F1CEB}</Project>
       <Name>MyAndromeda.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyAndromeda.Identity\MyAndromeda.Identity.csproj">
+      <Project>{9c3fa5a9-de59-4e12-a502-c88c17fe4e1e}</Project>
+      <Name>MyAndromeda.Identity</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyAndromeda.Logging\MyAndromeda.Logging.csproj">
       <Project>{865B78BD-51B5-4B1D-9BC7-CFB814EBE1EE}</Project>

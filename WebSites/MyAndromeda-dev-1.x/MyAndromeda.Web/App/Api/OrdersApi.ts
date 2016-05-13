@@ -213,6 +213,26 @@ module MyAndromeda.Data.Services
             return dataSource;
         }
 
+        public GetOrderFood(orderId: string): any {
+            let orderFoodUrl: string = kendo.format('data/debug-orders/{0}/orders/food', orderId);
+            return this.$http.get(orderFoodUrl);
+        }
+
+        public GetOrderDetails(orderId: string): any {
+            let orderDetailsUrl: string = kendo.format('data/debug-orders/{0}/orders/details', orderId);
+            return this.$http.get(orderDetailsUrl);
+        }
+
+        public GetOrderPayment(orderId: string): any {
+            let orderPaymentUrl: string = kendo.format('data/debug-orders/{0}/orders/payment', orderId);
+            return this.$http.get(orderPaymentUrl);
+        }
+
+        public GetOrderStatus(orderId: string): any {
+            let orderStatusUrl: string = kendo.format('data/debug-orders/{0}/orders/status', orderId);
+            return this.$http.get(orderStatusUrl);
+        }
+
         public ChangeOrderStatus(andromedaSiteId, orderId, change: Models.IOrderHeaderChangeStatus)
         {
             var route = kendo.format("/data/{0}/orders/{1}/updateStatus", andromedaSiteId, orderId);

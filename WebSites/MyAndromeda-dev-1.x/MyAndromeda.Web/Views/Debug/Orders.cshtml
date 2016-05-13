@@ -170,17 +170,13 @@
 
     <script type="text/template" id="order-detail-template.html">
 
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="header">Food </div>
+        <tabs>
+            <pane title="Food">
                 <div ng-repeat="item in dataItem.Items">
                     {{item.Qty}} - {{item.Name}} - {{item.Price}}
                 </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="header">
-                    Details - {{dataItem.StatusDescription}}
-                </div>
+            </pane>
+            <pane title="Details - {{dataItem.StatusDescription}}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="panel panel-default">
@@ -250,73 +246,215 @@
 
                 </div>
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Payment Lines
-                    </div>
-                    <div class="panel-body">
 
-                        <div class="row">
-                            <div class="col-sm-3">
-                                PayTypeName
-                            </div>
-                            <div class="col-sm-3">
-                                PaymentType
-                            </div>
-                            <div class="col-sm-3">
-                                Value
-                            </div>
-                            <div class="col-sm-3">
-                                Charge
-                            </div>
+            </pane>
+            <pane title="Payment Lines">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            PayTypeName
                         </div>
-                        <div class="row" ng-repeat="payLine in dataItem.PaymentLines">
-                            <div class="col-sm-3">
-                                {{payLine.PayTypeName}}
-                            </div>
-                            <div class="col-sm-3">
-                                {{payLine.PaymentType}}
-                            </div>
-                            <div class="col-sm-3">
-                                {{payLine.Value}}
-                            </div>
-                            <div class="col-sm-3">
-                                {{payLine.Charge}}
-                            </div>
+                        <div class="col-sm-3">
+                            PaymentType
+                        </div>
+                        <div class="col-sm-3">
+                            Value
+                        </div>
+                        <div class="col-sm-3">
+                            Charge
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="payLine in dataItem.PaymentLines">
+                        <div class="col-sm-3">
+                            {{payLine.PayTypeName}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{payLine.PaymentType}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{payLine.Value}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{payLine.Charge}}
                         </div>
                     </div>
                 </div>
 
-            </div>
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Order status
+            </pane>
+            <pane title="Order status">
+                <div class="panel-body">
+                    <div class="row" ng-if="!dataItem.OrderStatusHistory">
+                        <div class="col-sm-12">no records</div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row" ng-if="!dataItem.OrderStatusHistory">
-                            <div class="col-sm-12">no records</div>
+                    <div class="row" ng-repeat="status in dataItem.OrderStatusHistory">
+                        <div class="col-sm-1">
+                            {{status.Id}}
                         </div>
-                        <div class="row" ng-repeat="status in dataItem.OrderStatusHistory">
-                            <div class="col-sm-1">
-                                {{status.Id}}
-                            </div>
-                            <div class="col-sm-6">
-                                {{status.Description}}
-                            </div>
-                            <div class="col-sm-3">
-                                {{status.ChangeDateTime}}
-                            </div>
+                        <div class="col-sm-6">
+                            {{status.Description}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{status.ChangeDateTime}}
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+            </pane>
+        </tabs>
+
     </script>
+
+    @*<script type="text/template" id="order-detail-template.html">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="header">Food </div>
+                    <div ng-repeat="item in dataItem.Items">
+                        {{item.Qty}} - {{item.Name}} - {{item.Price}}
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="header">
+                        Details - {{dataItem.StatusDescription}}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Charges</div>
+                                <div class="panel-body">
+                                    Delivery: {{dataItem.DeliveryCharge}}
+                                    <br />
+                                    Card Charges: {{dataItem.CardCharges ? dataItem.CardCharges : 0}}
+                                    <br />
+                                    Tips: {{dataItem.Tips}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Third party ids</div>
+                                <div class="panel-body">
+                                    BringgId: {{dataItem.BringgId}}
+                                    <br />
+                                    IBS Order Id: {{dataItem.IbsOrderId}}
+                                    <br />
+                                    Rameses Ticket number: {{dataItem.TicketNumber}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Delivery</div>
+                                <div class="panel-body">
+                                    Postcode: {{dataItem.OrderAddress.Postcode}}<br />
+                                    Driver: {{dataItem.Driver.Name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Instructions
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-4">
+                                        Cooking Instructions: <br />
+                                        <div ng-if="dataItem.CookingInstructions">>{{dataItem.CookingInstructions}}</div>
+                                        <div ng-if="!dataItem.CookingInstructions">{{dataItem.CookingInstructions}}>None</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        Customer Directions: <br />
+                                        <div ng-if="dataItem.Customer.Directions">>{{dataItem.Customer.Directions}}</div>
+                                        <div ng-if="!dataItem.Customer.Directions">{{dataItem.Customer.Directions}}>None</div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        Order Directions: <br />
+                                        <div ng-if="dataItem.OrderAddress.Directions">>{{dataItem.OrderAddress.Directions}}</div>
+                                        <div ng-if="!dataItem.OrderAddress.Directions">{{dataItem.OrderAddress.Directions}}>None</div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Order Notes: <br />
+                                        <div ng-if="dataItem.OrderNotes">>{{dataItem.OrderNotes}}</div>
+                                        <div ng-if="!dataItem.OrderNotes">{{dataItem.OrderNotes}}>None</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Payment Lines
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    PayTypeName
+                                </div>
+                                <div class="col-sm-3">
+                                    PaymentType
+                                </div>
+                                <div class="col-sm-3">
+                                    Value
+                                </div>
+                                <div class="col-sm-3">
+                                    Charge
+                                </div>
+                            </div>
+                            <div class="row" ng-repeat="payLine in dataItem.PaymentLines">
+                                <div class="col-sm-3">
+                                    {{payLine.PayTypeName}}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{payLine.PaymentType}}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{payLine.Value}}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{payLine.Charge}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Order status
+                        </div>
+                        <div class="panel-body">
+                            <div class="row" ng-if="!dataItem.OrderStatusHistory">
+                                <div class="col-sm-12">no records</div>
+                            </div>
+                            <div class="row" ng-repeat="status in dataItem.OrderStatusHistory">
+                                <div class="col-sm-1">
+                                    {{status.Id}}
+                                </div>
+                                <div class="col-sm-6">
+                                    {{status.Description}}
+                                </div>
+                                <div class="col-sm-3">
+                                    {{status.ChangeDateTime}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </script>*@
 
     <script type="text/javascript">
         $(function () {

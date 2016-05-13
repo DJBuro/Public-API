@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using MyAndromedaMembershipProvider.Services;
 using MyAndromeda.Framework.Authorization;
 using MyAndromeda.Data.DataAccess.Users;
+using MyAndromeda.Framework.Services;
 
 namespace MyAndromedaMembershipProvider
 {

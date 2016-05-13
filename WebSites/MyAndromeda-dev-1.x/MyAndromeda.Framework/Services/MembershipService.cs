@@ -11,8 +11,10 @@ using MyAndromeda.Framework.Translation;
 using MyAndromeda.Core.User.Events;
 using MyAndromeda.Core.User;
 using MyAndromeda.Data.DataAccess.Users;
+using System.Web;
 
-namespace MyAndromedaMembershipProvider.Services
+
+namespace MyAndromeda.Framework.Services
 {
     public class MembershipService : IMembershipService
     {
@@ -38,13 +40,13 @@ namespace MyAndromedaMembershipProvider.Services
         }
 
         public IMyAndromedaLogger Logger { get; private set; }
-
+        
         public MyAndromedaUser CreateUser(MyAndromedaUser user, string password)
         {
             this.Logger.Debug("CreateUser {0}", user.Username);
 
             var entity = this.userDataService.New();
-
+            
             entity.Username = user.Username;
             entity.FirstName = user.Firstname;
             entity.LastName = user.Surname;

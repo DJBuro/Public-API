@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using MyAndromeda.Core.User;
 using MyAndromeda.Data.Model.MyAndromeda;
+using System.Data.Entity;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -99,6 +101,42 @@ namespace MyAndromeda.Data.DataAccess.Users
             //entity.PasswordFormat = user.PasswordFormat;
             //entity.HashAlgorithm = user.HashAlgorithm;
             this.dbContext.SaveChanges();
+        }
+
+        public async Task<MyAndromedaUser> GetByUserNameAsync(string userName)
+        {
+            MyAndromedaUser model = null;
+
+            var result = await this.dbContext.UserRecords
+                             .Where(e => e.Username.Equals(userName))
+                             .SingleOrDefaultAsync();
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            model = result.ToDomain();
+
+            return model;
+        }
+
+        public async Task<UserRecord> GetByUserIdAsync(int userId)
+        {
+            UserRecord model = null;
+            var result = await this.dbContext.UserRecords
+            //.Include(e=> e.UserIpLocking)
+                             .Where(e => e.Id.Equals(userId))
+                             .SingleOrDefaultAsync();
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            model = result;
+
+            return model;
         }
     }
 }
