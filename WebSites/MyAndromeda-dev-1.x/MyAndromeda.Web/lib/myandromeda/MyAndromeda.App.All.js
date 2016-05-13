@@ -2444,7 +2444,8 @@ var MyAndromeda;
             "MyAndromeda.Resize",
             "MyAndromeda.Data.Orders",
             "MyAndromeda.Data.Drivers"
-        ]);
+        ])
+            .controller('OrderDetailsController', [OrderDetailsController]);
         gridApp.run(function ($templateCache) {
             MyAndromeda.Logger.Notify("OrdersApp Started");
             angular.element('script[type="text/template"]').each(function (i, element) {
@@ -2463,28 +2464,14 @@ var MyAndromeda;
             OrderWantedTime: "<grid-order-wanted-time></grid-order-wanted-time>",
             OrderCustomer: "<grid-order-customer></grid-order-customer>"
         };
-        function getFood(orderId) {
-            console.log(1);
-            //let orderService: Data.Services.OrderService;
-            //let food = orderService.GetOrderFood(orderId);
-        }
-        function getDetails(orderId) {
-            console.log(2);
-            //let orderService: Data.Services.OrderService;
-            //let details = orderService.GetOrderDetails(orderId);
-            //console.log(details);
-        }
-        function getPayments(orderId) {
-            console.log(3);
-            //let orderService: Data.Services.OrderService;
-            //let payment = orderService.GetOrderPayment(orderId);
-            //console.log(payment);
-        }
-        function getStatus(orderId) {
-            console.log(4);
-            //let orderService: Data.Services.OrderService;
-            //let status = orderService.GetOrderStatus(orderId);
-            //console.log(status);
+        function OrderDetailsController() {
+            var vm = this;
+            var orderId = ''; //TODO: Get actual ID of order
+            var orderService;
+            vm.food = orderService.GetOrderFood(orderId);
+            vm.details = orderService.GetOrderDetails(orderId);
+            vm.payments = orderService.GetOrderPayment(orderId);
+            vm.status = orderService.GetOrderStatus(orderId);
         }
         gridApp.directive("ordersGrid", function () {
             return {

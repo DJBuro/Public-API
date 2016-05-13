@@ -170,23 +170,23 @@
 
     <script type="text/template" id="order-detail-template.html">
 
-        <tabs>
+        <tabs ng-controller="OrderDetailsController">
             <pane title="Food">
-                <div ng-repeat="item in dataItem.Items">
+                <div ng-repeat="item in food.Items">
                     {{item.Qty}} - {{item.Name}} - {{item.Price}}
                 </div>
             </pane>
-            <pane title="Details - {{dataItem.StatusDescription}}">
+            <pane title="Details - {{details.StatusDescription}}">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">Charges</div>
                             <div class="panel-body">
-                                Delivery: {{dataItem.DeliveryCharge}}
+                                Delivery: {{details.DeliveryCharge}}
                                 <br />
-                                Card Charges: {{dataItem.CardCharges ? dataItem.CardCharges : 0}}
+                                Card Charges: {{details.CardCharges ? details.CardCharges : 0}}
                                 <br />
-                                Tips: {{dataItem.Tips}}
+                                Tips: {{details.Tips}}
                             </div>
                         </div>
                     </div>
@@ -194,11 +194,11 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Third party ids</div>
                             <div class="panel-body">
-                                BringgId: {{dataItem.BringgId}}
+                                BringgId: {{details.BringgId}}
                                 <br />
-                                IBS Order Id: {{dataItem.IbsOrderId}}
+                                IBS Order Id: {{details.IbsOrderId}}
                                 <br />
-                                Rameses Ticket number: {{dataItem.TicketNumber}}
+                                Rameses Ticket number: {{details.TicketNumber}}
                             </div>
                         </div>
 
@@ -207,8 +207,8 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Delivery</div>
                             <div class="panel-body">
-                                Postcode: {{dataItem.OrderAddress.Postcode}}<br />
-                                Driver: {{dataItem.Driver.Name}}
+                                Postcode: {{details.OrderPostCode}}<br />
+                                Driver: {{details.DriverName}}
                             </div>
                         </div>
                     </div>
@@ -222,23 +222,23 @@
                             <div class="panel-body">
                                 <div class="col-md-4">
                                     Cooking Instructions: <br />
-                                    <div ng-if="dataItem.CookingInstructions">>{{dataItem.CookingInstructions}}</div>
-                                    <div ng-if="!dataItem.CookingInstructions">{{dataItem.CookingInstructions}}>None</div>
+                                    <div ng-if="details.CookingInstructions">>{{details.CookingInstructions}}</div>
+                                    <div ng-if="!details.CookingInstructions">{{details.CookingInstructions}}>None</div>
                                 </div>
                                 <div class="col-md-4">
                                     Customer Directions: <br />
-                                    <div ng-if="dataItem.Customer.Directions">>{{dataItem.Customer.Directions}}</div>
-                                    <div ng-if="!dataItem.Customer.Directions">{{dataItem.Customer.Directions}}>None</div>
+                                    <div ng-if="details.CustomerDirections">>{{details.CustomerDirections}}</div>
+                                    <div ng-if="!details.CustomerDirections">{{details.CustomerDirections}}>None</div>
                                 </div>
                                 <div class="col-md-4">
                                     Order Directions: <br />
-                                    <div ng-if="dataItem.OrderAddress.Directions">>{{dataItem.OrderAddress.Directions}}</div>
-                                    <div ng-if="!dataItem.OrderAddress.Directions">{{dataItem.OrderAddress.Directions}}>None</div>
+                                    <div ng-if="details.OrderAddressDirections">>{{details.OrderAddressDirections}}</div>
+                                    <div ng-if="!details.OrderAddressDirections">{{details.OrderAddressDirections}}>None</div>
                                 </div>
                                 <div class="col-md-12">
                                     Order Notes: <br />
-                                    <div ng-if="dataItem.OrderNotes">>{{dataItem.OrderNotes}}</div>
-                                    <div ng-if="!dataItem.OrderNotes">{{dataItem.OrderNotes}}>None</div>
+                                    <div ng-if="details.OrderNotes">>{{details.OrderNotes}}</div>
+                                    <div ng-if="!details.OrderNotes">{{details.OrderNotes}}>None</div>
                                 </div>
                             </div>
                         </div>
@@ -265,7 +265,7 @@
                             Charge
                         </div>
                     </div>
-                    <div class="row" ng-repeat="payLine in dataItem.PaymentLines">
+                    <div class="row" ng-repeat="payLine in payments.PaymentLines">
                         <div class="col-sm-3">
                             {{payLine.PayTypeName}}
                         </div>
@@ -284,10 +284,10 @@
             </pane>
             <pane title="Order status">
                 <div class="panel-body">
-                    <div class="row" ng-if="!dataItem.OrderStatusHistory">
+                    <div class="row" ng-if="!status.OrderStatusHistory">
                         <div class="col-sm-12">no records</div>
                     </div>
-                    <div class="row" ng-repeat="status in dataItem.OrderStatusHistory">
+                    <div class="row" ng-repeat="status in status.OrderStatusHistory">
                         <div class="col-sm-1">
                             {{status.Id}}
                         </div>

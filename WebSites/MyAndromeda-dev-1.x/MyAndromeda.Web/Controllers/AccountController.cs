@@ -27,15 +27,17 @@ namespace MyAndromeda.Web.Controllers
         private readonly ILoginService loginServicee;
         private readonly IPasswordResetService passwordResetService;
         private readonly IPasswordStrengthService passwordStrengthService;
-        private readonly MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider;
+        //private readonly MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider;
         
-        public AccountController(IWorkContext workContext, IMyAndromedaLogger logger, INotifier notifier, ILoginService loginServicee, MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider, ITranslator translator, IUserDataService userDataService, IPasswordResetService passwordResetService, IPasswordStrengthService passwordStrengthService)
+        public AccountController(IWorkContext workContext, IMyAndromedaLogger logger, INotifier notifier, ILoginService loginServicee, 
+            //MyAndromedaMembershipProvider.MyAndromedaMembershipProvider membershipProvider, 
+            ITranslator translator, IUserDataService userDataService, IPasswordResetService passwordResetService, IPasswordStrengthService passwordStrengthService)
         {
             this.passwordStrengthService = passwordStrengthService;
             this.workContext = workContext;
             this.passwordResetService = passwordResetService;
             this.userDataService = userDataService;
-            this.membershipProvider = membershipProvider;
+            //this.membershipProvider = membershipProvider;
             this.loginServicee = loginServicee;
             this.notifier = notifier;
             this.Logger = logger;

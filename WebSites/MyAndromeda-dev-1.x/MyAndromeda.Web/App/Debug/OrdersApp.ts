@@ -6,7 +6,8 @@
             "MyAndromeda.Resize",
             "MyAndromeda.Data.Orders",
             "MyAndromeda.Data.Drivers"
-        ]);
+        ])
+        .controller('OrderDetailsController', [OrderDetailsController]);
 
     gridApp.run(($templateCache: ng.ITemplateCacheService) => {
         Logger.Notify("OrdersApp Started");
@@ -31,35 +32,14 @@
         OrderCustomer: "<grid-order-customer></grid-order-customer>"
     };
 
-    function getFood(orderId: string) {
-        console.log(1);
-
-        //let orderService: Data.Services.OrderService;
-        //let food = orderService.GetOrderFood(orderId);
-    }
-
-    function getDetails(orderId: string) {
-        console.log(2);
-
-        //let orderService: Data.Services.OrderService;
-        //let details = orderService.GetOrderDetails(orderId);
-        //console.log(details);
-    }
-
-    function getPayments(orderId: string) {
-        console.log(3);
-
-        //let orderService: Data.Services.OrderService;
-        //let payment = orderService.GetOrderPayment(orderId);
-        //console.log(payment);
-    }
-
-    function getStatus(orderId: string) {
-        console.log(4);
-
-        //let orderService: Data.Services.OrderService;
-        //let status = orderService.GetOrderStatus(orderId);
-        //console.log(status);
+    function OrderDetailsController() {
+        var vm = this;
+        let orderId: string = ''; //TODO: Get actual ID of order
+        let orderService: Data.Services.OrderService;
+        vm.food = orderService.GetOrderFood(orderId);
+        vm.details = orderService.GetOrderDetails(orderId);
+        vm.payments = orderService.GetOrderPayment(orderId);
+        vm.status = orderService.GetOrderStatus(orderId);
     }
 
     gridApp.directive("ordersGrid", () => {
