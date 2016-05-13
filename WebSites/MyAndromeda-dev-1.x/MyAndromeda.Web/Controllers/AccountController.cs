@@ -245,59 +245,58 @@ namespace MyAndromeda.Web.Controllers
 
             return View(model);
         }
-
-        //
+        
         // POST: /Account/ChangePassword
-        //[Authorize]
-        //[HttpPost]
-        //[ActionName("ChangePassword")]
-        //public ActionResult ChangePasswordPost(ChangePasswordModel model)
-        //{
-        //    string[] passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
+        [Authorize]
+        [HttpPost]
+        [ActionName("ChangePassword")]
+        public ActionResult ChangePasswordPost(ChangePasswordModel model)
+        {
+            string[] passwordErrors = this.passwordStrengthService.ProblemsWithPassword(model.NewPassword).ToArray();
 
-        //    if (passwordErrors.Length > 0)
-        //    {
-        //        foreach (var error in passwordErrors)
-        //        {
-        //            this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
-        //        }
+            if (passwordErrors.Length > 0)
+            {
+                foreach (var error in passwordErrors)
+                {
+                    this.ModelState.AddModelError(key: "Password", errorMessage: Translator.T(error));
+                }
 
-        //        return View(model);
-        //    }
+                return View(model);
+            }
 
-        //    if (!ModelState.IsValid) { return View(model); }
+            if (!ModelState.IsValid) { return View(model); }
 
-        //    // ChangePassword will throw an exception rather
-        //    // than return false in certain failure scenarios.
-        //    bool changePasswordSucceeded;
-        //    try
-        //    {
-        //        //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-        //        //var user = this.membershipProvider.GetUserNameByEmail(User.Identity.Name);
-        //        changePasswordSucceeded = this.membershipProvider.ChangePassword(User.Identity.Name, string.Empty, model.NewPassword);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        this.notifier.Error(message: "There was a problem setting your password. Please try again");
-        //        changePasswordSucceeded = false;
-        //    }
+            // ChangePassword will throw an exception rather
+            // than return false in certain failure scenarios.
+            bool changePasswordSucceeded;
+            try
+            {
+                //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                //var user = this.membershipProvider.GetUserNameByEmail(User.Identity.Name);
+                changePasswordSucceeded = this.signUpHelper.ChangePassword(User.Identity.Name, model.NewPassword);
+            }
+            catch (Exception e)
+            {
+                this.notifier.Error(message: "There was a problem setting your password. Please try again");
+                changePasswordSucceeded = false;
+            }
 
-        //    if (changePasswordSucceeded)
-        //    {
-        //        this.notifier.Notify(message: "Your password has been successfully changed.");
-        //        model.ConfirmPassword = string.Empty;
-        //        model.NewPassword = string.Empty;
+            if (changePasswordSucceeded)
+            {
+                this.notifier.Notify(message: "Your password has been successfully changed.");
+                model.ConfirmPassword = string.Empty;
+                model.NewPassword = string.Empty;
 
-        //        return View(model);
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError(key: string.Empty, errorMessage: "The current password is incorrect or the new password is invalid.");
-        //    }
+                return View(model);
+            }
+            else
+            {
+                ModelState.AddModelError(key: string.Empty, errorMessage: "The current password is incorrect or the new password is invalid.");
+            }
 
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
     }
 }

@@ -6,6 +6,7 @@ using MyAndromeda.Identity;
 using System;
 using System.Web;
 using System.Threading.Tasks;
+using MyAndromeda.Data.Model.MyAndromeda;
 
 namespace MyAndromeda.Web.Helper
 {
@@ -14,7 +15,7 @@ namespace MyAndromeda.Web.Helper
         private readonly IMembershipService membershipService;
 
         public SignInHelper(
-            ApplicationUserManager userManager, 
+            ApplicationUserManager userManager,
             //IAuthenticationManager authManager, 
             IMembershipService membershipService)
         {
@@ -206,6 +207,14 @@ namespace MyAndromeda.Web.Helper
             bool success = result != null;
 
             return success;
+        }
+
+        public bool ChangePassword(string username, string password)
+        {
+            var user = this.membershipService.GetUserRecord(username);
+
+            var isPasswordSetted = this.membershipService.SetPassword(user, password, true);
+            return isPasswordSetted;
         }
     }
 }

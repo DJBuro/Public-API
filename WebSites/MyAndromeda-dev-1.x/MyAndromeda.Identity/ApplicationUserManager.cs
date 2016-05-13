@@ -78,7 +78,6 @@ namespace MyAndromeda.Identity
             }
             return manager;
         }
-
     }
 
     public class UserStore : IUserStore<MyAndromedaIdentityUser, int>

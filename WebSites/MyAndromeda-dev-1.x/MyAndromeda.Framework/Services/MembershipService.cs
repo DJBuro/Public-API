@@ -118,6 +118,13 @@ namespace MyAndromeda.Framework.Services
             return user.ToDomain();
         }
 
+        public UserRecord GetUserRecord(string username)
+        {
+            var user = this.userDataService.Query(entity => entity.Username == username).SingleOrDefault();
+
+            return user;
+        }
+
         public MyAndromedaUser ValidateUserLogin(string userNameOrEmail, string password)
         {
             var user = this.userDataService

@@ -25,5 +25,7 @@ namespace MyAndromeda.Web.Helper
         Task<SignInStatus> TwoFactorSignIn(string provider, string code, bool isPersistent, bool rememberBrowser);
 
         bool ValidateUser(string username, string password);
+
+        bool ChangePassword(string username, string password);
     }
 }

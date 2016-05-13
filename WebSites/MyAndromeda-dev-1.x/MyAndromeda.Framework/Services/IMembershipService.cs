@@ -39,12 +39,20 @@ namespace MyAndromeda.Framework.Services
         /// <param name="user">User</param>
         /// <returns></returns>
         MyAndromedaUser UpdateUser(MyAndromedaUser user);
+
         /// <summary>
         /// Gets the user.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
         MyAndromedaUser GetUser(string username);
+
+        /// <summary>
+        /// Gets the user record.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns></returns>
+        UserRecord GetUserRecord(string username);
 
         /// <summary>
         /// Sets the password.
