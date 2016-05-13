@@ -177,50 +177,52 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
         [HttpGet]
         [Route("data/debug-orders/{orderId}/orders/food")]
-        public async Task<OrderFoodViewModel> GetOrderFood(Guid orderId)
+        public async Task<OrderFoodViewModel> GetOrderFood(string orderId)
         {
-            var order = await this.orderHeaderDataService.OrderHeaders
-                .Where(o => o.ID == orderId)
+            var orderIdAsGuid = Guid.Parse(orderId);
+
+            var foods = await this.orderHeaderDataService.OrderHeaders
+                .Where(o => o.ID == orderIdAsGuid)
                 .Select(OrderFoodViewModel.FromOrder)
                 .FirstOrDefaultAsync();
 
-            return order;
+            return foods;
         }
 
         [HttpGet]
         [Route("data/debug-orders/{orderId}/orders/details")]
         public async Task<OrderDetailsViewModel> GetOrderDetails(Guid orderId)
         {
-            var order = await this.orderHeaderDataService.OrderHeaders
+            var details = await this.orderHeaderDataService.OrderHeaders
                 .Where(o => o.ID == orderId)
                 .Select(OrderDetailsViewModel.FromOrder)
                 .FirstOrDefaultAsync();
 
-            return order;
+            return details;
         }
 
         [HttpGet]
         [Route("data/debug-orders/{orderId}/orders/payment")]
         public async Task<OrderPaymentViewModel> GetOrderPayment(Guid orderId)
         {
-            var order = await this.orderHeaderDataService.OrderHeaders
+            var payments = await this.orderHeaderDataService.OrderHeaders
                 .Where(o => o.ID == orderId)
                 .Select(OrderPaymentViewModel.FromOrder)
                 .FirstOrDefaultAsync();
 
-            return order;
+            return payments;
         }
 
         [HttpGet]
         [Route("data/debug-orders/{orderId}/orders/status")]
         public async Task<OrderStatusViewModel> GetOrderStatus(Guid orderId)
         {
-            var order = await this.orderHeaderDataService.OrderHeaders
+            var statuses = await this.orderHeaderDataService.OrderHeaders
                 .Where(o => o.ID == orderId)
                 .Select(OrderStatusViewModel.FromOrder)
                 .FirstOrDefaultAsync();
 
-            return order;
+            return statuses;
         }
 
         //[HttpPost]

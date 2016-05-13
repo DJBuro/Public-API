@@ -13,7 +13,6 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
             {
                 return r => new OrderDetailsViewModel()
                 {
-                    StatusDescription = r.OrderStatu.Description,
                     DeliveryCharge = r.DeliveryCharge,
                     CardCharges = r.OrderPayments.Sum(k => k.PaymentCharge),
                     Tips = r.Tips,
@@ -29,8 +28,6 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
                 };
             }
         }
-
-        public string StatusDescription { get; set; }
 
         public decimal DeliveryCharge { get; set; }
 

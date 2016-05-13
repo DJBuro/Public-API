@@ -214,22 +214,24 @@ module MyAndromeda.Data.Services
         }
 
         public GetOrderFood(orderId: string): ng.IHttpPromise<any[]> {
-            let orderFoodUrl: string = kendo.format('data/debug-orders/{0}/orders/food', orderId);
-            return this.$http.get(orderFoodUrl);
+            let orderFoodUrl: string = kendo.format('/data/debug-orders/{0}/orders/food', orderId);
+            var foods = this.$http.get(orderFoodUrl);
+            console.log(foods);
+            return foods;
         }
 
         public GetOrderDetails(orderId: string): any {
-            let orderDetailsUrl: string = kendo.format('data/debug-orders/{0}/orders/details', orderId);
+            let orderDetailsUrl: string = kendo.format('/data/debug-orders/{0}/orders/details', orderId);
             return this.$http.get(orderDetailsUrl);
         }
 
         public GetOrderPayment(orderId: string): any {
-            let orderPaymentUrl: string = kendo.format('data/debug-orders/{0}/orders/payment', orderId);
+            let orderPaymentUrl: string = kendo.format('/data/debug-orders/{0}/orders/payment', orderId);
             return this.$http.get(orderPaymentUrl);
         }
 
         public GetOrderStatus(orderId: string): ng.IHttpPromise<any[]> {
-            let orderStatusUrl: string = kendo.format('data/debug-orders/{0}/orders/status', orderId);
+            let orderStatusUrl: string = kendo.format('/data/debug-orders/{0}/orders/status', orderId);
             return this.$http.get(orderStatusUrl);
         }
 
