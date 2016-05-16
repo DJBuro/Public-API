@@ -149,6 +149,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data
         [Route("data/{andromedaSiteId}/debug-orders")]
         public async Task<DataSourceResult> GetOrders()
         {
+            //{"take":10,"skip":0,"page":1,"pageSize":10}
             string body = await this.Request.Content.ReadAsStringAsync();
 
             DataSourceRequest request = JsonConvert.DeserializeObject<DataSourceRequest>(body);
@@ -158,14 +159,26 @@ namespace MyAndromeda.Web.Controllers.Api.Data
 
             try
             {
-                IQueryable<DebugOrderViewModel> ordersQuery = this.orderHeaderDataService.OrderHeaders
+                var ordersQuery = this.orderHeaderDataService.OrderHeaders
                 .AsNoTracking()
-                .Where(e => e.ExternalSiteID == this.currentSite.ExternalSiteId)
-                .Include(e => e.OrderStatu)
                 .Include(e => e.Customer)
-                .Select(DebugOrderViewModel.FromOrder);
+                .Where(e => e.ExternalSiteID == this.currentSite.ExternalSiteId);
 
-                DataSourceResult orders = ordersQuery.ToDataSourceResult(request); //request. //await ordersQuery.ToArrayAsync();
+                var data = ordersQuery
+                    .Select(DebugOrderViewModel.FromOrder)
+                    .OrderByDescending(r => r.OrderPlacedTime)
+                    .Skip(request.Page * request.PageSize)
+                    .Take(request.PageSize);
+
+                var total = ordersQuery.Count();
+
+                var orders = new DataSourceResult()
+                {
+                    Data = data,
+                    Total = total
+                };
+                                
+             /*   DataSourceResult orders = ordersQuery.ToDataSourceResult(request); *///request. //await ordersQuery.ToArrayAsync();
 
                 return orders;
             }

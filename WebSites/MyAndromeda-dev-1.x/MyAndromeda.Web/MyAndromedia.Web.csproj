@@ -2700,6 +2700,7 @@
     <Compile Include="Controllers\Api\Data\DailyReportingDataController.cs" />
     <Compile Include="Controllers\Api\Data\DataQuery.cs" />
     <Compile Include="Controllers\Api\Data\DataWarehouseDataController.cs" />
+    <Compile Include="Controllers\Api\Data\Models\CustomerOrderViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\DebugOrderViewModel.cs" />
     <Compile Include="Controllers\Api\Data\DriverViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\Bob.cs" />

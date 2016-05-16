@@ -21,11 +21,14 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
                         Qty = item.Qty,
                         Price = item.Price,
                         Person = item.Person
-                    })
+                    }),
+                    SubTotal = r.OrderLines.Select(item => item.Price).Sum()
                 };
             }
         }
 
         public IEnumerable<OrderItem> Items { get; set; }
+
+        public int? SubTotal { get; set; }
     }
 }

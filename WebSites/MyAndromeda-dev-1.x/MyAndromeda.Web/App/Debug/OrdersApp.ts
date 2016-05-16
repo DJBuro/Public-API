@@ -25,7 +25,6 @@
 
     var gridTempaltes = {
         orderId: "<grid-order-id></grid-order-id>",
-        OrderItemCount: "<grid-order-item-count></<grid-order-item-count>",
         OrderPlacedTime: "<grid-order-placed-time></grid-order-placed-time>",
         OrderWantedTime: "<grid-order-wanted-time></grid-order-wanted-time>",
         OrderCustomer: "<grid-order-customer></grid-order-customer>"
@@ -74,7 +73,7 @@
                     },
                     columns: [
                         { title: "Id", field: "Id", template: gridTempaltes.orderId },
-                        { title: "Items", field: "ItemCount", template: gridTempaltes.OrderItemCount },
+                        { title: "Items", field: "Items" },
                         { title: "Final Price", field: "FinalPrice" },
                         { title: "Placed Time", field: "OrderPlacedTime", template: gridTempaltes.OrderPlacedTime },
                         { title: "Wanted Time", field: "OrderWantedTime", template: gridTempaltes.OrderWantedTime },
