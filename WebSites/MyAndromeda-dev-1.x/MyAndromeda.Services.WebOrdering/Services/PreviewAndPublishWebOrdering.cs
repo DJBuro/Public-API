@@ -1,9 +1,9 @@
-﻿using System.Configuration;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Http;
 using MyAndromeda.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyAndromeda.Logging;
@@ -12,17 +12,12 @@ using AndroAdminDataAccess.Domain.WebOrderingSetup;
 
 namespace MyAndromeda.Services.WebOrdering.Services
 {
-    public interface IPreviewAndPublishWebOrdering : IDependency
-    {
-        Task<HttpResponseMessage> PublishWebOrderingSettingsAsync(WebSiteConfigurations config);
-        Task<HttpResponseMessage> PreviewWebOrderingSettingsAsync(WebSiteConfigurations config);
-    }
 
-    public class PreviewPublishTheme : IPreviewAndPublishWebOrdering
+    public class PreviewAndPublishWebOrdering : IPreviewAndPublishWebOrdering
     {
         private readonly IMyAndromedaLogger logger;
 
-        public PreviewPublishTheme(IMyAndromedaLogger logger)
+        public PreviewAndPublishWebOrdering(IMyAndromedaLogger logger)
         {
             this.logger = logger;
         }
@@ -32,11 +27,11 @@ namespace MyAndromeda.Services.WebOrdering.Services
             bool result = false;
             HttpResponseMessage response = null;
 
-            Uri serviceUrl = new Uri(ConfigurationManager.AppSettings["MyAndromeda.WebOrderingWebSite.CreateService"]);
+            var serviceUrl = new Uri(ConfigurationManager.AppSettings["MyAndromeda.WebOrderingWebSite.CreateService"]);
             using (var client = ClientHelper.GetANewJsonClient(serviceUrl))
             {
                 
-                this.logger.Debug("Await response");
+                this.logger.Debug(message: "Await response");
                 response = await client.PostAsJsonAsync(serviceUrl, config);
                 this.logger.Debug("response fetched and is: " + response.IsSuccessStatusCode);
 
@@ -65,7 +60,7 @@ namespace MyAndromeda.Services.WebOrdering.Services
             using (var client = ClientHelper.GetANewJsonClient(serviceUrl))
             {
                 
-                this.logger.Debug("Await response");
+                this.logger.Debug(message: "Await response");
                 response = await client.PostAsJsonAsync(serviceUrl, config);
                 this.logger.Debug("response fetched and is: " + response.IsSuccessStatusCode);
                 result = response.IsSuccessStatusCode;
@@ -81,4 +76,5 @@ namespace MyAndromeda.Services.WebOrdering.Services
             return response;
         }
     }
+
 }

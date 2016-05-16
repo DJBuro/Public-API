@@ -38,7 +38,7 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
 
         public IEnumerable<SummaryByDay<decimal>> GetTotalOrdersByDay(Expression<Func<OrderHeader, bool>> query)
         {
-            var data = OrderHeaderTable.Where(query);
+            IQueryable<OrderHeader> data = OrderHeaderTable.Where(query);
 
             var groupedData = data.GroupBy(e =>
                 new
@@ -61,16 +61,18 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
                     //DiscountMax = e.SelectMany(m => m.OrderDiscounts).Max(d=> d.DiscountAmount)
                 }).ToArray();
 
-            var results = groupedData.Select(e => new SummaryByDay<decimal>() { 
-                Total = e.Total,
-                Count = e.OrderCount,
-                Average = e.AvgPrice,
-                Max = e.MaxPrice,
-                Min = e.MinPrice,
-                Day = new DateTime(e.Year, e.Month, e.Day),
-                DeliveryCount = e.DeliveryCount,
-                CollectionCount = e.CollectionCount
-            }).OrderByDescending(e=> e.Day).ToArray();
+            SummaryByDay<decimal>[] results = groupedData.Select(e => new SummaryByDay<decimal>() { 
+                    Total = e.Total,
+                    Count = e.OrderCount,
+                    Average = e.AvgPrice,
+                    Max = e.MaxPrice,
+                    Min = e.MinPrice,
+                    Day = new DateTime(e.Year, e.Month, e.Day),
+                    DeliveryCount = e.DeliveryCount,
+                    CollectionCount = e.CollectionCount
+                })
+                .OrderByDescending(e=> e.Day)
+                .ToArray();
 
             return results;
         }

@@ -5,11 +5,11 @@ using System.Web;
 
 namespace MyAndromedaDataAccess.Domain.Reporting
 {
-    public class OrdersSummary
+    public class OrdersSummaryDomainModel
     {
         private readonly SummaryByDay<decimal> today;
 
-        public OrdersSummary(IEnumerable<SummaryByDay<decimal>> orderData)
+        public OrdersSummaryDomainModel(IEnumerable<SummaryByDay<decimal>> orderData)
         {
             this.OrderData = orderData;
             this.today = orderData.FirstOrDefault();

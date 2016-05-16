@@ -7,6 +7,6 @@ namespace MyAndromeda.Data.DataWarehouse.Services.Orders
 {
     public interface IOrderReportingService
     {
-        OrdersSummary GetSummaryOfOrders(int siteId, FilterQuery filter);
+        OrdersSummaryDomainModel GetSummaryOfOrders(int siteId, FilterQuery filter);
     }
 }

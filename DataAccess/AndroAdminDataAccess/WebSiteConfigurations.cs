@@ -5,13 +5,6 @@ using Newtonsoft.Json;
 
 namespace AndroAdminDataAccess.Domain.WebOrderingSetup
 {
-    public class Website 
-    {
-        public int Id { get; set; }
-        public string LiveDomainName { get; set; }
-        public string PreviewDomainName { get; set; }
-    }
-
     /// <summary>
     /// TBD: Class to be moved to another layer and method access-specifiers to be modified.
     /// TBD: JSON serialized-object format to+ be freezed.
@@ -80,7 +73,7 @@ namespace AndroAdminDataAccess.Domain.WebOrderingSetup
 
         public string DisabledReason { get; set; }
 
-        public AndroAdminDataAccess.Domain.WebOrderingSetup.WebsiteHome Home { get; set; }
+        public WebsiteHome Home { get; set; }
 
         public LegalNotices LegalNotices { get; set; }
 
@@ -135,28 +128,18 @@ namespace AndroAdminDataAccess.Domain.WebOrderingSetup
             if (obj == null)
                 return string.Empty;
 
-            var result = JsonConvert.SerializeObject(obj);
+            string result = JsonConvert.SerializeObject(obj);
             return result;
         }
 
         public static WebSiteConfigurations DeserializeJson(string obj)
         {
-            if (String.IsNullOrWhiteSpace(obj))
+            if (string.IsNullOrWhiteSpace(obj))
                 return new WebSiteConfigurations();
 
-            var result = JsonConvert.DeserializeObject<WebSiteConfigurations>(obj);
+            WebSiteConfigurations result = JsonConvert.DeserializeObject<WebSiteConfigurations>(obj);
             return result;
         }
     }
 
-    public class UpSellingModel {
-        public bool Enabled { get; set; }
-        public List<UpSellingDisplayCategory> DisplayCategories { get; set; }
-    }
-
-    public class UpSellingDisplayCategory 
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }
