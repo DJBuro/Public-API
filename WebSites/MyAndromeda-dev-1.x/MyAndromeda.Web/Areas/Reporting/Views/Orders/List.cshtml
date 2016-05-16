@@ -8,11 +8,18 @@
 }
 
 <div class="header">
-    <a class="k-button" href="@Url.Action("Index", "Store")">@translator.T("Back")</a>
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="@Url.Action("Index", "Store")">@translator.T("On-line dashboard")</a>
+        <a class="btn btn-default" href="@Url.Action("InStore", "Store")">@translator.T("In-store dashoard")</a>
+
+    </div>
     <h3>Web Order List</h3>
     @if (Model.FilterFrom.HasValue || Model.FilterTo.HasValue)
     {
-        <p>@Model.FilterFrom.Value.ToShortDateString() - @Model.FilterTo.Value.ToShortDateString()</p>
+        <p>
+            @Model.FilterFrom.Value.ToShortDateString() - @Model.FilterTo.Value.ToShortDateString()
+            @*<span class="label label-default">@if (Model.ShowInStoreOrders) { <text>Instore</text> }</span>*@
+        </p>
     }
     @if (!Model.FilterFrom.HasValue || !Model.FilterTo.HasValue)
     {
@@ -68,21 +75,21 @@
 
         /* doesn't seem to work ... shame */
         cols.Group(g => g.Title("Contact info").Columns(contact =>
-            {
-                cols.Bound(e => e.FirstName)
-                    .Title(translator.T("Name"))
-                    .Width(130)
-                    .ClientGroupHeaderTemplate("Ordered by: #: value #")
-                    .Filterable((filter) => filter.Mode(GridFilterMode.Row));
-                cols.Bound(e => e.Email)
-                    .Title(translator.T("Email"))
-                    .Width(150)
-                    .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
-                cols.Bound(e => e.Phone)
-                    .Title("Phone")
-                    .Width(150)
-                    .Filterable((filter) => filter.Mode(GridFilterMode.Menu)); ;
-            })
+        {
+            cols.Bound(e => e.FirstName)
+                .Title(translator.T("Name"))
+                .Width(130)
+                .ClientGroupHeaderTemplate("Ordered by: #: value #")
+                .Filterable((filter) => filter.Mode(GridFilterMode.Row));
+            cols.Bound(e => e.Email)
+                .Title(translator.T("Email"))
+                .Width(150)
+                .Filterable((filter) => filter.Mode(GridFilterMode.Menu));
+            cols.Bound(e => e.Phone)
+                .Title("Phone")
+                .Width(150)
+                .Filterable((filter) => filter.Mode(GridFilterMode.Menu)); ;
+        })
         );
 
         cols.Bound(e => e.PayType)
@@ -126,15 +133,15 @@
             toMonth = Model.FilterTo.Value.Month,
             toDay = Model.FilterTo.Value.Day
         })))
-            //.Read("read", "Orders", new
-            //{
-            //    fromYear = Model.FilterFrom.Value.Year,
-            //    fromMonth = Model.FilterFrom.Value.Month,
-            //    fromDay = Model.FilterFrom.Value.Day,
-            //    toYear = Model.FilterTo.Value.Year,
-            //    toMonth = Model.FilterTo.Value.Month,
-            //    toDay = Model.FilterTo.Value.Day
-            //})
+        //.Read("read", "Orders", new
+        //{
+        //    fromYear = Model.FilterFrom.Value.Year,
+        //    fromMonth = Model.FilterFrom.Value.Month,
+        //    fromDay = Model.FilterFrom.Value.Day,
+        //    toYear = Model.FilterTo.Value.Year,
+        //    toMonth = Model.FilterTo.Value.Month,
+        //    toDay = Model.FilterTo.Value.Day
+        //})
         .ServerOperation(false)
         .Aggregates(aggs =>
         {
@@ -165,7 +172,7 @@
             items.Add()
                 .Text("Emails")
                 .Content(@<text>
-                    
+
                     <div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -182,12 +189,12 @@
 
                 </text>);
 
-            items.Add()
-                .Text("Bringg")
- 
-                .Content(@<text>
-                    @Html.Partial("_bringg")
-                </text>);
+items.Add()
+        .Text("Bringg")
+
+        .Content(@<text>
+            @Html.Partial("_bringg")
+        </text>);
 
 
         }).ToClientTemplate())

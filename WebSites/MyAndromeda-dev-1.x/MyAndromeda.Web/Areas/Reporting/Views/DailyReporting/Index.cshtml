@@ -4,7 +4,7 @@
 @model IReportingContext
 @{
     var today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Utc);
-
+    var authorizer = this.Html.GetAuthorizer();
     var dailyFilter = new FilterQuery() { FilterFrom = today, FilterTo = DateTime.Today.AddDays(1).AddSeconds(-1) };
     var weeklyFilter = new FilterQuery() { FilterFrom = today.AddDays(-7), FilterTo = today };
     var monthlyFilter = new FilterQuery() { FilterFrom = today.AddDays(-30), FilterTo = today };
@@ -35,53 +35,150 @@
 <div id="dashboardreport">
     <div class="header">
         @*<a class="k-button k-button-change-date">Change Date</a>*@
-        <h3>Store Dashboard for @Model.SiteName</h3>
-
+        <h3>AMS Orders</h3>
+        <p class="subtitle-block">The data is updated once day and will always a day behind. Visit the ACS reports for todays orders.</p>
     </div>
     <div id="ChartWrapper">
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <div class="header">
-                    <div class="clearfix">
-                        <h3>Today's Online Orders</h3>
-                        <a class="k-button" href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = true })">
-                            More
-                        </a>
+            @*<div class="col-xs-12 col-md-6 col-lg-4">
+                    <div class="header">
+                        <div class="clearfix">
+                            <h3>Today's Online Orders</h3>
+                            <a class="k-button" href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = true })">
+                                More
+                            </a>
+                        </div>
+                        <div>
+                            @dailyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                            @dailyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                        </div>
                     </div>
-                    <div>
-                        @dailyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
-                        @dailyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    @Html.Action("Daily", "Orders", dailyFilter)
+                </div>*@
+
+            @if (authorizer.Authorize(MyAndromeda.Web.Areas.Reporting.EnrollmentPermissions.BasicAcsReportsFeature))
+            {
+                <div class="col-sm-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                ACS - Today
+                            </div>
+                            
+                        </div>
+                        <div class="panel-body">
+
+                            <span class="btn-group">
+
+                                <a class="btn btn-default"
+                                   href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo, ShowInStoreOrders = false, ShowOnlineOrders = true })">
+                                    On-line
+                                </a>
+
+                                <a href="@Url.Action("List", "Orders", new { dailyFilter.FilterFrom, dailyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = false})"
+                                   class="btn btn-default">
+                                    In-store*
+                                </a>
+                            </span>
+
+                        </div>
                     </div>
-                </div>
-                @Html.Action("Daily", "Orders", dailyFilter)
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <div class="header">
-                    <div class="clearfix">
-                        <h3>All Orders - Last 7 days</h3>
-                        <a class="k-button" href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders= true })">More</a>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                ACS - Last 7 days
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <span class="btn-group">
+
+                                @*<a class="btn btn-primary"
+                                       title="On-line and in-store orders"
+                                       href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = true })">
+                                        All Orders
+                                    </a>*@
+
+                                <a class="btn btn-default"
+                                   href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo, ShowInStoreOrders = false, ShowOnlineOrders = true })">
+                                    On-line
+                                </a>
+
+                                <a href="@Url.Action("List", "Orders", new { weeklyFilter.FilterFrom, weeklyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = false})"
+                                   class="btn btn-default">
+                                    In-store*
+                                </a>
+                            </span>
+                        </div>
                     </div>
-                    <div>
-                        @weeklyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
-                        @weeklyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                ACS - Last 30 days
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="btn-group">
+
+                                @*<a class="btn btn-primary"
+                                       title="On-line and in-store orders"
+                                       href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = true })">
+                                        All Orders
+                                    </a>*@
+
+                                <a class="btn btn-default"
+                                   href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo, ShowInStoreOrders = false, ShowOnlineOrders = true })">
+                                    On-line
+                                </a>
+
+                                <a href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = false })"
+                                   class="btn btn-default">
+                                    In-store*
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            * Requires a up-to date version of Rameses
+                        </div>
                     </div>
                 </div>
 
-                @Html.Action("Range", "DailyReporting", weeklyFilter)
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
-                <div class="header">
-                    <div class="clearfix">
-                        <h3>All Orders - Last 30 Days</h3>
-                        <a class="k-button" href="@Url.Action("List", "Orders", new { monthlyFilter.FilterFrom, monthlyFilter.FilterTo, ShowInStoreOrders = true, ShowOnlineOrders = true })">More</a>
+               
+            }
+
+            <div class="col-xs-12 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">All Orders - Previous 7 days</div>
+                        <div class="text-info">
+                            @weeklyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                            @weeklyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                        </div>
                     </div>
-                    <div>
-                        @monthlyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
-                        @monthlyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                    <div class="panel-body">
+                        @Html.Action("Range", "DailyReporting", weeklyFilter)
                     </div>
 
                 </div>
-                @Html.Action("Range", "DailyReporting", monthlyFilter)
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            All Orders - Previous 30 days
+
+                        </div>
+                        <div class="text-info">
+                            @monthlyFilter.FilterFrom.GetValueOrDefault().ToString("g") -
+                            @monthlyFilter.FilterTo.GetValueOrDefault().AddSeconds(-1).ToString("g")
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @Html.Action("Range", "DailyReporting", monthlyFilter)
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

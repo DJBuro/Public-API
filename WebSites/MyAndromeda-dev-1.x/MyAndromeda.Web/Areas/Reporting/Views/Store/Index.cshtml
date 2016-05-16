@@ -34,8 +34,10 @@
 <div id="dashboardreport">
     <div class="header">
         @*<a class="k-button k-button-change-date">Change Date</a>*@
-        <h3>ACS Sales Dashboard</h3>
-        <p class="subtitle-block">Online orders</p>
+        <h3>ACS - On-line Sales Dashboard</h3>
+        <a href="@Url.Action("InStore", "Store", new { Area = "Reporting" })" class="btn btn-info">In-store orders</a>
+        <p class="subtitle-block">Orders from AndroWeb or other integrators</p>
+        
 @*        <p class="subtitle-block">
             <span data-bind="text: today"></span>
         </p>
@@ -50,7 +52,7 @@
     <div id="ChartWrapper">
         <div class="row">
 
-            <div class="col-xs-12 col-md-6 col-lg-4">
+            <div class="col-xs-12 col-sm-4">
                 <div class="header">
                     <h3>Today's Orders</h3>
                     <h3 style="display:none">
@@ -62,7 +64,7 @@
                 </div>
                 @Html.Action("Daily", "Orders", dailyFilter)
             </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
+            <div class="col-xs-12 col-sm-4">
                 <div class="header">
                     <h3>Last 7 days</h3>
                     <h3 style="display:none">
@@ -74,7 +76,7 @@
                 </div>
                 @Html.Action("Week", "Orders", weeklyFilter)
             </div>
-            <div class="col-xs-12 col-md-6 col-lg-4">
+            <div class="col-xs-12 col-sm-4">
                 <div class="header">
                     <h3>Last 30 Days</h3>
                     <h3 style="display:none">

@@ -44,7 +44,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        OrdersSummary GetSummary(FilterQuery filter);
+        OrdersSummaryDomainModel GetSummary(FilterQuery filter);
     }
 
 

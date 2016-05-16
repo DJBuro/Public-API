@@ -18,6 +18,7 @@ using MyAndromeda.Data.DataWarehouse.Services.Customers;
 using MyAndromeda.Web.Areas.Reporting.ViewModels;
 using MyAndromeda.Data.DataWarehouse.Models;
 using MyAndromeda.Framework.Contexts;
+using MyAndromedaDataAccess.Domain.Reporting;
 
 namespace MyAndromeda.Web.Areas.Reporting.Controllers
 {
@@ -59,7 +60,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
         [ChildActionOnly]
         public ActionResult IndexChild(FilterQuery filter, [DataSourceRequest]DataSourceRequest request) 
         {
-            var model = orderService.GetSummary(filter);
+            OrdersSummaryDomainModel model = orderService.GetSummary(filter);
 
             return PartialView(model);
         }
@@ -67,7 +68,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
         [ChildActionOnly]
         public ActionResult Daily(FilterQuery filter) 
         {
-            var model = orderService.GetSummary(filter);
+            OrdersSummaryDomainModel model = orderService.GetSummary(filter);
 
             return PartialView(model);
         }
@@ -84,7 +85,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
         [ChildActionOnly]
         public ActionResult Month(FilterQuery filter)
         {
-            var model = orderService.GetSummary(filter);
+            OrdersSummaryDomainModel model = orderService.GetSummary(filter);
 
             return PartialView(model);
         }
@@ -99,11 +100,11 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             }
             //var model = orderService.GetOrderPopularity(filter);
 
-            var orderlimit = orderService.GetMaxLimitsOnOrderPopularity(filter);
+            Data.DataWarehouse.LineItemLimits orderlimit = orderService.GetMaxLimitsOnOrderPopularity(filter);
 
-            var vm = new ViewModels.PopularItemsViewModel() { 
+            var vm = new PopularItemsViewModel() { 
                 OrderQuantityMax = orderlimit.QuantitySoldInAllOrders.Max,
-                OrderSumMax = orderlimit.SumPriceOfAllItemsInAllOrders.Max.DevideBy(100),
+                OrderSumMax = orderlimit.SumPriceOfAllItemsInAllOrders.Max.DevideBy(value: 100),
                 Filter = filter
             };
 
@@ -129,7 +130,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             if (!customerId.HasValue)
             {
                 //var customer = this.acsCustomerDataService.GetCustomerByAcsOrderId(orderHeaderId.GetValueOrDefault());
-                var customer = this.acsCustomerDataService.Query()
+                Customer customer = this.acsCustomerDataService.Query()
                     .Where(e => e.OrderHeaders.Any(orderHeader => orderHeader.ID == orderHeaderId))
                     .SingleOrDefault();
 
@@ -142,7 +143,8 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
                     .Where(e => e.CustomerID == customerId.Value && e.ExternalSiteID == this.currentSite.ExternalSiteId);
             }
 
-            var result = data.ToDataSourceResult(request, e => e.ToViewModel(dateServices));
+            DataSourceResult result = data.ToDataSourceResult(request, e => e.ToViewModel(dateServices));
+
             return Json(result);
         }
 
@@ -162,7 +164,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
                 FilterTo = dateServices.ConvertToUtcFromLocal(new DateTime(toYear, toMonth, toDay))
             };
 
-            var data = orderService
+            IQueryable<OrderHeader> data = orderService
                 .GetListData(filter)
                 .OrderByDescending(e=> e.TimeStamp);
 
@@ -174,7 +176,8 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             };
 
             request.ReMap(remapDictionary);
-            var result = data.ToDataSourceResult(request, e=> e.ToViewModel(dateServices));
+
+            DataSourceResult result = data.ToDataSourceResult(request, e=> e.ToViewModel(dateServices));
             
             return Json(result);
         }
@@ -192,7 +195,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
                 };
             }
 
-            var model = orderService.GetSummary(filter);
+            OrdersSummaryDomainModel model = orderService.GetSummary(filter);
 
             return Json(model.OrderData.OrderBy(e=> e.Day));
         }

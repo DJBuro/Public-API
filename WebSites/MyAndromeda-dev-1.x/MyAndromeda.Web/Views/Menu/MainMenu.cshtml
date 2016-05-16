@@ -184,17 +184,22 @@ if (reportingFeature && userPermission)
                 bool acsRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature);
                 bool ramesesRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
 
+                
+                //ACS - Online orders or from integrators
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                {
+                    reportingItems.Add().Text("ACS On-line Orders").Action("Index", "Store", new { Area = "Reporting" });
+                }
+                //In store - Rameses live reporting-ish 
+                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                {
+                    reportingItems.Add().Text("ACS In-store Orders").Action("InStore", "Store", new { Area = "Reporting" });
+                }
+                //End of ACS 
+
                 if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllOrdersReport))
                 {
-                    reportingItems.Add().Text("All Orders").Action("Index", "DailyReporting", new { Area = "Reporting" });
-                }
-                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
-                {
-                    reportingItems.Add().Text("Online Orders").Action("Index", "Store", new { Area = "Reporting" });
-                }
-                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
-                {
-                    reportingItems.Add().Text("In Store Orders").Action("InStore", "Store", new { Area = "Reporting" });
+                    reportingItems.Add().Text("AMS Orders").Action("Index", "DailyReporting", new { Area = "Reporting" });
                 }
                 if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewPerformanceReport))
                 {
@@ -331,7 +336,7 @@ if (storeCanAccessMenu && userCanAccessMenu)
             {
                 authItems.Add()
                 .Text(translator.T("All Users"))
-                .SpriteCssClasses("fa fa-users")
+                //.SpriteCssClasses("fa fa-users")
                 .Route("Users_list", new { controller = "UserManagement" });
             }
             //authItems.Add()

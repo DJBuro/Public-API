@@ -21,10 +21,10 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
             this.reportingContext = reportingContext;
         }
 
-        public OrdersSummary GetSummary(FilterQuery filter)
+        public OrdersSummaryDomainModel GetSummary(FilterQuery filter)
         {
-            var orderData = this.GetData(filter);
-            var orderSummary = new OrdersSummary(orderData);
+            IEnumerable<SummaryByDay<decimal>> orderData = this.GetData(filter);
+            var orderSummary = new OrdersSummaryDomainModel(orderData);
 
             return orderSummary;
         }
@@ -33,10 +33,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
         {
             IEnumerable<SummaryByDay<decimal>> result = Enumerable.Empty<SummaryByDay<decimal>>();
 
-            
-
-
-            if (filter.ShowInStoreOrders)
+            if (filter.ShowInStoreOrders && ! filter.ShowOnlineOrders)
             {
                 result =
                     orderDataService.GetTotalOrdersByDay(
@@ -47,19 +44,28 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
                             filter.FilterTo > e.TimeStamp &&
                             filter.FilterFrom < e.TimeStamp);
 
-                return result;
             }
+            else if (filter.ShowOnlineOrders && !filter.ShowInStoreOrders)
+            {
+                result =
+                    orderDataService.GetTotalOrdersByDay(
+                        e =>
+                            e.ApplicationName != "Rameses" &&
+                            e.ExternalSiteID == reportingContext.ExternalSiteId &&
+                            filter.FilterTo > e.TimeStamp &&
+                            filter.FilterFrom < e.TimeStamp);
 
-            result =
-                orderDataService.GetTotalOrdersByDay(
-                    e =>
-                        e.ApplicationName != "Rameses" &&
-                        e.ExternalSiteID == reportingContext.ExternalSiteId &&
-                        filter.FilterTo > e.TimeStamp &&
-                        filter.FilterFrom < e.TimeStamp);
-
-            return result;
-
+            }
+            else
+            {
+                result =
+                    orderDataService.GetTotalOrdersByDay(
+                        e =>
+                            //(e.OrderType != "Delivery" && e.OrderType != "Collection") &&
+                            //e.ApplicationName == "Rameses" &&
+                            e.ExternalSiteID == reportingContext.ExternalSiteId &&
+                            filter.FilterTo > e.TimeStamp && filter.FilterFrom < e.TimeStamp);
+            }
             //IEnumerable<SummaryByDay<decimal>> ordersByDay =
             //    orderDataService.GetTotalOrdersByDay(e =>
             //        e.ExternalSiteID == reportingContext.ExternalSiteId &&
@@ -76,7 +82,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
 
             if (filter.ShowInStoreOrders)
             {
-                var onlineOrders = orderDataService.GetOrders(
+                IQueryable<OrderHeader> onlineOrders = orderDataService.GetOrders(
                         e =>
                             e.ApplicationName == "Rameses" &&
                             e.ExternalSiteID == reportingContext.ExternalSiteId &&
@@ -86,7 +92,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
                 return onlineOrders;
             }
 
-            var orders = orderDataService.GetOrders(
+            IQueryable<OrderHeader> orders = orderDataService.GetOrders(
                 e =>
                     e.ApplicationName != "Rameses" &&
                     e.ExternalSiteID == reportingContext.ExternalSiteId &&
@@ -103,8 +109,8 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
             //Guid siteExternalId;
             //if (Guid.TryParse(reportingContext.ExternalId, out siteExternalId))
             {
-                var orders = orderDataService
-                                             .GetOrderLineSummary(e => e.OrderHeader.ExternalSiteID == reportingContext.ExternalSiteId &&
+                IEnumerable<SummaryOfLineItem> orders = orderDataService
+                                              .GetOrderLineSummary(e => e.OrderHeader.ExternalSiteID == reportingContext.ExternalSiteId &&
                                                                        e.OrderHeader.TimeStamp > filter.FilterFrom &&
                                                                        e.OrderHeader.TimeStamp < filter.FilterTo);
 
