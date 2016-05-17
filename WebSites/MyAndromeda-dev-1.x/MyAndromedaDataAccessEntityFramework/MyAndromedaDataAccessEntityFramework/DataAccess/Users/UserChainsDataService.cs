@@ -9,7 +9,6 @@ using MyAndromeda.Core.User;
 using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
-using Domain = MyAndromedaDataAccess.Domain;
 using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.Domain;
 
@@ -18,9 +17,28 @@ namespace MyAndromeda.Data.DataAccess.Users
     public class UserChainsDataService : IUserChainsDataService
     {
         private readonly IMyAndromedaLogger logger;
-
-        private readonly AndroAdminDbContext androAdminDbContext;
         private readonly MyAndromedaDbContext myAndromedaDbContext;
+
+        /// <summary>
+        /// From AndroAdmin 
+        /// </summary>
+        public DbSet<Chain> Chains { get; private set; }
+
+        /// <summary>
+        /// From AndroAdmin .. what are you doing here?
+        /// </summary>
+        public DbSet<AndroWebOrderingWebsite> AndroWebOrderingWebsites { get; private set; }
+
+        /// <summary>
+        /// From AndroAdmin 
+        /// </summary>
+        public DbSet<ChainChain> ChainChains { get; private set; }
+
+
+        /// <summary>
+        /// MyAndromeda Link to chains
+        /// </summary>
+        public DbSet<UserChain> UserChains { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserChainsDataService" /> class.
@@ -28,12 +46,20 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <param name="logger">The logger.</param>
         /// <param name="androAdminDbContext">The andro admin db context.</param>
         /// <param name="myAndromedaDbContext">My andromeda db context.</param>
-        public UserChainsDataService(IMyAndromedaLogger logger,
+        public UserChainsDataService(
+            IMyAndromedaLogger logger,
             AndroAdminDbContext androAdminDbContext,
             MyAndromedaDbContext myAndromedaDbContext)
         {
             this.logger = logger;
-            this.androAdminDbContext = androAdminDbContext;
+            this.Chains = androAdminDbContext.Chains;
+            this.AndroWebOrderingWebsites = androAdminDbContext.AndroWebOrderingWebsites;
+            this.ChainChains = androAdminDbContext.ChainChains;
+
+            this.UserChains = myAndromedaDbContext.UserChains;
+            
+
+            //this.androAdminDbContext = androAdminDbContext;
             this.myAndromedaDbContext = myAndromedaDbContext;
         }
 
@@ -44,9 +70,6 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <returns></returns>
         public IEnumerable<ChainDomainModel> GetChainsForUser(int userId)
         {
-            bool failedAtMyAndromeda = false;
-            //bool failedAtAndroAdmin = false;
-
             IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
 
             try
@@ -56,8 +79,8 @@ namespace MyAndromeda.Data.DataAccess.Users
                 //fetch list in myandromeda to compare to androadmin 
                 try
                 {
-                    var userChainsTable = this.myAndromedaDbContext.UserChains;
-                    var userChainsQuery = userChainsTable
+                    DbSet<UserChain> userChainsTable = this.UserChains;
+                    IQueryable<int> userChainsQuery = userChainsTable
                                                          .Where(e => e.UserRecordId == userId)
                                                          .Select(e => e.ChainId);
 
@@ -70,20 +93,19 @@ namespace MyAndromeda.Data.DataAccess.Users
                     this.logger.Error("Chains Loaded from MyAndromeda failed", e);
                     this.logger.Error("Connection string:" + context.Database.Connection.ConnectionString);
 
-                    failedAtMyAndromeda = true;
 
                     throw e;
                 }
 
-                var chainTable = this.androAdminDbContext.Chains
+                Chain[] chainTable = this.Chains
                                      .Include(e => e.Children)
                                      .Include(e => e.Parents)
                                      .ToArray();
 
-                var chainQuery = chainTable.Where(e => accessibleChains.Contains(e.Id));
+                IEnumerable<Chain> chainQuery = chainTable.Where(e => accessibleChains.Contains(e.Id));
 
                 //top node on the chain structure 
-                var chainResult = chainQuery.ToArray();
+                Chain[] chainResult = chainQuery.ToArray();
 
                 if (chainResult.Length == 0)
                 {
@@ -94,13 +116,8 @@ namespace MyAndromeda.Data.DataAccess.Users
             }
             catch (Exception e)
             {
-                if (failedAtMyAndromeda)
-                {
-                    throw e;
-                }
-
                 this.logger.Error("Chains Loaded from AndroAdmin failed", e);
-                this.logger.Error("Connection string:" + this.androAdminDbContext.Database.Connection.ConnectionString);
+                //this.logger.Error("Connection string:" + this.androAdminDbContext.Database.Connection.ConnectionString);
 
                 throw;
             }
@@ -116,7 +133,7 @@ namespace MyAndromeda.Data.DataAccess.Users
 
             if (chainsResult.ToList().Count > 0)
             {
-                var websites = this.androAdminDbContext.AndroWebOrderingWebsites.ToList();
+                List<AndroWebOrderingWebsite> websites = this.AndroWebOrderingWebsites.ToList();
                 androWebOrderingSites = (from aws in websites
                                             join cr in chainsResult on (aws.ChainId == null ? 0 : aws.ChainId) equals cr.Id
                                             select aws).ToList();
@@ -144,7 +161,7 @@ namespace MyAndromeda.Data.DataAccess.Users
                 IEnumerable<int> accessibleChains = Enumerable.Empty<int>();
                 //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
                 {
-                    DbSet<UserChain> userChainsTable = this.myAndromedaDbContext.UserChains;
+                    DbSet<UserChain> userChainsTable = this.UserChains;
                     IQueryable<int> userChainsQuery = userChainsTable
                                                          .Where(e => e.UserRecordId == userId)
                                                          .Select(e => e.ChainId);
@@ -154,7 +171,7 @@ namespace MyAndromeda.Data.DataAccess.Users
                     accessibleChains = userChainsResult;
                 }
 
-                DbSet<Chain> chainTable = this.androAdminDbContext.Chains;
+                DbSet<Chain> chainTable = this.Chains;
                 IQueryable<Chain> chainQuery = chainTable
                                            .Where(query)
                                            .Where(e => accessibleChains.Any(chainId => chainId == e.Id));
@@ -180,22 +197,19 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// <param name="userId">The user id.</param>
         public void AddChainLinkToUser(ChainDomainModel chain, int userId)
         {
-            //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
+            DbSet<UserChain> userChainsTable = this.UserChains;
+            if (userChainsTable.Any(e => e.ChainId == chain.Id && e.UserRecordId == userId))
             {
-                var userChainsTable = this.myAndromedaDbContext.UserChains;
-                if (userChainsTable.Any(e => e.ChainId == chain.Id && e.UserRecordId == userId))
-                {
-                    return;
-                }
-
-                var link = userChainsTable.Create();
-                link.ChainId = chain.Id;
-                link.UserRecordId = userId;
-
-                userChainsTable.Add(link);
-
-                this.myAndromedaDbContext.SaveChanges();
+                return;
             }
+
+            UserChain link = userChainsTable.Create();
+            link.ChainId = chain.Id;
+            link.UserRecordId = userId;
+
+            userChainsTable.Add(link);
+
+            this.myAndromedaDbContext.SaveChanges();
         }
 
         /// <summary>
@@ -206,14 +220,11 @@ namespace MyAndromeda.Data.DataAccess.Users
         public IEnumerable<MyAndromedaUser> FindUsersDirectlyBelongingToChain(int chainId)
         {
             IEnumerable<MyAndromedaUser> myAndromedaUserusers;
+            
+            IEnumerable<UserRecord> userRecords = this.UserChains.Where(e => e.ChainId == chainId).Select(e => e.UserRecord);
+            UserRecord[] result = userRecords.ToArray();
 
-            //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
-            {
-                IEnumerable<UserRecord> userRecords = this.myAndromedaDbContext.UserChains.Where(e => e.ChainId == chainId).Select(e => e.UserRecord);
-                var result = userRecords.ToArray();
-
-                myAndromedaUserusers = result.Select(e => e.ToDomain()).ToArray();
-            }
+            myAndromedaUserusers = result.Select(e => e.ToDomainModel()).ToArray();
 
             return myAndromedaUserusers;
         }
@@ -222,50 +233,44 @@ namespace MyAndromeda.Data.DataAccess.Users
         {
             IEnumerable<ChainDomainModel> chains = Enumerable.Empty<ChainDomainModel>();
 
-            //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
-            {
-                var userChainsTable = this.myAndromedaDbContext.UserChains;
-                var userChainsquery = userChainsTable.Where(e => e.UserRecordId == userId).Select(e => e.ChainId).ToArray();
+            DbSet<UserChain> userChainsTable = this.UserChains;
+            int[] userChainsquery = userChainsTable.Where(e => e.UserRecordId == userId).Select(e => e.ChainId).ToArray();
 
-                //using (var androAdminDbContext = new Model.AndroAdmin.AndroAdminDbContext())
+            IQueryable<Chain> chainsquery = this.Chains.Where(chain => userChainsquery.Contains(chain.Id));
+            ChainDomainModel[] chainsResult = chainsquery
+                .ToArray()
+                .Select(e => new ChainDomainModel()
                 {
-                    var chainsquery = this.androAdminDbContext.Chains.Where(chain => userChainsquery.Contains(chain.Id));
-                    var chainsResult = chainsquery.ToArray().Select(e => new ChainDomainModel()
-                    {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Culture = e.Culture
-                    }).ToArray();
+                    Id = e.Id,
+                    Name = e.Name,
+                    Culture = e.Culture
+                })
+                .ToArray();
 
-                    chains = chainsResult;
-                }
-            }
+            chains = chainsResult;
 
             return chains;
         }
 
         public void RemoveChainLinkToUser(int userId, int chainId)
         {
-            //using (var myAndromedaDbContext = new Model.MyAndromeda.MyAndromedaDbContext())
+            DbSet<UserChain> table = this.UserChains;
+            IQueryable<UserChain> query = table.Where(e => e.ChainId == chainId && e.UserRecordId == userId);
+            UserChain[] results = query.ToArray();
+
+            foreach (var result in results)
             {
-                var table = this.myAndromedaDbContext.UserChains;
-                var query = table.Where(e => e.ChainId == chainId && e.UserRecordId == userId);
-                var results = query.ToArray();
-
-                foreach (var result in results)
-                {
-                    this.myAndromedaDbContext.UserChains.Remove(result);
-                }
-
-                this.myAndromedaDbContext.SaveChanges();
+                this.UserChains.Remove(result);
             }
+
+            this.myAndromedaDbContext.SaveChanges();
         }
 
         private IEnumerable<ChainDomainModel> CreateHierarchyStructure(Chain[] results)
         {
             var chains = new List<ChainDomainModel>(results.Length);
 
-            var linkTable = this.androAdminDbContext.ChainChains;
+            DbSet<ChainChain> linkTable = this.ChainChains;
             var linkQuery = linkTable
                                      .Where(e => e.ParentChainId > 0)
                                      .Select(e => new

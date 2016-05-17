@@ -5,7 +5,7 @@ namespace MyAndromeda.Data.DataAccess.Users
 {
     public static class UserDataServiceExtensions 
     {
-        public static MyAndromedaUser ToDomain(this UserRecord user) 
+        public static MyAndromedaUser ToDomainModel(this UserRecord user) 
         {
             var domainModel = new MyAndromedaUser()
             {

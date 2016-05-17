@@ -20,7 +20,7 @@
         <i class="fa fa-users"></i>
         @if (context.CurrentChain.Available)
         {
-            <span>for '@Model.CurrentChain.Chain.Name' Chain</span>
+            <span>For '@Model.CurrentChain.Chain.Name' Chain</span>
         }
         else
         {
@@ -29,22 +29,22 @@
     </h3>
     @if (this.Html.IsAuthorizedFor(UsersPermissions.CreateUsers))
     {
-        <a class="k-button" href="@Url.Action("Create")">
+        <a class="btn btn-primary" href="@Url.Action("Create")">
             <i class="fa fa-user-plus"></i> @translator.T("Add User")
         </a>
     }
 </div>
-
+@* Create the template to enable / disable users. *@
 @using (disableEnableUser.CreateTemplate)
 {
 
     <div>
         #if(Enabled) { #
-        <a class="k-button" href="@Url.ActionClientTemplate("Disable", "UserManagement", new { UserId = "#= Id #" })">
+        <a class="btn btn-danger" href="@Url.ActionClientTemplate("Disable", "UserManagement", new { UserId = "#= Id #" })">
             Disable
         </a>
         # }else{  #
-        <a class="k-button" href="@Url.ActionClientTemplate("Enable", "UserManagement", new { UserId = "#= Id #" })">
+        <a class="btn btn-default" href="@Url.ActionClientTemplate("Enable", "UserManagement", new { UserId = "#= Id #" })">
             Enable
         </a>
         # } #
@@ -53,47 +53,42 @@
 
 @using (editUserTemplate.CreateTemplate)
 {
-    <a class='k-button' href="@Url.ActionClientTemplate("EditUser", "UserManagement", new { UserId = "#=Id#" })">Edit User</a>
-}
-
-@using (editRolesTemplate.CreateTemplate)
-{
-    <a class='k-button' href="@Url.ActionClientTemplate("EditRoles","UserManagement", new { UserId = "#=Id#" })"> Edit Roles</a>
+    <div class="btn-group">
+        <a class="btn btn-default" href="@Url.ActionClientTemplate("EditUser", "UserManagement", new { UserId = "#=Id#" })">Edit User</a>
+        <a class="btn btn-default" href="@Url.ActionClientTemplate("EditRoles","UserManagement", new { UserId = "#=Id#" })">Edit Roles</a>
+    </div>
 }
 
 @(Html.Kendo().Grid(Model.Users).Name("UserList")
-    .Filterable(f => f.Enabled(true).Mode(GridFilterMode.Row))
-
+        .Filterable(f => f.Enabled(true))
+        
 
     .Columns(cols =>
+     {
+     cols.Bound(e => e.Firstname).Filterable(true);
+     cols.Bound(e => e.Surname);
+     cols.Bound(e => e.Username);
+
+
+     if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
+     {
+        cols.Template(@<text></text>)
+            .Width(200)
+            .ClientTemplate(editUserTemplate.Result);
+    }
+
+    if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
     {
-        cols.Bound(e => e.Firstname).Filterable(true);
-        cols.Bound(e => e.Surname);
-        cols.Bound(e => e.Username);
+        cols.Bound(e => e.Enabled)
+            .Title("Status")
+            .Width(100)
+            .ClientTemplate(disableEnableUser.Result);
+    }
 
-
-        if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
-        {
-            cols.Template(@<text></text>)
-                .ClientTemplate(editRolesTemplate.Result);
-        }
-
-
-        if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers))
-        {
-            cols.Template(@<text></text>)
-                .ClientTemplate(editUserTemplate.Result);
-        }
-
-        if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
-        {
-            cols.Bound(e => e.Enabled)
-                .ClientTemplate(disableEnableUser.Result);
-        }
-
-    }).DataSource(d =>
-        d.Ajax().ServerOperation(false).Sort(e => e.Add(field => field.Surname))
-
+     }).DataSource(d =>
+         d.Ajax().ServerOperation(false)
+            .Sort(e => e.Add(field => field.Surname))
+            
     )
     .Pageable()
     .Sortable()

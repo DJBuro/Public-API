@@ -115,7 +115,7 @@ namespace MyAndromeda.Framework.Services
         {
             var user = this.userDataService.Query(entity => entity.Username == username).SingleOrDefault();
 
-            return user.ToDomain();
+            return user.ToDomainModel();
         }
 
         public UserRecord GetUserRecord(string username)
@@ -140,7 +140,7 @@ namespace MyAndromeda.Framework.Services
 
             var context = new UserEventContext()
             {
-                User = user.ToDomain()
+                User = user.ToDomainModel()
             };
 
             foreach (var userEvent in this.userEventHandlers) 
@@ -153,14 +153,14 @@ namespace MyAndromeda.Framework.Services
                 return null;
             }
 
-            return user.ToDomain();
+            return user.ToDomainModel();
         }
 
         public bool SetPassword(UserRecord entity, string password, bool saveChanges = true)
         {
             var context = new UserEventContext()
             {
-                User = entity.ToDomain()
+                User = entity.ToDomainModel()
             };
 
             foreach (var userEvent in this.userEventHandlers)

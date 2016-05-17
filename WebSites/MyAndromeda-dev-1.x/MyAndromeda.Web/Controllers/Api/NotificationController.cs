@@ -21,7 +21,7 @@ namespace MyAndromeda.Web.Controllers.Api
 
         [HttpPost]
         [Route("api/{AndromedaSiteId}/Notify")]
-        public async Task<HttpResponseMessage> Notify([FromBody]NotificationContext notification) 
+        public HttpResponseMessage Notify([FromBody]NotificationContext notification) 
         {
             this.notifierEvent.OnNotify(notification);
 
@@ -30,7 +30,7 @@ namespace MyAndromeda.Web.Controllers.Api
 
         [HttpPost]
         [Route("api/{AndromedaSiteId}/Success")]
-        public async Task<HttpResponseMessage> Success([FromBody]NotificationContext notification)
+        public HttpResponseMessage Success([FromBody]NotificationContext notification)
         {
             this.notifierEvent.OnSuccess(notification);
 
@@ -39,7 +39,7 @@ namespace MyAndromeda.Web.Controllers.Api
 
         [HttpPost]
         [Route("api/{AndromedaSiteId}/Error")]
-        public async Task<HttpResponseMessage> Error([FromBody]NotificationContext notification)
+        public HttpResponseMessage Error([FromBody]NotificationContext notification)
         {
             this.notifierEvent.OnNotify(notification);
 
@@ -48,7 +48,7 @@ namespace MyAndromeda.Web.Controllers.Api
 
         [HttpPost]
         [Route("api/{AndromedaSiteId}/Announce")]
-        public async Task<HttpResponseMessage> Announce([FromBody]NotificationContext notification) 
+        public HttpResponseMessage Announce([FromBody]NotificationContext notification) 
         {
             this.notifierEvent.OnNotify(notification);
 
