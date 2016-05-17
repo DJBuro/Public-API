@@ -429,6 +429,7 @@
     <TypeScriptCompile Include="App\AndroWebOrdering\MyAndromeda.WebOrdering.UpSelling.ts" />
     <TypeScriptCompile Include="App\Api\DriversApi.ts" />
     <TypeScriptCompile Include="App\Api\OrdersApi.ts" />
+    <TypeScriptCompile Include="App\Chain\Directives.ts" />
     <TypeScriptCompile Include="App\Debug\OrdersApp.ts" />
     <TypeScriptCompile Include="App\General\Authorizer.ts" />
     <TypeScriptCompile Include="App\General\Core.ts" />
@@ -2742,11 +2743,13 @@
     <Compile Include="Controllers\Api\Reporting\OrdersController.cs" />
     <Compile Include="Controllers\Api\Status.cs" />
     <Compile Include="Controllers\Api\Store\Models\StoreOccasionTimeModel.cs" />
+    <Compile Include="Controllers\Api\User\AuthorizationController.cs" />
     <Compile Include="Controllers\Api\User\ChainAndStoreController.cs" />
     <Compile Include="Controllers\Api\User\Models\ChainModel.cs" />
     <Compile Include="Controllers\Api\User\Models\StoreEnrollment.cs" />
     <Compile Include="Controllers\Api\User\Models\StoreEnrollmentQueryModel.cs" />
     <Compile Include="Controllers\Api\User\Models\StoreModel.cs" />
+    <Compile Include="Controllers\Api\User\Models\UserCountModel.cs" />
     <Compile Include="Controllers\Api\WebHooks\WebHookNotificationApiController.cs" />
     <Compile Include="Controllers\Api\WebHooks\SendGridWebHookController.cs" />
     <Compile Include="Controllers\Api\WebOrdering\AndroWebOrderingThemeController.cs" />
@@ -2825,8 +2828,8 @@
     <TypeScriptCompile Include="App\DeliveryZonesByRadius\MyAndromeda.DeliveryZonesByRadius.Services.DeliveryZonesByRadiusApiService.ts" />
     <TypeScriptCompile Include="App\DeliveryZonesByRadius\MyAndromeda.DeliveryZonesByRadius.Settings.ts" />
     <TypeScriptCompile Include="App\MenuEditor\MyAndromeda.Menu.App.ts" />
-    <TypeScriptCompile Include="App\Chain\MyAndromeda.Chain.Services.TreeviewMapService.ts" />
-    <TypeScriptCompile Include="App\Chain\MyAndromeda.Chain.Models.d.ts" />
+    <TypeScriptCompile Include="App\Chain\TreeviewMapService.ts" />
+    <TypeScriptCompile Include="App\Chain\Models.d.ts" />
     <TypeScriptCompile Include="App\MenuEditor\MyAndromeda.Menu.Controllers.ToppingsController.ts" />
     <TypeScriptCompile Include="App\MenuEditor\MyAndromeda.Menu.Logger.ts" />
     <TypeScriptCompile Include="App\MenuEditor\MyAndromeda.Menu.Services.ToppingsService.ts" />
@@ -3506,7 +3509,7 @@
     <None Include="Web.test1.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <TypeScriptCompile Include="App\Chain\MyAndromeda.Chain.Services.ChainService.ts" />
+    <TypeScriptCompile Include="App\Chain\ChainService.ts" />
     <TypeScriptCompile Include="App\Store\MyAndromeda.Store.Services.StoreService.ts" />
     <Content Include="App\EmailTools.js.map">
       <DependentUpon>EmailTools.ts</DependentUpon>

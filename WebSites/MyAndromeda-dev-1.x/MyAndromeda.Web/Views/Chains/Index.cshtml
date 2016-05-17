@@ -57,8 +57,8 @@
 
 <script type="text/template" id="store-list-template">
     @*<div>
-            {{dataItem.Name}}
-    </div>*@
+                {{dataItem.Name}}
+        </div>*@
     <div class="container-fluid">
 
         <div class="row">
@@ -165,8 +165,8 @@
                                 </a>
 
                                 @*<a ng-if="dataItem.HasRameses" class="btn btn-default btn-sm" href="/Reporting/Chain/{{chain.Id}}/{{dataItem.ExternalSiteId}}/DailyReporting">
-                                    @translator.T("Rameses")
-                                </a>*@
+                                        @translator.T("Rameses")
+                                    </a>*@
 
                             </div>
 
@@ -196,16 +196,29 @@
     </span>
 
     <span style="white-space:normal">
+        
         <span class="btn-group pull-right" ng-if="status.hasStores">
+
             @if (showChainReportButton)
             {
-                <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">Chain Reports</a>
+                <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">
+                    <i class="fa fa-pie-chart"></i>
+                    Chain Reports
+                </a>
             }
             @if (showBetaReportButton)
             {
-                <a class="btn btn-danger" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">Beta Reports</a>
+                <a class="btn btn-default" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">
+                    <i class="fa fa-pie-chart"></i>
+                    Beta Reports
+                </a>
             }
         </span>
+
+        <span class="btn-group pull-right">
+            <manage-chain-users chain-id="chain.Id"></manage-chain-users>
+        </span>
+
     </span>
 
     <div ng-if="status.hasStores">

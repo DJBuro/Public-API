@@ -8,7 +8,7 @@ using Ninject;
 
 namespace MyAndromeda.Framework.Authorization
 {
-    [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class MyAndromedaAuthorizeAttribute : AuthorizeAttribute, IDependencyFilter
     {
         public MyAndromedaAuthorizeAttribute()
@@ -56,11 +56,11 @@ namespace MyAndromeda.Framework.Authorization
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (filterContext == null)
-                throw new ArgumentNullException("filterContext");
+                throw new ArgumentNullException(paramName: "filterContext");
 
-            var allowAnonymous =
-                filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true) ||
-                filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true);
+            bool allowAnonymous =
+                filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true)||
+                filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
 
             if (allowAnonymous)
             {
@@ -82,7 +82,7 @@ namespace MyAndromeda.Framework.Authorization
 
         protected override bool AuthorizeCore(System.Web.HttpContextBase httpContext)
         {
-            var baseAuthroized = base.AuthorizeCore(httpContext);
+            bool baseAuthroized = base.AuthorizeCore(httpContext);
             if (!baseAuthroized)
                 return false;
 
@@ -107,7 +107,7 @@ namespace MyAndromeda.Framework.Authorization
         private bool AuthorizeLocation(AuthorizationContext filterContext)
         {
             string redirectReason = "You do not have access to this location";
-            var authorizedToChainLevel = this.Authorizer.AuthorizedForChainAndStore();
+            ChainAndSiteAuthorization authorizedToChainLevel = this.Authorizer.AuthorizedForChainAndStore();
 
             //not browsing anything significant
             if (authorizedToChainLevel.NotAccessingChain && authorizedToChainLevel.NotAccessingSite)
@@ -130,7 +130,7 @@ namespace MyAndromeda.Framework.Authorization
             //ie they have entered another site id that doesn't belong to chain 
             if (authorizedToChainLevel.IsUserAllowedAtChainLevel && !authorizedToChainLevel.IsUserAllowedToSiteWithinChain)
             {
-                this.Logger.Error("User : {0} is trying to access a site that doesn't belong to their chain.", this.WorkContext.CurrentUser.User.Username);
+                this.Logger.Error(format: "User : {0} is trying to access a site that doesn't belong to their chain.", arg0: this.WorkContext.CurrentUser.User.Username);
                 this.Notifier.Notify(redirectReason);
 
                 return false;
@@ -139,7 +139,7 @@ namespace MyAndromeda.Framework.Authorization
             //force the chain id to be correct 
             if ((!authorizedToChainLevel.IsUserAllowedToSiteWithinChain))
             {
-                this.Logger.Error("Unauthorized reason: The site is correct but the chain isn't -> fix by redirect | user : {0}", this.WorkContext.CurrentUser.User.Username);
+                this.Logger.Error(format: "Unauthorized reason: The site is correct but the chain isn't -> fix by redirect | user : {0}", arg0: this.WorkContext.CurrentUser.User.Username);
                 this.Notifier.Notify(redirectReason);
 
                 return false;

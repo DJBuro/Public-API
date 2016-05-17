@@ -184,20 +184,20 @@ if (reportingFeature && userPermission)
                 bool acsRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicAcsReportsFeature);
                 bool ramesesRole = authorizer.Authorize(ReportingPermissions.EnrollmentPermissions.BasicRamesesReportsFeature);
 
-                
-                //ACS - Online orders or from integrators
-                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+
+                    //ACS - Online orders or from integrators
+                    if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
                 {
                     reportingItems.Add().Text("ACS On-line Orders").Action("Index", "Store", new { Area = "Reporting" });
                 }
-                //In store - Rameses live reporting-ish 
-                if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
+                    //In store - Rameses live reporting-ish
+                    if (acsRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllAcsOrdersReport))
                 {
                     reportingItems.Add().Text("ACS In-store Orders").Action("InStore", "Store", new { Area = "Reporting" });
                 }
-                //End of ACS 
+                    //End of ACS
 
-                if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllOrdersReport))
+                    if (ramesesRole && authorizer.Authorize(ReportingPermissions.UserReportingPermissions.ViewAllOrdersReport))
                 {
                     reportingItems.Add().Text("AMS Orders").Action("Index", "DailyReporting", new { Area = "Reporting" });
                 }
@@ -335,42 +335,46 @@ if (storeCanAccessMenu && userCanAccessMenu)
             if (Html.IsAuthorizedFor(UserPermissions.ListUsers))
             {
                 authItems.Add()
-                .Text(translator.T("All Users"))
-                //.SpriteCssClasses("fa fa-users")
-                .Route("Users_list", new { controller = "UserManagement" });
+                    .Text(translator.T("All Users"))
+                    //.SpriteCssClasses("fa fa-users")
+                    .Route("Users_list", new { controller = "UserManagement" });
             }
-            //authItems.Add()
-            //    .Text(translator.T("Chain"))
-            //    .SpriteCssClasses("fa fa-sitemap")
-            //    .Enabled(workContext.CurrentChain.Available)
-            //    .Items(chainItems =>
-            //    {
-            //        if (workContext.CurrentChain.Available)
-            //        {
-            //            chainItems.Add()
-            //                .Text(translator.T("Users"))
-            //                .Enabled(workContext.CurrentChain.Available)
-            //                .Action("Index", "UserManagement", new { Area = "Users" });
-            //            chainItems.Add()
-            //                .Text(translator.T("Culture"))
-            //                .Enabled(workContext.CurrentChain.Available)
-            //                .Action("UpdateCulture", "Chains", new { Area = "", ChainId = workContext.CurrentChain.Chain.Id });
-            //        }
-            //    });
+
+            
 
             if (Html.IsAuthorizedFor(SiteEntrollmentPermissions.ViewSiteEnrollment))
             {
                 authItems.Add()
-                .Text(translator.T("Store Enrolment Levels"))
-                .Action("Levels", "StoreEnrolmentPermission", new { Area = "Authorization" });
+                    .Text(translator.T("Store Enrolment Levels"))
+                    .Action("Levels", "StoreEnrolmentPermission", new { Area = "Authorization" });
             }
 
             if (Html.IsAuthorizedFor(UserRolePermissions.ViewUserRoleDefinitions))
             {
                 authItems.Add()
-                .Text(translator.T("User Roles"))
-                .Action("Levels", "UserRoleAuthorization", new { Area = "Authorization" });
+                    .Text(translator.T("User Roles"))
+                    .Action("Levels", "UserRoleAuthorization", new { Area = "Authorization" });
             }
+
+            authItems.Add()
+                .Text(translator.T("Chain"))
+                .SpriteCssClasses("fa fa-sitemap")
+                .Enabled(workContext.CurrentChain.Available)
+                .Items(chainItems =>
+                {
+                    if (workContext.CurrentChain.Available)
+                    {
+                        chainItems.Add()
+                            .Text(translator.T("Users"))
+                            .Enabled(workContext.CurrentChain.Available)
+                            .Action("Index", "UserManagement", new { Area = "Users" });
+
+                        chainItems.Add()
+                            .Text(translator.T("Culture"))
+                            .Enabled(workContext.CurrentChain.Available)
+                            .Action("UpdateCulture", "Chains", new { Area = "", ChainId = workContext.CurrentChain.Chain.Id });
+                    }
+                });
         });
     }
 

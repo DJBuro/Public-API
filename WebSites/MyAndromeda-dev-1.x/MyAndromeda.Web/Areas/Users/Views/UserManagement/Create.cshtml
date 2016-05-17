@@ -4,16 +4,11 @@
     var translator = Html.GetTranslator();
 }
 <div class="row">
-    <div class="col-xs-12">
-	    <div class="header">
-	        <h3>@translator.T("Create/Add a user")</h3>
-	        <a class="k-button" href="@Url.Action("Index")">Back</a>
-	
-	    </div>
-    </div>
-    <div class="col-xs-12" id="CreateUserWrapper">
+    
+    <div class="col-sm-12" id="CreateUserWrapper">
         <div class="header">
-            <h4>@translator.T("Create user")</h4>
+            <h3>@translator.T("Create user")</h3>
+            <a class="k-button" href="@Url.Action("Index")">Back</a>
         </div>
         @using (Html.BeginForm())
         {

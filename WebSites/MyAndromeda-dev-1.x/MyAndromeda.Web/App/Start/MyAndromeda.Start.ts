@@ -5,7 +5,7 @@
             "ngAnimate",
             "MyAndromeda.Start.Config",
             "MyAndromeda.Hr",
-            
+            "MyAndromeda.Chain.Directives"
         ]);
 
     export function setupStart(id: string) {

@@ -20,11 +20,11 @@
         <i class="fa fa-users"></i>
         @if (context.CurrentChain.Available)
         {
-            <span>For '@Model.CurrentChain.Chain.Name' Chain</span>
+            <span>'@Model.CurrentChain.Chain.Name' Users</span>
         }
         else
         {
-            <span>Everyone everywhere</span>
+            <span>All Users Everywhere</span>
         }
     </h3>
     @if (this.Html.IsAuthorizedFor(UsersPermissions.CreateUsers))
@@ -61,34 +61,34 @@
 
 @(Html.Kendo().Grid(Model.Users).Name("UserList")
         .Filterable(f => f.Enabled(true))
-        
+
 
     .Columns(cols =>
-     {
-     cols.Bound(e => e.Firstname).Filterable(true);
-     cols.Bound(e => e.Surname);
-     cols.Bound(e => e.Username);
+    {
+    cols.Bound(e => e.Firstname).Filterable(true);
+    cols.Bound(e => e.Surname);
+    cols.Bound(e => e.Username);
 
 
-     if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
-     {
+    if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
+    {
         cols.Template(@<text></text>)
             .Width(200)
             .ClientTemplate(editUserTemplate.Result);
-    }
+        }
 
-    if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
-    {
-        cols.Bound(e => e.Enabled)
-            .Title("Status")
-            .Width(100)
-            .ClientTemplate(disableEnableUser.Result);
-    }
+        if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
+        {
+            cols.Bound(e => e.Enabled)
+                .Title("Status")
+                .Width(100)
+                .ClientTemplate(disableEnableUser.Result);
+        }
 
-     }).DataSource(d =>
-         d.Ajax().ServerOperation(false)
-            .Sort(e => e.Add(field => field.Surname))
-            
+    }).DataSource(d =>
+        d.Ajax().ServerOperation(false)
+           .Sort(e => e.Add(field => field.Surname))
+
     )
     .Pageable()
     .Sortable()
@@ -119,27 +119,27 @@
             .Items(items =>
             {
                 items.Add().Text(translator.T("Linked Chains")).Content(@<text>
-                    <p>@translator.T("This is a list of the chains the user has been connected to. They then access any chain below their node.")</p>
-                    @Html.Partial("_LinkedChains")
+        <p>@translator.T("This is a list of the chains the user has been connected to. They then access any chain below their node.")</p>
+        @Html.Partial("_LinkedChains")
                 </text>);
 
                 items.Add().Text(translator.T("Access to")).Content(@<text>
-            <p>@translator.T("This is a list of every chain that the user can visit.")</p>
-            @Html.Partial("_AllChains")
+        <p>@translator.T("This is a list of every chain that the user can visit.")</p>
+        @Html.Partial("_AllChains")
                 </text>);
 
                 items.Add().Text(translator.T("User Roles")).Content(@<text>
-            @Html.Partial("_UserRoles")
+        @Html.Partial("_UserRoles")
                 </text>);
 
                 items.Add().Text(translator.T("User IP locks")).Content(@<text>
-            <p>@translator.T("This section defines where the user can access from.")</p>
-            @Html.Partial("_UserIPLocks")
+        <p>@translator.T("This section defines where the user can access from.")</p>
+        @Html.Partial("_UserIPLocks")
                 </text>);
 
                 items.Add().Text(translator.T("Linked Stores")).Content(@<text>
-            <p>@translator.T("This is a list of the stores the user has been connected to.")</p>
-            @Html.Partial("_LinkedStores")
+        <p>@translator.T("This is a list of the stores the user has been connected to.")</p>
+        @Html.Partial("_LinkedStores")
                 </text>);
 
             }).ToClientTemplate())

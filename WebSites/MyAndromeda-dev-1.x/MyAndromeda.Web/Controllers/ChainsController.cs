@@ -12,10 +12,11 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Collections.Generic;
 using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.Domain;
 
 namespace MyAndromeda.Web.Controllers
 {
-    [MyAndromedaAuthorizeAttribute]
+    [MyAndromedaAuthorize]
     public class ChainsController : Controller
     {
         private readonly ICurrentChain currentChain;
@@ -48,21 +49,21 @@ namespace MyAndromeda.Web.Controllers
         // GET: /Chains/
         public ActionResult Index()
         {
-            var chains = currentUser.FlattenedChains;
+            ChainDomainModel[] chains = currentUser.FlattenedChains;
             
             //no need to see chains here.
             if (chains.Length == 1) 
             {
-                var chain = chains.Single();
+                ChainDomainModel chain = chains.Single();
                 return RedirectToAction(actionName: "Index", controllerName: "Reports", routeValues: new { ChainId = chain.Id, Area = "ChainReporting" });    
             }
 
             int[] chainIds = currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
-            Dictionary<int, Data.Domain.SiteDomainModel[]> chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
+            Dictionary<int, SiteDomainModel[]> chainStoreList = this.siteDataService.List(e => chainIds.Contains(e.ChainId)).ToLookup(e => e.ChainId).ToDictionary(e => e.Key, e => e.ToArray());
 
             foreach (var storeList in chainStoreList) 
             {
-                var chain = currentUser.FlattenedChains.FirstOrDefault(e => e.Id == storeList.Key);
+                ChainDomainModel chain = currentUser.FlattenedChains.FirstOrDefault(e => e.Id == storeList.Key);
                 chain.Stores = storeList.Value;
             }
 
@@ -83,7 +84,7 @@ namespace MyAndromeda.Web.Controllers
         /// <returns></returns>
         public JsonResult ListSites(int chainId, bool deepSearch = false) 
         {
-            var sites = this.chainDataService.GetSiteList(chainId);
+            IEnumerable<SiteDomainModel> sites = this.chainDataService.GetSiteList(chainId);
 
             return Json(sites.Select(e=> new {
                 e.ExternalSiteId,
@@ -95,7 +96,7 @@ namespace MyAndromeda.Web.Controllers
         [HttpPost]
         public JsonResult ListSiteGrid([DataSourceRequest]DataSourceRequest request, int chainId) 
         {
-            var sites = this.chainDataService.GetSiteList(chainId);
+            IEnumerable<SiteDomainModel> sites = this.chainDataService.GetSiteList(chainId);
 
             return Json(sites.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -121,9 +122,9 @@ namespace MyAndromeda.Web.Controllers
 
             this.chainDataService.Update(model.Chain);
 
-            this.notifier.Notify(translator.T("Your chain details has been updated"));
+            this.notifier.Notify(translator.T(text: "Your chain details has been updated"));
 
-            if (string.IsNullOrWhiteSpace(model.ReturnUrl)) { return RedirectToAction("Index"); }
+            if (string.IsNullOrWhiteSpace(model.ReturnUrl)) { return RedirectToAction(actionName: "Index"); }
 
             return Redirect(model.ReturnUrl);
         }
@@ -132,13 +133,13 @@ namespace MyAndromeda.Web.Controllers
         {
             if (!userId.HasValue) 
             {
-                var models = currentUser.FlattenedChains;
+                ChainDomainModel[] models = currentUser.FlattenedChains;
 
                 return Json(models.ToDataSourceResult(request, this.ModelState));
             }
 
-            var userList = userChainDataService.GetChainsForUser(userId.Value);
-            var userDefined = CurrentUser.FlatternChains(userList);
+            IEnumerable<ChainDomainModel> userList = userChainDataService.GetChainsForUser(userId.Value);
+            IEnumerable<ChainDomainModel> userDefined = CurrentUser.FlatternChains(userList);
 
             return Json(userDefined.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
         }
@@ -147,9 +148,10 @@ namespace MyAndromeda.Web.Controllers
         {
             if (currentUser.Available)
             {
-                var models = currentUser.FlattenedChains;
+                ChainDomainModel[] models = currentUser.FlattenedChains;
                 return Json(models, JsonRequestBehavior.AllowGet);
             }
+
             return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
         }
 

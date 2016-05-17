@@ -10,18 +10,21 @@ using MyAndromeda.Data.Model.AndroAdmin;
 using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.Domain;
+using MyAndromeda.Web.Controllers.Api.User.Models;
 
 namespace MyAndromeda.Web.Controllers.Api.User
 {
     public class ChainAndStoreController : ApiController
     {
-        readonly ICurrentUser currentUser;
-        readonly AndroAdminDbContext androAdminDataContext;
-        readonly MyAndromedaDbContext myAndromedaDataContext;
-        readonly IMyAndromedaLogger logger;
-        readonly IAuthorizer authorizer;
+        private readonly AndroAdminDbContext androAdminDataContext;
+        private readonly MyAndromedaDbContext myAndromedaDataContext;
+
+        private readonly ICurrentUser currentUser;
+        private readonly IMyAndromedaLogger logger;
+        private readonly IAuthorizer authorizer;
 
         public ChainAndStoreController(
+            IMyAndromedaLogger logger,
             IAuthorizer authorizer,
             ICurrentUser currentUser,
             AndroAdminDbContext androAdminDataContext,
