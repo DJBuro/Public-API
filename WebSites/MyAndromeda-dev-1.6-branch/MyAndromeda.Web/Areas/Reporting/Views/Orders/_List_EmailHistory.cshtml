@@ -1,0 +1,96 @@
+﻿@{
+    var workContext = Html.GetWorkContext();
+}
+
+<div class="masterEmailHistory">
+    <div class="row" data-template="EmailHistoryTemplate" data-bind="source: this">
+
+    </div>
+
+</div>
+
+
+@using (Html.BeginScripts("EmailList"))
+{
+    <script type="text/javascript">
+        function initilizeEmailTempalte(e) {
+            var detailRow = e.detailRow;
+            var detailData = e.data;
+
+            var route =
+                //"api/{andromedaSiteId}/email-history/order/{orderId}";
+                "/api/{0}/email-history/order/{1}";
+
+            route = kendo.format(route, '@workContext.CurrentSite.AndromediaSiteId', detailData.Id);
+
+            var request = $.ajax({
+                url: route,
+                type: "GET",
+                dataType: "json"
+            });
+
+            var setContent = function (e, data) {
+                var b = e.contents().find("body");
+                b.html(data.Content);
+            };
+
+            request.success(function (data) {
+                var row = $(detailRow);
+                var element = row.find("div.masterEmailHistory");
+
+                kendo.bind(element, data);
+
+                var emailFrame = row.find("iframe");
+
+                setTimeout(function (e) {
+                    setContent(emailFrame, data);
+                }, 2000)
+
+                setContent(emailFrame, data);
+            });
+        }
+    </script>
+
+    <script type="text/html" id="EmailHistoryTemplate">
+        #if (data === null){#
+            <div>No email has been created</div>
+        #}else{#
+        <iframe class="col-sm-8" style="height:400px;">
+            <html>
+            <head>
+                <meta title="Hi" />
+            </head>
+            <body>
+
+            </body>
+        </html>
+    </iframe>
+    <div class="col-sm-4">
+        <div class="header">
+            Categories
+        </div>
+        <ul>
+            #for(var i=0;i < Categories.length; i++){#
+            <li>
+                #=Categories[i] #
+            </li>
+            #}#
+        </ul>
+        <div class="header">
+            History
+        </div>
+        <ul>
+            #for(var i=0; i < History.length; i++){ #
+            #var d = kendo.parseDate(History[i].TimeStamp);#
+            <li>
+                #= History[i].EventType #
+                #= kendo.toString(d, "g") #
+            </li>
+            #}#
+        </ul>
+    </div>
+        #}#
+
+        
+</script>
+}

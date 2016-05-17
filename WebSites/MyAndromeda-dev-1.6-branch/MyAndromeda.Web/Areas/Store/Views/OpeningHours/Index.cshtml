@@ -1,0 +1,232 @@
+﻿@model MyAndromeda.Web.Areas.Store.Models.OpeningTimesViewModel
+
+@{
+    var workContext = Html.GetWorkContext();
+    ViewBag.Title = "OpeningTimes";
+}
+@Html.Action("OpeningHours", "Help")
+
+
+<div class="header">
+    <h3>@workContext.CurrentSite.Site.ClientSiteName Opening Hours</h3>
+    <a class="k-button" href="@Url.Action("Index", "Store", new { Area = "Store" })">Back</a>
+</div>
+
+@(Html.Kendo().TabStrip().Name("openingHoursOptions").Items(items =>
+{
+
+    items.Add().Text("Opening Hours").Selected(true).Content(@<text>
+        <div class="alert alert-info" role="alert">If the occasion start and end is different to the opening times ie. Only Deliver for the last 3 hours of the day then assign them in the occasion tab.</div>
+
+        @Html.ValidationSummary()
+
+        <div class="clearfix">
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Monday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Tuesday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Wednesday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Thursday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Friday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Saturday" } })
+            @Html.Partial("ChangeOpeningHourPartial", Model, new ViewDataDictionary { { "Day", "Sunday" } })
+        </div>
+
+        <div style="clear:both;"></div>
+
+    </text>);
+
+    items.Add().Text("Occasion Times").Content(@<text>
+
+
+        <div id="store-scheduler">
+            <div ui-view></div>
+        </div>
+
+    </text>);
+
+
+}))
+
+
+
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+
+            var element = $("#store-scheduler");
+            var chainId = '@workContext.CurrentChain.Chain.Id';
+            var andromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
+            MyAndromeda.Stores.OpeningHours.boostrap(element, chainId, andromedaSiteId);
+
+        });
+    </script>
+    <script type="text/ng-template" id="occasionTask.html">
+
+        <div ng-if="!extra.allDay" class="label label-default">
+            <i class="fa fa-clock-o"></i> {{::extra.startTime}} - {{::extra.endTime}}
+        </div>
+        <div ng-if="extra.allDay" class="label label-default">
+            <i class="fa fa-clock-o"></i> 18:00 - 06:00
+        </div>
+        <div ng-if="!extra.allDay" class="label label-default">{{::extra.hours |  number:1 }} h</div>
+
+        @*<div class="label label-default" ng-repeat="occasion in state.occasions">
+            <i class="fa fa-cutlery" style="color:{{::getColour(occasion)}} "></i>
+            {{::occasion | limitTo: 2 }}
+          </div>*@
+
+        <div ng-if="task.title">
+            <span class="label label-default">{{::task.title}}</span>
+        </div>
+
+    </script>
+
+    <script type="text/ng-template" id="OpeningHours-template.html">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="alert alert-info" role="alert">
+                        Add specific times for collection / delivery / dine in as needed.<br />
+                        These times will filter the available times that appear during a day on AndroWeb. 
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-group">
+                        <a class="btn btn-primary" ng-click="create()">Create</a>
+                        <a class="btn btn-danger" ng-click="clearAll()">Clear All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div kendo-scheduler="OccasionScheduler" k-options="schedulerOptions">
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="occasionTaskEditor.html">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Occasion settings
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="label label-default">Title:</div>
+
+                                    <input name="title" id="title" class="k-textbox" type="text" required placeholder="Title" ng-model="task.title" ng-change="task.set('dirty', true)" />
+                                    <div style="margin-top:2em">
+                                        <div data-for="title" class="k-invalid-msg" style="display: none;"></div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div>&nbsp;</div>
+                                    <label>
+                                        <input type="checkbox" ng-model="task.isAllDay" /> All day?
+                                        <span class="label label-default">6:00AM - 6:00AM</span>
+                                        <span class="label" style="color:#000">eg. Monday 6AM - Tuesday 6AM</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row" ng-if="!task.isAllDay">
+
+                                <div class="col-sm-6">
+                                    <div class="label label-default">Start:</div>
+                                    <input kendo-date-time-picker required
+                                           name="start"
+                                           k-ng-model="task.start"
+                                           style="width: 100%;" />
+                                    <div class="label label-default">{{task.start | date:"fullDate" }}</div>
+                                    <span data-for="start" class="k-invalid-msg" style="display: none;"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="label label-default">End:</div>
+                                    <input kendo-date-time-picker required
+                                           name="end"
+                                           k-ng-model="task.end"
+                                           style="width: 100%;" />
+                                    <div class="label label-default">{{task.end | date:"fullDate"}}</div>
+                                    <span data-for="end" class="k-invalid-msg" style="display: none;"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="label label-default">Occasion Type(s): - occasions available during this day/slot</div>
+
+                                    <select required kendo-multi-select k-options="occasionOptions" k-ng-model="task.Occasions"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Repeat occasion on different days</div>
+                        <div class="panel-body">
+                            <repeat-weekly-editor task="task"></repeat-weekly-editor>
+
+                            @*<div data-container-for="recurrenceRule">
+                                    <div data-bind="value:recurrenceRule" name="recurrenceRule" data-role="recurrenceeditor"></div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </script>
+    <script type="text/ng-template" id="repeatWeeklyEditor.html">
+        <div class="label label-default">Repeat on these days:</div>
+        <div>
+            <label>
+                <input type="checkbox" ng-model="rule.Monday" ng-change="ruleChanged()" />
+                Mon
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Tuesday" ng-change="ruleChanged()" />
+                Tue
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Wednesday" ng-change="ruleChanged()" />
+                Wed
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Thursday" ng-change="ruleChanged()" />
+                Thur
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Friday" ng-change="ruleChanged()" />
+                Fri
+            </label>
+
+
+        </div>
+        <div class="label label-default">Weekend:</div>
+        <div>
+            <label>
+                <input type="checkbox" ng-model="rule.Saturday" ng-change="ruleChanged()" />
+                Sat
+            </label>
+            <label>
+                <input type="checkbox" ng-model="rule.Sunday" />
+                Sun
+            </label>
+        </div>
+    </script>
+}

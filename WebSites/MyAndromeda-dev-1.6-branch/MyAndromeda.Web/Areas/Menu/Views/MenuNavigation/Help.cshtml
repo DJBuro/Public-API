@@ -1,0 +1,60 @@
+﻿@using (Html.BeginHelpSection("Getting Started", TabArea.Help, true)) 
+{
+    <div class="header">
+        <h3>Getting Started</h3>
+    </div>
+        <p>
+        There are two significant parts to the editor currently: 
+    </p>
+    <ul>
+        <li>Web Names / Descriptions - you can add/change web names and descriptions for your online products.</li>
+        <li>Product Thumbnails - the ability to upload and change thumbnails for each product.</li>
+    </ul>
+    <p>
+        Click the edit button on a product item to get going. Use the drop down filters at the top to aid in finding particular menu items, or type in a product name in the top left filter.  
+    </p>
+}
+
+@using (Html.BeginHelpSection("Online descriptions", TabArea.Help)) 
+{ 
+    <div class="header">
+        <h3>Edit Online titles / descriptions</h3>
+    </div>
+    <div class="important">
+        <p>These changes go to store first. Therefore any changes will not be apparent till the following day after the Ramasses restarts and loads in the changes.</p>
+        <p>If no menu database can be found and only the published online menu is available then this section will be disabled.</p>
+    </div>
+}
+
+@using (Html.BeginHelpSection("Updating images", TabArea.Help))
+{
+    <div class="header">
+        <h3>Adding/Editing Images</h3>
+    </div>
+    <div>
+        <p>To add an image to a menu item:</p>
+        <ol>
+            <li>Edit the menu item that you want to update with an image</li>
+            <li>Click on the select files button</li>
+            <li>Navigate to the folder where your images are</li>
+            <li>After selecting a image (jpg, png...) the site will automatically begin uploading the image to be processed</li>
+        </ol>
+        <p>Once the image is uploaded it will be processed, this is so:</p>
+        <ul>
+            <li>One can optimize sizes for the menu appearance on different devices</li>
+            <li>Reduce file size to speed up browsing of the menu</li>
+        </ul>
+        <p>Editing is the same procedure as above and it will automatically replace the current thumbnail</p>
+    </div>
+}
+
+@using (Html.BeginHelpSection("Finished? Publish.", TabArea.Help))
+{ 
+    <div class="header">
+        <h3>Publishing</h3>
+    </div>
+    <p>Once all changes have been applied to the menu you can finalize the changes to begin appearing on websites.</p>
+    <p>
+        Publishing commits all the changes you have made to the menu to appear on your live site. 
+    </p>
+}

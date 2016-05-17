@@ -1,0 +1,63 @@
+﻿@{
+    var translator = Html.GetTranslator();
+    var context = Html.GetWorkContext();
+}
+
+
+<div data-role="modalview" id="publishPanel" class="col-sm-6" style="width:400px; max-width:400px">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                @translator.T("Publish Menu")
+            </div>
+            
+        </div>
+        <div class="panel-body">
+            <ul data-role="panelbar">
+                <li class="k-state-active">
+                    <span class="k-link k-state-selected">@translator.T("What do you want to publish?")</span>
+                    <div class="content" style="padding:1em">
+                        <p>@translator.T("Select the parts of the menu that need publishing")</p>
+                        <label>
+                            <input type="checkbox" data-bind="checked: publishMenu" style="margin-right:1em" />@translator.T("Store Menu")
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" data-bind="checked: publishThumbnails" style="margin-right:1em" />@translator.T("Menu Thumbnails")
+                        </label>
+                    </div>
+                </li>
+                <li class="k-state-active">
+                    <span>@translator.T("When do you want to publish?")</span>
+                    <div class="content" style="padding:1em">
+                        <div>
+                            <label>
+                                <input name="publishNow" value="now" type="radio" data-bind="checked: publishNow" style="margin-right:1em" />
+                                @translator.T("Now")
+                            </label>
+@*
+    <br />
+    <label>
+        <input name="publishNow" value="later" type="radio" data-bind="checked: publishNow" style="margin-right:1em" />
+        @translator.T("Later")
+    </label>*@
+                        </div>
+                        <div data-bind="visible: publishLater">Publish Date</div>
+                        <div data-bind="visible: publishLater">
+                            <input class="futureDate" data-role="datepicker" data-bind="value: publishOn, minDate: minDate" style="width: 180px" />
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+            <br />
+
+            <span class="btn-group">
+                <a class="btn btn-primary" data-bind="click: publishLaterClick">@translator.T("Finish")</a>
+                <a class="btn btn-default" data-bind="click: cancel">@translator.T("Cancel")</a>
+            </span>
+               
+
+        </div>
+    </div>
+</div>

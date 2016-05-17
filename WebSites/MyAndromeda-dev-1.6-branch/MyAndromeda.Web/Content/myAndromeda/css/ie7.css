@@ -1,0 +1,85 @@
+
+h1 {
+	line-height: 100%;
+}
+
+#logo h1 {
+	padding-top: 5px;
+}
+
+#logo p {
+	margin-top: -8px;
+}
+
+#wrapper {
+	margin-bottom: 15px;
+}
+
+/*== Fixes the empty div issue ==*/
+.clear {
+	height: 0px !important;
+	zoom: 1;
+}
+
+/*== Fxes the padding issue wiht the form submit button ==*/
+#submit, #post-comment {
+	padding: 6px 0px;
+}
+
+
+/*== The bottom border in the tabs nav is visible ==*/
+.tab-nav li a.current {
+	padding-bottom: 8px;
+	
+}
+
+/*==  Fixes the bottom margin for author info in the blog post page  ==*/
+.post-author {
+	margin-bottom: 15px;
+}
+
+
+/*==  Fixes the thew extra margin for latest post list   ==*/
+
+.latest-blog-posts li h5 {
+	margin-top: -15px;
+}
+
+#sidebar .latest-blog-posts li h5 {
+	margin-top: -22px;
+}
+
+/*==   Positioning the right async slider arrow   ==*/
+
+#asyncslider_next_prev_nav li.next a {
+	left: 960px;
+	margin-top: -44px !important;
+}
+
+
+/*==   Fixesthe padding around the default input text  ==*/
+
+#search-box {
+	height: 24px;
+	padding-top: 7px;
+}
+
+
+/*==  Places top and bottom borders for header and tagline replacing 
+the box-shadow trick for adding borders used in other browsers  ==*/
+
+body {
+	border-top: none;
+}
+
+#header {	
+	border-top: 5px solid #151515;
+    border-bottom: 5px solid #151515;
+    margin-bottom: 41px;
+}
+
+.container {
+	border-top: 5px solid #151515;
+    border-bottom: 5px solid #151515;
+    margin-bottom: 40px;
+}

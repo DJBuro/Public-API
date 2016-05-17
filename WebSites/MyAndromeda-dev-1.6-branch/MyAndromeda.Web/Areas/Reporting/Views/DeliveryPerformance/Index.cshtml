@@ -1,0 +1,227 @@
+﻿@model dynamic
+
+<div class="header">
+    <h3>Delivery Performance - 30 days</h3>
+</div>
+
+@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.DeliveryPerformanceViewModel>().Name("DaillyDeliveryPerformance")
+    .Sortable()
+    .ClientDetailTemplateId("DaillyDeliveryPerformanceDetailTemplate")
+    .Pageable()
+    .Columns(cols => {
+    cols.Bound(e => e.Time)
+        .Title("Date")
+        .ClientTemplate("#: kendo.toString(Time, 'd') # (#: kendo.toString(Time, 'ddd') #)")
+        .Width("150px");
+    cols.Bound(e => e.TotalDeliveryOrders)
+        .Title("Deliveries")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Under15).Title("Under 15")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between15And20)
+        .Title("15 - 20")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between20And25)
+        .Title("20 - 25")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between25And30)
+        .Title("25 - 30")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between30And35)
+        .Title("30 - 35")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between35And45)
+        .Title("35 - 45")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between45And60)
+        .Title("45 - 60")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Over60)
+        .Title("> 60 Mins ")
+        .ClientFooterTemplate("#: sum #");
+}).DataSource(data => data.Ajax()
+    .ServerOperation(false)
+    .Aggregates(aggs => {
+        aggs.Add(a => a.TotalDeliveryOrders).Sum();
+        aggs.Add(a => a.Under15).Sum();
+        aggs.Add(a => a.Between15And20).Sum();
+        aggs.Add(a => a.Between20And25).Sum();
+        aggs.Add(a => a.Between25And30).Sum();
+        aggs.Add(a => a.Between30And35).Sum();
+        aggs.Add(a => a.Between35And45).Sum(); 
+        aggs.Add(a => a.Between45And60).Sum();
+        aggs.Add(a => a.Over60).Sum();
+    })
+    .Read(read => read.Action("ReadDaily", "DeliveryPerformance", new { }))
+))
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var grid = $("#DaillyDeliveryPerformance").data("kendoGrid");
+            grid.bind("detailInit", function (e) {
+                var row = e.data;
+                var date = row.Time;
+                var url = "@Url.Action("Read", "DeliveryPerformance", new { FilterFrom = "FROM" })".replace("FROM", date.toJSON());
+
+                var vmActions = kendo.observable({
+                    showLess15: true,
+                    show15to20: true,
+                    show20to25: true,
+                    show25to30: true,
+                    show30to35: true,
+                    show35to45: true,
+                    show45to60: true,
+                    showMore60: true
+                });
+
+                var actions = e.detailRow.find(".actions");
+                var content = e.detailRow.find(".content");
+
+                kendo.bind(actions, vmActions);
+
+                var loadHourly = $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: url
+                });
+
+                loadHourly.done(function (e) {
+                    var vm = kendo.observable({
+                        Data: e.Data,
+                        schema: {
+                            model: {
+                                fields: {
+                                    "Time": { "type": "date" }
+                                }
+                            }
+                        }
+                    });
+                    kendo.bind(content, vm);
+                });
+            });
+        });
+    </script>
+    <script type="text/template" id="DaillyDeliveryPerformanceDetailTemplate">
+        <div class="k-widget">
+            <div class="k-header actions">
+                <ul class="k-reset list-inline">
+                    <li><span class="k-icon k-i-funnel"></span></li>
+                    <li><span><i>Click on a legend label to hide or show a series.</i></span></li>
+                    @*<li><span><i>Hover on a legend label to highlight a series on the chart</i></span></li>*@
+                    @*<li><label><input type="checkbox" data-bind="checked: showLess15" /><span class="k-link"><15</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show15to20" /><span class="k-link">15-20</span> </label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show20to25" /> <span class="k-link">20-25</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show25to30" /> <span class="k-link">25-30</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show30to35" /> <span class="k-link">30-35</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show35to45" /> <span class="k-link">35-45</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: show45to60" /> <span class="k-link">45-60</span></label></li>
+                    <li><label><input type="checkbox" data-bind="checked: showMore60" /> <span class="k-link">>60</span></label></li>*@
+                </ul>
+            </div>
+            <div class="content">
+                @*<div data-bind="text: AndromediaSiteId"></div>*@
+                <div class="k-chart-detail"  
+                    data-bind="source: Data" 
+                    data-title="Hourly Delivery Performance"
+                    data-role="chart" 
+                    data-theme="bootstrap"
+                    data-legend="{ position: 'top' }"
+                    data-series-defaults="{ type: 'column' }"
+                    data-category-axis="{ 
+                        field: 'Time', 
+                        baseUnit: 'hour', 
+                        type: 'date', 
+                        labels: { rotation: -90 }, 
+                        majorGridLines: { visible: true },
+                        axisCrossingValues: [0, 0, 30, 30]
+                    }"
+                    data-value-axis="[
+                        { name: 'orderCount', title: { text: 'Orders' }, visible: true },
+                    ]"
+                    data-tooltip="{
+                        visible: true,
+                        template: $('\\#BigPerformanceToolTipTemplate').html()
+                    }"
+                    @*data-series-colors="['\\#000000', '\\#111111', '\\#222222', '\\#333333']"*@
+                    data-series="[
+                        { name: 'Delivery', field: 'TotalDeliveryOrders', axis:'orderCount', type: 'line', visible: true },
+@*                      { name: 'Under 30', field: 'Under30', axis:'orderCount', type: 'area', visible: true },
+                        { name: 'Under 45', field: 'Under45', axis:'orderCount', type: 'area', visible: true },*@
+                        { name: 'Less 15', field: 'Under15', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#a3f7e0'},
+                        { name: '15-20', field: 'Between15And20', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#8deeae' },
+                        { name: '20-25', field: 'Between20And25', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#7de678' },
+                        { name: '25-30', field: 'Between25And30', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#7de678' },
+                        { name: '30-35', field: 'Between30And35', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#9ade64' },
+                        { name: '35-45', field: 'Between35And45', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#cdae40' },
+                        { name: '45-60', field: 'Between45And60', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#c56a2f' },
+                        { name: '60+', field: 'Over60', axis:'orderCount', type: 'column', stack: true, visible: true, color: '\\#bd2020' }
+                    ]"
+                    data-group="{ field:Time }"
+                   >
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script id="BigPerformanceToolTipTemplate" type="text/html">
+       @* #: kendo.toString(dataItem.Time, 'd') # (#: kendo.toString(dataItem.Time, 'dddd') #)*@
+        # if(series.axis === 'orderCount') { #
+            <div>#: value # orders</div>
+            <div>#: series.name # mins</div>
+        # } # 
+    </script>
+}
+
+@*<div class="header">
+    <h3>Hourly Delivery Performance</h3>
+</div>
+@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Reporting.ViewModels.DeliveryPerformanceViewModel>()
+    .Name("HourlyDelivery")
+    .Sortable()
+    .Columns(cols =>
+{
+    cols.Bound(e => e.Time)
+        .ClientTemplate("#: kendo.toString(Time, 'HH:mm') #");
+    cols.Bound(e => e.TotalDeliveryOrders)
+        .Title("Deliveries")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Under15).Title("Under 15")
+        .ClientFooterTemplate("#: sum #");
+    cols.Bound(e => e.Between15And20)
+        .Title("Between 15 & 20")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Between20And25)
+        .Title("Between 20 & 25")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Between25And30)
+        .Title("Between 25 & 30")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Between30And35)
+        .Title("Between 30 & 35")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Between35And45)
+        .Title("Between 35 & 45")
+        .ClientFooterTemplate("#: sum #"); 
+    cols.Bound(e => e.Between45And60)
+        .Title("Between 45 & 60")
+        .ClientFooterTemplate("#: sum #"); 
+}).DataSource(d => d
+    .Ajax()
+    .ServerOperation(false)
+    .Aggregates(aggs => {
+        aggs.Add(a => a.TotalDeliveryOrders).Sum();
+        aggs.Add(a => a.Under15).Sum();
+        aggs.Add(a => a.Between15And20).Sum();
+        aggs.Add(a => a.Between20And25).Sum();
+        aggs.Add(a => a.Between25And30).Sum();
+        aggs.Add(a => a.Between30And35).Sum();
+        aggs.Add(a => a.Between35And45).Sum(); 
+        aggs.Add(a=> a.Between45And60).Sum();
+    })
+    .Read(read => read.Action("Read", "DeliveryPerformance", new { }))
+    )
+)
+
+*@

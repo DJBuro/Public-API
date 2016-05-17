@@ -1,0 +1,2 @@
+2015-12-30 10:07:11.2916 MyAndromeda.Web.MvcApplication.Application_Error Error --- Picked up an error at application level:
+2015-12-30 10:07:11.2996 MyAndromeda.Web.MvcApplication.Application_Error Error --- The controller for path '/Chains54614' was not found or does not implement IController.

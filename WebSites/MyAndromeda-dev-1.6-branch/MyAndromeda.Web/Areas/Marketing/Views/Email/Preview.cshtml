@@ -1,0 +1,50 @@
+﻿@using MyAndromeda.Web.Areas.Marketing.ViewModels;
+@model PreviewEmailCampaignViewModel
+
+<div data-id="@Model.Id" class="email-template-preview">
+    <div class="header">
+        <h3>Email Preview</h3>
+        <a class="k-button" href="@Url.Action("Index")">Back</a>
+    </div>
+    <div class="k-content">
+        <p>Use this window to test the email yourself. Content will be picked on random.</p>
+
+        <div class="clearfix">
+            <div class="sb-right content1">
+                <div class="header">
+                    <h3>Send To:</h3>
+                </div>
+                <div id="PreviewEmailWrapper" class="content">
+                    @using (Html.BeginForm())
+                    { 
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(e => e.Id)
+                        <label for="@Html.IdFor(e => e.To)">To:</label>
+                        @*@Html.TextBoxFor(e => e.To)*@
+                        <input type="email" name="@Html.NameFor(e=> e.To)" id="@Html.IdFor(e=> e.To)" placeholder="Your email address"  />
+                        <input type="submit" class="k-button" value="Send" />
+                    }
+
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="sb-right content2">
+                <div class="header">
+                    <h3>Subject: @Model.Template.Subject </h3>
+                </div>
+                <div class="header">
+                    <h3>Template</h3>
+                </div>
+                <div class="content scroll-content">
+                    <div class="template-email-content">
+                        @Html.Raw(Model.Template.EmailTemplate)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="k-toolbar">
+    </div>
+
+</div>

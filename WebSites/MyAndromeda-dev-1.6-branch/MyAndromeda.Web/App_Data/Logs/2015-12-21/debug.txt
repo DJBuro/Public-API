@@ -1,0 +1,19 @@
+2015-12-21 19:01:14.7531 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- User: matt does not have permission for all of: Email marketing feature, View email campaigns
+2015-12-21 19:01:14.7581 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- User: matt does not have permission for any: View basic ACS reports, View basic Rameses reports
+2015-12-21 19:01:52.1261 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Request URI: http://localhost:50262/ibs/1490/getMenu; UserHostAddress: ::1
+2015-12-21 19:01:52.1461 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Message body:
+2015-12-21 19:01:52.1651 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- NO CONTENT
+2015-12-21 19:03:18.8301 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Request URI: http://localhost:50262/ibs/1490/getMenu; UserHostAddress: ::1
+2015-12-21 19:03:18.8301 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Message body:
+2015-12-21 19:03:18.8442 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- NO CONTENT
+2015-12-21 19:03:48.0157 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Request URI: http://localhost:50262/ibs/1490/getMenu; UserHostAddress: ::1
+2015-12-21 19:03:48.0227 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Message body:
+2015-12-21 19:03:48.0427 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- NO CONTENT
+2015-12-21 19:05:44.2515 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Request URI: http://localhost:50262/ibs/1490/getMenu; UserHostAddress: ::1
+2015-12-21 19:05:44.2515 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Message body:
+2015-12-21 19:05:44.2615 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- NO CONTENT
+2015-12-21 19:06:07.6072 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Request URI: http://localhost:50262/ibs/1490/getMenu; UserHostAddress: ::1
+2015-12-21 19:06:07.6072 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- Message body:
+2015-12-21 19:06:07.6072 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- NO CONTENT
+2015-12-21 19:07:59.8253 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- App Start
+2015-12-21 19:08:28.8788 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- App Start

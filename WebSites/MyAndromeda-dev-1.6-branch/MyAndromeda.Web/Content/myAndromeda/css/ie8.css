@@ -1,0 +1,32 @@
+
+/*==   Fixes issues with the search form   ==*/
+
+#search-box {
+	height: 24px;
+	padding-top: 7px;
+}
+
+#search-button {
+	width: 33px;
+	padding: 0 5px;
+	text-align: center;
+}
+
+/*==  Places top and bottom borders for header and tagline replacing 
+the box-shadow trick for adding borders used in other browsers  ==*/
+
+body {
+	border-top: none;
+}
+
+#header {	
+	border-top: 5px solid #151515;
+    border-bottom: 5px solid #151515;
+    margin-bottom: 41px;
+}
+
+.container {
+	border-top: 5px solid #151515;
+    border-bottom: 5px solid #151515;
+    margin-bottom: 40px;
+}

@@ -1,0 +1,254 @@
+﻿
+<div>
+    <div kendo-validator="GeneralSettingsValidator">
+        <div class="row">
+            <div class="col-sm-6 form-horizontal form-widgets">
+                <div class="form-group">
+                    <label class="control-label col-sm-4 col-xs-12">
+                        Minimum delivery amount:
+                    </label>
+                    <div class="col-sm-8 col-xs-12">
+                        <!-- some fiddling with pence -> pound in the controller -->
+                        <input name="GeneralSettings.MinimumDeliveryAmount"
+                               kendo-numeric-text-box k-min="0" k-format="'c'"
+                               required
+                               validationmessage="Minimum delivery amount is required"
+                               k-ng-model="GeneralSettings.MinimumDeliveryAmount" />
+                        <span class="k-invalid-msg" data-for="GeneralSettings.MinimumDeliveryAmount"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4 col-xs-12">Delivery charge amount:</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input name="GeneralSettings.DeliveryCharge" kendo-numeric-text-box k-min="0" k-format="'c'"
+                               required
+                               validationmessage="Delivery charge is required"
+                               k-ng-model="GeneralSettings.DeliveryCharge" />
+                        <span class="k-invalid-msg" data-for="GeneralSettings.DeliveryCharge"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4 col-xs-12">Optional free delivery threshold:</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input kendo-numeric-text-box k-min="0" k-format="'c'" k-ng-model="GeneralSettings.OptionalFreeDeliveryThreshold" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4 col-xs-12">Card Charge:</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <input kendo-numeric-text-box k-min="0" k-format="'c'" k-ng-model="GeneralSettings.CardCharge" />
+                    </div>
+                </div>
+
+                <!-- settings -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4 col-xs-12">Settings</label>
+                    <div class="col-sm-8 col-xs-12">
+                        <label>
+                            <input type="checkbox"
+                                   ng-disabled="(true)"
+                                   value="true"
+                                   name="Model.WebsiteConfigurations.GeneralSettings.IsEnterPostCode"
+                                   data-bind="checked: GeneralSettings.IsEnterPostCode" />
+                            Enter Postcode Lookup
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" value="true"
+                                   name="Model.WebsiteConfigurations.GeneralSettings.EnableHomePage"
+                                   data-bind="checked: GeneralSettings.EnableHomePage" />
+                            Enable Home Page
+                        </label>
+                    </div>
+                </div>
+
+
+                <!-- Menu -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Menu Settings</label>
+                    <div class="col-sm-8">
+                        <label>
+                            <input id="MenuSettingCheckbox" type="checkbox" data-bind="checked:MenuPageSettings.IsSingleToppingsOnlyEnabled">
+                            Remove 'Double' option for modifiers
+                        </label>
+                        <br />
+                        <label>
+                            <input id="MenuSettingCheckbox" type="checkbox" data-bind="checked:MenuPageSettings.AreToppingsSwapsEnabled">
+                            Free Toppings Swapping (regardless of the price difference)
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-4">Occasion Settings</label>
+                    <div class="col-sm-3">
+                        <label>
+                            <input type="checkbox" ng-model="GeneralSettings.EnableDelivery">
+                            Delivery
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" ng-model="GeneralSettings.EnableCollection">
+                            Collection
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" ng-model="GeneralSettings.EnableDineIn" />
+                            Dine in
+                        </label>
+                    </div>
+                    <div class="col-sm-5">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <i>
+                            Un-checking an occasion will remove the mode from the website.
+                        </i>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-6 form-horizontal form-widgets">
+                <!-- Login settings -->
+                <div class="form-group">
+
+                    <label class="control-label col-sm-4 col-xs-12">Login Options</label>
+
+                    <div class="col-sm-8 col-xs-12">
+                        <label>
+                            <input type="checkbox" value="true"
+                                   name="Model.WebsiteConfigurations.GeneralSettings.EnableAndromedaLogin"
+                                   data-bind="checked: CustomerAccountSettings.IsEnable" />
+                            Enable Customer account settings
+                        </label>
+                        <label>
+                            <input type="checkbox" value="true"
+                                   name="Model.WebsiteConfigurations.GeneralSettings.EnableAndromedaLogin"
+                                   data-bind="checked: CustomerAccountSettings.EnableAndromedaLogin" />
+                            Enable Andromeda Login
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" value="true"
+                                   name="Model.WebsiteConfigurations.GeneralSettings.EnableFacebookLogin"
+                                   ng-model="ShowFacebookAppId"
+                                   data-bind="checked: CustomerAccountSettings.EnableFacebookLogin" />
+                            Enable Facebook Login
+                        </label>
+                        <div style="padding-left: 20px" ng-show="ShowFacebookAppId">
+                            <label>
+                                Facebook Application Id
+                                <input type="text" id="GeneralSettings.FacebookApplicationId" class="k-textbox"
+                                       name="Model.WebsiteConfigurations.GeneralSettings.FacebookApplicationId"
+                                       ng-required="ShowFacebookAppId"
+                                       data-bind="value: CustomerAccountSettings.FacebookAccountId" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12" ng-hide="HasLoginOptions">
+                        <div class="k-block k-error-colored well">
+                            <span class="k-icon k-i-note"></span> No login options have been selected. There will be login option for the website.
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Jivo chat -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4">JivoChat</label>
+                    <div class="col-sm-8">
+                        <label>
+                            <input type="checkbox" ng-model="JivoChatSettings.IsJivoChatEnabled">
+                            Enable Jivo-chat
+                        </label>
+                        <div>
+                            <textarea rows="5"
+                                      ng-model="JivoChatSettings.Script"
+                                      ng-show="JivoChatSettings.IsJivoChatEnabled"
+                                      placeholder="Jivo Chat widget script"
+                                      data-required-msg="The widget script is required when this is enabled."
+                                      ng-required="JivoChatSettings.IsJivoChatEnabled"
+                                      style="width: 100%" class="k-textbox"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service charge -->
+                <div class="form-group" ng-if="GeneralSettings.EnableDineIn">
+                    <label class="control-label col-sm-4">
+                        Service charge (%):
+                    </label>
+                    <div class="col-sm-8">
+                        <input id="DineInServiceCharge"
+                               k-options="DineInServiceChargeOptions"
+                               kendo-numeric-text-box
+                               k-min="0"
+                               k-step="0.01"
+                               k-format="'p0'"
+                               k-ng-model="GeneralSettings.DineInServiceCharge" />
+                    </div>
+                </div>
+                <div class="form-group" ng-if="GeneralSettings.EnableDineIn">
+                    <label class="control-label col-sm-4">
+                        Service charge (%):
+                        <br />Legal Limit
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input id="LegalDineInServiceChargeLimit"
+                               k-options="DineInServiceChargeLimitOptions"
+                               kendo-numeric-text-box
+                               k-min="0"
+                               k-format="'p0'"
+                               k-step="0.01"
+                               k-ng-model="GeneralSettings.LegalDineInServiceChargeLimit" />
+                    </div>
+                </div>
+                <div class="form-group" ng-if="GeneralSettings.EnableDineIn">
+                    <label class="control-label col-sm-4">
+                        &nbsp;
+                    </label>
+                    <div class="col-sm-8">
+                        <label>
+                            <input type="checkbox" name="GeneralSettings.CompulsoryDineInServiceCharge"
+                                   ng-model="GeneralSettings.CompulsoryDineInServiceCharge" />
+                            Compulsory service charge
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="clear:both; height: 20px"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="k-button k-primary center" ng-click="SaveChanges()">Save</button>
+
+                <button type="button" title="Reset 'General Settings' to their defaults" ng-click="ResetToDefault()" class="k-button">
+                    Reset to defaults
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    ToggleRequiredAttribute = function () {
+        var checkbox = document.getElementById($("#Model_WebsiteConfigurations_GeneralSettings_EnableFacebookLogin"));
+        var txtFBId = document.getElementById($("#GeneralSettings_FacebookApplicationId"));
+        if (checkbox.checked) {
+            txtFBId.setAttribute("required", "required");
+        }
+        else {
+            txtFBId.removeAttribute("required");
+        }
+    }
+</script>

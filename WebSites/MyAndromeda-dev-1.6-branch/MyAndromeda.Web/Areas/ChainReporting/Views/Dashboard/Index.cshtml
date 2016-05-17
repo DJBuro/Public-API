@@ -1,0 +1,626 @@
+﻿<div id="ChainDashboard">
+    <dashboard-app-filter></dashboard-app-filter>
+
+    <div class="pdfRegion">
+        <div class="summary-region" ui-view="summary"></div>
+        <div class="detail-region" ui-view="detail"></div>
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    var workContext = Html.GetWorkContext();
+
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+    <script>
+        $(function () {
+            MyAndromeda.Reports.ChainDashboard.settings.chainId = @workContext.CurrentChain.Chain.Id;
+            MyAndromeda.Reports.ChainDashboard.setupChainDashboard("ChainDashboard");
+        });
+    </script>
+
+    <script id="dashboard-app-template.html" type="text/ng-template">
+
+    </script>
+
+
+    <script id="dashboard-app-filter.html" type="text/ng-template">
+        <div class="panel panel-default">
+            <div class="panel-heading">Tools</div>
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-sm-3">
+
+                        <label>From: </label>
+                        <input kendo-date-picker
+                               ng-model="query.FromLabel"
+                               k-ng-model="query.FromObj" />
+
+                    </div>
+                    <div class="col-sm-3">
+                        <label>To: </label>
+                        <input kendo-date-picker
+                               ng-model="query.ToLabel"
+                               k-ng-model="query.ToObj" />
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="btn-group">
+                            <a class="btn btn-default" ng-click="today()">Today</a>
+                            <a class="btn btn-default disabled">Week</a>
+                            <a class="btn btn-default disabled">Month</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="pull-right text-right">
+                            <a class="btn btn-primary" ng-click="createPdf()">Pdf</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </script>
+
+    <script id="chain-sales-dashboard-summary.html" type="text/ng-template">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="header">
+                    {{data.ChainName}} ({{storeCount}} stores)
+                    <a class="k-button" ui-sref="chain-sales-data-warehouse">Data Warehouse</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-2">
+                <div class="header">
+                    Total
+                </div>
+                {{data.Total.OrderCount}}<br />
+                {{currency(data.Total.NetSales)}}
+            </div>
+            <div class="col-sm-2">
+                <div class="header">
+                    Best week: {{bestWeek.WeekOfYear}}
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {{bestWeek.Total.OrderCount}}<br />
+                            {{currency(bestWeek.Total.NetSales)}}
+                        </div>
+                        <div class="col-sm-12">&nbsp;</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-xs-12">
+                <div kendo-chart
+                     k-options="monthChartOptions"
+                     k-data-source="salesDayData"
+                     style="height: 250px;">
+                </div>
+            </div>
+            <div class="col-sm-8 col-xs-12">
+                <div kendo-chart
+                     k-options="weekChartOptions"
+                     k-data-source="salesWeekData"
+                     style="height: 250px;">
+                </div>
+            </div>
+            <div class="col-sm-12 col-xs-12">
+                <div kendo-chart
+                     k-options="dayChartOptions"
+                     k-data-source="salesDayData"
+                     style="height: 250px;">
+                </div>
+            </div>
+
+
+        </div>
+    </script>
+
+    <script id="chain-sales-dashboard-detail.html" type="text/ng-template">
+        <div class="row" ng-repeat="store in data.Data">
+            <div class="col-sm-12 ">
+                <div class="header">
+                    {{store.ExternalSiteName}}
+
+                    <a class="k-button" ui-sref="store-sales-dashboard({storeId: store.StoreId})">More</a>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Total</div>
+                        {{store.Total.OrderCount}}<br />
+                        {{currency(store.Total.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Cancelled</div>
+                        {{store.Cancelled.OrderCount}}<br />
+                        {{currency(store.Cancelled.NetSales)}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-4 no-gutter">
+                <div class="header">Instore</div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Dine in</div>
+                        {{store.DineIn.OrderCount}}<br />
+                        {{currency(store.DineIn.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Carry out</div>
+                        {{store.CarryOut.OrderCount}}<br />
+                        {{currency(store.CarryOut.NetSales)}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 no-gutter">
+                <div class="header">Online</div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Collection</div>
+                        {{store.Collection.OrderCount}}<br />
+                        {{currency(store.Collection.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Delivery</div>
+                        {{store.Delivery.OrderCount}}<br />
+                        {{currency(store.Delivery.NetSales)}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-xs-12">&nbsp;</div>
+        </div>
+    </script>
+
+    <script id="store-sales-day-dashboard-widget.html" type="text/ng-template">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="header">
+                    {{summary.Name}}
+                    <a class="k-button" ui-sref="chain-sales-dashboard">Back</a>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="header">Total Orders</div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="header">Total</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="header">Completed</div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="header">Cancelled</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        {{summary.Total}}
+                        <br />{{currency(summary.TotalValue)}}
+                    </div>
+                    <div class="col-sm-4">
+                        {{summary.Completed}}
+                        <br />{{currency(summary.CompletedValue)}}
+                    </div>
+                    <div class="col-sm-4">
+                        {{summary.Cancelled}}
+                        <br />{{currency(summary.CancelledValue)}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="header">Active Orders</div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="header">Received</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="header">Oven</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="header">Ready to dispatch</div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="header">Out for delivery</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{summary.Received}}
+                        <br />{{currency(summary.ReceivedValue)}}
+                    </div>
+                    <div class="col-sm-3">
+                        {{summary.Oven}}
+                        <br />{{currency(summary.OvenValue)}}
+                    </div>
+                    <div class="col-sm-3">
+                        {{summary.ReadyToDispatch}}
+                        <br />{{currency(summary.ReadyToDispatchValue)}}
+                    </div>
+                    <div class="col-sm-3">
+                        {{summary.OutForDelivery}}
+                        <br />{{currency(summary.OutForDeliveryValue)}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </script>
+
+
+    <script id="store-sales-day-dashboard-detail.html" type="text/ng-template">
+
+        <div ng-repeat="summary in summaries | orderBy:'Total':true" class="animate-repeat">
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">{{summary.Name}}</div>
+                        <div class="panel-body">
+
+                            <div class="col-sm-4">
+                                <div class="header">Total Orders</div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="header">Total</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="header">Completed</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="header">Cancelled</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {{summary.Total}}
+                                        <br />{{currency(summary.TotalValue)}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{summary.Completed}}
+                                        <br />{{currency(summary.CompletedValue)}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{summary.Cancelled}}
+                                        <br />{{currency(summary.CancelledValue)}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="header">Active Orders</div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div class="header">Received</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Oven</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Ready to dispatch</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="header">Out for delivery</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        {{summary.Received}}
+                                        <br />{{currency(summary.ReceivedValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.Oven}}
+                                        <br />{{currency(summary.OvenValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.ReadyToDispatch}}
+                                        <br />{{currency(summary.ReadyToDispatchValue)}}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{summary.OutForDelivery}}
+                                        <br />{{currency(summary.OutForDeliveryValue)}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">&nbsp;</div>
+            </div>
+        </div>
+
+    </script>
+
+
+
+    <script id="store-sales-day-dashboard-summary.html" type="text/ng-template">
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                {{summary.Name}} - Summary
+                <a class="btn btn-default" ui-sref="chain-sales-dashboard">Back</a>
+            </div>
+            <div class="panel-body">
+                <div class="col-sm-4">
+                    <div class="header">Total Orders</div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="header">Total</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="header">Completed</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="header">Cancelled</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{summary.Total}}
+                            <br />{{currency(summary.TotalValue)}}
+                        </div>
+                        <div class="col-sm-4">
+                            {{summary.Completed}}
+                            <br />{{currency(summary.CompletedValue)}}
+                        </div>
+                        <div class="col-sm-4">
+                            {{summary.Cancelled}}
+                            <br />{{currency(summary.CancelledValue)}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="header">Active Orders</div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="header">Received</div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="header">Oven</div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="header">Ready to dispatch</div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="header">Out for delivery</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            {{summary.Received}}
+                            <br />{{currency(summary.ReceivedValue)}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{summary.Oven}}
+                            <br />{{currency(summary.OvenValue)}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{summary.ReadyToDispatch}}
+                            <br />{{currency(summary.ReadyToDispatchValue)}}
+                        </div>
+                        <div class="col-sm-3">
+                            {{summary.OutForDelivery}}
+                            <br />{{currency(summary.OutForDeliveryValue)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Sources of revenue</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div kendo-chart
+                                     k-legend="{ position: 'bottom' }"
+                                     k-options="acsChartOptions"
+                                     k-data-source="summary.AcsApplicationData"
+                                     style="height: 400px;">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">Order Types</div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div kendo-chart
+                                     k-legend="{ position: 'bottom' }"
+                                     k-options="occasionChartOptions"
+                                     k-data-source="summary.OccasionData"
+                                     style="height: 400px;">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="store-sales-map.summary.html" type="text/ng-template">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="header">
+                    {{store.ExternalSiteName}}
+                    <a class="k-button" ui-sref="chain-sales-dashboard">Back</a>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="store-sales-map.detail.html" type="text/ng-template">
+        <div class="row">
+            <div class="col-sm-8">
+                <div kendo-map="myMap"
+                     k-options="mapOptions"
+                     style="height: 400px; position:relative">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="header">Summary</div>
+                <div ng-if="!highlightedOrder">Select a store from the map</div>
+                <div ng-if="highlightedOrder">
+                    <div class="row">
+                        <div class="col-sm-12">{{(highlightedOrder.Customer.Name)}}</div>
+                    </div>
+                </div>
+                <div ng-if="highlightedOrder" ng-repeat="order in highlightedOrder.Orders">
+                    <div class="row">
+                        <div class="col-sm-12">{{currency(order.FinalPrice)}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">{{order.OrderWantedTime}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="store-sales-dashboard-summary.html" type="text/ng-template">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <div class="header">
+                    {{store.ExternalSiteName}}
+                    <a class="k-button" ui-sref="chain-sales-dashboard">Back</a>
+                    <a class="k-button" ui-sref="store-sales-live({storeId: store.StoreId})">Today</a>
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Total</div>
+                        {{store.Total.OrderCount}}<br />
+                        {{currency(store.Total.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Cancelled</div>
+                        {{store.Cancelled.OrderCount}}<br />
+                        {{currency(store.Cancelled.NetSales)}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-4 col-xs-6">
+                <div class="header">Instore</div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Dine in</div>
+                        {{store.DineIn.OrderCount}}<br />
+                        {{currency(store.DineIn.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Carry out</div>
+                        {{store.CarryOut.OrderCount}}<br />
+                        {{currency(store.CarryOut.NetSales)}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-xs-6">
+                <div class="header">
+                    Online
+                    <a class="k-button" ui-sref="store-map-live({storeId: store.StoreId})">Map</a>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="header">Collection</div>
+                        {{store.Collection.OrderCount}}<br />
+                        {{currency(store.Collection.NetSales)}}
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="header">Delivery</div>
+                        {{store.Delivery.OrderCount}}<br />
+                        {{currency(store.Delivery.NetSales)}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </script>
+
+    <script id="store-sales-dashboard-detail.html" type="text/ng-template">
+        <div class="row">
+
+
+            <div class="col-xs-12 col-sm-12">
+                <div kendo-chart
+                     k-options="storeDailyOptions"
+                     k-data-source="dailyDataSource"
+                     style="height: 250px;">
+                </div>
+            </div>
+
+            @*<div class="col-xs-12 col-sm-12">
+                    <div kendo-chart
+                         k-options="storeWeeklyOptions"
+                         k-data-source="dailyDataSource"
+                         style="height: 250px;">
+                    </div>
+                </div>*@
+
+            <div class="col-xs-12 col-sm-4">
+                <div kendo-chart
+                     k-options="storeMonthlyOptions"
+                     k-data-source="dailyDataSource"
+                     style="height: 250px;">
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-8">
+                <div kendo-chart
+                     k-options="storeWeekOptions"
+                     k-data-source="storeWeekData"
+                     style="height: 250px;">
+                </div>
+            </div>
+        </div>
+    </script>
+}

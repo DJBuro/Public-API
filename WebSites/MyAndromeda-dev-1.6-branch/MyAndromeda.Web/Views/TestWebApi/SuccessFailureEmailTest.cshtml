@@ -1,0 +1,96 @@
+﻿@{
+        
+}
+
+<form action="dynamicallyBuilt" id="TestMailForm" name="TestMailForm" method="post">
+    <div>
+        <label>Select site</label>
+        @(Html.Kendo()
+            .DropDownList()
+            .Name("andromedaSiteId")
+            .OptionLabel("Select Site")
+            .DataTextField("ClientSiteName")
+            .DataValueField("AndromedaSiteId")
+            .AutoBind(false)
+            .DataSource(data => {
+                data.Read(r => r.Route("DefaultApi", new { httproute = "httproute", controller = "Store" }));
+            })
+        )
+    </div>
+    <div>
+        <label>Select Order</label>
+        @(Html.Kendo()
+            .ComboBox()
+            .Name("Order_id")
+            //.OptionLabel("Select Order")
+            .DataTextField("RamesesOrderNum")
+            .DataValueField("RamesesOrderNum")
+            //.AutoBind(false)
+            .CascadeFrom("andromedaSiteId")
+            .DataSource(data => {
+                data.Read(r => r.Route("DefaultApi", new { httproute = "httproute", controller = "GprsOrders" })
+                    .Data("filterOrders")).ServerFiltering(true);
+            })
+        )
+    </div>
+    <div>
+        <label for="Printer_Id">Printer Id</label>
+        <input id="Printer_id" name="Printer_id" placeholder="anything" required="required" />
+    </div>
+    <div>
+        <label>
+            <input name="Status" type="radio" value="1" required="required" />
+            Success
+        </label>
+        <label>
+            <input name="Status" type="radio" value="2" required="required" />
+            Un-successful 
+        </label>
+    </div>
+    <div>
+        <label for="Msg">Msg</label>
+        <input type="text" name="Msg" id="Msg" required="required" placeholder="anything" />
+    </div>
+    <div>
+        <label for="Delivery_time">Delivery time</label>
+        <input type="text" name="Delivery_time" id="Delivery_time" required="required" placeholder="anything" />
+    </div>
+    <div>
+        <button type="submit" class="k-button">
+            Submit
+        </button>
+    </div>
+</form>
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#Delivery_time").kendoDateTimePicker({
+                value: new Date(),
+                format: "HH:mm dd-MM-yy"
+            });
+
+            var t = "@Url.RouteClientTemplate("GprsCallBackApi", new { httproute = "httproute", controller = "IBacsTel", andromedaSiteId="{0}", orderId="{1}" })";
+
+            $("#TestMailForm").on("click", "button", function (e) {
+                var andromedaSiteId = $("#andromedaSiteId").val();
+                var orderId= $("#Order_id").val();
+                var formRoute = kendo.format(t, andromedaSiteId, orderId);
+                $("#TestMailForm").attr("action", formRoute);
+
+                //console.log(formRoute);
+                //e.preventDefault();
+            });
+        });
+
+        function filterOrders()
+        {
+            var v = $("#andromedaSiteId").val();
+
+            return {
+                andromedaSiteId : v
+            }
+        }
+    </script>
+}

@@ -1,0 +1,471 @@
+﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
+@using MyAndromeda.Authorization
+@using Permisssions = MyAndromeda.Web.Areas.AndroWebOrdering;
+@{
+    var workContext = Html.GetWorkContext();
+    var authorizer = Html.GetAuthorizer();
+}
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            var angular = MyAndromeda.WebOrdering.Angular;
+            var settings = MyAndromeda.WebOrdering.Settings;
+            settings.AndromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
+            settings.WebSiteId = '@Model.Id';
+
+            var upselling = MyAndromeda.WebOrdering.UpSelling;
+            upselling.UpSellDataService.GetMemuRoute = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "GetMenu", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
+            //default is the webapi
+            //controller route
+            //settings.PublishRoute = '@Url.Action("Publish", "AndroWebOrdering", new { Id = Model.Id })';
+            angular.Init();
+        });
+    </script>
+}
+
+<div id="WebOrdering">
+    <style scoped="scoped">
+        .content-loading {
+            font-size: 2em;
+        }
+    </style>
+
+    <div ng-controller="StatusController">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="header">
+                    <h3>Manage AndroWeb Ordering</h3>
+                    @if (authorizer.Authorize(Permisssions.UserPermissions.PublishWebsites))
+                    {
+                        <button class="k-button k-primary" ng-click="PublishChanges()">
+                            <i class="fa fa-spinner fa-spin loading-spinner text-center" ng-show="PublishLiveBusy"></i>
+                            Update live website
+                        </button>
+                        <button class="k-button" ng-click="PreviewChanges()">
+                            <i class="fa fa-spinner fa-spin loading-spinner text-center" ng-show="PublishPreviewBusy"></i>
+                            Update preview website
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a class="k-button" target="_blank" href="http://@Model.PreviewWebSite">
+                    <i class="fa fa-play-circle"></i> Open Preview website
+                </a>
+                <a class="k-button" target="_blank" href="http://@Model.LiveDomainName">
+                    <i class="fa fa-play-circle"></i> Open live site
+                </a>
+            </div>
+            <div class="col-sm-12">&nbsp;</div>
+        </div>
+
+        <div kendo-mobile-modal-view="Modal">
+            <div class="row">
+                <div class="col-xs-12">
+                    <i style="font-size: 80px" class="fa fa-spinner fa-spin loading-spinner"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Kendo().TabStrip().Name("FindChain").Items(items =>
+        {
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewSiteDetails))
+            {
+
+                items.Add().Text("Site Details")
+                    .Selected(false)
+                    .Enabled(true)
+                    .Content(@<text>
+                        <div id="SiteDetailsController" ng-controller="SiteDetailsController" class="container-fluid">
+                            @Html.Partial("SiteDetails")
+                        </div>
+                    </text>);
+            }
+
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewHomePage))
+            {
+                items.Add().Text("Home Page")
+                    .Selected(true)
+                    .Content(@<text>
+                        <div class="container-fluid">
+                            @RenderHomePanelbarSection()
+                        </div>
+                    </text>);
+            }
+
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewCmsSection))
+            {
+                items.Add().Text("CMS Pages")
+                    .Content(@<text>
+            <div class="container-fluid">
+                @Html.Partial("CMSPages")
+            </div>
+                    </text>);
+            }
+
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewGeneralSettings))
+            {
+                items.Add().Text("General Settings").Selected(false).Content(@<text>
+        <div class="container-fluid" id="GeneralSettingsController" ng-controller="GeneralSettingsController">
+            @Html.Partial("GeneralSettings")
+        </div>
+                </text>);
+            }
+
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewSocialNetworks))
+            {
+                items.Add().Text("Social Networks").Selected(false).Content(@<text>
+                    <div class="container-fluid">
+                        @RenderSocialNetworksSection()
+                    </div>
+                </text>);
+            }
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewThemes))
+            {
+                items.Add().Text("Themes & Settings").Selected(false).Content(@<text>
+                    <div class="container-fluid">
+                        @RenderThemePanelbarSection()
+                    </div>
+                </text>);
+            }
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewEmailCmsSection))
+            {
+                items.Add().Text("Emails").Selected(false).Content(@<text>
+                    <div class="container-fluid">
+                        @RenderEmailPanelbarSection()
+                    </div>
+                    
+                </text>);
+            }
+
+            if (authorizer.Authorize(Permisssions.UserPermissions.ViewLegalNotices))
+            {
+                items.Add().Text("Legal notices")
+               .Selected(false)
+               .Content(@<text>
+                <div class="container-fluid" id="LegalNoticesController" ng-controller="LegalNoticesController">
+                    @Html.Partial("LegalNotices")
+                </div>
+            </text>);
+            }
+            if (authorizer.AuthorizeAny(Permisssions.UserPermissions.ViewSeo, Permisssions.UserPermissions.ViewAnalytics))
+            {
+                items.Add().Text("Analytics / SEO")
+                  .Selected(false)
+                  .Enabled(true)
+                  .Content(@<text>
+                    <div class="container-fluid">
+                        @RenderAnalyticsSEOSection()
+                    </div>
+                    
+                </text>);
+            }
+            if (authorizer.AuthorizeAny(Permisssions.UserPermissions.EditUpSelling))
+            {
+                items.Add().Text("Up-sell")
+                    .Selected(false)
+                    .Enabled(true)
+                    .Content(@<text>
+                        <div id="Up-sell" class="container-fluid">
+                            @Html.Partial("UpSelling")
+                        </div>
+                    </text>);
+            }
+
+    @*items.Add().Text("Settings")
+             .Selected(false)
+             .Enabled(false)
+             .Content(@<text>
+             @RenderSettingsTab()
+         </text>);
+        }*@
+
+    @*items.Add().Text("Stores")
+           .Selected(false)
+           .Enabled(true)
+           .Content(@<text>
+
+            @Html.Partial("StoreList", Model)
+        </text>);*@
+        })
+
+
+</div>
+
+@helper RenderSettingsTab()
+{
+    @(Html.Kendo().TabStrip()
+        .Name("Settings")
+        .Items(tabStrip =>
+        {
+
+            tabStrip.Add().Text("Customer Accounts")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                <div class="container-fluid" id="CustomerAccountSettingsController" ng-controller="CustomerAccountSettingsController">
+                    @Html.Partial("CustomerAccountSettings")
+                </div>
+            </text>);
+            tabStrip.Add().Text("Menu Page")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                @Html.Partial("MenuPageSettings")
+            </text>);
+            tabStrip.Add().Text("Checkout")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                @Html.Partial("CheckoutSettings")
+            </text>);
+            tabStrip.Add().Text("UpSelling")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                @Html.Partial("UpsellingSettings")
+            </text>);
+        })
+    )
+}
+
+@helper RenderEmailPanelbarSection()
+{
+    @(Html.Kendo().PanelBar()
+        .Name("EmailPartPanelBar")
+        .ExpandMode(PanelBarExpandMode.Multiple)
+        .Items(items =>
+        {
+
+            items.Add().Expanded(true).Text("Email theme").Content(
+                @<text>
+                    <div class="container-fluid" ng-controller="CustomEmailTemplateController">
+                        @Html.Partial("CustomEmailTemplate");
+                    </div>
+                </text>);
+            items.Add().Expanded(true).Text("Custom CMS").Content(@<text>
+                    <div class="container-fluid">
+                        @Html.Partial("EmailCustomCms")
+                    </div>
+                    
+            </text>);
+        })
+    )
+}
+
+@helper RenderThemePanelbarSection()
+{
+    @(Html.Kendo().PanelBar()
+        .Name("Themes")
+        .ExpandMode(PanelBarExpandMode.Multiple)
+        .Items(items =>
+        {
+            items.Add().Text("Theme Settings")
+                .Expanded(true)
+                .Content(@<text>
+                    <div class="container-fluid">
+                        @Html.Partial("ThemeSettings")
+                    </div>
+                </text>);
+            items.Add().Text("Pick a theme")
+                .Selected(true)
+                .Expanded(true)
+                .Content(@<text>
+                    <div class="container-fluid" ng-controller="PickThemeController">
+                        @Html.Partial("Themes")
+                    </div>
+                </text>);
+            items.Add().Text("Custom Background Images")
+                .Content(@<text>
+                <div class="container-fluid" id="CustomBackgroundImagesController" ng-controller="CustomBackgroundImagesController">
+                    @Html.Partial("CustomBackgroundImages")
+                </div>
+                </text>);
+            items.Add().Text("Custom Colors")
+                .Content(@<text>
+                <div class="container-fluid" id="CustomThemeSettingsController" ng-controller="CustomThemeSettingsController">
+                    @Html.Partial("CustomThemeSettings")
+                </div>
+                </text>);
+            @*items.Add().Text("Custom Email Template")
+                .Content(
+                 @<text>
+                     <div id="CustomEmailTemplateController" ng-controller="CustomEmailTemplateController">
+                         @Html.Partial("CustomEmailTemplate");
+                     </div>
+                 </text>);*@
+
+        })
+    )
+}
+
+@helper RenderHomePanelbarSection()
+{
+    @(Html.Kendo().PanelBar()
+        .Name("Home")
+        .ExpandMode(PanelBarExpandMode.Single)
+        .Items(tabStrip =>
+        {
+
+            tabStrip
+                .Add().Text("Welcome Section")
+                    .Selected(true)
+                    .Expanded(true)
+                    .Enabled(true)
+                    .Content(@<text>
+                        <div id="HomePageController" ng-controller="HomePageController" class="container-fluid">
+                            @Html.Partial("Welcome")
+                        </div>
+
+                    </text>);
+
+            tabStrip.Add().Text("Carousels")
+                .Selected(true)
+                .Expanded(false)
+                .Enabled(true)
+                .Content(@<text>
+                    <div id="CarouselController" ng-controller="CarouselController" class="container-fluid">
+                        @Html.Partial("Carousel")
+                    </div>
+
+                </text>);
+
+
+        })
+
+    )
+}
+
+@helper RenderCarouselInnerTab1()
+{
+    @(Html.Kendo().TabStrip()
+        .Name("Carousel1")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Item List")
+                .Selected(true)
+                .Enabled(true)
+            .Content(@<text>
+                    <div id="Main" class="container-fluid">@Html.Partial("Carousel1")</div>
+            </text>);
+            tabStrip.Add().Text("Container Settings")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                <div class="container-fluid">@Html.Partial("CarouselContainer1")</div>
+               
+            </text>);
+            tabStrip.Add().Text("Navigator Settings")
+            .Selected(false)
+            .Enabled(true)
+            .Content(@<text>
+                <div class="container-fluid">
+                    @Html.Partial("CarouselNavigator1")
+                </div>
+            </text>);
+        })
+    )
+}
+
+@helper RenderCarouselInnerTab2()
+{
+    @(Html.Kendo().TabStrip()
+        .Name("Carousel2")
+        .Items(tabStrip =>
+        {
+            tabStrip.Add().Text("Item List")
+           .Selected(false)
+           .Enabled(true)
+           .Content(@<text>
+            @Html.Partial("Carousel2")
+        </text>); tabStrip.Add().Text("Container Settings").Selected(false).Enabled(true).Content(@<text>
+            @Html.Partial("CarouselContainer2")
+        </text>); tabStrip.Add().Text("Navigator Settings").Selected(false).Enabled(true).Content(@<text>
+            @Html.Partial("CarouselNavigator2")
+        </text>);
+        })
+    )
+}
+
+@helper RenderAnalytics()
+{
+    <div class="form-group">
+        <div class="row">
+            <label class="control-label col-md-12">
+                Analytics Script:
+            </label>
+        </div>
+        <div class="form-control col-md-12 row">
+            <textarea id="AnalyticsScript"
+                      data-bind="value: AnalyticsScript"
+                      name="AnalyticsScript">
+                {{AnalyticsScript}}
+            </textarea>
+        </div>
+    </div>
+}
+
+@helper RenderSocialNetworksSection()
+{
+    @(Html.Kendo().PanelBar()
+        .Name("SocialNetworks")
+        .ExpandMode(PanelBarExpandMode.Single)
+        .Items(items =>
+        {
+            items.Add().Text("Social Network Settings")
+                .Selected(true)
+                .Expanded(true)
+                .Content(@<text>
+                    <div class="container-fluid" id="SocialNetworkSettingsController" ng-controller="SocialNetworkSettingsController">
+                        @Html.Partial("SocialNetworkSettings")
+                    </div>
+                </text>);
+            items.Add().Text("Facebook Crawler Settings")
+                .Content(@<text>
+                <div class="container-fluid" id="FacebookCrawlerSettingsController" ng-controller="FacebookCrawlerSettingsController">
+                    @Html.Partial("FacebookCrawlerSettings")
+                </div>
+                </text>);
+
+        })
+    )
+}
+
+
+@helper RenderAnalyticsSEOSection()
+{
+    @(Html.Kendo().PanelBar()
+    .Name("AnalyticsSEO")
+    .ExpandMode(PanelBarExpandMode.Single)
+    .Items(
+            items =>
+            {
+                items.Add().Text("Analytics")
+                    .Selected(true)
+                    .Expanded(true)
+                    .Content(@<text>
+                        <div class="container-fluid" id="AnalyticsController" ng-controller="AnalyticsController">
+                            @Html.Partial("Analytics")
+                        </div>
+                    </text>);
+                items.Add().Text("SEO")
+                    .Content(@<text>
+                        <div class="container-fluid" id="SEOSettingsController" ng-controller="SEOSettingsController">
+                            @Html.Partial("SEO")
+                        </div>
+                    </text>);
+            })
+    )
+
+}

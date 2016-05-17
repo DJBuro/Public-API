@@ -1,0 +1,10 @@
+﻿.k-widget .row * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.form-group .k-widget,
+.form-group .k-textbox {
+  width: 100%;
+}
+/*# sourceMappingURL=kendofixes.css.map */

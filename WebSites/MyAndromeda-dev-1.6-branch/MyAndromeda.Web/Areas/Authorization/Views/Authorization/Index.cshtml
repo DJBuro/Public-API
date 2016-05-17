@@ -1,0 +1,36 @@
+﻿@model dynamic
+
+<div class="">
+    <div class="header">
+        <h2>Authorization</h2>
+    </div>
+    <div id="CurrentHierarchy"></div>
+</div>
+
+@using(Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var dataSoure = new kendo.data.HierarchicalDataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("ReadChains", "Authorization")",
+                        dataType: "json",
+                        type: "POST"
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "Id",
+                        hasChildren: "HasChildren"
+                    }
+                }
+            });
+
+            var treeView = $("#CurrentHierarchy").kendoTreeView({
+                dataSource: dataSoure,
+                dataTextField: "Name"
+            });
+        });
+    </script>
+}

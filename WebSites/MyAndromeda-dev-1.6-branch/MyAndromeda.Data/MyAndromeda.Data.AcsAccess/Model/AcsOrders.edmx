@@ -1,0 +1,1132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ACS.Orders.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ACSOrdersStoreContainer">
+          <EntitySet Name="AccountType" EntityType="ACS.Orders.Store.AccountType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Address" EntityType="ACS.Orders.Store.Address" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Contact" EntityType="ACS.Orders.Store.Contact" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContactType" EntityType="ACS.Orders.Store.ContactType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Country" EntityType="ACS.Orders.Store.Country" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Customer" EntityType="ACS.Orders.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomerAccount" EntityType="ACS.Orders.Store.CustomerAccount" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CustomerAddress" EntityType="ACS.Orders.Store.CustomerAddress" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MarketingLevel" EntityType="ACS.Orders.Store.MarketingLevel" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="modifiers" EntityType="ACS.Orders.Store.modifiers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderHeader" EntityType="ACS.Orders.Store.OrderHeader" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderLines" EntityType="ACS.Orders.Store.OrderLines" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderStatus" EntityType="ACS.Orders.Store.OrderStatus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderStatusHistory" EntityType="ACS.Orders.Store.OrderStatusHistory" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Address_Country" Association="ACS.Orders.Store.FK_Address_Country">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Address" EntitySet="Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_ContactType" Association="ACS.Orders.Store.FK_Contact_ContactType">
+            <End Role="ContactType" EntitySet="ContactType" />
+            <End Role="Contact" EntitySet="Contact" />
+          </AssociationSet>
+          <AssociationSet Name="fk_contact_customer" Association="ACS.Orders.Store.fk_contact_customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Contact" EntitySet="Contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_MarketingLevel" Association="ACS.Orders.Store.FK_Contact_MarketingLevel">
+            <End Role="MarketingLevel" EntitySet="MarketingLevel" />
+            <End Role="Contact" EntitySet="Contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Address" Association="ACS.Orders.Store.FK_Customer_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_CustomerAccount" Association="ACS.Orders.Store.FK_Customer_CustomerAccount">
+            <End Role="CustomerAccount" EntitySet="CustomerAccount" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAccount_AccountType" Association="ACS.Orders.Store.FK_CustomerAccount_AccountType">
+            <End Role="AccountType" EntitySet="AccountType" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccount" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customer" Association="ACS.Orders.Store.FK_CustomerAddress_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_modifiers_OrderLines" Association="ACS.Orders.Store.FK_modifiers_OrderLines">
+            <End Role="OrderLines" EntitySet="OrderLines" />
+            <End Role="modifiers" EntitySet="modifiers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifiers_Orderlines_Cascade" Association="ACS.Orders.Store.FK_Modifiers_Orderlines_Cascade">
+            <End Role="OrderLines" EntitySet="OrderLines" />
+            <End Role="modifiers" EntitySet="modifiers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderHeader_Customer1" Association="ACS.Orders.Store.FK_OrderHeader_Customer1">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderHeader_OrderStatus" Association="ACS.Orders.Store.FK_OrderHeader_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderLines_OrderHeader" Association="ACS.Orders.Store.FK_OrderLines_OrderHeader">
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+            <End Role="OrderLines" EntitySet="OrderLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatusHistory_OrderStatus" Association="ACS.Orders.Store.FK_OrderStatusHistory_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="OrderStatusHistory" EntitySet="OrderStatusHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TABLE_NAME_PARENT_TABLE_NAME" Association="ACS.Orders.Store.FK_TABLE_NAME_PARENT_TABLE_NAME">
+            <End Role="OrderHeader" EntitySet="OrderHeader" />
+            <End Role="OrderLines" EntitySet="OrderLines" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AccountType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Org1" Type="nvarchar" MaxLength="64" />
+          <Property Name="Org2" Type="nvarchar" MaxLength="64" />
+          <Property Name="Org3" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem1" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem2" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem3" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem4" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem5" Type="nvarchar" MaxLength="64" />
+          <Property Name="Prem6" Type="nvarchar" MaxLength="64" />
+          <Property Name="RoadNum" Type="nvarchar" MaxLength="16" />
+          <Property Name="RoadName" Type="nvarchar" MaxLength="64" />
+          <Property Name="Locality" Type="nvarchar" MaxLength="64" />
+          <Property Name="Town" Type="nvarchar" MaxLength="64" />
+          <Property Name="County" Type="nvarchar" MaxLength="64" />
+          <Property Name="State" Type="nvarchar" MaxLength="64" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="16" />
+          <Property Name="DPS" Type="nvarchar" MaxLength="4" />
+          <Property Name="Lat" Type="nvarchar" MaxLength="15" />
+          <Property Name="Long" Type="nvarchar" MaxLength="15" />
+          <Property Name="Location" Type="geography" />
+          <Property Name="DataVersion" Type="int" Nullable="false" />
+          <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="Directions" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContactTypeId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="MarketingLevelId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContactType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" Nullable="false" MaxLength="64" />
+          <Property Name="ISO3166_1_alpha_2" Type="varchar" Nullable="false" MaxLength="2" />
+          <Property Name="ISO3166_1_numeric" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="16" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="48" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="48" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="ACSAplicationId" Type="int" Nullable="false" />
+          <Property Name="RegisteredDateTime" Type="datetime" Nullable="false" />
+          <Property Name="CustomerAccountId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountNumber" Type="nvarchar" MaxLength="16" />
+          <Property Name="Username" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="PasswordSalt" Type="varbinary" Nullable="false" MaxLength="100" />
+          <Property Name="AccountTypeId" Type="int" Nullable="false" />
+          <Property Name="RegisteredDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CustomerKey" Type="uniqueidentifier" />
+          <Property Name="RoadNum" Type="nvarchar" MaxLength="16" />
+          <Property Name="RoadName" Type="nvarchar" MaxLength="64" />
+          <Property Name="City" Type="nvarchar" MaxLength="32" />
+          <Property Name="State" Type="nvarchar" MaxLength="32" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="32" />
+          <Property Name="Country" Type="nvarchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="MarketingLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="modifiers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderLineID" Type="uniqueidentifier" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="64" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Removed" Type="bit" />
+          <Property Name="Price" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="CustomerID" Type="uniqueidentifier" />
+          <Property Name="OrderCurrency" Type="nvarchar" MaxLength="8" />
+          <Property Name="OrderType" Type="nvarchar" MaxLength="32" />
+          <Property Name="OrderPlacedTime" Type="datetime" />
+          <Property Name="OrderWantedTime" Type="datetime" />
+          <Property Name="ApplicationID" Type="int" Nullable="false" />
+          <Property Name="ApplicationName" Type="nvarchar" MaxLength="64" />
+          <Property Name="RamesesOrderNum" Type="int" Nullable="false" />
+          <Property Name="ExternalOrderRef" Type="nvarchar" MaxLength="64" />
+          <Property Name="ExternalSiteID" Type="nvarchar" MaxLength="64" />
+          <Property Name="SiteName" Type="nvarchar" Nullable="false" MaxLength="64" />
+          <Property Name="ACSOrderId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="paytype" Type="nvarchar" MaxLength="32" />
+          <Property Name="FinalPrice" Type="money" Nullable="false" />
+          <Property Name="TotalTax" Type="money" Nullable="false" />
+          <Property Name="DeliveryCharge" Type="money" Nullable="false" />
+          <Property Name="PriceIncludeTax" Type="bit" Nullable="false" />
+          <Property Name="PartnerName" Type="nvarchar" MaxLength="64" />
+          <Property Name="Cancelled" Type="bit" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderLines">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderHeaderID" Type="uniqueidentifier" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="96" />
+          <Property Name="Qty" Type="int" />
+          <Property Name="Price" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="OrderStatusHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrderHeaderId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="ChangedDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Address_Country">
+          <End Role="Country" Type="ACS.Orders.Store.Country" Multiplicity="1" />
+          <End Role="Address" Type="ACS.Orders.Store.Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_ContactType">
+          <End Role="ContactType" Type="ACS.Orders.Store.ContactType" Multiplicity="1" />
+          <End Role="Contact" Type="ACS.Orders.Store.Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="ContactTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_contact_customer">
+          <End Role="Customer" Type="ACS.Orders.Store.Customer" Multiplicity="1" />
+          <End Role="Contact" Type="ACS.Orders.Store.Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_MarketingLevel">
+          <End Role="MarketingLevel" Type="ACS.Orders.Store.MarketingLevel" Multiplicity="1" />
+          <End Role="Contact" Type="ACS.Orders.Store.Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MarketingLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="MarketingLevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Address">
+          <End Role="Address" Type="ACS.Orders.Store.Address" Multiplicity="0..1" />
+          <End Role="Customer" Type="ACS.Orders.Store.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_CustomerAccount">
+          <End Role="CustomerAccount" Type="ACS.Orders.Store.CustomerAccount" Multiplicity="0..1" />
+          <End Role="Customer" Type="ACS.Orders.Store.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAccount">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAccount_AccountType">
+          <End Role="AccountType" Type="ACS.Orders.Store.AccountType" Multiplicity="1" />
+          <End Role="CustomerAccount" Type="ACS.Orders.Store.CustomerAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="AccountTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customer">
+          <End Role="Customer" Type="ACS.Orders.Store.Customer" Multiplicity="0..1" />
+          <End Role="CustomerAddress" Type="ACS.Orders.Store.CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="CustomerKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_modifiers_OrderLines">
+          <End Role="OrderLines" Type="ACS.Orders.Store.OrderLines" Multiplicity="0..1" />
+          <End Role="modifiers" Type="ACS.Orders.Store.modifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLines">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="modifiers">
+              <PropertyRef Name="OrderLineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifiers_Orderlines_Cascade">
+          <End Role="OrderLines" Type="ACS.Orders.Store.OrderLines" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="modifiers" Type="ACS.Orders.Store.modifiers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLines">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="modifiers">
+              <PropertyRef Name="OrderLineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderHeader_Customer1">
+          <End Role="Customer" Type="ACS.Orders.Store.Customer" Multiplicity="0..1" />
+          <End Role="OrderHeader" Type="ACS.Orders.Store.OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderHeader_OrderStatus">
+          <End Role="OrderStatus" Type="ACS.Orders.Store.OrderStatus" Multiplicity="1" />
+          <End Role="OrderHeader" Type="ACS.Orders.Store.OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderLines_OrderHeader">
+          <End Role="OrderHeader" Type="ACS.Orders.Store.OrderHeader" Multiplicity="0..1" />
+          <End Role="OrderLines" Type="ACS.Orders.Store.OrderLines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHeader">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderLines">
+              <PropertyRef Name="OrderHeaderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatusHistory_OrderStatus">
+          <End Role="OrderStatus" Type="ACS.Orders.Store.OrderStatus" Multiplicity="1" />
+          <End Role="OrderStatusHistory" Type="ACS.Orders.Store.OrderStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatusHistory">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TABLE_NAME_PARENT_TABLE_NAME">
+          <End Role="OrderHeader" Type="ACS.Orders.Store.OrderHeader" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="OrderLines" Type="ACS.Orders.Store.OrderLines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHeader">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderLines">
+              <PropertyRef Name="OrderHeaderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ACS.Orders" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AcsOrderDbContext" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="AccountTypes" EntityType="ACS.Orders.AccountType" />
+          <EntitySet Name="Addresses" EntityType="ACS.Orders.Address" />
+          <EntitySet Name="Contacts" EntityType="ACS.Orders.Contact" />
+          <EntitySet Name="ContactTypes" EntityType="ACS.Orders.ContactType" />
+          <EntitySet Name="Countries" EntityType="ACS.Orders.Country" />
+          <EntitySet Name="Customers" EntityType="ACS.Orders.Customer" />
+          <EntitySet Name="CustomerAccounts" EntityType="ACS.Orders.CustomerAccount" />
+          <EntitySet Name="CustomerAddresses" EntityType="ACS.Orders.CustomerAddress" />
+          <EntitySet Name="MarketingLevels" EntityType="ACS.Orders.MarketingLevel" />
+          <EntitySet Name="modifiers" EntityType="ACS.Orders.modifier" />
+          <EntitySet Name="OrderHeaders" EntityType="ACS.Orders.OrderHeader" />
+          <EntitySet Name="OrderLines" EntityType="ACS.Orders.OrderLine" />
+          <EntitySet Name="OrderStatus" EntityType="ACS.Orders.OrderStatu" />
+          <EntitySet Name="OrderStatusHistories" EntityType="ACS.Orders.OrderStatusHistory" />
+          <AssociationSet Name="FK_CustomerAccount_AccountType" Association="ACS.Orders.FK_CustomerAccount_AccountType">
+            <End Role="AccountType" EntitySet="AccountTypes" />
+            <End Role="CustomerAccount" EntitySet="CustomerAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Address_Country" Association="ACS.Orders.FK_Address_Country">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="Address" EntitySet="Addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_Address" Association="ACS.Orders.FK_Customer_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_ContactType" Association="ACS.Orders.FK_Contact_ContactType">
+            <End Role="ContactType" EntitySet="ContactTypes" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_contact_customer" Association="ACS.Orders.fk_contact_customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contact_MarketingLevel" Association="ACS.Orders.FK_Contact_MarketingLevel">
+            <End Role="MarketingLevel" EntitySet="MarketingLevels" />
+            <End Role="Contact" EntitySet="Contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_CustomerAccount" Association="ACS.Orders.FK_Customer_CustomerAccount">
+            <End Role="CustomerAccount" EntitySet="CustomerAccounts" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customer" Association="ACS.Orders.FK_CustomerAddress_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderHeader_Customer1" Association="ACS.Orders.FK_OrderHeader_Customer1">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_modifiers_OrderLines" Association="ACS.Orders.FK_modifiers_OrderLines">
+            <End Role="OrderLine" EntitySet="OrderLines" />
+            <End Role="modifier" EntitySet="modifiers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Modifiers_Orderlines_Cascade" Association="ACS.Orders.FK_Modifiers_Orderlines_Cascade">
+            <End Role="OrderLine" EntitySet="OrderLines" />
+            <End Role="modifier" EntitySet="modifiers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderHeader_OrderStatus" Association="ACS.Orders.FK_OrderHeader_OrderStatus">
+            <End Role="OrderStatu" EntitySet="OrderStatus" />
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderLines_OrderHeader" Association="ACS.Orders.FK_OrderLines_OrderHeader">
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+            <End Role="OrderLine" EntitySet="OrderLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TABLE_NAME_PARENT_TABLE_NAME" Association="ACS.Orders.FK_TABLE_NAME_PARENT_TABLE_NAME">
+            <End Role="OrderHeader" EntitySet="OrderHeaders" />
+            <End Role="OrderLine" EntitySet="OrderLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderStatusHistory_OrderStatus" Association="ACS.Orders.FK_OrderStatusHistory_OrderStatus">
+            <End Role="OrderStatu" EntitySet="OrderStatus" />
+            <End Role="OrderStatusHistory" EntitySet="OrderStatusHistories" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AccountType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerAccounts" Relationship="ACS.Orders.FK_CustomerAccount_AccountType" FromRole="AccountType" ToRole="CustomerAccount" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Org1" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Org2" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Org3" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem1" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem2" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem3" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem4" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem5" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Prem6" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RoadNum" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RoadName" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Locality" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Town" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="County" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="State" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostCode" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DPS" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Lat" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Long" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Type="Geography" Name="Location" />
+          <Property Type="Int32" Name="DataVersion" Nullable="false" />
+          <Property Type="Int32" Name="CountryId" Nullable="false" />
+          <Property Type="String" Name="Directions" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Country" Relationship="ACS.Orders.FK_Address_Country" FromRole="Address" ToRole="Country" />
+          <NavigationProperty Name="Customers" Relationship="ACS.Orders.FK_Customer_Address" FromRole="Address" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ContactTypeId" Nullable="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="MarketingLevelId" Nullable="false" />
+          <Property Type="Guid" Name="CustomerId" Nullable="false" />
+          <NavigationProperty Name="ContactType" Relationship="ACS.Orders.FK_Contact_ContactType" FromRole="Contact" ToRole="ContactType" />
+          <NavigationProperty Name="Customer" Relationship="ACS.Orders.fk_contact_customer" FromRole="Contact" ToRole="Customer" />
+          <NavigationProperty Name="MarketingLevel" Relationship="ACS.Orders.FK_Contact_MarketingLevel" FromRole="Contact" ToRole="MarketingLevel" />
+        </EntityType>
+        <EntityType Name="ContactType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contacts" Relationship="ACS.Orders.FK_Contact_ContactType" FromRole="ContactType" ToRole="Contact" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CountryName" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ISO3166_1_alpha_2" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ISO3166_1_numeric" Nullable="false" />
+          <NavigationProperty Name="Addresses" Relationship="ACS.Orders.FK_Address_Country" FromRole="Country" ToRole="Address" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Title" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="FirstName" MaxLength="48" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" MaxLength="48" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="AddressId" />
+          <Property Type="Int32" Name="ACSAplicationId" Nullable="false" />
+          <Property Type="DateTime" Name="RegisteredDateTime" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="CustomerAccountId" />
+          <NavigationProperty Name="Address" Relationship="ACS.Orders.FK_Customer_Address" FromRole="Customer" ToRole="Address" />
+          <NavigationProperty Name="Contacts" Relationship="ACS.Orders.fk_contact_customer" FromRole="Customer" ToRole="Contact" />
+          <NavigationProperty Name="CustomerAccount" Relationship="ACS.Orders.FK_Customer_CustomerAccount" FromRole="Customer" ToRole="CustomerAccount" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="ACS.Orders.FK_CustomerAddress_Customer" FromRole="Customer" ToRole="CustomerAddress" />
+          <NavigationProperty Name="OrderHeaders" Relationship="ACS.Orders.FK_OrderHeader_Customer1" FromRole="Customer" ToRole="OrderHeader" />
+        </EntityType>
+        <EntityType Name="CustomerAccount">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="String" Name="AccountNumber" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Binary" Name="PasswordSalt" Nullable="false" MaxLength="100" FixedLength="false" />
+          <Property Type="Int32" Name="AccountTypeId" Nullable="false" />
+          <Property Type="DateTime" Name="RegisteredDateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AccountType" Relationship="ACS.Orders.FK_CustomerAccount_AccountType" FromRole="CustomerAccount" ToRole="AccountType" />
+          <NavigationProperty Name="Customers" Relationship="ACS.Orders.FK_Customer_CustomerAccount" FromRole="CustomerAccount" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="CustomerKey" />
+          <Property Type="String" Name="RoadNum" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="RoadName" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="City" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="State" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ZipCode" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Country" MaxLength="32" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="ACS.Orders.FK_CustomerAddress_Customer" FromRole="CustomerAddress" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="MarketingLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contacts" Relationship="ACS.Orders.FK_Contact_MarketingLevel" FromRole="MarketingLevel" ToRole="Contact" />
+        </EntityType>
+        <EntityType Name="modifier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="OrderLineID" />
+          <Property Type="Int32" Name="ProductID" />
+          <Property Type="String" Name="Description" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Qty" />
+          <Property Type="Boolean" Name="Removed" />
+          <Property Type="Int32" Name="Price" />
+          <NavigationProperty Name="OrderLine" Relationship="ACS.Orders.FK_modifiers_OrderLines" FromRole="modifier" ToRole="OrderLine" />
+          <NavigationProperty Name="OrderLine1" Relationship="ACS.Orders.FK_Modifiers_Orderlines_Cascade" FromRole="modifier" ToRole="OrderLine" />
+        </EntityType>
+        <EntityType Name="OrderHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="3" />
+          <Property Type="Guid" Name="CustomerID" />
+          <Property Type="String" Name="OrderCurrency" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OrderType" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="OrderPlacedTime" Precision="3" />
+          <Property Type="DateTime" Name="OrderWantedTime" Precision="3" />
+          <Property Type="Int32" Name="ApplicationID" Nullable="false" />
+          <Property Type="String" Name="ApplicationName" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="RamesesOrderNum" Nullable="false" />
+          <Property Type="String" Name="ExternalOrderRef" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ExternalSiteID" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SiteName" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ACSOrderId" Nullable="false" />
+          <Property Type="String" Name="paytype" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="FinalPrice" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="TotalTax" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="DeliveryCharge" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Boolean" Name="PriceIncludeTax" Nullable="false" />
+          <Property Type="String" Name="PartnerName" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Cancelled" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="ACS.Orders.FK_OrderHeader_Customer1" FromRole="OrderHeader" ToRole="Customer" />
+          <NavigationProperty Name="OrderStatu" Relationship="ACS.Orders.FK_OrderHeader_OrderStatus" FromRole="OrderHeader" ToRole="OrderStatu" />
+          <NavigationProperty Name="OrderLines" Relationship="ACS.Orders.FK_OrderLines_OrderHeader" FromRole="OrderHeader" ToRole="OrderLine" />
+          <NavigationProperty Name="OrderLines1" Relationship="ACS.Orders.FK_TABLE_NAME_PARENT_TABLE_NAME" FromRole="OrderHeader" ToRole="OrderLine" />
+        </EntityType>
+        <EntityType Name="OrderLine">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="Guid" Name="OrderHeaderID" />
+          <Property Type="Int32" Name="ProductID" />
+          <Property Type="String" Name="Description" MaxLength="96" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Qty" />
+          <Property Type="Int32" Name="Price" />
+          <NavigationProperty Name="modifiers" Relationship="ACS.Orders.FK_modifiers_OrderLines" FromRole="OrderLine" ToRole="modifier" />
+          <NavigationProperty Name="modifiers1" Relationship="ACS.Orders.FK_Modifiers_Orderlines_Cascade" FromRole="OrderLine" ToRole="modifier" />
+          <NavigationProperty Name="OrderHeader" Relationship="ACS.Orders.FK_OrderLines_OrderHeader" FromRole="OrderLine" ToRole="OrderHeader" />
+          <NavigationProperty Name="OrderHeader1" Relationship="ACS.Orders.FK_TABLE_NAME_PARENT_TABLE_NAME" FromRole="OrderLine" ToRole="OrderHeader" />
+        </EntityType>
+        <EntityType Name="OrderStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="OrderHeaders" Relationship="ACS.Orders.FK_OrderHeader_OrderStatus" FromRole="OrderStatu" ToRole="OrderHeader" />
+          <NavigationProperty Name="OrderStatusHistories" Relationship="ACS.Orders.FK_OrderStatusHistory_OrderStatus" FromRole="OrderStatu" ToRole="OrderStatusHistory" />
+        </EntityType>
+        <EntityType Name="OrderStatusHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="OrderHeaderId" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="DateTime" Name="ChangedDateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="OrderStatu" Relationship="ACS.Orders.FK_OrderStatusHistory_OrderStatus" FromRole="OrderStatusHistory" ToRole="OrderStatu" />
+        </EntityType>
+        <Association Name="FK_CustomerAccount_AccountType">
+          <End Type="ACS.Orders.AccountType" Role="AccountType" Multiplicity="1" />
+          <End Type="ACS.Orders.CustomerAccount" Role="CustomerAccount" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomerAccount">
+              <PropertyRef Name="AccountTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Address_Country">
+          <End Type="ACS.Orders.Country" Role="Country" Multiplicity="1" />
+          <End Type="ACS.Orders.Address" Role="Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Address">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_Address">
+          <End Type="ACS.Orders.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="ACS.Orders.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_ContactType">
+          <End Type="ACS.Orders.ContactType" Role="ContactType" Multiplicity="1" />
+          <End Type="ACS.Orders.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="ContactTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_contact_customer">
+          <End Type="ACS.Orders.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="ACS.Orders.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contact_MarketingLevel">
+          <End Type="ACS.Orders.MarketingLevel" Role="MarketingLevel" Multiplicity="1" />
+          <End Type="ACS.Orders.Contact" Role="Contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MarketingLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contact">
+              <PropertyRef Name="MarketingLevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_CustomerAccount">
+          <End Type="ACS.Orders.CustomerAccount" Role="CustomerAccount" Multiplicity="0..1" />
+          <End Type="ACS.Orders.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAccount">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customer">
+          <End Type="ACS.Orders.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ACS.Orders.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="CustomerKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderHeader_Customer1">
+          <End Type="ACS.Orders.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="ACS.Orders.OrderHeader" Role="OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_modifiers_OrderLines">
+          <End Type="ACS.Orders.OrderLine" Role="OrderLine" Multiplicity="0..1" />
+          <End Type="ACS.Orders.modifier" Role="modifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLine">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="modifier">
+              <PropertyRef Name="OrderLineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Modifiers_Orderlines_Cascade">
+          <End Type="ACS.Orders.OrderLine" Role="OrderLine" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ACS.Orders.modifier" Role="modifier" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderLine">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="modifier">
+              <PropertyRef Name="OrderLineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderHeader_OrderStatus">
+          <End Type="ACS.Orders.OrderStatu" Role="OrderStatu" Multiplicity="1" />
+          <End Type="ACS.Orders.OrderHeader" Role="OrderHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderHeader">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderLines_OrderHeader">
+          <End Type="ACS.Orders.OrderHeader" Role="OrderHeader" Multiplicity="0..1" />
+          <End Type="ACS.Orders.OrderLine" Role="OrderLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHeader">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderLine">
+              <PropertyRef Name="OrderHeaderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TABLE_NAME_PARENT_TABLE_NAME">
+          <End Type="ACS.Orders.OrderHeader" Role="OrderHeader" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ACS.Orders.OrderLine" Role="OrderLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderHeader">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderLine">
+              <PropertyRef Name="OrderHeaderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderStatusHistory_OrderStatus">
+          <End Type="ACS.Orders.OrderStatu" Role="OrderStatu" Multiplicity="1" />
+          <End Type="ACS.Orders.OrderStatusHistory" Role="OrderStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderStatusHistory">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ACSOrdersStoreContainer" CdmEntityContainer="AcsOrderDbContext">
+          <EntitySetMapping Name="AccountTypes">
+            <EntityTypeMapping TypeName="ACS.Orders.AccountType">
+              <MappingFragment StoreEntitySet="AccountType">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="ACS.Orders.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Directions" ColumnName="Directions" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="DataVersion" ColumnName="DataVersion" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="DPS" ColumnName="DPS" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="Locality" ColumnName="Locality" />
+                <ScalarProperty Name="RoadName" ColumnName="RoadName" />
+                <ScalarProperty Name="RoadNum" ColumnName="RoadNum" />
+                <ScalarProperty Name="Prem6" ColumnName="Prem6" />
+                <ScalarProperty Name="Prem5" ColumnName="Prem5" />
+                <ScalarProperty Name="Prem4" ColumnName="Prem4" />
+                <ScalarProperty Name="Prem3" ColumnName="Prem3" />
+                <ScalarProperty Name="Prem2" ColumnName="Prem2" />
+                <ScalarProperty Name="Prem1" ColumnName="Prem1" />
+                <ScalarProperty Name="Org3" ColumnName="Org3" />
+                <ScalarProperty Name="Org2" ColumnName="Org2" />
+                <ScalarProperty Name="Org1" ColumnName="Org1" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="ACS.Orders.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="MarketingLevelId" ColumnName="MarketingLevelId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ContactTypeId" ColumnName="ContactTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactTypes">
+            <EntityTypeMapping TypeName="ACS.Orders.ContactType">
+              <MappingFragment StoreEntitySet="ContactType">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="ACS.Orders.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="ISO3166_1_numeric" ColumnName="ISO3166_1_numeric" />
+                <ScalarProperty Name="ISO3166_1_alpha_2" ColumnName="ISO3166_1_alpha_2" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="ACS.Orders.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerAccountId" ColumnName="CustomerAccountId" />
+                <ScalarProperty Name="RegisteredDateTime" ColumnName="RegisteredDateTime" />
+                <ScalarProperty Name="ACSAplicationId" ColumnName="ACSAplicationId" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAccounts">
+            <EntityTypeMapping TypeName="ACS.Orders.CustomerAccount">
+              <MappingFragment StoreEntitySet="CustomerAccount">
+                <ScalarProperty Name="RegisteredDateTime" ColumnName="RegisteredDateTime" />
+                <ScalarProperty Name="AccountTypeId" ColumnName="AccountTypeId" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="AccountNumber" ColumnName="AccountNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAddresses">
+            <EntityTypeMapping TypeName="ACS.Orders.CustomerAddress">
+              <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="RoadName" ColumnName="RoadName" />
+                <ScalarProperty Name="RoadNum" ColumnName="RoadNum" />
+                <ScalarProperty Name="CustomerKey" ColumnName="CustomerKey" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MarketingLevels">
+            <EntityTypeMapping TypeName="ACS.Orders.MarketingLevel">
+              <MappingFragment StoreEntitySet="MarketingLevel">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="modifiers">
+            <EntityTypeMapping TypeName="ACS.Orders.modifier">
+              <MappingFragment StoreEntitySet="modifiers">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Removed" ColumnName="Removed" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderLineID" ColumnName="OrderLineID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderHeaders">
+            <EntityTypeMapping TypeName="ACS.Orders.OrderHeader">
+              <MappingFragment StoreEntitySet="OrderHeader">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Cancelled" ColumnName="Cancelled" />
+                <ScalarProperty Name="PartnerName" ColumnName="PartnerName" />
+                <ScalarProperty Name="PriceIncludeTax" ColumnName="PriceIncludeTax" />
+                <ScalarProperty Name="DeliveryCharge" ColumnName="DeliveryCharge" />
+                <ScalarProperty Name="TotalTax" ColumnName="TotalTax" />
+                <ScalarProperty Name="FinalPrice" ColumnName="FinalPrice" />
+                <ScalarProperty Name="paytype" ColumnName="paytype" />
+                <ScalarProperty Name="ACSOrderId" ColumnName="ACSOrderId" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="ExternalSiteID" ColumnName="ExternalSiteID" />
+                <ScalarProperty Name="ExternalOrderRef" ColumnName="ExternalOrderRef" />
+                <ScalarProperty Name="RamesesOrderNum" ColumnName="RamesesOrderNum" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+                <ScalarProperty Name="OrderWantedTime" ColumnName="OrderWantedTime" />
+                <ScalarProperty Name="OrderPlacedTime" ColumnName="OrderPlacedTime" />
+                <ScalarProperty Name="OrderType" ColumnName="OrderType" />
+                <ScalarProperty Name="OrderCurrency" ColumnName="OrderCurrency" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderLines">
+            <EntityTypeMapping TypeName="ACS.Orders.OrderLine">
+              <MappingFragment StoreEntitySet="OrderLines">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderHeaderID" ColumnName="OrderHeaderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatus">
+            <EntityTypeMapping TypeName="ACS.Orders.OrderStatu">
+              <MappingFragment StoreEntitySet="OrderStatus">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatusHistories">
+            <EntityTypeMapping TypeName="ACS.Orders.OrderStatusHistory">
+              <MappingFragment StoreEntitySet="OrderStatusHistory">
+                <ScalarProperty Name="ChangedDateTime" ColumnName="ChangedDateTime" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OrderHeaderId" ColumnName="OrderHeaderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

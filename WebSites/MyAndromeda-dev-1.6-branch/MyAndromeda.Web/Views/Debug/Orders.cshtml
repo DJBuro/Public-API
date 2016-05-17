@@ -1,0 +1,333 @@
+﻿@{
+    var workContext = Html.GetWorkContext();
+    var currentSite = workContext.CurrentSite;
+}
+
+<div id="GridAppDebug">
+
+    <div ng-controller="startController">
+
+        <orders-grid andromeda-site-id="@currentSite.AndromediaSiteId"></orders-grid>
+
+    </div>
+
+</div>
+
+
+@using (Html.BeginScripts())
+{
+    //http://demos.telerik.com/kendo-ui/menu/context-menu-angular
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/template" id="GridTemplate.html">
+        <div kendo-grid
+             k-options="gridOptions">
+
+        </div>
+
+        <div kendo-map
+             k-options="mapOptions"
+             style="height: 400px; position:relative">
+        </div>
+
+    </script>
+
+    <script type="text/template" id="order-id-column.html">
+
+        Id: {{dataItem.Id}}
+        <br />
+        External Order Ref: {{dataItem.ExternalOrderRef}}
+        <a class="hasMenu btn btn-danger"
+           ng-right-click="openMenu($event)">
+            Right-click me
+        </a>
+
+        <ul kendo-context-menu="rowMenu" target="target">
+            <li>
+                Driver
+                <ul>
+                    <li>
+                        <div class="well">
+                            <div>
+                                <label>Name</label>
+                                <input type="text" ng-model="dataItem.Driver.Name"></input>
+                            </div>
+                            <div>
+                                <label>Phone</label>
+                                <input type="text" ng-model="dataItem.Driver.Phone"></input>
+                            </div>
+                            <input class="k-button" type="button" value="send" ng-click="createDriver(dataItem.Id, dataItem.Driver)" />
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Web-hooks ... order status.
+                <ul>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 0)">
+                            0: Order Created
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 1)">
+                            1: Order has been received by the store
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 2)">
+                            2: Order is in oven
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 3)">
+                            3: Order is ready for dispatch
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 4)">
+                            4: Order is out for delivery
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 5)">
+                            5: Order has been completed
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 6)">
+                            6: Order has been canceled
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" ng-click="changeStatus(dataItem.Id, 8)">
+                            8: Future Order
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                IBS
+                <ul>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/getMenu">Get IBS Menu</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/getCustomer/{{dataItem.Id}}"><i class="fa fa-user"></i> get customer</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/addCustomer/{{dataItem.Id}}"><i class="fa fa-user"></i> add customer</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/previewOrder/{{dataItem.Id}}"><i class="fa fa-paper-plane-o"></i> preview Order</a>
+
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/sendOrder/{{dataItem.Id}}"><i class="fa fa-paper-plane-o"></i> Send Order</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/getLocations">Get Locations</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="/ibs/{{andromedaSiteId}}/getPaymentTypes">Get Payment Types</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </script>
+
+    <script type="text/template" id="order-item-count-column.html">
+        {{dataItem.Items}}
+    </script>
+
+    <script type="text/template" id="order-item-price-column.html">
+        {{dataItem.FinalPrice}}
+    </script>
+
+    <script type="text/template" id="order-placed-time-column.html">
+        {{dataItem.OrderPlacedTime}}
+    </script>
+
+    <script type="text/template" id="order-wanted-time-column.html">
+        {{dataItem.OrderWantedTime}}
+    </script>
+
+    <script type="text/template" id="order-customer-column.html">
+        <div style="display:none">{{dataItem.Customer.Id}}</div>
+        <div>{{dataItem.Customer.Name}}</div>
+        <div>{{dataItem.Customer.Phone}}</div>
+        <div>{{dataItem.Customer.Email}}</div>
+        <div>{{dataItem.Customer.Latitude}}</div>
+        <div>{{dataItem.Customer.Longitude}}</div>
+        <div>{{dataItem.Customer.Postcode}}</div>
+    </script>
+
+    <script type="text/template" id="order-display-foods.html">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Qty</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in context.foodItems.Items">
+                    <th scope="row">{{item.Qty}}</th>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Price}}</td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td></td>
+                    <td>
+                        Sub-Total
+                        <span ng-if="!context.foodItems.SubTotal">0</span>
+                        <span ng-if="!!context.foodItems.SubTotal">{{context.foodItems.SubTotal}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="order-display-details.html">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Charges</div>
+                    <div class="panel-body">
+                        Delivery: {{dataItem.DeliveryCharge}}
+                        <br />
+                        Card Charges: {{dataItem.CardCharges ? dataItem.CardCharges : 0}}
+                        <br />
+                        Tips: {{dataItem.Tips}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Third party ids</div>
+                    <div class="panel-body">
+                        BringgId: {{dataItem.BringgId}}
+                        <br />
+                        IBS Order Id: {{dataItem.IbsOrderId}}
+                        <br />
+                        Rameses Ticket number: {{dataItem.TicketNumber}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Delivery</div>
+                    <div class="panel-body">
+                        Postcode: {{dataItem.OrderPostCode}}<br />
+                        Driver: {{dataItem.DriverName}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Instructions
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            Cooking Instructions: <br />
+                            <div ng-if="dataItem.CookingInstructions">>{{dataItem.CookingInstructions}}</div>
+                            <div ng-if="!dataItem.CookingInstructions">{{dataItem.CookingInstructions}}>None</div>
+                        </div>
+                        <div class="col-md-4">
+                            Customer Directions: <br />
+                            <div ng-if="dataItem.CustomerDirections">>{{dataItem.CustomerDirections}}</div>
+                            <div ng-if="!dataItem.CustomerDirections">{{dataItem.CustomerDirections}}>None</div>
+                        </div>
+                        <div class="col-md-4">
+                            Order Directions: <br />
+                            <div ng-if="dataItem.OrderAddressDirections">>{{dataItem.OrderAddressDirections}}</div>
+                            <div ng-if="!dataItem.OrderAddressDirections">{{dataItem.OrderAddressDirections}}>None</div>
+                        </div>
+                        <div class="col-md-12">
+                            Order Notes: <br />
+                            <div ng-if="dataItem.OrderNotes">>{{dataItem.OrderNotes}}</div>
+                            <div ng-if="!dataItem.OrderNotes">{{dataItem.OrderNotes}}>None</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </script>
+
+    <script type="text/template" id="order-display-payments.html">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Pay Type Name</th>
+                    <th>Payment Type</th>
+                    <th>Value</th>
+                    <th>Charge</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="payLine in context.paymentLines.PaymentLines">
+                    <td>{{payLine.PayTypeName}}</td>
+                    <td>{{payLine.PaymentType}}</td>
+                    <td>{{payLine.Value}}</td>
+                    <td>{{payLine.Charge}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="order-display-statuses.html">
+        <div class="row" ng-if="!context.orderStatusHistory.OrderStatusHistory">
+            <div class="alert alert-warning" role="alert">
+                No records!
+            </div>
+        </div>
+        <table class="table" ng-if="!!context.orderStatusHistory.OrderStatusHistory">
+            <tbody>
+                <tr ng-repeat="status in context.orderStatusHistory.OrderStatusHistory">
+                    <td>{{status.Id}}</td>
+                    <td>{{status.Description}}</td>
+                    <td>{{payLine.Value}}</td>
+                    <td>{{status.ChangeDateTime}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+
+    <script type="text/template" id="order-detail-template.html">
+        <tabs>
+            <pane title="Food">
+                <grid-order-display-foods order-id="dataItem.Id"></grid-order-display-foods>
+            </pane>
+            <pane title="Details - {{dataItem.StatusDescription}}">
+                <grid-order-display-details order-id="dataItem.Id"></grid-order-display-details>
+            </pane>
+            <pane title="Payments">
+                <grid-order-display-payments order-id="dataItem.Id"></grid-order-display-payments>
+            </pane>
+            <pane title="Status">
+                <grid-order-display-statuses order-id="dataItem.Id"></grid-order-display-statuses>
+            </pane>
+        </tabs>
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            MyAndromeda.Debug.gridAppSetup("GridAppDebug");
+        });
+    </script>
+}

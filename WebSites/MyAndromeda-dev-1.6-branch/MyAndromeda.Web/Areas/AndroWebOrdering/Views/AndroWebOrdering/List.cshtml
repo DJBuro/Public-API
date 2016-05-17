@@ -1,0 +1,102 @@
+﻿@using MyAndromeda.Web.Areas.AndroWebOrdering;
+
+@model IList<MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel>
+@{
+    ViewBag.Title = "Index";
+
+    var titleProcess = Html.CreateHtmlTemplate();
+
+    var deleteProcess = Html.CreateHtmlTemplate();
+    var webHooks = Html.CreateHtmlTemplate();
+    var deviceTemplates = Html.CreateHtmlTemplate();
+
+    var authorizer = Html.GetAuthorizer();
+
+}
+
+<div class="header">
+    <h3>AndroWeb Ordering Websites</h3>
+</div>
+
+
+
+@using (webHooks.CreateTemplate)
+{
+    <div>
+        <a class="k-button" href="@Url.ActionClientTemplate("Index", "WebHooks", new { Area = "Acs", AcsApplicationId = "#=AcsApplicationId#" })">Web Hooks</a>
+    </div>
+}
+
+@using (deleteProcess.CreateTemplate)
+{
+    <div>
+        <a class="k-button" href="@Url.ActionClientTemplate("Delete", "AndroWebOrdering", new { Id = "#=Id#" } )">Delete</a>
+    </div>
+}
+@using (deviceTemplates.CreateTemplate)
+{
+    <ul>
+        #if(Devices.length === 0){#
+        <li>No devices - defaults to Rameses</li>
+        #}#
+        #if(Devices.length > 0){#
+        #for(var i=0; i < devices.length; i=i + 1){#
+        <li></li>
+        #}#
+        #}#
+    </ul>
+}
+
+
+@(Html.Kendo().Grid(Model)
+    .Name("AndroWebOrderingGrid")
+    .Columns(cols =>
+    {
+        cols.Bound(e => e.Name).Title("Website")
+            .Template(@<text>
+                <a href="@Url.Action("Index", "AndroWebOrdering", new { Id = item.Id })">@item.Name</a>
+            </text>)
+            .ClientTemplate(titleProcess.Result);
+
+        cols.Template(@<text>
+
+            @foreach (var device in item.Devices)
+            {
+                <span>- @device</span><br />
+            }
+            @if (item.Devices.Length == 0)
+            {
+                <span>No devices - Rameses will be picked by default</span>
+            }
+
+        </text>).Title("Devices")
+            .Width(200)
+            .MinScreenWidth(400);
+
+        if (authorizer.Authorize(UserPermissions.DeleteWebsite))
+        {
+            cols.Bound(e => e.Name).Title("Web Hooks")
+                .Filterable(false).Sortable(false)
+                .Width(130)
+                .Template(@<text>
+                    <a class="k-button" href="@Url.Action("Index", "WebHooks", new { Area = "Acs", AcsApplicationId = item.AcsApplicationId })">Web Hooks</a>
+                </text>);
+                //.ClientTemplate(webHooks.Result);
+        }
+        if (authorizer.Authorize(UserPermissions.DeleteWebsite))
+        {
+
+            cols.Bound(e => e.Name).Title("Actions")
+                .Filterable(false).Sortable(false)
+                .Width(100)
+                .Template(@<text>
+                    <a class="k-button" href="@Url.Action("Delete", "AndroWebOrdering", new { Id = item.Id } )" )">Delete</a>
+                </text>);
+                //.ClientTemplate(deleteProcess.Result);
+        }
+        //.ClientTemplate("<a href='" + Url.Action("Index", "AndroWebOrdering") + "?id=#= Id #'" + ">#=Name#</a>");
+    })
+    .Filterable()
+    .Sortable()
+    .Pageable(paging => paging.Refresh(true))
+)

@@ -1,0 +1,255 @@
+﻿@model dynamic
+@{
+    var translator = Html.GetTranslator();    
+}
+
+<div id="MenuApp">
+    <div class="km-widget">
+        <div class="row" ng-controller="MenuNavigationController">
+            <div class="col-xs-12">
+                @*<div kendo-toolbar k-options="ToolbarOptions"></div>*@
+                <button ng-click="Publish()" class="k-primary k-button pull-right">Publish</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div ng-view class="slide km-content km-widget km-scroll-wrapper">
+                </div>
+            </div>
+        </div>
+    </div>
+    <style scoped="scoped">
+        .category-pricing {
+            padding: 1em;
+            margin: 1em;
+            border: 1px dotted #ccc;
+        }
+
+        .category-pricing ul li {
+        }
+    </style>
+</div>
+
+@Html.Partial("MenuPublishTemplate")
+
+@using (Html.BeginScripts())
+{ 
+    <script id="MenuTemplate" type="text/html">
+        <div class="k-toolbar k-widget k-toolbar-resizable">
+            <div class="row" ng-controller="ToppingsFilterController">
+                <div class="col-xs-12">
+                    <input type="text" class="k-input" placeholder="Enter a toppng name" ng-model="Name" />
+                    <button class="k-button" ng-click="ResetFilters()"><span class="k-icon k-i-funnel-clear"></span>Reset</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="menu-editor-wrapper k-widget">
+
+            <div kendo-listview
+                id="listView"
+                k-data-source="DataSource"
+                k-template='MenuToppingsListViewTemplate'
+                k-edit-template='MenuToppingsEditListViewTemplate'>
+            </div>
+            <div kendo-pager
+                k-data-source="DataSource">
+            </div>
+
+        </div>
+    </script>
+    
+    <script id="MenuToppingsListViewTemplate" type="text/html">
+        <div class="menu-item k-widget" data-id="#:Id#">
+            <div class="header" style="border-left-color: #:ColorStatus() #">
+                <a class="k-button k-button-icontext k-edit-button" href="\\#"><span class="k-icon k-edit"></span>Edit</a>
+                <div>
+                    <h3>#: Name #</h3>
+                </div>
+                <div>
+                    <p>
+                        Group: #: Group.Name #
+                </div>
+                <div style="clear: both"></div>
+            </div>
+
+            # for(var i=0; i< ToppingVarients.length; i++) { #
+            # var varient = ToppingVarients[i]; # 
+            <div class="category-pricing" style="float: left">
+                <div>#: varient.Category.Name #</div>
+                <div class="menu-list-prices">
+                    <div>Delivery: #= kendo.toString(varient.DeliveryPrice, "c") #</div>
+                    <div>Collection: #= kendo.toString(varient.CollectionPrice, "c") #</div>
+                    <div>DineInPrice: #= kendo.toString(varient.DineInPrice, "c") #</div>
+                </div>
+            </div>
+            # } #
+            <div style="clear: both"></div>
+        </div>
+    </script>
+    
+    <script id="MenuToppingsEditListViewTemplate" type="text/html">
+        <div class="menu-item menu-item-topping k-widget" data-id="#:Id#">
+            <div class="header">
+                <a class="k-button k-button-icontext k-cancel-button" title="Cancel, and forfit any changes to this item">
+                    <span class="k-icon k-cancel"></span>
+                    Cancel
+                </a>
+
+                <a class="k-button k-button-icontext k-update-button" title="Finish changes this this item. Note this will not save yet.">
+                    <span class="k-icon k-update"></span>
+                    Continue
+                </a>
+
+                <div style="float: left">
+                    <h3 data-bind="text: Name"></h3>
+                    <p>Group #: Group.Name #</p>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+            <div class="clearfix tab-strip-wrapper">
+                <div data-role="tabstrip" data-bind="">
+                    <ul>
+                        <li class="k-state-active k-state-default">Simple</li>
+                        <li>Advanced</li>
+                    </ul>
+                    <!-- simple -->
+                    <div class="simple-wrapper">
+                        <table>
+                            <colgroup>
+                                <col style="width: 33%" />
+                                <col />
+                            </colgroup>
+                            <tr>
+                                <td>
+                                    <div class="category-pricing" style="float: left; height: 100%">
+                                        <label for="Name">@translator.T("Name")</label>
+                                        <input type="text" class="k-textbox"
+                                            data-value-update="keyup" data-bind="value: Name"
+                                            name="Name" required="required"
+                                            validationmessage="required" style="width: 100%" />
+                                        <span data-for="Name" class="k-invalid-msg"></span>
+
+                                        <div>
+                                            <label for="DineInPrice">@translator.T("Dine-in price:")</label><br />
+                                            <input type="number" data-bind="value: DineInPrice" data-role="numerictextbox" data-type="number" data-format="c"
+                                                name="DineIn" required="required" min="0" validationmessage="required" />
+
+                                            <span data-for="DineIn" class="k-invalid-msg"></span>
+                                            <button class="k-button" data-bind="click: UpdateAllDineIn">Update all</button>
+                                        </div>
+                                        <div>
+                                            <label for="DeliveryPrice">@translator.T("Collection Price")</label><br />
+
+                                            <input type="number" data-bind="value: CollectionPrice" data-role="numerictextbox" data-type="number" data-format="c"
+                                                name="CollectionPrice" required="required" min="0" validationmessage="required" />
+
+                                            <span data-for="DeliveryPrice" class="k-invalid-msg"></span>
+                                            <button class="k-button" data-bind="click: UpdateAllCollection">Update all</button>
+                                        </div>
+                                        <div>
+                                            <label for="DeliveryPrice">@translator.T("Delivery Price")</label><br />
+
+                                            <input type="number" data-bind="value: DeliveryPrice" data-role="numerictextbox" data-type="number" data-format="c" name="DeliveryPrice" required="required"
+                                                min="0" validationmessage="required" />
+
+                                            <span data-for="DeliveryPrice" class="k-invalid-msg"></span>
+                                            <button class="k-button" data-bind="click: UpdateAllDelivery">Update all</button>
+                                        </div>
+                                        <div>
+                                            <button class="k-button" data-bind="click: UpdateAllToppingPrices">Update all three prices</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div data-bind="source: ToppingVarients" data-template="SimplePricingTemplate"></div>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div class="advanced-wrapper">
+
+                        <!-- end of simple -->
+                        <!-- advanced -->
+                        <p class="category-pricing">
+                            Use this page to individually price each category. 
+                        </p>
+                        <div data-bind="source: ToppingVarients" data-template="AdvancedPricingTemplate"></div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <!-- end of advanced -->
+                </div>
+            </div>
+
+        </div>
+    </script>
+    <script type="text/html" id="SimplePricingTemplate">
+        <div class="content category-pricing" style="float: left">
+            <span>#: Category.Name #</span>
+            <br />
+            @translator.T("Dine-in") <span data-bind="currency: DineInPrice"></span>
+            @translator.T("Collection") <span data-bind="currency: CollectionPrice"></span>
+            @translator.T("Delivery") <span data-bind="currency: DeliveryPrice"></span>
+        </div>
+    </script>
+    <script type="text/html" id="AdvancedPricingTemplate">
+        <div class="content category-pricing" style="float: left;">
+            <div>#: Category.Name #</div>
+            <div>
+                <label for="DineInPrice">@translator.T("Dine-in price:")</label><br />
+
+                <input type="number" data-bind="value: DineInPrice" data-role="numerictextbox" data-type="number" data-format="c"
+                    name="DineIn" required="required" min="0" validationmessage="required" />
+
+                <span data-for="DineIn" class="k-invalid-msg"></span>
+            </div>
+            <div>
+                <label for="DeliveryPrice">@translator.T("Collection Price")</label><br />
+
+                <input type="number" data-bind="value: CollectionPrice" data-role="numerictextbox" data-type="number" data-format="c"
+                    name="CollectionPrice" required="required" min="0" validationmessage="required" />
+
+                <span data-for="DeliveryPrice" class="k-invalid-msg"></span>
+            </div>
+            <div>
+                <label for="DeliveryPrice">@translator.T("Delivery Price")</label><br />
+
+                <input type="number" data-bind="value: DeliveryPrice" data-role="numerictextbox" data-type="number" data-format="c"
+                    name="DeliveryPrice" required="required" min="0" validationmessage="required" />
+
+                <span data-for="DeliveryPrice" class="k-invalid-msg"></span>
+            </div>
+        </div>
+    </script>
+    
+}
+
+
+
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    { 
+    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var routes = MyAndromeda.Menu.Settings.Routes;
+            routes.Toppings.List = "@Url.Action("List")";
+            routes.Toppings.Update = "@Url.Action("Update")";
+            routes.Publish = "@Url.Action("Publish", "MenuSync")";
+
+
+            MyAndromeda.Menu.Logger.Notify("Setup Menu App");
+            MyAndromeda.Menu.Angular.Init();
+            MyAndromeda.Menu.Logger.Notify("Completed Menu App");
+        });
+    </script>
+}
