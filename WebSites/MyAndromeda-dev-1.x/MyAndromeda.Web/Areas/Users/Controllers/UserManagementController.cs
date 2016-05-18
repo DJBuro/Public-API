@@ -77,9 +77,9 @@ namespace MyAndromeda.Web.Areas.Users.Controllers
             viewModel.CurrentChain = currentChain;
             viewModel.CurrentUser = currentUser;
             viewModel.Users = //select the chain's users list if chain view is open 
-                this.currentChain.Available ? //I wanted to see all users everywhere rather than work out where they are. 
-                this.userChainsDataService.FindUsersDirectlyBelongingToChain(currentChain.Chain.Id) : 
-                this.userDataService.QueryForUsers(e=> true);
+                this.currentChain.Available
+                ? this.userChainsDataService.FindUsersDirectlyBelongingToChain(currentChain.Chain.Id) 
+                : this.userDataService.QueryForUsers(e=> true);
 
             return View(viewModel);
         }

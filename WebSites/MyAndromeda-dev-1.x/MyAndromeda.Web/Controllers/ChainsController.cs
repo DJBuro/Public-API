@@ -13,6 +13,7 @@ using Kendo.Mvc.UI;
 using System.Collections.Generic;
 using MyAndromeda.Data.DataAccess.Sites;
 using MyAndromeda.Data.Domain;
+using MyAndromeda.Core.Linq;
 
 namespace MyAndromeda.Web.Controllers
 {
@@ -144,15 +145,20 @@ namespace MyAndromeda.Web.Controllers
             return Json(userDefined.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult ListReadonly(string text)
+        public JsonResult ListReadonly(int? chainId, string text)
         {
-            if (currentUser.Available)
+            if (this.currentChain.Available)
             {
-                ChainDomainModel[] models = currentUser.FlattenedChains;
-                return Json(models, JsonRequestBehavior.AllowGet);
+                //todo - find chains below this chain 
+                IEnumerable<ChainDomainModel> withinChain = currentUser.FlattenedChains.Where(e => e.Id == chainId);
+                //change the tree (branch) to a flat level
+                IEnumerable<ChainDomainModel> flattened = withinChain.Flatten(e => e.Items);
+
+                return Json(flattened, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet);
+            ChainDomainModel[] models = currentUser.FlattenedChains;
+            return Json(models, JsonRequestBehavior.AllowGet);
         }
 
     }

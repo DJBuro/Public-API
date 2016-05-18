@@ -4,106 +4,168 @@
     var translator = Html.GetTranslator();
 }
 <div class="row">
-    
+
     <div class="col-sm-12" id="CreateUserWrapper">
-        <div class="header">
-            <h3>@translator.T("Create user")</h3>
-            <a class="k-button" href="@Url.Action("Index")">Back</a>
-        </div>
+        @if (workContext.CurrentChain.Available)
+        {
+
+            <div class="header">
+                <h3>@translator.T("Create user for {0}", workContext.CurrentChain.Chain.Name)</h3>
+                <a class="k-button" href="@Url.Action("Index")">Back</a>
+            </div>
+
+        }
+        else
+        {
+
+            <div class="header">
+                <h3>@translator.T("Create user")</h3>
+                <a class="k-button" href="@Url.Action("Index")">Back</a>
+            </div>
+
+        }
+
         @using (Html.BeginForm())
         {
-            if (!this.ViewData.ModelState.IsValid)
-            {
-            <div class="alert">
-                @Html.ValidationSummary()
-            </div>
-            }
-            <div class="col-sm-8">
-                <div>
-                    @Html.LabelFor(e => e.UserName, "User Name")
-                    <input type="text"
-                           required="required" autocomplete="off"
-                           id="@Html.IdFor(e => e.UserName)" name="@Html.NameFor(e => e.UserName)"
-                           class="tooltip-info form-control"
-                           value="@Model.UserName"
-                           title="@translator.T("A email is required. This will also be used for service notifications")"
-                           placeholder="name@organization.org" />
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                    @Html.ValidationMessageFor(e => e.UserName)
-                </div>
-                <div>
-                    @Html.LabelFor(e => e.FirstName, translator.T("First Name"))
-                    <input type="text" required="required" class="form-control" autocomplete="off"
-                           id="@Html.IdFor(e => e.FirstName)" name="@Html.NameFor(e => e.FirstName)"
-                           placeholder="Joe"
-                           value="@Model.FirstName" />
-                    @Html.ValidationMessageFor(e => e.FirstName)
-                </div>
-                <div>
-                    @Html.LabelFor(e => e.LastName, translator.T("Last Name"))
-                    <input type="text" required="required" class="form-control" autocomplete="off"
-                           id="@Html.IdFor(e => e.LastName)" name="@Html.NameFor(e => e.LastName)"
-                           value="@Model.LastName"
-                           placeholder="Bloggs" />
-                    @Html.ValidationMessageFor(e => e.LastName)
-                </div>
+                    @if (!this.ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert">
+                            @Html.ValidationSummary()
+                        </div>
+                    }
+                    <div class="col-sm-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">User Details</div>
+                            </div>
+                            <div class="panel-body">
+                                <div>
+                                    @Html.LabelFor(e => e.UserName, "User Name")
+                                    <input type="text"
+                                           required="required" autocomplete="off"
+                                           id="@Html.IdFor(e => e.UserName)" name="@Html.NameFor(e => e.UserName)"
+                                           class="tooltip-info form-control"
+                                           value="@Model.UserName"
+                                           title="@translator.T("A email address is required. It will be used for service notifications.")"
+                                           placeholder="name@organization.org" />
 
-                <div>
-                    @Html.LabelFor(e => e.Password, translator.T("Password"))
-                    <input type="password" required="required" class="form-control" autocomplete="off"
-                        id="@Html.IdFor(e => e.Password)" name="@Html.NameFor(e => e.Password)" value="@Model.Password" placeholder="password" />
-                    @Html.ValidationMessageFor(e => e.Password)
+                                    @Html.ValidationMessageFor(e => e.UserName)
+                                </div>
+                                <div>
+                                    @Html.LabelFor(e => e.FirstName, translator.T("First Name"))
+                                    <input type="text" required="required" class="form-control" autocomplete="off"
+                                           id="@Html.IdFor(e => e.FirstName)" name="@Html.NameFor(e => e.FirstName)"
+                                           placeholder="Joe"
+                                           value="@Model.FirstName" />
+                                    @Html.ValidationMessageFor(e => e.FirstName)
+                                </div>
+                                <div>
+                                    @Html.LabelFor(e => e.LastName, translator.T("Last Name"))
+                                    <input type="text" required="required" class="form-control" autocomplete="off"
+                                           id="@Html.IdFor(e => e.LastName)" name="@Html.NameFor(e => e.LastName)"
+                                           value="@Model.LastName"
+                                           placeholder="Bloggs" />
+                                    @Html.ValidationMessageFor(e => e.LastName)
+                                </div>
+
+                                <div>
+                                    @Html.LabelFor(e => e.Password, translator.T("Password"))
+                                    <input type="password" required="required" class="form-control" autocomplete="off"
+                                           id="@Html.IdFor(e => e.Password)" name="@Html.NameFor(e => e.Password)" value="@Model.Password" placeholder="password" />
+                                    @Html.ValidationMessageFor(e => e.Password)
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="checkbox"
+                                               id="@Html.IdFor(e => e.NotifyUser)" name="@Html.NameFor(e => e.NotifyUser)" value="true"
+                                               checked="checked" /> Notify this user when the account is created? <i class="fa fa-envelope-o"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Grant Access
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                @if (workContext.CurrentChain.Available) { 
+                                <div class="alert alert-info">
+                                    Chain and store selection is restricted within @workContext.CurrentChain.Chain.Name
+                                </div>
+                                }
+                                <div class="multi-section">
+                                    @Html.LabelFor(e => e.SelectedChainIds, "Chains")
+                                    @(Html.Kendo().MultiSelectFor(m => m.SelectedChainIds)
+                                          .DataTextField("Name")
+                                          .DataValueField("Id")
+                                          .Placeholder("Select Chains...")
+                                          .AutoBind(true)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  if (workContext.CurrentChain.Available)
+                                                  {
+                                                      read.Action("ListReadonly", "Chains", new { area = "", ChainId = workContext.CurrentChain.Chain.Id });
+                                                  }
+                                                  else
+                                                  {
+                                                      read.Action("ListReadonly", "Chains", new { area = "" });
+                                                  }
+                                              })
+                                              .ServerFiltering(false);
+                                          })
+                                    )
+                                </div>
+                                <div class="multi-section">
+                                    @Html.LabelFor(e => e.SelectedStoreIds, "Stores")
+                                    @(Html.Kendo().MultiSelectFor(m => m.SelectedStoreIds)
+                                          .DataTextField("ClientSiteName")
+                                          .DataValueField("Id")
+                                          .Placeholder("Select Stores...")
+                                          .AutoBind(true)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  if (workContext.CurrentChain.Available)
+                                                  {
+                                                      read.Action("ListReadonly", "Sites", new { area = "", chainId = workContext.CurrentChain.Chain.Id });
+                                                  }
+                                                  else
+                                                  {
+                                                      read.Action("ListReadonly", "Sites", new { area = "" });
+                                                  }
+
+                                              })
+                                              .ServerFiltering(false);
+                                          })
+                                        .Value(Model.SelectedStoreIds)
+                                    )
+                                </div>
+                                <br />
+                                <div class="alert alert-info">
+                                    Giving access to a chain will grant access to any store within it.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
-                <div>
-                    <label>
-                        <input type="checkbox"
-                               id="@Html.IdFor(e=>e.NotifyUser)" name="@Html.NameFor(e=>e.NotifyUser)" value="true"
-                               checked="checked" /> Notify this user when the account is created? <i class="fa fa-envelope-o"></i>
-                    </label>
+                <div class="panel-footer">
+                    <input class="btn btn-primary" type="submit" value="@translator.T("Save")" />
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="multi-section">
-                    @Html.LabelFor(e => e.SelectedChainIds, "Chains")
-                    @(Html.Kendo().MultiSelectFor(m => m.SelectedChainIds)
-                          .DataTextField("Name")
-                          .DataValueField("Id")
-                          .Placeholder("Select Chains...")
-                          .AutoBind(true)
-                          .DataSource(source =>
-                          {
-                              source.Read(read =>
-                              {
-                                  read.Action("ListReadonly", "Chains", new { area = "" });
-                              })
-                              .ServerFiltering(false);
-                          })
-                    )
-                </div>
-                <div class="multi-section">
-                    @Html.LabelFor(e => e.SelectedStoreIds, "Stores")
-                    @(Html.Kendo().MultiSelectFor(m => m.SelectedStoreIds)
-                          .DataTextField("ClientSiteName")
-                          .DataValueField("Id")
-                          .Placeholder("Select Stores...")
-                          .AutoBind(true)
-                          .DataSource(source =>
-                          {
-                              source.Read(read =>
-                              {
-                                  read.Action("ListReadonly", "Sites", new { area = "" });
-                              })
-                              .ServerFiltering(false);
-                          })
-                        .Value(Model.SelectedStoreIds)
-                    )
-                </div>
-            </div>
-            <div class="col-xs-12">&nbsp;</div>
-            <div class="col-xs-12">
-                <input class="k-button" type="submit" value="@translator.T("Finish")" />
             </div>
         }
+
 
     </div>
 </div>

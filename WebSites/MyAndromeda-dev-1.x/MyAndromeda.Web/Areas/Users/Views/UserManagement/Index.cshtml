@@ -12,8 +12,6 @@
     var editUserTemplate = Html.CreateHtmlTemplate();
     var editRolesTemplate = Html.CreateHtmlTemplate();
     var disableEnableUser = Html.CreateHtmlTemplate();
-
-
 }
 <div class="header">
     <h3>
@@ -43,7 +41,7 @@
         <a class="btn btn-danger" href="@Url.ActionClientTemplate("Disable", "UserManagement", new { UserId = "#= Id #" })">
             Disable
         </a>
-        # }else{  #
+        # }else{ #
         <a class="btn btn-default" href="@Url.ActionClientTemplate("Enable", "UserManagement", new { UserId = "#= Id #" })">
             Enable
         </a>
@@ -60,39 +58,45 @@
 }
 
 @(Html.Kendo().Grid(Model.Users).Name("UserList")
-        .Filterable(f => f.Enabled(true))
+        .Filterable(f => 
+            f.Enabled(true)
+                .Extra(false)
+                .Operators(ops => 
+                    ops.ForString(str => str.Clear().Contains("Contains"))
+                )
+        )
 
 
     .Columns(cols =>
     {
-    cols.Bound(e => e.Firstname).Filterable(true);
-    cols.Bound(e => e.Surname);
-    cols.Bound(e => e.Username);
+        cols.Bound(e => e.Firstname).Filterable(true);
+        cols.Bound(e => e.Surname);
+        cols.Bound(e => e.Username);
 
 
-    if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
-    {
-        cols.Template(@<text></text>)
-            .Width(200)
-            .ClientTemplate(editUserTemplate.Result);
-        }
-
-        if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
+        if (this.Html.IsAuthorizedForAny(UsersPermissions.CreateUsers, UsersPermissions.ChangeUserRole))
         {
-            cols.Bound(e => e.Enabled)
-                .Title("Status")
-                .Width(100)
-                .ClientTemplate(disableEnableUser.Result);
-        }
+            cols.Template(@<text></text>)
+                .Width(200)
+                .ClientTemplate(editUserTemplate.Result);
+            }
 
-    }).DataSource(d =>
-        d.Ajax().ServerOperation(false)
-           .Sort(e => e.Add(field => field.Surname))
+            if (this.Html.IsAuthorizedForAny(UsersPermissions.DisableUser))
+            {
+                cols.Bound(e => e.Enabled)
+                    .Title("Status")
+                    .Width(100)
+                    .ClientTemplate(disableEnableUser.Result);
+            }
 
-    )
-    .Pageable()
-    .Sortable()
-    .ClientDetailTemplateId("UserThing")
+            }).DataSource(d =>
+                d.Ajax().ServerOperation(false)
+                   .Sort(e => e.Add(field => field.Surname))
+
+        )
+        .Pageable()
+        .Sortable()
+        .ClientDetailTemplateId("UserThing")
 )
 
 

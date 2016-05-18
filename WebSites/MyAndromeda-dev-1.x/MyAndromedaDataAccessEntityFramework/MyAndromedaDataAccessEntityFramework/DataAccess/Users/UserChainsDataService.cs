@@ -11,6 +11,7 @@ using MyAndromeda.Data.Model.MyAndromeda;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.Domain;
+using System.Collections;
 
 namespace MyAndromeda.Data.DataAccess.Users
 {
@@ -39,6 +40,8 @@ namespace MyAndromeda.Data.DataAccess.Users
         /// MyAndromeda Link to chains
         /// </summary>
         public DbSet<UserChain> UserChains { get; private set; }
+        public DbSet<UserRecord> UserRecords { get; private set; }
+        public DbSet<Store> Stores { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserChainsDataService" /> class.
@@ -55,9 +58,10 @@ namespace MyAndromeda.Data.DataAccess.Users
             this.Chains = androAdminDbContext.Chains;
             this.AndroWebOrderingWebsites = androAdminDbContext.AndroWebOrderingWebsites;
             this.ChainChains = androAdminDbContext.ChainChains;
+            this.Stores = androAdminDbContext.Stores;
 
             this.UserChains = myAndromedaDbContext.UserChains;
-            
+            this.UserRecords = myAndromedaDbContext.UserRecords;
 
             //this.androAdminDbContext = androAdminDbContext;
             this.myAndromedaDbContext = myAndromedaDbContext;
@@ -221,10 +225,29 @@ namespace MyAndromeda.Data.DataAccess.Users
         {
             IEnumerable<MyAndromedaUser> myAndromedaUserusers;
             
-            IEnumerable<UserRecord> userRecords = this.UserChains.Where(e => e.ChainId == chainId).Select(e => e.UserRecord);
-            UserRecord[] result = userRecords.ToArray();
+            IQueryable<UserRecord> chainUserRecords = this.UserRecords.Where(e=> e.UserChains.Any(userChain => userChain.ChainId == chainId));
+            // and users linked to just the chains. 
+            int[] stores = this.Stores.Where(e => e.ChainId == chainId).Select(e=> e.Id).ToArray();
 
-            myAndromedaUserusers = result.Select(e => e.ToDomainModel()).ToArray();
+            IQueryable<UserRecord> storeUserRecords = this.UserRecords.Where(e => e.UserStores.Any(userStore => stores.Any(k => k == userStore.StoreId)));
+
+            List<UserRecord> chainResult = chainUserRecords.ToList();
+            List<UserRecord> storeResult = storeUserRecords.ToList();
+
+            var result = new Dictionary<int, UserRecord>();
+
+            chainResult.ForEach((item) => {
+                if (result.ContainsKey(item.Id)) { return; }
+
+                result.Add(item.Id, item);
+            });
+            storeResult.ForEach((item) => {
+                if (result.ContainsKey(item.Id)) { return; }
+
+                result.Add(item.Id, item);
+            });
+
+            myAndromedaUserusers = result.Values.Select(e => e.ToDomainModel()).ToArray();
 
             return myAndromedaUserusers;
         }

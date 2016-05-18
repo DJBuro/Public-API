@@ -7,22 +7,28 @@ using MyAndromeda.Framework.Contexts;
 using MyAndromeda.Logging;
 using MyAndromeda.Data.DataAccess.Users;
 using MyAndromeda.Data.DataAccess.Sites;
+using MyAndromeda.Data.Domain;
+using System.Collections.Generic;
+using MyAndromeda.Core.Linq;
 
 namespace MyAndromeda.Web.Controllers
 {
-    [MyAndromedaAuthorizeAttribute]
+    [MyAndromedaAuthorize]
     public class SitesController : Controller
     {
+        private readonly ICurrentChain currentChain;
         private readonly IUserSitesDataService userSitesDataService;
         private readonly ISiteDataService siteDataService;
         private readonly WorkContextWrapper workContextWrapper;
 
         public SitesController(WorkContextWrapper workContextWrapper,
+            ICurrentChain currentChain,
             IUserSitesDataService userSitesDataService,
             ISiteDataService siteDataService,
             IMyAndromedaLogger logger,
             INotifier notifier)
         {
+            this.currentChain = currentChain;
             this.siteDataService = siteDataService;
             this.workContextWrapper = workContextWrapper;
             this.userSitesDataService = userSitesDataService;
@@ -47,34 +53,43 @@ namespace MyAndromeda.Web.Controllers
         public ActionResult Index()
         {
             // Get the users details
-            var currentUser = this.workContextWrapper.Current.CurrentUser;
+            ICurrentUser currentUser = this.workContextWrapper.Current.CurrentUser;
             //var currentChain = this.workContextWrapper.Current.CurrentChain;
 
             if (currentUser.FlattenedChains.Any()) 
             { 
-                var chainsIds = currentUser.FlattenedChains.Select(e => e.Id).ToArray();
-                var stores = this.siteDataService.List(e => chainsIds.Contains(e.ChainId)).ToArray();
+                int[] chainsIds = currentUser.FlattenedChains.Select(e => e.Id).ToArray();
+                SiteDomainModel[] stores = this.siteDataService.List(e => chainsIds.Contains(e.ChainId)).ToArray();
                 return View(stores);
             }
 
-            var chainsSites = currentUser.AccessibleSites;
+            SiteDomainModel[] chainsSites = currentUser.AccessibleSites;
 
             return View(chainsSites);
         }
 
-        public JsonResult ListReadonly(string text)
+        public JsonResult ListReadonly(int? chainId, string text)
         {
-            var currentUser = this.workContextWrapper.Current.CurrentUser;
+            ICurrentUser currentUser = this.workContextWrapper.Current.CurrentUser;
 
             if (!currentUser.Available) { return Json(Enumerable.Empty<object>(), JsonRequestBehavior.AllowGet); }
 
-            var userChains = currentUser.FlattenedChains;
+            ChainDomainModel[] userChains = currentUser.FlattenedChains;
+
+            if (chainId.HasValue)
+            {
+                if (!currentUser.FlattenedChains.Any(e => e.Id == chainId))
+                {
+                    throw new Exception(message: "no"); 
+                }
+            }
+
 
             if (!userChains.Any()) 
             {
                 //load only the stores that the user associated with. 
 
-                var associatedStores = currentUser.AccessibleSites;
+                SiteDomainModel[] associatedStores = currentUser.AccessibleSites;
 
                 if (string.IsNullOrWhiteSpace(text)) 
                 {
@@ -82,9 +97,19 @@ namespace MyAndromeda.Web.Controllers
                 }
             }
 
-            var associatedChainIds = currentUser.FlattenedChains.Select(e=> e.Id).ToArray();
+            int[] associatedChainIds;
+            if (this.currentChain.Available) {
+                IEnumerable<ChainDomainModel> withinChain = currentUser.FlattenedChains.Where(e => e.Id == chainId);
+                //change the tree (branch) to a flat level
+                IEnumerable<ChainDomainModel> flattened = withinChain.Flatten(e => e.Items);
+                associatedChainIds = flattened.Select(e => e.Id).ToArray();
+            }
+            else {
+                associatedChainIds = currentUser.FlattenedChains.Select(e => e.Id).ToArray();
 
-            var siteQuery = this.siteDataService.List(e => associatedChainIds.Contains(e.ChainId));
+            }
+
+            IEnumerable<SiteDomainModel> siteQuery = this.siteDataService.List(e => associatedChainIds.Contains(e.ChainId));
             //var siteQuery = string.IsNullOrWhiteSpace(text) ? 
             //    Enumerable.Empty<Site>() : 
             //    this.siteDataService.List(e => associatedChainIds.Contains(e.ChainId) && e.ClientSiteName.Contains(text));

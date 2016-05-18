@@ -198,7 +198,6 @@
     <span style="white-space:normal">
         
         <span class="btn-group pull-right" ng-if="status.hasStores">
-
             @if (showChainReportButton)
             {
                 <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">
@@ -213,12 +212,9 @@
                     Beta Reports
                 </a>
             }
-        </span>
+            <manage-chain-users-link chain-id="chain.Id"></manage-chain-users-link>
 
-        <span class="btn-group pull-right">
-            <manage-chain-users chain-id="chain.Id"></manage-chain-users>
         </span>
-
     </span>
 
     <div ng-if="status.hasStores">

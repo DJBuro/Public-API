@@ -2,17 +2,18 @@
 
     let directives = angular.module("MyAndromeda.Chain.Directives", []); 
 
-    directives.directive("manageChainUsers", () => {
+    directives.directive("manageChainUsersLink", () => {
 
         return {
-            name: "manageChainUsers",
+            name: "manageChainUsersLink",
             scope: {
                 chainId : "=chainId" // chain-id="someScopeVar"
             },
             template: `
-                <a class="btn btn-danger" href="Users/Chain/{{chainId}}/UserManagement">
+                <a class="btn btn-default" href="Users/Chain/{{chainId}}/UserManagement">
                     <i class="fa fa-group"></i>
-                    Manage Users <span class="badge">{{context.userCount}}</span>
+                    Users 
+                    <span class="badge">{{context.userCount}}</span>
                 </a>
             `,
             controller: ($scope, $timeout, $http: ng.IHttpService) => {
@@ -25,7 +26,6 @@
 
                 promise.then((result: ng.IHttpPromiseCallbackArg<any>) => {
                     $timeout(() => { context.userCount = result.data.Count; });
-                    
                 });
 
                 $scope.context = context; 
