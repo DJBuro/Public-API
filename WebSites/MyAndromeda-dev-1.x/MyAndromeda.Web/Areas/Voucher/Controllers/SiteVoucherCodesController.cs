@@ -213,6 +213,30 @@ namespace MyAndromeda.Web.Areas.Voucher.Controllers
             }
         }
 
+        private void ValidateDates(VoucherViewModel viewModel)
+        {
+            if (viewModel.StartDateTime == null || viewModel.EndDataTime == null)
+            {
+                this.notifier.Error(translator.T("Please select start and end voucher availability"));
+            }
+            else if (viewModel.StartTimeOfDayAvailable == null || viewModel.EndTimeOfDayAvailable == null)
+            {
+                this.notifier.Error(translator.T("Please select start and end voucher available"));
+            }
+            else if (viewModel.StartDateTime.GetValueOrDefault().Hour > viewModel.StartTimeOfDayAvailable.GetValueOrDefault().Hours)
+            {
+                this.notifier.Error(translator.T("Start date available cannot be before start day availability"));
+            }
+            else if (viewModel.EndDataTime.GetValueOrDefault().Hour < viewModel.EndTimeOfDayAvailable.GetValueOrDefault().Hours)
+            {
+                this.notifier.Error(translator.T("End date available cannot be before end day availability"));
+            }
+            else if (viewModel.StartDateTime.GetValueOrDefault().Hour > viewModel.StartTimeOfDayAvailable.GetValueOrDefault().Hours)
+            {
+                this.notifier.Error(translator.T("Start time cannot be after end time"));
+            }
+        }
+
         //
         // GET: /Voucher/SiteVoucherCodes/Edit/5
 
@@ -237,6 +261,7 @@ namespace MyAndromeda.Web.Areas.Voucher.Controllers
         [ActionName("Edit")]
         public ActionResult EditPost(Guid id, VoucherViewModel viewModel)
         {
+            ValidateDates(viewModel);
             if (!this.authorizer.AuthorizeAll(VoucherCodesFeature.HasVoucherCodesFeature, UserPermissions.EditVoucherCodes))
             {
                 this.notifier.Error(translator.T("You do not have permission to create voucher codes"));
