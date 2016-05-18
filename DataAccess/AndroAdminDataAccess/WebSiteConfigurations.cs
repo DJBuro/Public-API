@@ -33,7 +33,7 @@ namespace AndroAdminDataAccess.Domain.WebOrderingSetup
             this.CheckoutSettings = new CheckoutSettings();
             this.CheckoutSettings.DefaultCheckOutPolicy();
 
-            this.UpSellingSettings = new UpSelling();
+            this.UpSellingSettings = new UpSellingSettings();
 
             this.LastUpdatedUtc = DateTime.UtcNow;
             this.AnalyticsSettings = new Analytics();
@@ -93,7 +93,7 @@ namespace AndroAdminDataAccess.Domain.WebOrderingSetup
 
         public CheckoutSettings CheckoutSettings { get; set; }
 
-        public UpSelling UpSellingSettings { get; set; }
+        public UpSellingSettings UpSellingSettings { get; set; }
 
         public DateTime LastUpdatedUtc { get; set; }
 

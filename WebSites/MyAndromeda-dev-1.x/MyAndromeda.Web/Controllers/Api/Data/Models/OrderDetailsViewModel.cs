@@ -13,6 +13,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
             {
                 return r => new OrderDetailsViewModel()
                 {
+                    Id = r.ID,
+                    ExternalOrderRef = r.ExternalOrderRef,
                     DeliveryCharge = r.DeliveryCharge,
                     CardCharges = r.OrderPayments.Sum(k => k.PaymentCharge),
                     Tips = r.Tips,
@@ -24,10 +26,16 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
                     CookingInstructions = r.CookingInstructions,
                     CustomerDirections = r.Customer.Address.Directions,
                     OrderAddressDirections = r.CustomerAddress.Directions,
-                    OrderNotes = r.OrderNotes
+                    OrderNotes = r.OrderNotes,
+                    DriverPhoneNumber = r.DriverPhoneNumber,
+                    RamesesOrderNum = r.RamesesOrderNum
                 };
             }
         }
+
+        public Guid Id { get; set; }
+
+        public string ExternalOrderRef { get; set; }
 
         public decimal DeliveryCharge { get; set; }
 
@@ -52,5 +60,9 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
         public string OrderAddressDirections { get; set; }
 
         public string OrderNotes { get; set; }
+
+        public string DriverPhoneNumber { get; set; }
+
+        public int RamesesOrderNum { get; set; }
     }
 }

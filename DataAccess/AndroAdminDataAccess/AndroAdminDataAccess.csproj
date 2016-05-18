@@ -496,6 +496,10 @@
       <Project>{56aa880a-eff0-440f-92f5-39f2c578cbdd}</Project>
       <Name>CloudSyncModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\WebSites\MyAndromeda-dev-1.x\MyAndromeda.Data.AcsServices\MyAndromeda.Data.AcsServices.csproj">
+      <Project>{75B415BE-C7FF-4972-8E42-BF518F3C9C6C}</Project>
+      <Name>MyAndromeda.Data.AcsServices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

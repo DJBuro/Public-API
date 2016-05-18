@@ -14,6 +14,7 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
                 return r => new DebugOrderViewModel()
                 {
                     StatusDescription = r.OrderStatu.Description,
+                    ExternalOrderRef = r.ExternalOrderRef,
                     Id = r.ID,
                     Items = r.OrderLines.Count(),
                     FinalPrice = r.FinalPrice,
@@ -34,6 +35,8 @@ namespace MyAndromeda.Web.Controllers.Api.Data.Models
         }
 
         public string StatusDescription { get; set; }
+
+        public string ExternalOrderRef { get; set; }
 
         public Guid Id { get; set; }
 

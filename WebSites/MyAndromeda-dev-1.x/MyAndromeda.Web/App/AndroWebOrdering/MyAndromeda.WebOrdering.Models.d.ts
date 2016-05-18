@@ -62,7 +62,7 @@ declare module MyAndromeda.WebOrdering.Models {
         //custom cms pages
         Pages: IPage[];
 
-        UpSelling: IUpSellSettings;
+        UpSellingSettings: IUpSellSettings;
     }
 
     export interface IUpSellSettings {

@@ -24,8 +24,10 @@
             dataSource: dataSource
         }; 
 
-        
 
+        Logger.Notify('OPTIONS: ');
+        Logger.Notify(multiselectOptions);
+        Logger.Notify('------------');
         $scope.MultiselectOptions = multiselectOptions;
         //$scope.SelectedDisplayCategories = [];
         $scope.DisplayCategoryDataSource = dataSource;
@@ -50,8 +52,8 @@
         var bothSubscription = both.subscribe(settings => {
             //var multiSelect = getMultiSelect();
             //$scope.SelectedDisplayCategories = settings.AndroWebSettings.UpSelling.DisplayCategories;
-            if (!settings.AndroWebSettings.UpSelling) {
-                settings.AndroWebSettings.UpSelling = {
+            if (!settings.AndroWebSettings.UpSellingSettings) {
+                settings.AndroWebSettings.UpSellingSettings = {
                     Enabled: false,
                     DisplayCategories : []
                 };

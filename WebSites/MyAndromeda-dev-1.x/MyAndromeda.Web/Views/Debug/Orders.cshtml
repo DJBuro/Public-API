@@ -214,11 +214,17 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Third party ids</div>
                     <div class="panel-body">
+                        Id: {{dataItem.Id}}
+                        <br />
+                        External Order Ref: {{dataItem.ExternalOrderRef}}
+                        <br />
                         BringgId: {{dataItem.BringgId}}
                         <br />
                         IBS Order Id: {{dataItem.IbsOrderId}}
                         <br />
-                        Rameses Ticket number: {{dataItem.TicketNumber}}
+                        Ticket Number: {{dataItem.TicketNumber}}
+                        <br />
+                        Rameses Order Number: {{dateItem.RamesesOrderNum}}
                     </div>
                 </div>
 
@@ -228,7 +234,8 @@
                     <div class="panel-heading">Delivery</div>
                     <div class="panel-body">
                         Postcode: {{dataItem.OrderPostCode}}<br />
-                        Driver: {{dataItem.DriverName}}
+                        Driver: {{dataItem.DriverName}}<br />
+                        Driver Phone Number: {{dataItem.DriverPhoneNumber}}
                     </div>
                 </div>
             </div>
@@ -308,12 +315,12 @@
     </script>
 
     <script type="text/template" id="order-detail-template.html">
-        <tabs>
-            <pane title="Food">
-                <grid-order-display-foods order-id="dataItem.Id"></grid-order-display-foods>
-            </pane>
+        <tabs ng-init="activeTab = 'details'">
             <pane title="Details - {{dataItem.StatusDescription}}">
                 <grid-order-display-details order-id="dataItem.Id"></grid-order-display-details>
+            </pane>
+            <pane title="Food">
+                <grid-order-display-foods order-id="dataItem.Id"></grid-order-display-foods>
             </pane>
             <pane title="Payments">
                 <grid-order-display-payments order-id="dataItem.Id"></grid-order-display-payments>
