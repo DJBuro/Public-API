@@ -16,7 +16,7 @@ using MyAndromeda.Framework.Dates;
 
 namespace MyAndromeda.Web.Areas.Reporting.Controllers
 {
-    [MyAndromedaAuthorizeAttribute]
+    [MyAndromedaAuthorize]
     public class DailyReportingController : Controller
     {
         private readonly IDateServices dateServices;
@@ -46,7 +46,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public ActionResult Index() 
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedView));
 
@@ -58,7 +58,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public ActionResult ServiceTime()
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedView));
 
@@ -78,7 +78,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public async Task<ActionResult> Hourly(DateTime? day) 
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedForAction));
 
@@ -86,9 +86,10 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
             }
 
 
-            var queryFor = day.HasValue ? day.Value : DateTime.Today.AddDays(-1);
+            DateTime queryFor = day.HasValue ? day.Value : DateTime.Today.AddDays(-1);
+
             var ids = new long[] { this.currentSite.AndromediaSiteId };
-            var data = (await dailyReportingService.SalesByHourAsync(ids,
+            DailyMetricGroup[] data = (await dailyReportingService.SalesByHourAsync(ids,
                 query =>
                     query.Thedate.Year == queryFor.Year &&
                     query.Thedate.Month == queryFor.Month &&
@@ -96,9 +97,9 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
                 )).ToArray();
 
             //data above may be missing some hours ... which the grids make... so time to fill in the missing hours 
-            var max = data.Max(e=> e.Date).GetValueOrDefault();
-            var min = data.Min(e=> e.Date).GetValueOrDefault();
-            var timespan = max - min;
+            DateTime max = data.Max(e=> e.Date).GetValueOrDefault();
+            DateTime min = data.Min(e=> e.Date).GetValueOrDefault();
+            TimeSpan timespan = max - min;
             //var hours = timespan.Hours + 1;
 
             //if (hours != data.Length) { 
@@ -117,10 +118,10 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         private IEnumerable<DailyMetricGroup> FixByFill(DailyMetricGroup[] data, DateTime min, DateTime max)
         {
-            var start = min.Hour;
+            int start = min.Hour;
             for (var i = start; i <= max.Hour; i++)
             {
-                var hourItem = data.FirstOrDefault(e=> e.Date.Value.Hour == i);
+                DailyMetricGroup hourItem = data.FirstOrDefault(e=> e.Date.Value.Hour == i);
                 if (hourItem != null)
                 {
                     yield return hourItem;

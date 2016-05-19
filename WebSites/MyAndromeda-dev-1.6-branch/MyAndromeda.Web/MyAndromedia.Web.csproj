@@ -951,6 +951,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\MyAndromeda-beta2 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\MyAndromeda-gprs - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -4488,7 +4489,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>50262</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
