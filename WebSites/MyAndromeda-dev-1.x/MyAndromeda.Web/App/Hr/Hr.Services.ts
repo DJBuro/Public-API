@@ -1,10 +1,9 @@
 ﻿module MyAndromeda.Hr.Services {
     var app = angular.module("MyAndromeda.Hr.Services", []);
 
-    export class EmployeeServiceState
-    {
+    export class EmployeeServiceState {
         public AndromedaSiteId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
-        public ChainId : Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
+        public ChainId: Rx.BehaviorSubject<number> = new Rx.BehaviorSubject(null);
 
 
         public CurrentChainId: number;
@@ -15,13 +14,13 @@
 
         constructor() {
 
-            this.ChainId.where(e=> e !== null).subscribe((e) => {
+            this.ChainId.where(e => e !== null).subscribe((e) => {
                 Logger.Notify("new chain id: " + e);
                 this.CurrentChainId = e;
 
             });
 
-            this.AndromedaSiteId.where(e=> e !== null).subscribe((e) => {
+            this.AndromedaSiteId.where(e => e !== null).subscribe((e) => {
                 Logger.Notify("new Andromeda site id: " + e);
                 this.CurrentAndromedaSiteId = e;
             });
@@ -29,24 +28,22 @@
         }
     }
 
-    export class EmployeeService
-    {
+    export class EmployeeService {
         public ChainEmployeeDataSource: kendo.data.DataSource;
         public StoreEmployeeDataSource: kendo.data.DataSource;
-        
+
         private chainId: number;
-        private andromedaSiteId: number; 
+        private andromedaSiteId: number;
 
         public Loading: Rx.Subject<boolean> = new Rx.Subject<boolean>();
         public IsLoading: boolean = false;
         public SavingSchedule: Rx.Subject<boolean> = new Rx.Subject<boolean>();
-        public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>(); 
+        public Saved: Rx.Subject<boolean> = new Rx.Subject<boolean>();
         public Error: Rx.Subject<string> = new Rx.Subject<string>();
 
         constructor(private $http: ng.IHttpService,
             private employeeServiceState: EmployeeServiceState,
-            private uuidService: MyAndromeda.Services.UUIdService)
-        {
+            private uuidService: MyAndromeda.Services.UUIdService) {
             this.ChainEmployeeDataSource = new kendo.data.DataSource({
                 schema: {
                     model: Models.employeeDataSourceSchema
@@ -66,7 +63,7 @@
                         let promise = this.$http.get(route);
 
                         this.Loading.onNext(true);
-                        
+
                         Rx.Observable.fromPromise(promise).subscribe((callback) => {
                             options.success(callback.data);
 
@@ -97,19 +94,19 @@
                             this.SavingSchedule.onNext(false);
                             e.error(data);
                         });
-                        
+
                     }
                 },
                 sort: { field: "ShortName", dir: "desc" }
-            }); 
+            });
 
-            this.employeeServiceState.AndromedaSiteId.where(e=> e !== null).distinctUntilChanged(e=> e).subscribe((id) => {
+            this.employeeServiceState.AndromedaSiteId.where(e => e !== null).distinctUntilChanged(e => e).subscribe((id) => {
                 Logger.Notify("new Andromeda site id : " + id);
                 this.andromedaSiteId = id;
                 this.StoreEmployeeDataSource.read();
             });
 
-            this.employeeServiceState.ChainId.where(e=> e !== null).distinctUntilChanged(e=> e).subscribe((id) => {
+            this.employeeServiceState.ChainId.where(e => e !== null).distinctUntilChanged(e => e).subscribe((id) => {
                 Logger.Notify("new chain id : " + id);
                 this.chainId = id;
                 this.ChainEmployeeDataSource.read();
@@ -120,8 +117,7 @@
             });
         }
 
-        public List(chainId: number, andromedaSiteId: number): ng.IHttpPromise<Models.IEmployee[]>
-        {
+        public List(chainId: number, andromedaSiteId: number): ng.IHttpPromise<Models.IEmployee[]> {
             var route = "";
 
             var pomise = this.$http.get(route);
@@ -148,8 +144,7 @@
             return sync;
         }
 
-        private Update(model: Models.IEmployee, onSuccess: (data) => void, onError: (data) => void)
-        {
+        private Update(model: Models.IEmployee, onSuccess: (data) => void, onError: (data) => void) {
             let route = "hr/{0}/employees/{1}/update";
             route = kendo.format(route, this.chainId, this.andromedaSiteId);
 
@@ -167,7 +162,7 @@
 
                 Logger.Notify(model.DateOfBirth);
             }
-            
+
             let promise = this.$http.post(route, model);
 
             this.Saved.onNext(false);
@@ -188,8 +183,7 @@
             });
         }
 
-        private Create(model, onSuccess: (data) => void, onError : (data) => void)
-        {
+        private Create(model, onSuccess: (data) => void, onError: (data) => void) {
             let route = "hr/{0}/employees/{1}/create";
             route = kendo.format(route, this.chainId, this.andromedaSiteId);
 
@@ -228,7 +222,7 @@
 
 
         public GetStoreListByEmployee(chainId: number, andromedaSiteId: number, employeeId: string): Rx.Observable<Models.IStore[]> {
-            let route = "hr/{0}/employees/{1}/list-stores/{2}"; 
+            let route = "hr/{0}/employees/{1}/list-stores/{2}";
 
             route = kendo.format(route, chainId, andromedaSiteId, employeeId);
 
@@ -238,8 +232,7 @@
             return map;
         }
 
-        public GetEmployeePictureUrl(chainId: number, andromedaSiteId: number, employeeId: string) : string
-        {
+        public GetEmployeePictureUrl(chainId: number, andromedaSiteId: number, employeeId: string): string {
             //"hr/{{$stateParams.chainId}}/employees/{{$stateParams.andromedaSiteId}}/resources/{{employee.Id}}"
             let path = "hr/{0}/employees/{1}/resources/{2}/profile-pic";
             path = kendo.format(path, chainId, andromedaSiteId, employeeId);
@@ -251,20 +244,18 @@
             return path;
         }
 
-        public GetUploadRouteUrl(chainId: number, andromedaSiteId: number, employeeId: string) : string
-        {
+        public GetUploadRouteUrl(chainId: number, andromedaSiteId: number, employeeId: string): string {
             let path = "hr/{0}/employees/{1}/resources/{2}/update-profile-pic";
             path = kendo.format(path, chainId, andromedaSiteId, employeeId);
 
-            return path; 
+            return path;
         }
 
-        public GetDocumentUploadRoute(chainId: number, andromedaSiteId, employeeId: string, documentId: string): string
-        {
+        public GetDocumentUploadRoute(chainId: number, andromedaSiteId, employeeId: string, documentId: string): string {
             let path = "hr/{0}/employees/{1}/resources/{2}/update-document/{3}";
             path = kendo.format(path, chainId, andromedaSiteId, employeeId, documentId);
 
-            return path;  
+            return path;
         }
 
         public GetDocumentRouteUrl(chainId: number, andromedaSiteId, employeeId: string, documentId: string, fileName: string): string {
@@ -283,8 +274,7 @@
             return path;
         }
 
-        public GetDataSourceForStoreScheduler(chainId: number, andromedaSiteId: number)
-        {
+        public GetDataSourceForStoreScheduler(chainId: number, andromedaSiteId: number) {
             let schema: kendo.data.DataSourceSchema = {
                 data: "Data",
                 total: "Total",
@@ -346,7 +336,7 @@
 
             dataSource.sort({
                 field: "EmployeeId",
-                dir : "desc"
+                dir: "desc"
             });
 
             return dataSource;
@@ -380,15 +370,18 @@
                         });
                     },
                     create: (options: kendo.data.DataSourceTransportOptions) => {
-                        Logger.Notify("Scheduler create");
-                        Logger.Notify(options.data);
                         let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                         let promise = this.$http.post(route, options.data);
 
                         promise.then((callback) => {
-                            Logger.Notify("Create response:");
-                            Logger.Notify(callback.data);
-                            options.success(callback.data);
+                            var callbackControllerError = callback.data["Errors"];
+
+                            if (callbackControllerError) {
+                                options.error(callback.data);
+                            }
+                            else {
+                                options.success(callback.data);
+                            }
                         });
                     },
                     destroy: (options: kendo.data.DataSourceTransportOptions) => {
@@ -413,8 +406,7 @@
 
         }
 
-        private GetStoreEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId: number)
-        {
+        private GetStoreEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId: number) {
             let path = "/hr/{0}/employees/{1}/schedule/store-list";
 
             path = kendo.format(path, chainId, andromedaSiteId);
@@ -422,8 +414,7 @@
             return path;
         }
 
-        private GetEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId, employeeId: string)
-        {
+        private GetEmployeeSchedulerReadRoute(chainId: number, andromedaSiteId, employeeId: string) {
             let path = "/hr/{0}/employees/{1}/schedule/list/{2}";
 
             path = kendo.format(path, chainId, andromedaSiteId, employeeId);
@@ -431,8 +422,7 @@
             return path;
         }
 
-        private GetEmployeeSchedulerUpdateRoute(chainId: number, andromedaSiteId)
-        {
+        private GetEmployeeSchedulerUpdateRoute(chainId: number, andromedaSiteId) {
             let path = "/hr/{0}/employees/{1}/schedule/update";
 
             path = kendo.format(path, chainId, andromedaSiteId);
@@ -440,8 +430,7 @@
             return path;
         }
 
-        private GetEmployeeSchedulerDestroyRoute(chainId: number, andromedaSiteId)
-        {
+        private GetEmployeeSchedulerDestroyRoute(chainId: number, andromedaSiteId) {
             let path = "/hr/{0}/employees/{1}/schedule/destroy";
 
             path = kendo.format(path, chainId, andromedaSiteId);
@@ -449,7 +438,7 @@
             return path;
         }
     }
-    
+
     app.service("employeeService", EmployeeService);
     app.service("employeeServiceState", EmployeeServiceState);
 }

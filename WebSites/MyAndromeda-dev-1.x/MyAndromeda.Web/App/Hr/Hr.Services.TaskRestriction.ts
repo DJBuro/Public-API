@@ -26,10 +26,10 @@ module MyAndromeda.Hr.Services {
             Logger.Notify("Tasks in range: " + currentTasks.length);
 
             Logger.Notify(currentTasks);
-            currentTasks = currentTasks.filter(e=> e.id !== task.id);
+            currentTasks = currentTasks.filter(e => e.id !== task.id);
             Logger.Notify("Tasks in range after removing self: " + currentTasks.length);
 
-            currentTasks = currentTasks.filter(e=> e.EmployeeId === task.EmployeeId);
+            currentTasks = currentTasks.filter(e => e.EmployeeId === task.EmployeeId);
             Logger.Notify("Tasks in range - by employee: " + currentTasks.length);
 
             Logger.Notify("startCheck : " + startCheck + " | endCheck: " + endCheck);
@@ -63,7 +63,7 @@ module MyAndromeda.Hr.Services {
 
                 let shift = Models.taskValues.Shift;
                 let coveringShift = Models.taskValues.CoveringShift;
-                
+
                 switch (task.TaskType) {
                     case Models.taskValues.Shift:
                     case Models.taskValues.NeedCover:
@@ -74,6 +74,22 @@ module MyAndromeda.Hr.Services {
                     }
                 }
             }
+            return true;
+        }
+
+        public PreverTasksOverlapping(model: Models.IEmployeeTask): boolean {
+            var schedulers = this.GetTasksInRange(model.start, model.end);
+            for (var scheduler of schedulers) {
+                if (scheduler.IsAllDay && (model.start == scheduler.start)) {
+                    return false;
+                }
+                else if (((scheduler.start == model.start) && (scheduler.end == model.end)) &&
+                    ((scheduler.start > model.start || scheduler.start < model.end) ||
+                        (scheduler.end < model.end || scheduler.end > model.start))) {
+                    return false;
+                }
+            }
+
             return true;
         }
     }
