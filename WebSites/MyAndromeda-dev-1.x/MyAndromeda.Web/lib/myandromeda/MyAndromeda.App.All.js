@@ -6340,7 +6340,7 @@ var MyAndromeda;
                             var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
                                 _this.SweetAlert.swal("Sorry", invalidReason, "error");
                             });
-                            if (tester.PreverTasksOverlapping(e.event)) {
+                            if (!tester.PreverTasksOverlapping(e.event)) {
                                 var message = 'At this time employee has another event! You cannot overlap events!';
                                 _this.SweetAlert.swal("Sorry", message, "error");
                                 e.preventDefault();
@@ -6436,15 +6436,19 @@ var MyAndromeda;
                     return true;
                 };
                 EmployeeAvailabilityTestService.prototype.PreverTasksOverlapping = function (model) {
-                    var schedulers = this.GetTasksInRange(model.start, model.end);
+                    var schedulers;
+                    if (model.isAllDay) {
+                        schedulers = this.GetTasksInRange(model.start, new Date(model.end.getFullYear(), model.end.getMonth(), model.end.getDate(), model.end.setHours(model.start.getHours() + 23.30), 0, null, null));
+                    }
+                    else {
+                        schedulers = this.GetTasksInRange(model.start, model.end);
+                    }
                     for (var _i = 0, schedulers_1 = schedulers; _i < schedulers_1.length; _i++) {
                         var scheduler = schedulers_1[_i];
-                        if (scheduler.IsAllDay && (model.start == scheduler.start)) {
-                            return false;
-                        }
-                        else if (((scheduler.start == model.start) && (scheduler.end == model.end)) &&
-                            ((scheduler.start > model.start || scheduler.start < model.end) ||
-                                (scheduler.end < model.end || scheduler.end > model.start))) {
+                        if (scheduler.isAllDay &&
+                            (model.start.getDate() == scheduler.start.getDate()
+                                && model.start.getMonth() == scheduler.start.getDate()
+                                && model.start.getFullYear() == scheduler.start.getFullYear())) {
                             return false;
                         }
                     }

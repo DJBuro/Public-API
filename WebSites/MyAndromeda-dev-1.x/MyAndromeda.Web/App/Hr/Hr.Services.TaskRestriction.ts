@@ -78,14 +78,22 @@ module MyAndromeda.Hr.Services {
         }
 
         public PreverTasksOverlapping(model: Models.IEmployeeTask): boolean {
-            var schedulers = this.GetTasksInRange(model.start, model.end);
+            var schedulers;
+            if (model.isAllDay) {
+                schedulers = this.GetTasksInRange(
+                    model.start,
+                    new Date(model.end.getFullYear(), model.end.getMonth(), model.end.getDate(), model.end.setHours(model.start.getHours() + 23.30), 0, null, null)
+                );
+            }
+            else {
+                schedulers = this.GetTasksInRange(model.start, model.end);
+            }
+
             for (var scheduler of schedulers) {
-                if (scheduler.IsAllDay && (model.start == scheduler.start)) {
-                    return false;
-                }
-                else if (((scheduler.start == model.start) && (scheduler.end == model.end)) &&
-                    ((scheduler.start > model.start || scheduler.start < model.end) ||
-                        (scheduler.end < model.end || scheduler.end > model.start))) {
+                if (scheduler.isAllDay &&
+                    (model.start.getDate() == scheduler.start.getDate()
+                        && model.start.getMonth() == scheduler.start.getDate()
+                        && model.start.getFullYear() == scheduler.start.getFullYear())) {
                     return false;
                 }
             }

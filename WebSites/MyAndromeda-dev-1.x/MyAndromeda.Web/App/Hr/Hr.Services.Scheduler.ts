@@ -393,7 +393,7 @@ module MyAndromeda.Hr.Services {
                         this.SweetAlert.swal("Sorry", invalidReason, "error");
                     });
                     
-                    if (tester.PreverTasksOverlapping(<any>e.event)) {
+                    if (!tester.PreverTasksOverlapping(<any>e.event)) {
                         let message = 'At this time employee has another event! You cannot overlap events!';
                         this.SweetAlert.swal("Sorry", message, "error");
 
