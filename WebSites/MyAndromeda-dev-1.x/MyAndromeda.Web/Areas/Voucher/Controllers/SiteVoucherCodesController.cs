@@ -176,6 +176,12 @@ namespace MyAndromeda.Web.Areas.Voucher.Controllers
         [ActionName("Create")]
         public ActionResult CreatePost(VoucherViewModel viewModel)
         {
+            var areValid = AreValidDates(viewModel);
+            if (!areValid)
+            {
+                return this.View("Edit", viewModel);
+            }
+
             if (!this.authorizer.AuthorizeAll(VoucherCodesFeature.HasVoucherCodesFeature, UserPermissions.EnableOrDisableVoucherCodes))
             {
                 this.notifier.Error(translator.T("You do not have permission to create voucher codes"));
