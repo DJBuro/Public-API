@@ -236,8 +236,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -255,7 +253,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
                         ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
 
@@ -266,7 +263,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
                         ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
 
@@ -276,8 +272,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
 
@@ -287,8 +281,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
 
@@ -298,8 +290,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -308,8 +298,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -318,8 +306,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -328,8 +314,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -338,8 +322,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -348,8 +330,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -358,8 +338,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -368,8 +346,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -378,8 +354,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -388,8 +362,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -398,8 +370,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -408,8 +378,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -418,8 +386,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -428,8 +394,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] {
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -438,8 +402,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] {
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 }, 
                 new PermissionStereotype()
@@ -448,8 +410,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] {
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 },
                 new PermissionStereotype()
@@ -464,8 +424,6 @@ namespace MyAndromeda.Web.Areas.AndroWebOrdering
                     AllowRoles = new [] {
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator,
-                        ExpectedUserRoles.ChainAdministrator   
                     }
                 }
             };

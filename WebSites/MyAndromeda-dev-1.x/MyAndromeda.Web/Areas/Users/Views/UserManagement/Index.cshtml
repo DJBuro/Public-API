@@ -122,16 +122,18 @@
             .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
             .Items(items =>
             {
+                /*
                 items.Add().Text(translator.T("Linked Chains")).Content(@<text>
         <p>@translator.T("This is a list of the chains the user has been connected to. They then access any chain below their node.")</p>
         @Html.Partial("_LinkedChains")
                 </text>);
-
+                */
+                /*
                 items.Add().Text(translator.T("Access to")).Content(@<text>
         <p>@translator.T("This is a list of every chain that the user can visit.")</p>
         @Html.Partial("_AllChains")
                 </text>);
-
+                */
                 items.Add().Text(translator.T("User Roles")).Content(@<text>
         @Html.Partial("_UserRoles")
                 </text>);
@@ -140,12 +142,12 @@
         <p>@translator.T("This section defines where the user can access from.")</p>
         @Html.Partial("_UserIPLocks")
                 </text>);
-
+                /*
                 items.Add().Text(translator.T("Linked Stores")).Content(@<text>
         <p>@translator.T("This is a list of the stores the user has been connected to.")</p>
         @Html.Partial("_LinkedStores")
                 </text>);
-
+                */
             }).ToClientTemplate())
 </script>
 

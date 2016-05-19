@@ -134,7 +134,7 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
             {
                 await this.FillUpBasicMissingIds(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
             }
 

@@ -78,7 +78,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Services
 
         public IQueryable<OrderHeader> GetListData(FilterQuery filter)
         {
-            filter.CheckNull("FilterQuery");
+            filter.CheckNull(argumentName: "FilterQuery");
 
             if (filter.ShowInStoreOrders)
             {

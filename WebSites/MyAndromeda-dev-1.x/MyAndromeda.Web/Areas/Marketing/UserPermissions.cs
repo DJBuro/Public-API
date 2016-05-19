@@ -116,8 +116,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 
@@ -127,8 +125,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -137,8 +133,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -147,8 +141,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -157,8 +149,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -167,8 +157,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -177,8 +165,6 @@ namespace MyAndromeda.Web.Areas.Marketing
                     AllowRoles = new[] {
                         ExpectedUserRoles.SuperAdministrator,
                         ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()

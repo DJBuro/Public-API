@@ -10,7 +10,7 @@
                 chainId : "=chainId" // chain-id="someScopeVar"
             },
             template: `
-                <a class="btn btn-default" href="Users/Chain/{{chainId}}/UserManagement">
+                <a class="btn btn-default" style="width:100px" href="/Users/Chain/{{chainId}}/UserManagement">
                     <i class="fa fa-group"></i>
                     Users 
                     <span class="badge">{{context.userCount}}</span>

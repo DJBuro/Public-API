@@ -196,24 +196,29 @@
     </span>
 
     <span style="white-space:normal">
-        
-        <span class="btn-group pull-right" ng-if="status.hasStores">
-            @if (showChainReportButton)
-            {
-                <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">
-                    <i class="fa fa-pie-chart"></i>
-                    Chain Reports
-                </a>
-            }
-            @if (showBetaReportButton)
-            {
-                <a class="btn btn-default" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">
-                    <i class="fa fa-pie-chart"></i>
-                    Beta Reports
-                </a>
-            }
-            <manage-chain-users-link chain-id="chain.Id"></manage-chain-users-link>
 
+        <span class="pull-right">
+            <span class="btn-group" ng-if="status.hasStores">
+                @if (showChainReportButton)
+                {
+                    <a class="btn btn-info" href="/ChainReporting/{{chain.Id}}/Reports">
+                        <i class="fa fa-pie-chart"></i>
+                        Chain Reports
+                    </a>
+                }
+                @if (showBetaReportButton)
+                {
+                    <a class="btn btn-default" href="/ChainReporting/{{chain.Id}}/Dashboard#/chain-sales-live">
+                        <i class="fa fa-pie-chart"></i>
+                        Beta Reports
+                    </a>
+                }
+
+            </span>
+            @if(authorizer.Authorize(MyAndromeda.Web.Areas.Users.UserManagementUserPermissions.ListUsers)) {
+            <manage-chain-users-link chain-id="chain.Id">
+            </manage-chain-users-link>
+            }
         </span>
     </span>
 

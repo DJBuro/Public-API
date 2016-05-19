@@ -42,7 +42,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
         [HttpPost]
         public async Task<ActionResult> Data(FilterQuery filter)
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedForAction));
 

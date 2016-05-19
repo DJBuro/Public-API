@@ -48,21 +48,22 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         private async Task FillUpBasicMissingIds<TModel>(TModel model) 
             where TModel : IHook 
         {
-            this.logger.Debug("Fill in the incoming message. It is a medley of differences between external id, andromeda site id");
+            
+            this.logger.Debug("Fill in the missing ids for the incoming message");
 
             try
             {
-                bool needExternalId = string.IsNullOrWhiteSpace(model.ExternalSiteId);
+                bool needExternalSiteId = string.IsNullOrWhiteSpace(model.ExternalSiteId);
                 bool needAndromedaSiteId = model.AndromedaSiteId == 0;
 
-                if (!needAndromedaSiteId && !needExternalId)
+                if (!needAndromedaSiteId && !needExternalSiteId)
                 {
                     this.logger.Debug("All ids are here!" + model.ExternalSiteId);
                     //all good;
                     return;
                 }
 
-                if (needExternalId)
+                if (needExternalSiteId)
                 {
                     var store = await this.storeDataService.List()
                         .Where(e => e.AndromedaSiteId == model.AndromedaSiteId)
@@ -127,7 +128,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-status")]
         public async Task<HttpResponseMessage> OnlineState(OutgoingWebHookStoreOnlineStatus model)
         {
-            this.logger.Info("web-hooks/store/update-status hit");
+            string body = JsonConvert.SerializeObject(model);
+            this.logger.Info("web-hooks/store/update-status hit : " + body);
             //this.Flavor = WebHookType.StoreStaus;
 
             try
@@ -147,7 +149,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-estimated-delivery-time")]
         public async Task<HttpResponseMessage> UpdateDeliveryTime(OutgoingWebHookUpdateDeliveryTime model)
         {
-            this.logger.Info(message: "web-hooks/store/update-estimated-delivery-time hit");
+            string body = JsonConvert.SerializeObject(model);
+            this.logger.Info(message: "web-hooks/store/update-estimated-delivery-time hit: " + body);
             //this.Flavor = WebHookType.OrderEta;
 
             try
@@ -167,7 +170,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-menu")]
         public async Task<HttpResponseMessage> MenuChange(OutgoingWebHookMenuChange model)
         {
-            this.logger.Info(message: "web-hooks/store/update-menu hit");
+            string body = JsonConvert.SerializeObject(model);
+            this.logger.Info(message: "web-hooks/store/update-menu hit: " + body);
             //this.Flavor = WebHookType.MenuChange;
 
             try
@@ -187,7 +191,8 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/update-menu-items")]
         public async Task<HttpResponseMessage> MenuItemsChanged(OutgoingWebHookMenuItemsChanged model) 
         {
-            this.logger.Info(message: "web-hooks/store/update-menu-items hit");
+            string body = JsonConvert.SerializeObject(model);
+            this.logger.Info(message: "web-hooks/store/update-menu-items hit: " + body);
             //this.Flavor = WebHookType.MenuItemChange | WebHookType.MenuChange;
 
             try
@@ -207,76 +212,83 @@ namespace MyAndromeda.Web.Controllers.Api.WebHooks
         [Route("web-hooks/store/orders/update-order-status")]
         public async Task<HttpResponseMessage> OrderStatusChange(OutgoingWebHookOrderStatusChange model)
         {
+            string body = JsonConvert.SerializeObject(model);
             this.logger.Info(message: "web-hooks/store/orders/update-order-status hit");
             //this.Flavor = WebHookType.OrderStatus;
 
             try
             {
                 await this.FillUpBasicMissingIds(model);
-            }
-            catch (Exception) { }
 
-            if (string.IsNullOrWhiteSpace(model.ExternalOrderId) && !model.RamesesOrderNum.HasValue) 
-            {
-                string message = "External Order Id OR RamesesOrderNum is required: " + model.Source;
-                this.logger.Error(message);
+                if (string.IsNullOrWhiteSpace(model.ExternalOrderId) && !model.RamesesOrderNum.HasValue)
+                {
+                    string message = "External Order Id OR RamesesOrderNum is required: " + model.Source;
+                    this.logger.Error(message);
 
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
-            }
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
+                }
 
-            IQueryable<OrderHeader> query = this.orderHeaderDataService.List();
+                IQueryable<OrderHeader> query = this.orderHeaderDataService.List();
 
-            if (!string.IsNullOrWhiteSpace(model.ExternalOrderId))
-            {
+                if (!string.IsNullOrWhiteSpace(model.ExternalOrderId))
+                {
+                    query = query
+                        .Where(e => e.ExternalOrderRef == model.ExternalOrderId);
+                }
+
+                if (model.RamesesOrderNum.HasValue)
+                {
+                    query = query
+                        .Where(e => e.RamesesOrderNum == model.RamesesOrderNum);
+                }
+
                 query = query
-                    .Where(e => e.ExternalOrderRef == model.ExternalOrderId);
-            }
+                    .Where(e => e.ExternalSiteID == model.ExternalSiteId)
+                    .OrderByDescending(e => e.TimeStamp);
 
-            if (model.RamesesOrderNum.HasValue)
+                var orderHeaders = query
+                    .Select(e => new {
+                        e.ID,
+                        e.ApplicationID,
+                        e.ExternalOrderRef,
+                        e.RamesesOrderNum,
+                    }).ToArray();
+
+                if (orderHeaders.Length > 1)
+                {
+                    string obj = JsonConvert.SerializeObject(model);
+                    string message = "The order brought back too many records!!!!! " + obj;
+
+                    this.logger.Error(message);
+                    this.logger.Error(query.ToTraceQuery());
+
+                }
+                if (orderHeaders.Length == 0)
+                {
+                    string obj = JsonConvert.SerializeObject(model);
+                    string message = "No order could be found using external Order id: " + obj;
+                    this.logger.Error(message);
+
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
+                }
+
+                var orderHeader = orderHeaders.FirstOrDefault();
+
+                model.InternalOrderId = orderHeader.ID;
+                model.AcsApplicationId = orderHeader.ApplicationID;
+                model.ExternalOrderId = orderHeader.ExternalOrderRef;
+                model.RamesesOrderNum = orderHeader.RamesesOrderNum;
+
+
+                await this.sendWebHooksService.CallEndpoints(model, e => e.OrderStatus);
+
+                this.logger.Info("Completed update order status without any errors"); 
+            }
+            catch (Exception ex)
             {
-                query = query
-                    .Where(e => e.RamesesOrderNum == model.RamesesOrderNum);
+                this.logger.Error("failed processing order update");
+                this.logger.Error(ex.Message);
             }
-
-            query = query
-                .Where(e => e.ExternalSiteID == model.ExternalSiteId)
-                .OrderByDescending(e=> e.TimeStamp);
-
-            var orderHeaders = query
-                .Select(e=> new { 
-                    e.ID, 
-                    e.ApplicationID,
-                    e.ExternalOrderRef,
-                    e.RamesesOrderNum,
-                }).ToArray();
-
-            if (orderHeaders.Length > 1) 
-            {
-                string obj = JsonConvert.SerializeObject(model);
-                string message = "The order brought back too many records!!!!! " + obj;
-
-                this.logger.Error(message);
-                this.logger.Error(query.ToTraceQuery());
-
-            }
-            if (orderHeaders.Length == 0)
-            {
-                string obj = JsonConvert.SerializeObject(model); 
-                string message = "No order could be found using external Order id: " + obj;
-                this.logger.Error(message);
-
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, message);
-            }
-
-            var orderHeader = orderHeaders.FirstOrDefault(); 
-
-            model.InternalOrderId = orderHeader.ID;
-            model.AcsApplicationId = orderHeader.ApplicationID;
-            model.ExternalOrderId = orderHeader.ExternalOrderRef;
-            model.RamesesOrderNum = orderHeader.RamesesOrderNum;
-
-
-            await this.sendWebHooksService.CallEndpoints(model, e => e.OrderStatus);
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }

@@ -166,7 +166,6 @@ namespace MyAndromeda.Web.Areas.Users
                         ExpectedUserRoles.SuperAdministrator, 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.ChainAdministrator, 
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype(){
@@ -218,13 +217,16 @@ namespace MyAndromeda.Web.Areas.Users
                     Permission = EditIpLock, 
                     AllowRoles = new [] { 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.Administrator 
+                        ExpectedUserRoles.Administrator ,
+                        ExpectedUserRoles.ChainAdministrator
                     }
                 },
                 new PermissionStereotype() {
                     Permission = DeleteIpLock,
                     AllowRoles = new [] { 
-                        ExpectedUserRoles.SuperAdministrator 
+                        ExpectedUserRoles.SuperAdministrator ,
+                        ExpectedUserRoles.Administrator,
+                        ExpectedUserRoles.ChainAdministrator
                     }
                 },
 

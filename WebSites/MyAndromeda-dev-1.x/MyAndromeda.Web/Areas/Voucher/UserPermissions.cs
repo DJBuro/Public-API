@@ -80,8 +80,6 @@ namespace MyAndromeda.Web.Areas.Voucher
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype() {
@@ -89,8 +87,6 @@ namespace MyAndromeda.Web.Areas.Voucher
                     AllowRoles = new [] {                         
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator, 
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator 
                     }
                 },
                 new PermissionStereotype()
@@ -100,8 +96,6 @@ namespace MyAndromeda.Web.Areas.Voucher
                     {
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 },
                 new PermissionStereotype()
@@ -119,8 +113,6 @@ namespace MyAndromeda.Web.Areas.Voucher
                     AllowRoles = new [] { 
                         ExpectedUserRoles.Administrator, 
                         ExpectedUserRoles.SuperAdministrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
                     }
                 }
             };

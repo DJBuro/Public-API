@@ -32,7 +32,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public ActionResult Index()
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedView));
 
@@ -44,7 +44,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public async Task<ActionResult> Read(FilterQuery query) 
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedForAction));
 
@@ -78,7 +78,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
 
         public async Task<ActionResult> ReadDaily(FilterQuery query) 
         {
-            if (!authorizer.Authorize(EnrollmentPermissions.BasicAcsReportsFeature))
+            if (!authorizer.Authorize(EnrollmentPermissions.BasicRamesesReportsFeature))
             {
                 this.notifier.Notify(translator.T(Messages.NotAuthorizedForAction));
 

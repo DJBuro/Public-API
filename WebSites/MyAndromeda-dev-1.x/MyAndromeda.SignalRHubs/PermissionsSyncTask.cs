@@ -41,9 +41,7 @@ namespace MyAndromeda.SignalRHubs
                     Permission = ViewSyncTaskLogging, 
                     AllowRoles = new[] { 
                         ExpectedUserRoles.SuperAdministrator,
-                        ExpectedUserRoles.Administrator,
-                        ExpectedUserRoles.ChainAdministrator,
-                        ExpectedUserRoles.StoreAdministrator
+                        ExpectedUserRoles.Administrator
                     }
                 }
             };
