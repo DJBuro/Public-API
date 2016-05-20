@@ -1,7 +1,7 @@
 ﻿module MyAndromeda.Stores.OpeningHours {
 
     var app = angular.module("MyAndromeda.Store.OpeningHours.Controllers", []);
-    
+
     app.controller("OpeningHoursController", ($scope, SweetAlert, storeOccasionSchedulerService: Services.StoreOccasionSchedulerService) => {
 
         let schedulerOptions = storeOccasionSchedulerService.CreateScheduler();
@@ -13,8 +13,8 @@
             //let startDate = scheduler.date();
             //scheduler.addEvent({});
             let s: any = scheduler;
-            let view = s._selectedView; 
-            let start = view._startDate; 
+            let view = s._selectedView;
+            let start = view._startDate;
 
             //Logger.Notify("slot:");
             //Logger.Notify(slot);
@@ -28,10 +28,11 @@
                 start: start,
                 end: start
             });
+
         };
-        
+
         $scope.clearAll = () => {
-           
+
 
             SweetAlert.swal({
                 title: "Are you sure?",
@@ -50,13 +51,12 @@
                         SweetAlert.swal("Deleted!", "All times have been deleted", "success");
                     });
                 }
-                else
-                {
+                else {
                     Logger.Notify("alert cancel");
                 }
             });
 
-           
+
         };
     });
 } 

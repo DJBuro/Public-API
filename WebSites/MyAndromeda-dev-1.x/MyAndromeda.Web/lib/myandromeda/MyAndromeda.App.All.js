@@ -11628,12 +11628,6 @@ var MyAndromeda;
                                 }
                             },
                             save: function (e) {
-                                MyAndromeda.Logger.Notify("save");
-                                MyAndromeda.Logger.Notify(e.event);
-                                MyAndromeda.Logger.Notify("start time");
-                                MyAndromeda.Logger.Notify(e.event.start);
-                                MyAndromeda.Logger.Notify("end time");
-                                MyAndromeda.Logger.Notify(e.event.end);
                                 var ev = e.event;
                                 if (ev.Occasions) {
                                     var o = ev.Occasions.length;
@@ -11648,6 +11642,8 @@ var MyAndromeda;
                                     e.preventDefault();
                                     return;
                                 }
+                                e.event.start.setHours(6, 0, 0, 0);
+                                e.event.end.setHours(e.event.start.getHours() + 24, 0, 0, 0);
                                 var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
                                 if (occasionsInSpace.length > 0) {
                                     MyAndromeda.Logger.Notify("cancel save");

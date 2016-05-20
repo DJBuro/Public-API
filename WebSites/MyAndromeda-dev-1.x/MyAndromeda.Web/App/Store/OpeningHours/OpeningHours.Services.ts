@@ -331,14 +331,6 @@
                     }
                 },
                 save: (e) => {
-                    Logger.Notify("save");
-                    Logger.Notify(e.event);
-
-                    Logger.Notify("start time");
-                    Logger.Notify(e.event.start);
-                    Logger.Notify("end time");
-                    Logger.Notify(e.event.end);
-
                     let ev: any = e.event;
                     if (ev.Occasions)
                     {
@@ -357,6 +349,9 @@
                         e.preventDefault();
                         return;
                     }
+
+                    e.event.start.setHours(6, 0, 0, 0);
+                    e.event.end.setHours(e.event.start.getHours() + 24, 0, 0, 0);
 
                     let occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
                     if (occasionsInSpace.length > 0) {
