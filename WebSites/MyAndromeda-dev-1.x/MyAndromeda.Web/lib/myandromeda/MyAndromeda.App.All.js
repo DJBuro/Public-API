@@ -7032,11 +7032,14 @@ var MyAndromeda;
                 var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
                 var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
                 if (!maxValue || !minValue) {
+                    $scope.SaveBusy = false;
                     return false;
                 }
                 if (minValue <= maxValue) {
+                    $scope.SaveBusy = false;
                     return false;
                 }
+                $scope.SaveBusy = true;
                 return true;
             };
             $scope.IsMaximumAndMinimumRulesEqual = function () {

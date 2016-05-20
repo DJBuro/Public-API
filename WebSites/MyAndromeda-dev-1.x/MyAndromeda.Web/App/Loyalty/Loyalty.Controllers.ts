@@ -142,10 +142,17 @@ module MyAndromeda.Loyalty {
             var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
             var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
 
-            if (!maxValue || !minValue) { return false; }
+            if (!maxValue || !minValue) {
+                $scope.SaveBusy = false;
+                return false;
+            }
 
-            if (minValue <= maxValue) { return false; }
+            if (minValue <= maxValue) {
+                $scope.SaveBusy = false;
+                return false;
+            }
 
+            $scope.SaveBusy = true;
             return true;
         };
         $scope.IsMaximumAndMinimumRulesEqual = () => {

@@ -132,6 +132,11 @@
                         <div ng-if="IsMinimumPointsBeforeAvailableEnabled()">
                             <span>{{ ValueOf(Model.MinimumPointsBeforeAvailable) }}</span>
                         </div>
+                        <div ng-if="MinNumberOfPointsIsLessThanMaxPointsPerCustomer()">
+                            <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error">
+                                <span class="k-icon k-danger"> </span> <i>"Minimum number of points needed before being able to redeem"</i> <b>cannot be less than</b> <i>"Maximum points per customer"</i>
+                            </span>
+                        </div>
                         <div ng-if="!IsMinimumPointsBeforeAvailableEnabled()">
                             <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error">
                                 <span class="k-icon k-warning"> </span> This will be disabled. Enter a value to enable the option
