@@ -82,11 +82,6 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
         public async Task<object> Update()
         {
             string content = await this.Request.Content.ReadAsStringAsync();
-            var result = new DataSourceResult()
-            {
-                Total = 0,
-                Data = new List<EmployeeScheduleModel>()
-            };
             EmployeeScheduleModel model = null;
 
             try
@@ -122,10 +117,12 @@ namespace MyAndromeda.Web.Controllers.Api.Hr
 
             //return model;
             //parse expects Data. 
-
-            result.Total = 1;
-            result.Data = new[] { model };
-            return result;
+            
+            return new DataSourceResult()
+            {
+                Total = 1,
+                Data = new[] { model }
+            };
         }
 
         [HttpPost]

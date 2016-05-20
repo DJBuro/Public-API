@@ -302,14 +302,10 @@
                         });
                     },
                     create: (options: kendo.data.DataSourceTransportOptions) => {
-                        Logger.Notify("Scheduler create");
-                        Logger.Notify(options.data);
                         let route = this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                         let promise = this.$http.post(route, options.data);
 
                         promise.then((callback) => {
-                            Logger.Notify("Create response:");
-                            Logger.Notify(callback.data);
                             options.success(callback.data);
                         });
                     },

@@ -32,7 +32,7 @@ namespace MyAndromeda.Web.Areas.Menu.Controllers
         public PartialViewResult Debug()
         {
             if (accessDatabase.IsAvailable(currentSite.AndromediaSiteId))
-            { 
+            {
                 var current = accessDatabase.GetMenuVersionRow(currentSite.AndromediaSiteId);
                 DebugViewModel o = new DebugViewModel { AccessVersion = current.nVersion };
                 return PartialView(o);

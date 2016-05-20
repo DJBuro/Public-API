@@ -4,8 +4,9 @@
 }
 
 <div id="MenuDebug" class="header">
-    <h3>Menu
-        @if (Model != null) 
+    <h3>
+        Menu
+        @if (Model != null)
         {
             <span>Access version: @Model.AccessVersion</span>
         }
@@ -23,10 +24,10 @@
 @using (Html.BeginScripts("StoreDebugBit", Area.Foot))
 {
     if (false)
-    { 
+    {
         <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
     }
-    
+
     <script type="text/ecmascript">
         $(function () {
             $("#MenuDebug").on("click", ".k-button-force-check", function (e) {
@@ -71,7 +72,7 @@
             var hubService = new MyAndromeda.Hubs.Services.MenuHubService(options);
             hubService.init();
 
-@*            var askForNewMenu = $.ajax({
+            @*            var askForNewMenu = $.ajax({
                 url: "@Url.Action("QueryForNewMenu")",
                 type: "POST",
                 dataType: "json"
@@ -83,11 +84,12 @@
     <script id="debug-menu" type="text/template">
         <div class="clearfix">
             <div class="header">
-                <h3>Listening to: 
+                <h3>
+                    Listening to:
                     <span data-bind="text: siteName"></span>
                 </h3>
             </div>
-            <div data-bind="source: updates" data-templat="debug-menu-updated-row" >
+            <div data-bind="source: updates" data-templat="debug-menu-updated-row">
             </div>
         </div>
     </script>

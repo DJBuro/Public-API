@@ -2344,7 +2344,7 @@ var MyAndromeda;
                     scope: {
                         chainId: "=chainId" // chain-id="someScopeVar"
                     },
-                    template: "\n                <a class=\"btn btn-default\" href=\"Users/Chain/{{chainId}}/UserManagement\">\n                    <i class=\"fa fa-group\"></i>\n                    Users \n                    <span class=\"badge\">{{context.userCount}}</span>\n                </a>\n            ",
+                    template: "\n                <a class=\"btn btn-default\" style=\"width:100px\" href=\"/Users/Chain/{{chainId}}/UserManagement\">\n                    <i class=\"fa fa-group\"></i>\n                    Users \n                    <span class=\"badge\">{{context.userCount}}</span>\n                </a>\n            ",
                     controller: function ($scope, $timeout, $http) {
                         var context = {
                             userCount: 0
@@ -5897,13 +5897,9 @@ var MyAndromeda;
                                 });
                             },
                             create: function (options) {
-                                MyAndromeda.Logger.Notify("Scheduler create");
-                                MyAndromeda.Logger.Notify(options.data);
                                 var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                                 var promise = _this.$http.post(route, options.data);
                                 promise.then(function (callback) {
-                                    MyAndromeda.Logger.Notify("Create response:");
-                                    MyAndromeda.Logger.Notify(callback.data);
                                     options.success(callback.data);
                                 });
                             },
