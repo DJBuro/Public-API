@@ -3,14 +3,15 @@
 @{
     ViewBag.Title = "VoucherReports";
     var translator = Html.GetTranslator();
+    var date = DateTime.Now;
 }
 
-<div class="clearfix">
+<fieldset class="clearfix">
     <div class="header">
         <h3>Voucher Usage</h3>
     </div>
 
-    @using (Html.BeginForm())
+    @*@using (Html.BeginForm())
     {
         <div class="editor-label">
             <b>Select a coupon:</b>
@@ -34,6 +35,48 @@
         <div style="height: 10px"></div>
         <button class="k-button" type="submit">View Report</button>
         <div style="height: 20px"></div>
+    }*@
+    @using (Html.BeginForm())
+    {
+        <fieldset class="form-group">
+            <b>Select a coupon:</b>
+        </fieldset>
+        <fieldset class="form-group">
+            @Html.LabelFor(m => m.VoucherId)
+
+            @(Html.Kendo().DropDownListFor(m => m.VoucherId)
+              .HtmlAttributes(new { style = "width:200px", @class= "form-control" })
+              .OptionLabel("Select Voucher")
+              .DataTextField("VoucherCode")
+              .DataValueField("Id")
+              .Value(Model.VoucherId.ToString())
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetVoucherCodeList", "Voucher");
+                  });
+              }))
+        </fieldset>
+        <fieldset class="form-group">
+           @Html.LabelFor(m=> m.From)
+
+            @(Html.Kendo().DatePickerFor(m => m.From)
+              .Name("from")
+              .Value(new DateTime(date.Year, date.Month, 1))
+              .HtmlAttributes(new { @class = "form-control" })
+            )
+        </fieldset>
+        <fieldset class="form-group">
+            @Html.LabelFor(m => m.To)
+
+            @(Html.Kendo().DatePickerFor(m => m.To)
+              .Name("to")
+              .Value(new DateTime(date.Year, date.Month, DateTime.DaysInMonth(date.Year, date.Month)))
+              .HtmlAttributes(new { @class = "form-control" })
+            )
+        </fieldset>
+        <button type="submit" class="btn btn-primary">View Report</button>
     }
     <hr />
     <div class="row">

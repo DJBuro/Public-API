@@ -29,9 +29,11 @@ namespace MyAndromeda.Web.Areas.Menu.Controllers
         }
 
         [ChildActionOnly]
-        public PartialViewResult Debug()
+        public PartialViewResult Debug(int chainId, int andromedaSiteId)
         {
-            if (accessDatabase.IsAvailable(currentSite.AndromediaSiteId))
+            ViewBag.ChainId = chainId;
+            //if (accessDatabase.IsAvailable(currentSite.AndromediaSiteId))
+            if (accessDatabase.IsAvailable(andromedaSiteId))
             {
                 var current = accessDatabase.GetMenuVersionRow(currentSite.AndromediaSiteId);
                 DebugViewModel o = new DebugViewModel { AccessVersion = current.nVersion };

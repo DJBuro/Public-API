@@ -1,18 +1,20 @@
-﻿using MyAndromeda.Data.DataWarehouse.Domain.Reporting;
-using MyAndromeda.Web.Areas.Voucher.Models;
-using MyAndromedaDataAccess.Domain.Reporting;
-using System;
-using System.Collections;
+﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using MyAndromeda.Data.DataWarehouse.Domain.Reporting;
 
 namespace MyAndromeda.Web.Areas.Reporting.ViewModels
 {
     public class VoucherSummaryViewModel
     {
+        [DisplayName("Voucher")]
         public Guid VoucherId { get; set; }
+
         public VoucherSummary VoucherSummary { get; set; }
+
+        public DateTime? From { get; set; }
+
+        public DateTime? To { get; set; }
 
         public VoucherSummaryViewModel()
         { 

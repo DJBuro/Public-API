@@ -11,6 +11,12 @@
             }
         }
 
+        public static Clear() {
+            if (logger.UseNotify) {
+                console.clear();
+            }
+        }
+
         public static Debug(o) {
             if (logger.UseDebug) {
                 console.log(o);

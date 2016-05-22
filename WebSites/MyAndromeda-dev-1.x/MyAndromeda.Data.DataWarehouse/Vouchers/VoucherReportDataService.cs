@@ -23,12 +23,12 @@ namespace MyAndromeda.Data.DataWarehouse.Vouchers
             this.OrderHeaderTable = dbContext.Set<OrderHeader>();
         }
 
-        public VoucherSummary GetTotalOrdersByCode(Guid voucherId)
+        public VoucherSummary GetTotalOrdersByCode(Guid voucherId, DateTime? fromDate, DateTime? toDate)
         {
             var summaryData = from voucher in VoucherTable
                               join uVoucher in UsedVoucherTable on voucher.Id equals uVoucher.VoucherId
                               join oh in OrderHeaderTable on uVoucher.OrderId equals oh.ID
-                              where voucher.Id.Equals(voucherId) && oh.Status != 6 // omit cancelled orders
+                              where voucher.Id.Equals(voucherId) && (voucher.StartDateTime == fromDate) && (voucher.EndDataTime == toDate) && oh.Status != 6 // omit cancelled orders
                               select new
                               {
                                   Id = voucher.Id,

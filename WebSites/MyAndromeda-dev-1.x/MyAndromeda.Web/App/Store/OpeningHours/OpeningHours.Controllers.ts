@@ -15,7 +15,7 @@
             let s: any = scheduler;
             let view = s._selectedView;
             let start = view._startDate;
-
+            Logger.Notify(start);
             //Logger.Notify("slot:");
             //Logger.Notify(slot);
 
@@ -23,7 +23,6 @@
             //let resourceInfo = s._resourceBySlot(0, 0);
             //Logger.Notify("resourceInfo");
             //Logger.Notify(resourceInfo);
-
             scheduler.addEvent({
                 start: start,
                 end: start

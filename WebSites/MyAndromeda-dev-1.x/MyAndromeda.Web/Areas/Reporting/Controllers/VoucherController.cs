@@ -18,7 +18,7 @@ using MyAndromeda.Web.Areas.Voucher.Models;
 
 namespace MyAndromeda.Web.Areas.Reporting.Controllers
 {
-    public class VoucherController : Controller 
+    public class VoucherController : Controller
     {
         private readonly IVoucherReportingDataService voucherReportService;
         private readonly ISiteVoucherService siteVoucherService;
@@ -56,7 +56,7 @@ namespace MyAndromeda.Web.Areas.Reporting.Controllers
         [HttpPost]
         public ActionResult Index(VoucherSummaryViewModel vm)
         {
-            vm.VoucherSummary = voucherReportService.GetTotalOrdersByCode(vm.VoucherId);
+            vm.VoucherSummary = voucherReportService.GetTotalOrdersByCode(vm.VoucherId, vm.From, vm.To);
             return View(vm);
         }
 

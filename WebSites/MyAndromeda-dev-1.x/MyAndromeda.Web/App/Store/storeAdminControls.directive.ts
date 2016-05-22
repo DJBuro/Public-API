@@ -15,6 +15,10 @@
         
     });
 
+    function hasAccessToStore() {
+
+    }
+
 
     storeAdminComponent.directive("storeAdminLinks", () => {
         return {
@@ -22,27 +26,28 @@
             scope: {
                 store: "=store"
             },
-            template: `
+            //template: `
                 
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            Admin
-                        </div>
-                        <div class="panel-body">
-                            <div class="btn-group">
-                                <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders">
-                                    Orders
-                                </a>
-                                <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
-                                    Websites
-                                </a>
-                                <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})">
-                                    Employees
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                `
+            //        <div class="panel panel-danger">
+            //            <div class="panel-heading">
+            //                Admin
+            //            </div>
+            //            <div class="panel-body">
+            //                <div class="btn-group">
+            //                    <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders">
+            //                        Orders
+            //                    </a>
+            //                    <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
+            //                        Websites
+            //                    </a>
+            //                    <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})">
+            //                        Employees
+            //                    </a>
+            //                </div>
+            //            </div>
+            //        </div>
+            //    `
+            templateUrl: '/Chains/GetAdminMenu'
         };
     });
 

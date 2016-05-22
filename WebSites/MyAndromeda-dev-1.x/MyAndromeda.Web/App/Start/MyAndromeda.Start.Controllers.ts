@@ -8,9 +8,6 @@
         var chainActionTemplate = $("#chain-actions-template").html();
         var storeTemplate = $("#chain-template").html();
 
-        Logger.Notify("store template");
-        Logger.Notify(storeTemplate);
-
         var chainListOptionsDataSource = new kendo.data.TreeListDataSource({
             //data: [
             //    { Id: 1, Name: "test", ParentId: null },

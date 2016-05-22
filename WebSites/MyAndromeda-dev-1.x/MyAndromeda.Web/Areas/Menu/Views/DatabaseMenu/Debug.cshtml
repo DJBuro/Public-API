@@ -1,6 +1,15 @@
 ﻿@model MyAndromeda.Web.Areas.Menu.ViewModels.DebugViewModel
 @{
     var context = Html.GetWorkContext();
+    var chainId = 0;
+    if (context != null && context.CurrentChain != null && context.CurrentChain.Chain != null)
+    {
+        chainId = context.CurrentChain.Chain.Id;
+    }
+    if (ViewBag.ChainId != null)
+    {
+        chainId = int.Parse(ViewBag.ChainId.ToString());
+    }
 }
 
 <div id="MenuDebug" class="header">
@@ -65,7 +74,7 @@
     <script type="text/javascript">
         $(function () {
             var options = {
-                chainId: '@context.CurrentChain.Chain.Id',
+                chainId: '@chainId',
                 externalSiteId: '@context.CurrentSite.Site.ExternalSiteId'
             };
 

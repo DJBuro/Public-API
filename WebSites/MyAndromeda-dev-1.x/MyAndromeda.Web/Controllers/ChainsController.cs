@@ -161,5 +161,9 @@ namespace MyAndromeda.Web.Controllers
             return Json(models, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetAdminMenu()
+        {
+            return PartialView("_StoreAdminLinks");
+        }
     }
 }

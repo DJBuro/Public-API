@@ -3343,6 +3343,11 @@ var MyAndromeda;
                 console.log(o);
             }
         };
+        Logger.Clear = function () {
+            if (logger.UseNotify) {
+                console.clear();
+            }
+        };
         Logger.Debug = function (o) {
             if (logger.UseDebug) {
                 console.log(o);
@@ -10739,8 +10744,6 @@ var MyAndromeda;
         controllers.controller("chainListController", function ($scope, userChainDataService) {
             var chainActionTemplate = $("#chain-actions-template").html();
             var storeTemplate = $("#chain-template").html();
-            MyAndromeda.Logger.Notify("store template");
-            MyAndromeda.Logger.Notify(storeTemplate);
             var chainListOptionsDataSource = new kendo.data.TreeListDataSource({
                 //data: [
                 //    { Id: 1, Name: "test", ParentId: null },
@@ -11045,6 +11048,7 @@ var MyAndromeda;
                     var s = scheduler;
                     var view = s._selectedView;
                     var start = view._startDate;
+                    MyAndromeda.Logger.Notify(start);
                     //Logger.Notify("slot:");
                     //Logger.Notify(slot);
                     //let resourceInfo = s._resourceBySlot(0, 0);
@@ -11709,13 +11713,35 @@ var MyAndromeda;
                 Store: "",
             };
         });
+        function hasAccessToStore() {
+        }
         storeAdminComponent.directive("storeAdminLinks", function () {
             return {
                 name: "storeAdminLinks",
                 scope: {
                     store: "=store"
                 },
-                template: "\n                \n                    <div class=\"panel panel-danger\">\n                        <div class=\"panel-heading\">\n                            Admin\n                        </div>\n                        <div class=\"panel-body\">\n                            <div class=\"btn-group\">\n                                <a class=\"btn btn-default btn-sm\" href=\"/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders\">\n                                    Orders\n                                </a>\n                                <a class=\"btn btn-default btn-sm\" href=\"/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List\">\n                                    Websites\n                                </a>\n                                <a class=\"btn btn-default btn-sm\" ui-sref=\"hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})\">\n                                    Employees\n                                </a>\n                            </div>\n                        </div>\n                    </div>\n                "
+                //template: `
+                //        <div class="panel panel-danger">
+                //            <div class="panel-heading">
+                //                Admin
+                //            </div>
+                //            <div class="panel-body">
+                //                <div class="btn-group">
+                //                    <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders">
+                //                        Orders
+                //                    </a>
+                //                    <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
+                //                        Websites
+                //                    </a>
+                //                    <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})">
+                //                        Employees
+                //                    </a>
+                //                </div>
+                //            </div>
+                //        </div>
+                //    `
+                templateUrl: '/Chains/GetAdminMenu'
             };
         });
         storeAdminComponent.directive("storeDetailLinks", function () {

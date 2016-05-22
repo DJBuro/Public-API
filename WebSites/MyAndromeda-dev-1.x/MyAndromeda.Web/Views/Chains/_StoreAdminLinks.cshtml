@@ -1,0 +1,70 @@
+﻿@using OrderManagementPermissions = MyAndromeda.Web.Areas.OrderManagement;
+@using WebsitePermissions = MyAndromeda.Web.Areas.AndroWebOrdering;
+@{
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+
+}
+
+@{
+    var showOrders = authorizer.Authorize(OrderManagementPermissions.UserPermissions.ViewOrderManagement);
+    var showWebsites = authorizer.Authorize(WebsitePermissions.UserPermissions.ViewWebsites);
+}
+
+@*<div class="panel panel-danger">
+    <div class="panel-heading">
+        @translator.T("Admin")
+
+    </div>
+    <div class="panel-body">
+        <div class="btn-group">
+            @if (showOrders)
+            {
+                <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.Id}}/{{store.ExternalSiteId}}/Orders">
+                    @translator.T("Orders")
+                </a>
+            }
+            @if (showWebsites)
+            {
+                <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.Id}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
+                    @translator.T("Websites")
+                </a>
+            }
+            <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.Id, andromedaSiteId: store.AndromedaSiteId})">
+                @translator.T("Employees")
+            </a>
+        </div>
+
+    </div>
+</div>*@
+
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        Admin
+
+    </div>
+    <div class="panel-body">
+        <div class="btn-group">
+            @if (showOrders)
+            {
+                <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders">
+                    Orders
+                </a>
+            }
+            @if (showWebsites)
+            {
+                <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
+                    Websites
+
+                </a>
+            }
+            <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})">
+                Employees
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
