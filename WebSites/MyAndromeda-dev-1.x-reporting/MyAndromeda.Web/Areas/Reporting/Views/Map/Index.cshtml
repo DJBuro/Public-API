@@ -1,0 +1,307 @@
+﻿<div id="MapDemo">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="header">
+                <h3>Maps</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" ng-controller="MapDemoController">
+        <div class="col-xs-12">
+            <div class="demo-section k-header">
+                <div kendo-toolbar k-options="ToolbarOptions"></div>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-9 col-md-8">
+            <div kendo-map k-options="MapOptions"></div>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-4">
+            <!-- data section -->
+
+            <div>{{Start}} - {{End}}</div>
+            <table class="sparkline">
+                <colgroup>
+                    <col style="width: 100px" />
+                    <col style="width: 100px" />
+                    <col style="width: 100px" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sales</td>
+                        <td>
+                            {{TotalTurnover}}</td>
+                        <td>
+                            <div kendo-sparkline="TotalSparkline"
+                                 k-series="[{
+                                   type: 'column',
+                                   field: 'TMax',
+                                   color: '#ff0000',
+                                   negativeColor: '#0099ff'
+                               }]"
+                                 k-tooltip="{ visible: false, shared: false }"
+                                 k-data-source="SalesDataSource"
+                                 style="height:30px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Daily Avg
+                        </td>
+                        <td>{{RangeAverage}}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Orders</td>
+                        <td>
+                            {{RangeCount}}
+                        </td>
+                        <td>
+                            <div kendo-sparkline="TotalOrdersSparkLine"
+                                 k-series="[{
+                                   type: 'column',
+                                   field: 'TMax',
+                                   color: '#ff0000',
+                                   negativeColor: '#0099ff'
+                               }]"
+                                 k-tooltip="{ visible: false, shared: false }"
+                                 k-data-source="SalesDataSource"
+                                 style="height:30px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Delivery<br />
+                            Collection
+                        </td>
+                        <td>
+                            {{DeliveryOrderQuantity}}<br />
+                            {{CollectionQuantity}}
+                        </td>
+                        <td><span id="CountCollectionWeek"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- end of data section -->
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{ 
+    <script id="MapStoreTemplate" type="text/html">
+        <div>My Store</div>
+        <div>
+            <img width='200' src='/content/keep-calm-and-be-awesome-4111.png'>
+        </div>
+        <div>
+            Orders: many<br />
+            Deliveries: many<br />
+            Collections: many
+            <br />
+            Total: £££
+        </div>
+    </script>
+    <script id="MapPersonTemplate" type="text/html">
+        <div>#= marker.dataItem.name #</div>
+        <div>Orders: #= marker.dataItem.orders #</div>
+        <div>Value: #= kendo.toString(marker.dataItem.value, 'C') # </div>
+    </script>
+    
+    <script type="text/javascript">
+        angular.module("MapDemo", ["kendo.directives"])
+            .controller("MapDemoController", function ($scope, $timeout) {
+                var getToday = function () {
+                    var now = new Date();
+                    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    return today;
+                };
+      
+
+                var td = getToday();
+                $scope.End = new Date(getToday().setDate(td.getDate() + 1));
+                $scope.Start = new Date(getToday().setDate(td.getDate() - 7));
+      
+                //filters
+                //$scope.Start = new Date();
+                //$scope.End = new Date();
+
+                //aggregates 
+                $scope.TotalTurnover = 0;
+                $scope.RangeAverage = 0;
+                $scope.RangeCount = 0;
+                $scope.DeliveryOrderQuantity = 0;
+                $scope.CollectionQuantity = 0;
+
+                $scope.ToolbarOptions = {
+                    items: [
+                        { template: "<label>Start:</label>" },
+                        {
+                            template: "<input kendo-date-time-picker='StartDateTimePicker' k-ng-model='Start' />",
+                            overflow: "never"
+                        },
+                        { template: "<label>End:</label>" },
+                        {
+                            template: "<input kendo-date-time-picker='EndDateTimePicker' k-ng-model='End' />",
+                            overflow: "never"
+                        },
+                        { type: "separator" },
+                        {
+                            type: "buttonGroup",
+                            buttons: [
+                                {
+                                    text: "Today", togglable: true, group: "date-group",
+                                    click: function () {
+                                        var now = new Date();
+                                        var today = new Date(now.getYear(), now.getMonth(), now.getDay());
+                                        $timeout(function () {
+                                            $scope.Start = today;
+                                            $scope.End = new Date(today.getDate() + 1);
+                                        });
+                                        
+                                    }
+                                },
+                                {
+                                    selected: true,
+                                    text: "Last 7 days", togglable: true, group: "date-group",
+                                    click: function () {
+                                        var now = new Date();
+                                        var today = new Date(now.getYear(), now.getMonth(), now.getDay());
+                                        $timeout(function () {
+                                            $scope.End = new Date(today.setDate(today.getDate() + 1));
+                                            $scope.Start = new Date(today.setDate(today.getDate() - 7));
+                                        });
+                                        
+                                    }
+
+                                },
+                                {
+                                    text: "Last 30 days", togglable: true, group: "date-group",
+                                    click: function () {
+                                        var now = new Date();
+                                        var today = new Date(now.getYear(), now.getMonth(), now.getDay());
+
+                                        $scope.End = new Date(today.setDate(today.getDate() + 1));
+                                        $scope.Start = new Date(today.setDate(today.getDate() - 7));
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+
+                var dailySalesData = new kendo.data.DataSource({
+                    transport: {
+                        read: {
+                            url: function (options) {
+                                var from = $scope.Start;
+                                var to = $scope.End;
+                                var url = "@Url.Action("ReadOrderSummary", "Orders")" + "?from={0}&to={1}&dayOnly={2}";
+                                var destination = kendo.format(url, from.toJSON(), to.toJSON(), true);
+                            
+                                return destination;
+                            },
+                            dataType: "json",
+                            type: "POST"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                "Day":{"type":"date"},
+                                "Total":{"type":"number"},
+                                "Count":{"type":"number"},
+                                "Average":{"type":"number"},
+                                "Min":{"type":"number"},
+                                "Max": { "type": "number" },
+                                "DeliveryCount": { "type": "number" },
+                                "CollectionCount": { "type" : "number" }
+                            }
+                        }
+                    },
+                    aggregate: [
+                        { field: "Total", aggregate: "sum" }, { field: "Total", aggregate: "min" }, { field: "Total", aggregate: "max" },
+                        { field: "Count", aggregate: "sum" }, { field: "Count", aggregate: "min" }, { field: "Count", aggregate: "max" }, { field: "Count", aggregate: "average" },
+                        { field: "Average", aggregate: "average" },
+                        { field: "DeliveryCount", aggregate: "sum" }, { field: "DeliveryCount", aggregate: "min" }, { field: "DeliveryCount", aggregate: "max" }, { field: "DeliveryCount", aggregate: "average" },
+                        { field: "CollectionCount", aggregate: "sum" }, { field: "CollectionCount", aggregate: "min" }, { field: "CollectionCount", aggregate: "max" }, { field: "CollectionCount", aggregate: "average" }
+                    ]
+                    //change: function (e) { console.log("hello"); }
+                });
+
+                dailySalesData.bind("change", function (e) {
+                    console.log("change - set aggregates");
+                    var all = dailySalesData.aggregates();
+                    console.log(all);
+
+                    $timeout(function () {
+                        $scope.TotalTurnover = all.Total.sum;
+                        $scope.RangeAverage = all.Average.average;
+                        $scope.RangeCount = all.Count.sum;
+                        $scope.DeliveryOrderQuantity = all.DeliveryCount.sum;
+                        $scope.CollectionQuantity = all.CollectionCount.sum;
+                    });
+                });
+
+                $scope.SalesDataSource = dailySalesData;
+                $scope.SalesDataSource.read();
+
+
+                var data = [
+                    { "latlng": [30.2675, -97.7409], "name": "Zevo Toys", "orders": 1, "value": 20 },
+                    { "latlng": [30.2707, -97.7490], "name": "Foo Bars", "orders": 2, "value": 30 },
+                    { "latlng": [30.2705, -97.7409], "name": "Mainway Toys", "orders": 3, "value": 40 },
+                    { "latlng": [30.2686, -97.7494], "name": "Acme Toys", "orders": 5, "value": 35.20 }
+                ];
+
+                var dataSource = new kendo.data.DataSource({
+                    data: data
+                });
+
+                $scope.MapOptions = {
+                    center: [0,0],
+                    zoom: 4,
+                    layers: [{
+                        type: "tile",
+                        urlTemplate: "http://#= subdomain #.tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png",
+                        subdomains: ["a", "b", "c"],
+                        attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap contributors</a>"
+                    },
+                        {
+                            type: "marker",
+                            dataSource: dataSource,
+                            locationField: "latlng",
+                            //titleField: "name",
+                            tooltip: {
+                                template: $("#MapPersonTemplate").html()
+                            }
+                        }
+                        //{
+                        //    type: "bubble"
+                        //}
+                    ],
+                    markers: [{
+                        location: [30.268107, -97.744821],
+                        shape: "pin",
+                        tooltip: {
+                            template: $("#MapStoreTemplate").html(),
+                            width: 220,
+                            height: 280
+                        }
+                    }]
+                };
+
+            })
+
+        angular.bootstrap(document.getElementById("MapDemo"), ['MapDemo']);
+    </script>
+}

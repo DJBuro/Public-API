@@ -1,0 +1,5 @@
+2015-12-16 17:22:22.8075 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Error Error --- W635858831315366683228822 - The order already has a bringgId - 339452
+2015-12-16 17:23:41.4026 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Error Error --- W635858831315366683228822 - The order already has a bringgId - 339452
+2015-12-16 17:23:45.6845 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Error Error --- W635858831315366683228822 - The order already has a bringgId - 339452
+2015-12-16 17:24:50.4674 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Error Error --- W635858831315366683228822 - The order already has a bringgId - 339452
+2015-12-16 17:25:56.2791 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Error Error --- W635858831315366683228822 - The order already has a bringgId - 339452

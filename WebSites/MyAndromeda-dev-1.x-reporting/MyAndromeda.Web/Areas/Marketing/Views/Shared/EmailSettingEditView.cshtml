@@ -1,0 +1,82 @@
+﻿@model MyAndromeda.Web.Areas.Marketing.ViewModels.EditEmailSettingsViewModel
+
+@Html.HiddenFor(e=> e.Settings.Id)
+<div class="clearfix">
+    <div class="sb-right content1">
+        <div class="header">
+            <h3>1. SMTP Settings</h3>
+            
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Settings.From)
+            @Html.TextBoxFor(e=> e.Settings.From)
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Settings.Host)
+            @Html.TextBoxFor(e => e.Settings.Host)
+        </div>
+        
+    </div>
+    <div class="sb-right content1">
+        <div class="header">
+            <h3>
+            Port and encryption</h3>
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Settings.SSL, "SSL")
+            @Html.CheckBoxFor(e=> e.Settings.SSL)
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Settings.Port)
+            @Html.TextBoxFor(e => e.Settings.Port)
+        </div>
+    </div>
+    <div class="sb-right content1">
+        <div class="header">
+            <h3>2. Requires Authentication?</h3>
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Settings.Authenticated)
+            @Html.CheckBoxFor(e=> e.Settings.Authenticated)
+        </div>
+        <div class="authenticated-mode" style="display:@(Model.Settings.Authenticated ? "block" : "none")">
+            <div>
+                @Html.LabelFor(e=> e.Settings.UserName)
+                @Html.TextBoxFor(e=> e.Settings.UserName)
+            </div>
+            <div>
+                @Html.LabelFor(e=> e.Settings.Password)
+                @*@Html.PasswordFor(e=> e.Settings.Password)*@
+                <input type="password" id="@Html.IdFor(e=> e.Settings.Password)" name="@Html.NameFor(e=> e.Settings.Password)" value="@Model.Settings.Password" />
+            </div>
+        </div>
+    </div>
+    
+</div>
+<div class="clearfix">
+    
+    <div class="sb-right content2">
+        <div class="header">
+            <h3>3. Finished?</h3>
+        </div>
+        <input class="k-button" type="submit" value="Save" />
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{ 
+    <script type="text/javascript">
+        $(function () {
+            
+            $("#@Html.IdFor(e=> e.Settings.Authenticated)").on("change", function (e) {
+                var checkbox = $(this);
+                var checked = checkbox.is(':checked');
+                if (checked) {
+                    $(".authenticated-mode").slideDown();
+                } else {
+                    $(".authenticated-mode").slideUp();
+                }
+            });
+        });
+    </script>
+}

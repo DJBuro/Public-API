@@ -1,0 +1,49 @@
+﻿@{
+
+}
+
+@using (Html.BeginScripts())
+{
+    if (false) 
+    {
+        <script src="~/Scripts/kendo/2015.2.703/angular.min.js"></script>
+        <script src="~/Scripts/kendo/2015.2.703/kendo.all.min.js"></script>
+    }
+    
+    <script type="text/javascript">
+
+        ((function (angular) {
+
+            angular.module("KendoDemos", ["kendo.directives"])
+                .controller("MyCtrl", function ($scope) {
+
+                    $scope.detailGridOptions = function (dataItem) {
+                        return {
+                            dataSource: {
+                                type: "odata",
+                                transport: {
+                                    read: "http://demos.telerik.com/kendo-ui/service/Northwind.svc/Orders"
+                                },
+                                serverPaging: true,
+                                serverSorting: true,
+                                serverFiltering: true,
+                                pageSize: 5,
+                                filter: { field: "EmployeeID", operator: "eq", value: dataItem.EmployeeID }
+                            },
+                            scrollable: false,
+                            sortable: true,
+                            pageable: true,
+                            columns: [
+                                { field: "Id", title: "Id", width: "56px" },
+                                { field: "FirstName", title: "Id" },
+                            ]
+                        };
+                    };
+                });
+
+            angular.bootstrap()
+
+        })(angular));
+
+    </script>
+}

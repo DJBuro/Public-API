@@ -1,0 +1,67 @@
+﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
+
+@{
+    var workcontext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+
+<div kendo-validator="SEOSettingsValidator">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 form-horizontal form-widgets">
+            <div class="form-group">
+                <label class="control-label col-md-4 col-xs-12" for="Title">
+                    @translator.T("Site Title ")
+                </label>
+                <div class="col-md-8 col-xs-12">
+                    <input type="text" class="k-textbox"
+                           required="required"
+                           maxlength="150"
+                           id="Title"
+                           name="Title"
+                           data-bind="value: Title" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-4 col-xs-12" for="Keywords">
+                    @translator.T("Keywords :")
+                </label>
+                <div class="col-md-8 col-xs-12">
+                    <textarea class="k-textbox"
+                              id="Keywords"
+                              name="Keywords"
+                              data-bind="value: Keywords"
+                              rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-6 col-xs-12" for="IsEnableDescription">
+                    <input type="checkbox" value="true"
+                           name="SEOSettings.IsEnableDescription"
+                           ng-model="ShowSEODescription"
+                           data-bind="checked:SEOSettings.IsEnableDescription">
+                    @translator.T("Enable Meta Description")
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-4 col-xs-12" for="Keywords" ng-show="ShowSEODescription">
+                    @translator.T("Description :")
+                </label>
+                <div class="col-md-8 col-xs-12" ng-show="ShowSEODescription">
+                    <textarea class="k-textbox"
+                              name="Model.WebsiteConfigurations.SEOSettings.Description"
+                              ng-required="ShowSEODescription"
+                              data-required-msg='@translator.T("The meta description is required when this is enabled.")'
+                              data-bind="value: SEOSettings.Description"
+                              rows="5"></textarea>
+                </div>
+            </div>
+
+
+            <div class="col-xs-12">
+                <button type="button" class="k-button k-primary" ng-click="SaveChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,5 @@
+2015-12-16 17:22:22.5994 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!B75CF46A-1742-4DE0-9297-32B386E6E6AF
+2015-12-16 17:23:37.7042 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!B75CF46A-1742-4DE0-9297-32B386E6E6AF
+2015-12-16 17:23:42.9446 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!B75CF46A-1742-4DE0-9297-32B386E6E6AF
+2015-12-16 17:24:50.3914 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!B75CF46A-1742-4DE0-9297-32B386E6E6AF
+2015-12-16 17:25:56.2160 MyAndromeda.Logging.NlogImplementation.MyAndromedaNLogger.Debug Debug --- All ids are here!B75CF46A-1742-4DE0-9297-32B386E6E6AF

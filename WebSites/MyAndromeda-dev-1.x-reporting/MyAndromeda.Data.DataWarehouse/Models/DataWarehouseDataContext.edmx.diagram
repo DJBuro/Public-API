@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bec400deee1b4ec08ba87e350cbe7b71" Name="Diagram1" ZoomLevel="67">
+        <EntityTypeShape EntityType="DataWarehouseModel.AccountType" Width="1.5" PointX="1.5" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Address" Width="1.5" PointX="1.5" PointY="32" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Contact" Width="1.5" PointX="4" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.ContactType" Width="1.5" PointX="1.75" PointY="59.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Country" Width="1.5" PointX="1.5" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Customer" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerAccount" Width="1.5" PointX="1.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerAddress" Width="1.5" PointX="0.75" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataWarehouseModel.MarketingLevel" Width="1.5" PointX="1.75" PointY="56.625" IsExpanded="true" />
+        <AssociationConnector Association="DataWarehouseModel.FK_CustomerAccount_AccountType" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Address_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Customer_Address" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Contact_ContactType" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.fk_contact_customer" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Contact_MarketingLevel" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Customer_CustomerAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="DataWarehouseModel.FK_CustomerAddress_Customer" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderLine" Width="1.5" PointX="5.25" PointY="7.625" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderStatu" Width="1.5" PointX="0.75" PointY="13.875" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderStatusHistory" Width="1.5" PointX="3" PointY="28.75" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderStatusHistory_OrderStatus" />
+        <EntityTypeShape EntityType="DataWarehouseModel.modifier" Width="1.5" PointX="7.5" PointY="8.25" />
+        <EntityTypeShape EntityType="DataWarehouseModel.SiteVoucher" Width="1.5" PointX="5.25" PointY="43.875" />
+        <EntityTypeShape EntityType="DataWarehouseModel.UsedVoucher" Width="1.5" PointX="5.25" PointY="13.625" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Voucher" Width="1.5" PointX="3" PointY="42.5" />
+        <AssociationConnector Association="DataWarehouseModel.FK_UsedVoucher_Customer" />
+        <AssociationConnector Association="DataWarehouseModel.FK_modifiers_OrderLines" />
+        <AssociationConnector Association="DataWarehouseModel.FK_SiteVoucher_Voucher" />
+        <AssociationConnector Association="DataWarehouseModel.FK_UsedVoucher_Voucher" />
+        <EntityTypeShape EntityType="DataWarehouseModel.ACSErrorCode" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Audit" Width="1.5" PointX="10.75" PointY="13.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.PasswordResetRequest" Width="1.5" PointX="3" PointY="6.625" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Site" Width="1.5" PointX="6.75" PointY="1.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.sysdiagram" Width="1.5" PointX="12.75" PointY="13.75" />
+        <AssociationConnector Association="DataWarehouseModel.fk_passwordresetrequest_customer" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerLoyalty" Width="1.5" PointX="3" PointY="24.375" />
+        <AssociationConnector Association="DataWarehouseModel.FK_CustomerLoyalty_Customer" />
+        <EntityTypeShape EntityType="DataWarehouseModel.AndroWebTelemetry" Width="1.5" PointX="5.25" PointY="48.25" />
+        <EntityTypeShape EntityType="DataWarehouseModel.AndroWebTelemetrySession" Width="1.5" PointX="3" PointY="48.125" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedback" Width="1.5" PointX="13" PointY="10" />
+        <EntityTypeShape EntityType="DataWarehouseModel.CustomerFeedbackCategory" Width="1.5" PointX="10.75" PointY="10.625" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderDiscount" Width="1.5" PointX="8.25" PointY="13.375" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderDiscountType" Width="1.5" PointX="6" PointY="5" />
+        <AssociationConnector Association="DataWarehouseModel.FK_AndroWebSessionItem_AndroWebSession" />
+        <AssociationConnector Association="DataWarehouseModel.FK_AndroWebSession_Customer" />
+        <AssociationConnector Association="DataWarehouseModel.FK_CustomerFeedback_CustomerFeedbackCategory" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderDiscount_OrderDiscountType" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderLoyalty" Width="1.5" PointX="5.25" PointY="18.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderPaymentPSP" Width="1.5" PointX="7.5" PointY="22.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderPayment" Width="1.5" PointX="5.25" PointY="22.25" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderPaymentPSP_OrderPayment" />
+        <EntityTypeShape EntityType="DataWarehouseModel.Email" Width="1.5" PointX="3" PointY="52" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmailCategory" Width="1.5" PointX="5.25" PointY="51.375" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmailHistory" Width="1.5" PointX="5.25" PointY="53.75" />
+        <AssociationConnector Association="DataWarehouseModel.FK_Email_Customer" />
+        <AssociationConnector Association="DataWarehouseModel.FK_EmailCategories_Email" />
+        <AssociationConnector Association="DataWarehouseModel.FK_EmailHistory_Email" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderHeader" Width="1.5" PointX="3" PointY="9.5" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderHeader_ACSErrorCode" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderHeader_Customer1" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderAddress" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderDiscount_OrderHeader" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderHeader_OrderStatus" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderLines_OrderHeader" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderLoyalty_OrderHeader" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderPayments_OrderHeader" />
+        <AssociationConnector Association="DataWarehouseModel.FK_UsedVoucher_OrderHeader" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsOrder" Width="1.5" PointX="5.25" PointY="26.25" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsRamesesTranslation" Width="1.5" PointX="14.75" PointY="1.75" />
+        <AssociationConnector Association="DataWarehouseModel.FK_IbsOrder_OrderHeader" />
+        <EntityTypeShape EntityType="DataWarehouseModel.IbsPaymentTypeTranslation" Width="1.5" PointX="14.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeRecord" Width="1.5" PointX="9.75" PointY="3.875" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeStoreLinkRecord" Width="1.5" PointX="12" PointY="2.125" />
+        <AssociationConnector Association="DataWarehouseModel.FK_EmployeeStoreLinkRecord_EmployeeRecord" />
+        <EntityTypeShape EntityType="DataWarehouseModel.EmployeeSchedule" Width="1.5" PointX="12" PointY="4.5" />
+        <AssociationConnector Association="DataWarehouseModel.FK_EmployeeSchedule_EmployeeRecord" />
+        <AssociationConnector Association="DataWarehouseModel.OrderHeaderOrderStatusHistory" />
+        </Diagram>
+      <Diagram DiagramId="f52ba0265e624f60bcad0656354fba09" Name="Orders" ZoomLevel="95" >
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderLine" Width="1.5" PointX="3.125" PointY="0.875" />
+        <EntityTypeShape EntityType="DataWarehouseModel.modifier" Width="1.5" PointX="5.625" PointY="0.875" />
+        <AssociationConnector Association="DataWarehouseModel.FK_modifiers_OrderLines" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderHeader" Width="1.5" PointX="13.875" PointY="4.75" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderLines_OrderHeader" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderStatusHistory" Width="1.5" PointX="9" PointY="4" />
+        <EntityTypeShape EntityType="DataWarehouseModel.OrderStatu" Width="1.5" PointX="9" PointY="6.625" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderStatusHistory_OrderStatus" />
+        <AssociationConnector Association="DataWarehouseModel.FK_OrderHeader_OrderStatus" />
+        <AssociationConnector Association="DataWarehouseModel.OrderHeaderOrderStatusHistory" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

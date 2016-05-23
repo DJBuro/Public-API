@@ -1,0 +1,212 @@
+﻿@using MyAndromeda.Web.Areas.Voucher.Models;
+@using Permissions = MyAndromeda.Web.Areas.Voucher;
+@{
+    ViewBag.Title = "Index";
+
+    var authorizer = Html.GetAuthorizer();
+    var translator = Html.GetTranslator();
+
+    var StatusTemplate = Html.CreateHtmlTemplate();
+    var voucherCodeDetailTemplate = Html.CreateHtmlTemplate();
+    var descriptionTemplate = Html.CreateHtmlTemplate();
+    var actionsTemplate = Html.CreateHtmlTemplate();
+}
+
+<div class="header">
+    <h3>Site Vouchers List</h3>
+</div>
+
+
+@using (StatusTemplate.CreateTemplate)
+{
+    <div>
+        # if(@Html.MemberName((VoucherViewModel a) => a.IsActive)) { #
+        <p class="center">Active</p>
+        # } else { #
+        <p class="center">Inactive</p>
+        # } #
+    </div>
+}
+@using (voucherCodeDetailTemplate.CreateTemplate)
+{
+    <div>
+        <p class="center"><b>@Html.KendoMember((VoucherViewModel a) => a.VoucherCode)</b></p>
+        <p class="center">@Html.KendoMember((VoucherViewModel a) => a.Description)</p>
+    </div>
+}
+
+@using (actionsTemplate.CreateTemplate)
+{
+    <div class="action-buttons">
+        @if (authorizer.Authorize(MyAndromeda.Web.Areas.Voucher.UserPermissions.EditVoucherCodes))
+        {
+            <div>
+                <a class="k-button" href="@Url.ActionClientTemplate("Edit", "SiteVoucherCodes", new { Id = "#=Id#" })">@translator.T("Edit")</a>
+            </div>
+        }
+        @if (authorizer.Authorize(MyAndromeda.Web.Areas.Voucher.UserPermissions.EnableOrDisableVoucherCodes))
+        {
+            <div>
+                # if(@Html.MemberName((VoucherViewModel a) => a.IsActive)) { #
+                <a class="k-button" href="@Url.ActionClientTemplate("Disable", "SiteVoucherCodes", new { Id= "#=Id#" })">@translator.T("Disable")</a>
+                # } else { #
+                <a class="k-button" href="@Url.ActionClientTemplate("Enable", "SiteVoucherCodes", new { Id= "#=Id#" })">@translator.T("Enable")</a>
+                # } #
+            </div>
+        }
+        @if (authorizer.Authorize(MyAndromeda.Web.Areas.Voucher.UserPermissions.DeleteVoucherCodes))
+        {
+            <div>
+                <a class="k-button" href="@Url.ActionClientTemplate("Remove", "SiteVoucherCodes", new { Id = "#=Id#" })">@translator.T("Delete")</a>
+            </div>
+        }
+    </div>
+}
+
+@using (descriptionTemplate.CreateTemplate)
+{
+    <div class="row" style="font-size:11px !important">
+        <div class="col-sm-5">
+            <b>@translator.T("Occasion"):</b>@Html.KendoMember((VoucherViewModel a) => a.StringOccasions)<br />
+            <b>@translator.T("Minimum amount per order"): #= kendo.toString(@Html.MemberName((VoucherViewModel a) => a.MinimumOrderAmount), "c") #</b>
+            <br />
+            <b>@translator.T("Repetitions"):</b> @Html.KendoMember((VoucherViewModel a) => a.MaxRepetitions)<br />
+            <b>Discount Type:</b> @Html.KendoMember((VoucherViewModel a) => a.DiscountType)<br />
+            <b>Discount Value:</b> @Html.KendoMember((VoucherViewModel a) => a.DiscountValueString)<br />
+        </div>
+        <div class="col-sm-7">
+            <b>StartDateTime:</b>
+            #= kendo.toString(@Html.MemberName((VoucherViewModel a) => a.StartDateTime)==null ? "" : @Html.MemberName((VoucherViewModel a) => a.StartDateTime) , "g")#
+            <br />
+            <b>EndDataTime:</b> #= kendo.toString(@Html.MemberName((VoucherViewModel a) => a.EndDataTime)==null? "" : @Html.MemberName((VoucherViewModel a) => a.EndDataTime), "g") #<br />
+            <span style="-ms-word-wrap: break-word; word-wrap: break-word;">
+                <b>AvailableOnDays:</b> @Html.KendoMember((VoucherViewModel a) => a.StringAvailableDays)
+            </span><br />
+            <b>Times available: </b>
+            # if(StartTimeOfDayAvailable) { #
+            #= kendo.toString(StartTimeOfDayAvailable.Hours, "00") #:#= kendo.toString(StartTimeOfDayAvailable.Minutes, "00") #
+            # } #
+            # if(EndTimeOfDayAvailable) { #
+            to
+            #= kendo.toString(EndTimeOfDayAvailable.Hours, "00") #:#= kendo.toString(EndTimeOfDayAvailable.Minutes, "00") #
+            # } #
+            # if(!StartTimeOfDayAvailable && !EndTimeOfDayAvailable) { #
+            None specified
+            # } #
+        </div>
+
+    </div>
+    <div>
+        #if(WebSites.length){#
+        #for(var i = 0; i< WebSites.length; i++){ #
+        #var link = kendo.format("http://{0}/?s={1}&v={2}", WebSites[i].LiveWebsite, ExternalSiteName, VoucherCode); #
+        <div class="row" style="font-size:11px !important">
+            <div class="col-sm-12">
+                <div><a target="_blank" href="#=link#">#=link#</a></div>
+            </div>
+        </div>
+        #}#
+        #}#
+    </div>
+}
+
+<div id="filters" class="k-toolbar k-widget k-toolbar-resizable">
+    <input class="k-textbox" style="width:200px" type="text" data-bind="value: searchText" data-value-update="keyup" placeholder="enter a code / description" />
+    <select data-role="dropdownlist"
+            data-text-field="name"
+            data-value-field="value"
+            data-bind="source: activeOptions, value: selectedActiveOption"></select>
+    <a class="k-button k-button-reset" href="#" data-bind="click: resetFilters">@translator.T("Reset")</a>
+</div>
+
+@using (Html.BeginScripts())
+{
+    //all the filtering logic can be found in the type script file.
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+
+    <script type="text/javascript">
+        $(function () {
+            var service = new MyAndromeda.Vouchers.Services.VoucherListService();
+            service.Init();
+        });
+    </script>
+}
+
+@(Html.Kendo().Grid<MyAndromeda.Web.Areas.Voucher.Models.VoucherViewModel>()
+    .Name("VouchersList")
+    .Pageable(p => p.PageSizes(new[] { 10, 20, 50 }))
+    .Sortable()
+    .Scrollable(c => c.Height(400))
+    .ColumnMenu(columnMenu => columnMenu.Columns(true))
+    .ToolBar(tools =>
+    {
+        if (authorizer.Authorize(MyAndromeda.Web.Areas.Voucher.UserPermissions.CreateVoucherChode))
+        {
+            tools.Template(@<text>
+                <a href="@Url.Action("Create", "SiteVoucherCodes")" class="k-button k-primary-button">@translator.T("Create Voucher")</a>
+            </text>);
+        }
+    })
+    .Columns(
+    cols =>
+    {
+        cols.Bound(c => c.IsActive)
+            .Title("Status")
+            .ClientTemplate(StatusTemplate.Result)
+            .Width(80);
+
+        cols.Bound(c => c.VoucherCode).Title("Voucher Code/Description")
+            .ClientTemplate(voucherCodeDetailTemplate.Result)
+            .Template(@<text></text>).Width(170);
+        cols.Bound(c => c.VoucherCode)
+            .Title("Voucher Details")
+            .ClientTemplate(descriptionTemplate.Result)
+            .MinScreenWidth(400);
+        cols.Template(@<text></text>).ClientTemplate(actionsTemplate.Result).Title("Actions").Width(100);
+
+    })
+    .Resizable(r=> r.Columns(true))
+    .DataSource(d => d.Ajax()
+        .ServerOperation(false)
+        .Read(r => r.Action("List", "SiteVoucherCodes"))
+        .Update(u => u.Action("Edit", "SiteVoucherCodes"))
+        .Destroy(del => del.Action("Delete", "SiteVoucherCodes"))
+        .Model(model => {
+            model.Id(m => m.Id);
+            model.Field<bool>(e => e.IsActive);
+            }
+        ).Sort(sort => sort.Add(sorting => sorting.StartDateTime).Descending())
+
+    )
+)
+
+
+
+<style>
+    .k-pager-sizes select {
+        width: 40px;
+        height: 15px;
+        margin-right: 5px;
+    }
+
+    .action-buttons .k-button {
+        margin-bottom: 5px;
+        /*color: white;
+            background-color: #4FB5F4;*/
+        width: 80px;
+    }
+    /*.k-header {
+            text-align: center !important;
+        }*/
+
+    .center {
+        text-align: center;
+    }
+
+    .k-button-icontext .k-icon, .k-button-icontext .k-image {
+        display: none;
+    }
+</style>

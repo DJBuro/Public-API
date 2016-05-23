@@ -1,0 +1,318 @@
+﻿@model MyAndromeda.Web.Areas.Voucher.Models.VoucherViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+
+<div class="clearfix">
+    <div class="header">
+        <h3>@translator.T("Voucher Details")</h3>
+        <a class="k-button" href="@Url.Action("Index")">Back</a>
+    </div>
+    <div id="CreateVoucherWrapper">
+        <div class="header">
+            <h4>
+                @if (Model.Id == default(Guid))
+                {
+                @translator.T("Create voucher")
+                }
+                else
+                {
+                @translator.T("Edit voucher")
+                }
+            </h4>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+
+            <style scoped="scoped">
+                .header-label {
+                    clear: both;
+                }
+
+                .editor-label {
+                    clear: both;
+                    float: left;
+                    margin-bottom: 10px;
+                }
+
+                .editor-label-right {
+                    text-align: right;
+                }
+
+                .editor-field {
+                    float: left;
+                    width: 220px;
+                    margin-bottom: 10px;
+                }
+
+                input {
+                }
+            </style>
+
+            <div class="clearfix">
+                <div style="width: 49%; float: left">
+                    <div class="editor-label">
+                        <b>Voucher Code:</b>
+                    </div>
+                    <div class="editor-field">
+                        <input type="text"
+                               required="required"
+                               id="@Html.IdFor(e => e.VoucherCode)" name="@Html.NameFor(e => e.VoucherCode)"
+                               maxlength="32"
+                               class="tooltip-info"
+                               value="@Model.VoucherCode"
+                               title="@translator.T("Voucher code is required.")"
+                               placeholder="mon-10-percent-off" pattern="[A-Za-z0-9]+" data-pattern-msg="Enter alpha numeric values only." />
+
+                        @Html.ValidationMessageFor(e => e.VoucherCode)
+                    </div>
+                    <div class="editor-label">
+                        <b>Description:</b>
+                    </div>
+                    <div class="editor-field">
+                        <input type="text" required="required"
+                               id="@Html.IdFor(e => e.Description)" name="@Html.NameFor(e => e.Description)" class="tooltip-info"
+                               maxlength="254"
+                               placeholder=""
+                               title="@translator.T("Description is required.")"
+                               value="@Model.Description" />
+                        @Html.ValidationMessageFor(e => e.Description)
+                    </div>
+                    <div class="editor-label">
+                        <b>Occasion:</b>
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo()
+                            .MultiSelectFor(m => m.SelectedOccasions)
+                            .HtmlAttributes(new { Required = "Required" })
+                            .BindTo(new[] {
+                                new SelectListItem() { Text = translator.T("Delivery"), Value = "Delivery" },
+                                new SelectListItem() { Text = translator.T("Collection"), Value = "Collection" }  }
+                            ).Value(Model.SelectedOccasions)
+                        )
+                    </div>
+                    <div class="editor-label">
+                        <b>Active:</b>
+                    </div>
+                    <div class="editor-field">
+                        <label>
+                            @Html.CheckBoxFor(e => e.IsActive)
+                            Tick to activate the voucher
+                        </label>
+                    </div>
+                    <div style="display: none">
+                        <b>Combinable:</b>
+                    </div>
+                    <div style="display: none">
+                        <label>@Html.CheckBoxFor(e => e.Combinable, @Model.Combinable) </label>
+                    </div>
+                    <div class="editor-label">
+                        <b>Minimum Amount:</b>
+                    </div>
+                    <div class="editor-field">
+                        <input type="text"
+                               id="@Html.IdFor(e => e.MinimumOrderAmount)" name="@Html.NameFor(e => e.MinimumOrderAmount)" class="customTextBox"
+                               value="@Model.MinimumOrderAmount"
+                               placeholder=""
+                               data-role="numerictextbox"
+                               data-format="c"
+                               min="0" />
+                        <label id="lblMinAmtMsg" class="lblMsg">Minimum total of the order necessary for the voucher to apply</label>
+                    </div>
+                    <div class="editor-label">
+                        <b>Max. repetitions:</b>
+                    </div>
+                    <div class="editor-field">
+                        <input type="text"
+                               id="@Html.IdFor(e => e.MaxRepetitions)" name="@Html.NameFor(e => e.MaxRepetitions)" class="customTextBox"
+                               value="@Model.MaxRepetitions"
+                               placeholder=""
+                               data-role="numerictextbox"
+                               data-format="#"
+                               data-decimals="0"
+                               min="0"><label id="lblMaxReptMsg" class="lblMsg">Number of times a voucher can be used per customer</label>
+                    </div>
+                </div>
+
+                <!-- Right column -->
+                <div style="width: 49%; float: left">
+                    <div class="editor-label">
+                        <b>Days Available:</b>
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().MultiSelectFor(m => m.SelectedAvailableOnDays)
+                        .HtmlAttributes(new { Required = "Required" })
+                        .BindTo
+                        (new[] {
+                            new SelectListItem() { Text = translator.T("Mon"), Value = "Monday" },
+                            new SelectListItem() { Text = translator.T("Tue"), Value = "Tuesday" },
+                            new SelectListItem() { Text = translator.T("Wed"), Value = "Wednesday" },
+                            new SelectListItem() { Text = translator.T("Thurs"), Value = "Thursday" },
+                            new SelectListItem() { Text = translator.T("Fri"), Value = "Friday" },
+                            new SelectListItem() { Text = translator.T("Sat"), Value = "Saturday" },
+                            new SelectListItem() { Text = translator.T("Sun"), Value = "Sunday" }
+                            }
+                         ).Value(Model.SelectedAvailableOnDays))
+                    </div>
+                    <div class="header-label"><b>Voucher Availability:</b></div>
+                    <div class="editor-label editor-label-right">
+                        Start Date:
+                    </div>
+                    <div class="editor-field">
+
+                        @(Html.Kendo().DateTimePickerFor(m => m.StartDateTime)
+                          .Name("StartDateTime")
+                                     .Value(Model.StartDateTime)
+                                  .Events(e => e.Change("startChangeAvailability"))
+                        )
+                    </div>
+                    <div class="editor-label editor-label-right">
+                        End Date:
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().DateTimePickerFor(m => m.EndDataTime)
+                          .Name("EndDataTime")
+                                     .Value(Model.EndDataTime)
+                                  .Events(e => e.Change("endChangeAvailability"))
+                        )
+                    </div>
+
+
+                    <div class="header-label">
+                        <b>Times Available:</b>
+                    </div>
+                    <div class="editor-label editor-label-right">
+                        Start time:
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().TimePickerFor(m => m.StartTimeOfDayAvailable)
+                              .Name("StartTimeOfDayAvailable")
+                              .Format("HH:mm")
+                              .Value(DateTime.Today)
+                              .Max(DateTime.Today)
+                              .ParseFormats(new string[] { "MM/dd/yyyy" })
+                              .Events(e => e.Change("startChange"))
+                              .Value(Model.StartTimeOfDayAvailable)
+                        )
+                    </div>
+                    <div class="editor-label editor-label-right">
+                        End time:
+                    </div>
+                    <div class="editor-field">
+
+                        @(Html.Kendo().TimePickerFor(m => m.EndTimeOfDayAvailable)
+                .Name("EndTimeOfDayAvailable")
+                            .Format("HH:mm")
+          .Value(DateTime.Today)
+          .Min(DateTime.Today)
+          .Events(e => e.Change("endChange"))
+                            .Value(Model.EndTimeOfDayAvailable)
+                        )
+                    </div>
+                    <div class="editor-label">
+                        <b>Discount Type:</b>
+                    </div>
+                    <div class="editor-field">
+                        @(Html.Kendo().DropDownListFor(m => m.DiscountType)
+                          .BindTo(new[] {
+                            new SelectListItem() { Text = translator.T("Fixed"), Value = "Fixed" },
+                            new SelectListItem() { Text = translator.T("Percentage"), Value = "Percentage" } }).Value(Model.DiscountType)
+                        )
+                    </div>
+                    <div class="editor-label">
+                        <b>Discount Value:</b>
+                    </div>
+                    <div class="editor-field">
+                        <input type="text"
+                               id="@Html.IdFor(e => e.DiscountValue)" name="@Html.NameFor(e => e.DiscountValue)"
+                               placeholder=""
+                               value="@Model.DiscountValue"
+                               data-role="numerictextbox"
+                               min="0" />
+
+                        @Html.ValidationMessageFor(e => e.DiscountValue)
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="k-button k-primary" type="submit">@translator.T("Save")</button>
+            </div>
+        }
+    </div>
+</div>
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var container = $("#CreateVoucherWrapper");
+            kendo.init(container);
+        });
+
+        //$(function () {
+        //    var tooltip = $("#CreateVoucherWrapper").kendoTooltip({
+        //        filter: "input.tooltip-info",
+        //        width: 120,
+        //        position: "right",
+        //        showOn: "focus"
+        //    }).data("kendoTooltip");
+        //});
+
+    </script>
+}
+
+<script>
+    function startChangeAvailability() {
+        var endPicker = $("#EndDataTime").data("kendoDateTimePicker"),
+            startDate = this.value(),
+            startDateAvailable = $("#StartTimeOfDayAvailable").data("kendoTimePicker"),
+            endDateAvailable = $("#EndTimeOfDayAvailable").data("kendoTimePicker");
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+
+            endPicker.min(startDate);
+            startDateAvailable.min(startDate);
+            endDateAvailable.min(startDate);
+        }
+    }
+
+    function endChangeAvailability() {
+        var startPicker = $("#StartDateTime").data("kendoDateTimePicker"),
+            endDate = this.value(),
+            startDateAvailable = $("#StartTimeOfDayAvailable").data("kendoTimePicker"),
+        endDateAvailable = $("#EndTimeOfDayAvailable").data("kendoTimePicker");
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            startPicker.max(endDate);
+            startDateAvailable.max(endDate);
+            endDateAvailable.max(endDate);
+        }
+    }
+
+    function startChange() {
+        var endPicker = $("#EndTimeOfDayAvailable").data("kendoTimePicker"),
+            startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            endPicker.min(startDate);
+        }
+    }
+
+    function endChange() {
+        var startPicker = $("#StartTimeOfDayAvailable").data("kendoTimePicker"),
+            endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            startPicker.max(endDate);
+        }
+    }
+</script>

@@ -1,0 +1,564 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{05C9FB8A-E64C-4C16-BB7B-D1695BA9A1BE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyAndromeda.Data.DailyReporting</RootNamespace>
+    <AssemblyName>MyAndromeda.Data.DailyReporting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test1|AnyCPU'">
+    <OutputPath>bin\test1\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Live|AnyCPU'">
+    <OutputPath>bin\Live\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'GPRS-Live|AnyCPU'">
+    <OutputPath>bin\GPRS-Live\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AddressesOld.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AddressesOldConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetCostOfSalesReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetDailyTotalsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetDiscountCancellationsDetailsReortReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetDiscountCancellationsReortReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetHcasReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetIncompleteOrdersReortReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetInvRecipeGroupsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetQuickDatesReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetRecipeGroupsByStoreReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetRecipeItemsByStoreReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetSalesAndServiceReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetSalesByStoreReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetSalesByTaxPercentReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetSalesByWeekReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetServiceAnalysisDetailsReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetStaffAverageSpendReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetStoreGroupsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetStoresByGroupsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsGetWeeklyPayrollReportReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsHelperCanxOrdersReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsHomePageGetCompStoresReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsHomePageServiceSummaryReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsMenuBasedRegion.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsMenuBasedRegionConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspCompstorespollingserviceReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspGetallmenusiteidsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspGetamsidReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspGetmastermenuidReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspGetservicesettingsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspGetstoresReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsspUpdateservicesettingsReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTlkpJobCode.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTlkpJobCodeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTlkpOrderLineType.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTlkpOrderLineTypeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTranslation.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsTranslationConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsUploadStatu.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AmsUploadStatuConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AndroAmsSpDiscountCancellationsReortReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Audit.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AuditConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Auditservice.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\AuditserviceConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Basesize.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\BasesizeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Cashrec.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CashrecConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Chain.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\ChainConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Country.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CountryConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Createorder.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CreateorderConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Credit.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CreditConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CustomLookup.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\CustomLookupConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailyReporting.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailyReportingCodeFirstDbContext.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailySummary.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailySummaryConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailysummaryCubeVw.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailysummaryCubeVwConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailysummaryVw.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DailysummaryVwConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DeleteId.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DeleteIdConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DeleteTheDate.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DeleteTheDateConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Displaybar.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\DisplaybarConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Employee.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\EmployeeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\FakeDailyReportingCodeFirstDbContext.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\FakeDbSet.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\GetIndexFragmentationReturnModel.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Group.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\GroupConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\GroupsExt.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\GroupsExtConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\HourlyServiceMetric.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\HourlyServiceMetricConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\IDailyReportingCodeFirstDbContext.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\KfcCreateorder.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\KfcCreateorderConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenucontentsOld.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenucontentsOldConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenuItemsMapping.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenuItemsMappingConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenuOld.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MenuOldConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MetricsVw.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\MetricsVwConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OrderDetails3Vw.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OrderDetails3VwConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Orderstatu.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OrderstatuConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Ordertype.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OrdertypeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OtdVw.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\OtdVwConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PafSector.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PafSectorConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Payroll.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PayrollConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Paytype.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PaytypeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PollingMonitorTranslation.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PollingMonitorTranslationConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Primarycat.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\PrimarycatConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Ramesesaudit.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\RamesesauditConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Recipe.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\RecipeConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Recipegroup.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\RecipegroupConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Scheduling.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\SchedulingConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Secondarycat.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\SecondarycatConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Servicesetting.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\ServicesettingConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Store.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Storecatagory.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\StorecatagoryConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Storecatagorytogroup.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\StorecatagorytogroupConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\StoreConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Storegroup.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Storegroup1.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Storegroup1Configuration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\StoregroupConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_DatabaseFirewallRule.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_DatabaseFirewallRuleConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_ScriptDeployment.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_ScriptDeploymentConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_ScriptDeploymentStatus.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\sys_ScriptDeploymentStatusConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\Testorder.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CodeFirst\TestorderConfiguration.cs">
+      <DependentUpon>DailyReporting.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DailyMetricGroup.cs" />
+    <Compile Include="Services\IDailyReportingSalesAggregateServices.cs" />
+    <Compile Include="Services\IDailySummaryDataService.cs" />
+    <Compile Include="Services\IStoreEmployeeOverviewService.cs" />
+    <Compile Include="Services\OrderMetricGroup.cs" />
+    <Compile Include="Services\PerformanceMetricGroup.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\MyAndromeda.Core\MyAndromeda.Core.csproj">
+      <Project>{F1C66EE6-D9CC-4437-9D47-CBD32B6132CE}</Project>
+      <Name>MyAndromeda.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Model\CodeFirst\DailyReporting.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DailyReporting.cs</LastGenOutput>
+    </None>
+    <None Include="Model\CodeFirst\EF.Reverse.POCO.Core.ttinclude" />
+    <None Include="Model\CodeFirst\EF.Reverse.POCO.ttinclude" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

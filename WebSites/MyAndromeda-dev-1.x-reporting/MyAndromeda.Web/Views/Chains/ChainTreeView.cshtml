@@ -1,0 +1,161 @@
+﻿@using Kendo.Mvc.UI.Fluent;
+@using MyAndromedaDataAccess.Domain;
+@using MyAndromeda.Authorization;
+@model MyAndromeda.Web.ViewModels.ChainListViewModel
+@{
+    var translator = @Html.GetTranslator();    
+}
+<div class="clearfix">
+    <div id="treeviewdata" class="sb-right" style="width:33%">
+@*        <div>
+            <input type="search" id="SearchTreeviewNodes" />
+        </div>*@
+        <div id="TreeviewChains" style="height:600px"
+
+            @*data-role="treeview"
+            data-load-on-demand="false"
+            data-expand-all="true"
+            data-text-field="name"
+            data-template-id="StoreNode"
+            data-bind="source: chains" *@
+            >
+        </div>
+    </div>
+    <div id="mapData" class="sb-right content3of5 k-widget" style="width:60%; height: 400px; padding: 5px">
+@*        <div class="k-toolbar">
+            <button class="k-button"><i class="fa fa-search-plus" ></i></button>
+            <button class="k-button"><i class="fa fa-search-minus" ></i></button>
+        </div>*@
+        <div id="map"  
+            style="height:400px"                                                                                                                                                                             
+            data-role="map"                                                                                                                                                                          
+            data-center="[0,0]"
+            data-zoom="1"
+            data-layers="[
+                {
+                    type: 'tile',
+                    urlTemplate: 'http://tile.openstreetmap.org/#= zoom #/#= x #/#= y #.png'
+                }
+            ]"
+            data-bind="events: { shapeCreated: onShapeCreated, shapeMouseLeave: onShapeMouseLeave }, source: stores">
+        </div>
+    </div>
+</div>
+
+@*@using (Html.BeginScripts())
+{
+    if (false) { <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script> }
+    <script type="text/javascript">
+        $(function () {
+            var data = @Html.Raw(Model.TreeViewChain.JsonNetToString(true, false));
+            var service = new MyAndromeda.Chain.Services.TreeviewChainService(data);
+        });
+    </script>
+}*@
+
+@using (Html.BeginScripts())
+{
+    var chainReportingUrl = Url.Action("Index", "Reports", new { ChainId = "CHAINID", Area = "ChainReporting" });
+    var chianUserManagementUrl = Url.Action("Index", "UserManagement", new { Area = "Users", ChainId = "CHAINID" });
+    
+    <script type="text/javascript">
+        function testValue(ab) {
+            console.log(ab);
+        }
+
+        function createChainReportLink(treenode)
+        {
+            var url = '@Html.Raw(chainReportingUrl)';
+            url = url.replace('CHAINID', treenode.item.id);
+            return url;
+        }
+
+        function editUsersLink(treenode){
+            var url = '@Html.Raw(chianUserManagementUrl)';
+            url = url.replace('CHAINID', treenode.item.id);
+            return url;
+        }
+
+        $(function () {
+            $("#SearchTreeviewNodes").on("change", function (e) {
+                var treeview = $("#TreeviewChains").data("kendoTreeView"),
+                    filterValue = $(this).val();
+
+                treeview.dataSource.filter({
+                    field: "text", operator: "contains", value: filterValue
+                });
+            });
+        });
+    </script>
+    <script type="text/template" id="StoreNode">
+
+        <div class="treeview-navigation k-widget" style="width: 200px">
+            <h3>
+                # if(data.item.stores && data.item.stores.length > 0){ #
+                    <a class="me" href="#: createChainReportLink(data) #">#:data.item.name #</a>
+                # }else { #
+                    #:data.item.name #
+                # } #
+            </h3>
+            <table>
+                <tbody>
+                    # if(data.item.stores) { # 
+                    <tr>
+                        <td>
+                            <a href="#: createChainReportLink(data) #" class="k-button" title="@translator.T("Open chains main reporting dashboard")">
+                                <i class="fa fa-bar-chart-o"></i>
+                                Chain Reports 
+                            </a>
+                        </td>
+                        <td>
+                            <a href="\\#" class="k-button k-button-show-stores" title="@translator.T("Show markers on map")">
+                                <i class="fa fa-map-marker"></i>
+                                @translator.T("Stores") (#: data.item.stores.length #)
+                            </a>
+                        </td>
+                    </tr>
+                    # }else{ #
+                    @*<tr>
+                        <td colspan="2">0 stores</td>
+                    </tr>*@
+                    # } #
+                    @if (Html.IsAuthorizedForAny(MyAndromeda.Web.Areas.Users.UserManagementUserPermissions.CreateUsers, MyAndromeda.Web.Areas.Users.UserManagementUserPermissions.ListUsers))
+                    {
+                    <tr>
+                        <td>
+                            <a class="k-button" href="#: editUsersLink(data) #" title="@translator.T("Manage this chains users")">
+                                <i class="fa fa-users"></i> @translator.T("Manage Users")</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </script>
+    <script type="text/javascript">
+        function testMapTooltip(data, location, marker) {
+            var a = 1;
+            console.log(data);
+            console.log(location);
+            console.log(marker);
+        }
+    </script>
+    <script type="text/template" id="map-tooltip-template">
+        <h3>#: marker.options.store.externalName #</h3>
+        <ul>
+            <li>
+                <a class="k-button" href="#= kendo.format('/Reporting/Chain/{0}/{1}/DailyReporting', marker.options.store.chainId, marker.options.store.externalSiteId) #">
+                    <i class="fa fa-bar-chart-o"></i>
+                    @translator.T("Store Reports")</a>
+                <a class="k-button" href="#= kendo.format('/Chain/{0}/Store/{1}', marker.options.store.chainId, marker.options.store.externalSiteId) #">
+                    <i class="fa fa-edit"></i>
+                    @translator.T("Edit Store")
+                </a>
+                <a class="k-button" href="#= kendo.format('/Menus/Chain/{0}/{1}/MenuNavigation', marker.options.store.chainId, marker.options.store.externalSiteId)  #" >
+                    <i class="fa fa-edit"></i>
+                    @translator.T("Edit Menu")</a>
+            </li>
+        </ul>
+    </script>
+}
+    

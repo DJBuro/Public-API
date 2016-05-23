@@ -1,0 +1,80 @@
+﻿@import 'animate.less';
+
+//MIXINS
+.transition(@transition) {
+  -webkit-transition: @transition;
+     -moz-transition: @transition;
+       -o-transition: @transition;
+          transition: @transition;
+}
+.backface {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.translate3d(@x, @y, @z) {
+    .backface;
+    -webkit-transform: translate3d(@x, @y, @z);
+    -moz-transform: translate3d(@x, @y, @z);
+    -o-transform: translate3d(@x, @y, @z);
+    -ms-transform: translate3d(@x, @y, @z);
+    transform: translate3d(@x, @y, @z);
+}
+
+.tempAbs {
+  //mixin to temporarily make this position absolute  
+  //so it doesn't conflict with other divs
+
+  //position:absolute;
+  //z-index: 10;
+}
+
+
+//GLOBAL TRANSITION CLASS
+#masterUI {
+	.transition(all 1s); 
+    //position:relative;
+    //if using child transition animations, #
+    //they should all be under this time value, keyframe animations are different
+}
+
+.list-page {
+    .animated;
+}
+.edit-page {
+    .animated;
+}
+
+#masterUI.ng-enter {
+    .list-page {
+  		.fadeIn;
+        .tempAbs;
+
+  	}
+    .edit-page{
+        .fadeIn;
+        .tempAbs;
+    }
+    .default-transition{
+        .fadeIn;
+        .tempAbs;
+    }
+}
+
+#masterUI.ng-leave {
+  	.list-page {
+  		.fadeOut;
+        .tempAbs;
+  	}
+    .edit-page{
+        .fadeOut;
+        .tempAbs;
+    }
+    .default-transition{
+        .fadeIn;
+        .tempAbs;
+    }
+}
+
+

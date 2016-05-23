@@ -1,0 +1,235 @@
+﻿@using MyAndromeda.Web.Areas.Menu.Models;
+@using Permissions = MyAndromeda.Web.Areas.Menu;
+@model MenuIndexViewModel
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+    var authorizer = Html.GetAuthorizer();
+
+    var filterIds = new
+    {
+        DisplayCategory = "search-display-category",
+        Category1 = "search-categories",
+        Category2 = "search-categories2"
+    };
+}
+
+@Html.Partial("_debugbar")
+
+<div class="row menuWrapper">
+    <div class="col-sm-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    @translator.T("Online Menu Editor")
+                </div>
+
+            </div>
+            <div class="panel-body">
+
+                <div class="menu-editor-wrapper">
+                    <div class="menu-editor-toolbar-wrapper">
+
+                        <div class="row">
+                            <div class="col-sm-8">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">Filters</div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="MenuFilterWrapper">
+                                            <div class="menuFilters">
+                                                <input id="search-item-name"
+                                                       data-bind="value:ItemName"
+                                                       data-value-update="keyup"
+                                                       class="k-textbox"
+                                                       style="width: 20em;"
+                                                       type="text"
+                                                       placeholder="By Name or Description eg. Pizza" />
+                                                <br /><br />
+                                                <input id="@filterIds.DisplayCategory" style="width:200px"
+                                                       name="DisplayCategory"
+                                                       data-role="combobox"
+                                                       data-placeholder="@translator.T("Select a web section")"
+                                                       data-bind="source:DisplayCategory, value:SelectedDisplayCategory"
+                                                       data-text-field="Name"
+                                                       data-value-field="Id" />
+                                                
+                                                <input id="@filterIds.Category1" style="width:120px"
+                                                       title="Main / Subcategory / Group name"
+                                                       name="Category1"
+                                                       data-role="combobox"
+                                                       data-cascade-from="@filterIds.DisplayCategory"
+                                                       data-cascade-from-field="ParentId"
+                                                       data-placeholder="Category 1"
+                                                       data-bind="source:Category1, value:SelectedCategory1"
+                                                       data-text-field="Name"
+                                                       data-value-field="Id" />
+
+                                                <input id="@filterIds.Category2" style="width:120px"
+                                                       title="Main / Subcategory / Group name"
+                                                       data-role="combobox"
+                                                       data-cascade-from="@filterIds.DisplayCategory"
+                                                       data-cascade-from-field="ParentId"
+                                                       data-placeholder="Category 2"
+                                                       data-bind="source:Category2, value:SelectedCategory2"
+                                                       data-text-field="Name"
+                                                       data-value-field="Id" />
+
+                                                <button class="k-button k-filter-clear">Reset</button>
+                                            </div>
+                                            @*<p class="menuFilterDescription">
+                                                    <span data-bind="visibleSoFadeIn:Filtered">Filtered by:</span>
+                                                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.Name"></span>
+                                                    <span data-bind="visibleSoFadeIn:FilteredBy.Name">|</span>
+                                                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.DisplayCategory"></span>
+                                                    <span data-bind="visibleSoFadeIn:FilteredBy.DisplayCategory">|</span>
+                                                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.Category1"></span>
+                                                    <span data-bind="visibleSoFadeIn:FilteredBy.Category1">|</span>
+                                                    <span data-bind="visibleSoFadeIn:Filtered, text: FilteredBy.Category2"></span>
+                                                    <span data-bind="visibleSoFadeIn:FilteredBy.Category2">|</span>
+                                                    <span data-bind="visibleSoFadeIn:Sorted">Sorted by:</span>
+                                                    <span data-bind="visibleSoFadeIn:Sorted, text: SortedBy"></span>
+                                                    &nbsp;
+                                                </p>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            Actions
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="menuTasksView">
+                                            @*<p class="k-info-colored" data-bind="visible: HasChanges, text:Message"></p>*@
+                                            <span class="btn-group">
+                                                <a class="btn btn-primary"
+                                                   title="Save changes"
+                                                   data-bind="enabled: HasChanges, click: SaveChanges, title : Message">
+                                                    <i class="glyphicon glyphicon-ok-circle"></i>
+                                                    Save Changes
+                                                </a>
+                                                <a class="btn btn-default"
+                                                   title="Cancel changes"
+                                                   data-bind="enabled: HasChanges, click: CancelChanges">
+                                                    <i class="glyphicon glyphicon-remove-circle"></i>
+                                                    Cancel all changes
+                                                </a>
+                                            </span>
+                                            @*<a data-bind="disabled: HasChanges" class="k-button">Publish</a>*@
+                                        </div>
+
+                                    </div>
+                                    @if (authorizer.Authorize(Permissions.UserPermissions.PublishStoreMenu))
+                                    {
+                                        <div class="panel-footer">
+                                            <button class="k-primary k-button" id="MenuPublishButton">@translator.T("Publish")</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="menuItemsListView" style="padding: 1em;">
+                    </div>
+                    <div id="pager" class="k-pager-wrap"></div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Html.Partial("ItemTemplate")
+@Html.Partial("ItemEditTemplate")
+@Html.Partial("MenuPublishTemplate")
+
+@if (false)
+{
+    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    <script src="~/Scripts/angular.js"></script>
+}
+
+@using (Html.BeginScripts("MyAndromeda.MenuServices", Area.Foot))
+{
+    <script type="text/javascript">
+        $(function () {
+            var routeOptions = {
+                chainId: '@this.ViewContext.RouteData.Values["chainId"]',
+                externalSiteId: '@this.ViewContext.RouteData.Values["externalSiteId"]'
+            };
+
+            $(window).on("scroll", function(e) {
+                var $container = $(".menuTasksView");
+                var $actionElement = $(".menuTasksView").find(".btn-group"),
+                    pageTop = $(document).scrollTop(),
+                    elementOffset = $container.offset();
+
+                if(pageTop > elementOffset.top)
+                {
+                    if($actionElement.css("position") !== "fixed") {
+                        $actionElement.hide();
+                        $actionElement.css({ position: 'fixed', top: '10%', right: '1em', bottom: 'auto', 'z-index': 1000 });
+                        $actionElement.fadeIn();
+                    }
+                }else{
+                    if($actionElement.css("position") !== "inherit") {
+                        $actionElement.css({ position: 'inherit', 'z-index': 1 });
+                    }
+                }
+            });
+
+            var menuItemRoutes = MyAndromeda.Menu.Settings.Routes.MenuItems;
+            menuItemRoutes.ListMenuItems = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "GetMenu", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
+            menuItemRoutes.SaveMenuItems = "@Url.RouteUrl("StoreApi", new { httproute = "httproute", controller = "Menu", Action = "SaveMenuItemsBatch", AndromedaSiteId = workContext.CurrentSite.AndromediaSiteId })";
+            menuItemRoutes.SaveImageUrl = "@Url.Action("Upload", "MenuThumbs")";
+            menuItemRoutes.RemoveImageUrl = "@Url.Action("Remove", "MenuThumbs")";
+
+            var service = new MyAndromeda.Menu.Services.MenuControllerService({
+                ids: {
+                    listViewId: "#menuItemsListView",
+                    pagerId: "#pager",
+                    statusViewId: ".menuTasksView"
+                },
+                listview: {
+                    template: $("#itemTemplate").html(),
+                    editTemplate: $("#itemEditTemplate").html()
+                },
+                filterIds: {
+                    toolBarId: "#MenuFilterWrapper",
+                    itemNameId: "#search-item-name",
+                    displayCategoryId: "#@filterIds.DisplayCategory",
+                    category1Id: "#@filterIds.Category1",
+                    category2Id: "#@filterIds.Category2",
+                    resetId: ".k-filter-clear"
+                },
+                publishPanel: {
+                    publishPanelId: "#publishPanel",
+                    mainButtonId : "#MenuPublishButton",
+                    publishUrlPath: "@Url.Action("Publish", "MenuSync")"
+                },
+                routeParameters: routeOptions,
+                data: {
+                    endpoints: @(Html.Raw(Model.Endpoints.JsonNetToString()))
+                }
+            });
+            service.init();
+        });
+    </script>
+}
+
+@Html.Partial("Help")

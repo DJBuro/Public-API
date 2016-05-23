@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Bootstrap";
+}
+
+<div class="page-header">
+    <h1>@ViewBag.Title <small>by Twitter&reg;</small></h1>
+    <p>Sleek, intuitive, and powerful front-end framework for faster and easier web development.</p>
+</div>
+<p>Original</p>
+<ul>
+    <li>@Html.ActionLink("ftp download", "Original", "Ftp", new { id = 1291 }, new { })</li>
+</ul>
+<p>FTPService</p>
+<ul>
+    <li>@Html.ActionLink("ftp download", "Index", "Ftp", new { id = 1291 }, new { })</li>
+    <li>@Html.ActionLink("ftp upload", "Upload", "ftp", new { id = 1291 }, new { })</li>
+</ul>
+
+<ul>
+    <li>@Html.ActionLink("ftp - basic", "Basic", "ftp", new { id = 1291 }, new { })</li>
+    <li>@Html.ActionLink("ftp - basic", "Basic2", "ftp", new { id = 1291 }, new { })</li>
+</ul>
+
+<p>live test</p>
+<ul>
+    <li>@Html.ActionLink("ftp check", "Index", "Ftp", new { id = 1291 }, new { })</li>
+    <li>@Html.ActionLink("ftp upload", "Upload", "ftp", new { id = 1291 }, new { })</li>
+</ul>
+
+

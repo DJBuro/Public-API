@@ -1,0 +1,11 @@
+﻿@model dynamic
+
+@(Html.Kendo()
+    .TabStrip()
+    .Name("Store")
+    .Items(items => {
+        items.Add().Text("Find By Name").Content(@<text><div>@Html.Partial("FindStoreByName")</div></text>);
+        items.Add().Text("Tree-view").Content(@<text><div>@Html.Partial("FindByTreeview")</div></text>);
+    })
+)
+

@@ -1,0 +1,120 @@
+﻿@model MyAndromeda.Web.Areas.DeliveryZone.Models.DeliveryZoneNameViewModel
+
+@{
+    var workContext = Html.GetWorkContext();
+    var translator = Html.GetTranslator();
+}
+
+@using (Html.BeginScripts())
+{
+    if (false)
+    {
+        <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var angular = MyAndromeda.DeliveryZonesByRadius.Angular;
+            var settings = MyAndromeda.DeliveryZonesByRadius.Settings;
+
+            settings.AndromedaSiteId = '@workContext.CurrentSite.AndromediaSiteId';
+
+            angular.Init();
+        });
+    </script>
+}
+
+<div id="DeliveryZonesByRadius">
+
+    <style scoped="scoped">
+        .content-loading {
+            font-size: 2em;
+        }
+    </style>
+
+    <div class="header">
+        <h3>Delivery Zones By Radius</h3>
+    </div>
+
+
+    @Html.HiddenFor(model => model.StoreId)
+
+    <div id="DeliveryZoneNamesController" ng-controller="DeliveryZoneNamesController">
+        <!-- form area -->
+        <div kendo-validator="PostCodeValidator">
+            <div class="row">
+                <div class="form-horizontal form-widgets col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-6" for="ViewModel.OriginPostCode">
+                            @translator.T("Origin Post Code*:")
+                        </label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input class="form-control" 
+                                    name="OriginPostCode"
+                                    type="text" id="ViewModel.OriginPostCode" 
+                                    ng-model="ViewModel.OriginPostCode" 
+                                    required="required"
+                                    data-pattern-message="Please enter a valid post code."
+                                    pattern="[a-zA-Z]{2}[0-9][\w]{0,1}[\s]{0,1}[0-9][a-zA-Z]{0,2}|[a-zA-Z][0-9][\w]{0,1}[\s]{0,1}[0-9][a-zA-Z]{2}|[a-zA-Z]{2}[0-9][\w]{0,1}|[a-zA-Z][0-9][\w]{0,1}|[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}|[a-zA-Z]{2}[\s][0-9][a-zA-Z]{2}|[a-zA-Z]{2}[0-9][\s][0-9][a-zA-Z]{2}|[a-zA-Z][0-9][\s][0-9][a-zA-Z]{2}|[a-zA-Z]{2}[0-9][a-zA-Z][0-9][a-zA-Z]{2}|[a-zA-Z][0-9]{2}[\s][0-9][a-zA-Z]{2}|[a-zA-Z]{2}[0-9][a-zA-Z][0-9][a-zA-Z]{2}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-6" for="ViewModel.RadiusCovered}}">
+                            @translator.T("Radius(in miles)*:")
+                        </label>
+                        <div class="col-xs-12 col-sm-6">
+                            @*<input type="text" class="form-control" id="ViewModel.RadiusCovered" ng-model="ViewModel.RadiusCovered" required="required" />*@
+                            <input kendo-numeric-text-box k-min="0.1" k-max="100" ng-model="ViewModel.RadiusCovered" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <!-- why do i need two buttons ? -->
+                            <button class="k-button k-primary col-sm-5 col-md-offset-3" ng-click="GeneratePostCodeSectors()" ng-hide="ViewModel.HasPostCodes">generate Post Code Sectors</button>
+                            <button class="k-button k-primary col-sm-5 col-md-offset-3" ng-click="GeneratePostCodeSectors()" ng-show="ViewModel.HasPostCodes">Regenerate Post Code Sectors</button>
+                            
+                            <div id="loader" class="col-sm-4 hidden">
+                                <div class="fa fa-spinner fa-spin loading-spinner text-center "></div>
+                                Please wait..
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of form area -->
+        <!-- list area -->
+        <div class="row" ng-show="ViewModel.HasPostCodes">
+            <div class="col-xs-12">
+                <div class="k-widget">
+
+                    <div class="clearfix text-right k-toolbar">
+
+                        <label class="control-label">
+                            <input type="checkbox" id="SelectAll" ng-model="SelectAll" ng-change="SelectAllChange()" />
+                            Select all
+                        </label>
+                        <button class="k-button k-primary" ng-click="SaveChanges()">
+                            <i class="fa fa-spinner fa-spin loading-spinner" ng-show="IsSaveBusy"></i>
+                            Save
+                        </button>
+
+                    </div>
+
+                    <div kendo-list-view="PostCodeOptionsListView" id="listView" class="clearfix">
+                        <div k-template class="col-xs-2 col-lg-2">
+                            <label class="control-label">
+                                <input type="checkbox" ng-model="dataItem.IsSelected" ng-change="UpdateSelectAll()" />
+                                {{dataItem.PostCodeSector}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--End of list area -->
+
+
+    </div>
+</div>

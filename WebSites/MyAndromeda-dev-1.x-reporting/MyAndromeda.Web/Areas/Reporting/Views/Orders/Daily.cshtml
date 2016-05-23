@@ -1,0 +1,84 @@
+﻿@using MyAndromedaDataAccess.Domain.Reporting;
+@model OrdersSummaryDomainModel
+
+<table class="sparkline" data-date="">
+    <colgroup>
+        <col style="width: 100px" />
+        <col style="width: 100px" />
+        <col style="width: 100px" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Sales</td>
+            <td>@Model.TotalRangeTurnover.ToString("C")</td>
+            <td>
+@*                @(@Html.Kendo().Sparkline(Model.OrderData.OrderBy(e=> e.Day)).Name("TotalTurnoverTodaySparkLine"))
+                <span id="TodaysTurnover"></span>*@
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Order avg
+            </td>
+            <td>@(string.Format("{0:C}", Model.RangeAverage))</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Orders</td>
+            <td>
+                @Model.RangeCount
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>Delivery<br />Collection</td>
+            <td>
+                @Model.DeliveryOrderQuantity<br />
+                @Model.CollectionQuantity
+                
+            </td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+@if (false) { 
+    <script src="~/Scripts/app/StoreReporting.js"></script>
+}
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(function () {
+            var service = $("#dashboardreport").data("ReportingService");
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: function(options){
+                            var from = new Date();
+                            var to = new Date();
+                            var url = "@Url.Action("ReadOrderSummary", "Orders")" + "?from={0}&to={1}&dayOnly={2}";
+                            var destination = kendo.format(url, from.toJSON(), to.toJSON(), true);
+
+                            return destination;
+                        },
+                        dataType: "json",
+                        type: "POST"
+                    }
+                }
+            });
+
+            dataSource.read();
+
+            //service.AddResult("DailyLook", dataSource);
+            
+            //console.log(service);
+        });
+    </script>
+}

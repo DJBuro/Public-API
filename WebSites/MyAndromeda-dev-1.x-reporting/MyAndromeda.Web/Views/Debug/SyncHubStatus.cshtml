@@ -1,0 +1,36 @@
+﻿@model dynamic
+
+<div id="SyncStatus" style="overflow:auto; height:400px" >
+    <div class="header">Started Events</div>
+    <div data-bind="source: started" data-template="sync-context-template" ></div>
+    <div class="header">Completed Events</div>
+    <div data-bind="source: completed" data-template="sync-context-template"></div>
+    <div class="header">Errors</div>
+    <div data-bind="source: errors" data-template="sync-error-context-template"></div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    if (false) { 
+    <script src="~/lib/myandromeda/MyAndromeda.App.All.js"></script>
+    }
+    <script type="text/javascript">
+        $(function () {
+            var options = {
+                id: "#SyncStatus"
+            };
+            var service = new MyAndromeda.Hubs.SynchronizationHubService(options);
+            service.init();
+        });
+    </script>
+    <script id="sync-context-template" type="text/html">
+        <div>
+            <div>Status: #: Note # (#: Count #)</div>
+            <div>#: kendo.toString(TimeStamp, "D") # #:kendo.toString(TimeStamp, "h:mm:ss tt") #</div>
+        </div>
+    </script>
+    <script id="sync-error-context-template" type="text/html">
+        <div>Syncing error</div>
+        <div>#: Error #</div>
+    </script>
+}

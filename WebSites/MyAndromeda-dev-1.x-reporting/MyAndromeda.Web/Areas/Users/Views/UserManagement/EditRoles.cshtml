@@ -1,0 +1,100 @@
+﻿@model MyAndromeda.Web.Areas.Users.ViewModels.UserRoleViewModel
+@using MyAndromeda.Core.Authorization;
+@{
+    var context = Html.GetWorkContext();
+    var user = context.CurrentUser;
+
+    var userIsChainAdminOrStoreAdmin = user.Roles.Any(e => ExpectedUserRoles.ChainAdministrator == e.Name || ExpectedUserRoles.StoreAdministrator == e.Name);
+}
+<div class="header">
+    <h3>Edit Roles</h3>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(e => e.User.Id)
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Roles for - '@Model.User.Username'</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+
+
+                    @foreach (var role in Model.AvailableRoles)
+                    {
+                        <div class="row">
+                            <div class="col-xs-12">
+                                @if (role.Name.Equals(ExpectedUserRoles.Administrator) || role.Name.Equals(ExpectedUserRoles.SuperAdministrator) )
+                                {
+                                    if (!context.CurrentUser.Roles.Any(e => e.Name.Equals(ExpectedUserRoles.Administrator) || e.Name.Equals(ExpectedUserRoles.SuperAdministrator)))
+                                    {
+                                        <input type="hidden" name="@Html.NameFor(e => e.SelectedRoles)" value="@role.Id" />
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            <input type="checkbox" name="@Html.NameFor(e=> e.SelectedRoles)" value="@role.Id" @if (Model.SelectedRoles.Any(e => e == role.Id)) { <text> checked="checked" </text>                } />
+                                            @role.Name
+                                        </label>
+                                    }
+                                }
+                                else if (role.Name.Equals(ExpectedUserRoles.User))
+                                {
+                                    <label>
+                                        <input type="checkbox"
+                                               disabled="disabled"
+                                               name="@Html.NameFor(e=> e.SelectedRoles)"
+                                               value="@role.Id"
+                                               checked="checked" />
+                                        @role.Name
+                                    </label>
+                                }
+                                else if (context.CurrentChain.Available && userIsChainAdminOrStoreAdmin)
+                                {
+                                    //curious ... if the chain has a context... ie a chain user is creating stuff then we will limit to what roles they have
+                                    if (user.Roles.Any(r => r.Name == role.Name))
+                                    {
+                                        <label>
+                                            <input type="checkbox" name="@Html.NameFor(e=> e.SelectedRoles)"
+                                                   value="@role.Id" @if (Model.SelectedRoles.Any(e => e == role.Id)) { <text> checked="checked" </text>                 } />
+                                            @role.Name
+                                        </label>
+                                    }
+                                }
+                                else
+                                {
+                                    <label>
+                                        <input type="checkbox" name="@Html.NameFor(e=> e.SelectedRoles)"
+                                               value="@role.Id" @if (Model.SelectedRoles.Any(e => e == role.Id)) { <text> checked="checked" </text>                } />
+                                        @role.Name
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="col-sm-8">
+                    <div class="alert alert-info">
+                        <strong>
+                            Creating 'Chain Admin' &amp; 'Store Admins': 
+                        </strong><br />
+                        Set the user to have any role that they might need pass to additional users. 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-footer">
+
+            <input class="btn btn-primary" type="submit" value="Save" />
+
+        </div>
+
+
+    </div>
+
+}

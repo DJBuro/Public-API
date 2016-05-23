@@ -1,0 +1,19 @@
+﻿@model MyAndromeda.Web.Areas.Authorization.ViewModels.EnrolmentLevelViewModel
+<div class="header">
+    <h3>Create / Edit Enrolment Level</h3>
+    <a class="k-button" href="@Url.Action("Levels")">Back</a>
+</div>
+@using (Html.BeginForm()) { 
+    <fieldset>
+        @Html.HiddenFor(e => e.Id)
+        <div>
+            @Html.LabelFor(e=> e.Name)
+            @Html.TextBoxFor(e=> e.Name)
+        </div>
+        <div>
+            @Html.LabelFor(e=> e.Description)
+            @Html.TextAreaFor(e => e.Description)
+        </div>
+    </fieldset>
+    <input class="k-button" type="submit" name="submit" value="save" />
+}
