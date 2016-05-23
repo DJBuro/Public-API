@@ -25,6 +25,19 @@ namespace MyAndromeda.Web.Areas.Voucher.Models
         public string DiscountType { get; set; }
         public decimal DiscountValue { get; set; }
 
+        public string DiscountValueString
+        {
+            get
+            {
+                if (this.DiscountType == "Percentage")
+                {
+                    return this.DiscountValue.ToString("0.00") + "%";
+                }
+
+                return "£" + this.DiscountValue.ToString("0.00");
+            }
+        }
+
         public string StringOccasions { set; get; }
         public string StringAvailableDays { set; get; }
 
@@ -33,7 +46,7 @@ namespace MyAndromeda.Web.Areas.Voucher.Models
         public VoucherWebSite[] WebSites { get; set; }
     }
 
-    public class VoucherWebSite 
+    public class VoucherWebSite
     {
         public string LiveWebsite { get; set; }
         public string PreviewWebiste { get; set; }
@@ -42,7 +55,7 @@ namespace MyAndromeda.Web.Areas.Voucher.Models
     public static class VoucherViewModelExtensions
     {
         public static void UpdateFromViewModel(this Data.DataWarehouse.Models.Voucher voucher, VoucherViewModel viewModel)
-       {
+        {
             //voucher.Id = viewModel.Id;
             voucher.VoucherCode = viewModel.VoucherCode;
             voucher.Description = viewModel.Description;
@@ -58,7 +71,8 @@ namespace MyAndromeda.Web.Areas.Voucher.Models
                 {
                     voucher.AvailableOnDays = "All";
                 }
-                else {
+                else
+                {
                     voucher.AvailableOnDays = string.Join(",", viewModel.SelectedAvailableOnDays);
                 }
             }
@@ -98,7 +112,7 @@ namespace MyAndromeda.Web.Areas.Voucher.Models
                 ((decimal)100 - voucher.DiscountValue) :
                 voucher.DiscountValue;
             model.StringOccasions = voucher.Occasion;
-            model.StringAvailableDays = voucher.AvailableOnDays.ToLower().Equals("all") ?  days : voucher.AvailableOnDays;
+            model.StringAvailableDays = voucher.AvailableOnDays.ToLower().Equals("all") ? days : voucher.AvailableOnDays;
             model.ExternalSiteName = externalSiteId;
 
             model.WebSites = websites ?? new VoucherWebSite[0];

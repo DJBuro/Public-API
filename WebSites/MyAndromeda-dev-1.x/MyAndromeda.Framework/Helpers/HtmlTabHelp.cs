@@ -140,9 +140,9 @@ namespace MyAndromeda.Framework.Helpers
             }
             
             return new MvcHtmlString(string.Format("{0}{1}", indent, text));
-        } 
+        }
 
-        public static MvcHtmlString KendoMember<TModel, TProperty>(this HtmlHelper helper, Expression<Func<TModel, TProperty>> predicate) 
+        public static MvcHtmlString KendoMember<TModel, TProperty>(this HtmlHelper helper, Expression<Func<TModel, TProperty>> predicate)
             where TModel : class
         {
             var name = helper.MemberName(predicate);
@@ -150,10 +150,10 @@ namespace MyAndromeda.Framework.Helpers
         }
 
         public static string MemberName<TModel, TProperty>(this HtmlHelper helper, Expression<Func<TModel, TProperty>> predicate)
-            where TModel: class
+            where TModel : class
         {
             var memberExpression = predicate.Body as MemberExpression;
-            
+
             return memberExpression.Member.Name;
         }
     }

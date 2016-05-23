@@ -72,7 +72,7 @@
             <br />
             <b>@translator.T("Repetitions"):</b> @Html.KendoMember((VoucherViewModel a) => a.MaxRepetitions)<br />
             <b>Discount Type:</b> @Html.KendoMember((VoucherViewModel a) => a.DiscountType)<br />
-            <b>Discount Value:</b> #= kendo.toString(@Html.MemberName((VoucherViewModel a) => a.DiscountValue), "c") #
+            <b>Discount Value:</b> @Html.KendoMember((VoucherViewModel a) => a.DiscountValueString)<br />
         </div>
         <div class="col-sm-7">
             <b>StartDateTime:</b>
