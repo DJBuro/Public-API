@@ -2,7 +2,8 @@
 module MyAndromeda.Chain.Services {
     export class chainService implements Models.IChainService
     {
-        public chainServiceRoutes: Models.IChainServiceRoutes
+        public chainServiceRoutes: Models.IChainServiceRoutes;
+
         constructor(chainServiceRoutes: Models.IChainServiceRoutes)
         {
             this.chainServiceRoutes = chainServiceRoutes;

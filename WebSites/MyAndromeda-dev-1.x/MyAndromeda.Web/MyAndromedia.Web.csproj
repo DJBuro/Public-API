@@ -429,7 +429,12 @@
     <TypeScriptCompile Include="App\AndroWebOrdering\MyAndromeda.WebOrdering.UpSelling.ts" />
     <TypeScriptCompile Include="App\Api\DriversApi.ts" />
     <TypeScriptCompile Include="App\Api\OrdersApi.ts" />
-    <TypeScriptCompile Include="App\Chain\Directives.ts" />
+    <TypeScriptCompile Include="App\Chain\manageChainUsersLink.Directive.ts" />
+    <TypeScriptCompile Include="App\Chain\Manipulation\ChainTreeVeiw.Directive.ts" />
+    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Config.ts" />
+    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Controllers.ts" />
+    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Models.ts" />
+    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Services.ts" />
     <TypeScriptCompile Include="App\Debug\OrdersApp.ts" />
     <TypeScriptCompile Include="App\General\Authorizer.ts" />
     <TypeScriptCompile Include="App\General\Core.ts" />

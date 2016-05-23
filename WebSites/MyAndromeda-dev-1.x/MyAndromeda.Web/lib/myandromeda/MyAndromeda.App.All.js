@@ -2361,6 +2361,167 @@ var MyAndromeda;
         })(Directives = Chain.Directives || (Chain.Directives = {}));
     })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Manipulation;
+        (function (Manipulation) {
+            var app = angular.module("MyAndromeda.Chain.Manipulation", [
+                "MyAndromeda.Chain.Manipulation.Controllers",
+                "MyAndromeda.Chain.Manipulation.Services",
+                "MyAndromeda.Hr.Directives",
+                "MyAndromeda.Hr.Directives.Scheduler"
+            ]);
+            app.config(function ($stateProvider, $urlRouterProvider) {
+                var hr = {
+                    abstract: true,
+                    url: '/manipulation',
+                    template: '<div id="masterUI" ui-view="main"></div>'
+                };
+                var hrStoreList = {
+                    url: "/list/store/:andromedaSiteId",
+                    views: {
+                        "main": {
+                            templateUrl: "employee-list.html",
+                            controller: "employeeListController"
+                        },
+                    },
+                    onEnter: function () {
+                        MyAndromeda.Logger.Notify("Entering employee list");
+                    },
+                    cache: false
+                };
+                var hrEmployeeList = {
+                    url: "/employees",
+                    views: {
+                        "store-employee-view": {
+                            templateUrl: "store-employee-list.html"
+                        }
+                    }
+                };
+                var hrStoreScheduler = {
+                    url: "/schedule",
+                    views: {
+                        "store-employee-view": {
+                            templateUrl: "store-employee-scheduler.html"
+                        }
+                    }
+                };
+                var hrStoreEmployeeEdit = {
+                    url: "/edit/:id",
+                    views: {
+                        //use the 'main' view area of the 'hr' state. 
+                        "main@hr": {
+                            templateUrl: "employee-edit.html",
+                            controller: "employeeEditController"
+                        }
+                    },
+                    onEnter: function () {
+                        MyAndromeda.Logger.Notify("Entering employee edit");
+                    },
+                    cache: false
+                };
+                var hrStoreEmployeEditDetails = {
+                    url: "/details",
+                    views: {
+                        "editor-main": {
+                            templateUrl: "employee-edit-details.html"
+                        }
+                    },
+                    cache: false
+                };
+                var hrStoreEmployeeDocuments = {
+                    url: "/documents",
+                    views: {
+                        "editor-main": {
+                            templateUrl: "hr.store-list.edit-employee.documents.html"
+                        }
+                    }
+                };
+                var hrStoreEmployeeEditScheduler = {
+                    url: "/schedule",
+                    views: {
+                        "editor-main": {
+                            templateUrl: "employee-edit-schedule.html",
+                            controller: "employeeEditSchedulerController"
+                        }
+                    },
+                    onEnter: function () {
+                        MyAndromeda.Logger.Notify("Edit person's schedule.");
+                    },
+                    cache: false
+                };
+                var hrStoreEmployeeCreate = {
+                    url: "/create",
+                    views: {
+                        //use the 'main' view area of the 'hr' state. 
+                        "main@hr": {
+                            templateUrl: "employee-create.html",
+                            controller: "employeeEditController"
+                        }
+                    },
+                    onEnter: function () {
+                        MyAndromeda.Logger.Notify("Entering employee create");
+                    },
+                    cache: false
+                };
+                MyAndromeda.Logger.Notify("set hr states");
+                // route: /hr-store
+                $stateProvider.state("hr", hr);
+                $stateProvider.state("hr.store-list", hrStoreList);
+                $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
+                $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
+                $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
+                //reuse edit details for create
+                $stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
+                $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
+                $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
+                $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
+                $stateProvider.state("hr.store-list.edit-employee.documents", hrStoreEmployeeDocuments);
+                //$stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
+            });
+            app.run(function ($rootScope) {
+                $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                    MyAndromeda.Logger.Notify("$stateChangeStart");
+                });
+                $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
+                    MyAndromeda.Logger.Notify("$stateNotFound");
+                });
+                $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                    MyAndromeda.Logger.Notify("$stateChangeSuccess");
+                });
+            });
+        })(Manipulation = Chain.Manipulation || (Chain.Manipulation = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Manipulation;
+        (function (Manipulation) {
+            var services = angular.module("MyAndromeda.Chain.Manipulation.Services", []);
+            var ManipulateTreeService = (function () {
+                function ManipulateTreeService() {
+                }
+                ManipulateTreeService.prototype.Add = function (item) {
+                };
+                return ManipulateTreeService;
+            }());
+            Manipulation.ManipulateTreeService = ManipulateTreeService;
+            services.service("manipulateTreeService", ManipulateTreeService);
+            var AssignStoreToChainService = (function () {
+                function AssignStoreToChainService($http) {
+                    this.$http = $http;
+                }
+                return AssignStoreToChainService;
+            }());
+            Manipulation.AssignStoreToChainService = AssignStoreToChainService;
+            services.service("assignStoreToChainService", AssignStoreToChainService);
+        })(Manipulation = Chain.Manipulation || (Chain.Manipulation = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
 /// <reference path="../../Scripts/typings/linqjs/linq.d.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
@@ -3341,11 +3502,6 @@ var MyAndromeda;
         Logger.Notify = function (o) {
             if (logger.UseNotify) {
                 console.log(o);
-            }
-        };
-        Logger.Clear = function () {
-            if (logger.UseNotify) {
-                console.clear();
             }
         };
         Logger.Debug = function (o) {
@@ -5902,9 +6058,13 @@ var MyAndromeda;
                                 });
                             },
                             create: function (options) {
+                                MyAndromeda.Logger.Notify("Scheduler create");
+                                MyAndromeda.Logger.Notify(options.data);
                                 var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                                 var promise = _this.$http.post(route, options.data);
                                 promise.then(function (callback) {
+                                    MyAndromeda.Logger.Notify("Create response:");
+                                    MyAndromeda.Logger.Notify(callback.data);
                                     options.success(callback.data);
                                 });
                             },
@@ -5957,16 +6117,14 @@ var MyAndromeda;
                                 });
                             },
                             create: function (options) {
+                                MyAndromeda.Logger.Notify("Scheduler create");
+                                MyAndromeda.Logger.Notify(options.data);
                                 var route = _this.GetEmployeeSchedulerUpdateRoute(chainId, andromedaSiteId);
                                 var promise = _this.$http.post(route, options.data);
                                 promise.then(function (callback) {
-                                    var callbackControllerError = callback.data["Errors"];
-                                    if (callbackControllerError) {
-                                        options.error(callback.data);
-                                    }
-                                    else {
-                                        options.success(callback.data);
-                                    }
+                                    MyAndromeda.Logger.Notify("Create response:");
+                                    MyAndromeda.Logger.Notify(callback.data);
+                                    options.success(callback.data);
                                 });
                             },
                             destroy: function (options) {
@@ -6341,11 +6499,6 @@ var MyAndromeda;
                             var validSelection = tester.IsAllDayValid(e.event, function (invalidReason) {
                                 _this.SweetAlert.swal("Sorry", invalidReason, "error");
                             });
-                            if (!tester.PreverTasksOverlapping(e.event)) {
-                                var message = 'At this time employee has another event! You cannot overlap events!';
-                                _this.SweetAlert.swal("Sorry", message, "error");
-                                e.preventDefault();
-                            }
                             if (!validSelection) {
                                 e.preventDefault();
                             }
@@ -6432,25 +6585,6 @@ var MyAndromeda;
                                 invalid(msg);
                                 return false;
                             }
-                        }
-                    }
-                    return true;
-                };
-                EmployeeAvailabilityTestService.prototype.PreverTasksOverlapping = function (model) {
-                    var schedulers;
-                    if (model.isAllDay) {
-                        schedulers = this.GetTasksInRange(model.start, new Date(model.end.getFullYear(), model.end.getMonth(), model.end.getDate(), model.end.setHours(model.start.getHours() + 23.30), 0, null, null));
-                    }
-                    else {
-                        schedulers = this.GetTasksInRange(model.start, model.end);
-                    }
-                    for (var _i = 0, schedulers_1 = schedulers; _i < schedulers_1.length; _i++) {
-                        var scheduler = schedulers_1[_i];
-                        if (scheduler.isAllDay &&
-                            (model.start.getDate() == scheduler.start.getDate()
-                                && model.start.getMonth() == scheduler.start.getDate()
-                                && model.start.getFullYear() == scheduler.start.getFullYear())) {
-                            return false;
                         }
                     }
                     return true;
@@ -7037,14 +7171,11 @@ var MyAndromeda;
                 var maxValue = $scope.MaximumObtainablePointsNumericTextBox.value();
                 var minValue = $scope.MinimumPointsBeforeAvailableNumericTextBox.value();
                 if (!maxValue || !minValue) {
-                    $scope.SaveBusy = false;
                     return false;
                 }
                 if (minValue <= maxValue) {
-                    $scope.SaveBusy = false;
                     return false;
                 }
-                $scope.SaveBusy = true;
                 return true;
             };
             $scope.IsMaximumAndMinimumRulesEqual = function () {
@@ -10744,6 +10875,8 @@ var MyAndromeda;
         controllers.controller("chainListController", function ($scope, userChainDataService) {
             var chainActionTemplate = $("#chain-actions-template").html();
             var storeTemplate = $("#chain-template").html();
+            MyAndromeda.Logger.Notify("store template");
+            MyAndromeda.Logger.Notify(storeTemplate);
             var chainListOptionsDataSource = new kendo.data.TreeListDataSource({
                 //data: [
                 //    { Id: 1, Name: "test", ParentId: null },
@@ -11048,7 +11181,6 @@ var MyAndromeda;
                     var s = scheduler;
                     var view = s._selectedView;
                     var start = view._startDate;
-                    MyAndromeda.Logger.Notify(start);
                     //Logger.Notify("slot:");
                     //Logger.Notify(slot);
                     //let resourceInfo = s._resourceBySlot(0, 0);
@@ -11631,6 +11763,12 @@ var MyAndromeda;
                                 }
                             },
                             save: function (e) {
+                                MyAndromeda.Logger.Notify("save");
+                                MyAndromeda.Logger.Notify(e.event);
+                                MyAndromeda.Logger.Notify("start time");
+                                MyAndromeda.Logger.Notify(e.event.start);
+                                MyAndromeda.Logger.Notify("end time");
+                                MyAndromeda.Logger.Notify(e.event.end);
                                 var ev = e.event;
                                 if (ev.Occasions) {
                                     var o = ev.Occasions.length;
@@ -11645,8 +11783,6 @@ var MyAndromeda;
                                     e.preventDefault();
                                     return;
                                 }
-                                e.event.start.setHours(6, 0, 0, 0);
-                                e.event.end.setHours(e.event.start.getHours() + 24, 0, 0, 0);
                                 var occasionsInSpace = tester.IsOccasionAvailable(e.event.start, e.event.end, e.event);
                                 if (occasionsInSpace.length > 0) {
                                     MyAndromeda.Logger.Notify("cancel save");
@@ -11713,35 +11849,13 @@ var MyAndromeda;
                 Store: "",
             };
         });
-        function hasAccessToStore() {
-        }
         storeAdminComponent.directive("storeAdminLinks", function () {
             return {
                 name: "storeAdminLinks",
                 scope: {
                     store: "=store"
                 },
-                //template: `
-                //        <div class="panel panel-danger">
-                //            <div class="panel-heading">
-                //                Admin
-                //            </div>
-                //            <div class="panel-body">
-                //                <div class="btn-group">
-                //                    <a class="btn btn-default btn-sm" href="/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders">
-                //                        Orders
-                //                    </a>
-                //                    <a class="btn btn-default btn-sm" href="/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List">
-                //                        Websites
-                //                    </a>
-                //                    <a class="btn btn-default btn-sm" ui-sref="hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})">
-                //                        Employees
-                //                    </a>
-                //                </div>
-                //            </div>
-                //        </div>
-                //    `
-                templateUrl: '/Chains/GetAdminMenu'
+                template: "\n                \n                    <div class=\"panel panel-danger\">\n                        <div class=\"panel-heading\">\n                            Admin\n                        </div>\n                        <div class=\"panel-body\">\n                            <div class=\"btn-group\">\n                                <a class=\"btn btn-default btn-sm\" href=\"/OrderManagement/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/Orders\">\n                                    Orders\n                                </a>\n                                <a class=\"btn btn-default btn-sm\" href=\"/AndroWebOrdering/Chain/{{store.ChainId}}/{{store.ExternalSiteId}}/AndroWebOrdering/List\">\n                                    Websites\n                                </a>\n                                <a class=\"btn btn-default btn-sm\" ui-sref=\"hr.store-list.employee-list({ chainId : store.ChainId, andromedaSiteId: store.AndromedaSiteId})\">\n                                    Employees\n                                </a>\n                            </div>\n                        </div>\n                    </div>\n                "
             };
         });
         storeAdminComponent.directive("storeDetailLinks", function () {
