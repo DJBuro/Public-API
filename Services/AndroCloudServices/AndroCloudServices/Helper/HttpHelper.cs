@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -57,13 +58,18 @@ namespace AndroCloudServices.Helper
             // The REST service to call
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
 
+            // Get the timeout setting
+            string defaultHTTPTimeoutMillisecondsText = ConfigurationManager.AppSettings["DefaultHTTPTimeoutMilliseconds"];
+            int defaultHTTPTimeoutMilliseconds = 60000;
+            int.TryParse(defaultHTTPTimeoutMillisecondsText, out defaultHTTPTimeoutMilliseconds);
+
             webRequest.Method = httpMethod;
             webRequest.PreAuthenticate = true;
             webRequest.ContentType = contentType;
             webRequest.Accept = accepts;
             webRequest.ContentLength = data.Length;
-            webRequest.Timeout = 60000;
-            webRequest.ReadWriteTimeout = 60000;
+            webRequest.Timeout = defaultHTTPTimeoutMilliseconds;
+            webRequest.ReadWriteTimeout = defaultHTTPTimeoutMilliseconds;
             webRequest.AllowAutoRedirect = false;
             if (headers != null)
             {
