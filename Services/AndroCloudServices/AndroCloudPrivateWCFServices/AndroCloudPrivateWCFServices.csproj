@@ -121,10 +121,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebActivatorEx.2.1.0\lib\net40\WebActivatorEx.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
@@ -151,7 +147,6 @@
     <Content Include="LogConfig.xml">
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
-    <Content Include="packages\WebActivator.1.5.1\lib\net40\WebActivator.dll" />
     <Content Include="URLs.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -183,22 +178,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
-    <Folder Include="packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net35\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net40\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\net45-full\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl2\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl3-wp\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl3\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl4-windowsphone71\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl4\" />
-    <Folder Include="packages\Ninject.3.0.1.10\lib\sl5\" />
-    <Folder Include="packages\Ninject.MVC3.3.0.0.6\lib\net40-full\" />
-    <Folder Include="packages\Ninject.MVC3.3.0.0.6\lib\net45-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\Content\App_Start\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net35-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net40-full\" />
-    <Folder Include="packages\Ninject.Web.Common.3.0.0.7\lib\net45-full\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
@@ -228,9 +207,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages\repositories.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packageRestore.proj" />

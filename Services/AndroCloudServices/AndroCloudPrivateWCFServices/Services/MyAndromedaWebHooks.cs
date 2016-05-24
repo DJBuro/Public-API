@@ -5,6 +5,7 @@ using AndroCloudDataAccess;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using AndroCloudServices.Domain;
+using Newtonsoft.Json;
 
 namespace AndroCloudPrivateWCFServices.Services
 {
@@ -13,7 +14,7 @@ namespace AndroCloudPrivateWCFServices.Services
         public const string AuthHeader = "Hi";
 
         public static async Task<string> CallWebHooksForEtdChange(
-            AndroCloudServices.Domain.SiteUpdate update,
+            SiteUpdate update,
             string andromedaSiteId 
             ) 
         {
@@ -21,7 +22,7 @@ namespace AndroCloudPrivateWCFServices.Services
             {
                 var hosts = new List<AndroCloudDataAccess.Domain.HostV2>();
 
-                var results = "";
+                string results = "";
                 DataAccessHelper.DataAccessFactory.HostDataAccess.GetEdtChangedHosts(out hosts);
 
 
@@ -36,8 +37,8 @@ namespace AndroCloudPrivateWCFServices.Services
                             // New code:
                             client.BaseAddress = new Uri(host.Url);
                             client.DefaultRequestHeaders.Accept.Clear();
-                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                            client.DefaultRequestHeaders.Add("MyAuthorization", AuthHeader);
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                            client.DefaultRequestHeaders.Add(name: "MyAuthorization", value: AuthHeader);
 
                             var model = new
                             {
@@ -51,20 +52,24 @@ namespace AndroCloudPrivateWCFServices.Services
 
                             if (!response.IsSuccessStatusCode)
                             {
-                                string message = string.Format("Notify - Could not call : {0}", host.Url);
+                                string message = string.Format(format: "Notify - Could not call : {0}", 
+                                    arg0: host.Url);
+
                                 string responseMessage = await response.Content.ReadAsStringAsync();
                                 //throw new WebException(message, new Exception(responseMessage));
                                 results += message + " " + responseMessage;
 
-                                var auditMessage = string.Format("{'Call':'{0}','edt': {1},'asid':'{2}'}", host.Url, model.Edt, model.AndromedaSiteId);
+                                string auditMessage = string.Format(format: "{'Call':'{0}','edt': {1},'asid':'{2}'}", 
+                                    arg0: host.Url, 
+                                    arg1: model.Edt, 
+                                    arg2: model.AndromedaSiteId);
+
                                 DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                                   "",
-                                   "",
-                                   "",
-                                   "PostMenu-WebHooks",
-                                   0,
-                                   0,
-                                  auditMessage);
+                                   string.Empty, string.Empty, string.Empty, 
+                                   action: "CallWebHooksForEtdChange-WebHooks failed", 
+                                   responseTime: 0, 
+                                   errorCode: 0, 
+                                   extraInfo: auditMessage);
                             }
                         }
                     }
@@ -82,6 +87,7 @@ namespace AndroCloudPrivateWCFServices.Services
         }
 
         public static async Task<string> CallWebHooksForOrderStatusChange(
+            AndroCloudDataAccess.Domain.Site site,
             OrderStatusUpdate update,
             string andromedaSiteId,
             string ramesesOrderNum
@@ -95,37 +101,41 @@ namespace AndroCloudPrivateWCFServices.Services
             try
             {
                 var hosts = new List<AndroCloudDataAccess.Domain.HostV2>();
-                var results = "";
+                string results = string.Empty;
                 DataAccessHelper.DataAccessFactory.HostDataAccess.GetOrderStatusChangedHosts(out hosts);
 
                 if (hosts.Count == 0)
                 {
                     DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                                  "",
-                                  "",
-                                  "",
-                                  "PostMenu-WebHooks",
-                                  0,
-                                  0,
-                                 "No web hook endpoints to send to.");
-                }
-                else
-                {
-                    DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                                  "",
-                                  "",
-                                  "",
-                                  "PostMenu-WebHooks",
-                                  0,
-                                  0,
-                                 "Where am i? ");
+                                  string.Empty, string.Empty, string.Empty, 
+                                  action: "OrderStatusChange-WebHooks", 
+                                  responseTime: 0, 
+                                  errorCode: 0, 
+                                  extraInfo: "No web hook endpoints to send to for CallWebHooksForOrderStatusChange");
                 }
 
+                var model = new
+                {
+                    AndromedaSiteId = site.AndroId,
+                    ExternalSiteId = site.ExternalId,
+                    Source = "AndroCloudPrivateWCFServices.Services.MyAndromedaWebHooks",
+                    RamesesOrderNum = ramesesOrderNum,
+                    //ExternalOrderId = externalOrderId,
+                    //AcsApplicationId = acsApplicationId,
+                    Status = update.Status
+                };
+                string body = JsonConvert.SerializeObject(model);
 
                 foreach (var host in hosts)
                 {
                     //call: MyAndromeda - probably 
-                    //lookup host v2 
+                    DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
+                                string.Empty, string.Empty, string.Empty,
+                                action: "OrderStatusChange-WebHooks",
+                                responseTime: 0,
+                                errorCode: 0,
+                                extraInfo: string.Format(format: "send to: '{0}' | {1}", arg0: host.Url, arg1: body));
+                    
                     try
                     {
                         using (var client = new HttpClient())
@@ -133,65 +143,57 @@ namespace AndroCloudPrivateWCFServices.Services
                             // New code:
                             client.BaseAddress = new Uri(host.Url);
                             client.DefaultRequestHeaders.Accept.Clear();
-                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                            client.DefaultRequestHeaders.Add("MyAuthorization", AuthHeader);
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                            client.DefaultRequestHeaders.Add(name: "MyAuthorization", value: AuthHeader);
 
-                            var model = new
-                            {
-                                AndromedaSiteId = andromedaSiteId,
-                                //ExternalSiteId = externalSiteId,
-                                Source = "AndroCloudPrivateWCFServices.Services.MyAndromedaWebHooks",
-                                RamesesOrderNum = ramesesOrderNum,
-                                //ExternalOrderId = externalOrderId,
-                                //AcsApplicationId = acsApplicationId,
-                                Status = update.Status
-                            };
+                            
 
                             HttpResponseMessage response = await client.PostAsJsonAsync(host.Url, model);
 
                             if (!response.IsSuccessStatusCode)
                             {
-                                string message = string.Format("Notify - Could not call : {0}", host.Url);
+                                string message = string.Format(format: "Notify - Could not call : {0}", arg0: host.Url);
                                 string responseMessage = await response.Content.ReadAsStringAsync();
                                 //throw new WebException(message, new Exception(responseMessage));
                                 results += message + " " + responseMessage;
 
-                                var auditMessage = string.Format("{'Call':'{0}','status': {1},'asid':'{2}'}", host.Url, model.Status, model.AndromedaSiteId);
+                                string auditMessage = string.Format(format: "{'Call':'{0}','status': {1},'asid':'{2}'}", arg0: host.Url, arg1: model.Status, arg2: model.AndromedaSiteId);
                                 DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                                   "",
-                                   "",
-                                   "",
-                                   "PostMenu-WebHooks",
-                                   0,
-                                   0,
-                                  auditMessage);
+                                   string.Empty, string.Empty, string.Empty, 
+                                   action: "OrderStatusChange-WebHooks", 
+                                   responseTime: 0, 
+                                   errorCode: 0, 
+                                   extraInfo: auditMessage);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        string message = string.Format("Notify - Could not call : {0}", host.Url);
+                        string message = string.Format(format: "Notify - Could not call : {0}", arg0: host.Url);
                         string responseMessage = ex.Message;
                         //throw new WebException(message, new Exception(responseMessage));
                         results += message + " " + responseMessage;
 
-                        var auditMessage = string.Format("{'Call':'{0}', 'Error': '{1}'}", host.Url, results);
+                        string auditMessage = string.Format(format: "{'Call':'{0}', 'Error': '{1}'}", arg0: host.Url, arg1: results);
                         DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                           "",
-                           "",
-                           "",
-                           "PostMenu-WebHooks",
-                           0,
-                           0,
-                          auditMessage);
+                           string.Empty, string.Empty, string.Empty, 
+                           action: "CallWebHooksForOrderStatusChange-WebHooks", 
+                           responseTime: 0, 
+                           errorCode: 0, 
+                           extraInfo: auditMessage);
                     }
                 }
 
                 return results;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                
+                DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
+                          string.Empty, string.Empty, string.Empty,
+                          action: "CallWebHooksForOrderStatusChange-WebHooks",
+                          responseTime: 0,
+                          errorCode: 0,
+                          extraInfo: string.Format("error: {0}", ex.Message));
             }
 
             return string.Empty;
@@ -201,7 +203,7 @@ namespace AndroCloudPrivateWCFServices.Services
         {
             //list places to call for version updated - DataAccessHelper;
             var hosts = new List<AndroCloudDataAccess.Domain.HostV2>();
-            var results = "";
+            string results = "";
             DataAccessHelper.DataAccessFactory.HostDataAccess.GetMenuChangedHosts(out hosts);
 
             foreach (var host in hosts)
@@ -215,12 +217,12 @@ namespace AndroCloudPrivateWCFServices.Services
                         // New code:
                         client.BaseAddress = new Uri(host.Url);
                         client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        client.DefaultRequestHeaders.Add("MyAuthorization", AuthHeader);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(mediaType: "application/json"));
+                        client.DefaultRequestHeaders.Add(name: "MyAuthorization", value: AuthHeader);
 
                         var model = new
                         {
-                            Source = "AndroCloudPrivateWCFServices.Services.Menus",
+                            Source = "AndroCloudPrivateWCFServices.Services.MyAndromedaWebHooks",
                             AndromedaSiteId = androSiteId,
                             Version = version
                         };
@@ -230,20 +232,18 @@ namespace AndroCloudPrivateWCFServices.Services
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            string message = string.Format("Notify - Could not call : {0}", host.Url);
+                            string message = string.Format(format: "Notify - Could not call : {0}", arg0: host.Url);
                             string responseMessage = await response.Content.ReadAsStringAsync();
                             //throw new WebException(message, new Exception(responseMessage));
                             results += message + " " + responseMessage;
 
-                            var auditMessage = string.Format("{'Call':'{0}','v': '{1}','asid':'{2}'}", host.Url, model.Version, model.AndromedaSiteId);
+                            string auditMessage = string.Format(format: "{'Call':'{0}','v': '{1}','asid':'{2}'}", arg0: host.Url, arg1: model.Version, arg2: model.AndromedaSiteId);
                             DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                               "",
-                               "",
-                               "",
-                               "PostMenu-WebHooks",
-                               0,
-                               0,
-                              auditMessage);
+                               string.Empty, string.Empty, string.Empty,
+                               action: "CallWebHooksForMenuUpdate-WebHooks", 
+                               responseTime: 0, 
+                               errorCode: 0, 
+                               extraInfo: auditMessage);
                         }
                     }
                 }

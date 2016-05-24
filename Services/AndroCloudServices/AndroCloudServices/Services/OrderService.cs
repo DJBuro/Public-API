@@ -349,9 +349,11 @@ namespace AndroCloudServices.Services
             DataTypeEnum dataType,
             AndroCloudDataAccess.IDataAccessFactory dataAccessFactory,
             DataWarehouseDataAccess.IDataAccessFactory dataWarehouseDataAccessFactory,
-            out OrderStatusUpdate orderStatusUpdate)
+            out OrderStatusUpdate orderStatusUpdate,
+            out AndroCloudDataAccess.Domain.Site site)
         {
             orderStatusUpdate = null;
+            site = null;
 
             int andromedaSiteId = 0;
 
@@ -440,7 +442,7 @@ namespace AndroCloudServices.Services
             }
 
             // Check the andromedaSiteId is valid
-            AndroCloudDataAccess.Domain.Site site = null;
+            site = null;
             dataAccessFactory.SiteDataAccess.GetByAndromedaSiteIdAndLive(andromedaSiteId, out site);
 
             if (site == null)

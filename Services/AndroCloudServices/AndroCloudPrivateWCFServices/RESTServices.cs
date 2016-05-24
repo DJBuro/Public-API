@@ -45,13 +45,14 @@ namespace AndroCloudPrivateWCFServices
         [WebInvoke(Method = "PUT", UriTemplate = "order/{siteId}/{orderId}?licenseKey={licenseKey}&hardwareKey={hardwareKey}")]
         public async Task<Stream> PutOrder(Stream input, string siteId, string orderId, string licenseKey, string hardwareKey)
         {
-            AndroCloudServices.Domain.OrderStatusUpdate orderStatusUpdate = null;
+            //AndroCloudServices.Domain.OrderStatusUpdate orderStatusUpdate = null;
             string responseText = await Orders.PutOrder(Helper.GetDataTypes(), input, siteId, orderId, licenseKey, hardwareKey);
 
-            if (orderStatusUpdate != null && string.IsNullOrWhiteSpace(responseText))
-            {
-                responseText = await MyAndromedaWebHooks.CallWebHooksForOrderStatusChange(orderStatusUpdate, siteId, orderId);
-            }
+            //it never did anything. 
+            //if (orderStatusUpdate != null && string.IsNullOrWhiteSpace(responseText))
+            //{
+            //    responseText = await MyAndromedaWebHooks.CallWebHooksForOrderStatusChange(orderStatusUpdate, siteId, orderId);
+            //}
 
             // Convert the response text to a binary stream
             return Helper.StringToStream(responseText);
@@ -61,11 +62,16 @@ namespace AndroCloudPrivateWCFServices
         public async Task<Stream> PostOrder(Stream input, string siteId, string orderId, string licenseKey, string hardwareKey)
         {
             AndroCloudServices.Domain.OrderStatusUpdate orderStatusUpdate = null;
-            string responseText = Orders.PostOrder(Helper.GetDataTypes(), input, siteId, orderId, licenseKey, hardwareKey, out orderStatusUpdate);
+            AndroCloudDataAccess.Domain.Site site;
 
+            string responseText = Orders.PostOrder(Helper.GetDataTypes(), input, siteId, orderId, licenseKey, hardwareKey, out orderStatusUpdate, out site);
+
+            //site id is the andromeda site id apparently. 
             if (orderStatusUpdate != null && string.IsNullOrWhiteSpace(responseText))
             {
-                responseText = await MyAndromedaWebHooks.CallWebHooksForOrderStatusChange(orderStatusUpdate, siteId, orderId);
+                responseText = await MyAndromedaWebHooks.CallWebHooksForOrderStatusChange(
+                    site,
+                    orderStatusUpdate, siteId, orderId);
             }
 
             // Convert the response text to a binary stream

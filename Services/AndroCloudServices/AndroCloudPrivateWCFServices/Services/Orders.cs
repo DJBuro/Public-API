@@ -113,8 +113,10 @@ namespace AndroCloudPrivateWCFServices.Services
         public static string PostOrder(
             DataTypes dataTypes, Stream input, string androSiteId, 
             string externalOrderId, string licenseKey, string hardwareKey,
-            out OrderStatusUpdate orderStatusUpdate)
+            out OrderStatusUpdate orderStatusUpdate,
+            out AndroCloudDataAccess.Domain.Site site)
         {
+            site = null;
             orderStatusUpdate = null;
             string responseText = "";
 
@@ -149,7 +151,8 @@ namespace AndroCloudPrivateWCFServices.Services
                         dataTypes.SubmittedDataType,
                         AndroCloudDataAccess.DataAccessHelper.DataAccessFactory,
                         DataWarehouseDataAccess.DataAccessHelper.DataAccessFactory,
-                        out orderStatusUpdate
+                        out orderStatusUpdate,
+                        out site
                     );
                 }
                 catch (Exception exception)
