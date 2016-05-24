@@ -80,7 +80,7 @@ namespace MyAndromeda.Data.DataAccess.Users
             {
                 IEnumerable<int> accessibleChains = Enumerable.Empty<int>();
 
-                //fetch list in myandromeda to compare to androadmin 
+                //fetch the list in myandromeda to compare to androadmin 
                 try
                 {
                     DbSet<UserChain> userChainsTable = this.UserChains;
@@ -94,7 +94,7 @@ namespace MyAndromeda.Data.DataAccess.Users
                 {
                     var context = new MyAndromedaDbContext();
 
-                    this.logger.Error("Chains Loaded from MyAndromeda failed", e);
+                    this.logger.Error(format: "Chains Loaded from MyAndromeda failed", arg0: e);
                     this.logger.Error("Connection string:" + context.Database.Connection.ConnectionString);
 
 
@@ -120,7 +120,7 @@ namespace MyAndromeda.Data.DataAccess.Users
             }
             catch (Exception e)
             {
-                this.logger.Error("Chains Loaded from AndroAdmin failed", e);
+                this.logger.Error(format: "Chains Loaded from AndroAdmin failed", arg0: e);
                 //this.logger.Error("Connection string:" + this.androAdminDbContext.Database.Connection.ConnectionString);
 
                 throw;

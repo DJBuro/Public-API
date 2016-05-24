@@ -1,0 +1,83 @@
+﻿
+<div class="row">
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Chain
+                </div>
+            </div>
+            <div class="panel-body">
+
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="btn-group">
+                            <a class="btn btn-primary">Save changes</a>
+                            <a class="btn btn-default">Cancel changes</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div kendo-tree-view="tree"
+                     k-data-source="treeViewData"
+                     k-drag-and-drop="true"
+                     k-on-change="context.model = dataItem">
+                    <span k-template>
+                        <!--<i class="fa fa-code-fork"></i>-->
+                        {{dataItem.Name}} <button class='k-button' ng-click='click(dataItem)'>Select</button>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Add Chain
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Name</span>
+                    <input ng-model="context.newModel.Name"
+                           type="text" class="form-control" placeholder="Chain/Group name" aria-describedby="basic-addon1">
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <a class="btn btn-primary" ng-click="addItem(context.newModel)">Insert</a>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Edit chain
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Name</span>
+                        <input ng-model="context.model.Name" type="text" class="form-control" placeholder="Chain/Group name" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a class="btn btn-primary" ng-click="saveChanges()">Save changes</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    Stores
+                </div>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+</div>

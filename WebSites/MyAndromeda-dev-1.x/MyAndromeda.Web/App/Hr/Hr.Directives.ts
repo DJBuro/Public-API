@@ -20,7 +20,7 @@ module MyAndromeda.Hr.Directives {
 
                 let state = {
                     percentage: 0,
-                    complete : false
+                    complete: false
                 };
 
                 $scope.state = state;
@@ -35,7 +35,7 @@ module MyAndromeda.Hr.Directives {
                 var bind = null, unBind = null;
 
                 let onProgress = (e: kendo.ui.UploadProgressEvent) => {
-                    
+
                     Logger.Notify("Upload progress :: " + e.percentComplete + "% :: ");
                     Logger.Notify("files:");
                     Logger.Notify(e.files);
@@ -66,7 +66,7 @@ module MyAndromeda.Hr.Directives {
                     control.unbind("complete", onSuccess);
                     control.unbind("progress", onProgress);
                     control.unbind("error", onError);
-                };       
+                };
                 bind();
             }
         };
@@ -133,7 +133,7 @@ module MyAndromeda.Hr.Directives {
                 });
 
 
-                let updates = employeeServiceState.EmployeeUpdated.where(e=> e.Id == dataItem.Id).subscribe((change) => {
+                let updates = employeeServiceState.EmployeeUpdated.where(e => e.Id == dataItem.Id).subscribe((change) => {
                     $timeout(() => {
                         Logger.Notify(dataItem.ShortName + " updated");
                         //just run ... not nothing to do. 
@@ -236,10 +236,10 @@ module MyAndromeda.Hr.Directives {
                     Logger.Notify(e);
 
                     var document: Models.IEmployeeDocument = $scope.document;
-                    
+
                     e.files.forEach((item: { name: string }) => {
                         document.Files.push({
-                            FileName : item.name
+                            FileName: item.name
                         });
                     });
 
@@ -315,7 +315,7 @@ module MyAndromeda.Hr.Directives {
                         }, 100);
                     });
 
-                    
+
                 };
 
                 $scope.clear = () => {
@@ -387,7 +387,7 @@ module MyAndromeda.Hr.Directives {
                             Logger.Notify("alert cancel");
                         }
                     });
-                    
+
                 };
 
                 $scope.getEmployeeDocumentImage = (document: Models.IEmployeeDocument, file: Models.IFile) => {

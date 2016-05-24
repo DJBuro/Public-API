@@ -2306,6 +2306,217 @@ var MyAndromeda;
 (function (MyAndromeda) {
     var Chain;
     (function (Chain) {
+        var Administration;
+        (function (Administration) {
+            var app = angular.module("MyAndromeda.Chain.Administration", [
+                "MyAndromeda.Chain.Administration.Controllers",
+                "MyAndromeda.Chain.Administration.Services",
+                "MyAndromeda.Chain.Administration.Directives"
+            ]);
+            app.config(function ($stateProvider, $urlRouterProvider) {
+                var chainAdmin = {
+                    abstract: true,
+                    url: '/chain-admin',
+                    template: '<div id="masterUI" ui-view="main"></div>'
+                };
+                var chainEdit = {
+                    url: "/:chainId",
+                    views: {
+                        "main": {
+                            templateUrl: "/App/Views/Chain/Administration/admin-start.page.html",
+                            controller: "ChainAdminController"
+                        },
+                    },
+                    onEnter: function () {
+                        MyAndromeda.Logger.Notify("Entering chain dashboard.");
+                    },
+                    cache: false
+                };
+                // route: /chain-admin
+                $stateProvider.state("chain-admin", chainAdmin);
+                // /chain-admin/building"
+                $stateProvider.state("chain-admin.edit", chainEdit);
+            });
+        })(Administration = Chain.Administration || (Chain.Administration = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Administration;
+        (function (Administration) {
+            var Controllers;
+            (function (Controllers) {
+                var controllers = angular.module("MyAndromeda.Chain.Administration.Controllers", []);
+                controllers.controller("ChainAdminController", function ($scope, $stateParams, manipulateTreeService) {
+                    var blankModel = {};
+                    var context = {
+                        chainId: $stateParams.chainId,
+                        model: null,
+                        newModel: blankModel
+                    };
+                    var treeViewData = manipulateTreeService.treeViewData;
+                    var treeViewOptions = {
+                        dragstart: function (e) {
+                        },
+                        dragend: function (e) {
+                        }
+                    };
+                    $scope.chianId = context.chainId;
+                    $scope.context = context;
+                    $scope.treeViewData = treeViewData;
+                    $scope.addItem = function () {
+                        MyAndromeda.Logger.Notify("insert");
+                        var treeview = $scope.tree;
+                        treeview.insertAfter(context.newModel, $scope.tree.select());
+                        //manipulateTreeService.Add(context.model);
+                        context.newModel = {};
+                    };
+                    $scope.saveChanges = function () {
+                        treeViewData.sync();
+                    };
+                    $scope.cancelChanges = function () {
+                        treeViewData.cancelChanges();
+                    };
+                });
+            })(Controllers = Administration.Controllers || (Administration.Controllers = {}));
+        })(Administration = Chain.Administration || (Chain.Administration = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Administration;
+        (function (Administration) {
+            var Directives;
+            (function (Directives) {
+                var app = angular.module("MyAndromeda.Chain.Administration.Directives", []);
+                app.directive("chainAdminTreeview", function () {
+                    return {
+                        name: "chainAdminTreeview",
+                        scope: {
+                            chainId: "=chainId"
+                        },
+                        controller: function ($scope) { }
+                    };
+                });
+                app.directive("storeTickList", function () {
+                    return {
+                        name: "storeTickList",
+                        scope: {
+                            selectedChainId: "=chainId",
+                        },
+                        controller: function ($scope) {
+                        }
+                    };
+                });
+            })(Directives = Administration.Directives || (Administration.Directives = {}));
+        })(Administration = Chain.Administration || (Chain.Administration = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
+        var Administration;
+        (function (Administration) {
+            var Services;
+            (function (Services) {
+                var services = angular.module("MyAndromeda.Chain.Administration.Services", []);
+                var ManipulateTreeService = (function () {
+                    function ManipulateTreeService($http) {
+                        var _this = this;
+                        this.$http = $http;
+                        var model = {
+                            id: "Id",
+                            children: "Items",
+                            fields: {
+                                Name: { field: "Name", type: "string" }
+                            }
+                        };
+                        var schema = {
+                            model: model
+                        };
+                        var treeViewData = new kendo.data.HierarchicalDataSource({
+                            //data: [
+                            //    { Id: 1, Name: "test", ParentId: null },
+                            //    { Id: 2, Name: "test 2", ParentId: 1 }
+                            //],
+                            //schema: {
+                            //    model: {
+                            //        id: "Id",
+                            //        fields: {
+                            //            Name: {
+                            //                field: "Name", type: "string"
+                            //            },
+                            //            StoreCount: { field: "StoreCount", type: "number" },
+                            //            ParentId: { field: "ParentId", nullable: true },
+                            //        },
+                            //        children: "Items",
+                            //        //should be the context of the model:
+                            //        hasChildren: function () {
+                            //            //Logger.Notify("has children:");
+                            //            //Logger.Notify(this);
+                            //            return false;
+                            //            //let items = this.Items;
+                            //            //return items.length; 
+                            //        }
+                            //    }
+                            //},
+                            schema: schema,
+                            transport: {
+                                read: function (options) {
+                                    var route = "/data/admin/chains";
+                                    var promise = _this.$http.get(route);
+                                    promise.then(function (callback) {
+                                        options.success(callback.data);
+                                    });
+                                },
+                                update: function (options) {
+                                },
+                                create: function (options) {
+                                },
+                                destroy: function (options) {
+                                }
+                            },
+                            sort: [
+                                { field: "Name", dir: "asc" }
+                            ],
+                            serverSorting: false
+                        });
+                        treeViewData.read();
+                        this.treeViewData = treeViewData;
+                    }
+                    ManipulateTreeService.prototype.Add = function (item) {
+                        this.treeViewData.add(item);
+                    };
+                    return ManipulateTreeService;
+                }());
+                Services.ManipulateTreeService = ManipulateTreeService;
+                services.service("manipulateTreeService", ManipulateTreeService);
+                var AssignStoreToChainService = (function () {
+                    function AssignStoreToChainService($http) {
+                        this.$http = $http;
+                    }
+                    AssignStoreToChainService.prototype.assignToChain = function (chainId, models) {
+                        var route = "/chain-administration/{0}";
+                        route = kendo.format(route, chainId);
+                        //this.$http.post(
+                    };
+                    return AssignStoreToChainService;
+                }());
+                Services.AssignStoreToChainService = AssignStoreToChainService;
+                services.service("assignStoreToChainService", AssignStoreToChainService);
+            })(Services = Administration.Services || (Administration.Services = {}));
+        })(Administration = Chain.Administration || (Chain.Administration = {}));
+    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
+})(MyAndromeda || (MyAndromeda = {}));
+var MyAndromeda;
+(function (MyAndromeda) {
+    var Chain;
+    (function (Chain) {
         var Services;
         (function (Services) {
             var chainService = (function () {
@@ -2361,165 +2572,28 @@ var MyAndromeda;
         })(Directives = Chain.Directives || (Chain.Directives = {}));
     })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
 })(MyAndromeda || (MyAndromeda = {}));
+/// <reference path="managechainuserslink.directive.ts" />
 var MyAndromeda;
 (function (MyAndromeda) {
     var Chain;
     (function (Chain) {
-        var Manipulation;
-        (function (Manipulation) {
-            var app = angular.module("MyAndromeda.Chain.Manipulation", [
-                "MyAndromeda.Chain.Manipulation.Controllers",
-                "MyAndromeda.Chain.Manipulation.Services",
-                "MyAndromeda.Hr.Directives",
-                "MyAndromeda.Hr.Directives.Scheduler"
-            ]);
-            app.config(function ($stateProvider, $urlRouterProvider) {
-                var hr = {
-                    abstract: true,
-                    url: '/manipulation',
-                    template: '<div id="masterUI" ui-view="main"></div>'
-                };
-                var hrStoreList = {
-                    url: "/list/store/:andromedaSiteId",
-                    views: {
-                        "main": {
-                            templateUrl: "employee-list.html",
-                            controller: "employeeListController"
-                        },
+        var Directives;
+        (function (Directives) {
+            var directives = angular.module("MyAndromeda.Chain.Directives");
+            directives.directive("manageChainHierachyLink", function () {
+                return {
+                    name: "manageChainHierachyLink",
+                    scope: {
+                        chainId: "=chainId" // chain-id="someScopeVar"
                     },
-                    onEnter: function () {
-                        MyAndromeda.Logger.Notify("Entering employee list");
-                    },
-                    cache: false
-                };
-                var hrEmployeeList = {
-                    url: "/employees",
-                    views: {
-                        "store-employee-view": {
-                            templateUrl: "store-employee-list.html"
-                        }
+                    template: "\n                <a class=\"btn btn-default\" style=\"width:100px\" ui-sref=\"chain-admin.edit({chainId: chainId})\">\n                    <i class=\"fa fa-code-fork\"></i>\n                    Edit Chain\n                </a>\n            ",
+                    controller: function ($scope, $timeout, $http) {
+                        var context = {};
+                        $scope.context = context;
                     }
                 };
-                var hrStoreScheduler = {
-                    url: "/schedule",
-                    views: {
-                        "store-employee-view": {
-                            templateUrl: "store-employee-scheduler.html"
-                        }
-                    }
-                };
-                var hrStoreEmployeeEdit = {
-                    url: "/edit/:id",
-                    views: {
-                        //use the 'main' view area of the 'hr' state. 
-                        "main@hr": {
-                            templateUrl: "employee-edit.html",
-                            controller: "employeeEditController"
-                        }
-                    },
-                    onEnter: function () {
-                        MyAndromeda.Logger.Notify("Entering employee edit");
-                    },
-                    cache: false
-                };
-                var hrStoreEmployeEditDetails = {
-                    url: "/details",
-                    views: {
-                        "editor-main": {
-                            templateUrl: "employee-edit-details.html"
-                        }
-                    },
-                    cache: false
-                };
-                var hrStoreEmployeeDocuments = {
-                    url: "/documents",
-                    views: {
-                        "editor-main": {
-                            templateUrl: "hr.store-list.edit-employee.documents.html"
-                        }
-                    }
-                };
-                var hrStoreEmployeeEditScheduler = {
-                    url: "/schedule",
-                    views: {
-                        "editor-main": {
-                            templateUrl: "employee-edit-schedule.html",
-                            controller: "employeeEditSchedulerController"
-                        }
-                    },
-                    onEnter: function () {
-                        MyAndromeda.Logger.Notify("Edit person's schedule.");
-                    },
-                    cache: false
-                };
-                var hrStoreEmployeeCreate = {
-                    url: "/create",
-                    views: {
-                        //use the 'main' view area of the 'hr' state. 
-                        "main@hr": {
-                            templateUrl: "employee-create.html",
-                            controller: "employeeEditController"
-                        }
-                    },
-                    onEnter: function () {
-                        MyAndromeda.Logger.Notify("Entering employee create");
-                    },
-                    cache: false
-                };
-                MyAndromeda.Logger.Notify("set hr states");
-                // route: /hr-store
-                $stateProvider.state("hr", hr);
-                $stateProvider.state("hr.store-list", hrStoreList);
-                $stateProvider.state("hr.store-list.employee-list", hrEmployeeList);
-                $stateProvider.state("hr.store-list.scheduler", hrStoreScheduler);
-                $stateProvider.state("hr.store-list.create-employee", hrStoreEmployeeCreate);
-                //reuse edit details for create
-                $stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
-                $stateProvider.state("hr.store-list.edit-employee", hrStoreEmployeeEdit);
-                $stateProvider.state("hr.store-list.edit-employee.details", hrStoreEmployeEditDetails);
-                $stateProvider.state("hr.store-list.edit-employee.schedule", hrStoreEmployeeEditScheduler);
-                $stateProvider.state("hr.store-list.edit-employee.documents", hrStoreEmployeeDocuments);
-                //$stateProvider.state("hr.store-list.create-employee.details", hrStoreEmployeEditDetails);
             });
-            app.run(function ($rootScope) {
-                $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                    MyAndromeda.Logger.Notify("$stateChangeStart");
-                });
-                $rootScope.$on('$stateNotFound', function (event, unfoundState, fromState, fromParams) {
-                    MyAndromeda.Logger.Notify("$stateNotFound");
-                });
-                $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                    MyAndromeda.Logger.Notify("$stateChangeSuccess");
-                });
-            });
-        })(Manipulation = Chain.Manipulation || (Chain.Manipulation = {}));
-    })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
-})(MyAndromeda || (MyAndromeda = {}));
-var MyAndromeda;
-(function (MyAndromeda) {
-    var Chain;
-    (function (Chain) {
-        var Manipulation;
-        (function (Manipulation) {
-            var services = angular.module("MyAndromeda.Chain.Manipulation.Services", []);
-            var ManipulateTreeService = (function () {
-                function ManipulateTreeService() {
-                }
-                ManipulateTreeService.prototype.Add = function (item) {
-                };
-                return ManipulateTreeService;
-            }());
-            Manipulation.ManipulateTreeService = ManipulateTreeService;
-            services.service("manipulateTreeService", ManipulateTreeService);
-            var AssignStoreToChainService = (function () {
-                function AssignStoreToChainService($http) {
-                    this.$http = $http;
-                }
-                return AssignStoreToChainService;
-            }());
-            Manipulation.AssignStoreToChainService = AssignStoreToChainService;
-            services.service("assignStoreToChainService", AssignStoreToChainService);
-        })(Manipulation = Chain.Manipulation || (Chain.Manipulation = {}));
+        })(Directives = Chain.Directives || (Chain.Directives = {}));
     })(Chain = MyAndromeda.Chain || (MyAndromeda.Chain = {}));
 })(MyAndromeda || (MyAndromeda = {}));
 /// <reference path="../../Scripts/typings/linqjs/linq.d.ts" />
@@ -11042,7 +11116,8 @@ var MyAndromeda;
             "ngAnimate",
             "MyAndromeda.Start.Config",
             "MyAndromeda.Hr",
-            "MyAndromeda.Chain.Directives"
+            "MyAndromeda.Chain.Directives",
+            "MyAndromeda.Chain.Administration"
         ]);
         function setupStart(id) {
             var element = document.getElementById(id);

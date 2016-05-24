@@ -1,3 +1,0 @@
-﻿module MyAndromeda.Chain.Manipulation {
-
-}

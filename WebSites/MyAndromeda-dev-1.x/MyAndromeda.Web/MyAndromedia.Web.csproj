@@ -429,12 +429,13 @@
     <TypeScriptCompile Include="App\AndroWebOrdering\MyAndromeda.WebOrdering.UpSelling.ts" />
     <TypeScriptCompile Include="App\Api\DriversApi.ts" />
     <TypeScriptCompile Include="App\Api\OrdersApi.ts" />
+    <TypeScriptCompile Include="App\Chain\manageChainHierachyLink.Directive.ts" />
     <TypeScriptCompile Include="App\Chain\manageChainUsersLink.Directive.ts" />
-    <TypeScriptCompile Include="App\Chain\Manipulation\ChainTreeVeiw.Directive.ts" />
-    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Config.ts" />
-    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Controllers.ts" />
-    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Models.ts" />
-    <TypeScriptCompile Include="App\Chain\Manipulation\Manipulation.Services.ts" />
+    <TypeScriptCompile Include="App\Chain\Administration\Administration.Directives.ts" />
+    <TypeScriptCompile Include="App\Chain\Administration\Administration.Config.ts" />
+    <TypeScriptCompile Include="App\Chain\Administration\Administration.Controllers.ts" />
+    <TypeScriptCompile Include="App\Chain\Administration\Administration.Models.d.ts" />
+    <TypeScriptCompile Include="App\Chain\Administration\Administration.Services.ts" />
     <TypeScriptCompile Include="App\Debug\OrdersApp.ts" />
     <TypeScriptCompile Include="App\General\Authorizer.ts" />
     <TypeScriptCompile Include="App\General\Core.ts" />
@@ -953,6 +954,7 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="App\Views\Chain\Administration\admin-start.page.html" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2700,16 +2702,17 @@
     <Compile Include="Controllers\Api\Authorizer\AuthorizeController.cs" />
     <Compile Include="Controllers\Api\Authorizer\Models\AuthorizeStorePermissionModel.cs" />
     <Compile Include="Controllers\Api\Bringg\BringApiController.cs" />
+    <Compile Include="Controllers\Api\ChainControllers\ChainController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
-    <Compile Include="Controllers\Api\Data\ChainResult.cs" />
-    <Compile Include="Controllers\Api\Data\ChangeOrderStatusViewModel.cs" />
-    <Compile Include="Controllers\Api\Data\CustomerViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\ChainResult.cs" />
+    <Compile Include="Controllers\Api\Data\Models\ChangeOrderStatusViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\CustomerViewModel.cs" />
     <Compile Include="Controllers\Api\Data\DailyReportingDataController.cs" />
     <Compile Include="Controllers\Api\Data\DataQuery.cs" />
     <Compile Include="Controllers\Api\Data\DataWarehouseDataController.cs" />
     <Compile Include="Controllers\Api\Data\Models\CustomerOrderViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\DebugOrderViewModel.cs" />
-    <Compile Include="Controllers\Api\Data\DriverViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\DriverViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\Bob.cs" />
     <Compile Include="Controllers\Api\Data\Models\DailyReportingQuery.cs" />
     <Compile Include="Controllers\Api\Data\Models\DataWareHouseStore.cs" />
@@ -2722,11 +2725,11 @@
     <Compile Include="Controllers\Api\Data\Models\StoreOrdersSummary.cs" />
     <Compile Include="Controllers\Api\Data\Models\StoreParams.cs" />
     <Compile Include="Controllers\Api\Data\Models\StoreSummaryModel.cs" />
-    <Compile Include="Controllers\Api\Data\OrderAddressViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderAddressViewModel.cs" />
     <Compile Include="Controllers\Api\Data\Models\SummarySalesModelType.cs" />
     <Compile Include="Controllers\Api\Data\OrderItem.cs" />
     <Compile Include="Controllers\Api\Data\OrderStatus.cs" />
-    <Compile Include="Controllers\Api\Data\OrderViewModel.cs" />
+    <Compile Include="Controllers\Api\Data\Models\OrderViewModel.cs" />
     <Compile Include="Controllers\Api\Data\PaymentLine.cs" />
     <Compile Include="Controllers\Api\Data\Sort.cs" />
     <Compile Include="Controllers\Api\DeliveryZonesByRadiusController.cs" />
@@ -2751,6 +2754,7 @@
     <Compile Include="Controllers\Api\Store\Models\StoreOccasionTimeModel.cs" />
     <Compile Include="Controllers\Api\User\AuthorizationController.cs" />
     <Compile Include="Controllers\Api\User\ChainAndStoreController.cs" />
+    <Compile Include="Controllers\Api\ChainControllers\Models\ChainEditModel.cs" />
     <Compile Include="Controllers\Api\User\Models\ChainModel.cs" />
     <Compile Include="Controllers\Api\User\Models\StoreEnrollment.cs" />
     <Compile Include="Controllers\Api\User\Models\StoreEnrollmentQueryModel.cs" />
