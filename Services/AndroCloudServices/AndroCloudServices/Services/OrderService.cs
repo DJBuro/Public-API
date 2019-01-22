@@ -19,6 +19,10 @@ using System.Linq.Expressions;
 
 namespace AndroCloudServices.Services
 {
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+
     public class OrderService
     {
         public static Response Get(
@@ -122,43 +126,7 @@ namespace AndroCloudServices.Services
             int andromedaSiteId = -1;
             Response response = SecurityHelper.CheckOrderPostAccess(externalApplicationId, externalSiteId, dataAccessFactory, dataType, out applicationId, out andromedaSiteId);
 
-            if (response == null)
-            {
-                // For testing / staging we can bypass SignalR for specific stores
-                response = TestHelper.CheckForStoreSignalRBypass(externalSiteId, dataType);
-
-                if (response != null) return response;
-            }
-
-            // Get the hosts
-            List<PrivateHostV2> hostList = null;
-            dataAccessFactory.HostDataAccess.GetBestPrivateV2(andromedaSiteId, applicationId, out hostList);
-
-            // Fix urls for debugging
-            HostService.CheckForDevOverride<PrivateHostV2>(hostList);
-
-            // Was a host returned?
-            if ((hostList == null || hostList.Count == 0))
-            {
-                ErrorHelper.Log.Error("GetBestPrivateV2 returned no hubs for andromedaSiteId: " + andromedaSiteId + " applicationId: " + applicationId);
-                return new Response(Errors.InternalError, dataType);
-            }
-
-            string url = "";
-            foreach (PrivateHostV2 host in hostList)
-            {
-                if (host.Type == "PrivateHubWebService")
-                {
-                    url = host.Url;
-                    break;
-                }
-            }
-
-            if (url.Length == 0)
-            {
-                ErrorHelper.Log.Error("GetBestPrivateV2 returned no PrivateHubWebService hubs for andromedaSiteId: " + andromedaSiteId + " applicationId: " + applicationId);
-                response = new Response(Errors.InternalError, dataType);
-            }
+            string url = ConfigurationManager.AppSettings["HubAPI"];
 
             if (response == null)
             {
@@ -270,24 +238,22 @@ namespace AndroCloudServices.Services
             DataTypeEnum dataType,
             string url)
         {
-            Response response = null;
-
-            RestCallResult restCallResult = null;
-
+            Response response = new Response();
             string httpDataType = dataType == DataTypeEnum.XML ? "Application/XML" : "Application/JSON";
 
-            restCallResult = await HttpHelper.RestCall(
-                "PUT",
-                url,
-                httpDataType,
-                httpDataType,
-                null,
-                orderData);
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            HttpClient client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(httpDataType));
+            request.Content = new StringContent(orderData, Encoding.UTF8, httpDataType);
 
-            if (restCallResult.Success && restCallResult.HttpStatus == HttpStatusCode.OK)
+            var hubResponse = await client.SendAsync(request);
+            string responseAsString = await hubResponse.Content.ReadAsStringAsync();
+
+            if (hubResponse.StatusCode == HttpStatusCode.OK)
             {
                 ACSHubResult acsHubResult = null;
-                string error = AndroCloudHelper.SerializeHelper.Deserialize<ACSHubResult>(restCallResult.ResponseData, dataType, out acsHubResult);
+                string error = AndroCloudHelper.SerializeHelper.Deserialize<ACSHubResult>(responseAsString, dataType, out acsHubResult);
 
                 if (error.Length == 0)
                 {
@@ -318,7 +284,7 @@ namespace AndroCloudServices.Services
                     else
                     {
                         // Failure!!
-                        response = new Response(new Error(acsHubResult.Message + " " + acsHubResult.Payload, (int)acsHubResult.Code, ResultEnum.BadRequest), dataType);
+                        response = new Response(new Error(acsHubResult.Message + " " + acsHubResult.Payload, acsHubResult.Code, ResultEnum.BadRequest), dataType);
                     }
                 }
                 else
@@ -326,7 +292,7 @@ namespace AndroCloudServices.Services
                     // Error deserializing data returned by the acs hub web service
                     response = new Response(Errors.InternalError, dataType);
 
-                    ErrorHelper.Log.Error("ACS hub response deserialize failed with: " + error + " data: " + restCallResult.ResponseData);
+                    ErrorHelper.Log.Error("ACS hub response deserialize failed with: " + error + " data: " + responseAsString);
                 }
             }
             else
@@ -334,8 +300,9 @@ namespace AndroCloudServices.Services
                 // Error calling the acs hub web service
                 response = new Response(Errors.InternalError, dataType);
 
-                ErrorHelper.Log.Error("ACS hub web service call failed with: " + restCallResult.HttpStatus.ToString() + " response: " + restCallResult.ResponseData == null ? "null" : restCallResult.ResponseData);
+                ErrorHelper.Log.Error("ACS hub web service call failed with: " + hubResponse.StatusCode.ToString() + " response: " + responseAsString == null ? "null" : responseAsString);
             }
+
 
             return response;
         }

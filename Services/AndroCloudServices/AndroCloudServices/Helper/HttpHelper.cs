@@ -59,9 +59,9 @@ namespace AndroCloudServices.Helper
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
 
             // Get the timeout setting
-            string defaultHTTPTimeoutMillisecondsText = ConfigurationManager.AppSettings["DefaultHTTPTimeoutMilliseconds"];
+            //string defaultHTTPTimeoutMillisecondsText = ConfigurationManager.AppSettings["DefaultHTTPTimeoutMilliseconds"];
             int defaultHTTPTimeoutMilliseconds = 60000;
-            int.TryParse(defaultHTTPTimeoutMillisecondsText, out defaultHTTPTimeoutMilliseconds);
+            //int.TryParse(defaultHTTPTimeoutMillisecondsText, out defaultHTTPTimeoutMilliseconds);
 
             webRequest.Method = httpMethod;
             webRequest.PreAuthenticate = true;

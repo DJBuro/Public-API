@@ -28,7 +28,6 @@ namespace CloudSyncModel
 
             this.LoyaltyUpdates = new Loyalty.LoyaltyUpdates();
             this.StoreOccasionTimes = new List<StoreOccasionTimeModel>();
-            
         }
 
         public int FromDataVersion { get; set; }
