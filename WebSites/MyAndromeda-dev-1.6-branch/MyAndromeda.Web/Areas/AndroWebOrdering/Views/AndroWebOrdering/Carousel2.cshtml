@@ -1,6 +1,0 @@
-﻿@model MyAndromeda.Web.Areas.AndroWebOrdering.Models.AndroWebOrderingWebSiteModel
-
-@using (Html.BeginForm("Carousel1Settings", "AndroWebOrdering", FormMethod.Post, new { Id = Request.QueryString["id"] }))
-{
-    @Html.Hidden("Id", Request.QueryString["id"])
-}

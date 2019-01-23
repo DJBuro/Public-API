@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<publishData>
-  <publishProfile publishUrl="C:\Andromeda Development Source\OrderTracking\WebOrderTracking\PublishedGPSGateServices" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="GPSGateTrackerServices.svc" publishTime="07/05/2011 11:38:20" />
-    <file relUrl="bin/Andromeda.GPSGateServices.dll" publishTime="07/19/2011 11:58:50" />
-    <file relUrl="Web.config" publishTime="07/19/2011 11:56:07" />
-  </publishProfile>
-</publishData>

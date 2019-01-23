@@ -1,7 +1,0 @@
-﻿1. The current menu for the store 
-Menus/#:AndroId #/current.mdb 
-2. The current menu from the ftp
-Menus/#:AndroId #/temp.mdb
-
-Targets: 
-1. Use SignalR to check if the current menu on ftp is the current version when the store level is accessed

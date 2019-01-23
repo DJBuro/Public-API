@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<publishData>
-  <publishProfile publishUrl="C:\Andromeda Development Source\OrderTracking\WebOrderTracking\PublishedWebOrderTracking" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/Andromeda.WebOrderTracking.dll" publishTime="11/01/2011 14:13:23" />
-    <file relUrl="WebOrderTrackingService.svc" publishTime="07/05/2011 12:05:57" />
-    <file relUrl="Web.config" publishTime="11/01/2011 14:13:24" />
-    <file relUrl="bin/Andromeda.WebOrderTracking.pdb" publishTime="11/01/2011 14:13:23" />
-  </publishProfile>
-</publishData>

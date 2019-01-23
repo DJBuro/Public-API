@@ -1,7 +1,0 @@
-﻿Guam,en-US
-United States,en-US
-Russian Federation,ru-RU
-Turkey,tr
-United Kingdom,en-GB
-Azerbaijan,az
-Canada,en-Ca

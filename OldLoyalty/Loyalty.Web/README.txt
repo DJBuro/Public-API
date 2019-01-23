@@ -1,1 +1,0 @@
-Loyalty.Web.SharedLibary needs production Dlls before going live... these are all debug

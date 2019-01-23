@@ -1,4 +1,0 @@
-namespace MyAndromeda.Framework.Authorization
-{
-    
-}

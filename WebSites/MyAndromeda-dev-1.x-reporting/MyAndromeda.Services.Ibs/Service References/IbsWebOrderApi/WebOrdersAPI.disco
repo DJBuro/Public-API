@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
-  <contractRef ref="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx?wsdl" docRef="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
-  <soap address="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" xmlns:q1="http://ibs-systems.co.uk/WebOrdersAPI/" binding="q1:WebOrdersAPISoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-  <soap address="https://server1.stocklinkonline.com/stocknetapi/WebOrdersAPI.asmx" xmlns:q2="http://ibs-systems.co.uk/WebOrdersAPI/" binding="q2:WebOrdersAPISoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
-</discovery>

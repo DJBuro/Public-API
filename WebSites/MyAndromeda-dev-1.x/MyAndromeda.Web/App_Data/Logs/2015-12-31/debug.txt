@@ -1,8 +1,0 @@
-2015-12-31 13:55:11.1178 MyAndromeda.Web.MvcApplication.Application_Start Debug --- App Start
-2015-12-31 13:55:13.3750 MyAndromeda.Web.Services.LoginService.LoggedIn Debug --- Get the user matt
-2015-12-31 13:55:24.7001 MyAndromeda.Authorization.Authorizer.AuthorizeAll Debug --- User: matt does not have permission for all of: Email marketing feature, View email campaigns
-2015-12-31 13:55:24.7046 MyAndromeda.Authorization.Authorizer.AuthorizeAny Debug --- User: matt does not have permission for any: View basic ACS reports, View basic Rameses reports
-2015-12-31 14:32:05.0871 MyAndromeda.Web.MvcApplication.Application_Start Debug --- App Start
-2015-12-31 14:32:07.2459 MyAndromeda.Web.Services.LoginService.LoggedIn Debug --- Get the user matt
-2015-12-31 14:32:15.9311 MyAndromeda.Authorization.Authorizer.AuthorizeAll Debug --- User: matt does not have permission for all of: Email marketing feature, View email campaigns
-2015-12-31 14:32:15.9381 MyAndromeda.Authorization.Authorizer.AuthorizeAny Debug --- User: matt does not have permission for any: View basic ACS reports, View basic Rameses reports

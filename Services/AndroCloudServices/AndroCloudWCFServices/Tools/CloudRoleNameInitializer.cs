@@ -7,17 +7,17 @@
 
     public class CloudRoleNameInitializer : ITelemetryInitializer
     {
-        private readonly string roleName;
+        private readonly string _roleName;
 
         public CloudRoleNameInitializer(string roleName)
         {
-            this.roleName = roleName ?? throw new ArgumentNullException(nameof(roleName));
+            this._roleName = roleName ?? throw new ArgumentNullException(nameof(roleName));
         }
 
         public void Initialize(ITelemetry telemetry)
         {
-            telemetry.Context.Cloud.RoleName = roleName;
-            telemetry.Context.Cloud.RoleInstance = roleName;
+            telemetry.Context.Cloud.RoleName = _roleName;
+            telemetry.Context.Cloud.RoleInstance = _roleName;
         }
     }
 }

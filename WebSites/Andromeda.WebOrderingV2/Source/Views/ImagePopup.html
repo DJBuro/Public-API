@@ -1,9 +1,0 @@
-﻿<script type="text/html" id="imageView">   
-    <div id="imageInner" data-bind="click: imageHelper.hidePopup">
-        <div class="closeButton" data-bind="click: imageHelper.hidePopup"></div>
-        <!-- ko if: menuHelper.menuDataThumbnails() != undefined -->
-        <img src="#" data-bind="attr: { src: menuHelper.menuDataThumbnails().Server.Endpoint + imageHelper.image().Src, height: imageHelper.image().Height + 'px', width: imageHelper.image().Width + 'px' }"  />
-        <!-- /ko -->
-        <p data-bind="text: textStrings.ivClose"></p>
-    </div>
-</script>
