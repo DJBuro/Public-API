@@ -1,2 +1,0 @@
-D:\ACS-prod\ACS\CloudSync\CloudSyncClientTests\obj\Debug\CloudSyncClientTests.csprojAssemblyReference.cache
-D:\ACS-prod\ACS\CloudSync\CloudSyncClientTests\obj\Debug\CloudSyncClientTests.csproj.CoreCompileInputs.cache

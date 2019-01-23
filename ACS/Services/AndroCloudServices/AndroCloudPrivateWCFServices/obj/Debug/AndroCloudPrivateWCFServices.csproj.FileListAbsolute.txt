@@ -1,2 +1,0 @@
-D:\ACS-prod\ACS\Services\AndroCloudServices\AndroCloudPrivateWCFServices\obj\Debug\AndroCloudPrivateWCFServices.csprojAssemblyReference.cache
-D:\ACS-prod\ACS\Services\AndroCloudServices\AndroCloudPrivateWCFServices\obj\Debug\AndroCloudPrivateWCFServices.csproj.CoreCompileInputs.cache
