@@ -172,21 +172,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
+    <ProjectReference Include="..\AndroAdminDataAccess\AndroAdminDataAccess.csproj">
+      <Project>{3ecf6405-90d5-4c8b-abcc-c0baedfdeef9}</Project>
+      <Name>AndroAdminDataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
       <Project>{0520364a-a9b3-4ad6-b125-d935dccaf731}</Project>
       <Name>AndroCloudDataAccessEntityFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
+    <ProjectReference Include="..\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
       <Project>{408fba0e-e649-493e-b4d4-8a5328265450}</Project>
       <Name>AndroCloudDataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\DataWarehouseDataAccessEntityFramework\DataWarehouseDataAccessEntityFramework.csproj">
-      <Project>{20b6e3c9-17fd-44c4-9980-cae413e6c55d}</Project>
-      <Name>DataWarehouseDataAccessEntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\DataWarehouseDataAccess\DataWarehouseDataAccess.csproj">
-      <Project>{10ba737f-f9e7-4eed-b096-bbc47ce14338}</Project>
-      <Name>DataWarehouseDataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\AndroCloudServices\AndroCloudServices.csproj">
       <Project>{4e767597-373b-4aa6-a47a-8f6201008301}</Project>
@@ -195,6 +191,14 @@
     <ProjectReference Include="..\AndroCloudWCFHelper\AndroCloudHelper.csproj">
       <Project>{d9959d2f-2016-4355-bc22-061ea8a5e267}</Project>
       <Name>AndroCloudHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataWarehouseDataAccessEntityFramework\DataWarehouseDataAccessEntityFramework.csproj">
+      <Project>{20b6e3c9-17fd-44c4-9980-cae413e6c55d}</Project>
+      <Name>DataWarehouseDataAccessEntityFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataWarehouseDataAccess\DataWarehouseDataAccess.csproj">
+      <Project>{10ba737f-f9e7-4eed-b096-bbc47ce14338}</Project>
+      <Name>DataWarehouseDataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

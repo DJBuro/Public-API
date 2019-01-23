@@ -99,11 +99,11 @@
     <Compile Include="TimeSpanBlock3.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\AndroCloudServices\AndroCloudWCFHelper\AndroCloudHelper.csproj">
+    <ProjectReference Include="..\AndroCloudWCFHelper\AndroCloudHelper.csproj">
       <Project>{d9959d2f-2016-4355-bc22-061ea8a5e267}</Project>
       <Name>AndroCloudHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\CloudSync\CloudSyncModel\CloudSyncModel.csproj">
+    <ProjectReference Include="..\CloudSyncModel\CloudSyncModel.csproj">
       <Project>{56aa880a-eff0-440f-92f5-39f2c578cbdd}</Project>
       <Name>CloudSyncModel</Name>
     </ProjectReference>

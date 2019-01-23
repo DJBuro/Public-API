@@ -109,29 +109,21 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CloudSync\CloudSync\CloudSync.csproj">
-      <Project>{3e34d787-0c46-4501-a774-cca5930ab20d}</Project>
-      <Name>CloudSync</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
-      <Project>{0520364a-a9b3-4ad6-b125-d935dccaf731}</Project>
-      <Name>AndroCloudDataAccessEntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
+    <ProjectReference Include="..\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
       <Project>{408fba0e-e649-493e-b4d4-8a5328265450}</Project>
       <Name>AndroCloudDataAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\DataWarehouseDataAccessEntityFramework\DataWarehouseDataAccessEntityFramework.csproj">
-      <Project>{20b6e3c9-17fd-44c4-9980-cae413e6c55d}</Project>
-      <Name>DataWarehouseDataAccessEntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\DataWarehouseDataAccess\DataWarehouseDataAccess.csproj">
-      <Project>{10ba737f-f9e7-4eed-b096-bbc47ce14338}</Project>
-      <Name>DataWarehouseDataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\AndroCloudWCFHelper\AndroCloudHelper.csproj">
       <Project>{d9959d2f-2016-4355-bc22-061ea8a5e267}</Project>
       <Name>AndroCloudHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CloudSync\CloudSync.csproj">
+      <Project>{3e34d787-0c46-4501-a774-cca5930ab20d}</Project>
+      <Name>CloudSync</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataWarehouseDataAccess\DataWarehouseDataAccess.csproj">
+      <Project>{10ba737f-f9e7-4eed-b096-bbc47ce14338}</Project>
+      <Name>DataWarehouseDataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
