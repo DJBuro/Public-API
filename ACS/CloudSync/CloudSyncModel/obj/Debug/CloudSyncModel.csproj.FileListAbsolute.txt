@@ -1,0 +1,9 @@
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\bin\CloudSyncModel.dll.config
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\bin\CloudSyncModel.dll
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\bin\CloudSyncModel.pdb
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\bin\EntityFramework.SqlServer.dll
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\bin\EntityFramework.dll
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\obj\Debug\CloudSyncModel.csproj.CoreCompileInputs.cache
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\obj\Debug\CloudSyncModel.csproj.CopyComplete
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\obj\Debug\CloudSyncModel.dll
+D:\ACS-prod\ACS\CloudSync\CloudSyncModel\obj\Debug\CloudSyncModel.pdb

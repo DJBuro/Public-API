@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ACSModelStoreContainer" CdmEntityContainer="ACSEntities">
+    <EntitySetMapping Name="ACSApplicationSites">
+      <EntityTypeMapping TypeName="ACSModel.ACSApplicationSite">
+        <MappingFragment StoreEntitySet="ACSApplicationSite">
+          <ScalarProperty Name="ACSApplicationId" ColumnName="ACSApplicationId" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACSLogs">
+      <EntityTypeMapping TypeName="ACSModel.ACSLog">
+        <MappingFragment StoreEntitySet="ACSLog">
+          <ScalarProperty Name="Exception" ColumnName="Exception" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Logger" ColumnName="Logger" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Thread" ColumnName="Thread" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ACSQueues">
+      <EntityTypeMapping TypeName="ACSModel.ACSQueue">
+        <MappingFragment StoreEntitySet="ACSQueue">
+          <ScalarProperty Name="Packet" ColumnName="Packet" />
+          <ScalarProperty Name="dataType" ColumnName="dataType" />
+          <ScalarProperty Name="Replicated" ColumnName="Replicated" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="Timeout" ColumnName="Timeout" />
+          <ScalarProperty Name="DestSiteGuid" ColumnName="DestSiteGuid" />
+          <ScalarProperty Name="DestSiteID" ColumnName="DestSiteID" />
+          <ScalarProperty Name="SrcSiteGuid" ColumnName="SrcSiteGuid" />
+          <ScalarProperty Name="SrcSiteID" ColumnName="SrcSiteID" />
+          <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Addresses">
+      <EntityTypeMapping TypeName="ACSModel.Address">
+        <MappingFragment StoreEntitySet="Addresses">
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+          <ScalarProperty Name="Long" ColumnName="Long" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="DPS" ColumnName="DPS" />
+          <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="County" ColumnName="County" />
+          <ScalarProperty Name="Town" ColumnName="Town" />
+          <ScalarProperty Name="Locality" ColumnName="Locality" />
+          <ScalarProperty Name="RoadName" ColumnName="RoadName" />
+          <ScalarProperty Name="RoadNum" ColumnName="RoadNum" />
+          <ScalarProperty Name="Prem6" ColumnName="Prem6" />
+          <ScalarProperty Name="Prem5" ColumnName="Prem5" />
+          <ScalarProperty Name="Prem4" ColumnName="Prem4" />
+          <ScalarProperty Name="Prem3" ColumnName="Prem3" />
+          <ScalarProperty Name="Prem2" ColumnName="Prem2" />
+          <ScalarProperty Name="Prem1" ColumnName="Prem1" />
+          <ScalarProperty Name="Org3" ColumnName="Org3" />
+          <ScalarProperty Name="Org2" ColumnName="Org2" />
+          <ScalarProperty Name="Org1" ColumnName="Org1" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Audits">
+      <EntityTypeMapping TypeName="ACSModel.Audit">
+        <MappingFragment StoreEntitySet="Audit">
+          <ScalarProperty Name="ExtraInfo" ColumnName="ExtraInfo" />
+          <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+          <ScalarProperty Name="ResponseTime" ColumnName="ResponseTime" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="IP_Port" ColumnName="IP_Port" />
+          <ScalarProperty Name="HardwareID" ColumnName="HardwareID" />
+          <ScalarProperty Name="SrcID" ColumnName="SrcID" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Countries">
+      <EntityTypeMapping TypeName="ACSModel.Country">
+        <MappingFragment StoreEntitySet="Country">
+          <ScalarProperty Name="ISO3166_1_numeric" ColumnName="ISO3166_1_numeric" />
+          <ScalarProperty Name="ISO3166_1_alpha_2" ColumnName="ISO3166_1_alpha_2" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Days">
+      <EntityTypeMapping TypeName="ACSModel.Day">
+        <MappingFragment StoreEntitySet="Day">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliveryAreas">
+      <EntityTypeMapping TypeName="ACSModel.DeliveryArea">
+        <MappingFragment StoreEntitySet="DeliveryArea">
+          <ScalarProperty Name="DeliveryCharge" ColumnName="DeliveryCharge" />
+          <ScalarProperty Name="DeliveryArea1" ColumnName="DeliveryArea" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HostTypes">
+      <EntityTypeMapping TypeName="ACSModel.HostType">
+        <MappingFragment StoreEntitySet="HostTypes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OpeningHours">
+      <EntityTypeMapping TypeName="ACSModel.OpeningHour">
+        <MappingFragment StoreEntitySet="OpeningHours">
+          <ScalarProperty Name="DayID" ColumnName="DayID" />
+          <ScalarProperty Name="OpenAllDay" ColumnName="OpenAllDay" />
+          <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+          <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="ACSModel.Order">
+        <MappingFragment StoreEntitySet="Orders">
+          <ScalarProperty Name="ApplicationID" ColumnName="ApplicationID" />
+          <ScalarProperty Name="ExternalID" ColumnName="ExternalID" />
+          <ScalarProperty Name="InternetOrderNumber" ColumnName="InternetOrderNumber" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="ACSQueueID" ColumnName="ACSQueueID" />
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderStatus">
+      <EntityTypeMapping TypeName="ACSModel.OrderStatu">
+        <MappingFragment StoreEntitySet="OrderStatus">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="RamesesStatusId" ColumnName="RamesesStatusId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Partners">
+      <EntityTypeMapping TypeName="ACSModel.Partner">
+        <MappingFragment StoreEntitySet="Partners">
+          <ScalarProperty Name="ExternalId" ColumnName="ExternalId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Settings">
+      <EntityTypeMapping TypeName="ACSModel.Setting">
+        <MappingFragment StoreEntitySet="Settings">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sites">
+      <EntityTypeMapping TypeName="ACSModel.Site">
+        <MappingFragment StoreEntitySet="Sites">
+          <ScalarProperty Name="EstimatedCollectionTime" ColumnName="EstimatedCollectionTime" />
+          <ScalarProperty Name="UiCulture" ColumnName="UiCulture" />
+          <ScalarProperty Name="TimeZoneInfoId" ColumnName="TimeZoneInfoId" />
+          <ScalarProperty Name="SiteOfflineID" ColumnName="SiteOfflineID" />
+          <ScalarProperty Name="StorePaymentProviderID" ColumnName="StorePaymentProviderID" />
+          <ScalarProperty Name="SiteStatusID" ColumnName="SiteStatusID" />
+          <ScalarProperty Name="HardwareKey" ColumnName="HardwareKey" />
+          <ScalarProperty Name="LicenceKey" ColumnName="LicenceKey" />
+          <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+          <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
+          <ScalarProperty Name="EstimatedDeliveryTime" ColumnName="EstimatedDeliveryTime" />
+          <ScalarProperty Name="ExternalId" ColumnName="ExternalId" />
+          <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+          <ScalarProperty Name="StoreConnected" ColumnName="StoreConnected" />
+          <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+          <ScalarProperty Name="AndroID" ColumnName="AndroID" />
+          <ScalarProperty Name="ExternalSiteName" ColumnName="ExternalSiteName" />
+          <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+          <ScalarProperty Name="SignalRConnectionID" ColumnName="SignalRConnectionID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SiteStatuses">
+      <EntityTypeMapping TypeName="ACSModel.SiteStatus">
+        <MappingFragment StoreEntitySet="SiteStatuses">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliveryAreaRoadRules">
+      <EntityTypeMapping TypeName="ACSModel.DeliveryAreaRoadRule">
+        <MappingFragment StoreEntitySet="DeliveryAreaRoadRule">
+          <ScalarProperty Name="Rule" ColumnName="Rule" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hosts">
+      <EntityTypeMapping TypeName="ACSModel.Host">
+        <MappingFragment StoreEntitySet="Hosts">
+          <ScalarProperty Name="OptInOnly" ColumnName="OptInOnly" />
+          <ScalarProperty Name="SignalRHostName" ColumnName="SignalRHostName" />
+          <ScalarProperty Name="PrivateHostName" ColumnName="PrivateHostName" />
+          <ScalarProperty Name="Port" ColumnName="Port" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="HostName" ColumnName="HostName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HostsV2">
+      <EntityTypeMapping TypeName="ACSModel.HostsV2">
+        <MappingFragment StoreEntitySet="HostsV2">
+          <ScalarProperty Name="OptInOnly" ColumnName="OptInOnly" />
+          <ScalarProperty Name="Public" ColumnName="Public" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="HostTypeId" ColumnName="HostTypeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliveryAreaRoads">
+      <EntityTypeMapping TypeName="ACSModel.DeliveryAreaRoad">
+        <MappingFragment StoreEntitySet="DeliveryAreaRoad">
+          <ScalarProperty Name="RuleId" ColumnName="RuleId" />
+          <ScalarProperty Name="HouseNumberEnd" ColumnName="HouseNumberEnd" />
+          <ScalarProperty Name="HouseNumberStart" ColumnName="HouseNumberStart" />
+          <ScalarProperty Name="DeliversToWholeRoad" ColumnName="DeliversToWholeRoad" />
+          <ScalarProperty Name="RoadName" ColumnName="RoadName" />
+          <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DeliveryAreaTowns">
+      <EntityTypeMapping TypeName="ACSModel.DeliveryAreaTown">
+        <MappingFragment StoreEntitySet="DeliveryAreaTown">
+          <ScalarProperty Name="Postcodes" ColumnName="Postcodes" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HubHosts">
+      <EntityTypeMapping TypeName="ACSModel.HubHost">
+        <MappingFragment StoreEntitySet="HubHost">
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="SiteHubs" TypeName="ACSModel.SiteHubs" StoreEntitySet="SiteHubs">
+      <EndProperty Name="Site">
+        <ScalarProperty Name="ID" ColumnName="SiteId" />
+      </EndProperty>
+      <EndProperty Name="HubHost">
+        <ScalarProperty Name="Id" ColumnName="HubId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="ACSApplications">
+      <EntityTypeMapping TypeName="ACSModel.ACSApplication">
+        <MappingFragment StoreEntitySet="ACSApplication">
+          <ScalarProperty Name="PartnerId" ColumnName="PartnerId" />
+          <ScalarProperty Name="ExternalDisplayName" ColumnName="ExternalDisplayName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ExternalApplicationId" ColumnName="ExternalApplicationId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AcsApplicationHosts" TypeName="ACSModel.AcsApplicationHosts" StoreEntitySet="AcsApplicationHosts">
+      <EndProperty Name="Host">
+        <ScalarProperty Name="ID" ColumnName="HostsId" />
+      </EndProperty>
+      <EndProperty Name="ACSApplication">
+        <ScalarProperty Name="Id" ColumnName="AcsApplicationSiteId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="AcsApplicationHostsV2" TypeName="ACSModel.AcsApplicationHostsV2" StoreEntitySet="AcsApplicationHostsV2">
+      <EndProperty Name="HostsV2">
+        <ScalarProperty Name="Id" ColumnName="HostsV2Id" />
+      </EndProperty>
+      <EndProperty Name="ACSApplication">
+        <ScalarProperty Name="Id" ColumnName="AcsApplicationHostsId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="SiteMenus">
+      <EntityTypeMapping TypeName="ACSModel.SiteMenu">
+        <MappingFragment StoreEntitySet="SiteMenus">
+          <ScalarProperty Name="MenuDataExtendedVersion" ColumnName="MenuDataExtendedVersion" />
+          <ScalarProperty Name="MenuDataExtended" ColumnName="MenuDataExtended" />
+          <ScalarProperty Name="MenuDataThumbnailsVersion" ColumnName="MenuDataThumbnailsVersion" />
+          <ScalarProperty Name="menuDataThumbnails" ColumnName="menuDataThumbnails" />
+          <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+          <ScalarProperty Name="menuData" ColumnName="menuData" />
+          <ScalarProperty Name="MenuType" ColumnName="MenuType" />
+          <ScalarProperty Name="Version" ColumnName="Version" />
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="SiteHostV1" TypeName="ACSModel.SiteHostV1" StoreEntitySet="SiteHostV1">
+      <EndProperty Name="Site">
+        <ScalarProperty Name="ID" ColumnName="SiteId" />
+      </EndProperty>
+      <EndProperty Name="Host">
+        <ScalarProperty Name="ID" ColumnName="HostV1Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SiteHostV2" TypeName="ACSModel.SiteHostV2" StoreEntitySet="SiteHostV2">
+      <EndProperty Name="Site">
+        <ScalarProperty Name="ID" ColumnName="SiteId" />
+      </EndProperty>
+      <EndProperty Name="HostsV2">
+        <ScalarProperty Name="Id" ColumnName="HostV2Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="StorePaymentProviders">
+      <EntityTypeMapping TypeName="ACSModel.StorePaymentProvider">
+        <MappingFragment StoreEntitySet="StorePaymentProvider">
+          <ScalarProperty Name="ClientPassword" ColumnName="ClientPassword" />
+          <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Devices">
+      <EntityTypeMapping TypeName="ACSModel.Device">
+        <MappingFragment StoreEntitySet="Devices">
+          <ScalarProperty Name="ExternalApiId" ColumnName="ExternalApiId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExternalApis">
+      <EntityTypeMapping TypeName="ACSModel.ExternalApi">
+        <MappingFragment StoreEntitySet="ExternalApi">
+          <ScalarProperty Name="Parameters" ColumnName="Parameters" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SiteDevices">
+      <EntityTypeMapping TypeName="ACSModel.SiteDevice">
+        <MappingFragment StoreEntitySet="SiteDevices">
+          <ScalarProperty Name="DataVersion" ColumnName="DataVersion" />
+          <ScalarProperty Name="Parameters" ColumnName="Parameters" />
+          <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SiteLoyalties">
+      <EntityTypeMapping TypeName="ACSModel.SiteLoyalty">
+        <MappingFragment StoreEntitySet="SiteLoyalty">
+          <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+          <ScalarProperty Name="Configuration" ColumnName="Configuration" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SitesOfflines">
+      <EntityTypeMapping TypeName="ACSModel.SitesOffline">
+        <MappingFragment StoreEntitySet="SitesOffline">
+          <ScalarProperty Name="SendEmailNow" ColumnName="SendEmailNow" />
+          <ScalarProperty Name="EmailSentTimes" ColumnName="EmailSentTimes" />
+          <ScalarProperty Name="EmailNextSent" ColumnName="EmailNextSent" />
+          <ScalarProperty Name="EmailLastSent" ColumnName="EmailLastSent" />
+          <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="ACSModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SiteOccasionTimes">
+      <EntityTypeMapping TypeName="ACSModel.SiteOccasionTime">
+        <MappingFragment StoreEntitySet="SiteOccasionTimes">
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Occasions" ColumnName="Occasions" />
+          <ScalarProperty Name="StartTimezone" ColumnName="StartTimezone" />
+          <ScalarProperty Name="StartUtc" ColumnName="StartUtc" />
+          <ScalarProperty Name="RecurrenceRule" ColumnName="RecurrenceRule" />
+          <ScalarProperty Name="RecurrenceException" ColumnName="RecurrenceException" />
+          <ScalarProperty Name="IsAllDay" ColumnName="IsAllDay" />
+          <ScalarProperty Name="EndTimezone" ColumnName="EndTimezone" />
+          <ScalarProperty Name="EndUtc" ColumnName="EndUtc" />
+          <ScalarProperty Name="AndromedaSiteId" ColumnName="AndromedaSiteId" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

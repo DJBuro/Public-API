@@ -1,0 +1,2 @@
+D:\ACS-prod\ACS\Services\AndroCloudServices\AndroCloudServicesTests\obj\Debug\AndroCloudServicesTests.csprojAssemblyReference.cache
+D:\ACS-prod\ACS\Services\AndroCloudServices\AndroCloudServicesTests\obj\Debug\AndroCloudServicesTests.csproj.CoreCompileInputs.cache

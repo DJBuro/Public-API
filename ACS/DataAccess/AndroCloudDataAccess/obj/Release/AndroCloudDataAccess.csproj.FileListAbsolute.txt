@@ -1,0 +1,16 @@
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\AndroCloudDataAccess.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\AndroCloudDataAccess.pdb
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\EntityFramework.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\log4net.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\Newtonsoft.Json.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\AndroCloudWCFHelper.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\CloudSyncModel.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\AndroCloudWCFHelper.pdb
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\CloudSyncModel.pdb
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\obj\Release\AndroCloudDataAccess.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\obj\Release\AndroCloudDataAccess.pdb
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\EntityFramework.SqlServer.dll
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\bin\CloudSyncModel.dll.config
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\obj\Release\AndroCloudDataAccess.csprojAssemblyReference.cache
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\obj\Release\AndroCloudDataAccess.csproj.CoreCompileInputs.cache
+D:\ACS-prod\ACS\DataAccess\AndroCloudDataAccess\obj\Release\AndroCloudDataAccess.csproj.CopyComplete
