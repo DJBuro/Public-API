@@ -110,8 +110,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="IRESTServices.cs" />
-    <Compile Include="Services\Menu.cs" />
-    <Compile Include="Services\Site.cs" />
+    <Compile Include="Services\MenuService.cs" />
+    <Compile Include="Services\SiteService.cs" />
     <Compile Include="Services\Telemetry.cs" />
     <Compile Include="Services\Feedback.cs" />
     <Compile Include="Services\PasswordResetRequest.cs" />

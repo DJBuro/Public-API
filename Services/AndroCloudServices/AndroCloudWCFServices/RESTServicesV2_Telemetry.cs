@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.ServiceModel.Web;
-using System.IO;
-using AndroCloudHelper;
-
-namespace AndroCloudWCFServices
+﻿namespace AndroCloudWCFServices
 {
-    partial class RESTServicesV2_Host : IRESTServicesV2
+    using System;
+    using System.ServiceModel.Web;
+    using System.IO;
+    using AndroCloudHelper;
+
+    partial class RestServicesV2 : IRESTServicesV2
     {
         [WebInvoke(Method = "PUT", UriTemplate = "sites/{siteId}/telemetrysession?applicationId={applicationId}")]
         public Stream PutTelemetrySession(Stream input, string siteId, string applicationId)

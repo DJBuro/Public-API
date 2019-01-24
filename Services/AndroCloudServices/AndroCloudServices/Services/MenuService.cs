@@ -1,14 +1,14 @@
-﻿using AndroCloudDataAccess.DataAccess;
-using AndroCloudDataAccess.Domain;
-using System;
-using AndroCloudServices.Domain;
-using AndroCloudServices.Helper;
-using AndroCloudDataAccess;
-using AndroCloudHelper;
-using System.Collections.Generic;
-
-namespace AndroCloudServices.Services
+﻿namespace AndroCloudServices.Services
 {
+    using System;
+
+    using AndroCloudDataAccess;
+    using AndroCloudDataAccess.Domain;
+
+    using AndroCloudHelper;
+
+    using AndroCloudServices.Helper;
+
     public class MenuService
     {
         public static Response Get(
@@ -21,41 +21,26 @@ namespace AndroCloudServices.Services
             // The source is the externalApplicationId
             sourceId = externalApplicationId;
 
-            // Was a valid partnerId provided?
-            if (externalApplicationId == null || externalApplicationId.Length == 0)
+            if (string.IsNullOrEmpty(externalApplicationId))
             {
-                // Application id was not provided
                 return new Response(Errors.MissingApplicationId, dataType);
             }
 
-            // Was a externalSiteId provided?
-            if (externalSiteId == null || externalSiteId.Length == 0)
+            if (string.IsNullOrEmpty(externalSiteId))
             {
-                // externalSiteId was not provided
                 return new Response(Errors.MissingSiteId, dataType);
             }
 
-            // Check the partners details
-            Guid partnerId = Guid.Empty;
-            Guid siteId = Guid.Empty;
-            Response error = SecurityHelper.CheckMenuGetAccess(externalApplicationId, externalSiteId, dataAccessFactory, dataType, out siteId);
+            Response error = SecurityHelper.CheckMenuGetAccess(externalApplicationId, externalSiteId, dataAccessFactory, dataType, out Guid siteId);
             if (error != null)
             {
-                // Security check failed
                 return error;
             }
 
             // Get the menu
-            SiteMenu siteMenu = null;
-            dataAccessFactory.SiteMenuDataAccess.GetBySiteId(siteId, dataType, out siteMenu);
+            dataAccessFactory.SiteMenuDataAccess.GetBySiteId(siteId, dataType, out SiteMenu siteMenu);
 
-            // Was a menu returned?
-            if (siteMenu == null)
-            {
-                return new Response(Errors.MenuNotFound, dataType);
-            }
-
-            return new Response(siteMenu.MenuData);
+            return siteMenu == null ? new Response(Errors.MenuNotFound, dataType) : new Response(siteMenu.MenuData);
         }
 
         public static Response GetMenuImages(
@@ -93,8 +78,7 @@ namespace AndroCloudServices.Services
             }
 
             // Get the menu images
-            string menuImages = null;
-            dataAccessFactory.SiteMenuDataAccess.GetMenuImagesBySiteId(siteId, dataType, out menuImages);
+            dataAccessFactory.SiteMenuDataAccess.GetMenuImagesBySiteId(siteId, dataType, out string menuImages);
 
             // Success
             return new Response(menuImages == null ? "" : menuImages);
@@ -106,13 +90,12 @@ namespace AndroCloudServices.Services
             string hardwareKey,
             string versionParameter,
             string data,
-            DataTypeEnum dataType, 
+            DataTypeEnum dataType,
             IDataAccessFactory dataAccessFactory,
             out string sourceId)
         {
             // The source is the externalSiteId
             sourceId = andromedaSiteIdParameter;
-            int andromedaSiteId = 0;
 
             // Was an andromedaSiteId provided?
             if (andromedaSiteIdParameter == null || andromedaSiteIdParameter.Length == 0)
@@ -122,7 +105,7 @@ namespace AndroCloudServices.Services
             }
 
             // Is andromedaSiteId an integer?
-            if (!int.TryParse(andromedaSiteIdParameter, out andromedaSiteId))
+            if (!int.TryParse(andromedaSiteIdParameter, out int andromedaSiteId))
             {
                 // andromedaSiteId is not an integer
                 return new Response(Errors.InvalidSiteId, dataType);

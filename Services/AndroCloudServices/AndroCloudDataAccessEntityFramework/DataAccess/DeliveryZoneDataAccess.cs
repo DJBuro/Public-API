@@ -1,37 +1,25 @@
-﻿using System;
-using System.Data;
-using System.Linq;
-using AndroCloudDataAccess.DataAccess;
-using System.Collections.Generic;
-using AndroCloudDataAccessEntityFramework.Model;
-using AndroCloudDataAccess.Domain;
-using AndroCloudHelper;
-
-namespace AndroCloudDataAccessEntityFramework.DataAccess
+﻿namespace AndroCloudDataAccessEntityFramework.DataAccess
 {
-    public class DeliveryZoneDataAccess : IDeliveryAreaDataAccess
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using AndroCloudDataAccess.DataAccess;
+
+    using AndroCloudDataAccessEntityFramework.Model;
+
+    internal sealed class DeliveryZoneDataAccess : IDeliveryAreaDataAccess
     {
         public string ConnectionStringOverride { get; set; }
 
-        public string GetBySiteId(Guid siteId, out List<string> deliveryZones)
+        public IEnumerable<string> GetBySiteId(Guid siteId)
         {
-            deliveryZones = new List<string>();
-
-            using (ACSEntities acsEntities = new ACSEntities())
+            using (var acsEntities = new ACSEntities())
             {
-                DataAccessHelper.FixConnectionString(acsEntities, this.ConnectionStringOverride);
+                DataAccessHelper.FixConnectionString(acsEntities, ConnectionStringOverride);
 
-                var deliveryZonesQuery = from dz in acsEntities.DeliveryAreas
-                                         where dz.SiteId == siteId
-                                         select dz;
-
-                foreach (var deliveryZone in deliveryZonesQuery)
-                {
-                    deliveryZones.Add(deliveryZone.DeliveryArea1);
-                }
+                return acsEntities.DeliveryAreas.Where(da => da.SiteId == siteId).Select(da => da.DeliveryArea1).ToList();
             }
-
-            return "";
         }
     }
 }

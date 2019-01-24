@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AndroCloudDataAccess.Domain;
-using AndroCloudHelper;
-
-namespace AndroCloudDataAccess.DataAccess
+﻿namespace AndroCloudDataAccess.DataAccess
 {
+    using System;
+    using System.Collections.Generic;
+    using AndroCloudDataAccess.Domain;
+    using AndroCloudHelper;
+    using AndroCloudServices.Models;
+
     public interface ISiteDataAccess
     {
         string ConnectionStringOverride { get; set; }
@@ -31,5 +30,7 @@ namespace AndroCloudDataAccess.DataAccess
         string GetByIdAndApplication(int applicationId, Guid siteId, out Site site);
 
         string Update(int andromedaSiteId, int etd);
+
+        IEnumerable<AcsSiteDetails> GetSitesWithDetailsByApplicationId(string applicationId);
     }
 }

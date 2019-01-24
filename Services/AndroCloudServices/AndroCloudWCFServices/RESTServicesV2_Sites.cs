@@ -1,12 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.ServiceModel.Web;
-using System.IO;
-using AndroCloudHelper;
-
-namespace AndroCloudWCFServices
+﻿namespace AndroCloudWCFServices
 {
-    partial class RESTServicesV2_Host : IRESTServicesV2
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.ServiceModel.Web;
+    using AndroCloudHelper;
+    using AndroCloudServices.Models;
+    using AndroCloudWCFServices.Services;
+
+
+    partial class RestServicesV2 : IRESTServicesV2
     {
         /// <summary>
         /// Gets a list of sites
@@ -22,7 +26,7 @@ namespace AndroCloudWCFServices
         {
             try
             {
-                string responseText = AndroCloudWCFServices.Services.Site.GetSites(Helper.GetDataTypes(), null, maxDistanceFilter, longitudeFilter, latitudeFilter, deliveryZoneFilter, applicationId);
+                string responseText = SiteService.GetSites(Helper.GetDataTypes(), null, maxDistanceFilter, longitudeFilter, latitudeFilter, deliveryZoneFilter, applicationId);
 
                 // Convert the response text to a binary stream
                 return Helper.StringToStream(responseText);
@@ -48,7 +52,7 @@ namespace AndroCloudWCFServices
             {
                 // New v2 method
                 bool? statusCheckBool = statusCheck == null ? (bool?)null : statusCheck.ToUpper() == "TRUE" ? true : false;
-                string responseText = AndroCloudWCFServices.Services.Site.GetSite(Helper.GetDataTypes(), siteId, applicationId, gotMenuVersion, statusCheckBool);
+                string responseText = SiteService.GetSite(Helper.GetDataTypes(), siteId, applicationId, gotMenuVersion, statusCheckBool);
 
                 // Convert the response text to a binary stream
                 return Helper.StringToStream(responseText);
@@ -91,12 +95,12 @@ namespace AndroCloudWCFServices
         [WebInvoke(Method = "GET", UriTemplate = "sites/{siteId}/deliveryzones?applicationId={applicationId}")]
         public Stream GetDeliveryZones(string siteId, string applicationId)
         {
-            string responseText = "";
+            string responseText;
 
             try
             {
                 // New v2 method
-                responseText = AndroCloudWCFServices.Services.DeliveryZone.GetDeliveryZones(Helper.GetDataTypes(), siteId, applicationId);
+                responseText = DeliveryZone.GetDeliveryZones(Helper.GetDataTypes(), siteId, applicationId);
             }
             catch (Exception exception)
             {
@@ -172,7 +176,7 @@ namespace AndroCloudWCFServices
             {
                 // New v2 method
                 bool? statusCheckBool = statusCheck == null ? (bool?)null : statusCheck.ToUpper() == "TRUE" ? true : false;
-                string responseText = AndroCloudWCFServices.Services.Site.GetSite3(Helper.GetDataTypes(), siteId, applicationId, gotMenuVersion, statusCheckBool);
+                string responseText = AndroCloudWCFServices.Services.SiteService.GetSite3(Helper.GetDataTypes(), siteId, applicationId, gotMenuVersion, statusCheckBool);
 
                 // Convert the response text to a binary stream
                 return Helper.StringToStream(responseText);
@@ -181,6 +185,25 @@ namespace AndroCloudWCFServices
             {
                 Global.Log.Error("Unhandled exception", exception);
                 return Helper.StringToStream(Helper.ProcessCatastrophicException(exception));
+            }
+        }
+
+        [WebInvoke(Method = "GET", UriTemplate = "sitesDetails?applicationId={applicationId}",
+            RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
+        public IEnumerable<AcsSiteDetails> GetSites(string applicationId)
+        {
+            try
+            {
+                return SiteService.GetSitesDetails(applicationId);
+            }
+            catch (Exception exception)
+            {
+                Global.Log.Error("Unhandled exception", exception);
+
+                WebOperationContext ctx = WebOperationContext.Current;
+                ctx.OutgoingResponse.StatusCode = HttpStatusCode.BadRequest;
+
+                return null;
             }
         }
     }

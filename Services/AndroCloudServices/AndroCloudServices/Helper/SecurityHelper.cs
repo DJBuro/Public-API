@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AndroCloudDataAccess.DataAccess;
-using AndroCloudDataAccess;
-using DataWarehouseDataAccess;
-using AndroCloudDataAccess.Domain;
-using AndroCloudServices.Domain;
-using AndroCloudHelper;
-using DataWarehouseDataAccess.Domain;
-
-namespace AndroCloudServices.Helper
+﻿namespace AndroCloudServices.Helper
 {
-    public class SecurityHelper
+    using System;
+    using AndroCloudDataAccess.Domain;
+    using AndroCloudHelper;
+    using DataWarehouseDataAccess.Domain;
+    using Site = AndroCloudDataAccess.Domain.Site;
+
+    internal class SecurityHelper
     {
 
         public static Response CheckMenuGetAccess(
@@ -162,20 +156,17 @@ namespace AndroCloudServices.Helper
             siteId = Guid.Empty;
 
             // Check the externalApplicationId is valid
-            ACSApplication acsApplication = null;
-            dataAccessFactory.AcsApplicationDataAccess.GetByExternalId(externalApplicationId, out acsApplication);
+            dataAccessFactory.AcsApplicationDataAccess.GetByExternalId(externalApplicationId, out ACSApplication acsApplication);
 
             if (acsApplication == null)
             {
                 return new Response(Errors.UnknownApplicationId, dataType);
             }
 
-            // We've got the application - we need to return the id
             applicationId = acsApplication.Id;
 
             // Check the externalSiteId is valid
-            AndroCloudDataAccess.Domain.Site site = null;
-            dataAccessFactory.SiteDataAccess.GetByExternalSiteId(externalSiteId, out site);
+            dataAccessFactory.SiteDataAccess.GetByExternalSiteId(externalSiteId, out Site site);
 
             if (site == null)
             {

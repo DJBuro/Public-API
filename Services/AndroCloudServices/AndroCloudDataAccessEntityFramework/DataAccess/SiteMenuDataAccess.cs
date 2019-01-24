@@ -14,26 +14,21 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
         {
             siteMenu = null;
 
-            using (ACSEntities acsEntities = new ACSEntities())
+            using (var acsEntities = new ACSEntities())
             {
-                DataAccessHelper.FixConnectionString(acsEntities, this.ConnectionStringOverride);
+                DataAccessHelper.FixConnectionString(acsEntities, ConnectionStringOverride);
 
-                string dataTypeString = dataType.ToString();
-                var siteMenuQuery = from sm in acsEntities.SiteMenus
-                                    where sm.SiteID == siteId
-                                    && sm.MenuType == dataTypeString
-                                    select sm;
-
-                var siteMenuEntity = siteMenuQuery.FirstOrDefault();
-
+                SiteMenu siteMenuEntity = acsEntities.SiteMenus.FirstOrDefault(sm => sm.SiteID == siteId && sm.MenuType == dataType.ToString());
                 if (siteMenuEntity != null)
                 {
-                    siteMenu = new AndroCloudDataAccess.Domain.SiteMenu();
-                    siteMenu.MenuData = siteMenuEntity.menuData;
-                    siteMenu.MenuDataThumbnails = siteMenuEntity.menuDataThumbnails;
-                    siteMenu.MenuType = siteMenuEntity.MenuType;
-                    siteMenu.SiteID = siteMenuEntity.SiteID.GetValueOrDefault();
-                    siteMenu.Version = siteMenuEntity.Version.GetValueOrDefault(0);
+                    siteMenu = new AndroCloudDataAccess.Domain.SiteMenu
+                    {
+                        MenuData = siteMenuEntity.menuData,
+                        MenuDataThumbnails = siteMenuEntity.menuDataThumbnails,
+                        MenuType = siteMenuEntity.MenuType,
+                        SiteID = siteMenuEntity.SiteID.GetValueOrDefault(),
+                        Version = siteMenuEntity.Version.GetValueOrDefault(0)
+                    };
                 }
             }
 

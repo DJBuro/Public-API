@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ServiceModel;
-using System.ServiceModel.Activation;
-using System.ServiceModel.Web;
-using System.IO;
-using System.Text;
-using System.Net;
-using AndroCloudServices;
-using AndroCloudDataAccess.DataAccess;
-using AndroCloudDataAccess.Domain;
-using AndroCloudDataAccess;
-using System.Diagnostics;
-using AndroCloudHelper;
-using AndroCloudServices.Domain;
-using AndroCloudServices.Services;
-
-namespace AndroCloudWCFServices.Services
+﻿namespace AndroCloudWCFServices.Services
 {
-    public class DeliveryZone
+    using System;
+    using System.Diagnostics;
+
+    using AndroCloudDataAccess;
+
+    using AndroCloudHelper;
+
+    using AndroCloudServices.Services;
+
+    internal class DeliveryZone
     {
         /// <summary>
         /// Get a list of delivery zones
@@ -29,29 +19,27 @@ namespace AndroCloudWCFServices.Services
         /// <param name="externalApplicationId"></param>
         /// <returns></returns>
         public static string GetDeliveryZones(
-            DataTypes dataTypes, 
+            DataTypes dataTypes,
             string externalSiteId,
             string externalApplicationId)
         {
-            string responseText = "";
+            string responseText;
 
             try
             {
-                string callerIPAddress = "";
-                Response response = null;
-                string sourceId = "";
+                string callerIpAddress = string.Empty;
+                Response response;
 
                 // Measure how long this call takes
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
+                Stopwatch stopWatch = Stopwatch.StartNew();
 
                 try
                 {
                     // Get the source ip address (we have to do this before reading the payload)
-                    callerIPAddress = Helper.GetClientIPAddressPortString();
+                    callerIpAddress = Helper.GetClientIPAddressPortString();
 
                     // Get the sites from the datastore
-                    response = DeliveryZoneService.Get(externalApplicationId, externalSiteId, dataTypes.WantsDataType, DataAccessHelper.DataAccessFactory, out sourceId);
+                    response = DeliveryZoneService.Get(externalApplicationId, externalSiteId, dataTypes.WantsDataType, DataAccessHelper.DataAccessFactory);
                 }
                 catch (Exception exception)
                 {
@@ -59,21 +47,28 @@ namespace AndroCloudWCFServices.Services
                 }
 
                 // Log usefull stuff
-                string extraInfo = "";
+                string extraInfo = string.Empty;
 
                 if (externalSiteId != null)
                 {
-                    if (extraInfo.Length > 0) extraInfo += ",";
+                    if (extraInfo.Length > 0)
+                    {
+                        extraInfo += ",";
+                    }
+
                     extraInfo += "\"sid\":\"" + externalSiteId + "\"";
                 }
 
-                if (extraInfo.Length > 0) extraInfo = "{" + extraInfo + "}";
+                if (extraInfo.Length > 0)
+                {
+                    extraInfo = "{" + extraInfo + "}";
+                }
 
                 // Log the call
                 DataAccessHelper.DataAccessFactory.AuditDataAccess.Add(
-                    sourceId,
-                    "",
-                    callerIPAddress,
+                    externalApplicationId,
+                    string.Empty,
+                    callerIpAddress,
                     "GetDeliveryZones",
                     (int)stopWatch.Elapsed.TotalMilliseconds,
                     (int?)response.Error.ErrorCode,
@@ -83,7 +78,10 @@ namespace AndroCloudWCFServices.Services
                 Helper.FinishWebCall(dataTypes.WantsDataType, response);
                 responseText = response.ResponseText;
             }
-            catch (Exception exception) { responseText = Helper.ProcessCatastrophicException(exception); }
+            catch (Exception exception)
+            {
+                responseText = Helper.ProcessCatastrophicException(exception);
+            }
 
             return responseText;
         }

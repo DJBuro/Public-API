@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace AndroCloudWCFServices
 {
-    partial class RESTServicesV2_Host : IRESTServicesV2
+    partial class RestServicesV2 : IRESTServicesV2
     {
         /// <summary>
         /// Sends an order to a store

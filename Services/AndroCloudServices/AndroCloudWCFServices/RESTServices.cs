@@ -48,11 +48,21 @@ namespace AndroCloudWCFServices
         /// <param name="siteId"></param>
         /// <param name="partnerId">For backwards compatibility only</param>
         /// <param name="applicationId"></param>
+        /// <param name="version">The version of the menu -> version 2 is the new menu</param>
         /// <returns>A menu (XML or JSON)</returns>
-        [WebGet(UriTemplate = "menu/{siteId}?partnerId={partnerId}&applicationId={applicationId}")]
-        public Stream GetMenu(string siteId, string partnerId, string applicationId)
+        [WebGet(UriTemplate = "menu/{siteId}?partnerId={partnerId}&applicationId={applicationId}&version={version}")]
+        public Stream GetMenu(string siteId, string partnerId, string applicationId, string version)
         {
-            string responseText = Menu.GetMenu(Helper.GetDataTypes(), siteId, partnerId, applicationId);
+            DataTypes datatypes = Helper.GetDataTypes();
+
+            if (version == "2" && datatypes.WantsDataType != DataTypeEnum.JSON)
+            {
+                WebOperationContext ctx = WebOperationContext.Current;
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotAcceptable;
+                return null;
+            }
+
+            string responseText = MenuService.GetMenu(datatypes, siteId, partnerId, applicationId, version == "2" ? 2 : 1);
 
             // Convert the response text to a binary stream
             return Helper.StringToStream(responseText);
@@ -71,7 +81,7 @@ namespace AndroCloudWCFServices
         [WebGet(UriTemplate = "site?partnerId={partnerId}&groupId={groupIdFilter}&maxDistance={maxDistanceFilter}&longitude={longitudeFilter}&latitude={latitudeFilter}&applicationId={applicationId}")]
         public Stream GetSite(string partnerId, string groupIdFilter, string maxDistanceFilter, string longitudeFilter, string latitudeFilter, string applicationId)
         {
-            string responseText = AndroCloudWCFServices.Services.Site.GetSites(Helper.GetDataTypes(), partnerId, maxDistanceFilter, longitudeFilter, latitudeFilter, null, applicationId);
+            string responseText = AndroCloudWCFServices.Services.SiteService.GetSites(Helper.GetDataTypes(), partnerId, maxDistanceFilter, longitudeFilter, latitudeFilter, null, applicationId);
 
             // Convert the response text to a binary stream
             return Helper.StringToStream(responseText);

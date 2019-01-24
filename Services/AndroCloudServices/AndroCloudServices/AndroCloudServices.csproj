@@ -109,6 +109,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AndroCloudDataAccessEntityFramework\AndroCloudDataAccessEntityFramework.csproj">
+      <Project>{0520364a-a9b3-4ad6-b125-d935dccaf731}</Project>
+      <Name>AndroCloudDataAccessEntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AndroCloudDataAccess\AndroCloudDataAccess.csproj">
       <Project>{408fba0e-e649-493e-b4d4-8a5328265450}</Project>
       <Name>AndroCloudDataAccess</Name>

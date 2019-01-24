@@ -1,16 +1,21 @@
-﻿using System;
-using System.Linq;
-using AndroCloudDataAccess.DataAccess;
-using System.Collections.Generic;
-using AndroCloudDataAccessEntityFramework.Model;
-using AndroCloudWCFHelper;
-using AndroCloudHelper;
-using System.Data.Entity;
-using Newtonsoft.Json;
-using AndroCloudDataAccess.Domain;
-
-namespace AndroCloudDataAccessEntityFramework.DataAccess
+﻿namespace AndroCloudDataAccessEntityFramework.DataAccess
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using AndroCloudDataAccess.DataAccess;
+    using AndroCloudDataAccess.Domain;
+    using AndroCloudDataAccessEntityFramework.Exceptions;
+    using AndroCloudDataAccessEntityFramework.Model;
+    using AndroCloudHelper;
+    using AndroCloudServices.Models;
+    using AndroCloudWCFHelper;
+    using Newtonsoft.Json;
+    using ACSApplication = AndroCloudDataAccessEntityFramework.Model.ACSApplication;
+    using Site = AndroCloudDataAccess.Domain.Site;
+
+
     public class SitesDataAccess : ISiteDataAccess
     {
         public string ConnectionStringOverride { get; set; }
@@ -70,16 +75,13 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                         // Do we need to filter by distance i.e. only return the closest X stores?
                         if (filterByMaxDistance != null && filterByLongitude != null && filterByLatitude != null)
                         {
-                            double storeLatitude = 0;
-                            double storeLongitude = 0;
-
                             // Do we have the location of the site?
                             if (siteEntity.Lat == null ||
                                 siteEntity.Long == null ||
                                 filterByLatitude == null ||
                                 filterByLongitude == null ||
-                                !double.TryParse(siteEntity.Long, out storeLongitude) ||
-                                !double.TryParse(siteEntity.Lat, out storeLatitude))
+                                !double.TryParse(siteEntity.Long, out double storeLongitude) ||
+                                !double.TryParse(siteEntity.Lat, out double storeLatitude))
                             {
                                 // Don't know where the site is so don't return it
                                 returnSite = false;
@@ -168,16 +170,13 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
                         // Do we need to filter by distance i.e. only return the closest X stores?
                         if (filterByMaxDistance != null && filterByLongitude != null && filterByLatitude != null)
                         {
-                            double storeLatitude = 0;
-                            double storeLongitude = 0;
-
                             // Do we have the location of the site?
                             if (siteEntity.Lat == null ||
                                 siteEntity.Long == null ||
                                 filterByLatitude == null ||
                                 filterByLongitude == null ||
-                                !double.TryParse(siteEntity.Long, out storeLongitude) ||
-                                !double.TryParse(siteEntity.Lat, out storeLatitude))
+                                !double.TryParse(siteEntity.Long, out double storeLongitude) ||
+                                !double.TryParse(siteEntity.Lat, out double storeLatitude))
                             {
                                 // Don't know where the site is so don't return it
                                 returnSite = false;
@@ -219,7 +218,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        public string GetById(Guid siteId, out AndroCloudDataAccess.Domain.Site site)
+        public string GetById(Guid siteId, out Site site)
         {
             site = null;
 
@@ -254,7 +253,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        public string GetByExternalSiteId(string externalSiteId, out AndroCloudDataAccess.Domain.Site site)
+        public string GetByExternalSiteId(string externalSiteId, out Site site)
         {
             site = null;
 
@@ -289,7 +288,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        public string GetByAndromedaSiteIdAndLive(int andromedaSiteId, out AndroCloudDataAccess.Domain.Site site)
+        public string GetByAndromedaSiteIdAndLive(int andromedaSiteId, out Site site)
         {
             site = null;
 
@@ -324,7 +323,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        public string GetByAndromedaSiteId(int andromedaSiteId, out AndroCloudDataAccess.Domain.Site site)
+        public string GetByAndromedaSiteId(int andromedaSiteId, out Site site)
         {
             site = null;
 
@@ -358,7 +357,7 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        public string GetByIdAndApplication(int applicationId, Guid siteId, out AndroCloudDataAccess.Domain.Site site)
+        public string GetByIdAndApplication(int applicationId, Guid siteId, out Site site)
         {
             site = null;
 
@@ -436,7 +435,77 @@ namespace AndroCloudDataAccessEntityFramework.DataAccess
             return "";
         }
 
-        private void GetLoyaltyConfiguration(AndroCloudDataAccess.Domain.Site site, dynamic siteEntity)
+        public IEnumerable<AcsSiteDetails> GetSitesWithDetailsByApplicationId(string applicationId)
+        {
+            using (var acsEntities = new ACSEntities())
+            {
+                DataAccessHelper.FixConnectionString(acsEntities, ConnectionStringOverride);
+
+                ACSApplication acsApplication = acsEntities.ACSApplications
+                    .Where(x => x.ExternalApplicationId == applicationId)
+                    .Include(x => x.ACSApplicationSites.Select(a => a.Site.OpeningHours))
+                    .Include(x => x.ACSApplicationSites.Select(a => a.Site.Address))
+                    .Include(x => x.ACSApplicationSites.Select(a => a.Site.DeliveryAreas))
+                    .FirstOrDefault();
+
+                if (acsApplication == null)
+                {
+                    throw new NotExistingEntityException("Entity with this applicationId doesn't exist");
+                }
+
+                var sites = new List<AcsSiteDetails>();
+
+                foreach (ACSApplicationSite acsApplicationSite in acsApplication.ACSApplicationSites)
+                {
+                    var address = new AcsSiteAddress
+                    {
+                        Dps = acsApplicationSite.Site.Address.DPS,
+                        Latitude = acsApplicationSite.Site.Address.Lat,
+                        Locality = acsApplicationSite.Site.Address.Locality,
+                        Longitude = acsApplicationSite.Site.Address.Long,
+                        Org1 = acsApplicationSite.Site.Address.Org1,
+                        Org2 = acsApplicationSite.Site.Address.Org2,
+                        Org3 = acsApplicationSite.Site.Address.Org3,
+                        Prem1 = acsApplicationSite.Site.Address.Prem1,
+                        Prem2 = acsApplicationSite.Site.Address.Prem2,
+                        Prem3 = acsApplicationSite.Site.Address.Prem3,
+                        Prem4 = acsApplicationSite.Site.Address.Prem4,
+                        Prem5 = acsApplicationSite.Site.Address.Prem5,
+                        Prem6 = acsApplicationSite.Site.Address.Prem6
+                    };
+
+                    List<AcsOpeningHour> openingHours = acsApplicationSite.Site.OpeningHours
+                        .Select(
+                            siteOpeningHour => new AcsOpeningHour
+                            {
+                                Day = siteOpeningHour.Day.Description,
+                                StartTime = siteOpeningHour.TimeStart,
+                                EndTime = siteOpeningHour.TimeEnd,
+                                OpenAllDay = siteOpeningHour.OpenAllDay
+                            })
+                        .ToList();
+
+                    var site = new AcsSiteDetails
+                    {
+                        Name = acsApplicationSite.Site.ExternalSiteName,
+                        Address = address,
+                        OpeningHours = openingHours,
+                        SiteId = acsApplicationSite.Site.ExternalId,
+                        DeliveryZones = acsApplicationSite.Site.DeliveryAreas.Select(da => da.DeliveryArea1).ToList(),
+                        Phone = acsApplicationSite.Site.Telephone,
+                        TimeZone = acsApplicationSite.Site.TimeZone,
+                        EstimatedCollectionDuration = acsApplicationSite.Site.EstimatedCollectionTime,
+                        EstimatedDeliveryDuration = acsApplicationSite.Site.EstimatedDeliveryTime
+                    };
+
+                    sites.Add(site);
+                }
+
+                return sites;
+            }
+        }
+
+        private void GetLoyaltyConfiguration(Site site, dynamic siteEntity)
         {
             site.SiteLoyalties = new List<AndroCloudDataAccess.Domain.SiteLoyalty>();
             try

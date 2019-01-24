@@ -18,7 +18,7 @@ namespace AndroCloudWCFServices
         Stream GetHost(string partnerId, string applicationId);
 
         [OperationContract]
-        Stream GetMenu(string siteId, string partnerId, string applicationId);
+        Stream GetMenu(string siteId, string partnerId, string applicationId, string version);
 
         [OperationContract]
         Stream GetSite(string partnerId, string groupIdFilter, string maxDistanceFilter, string longitudeFilter, string latitudeFilter, string applicationId);

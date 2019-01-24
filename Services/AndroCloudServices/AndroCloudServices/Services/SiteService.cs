@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AndroCloudDataAccess.DataAccess;
-using AndroCloudDataAccess.Domain;
-using System.Xml.Serialization;
-using System.IO;
-using AndroCloudServices.Domain;
-using AndroCloudServices.Helper;
-using AndroCloudDataAccess;
-using AndroCloudHelper;
-
-namespace AndroCloudServices.Services
+﻿namespace AndroCloudServices.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using AndroCloudDataAccess;
+    using AndroCloudDataAccess.Domain;
+    using AndroCloudHelper;
+    using AndroCloudServices.Domain;
+    using AndroCloudServices.Helper;
+    using AndroCloudServices.Models;
+    using Site = AndroCloudDataAccess.Domain.Site;
+
     public class SiteService
     {
         /// <summary>
@@ -226,8 +223,7 @@ namespace AndroCloudServices.Services
                 }
 
                 // Get delivery zones
-                List<string> deliveryZones = null;
-                dataAccessFactory.DeliveryZoneDataAccess.GetBySiteId(siteId, out deliveryZones);
+                IEnumerable<string> deliveryZones = dataAccessFactory.DeliveryZoneDataAccess.GetBySiteId(siteId);
 
                 // Return the full site details
                 site = new AndroCloudServices.Domain.Site()

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.IO;
-using System.ServiceModel.Activation;
-using AndroCloudWCFServices.Services;
-using AndroCloudHelper;
-
-namespace AndroCloudWCFServices
+﻿namespace AndroCloudWCFServices
 {
+    using System;
+    using System.IO;
+    using System.ServiceModel;
+    using System.ServiceModel.Activation;
+    using System.ServiceModel.Web;
+    using AndroCloudHelper;
+    using AndroCloudWCFServices.Services;
+
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
-    partial class RESTServicesV2_Host : IRESTServicesV2
+    partial class RestServicesV2 : IRESTServicesV2
     {
         /// <summary>
         /// Gets a list of Hosts
@@ -43,14 +42,14 @@ namespace AndroCloudWCFServices
         /// <param name="siteId"></param>
         /// <param name="applicationId"></param>
         /// <returns>A menu (XML or JSON)</returns>
-        [WebInvoke(Method = "GET", UriTemplate = "sites/{siteId}/menu?applicationId={applicationId}")]
-        public Stream GetMenu(string siteId, string applicationId)
+        [WebInvoke(Method = "GET", UriTemplate = "sites/{siteId}/menu?applicationId={applicationId}&version={version}")]
+        public Stream GetMenu(string siteId, string applicationId, string version)
         {
             try
             {
                 // Pass through to v1
-                RESTServices restServices = new RESTServices();
-                return restServices.GetMenu(siteId, null, applicationId);
+                var restServices = new RESTServices();
+                return restServices.GetMenu(siteId, null, applicationId, version);
             }
             catch (Exception exception)
             {
@@ -72,7 +71,7 @@ namespace AndroCloudWCFServices
 
             try
             {
-                responseText = AndroCloudWCFServices.Services.Menu.GetMenuImages(Helper.GetDataTypes(), siteId, applicationId);
+                responseText = AndroCloudWCFServices.Services.MenuService.GetMenuImages(Helper.GetDataTypes(), siteId, applicationId);
             }
             catch (Exception exception)
             {

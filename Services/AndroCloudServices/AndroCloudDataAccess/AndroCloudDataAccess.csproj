@@ -48,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcsOpeningHour.cs" />
-    <Compile Include="AcsSiteAddress.cs" />
-    <Compile Include="AcsSiteDetails.cs" />
+    <Compile Include="Dto\AcsOpeningHour.cs" />
+    <Compile Include="Dto\AcsSiteAddress.cs" />
+    <Compile Include="Dto\AcsSiteDetails.cs" />
     <Compile Include="DataAccessHelper.cs" />
     <Compile Include="DataAccess\HostV2UpdateDataAccess.cs" />
     <Compile Include="DataAccess\IDeliveryAreaRoadDataAccess.cs" />

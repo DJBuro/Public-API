@@ -6,7 +6,7 @@ using AndroCloudHelper;
 
 namespace AndroCloudWCFServices
 {
-    partial class RESTServicesV2_Host : IRESTServicesV2
+    partial class RestServicesV2 : IRESTServicesV2
     {
         [WebInvoke(Method = "PUT", UriTemplate = "feedback?applicationId={applicationId}")]
         public Stream PutFeedback(Stream input, string applicationId)

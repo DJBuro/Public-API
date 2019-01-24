@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.ServiceModel;
-using System.Threading.Tasks;
-using System.Web;
-
-namespace AndroCloudWCFServices
+﻿namespace AndroCloudWCFServices
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.ServiceModel;
+    using System.Threading.Tasks;
+    using AndroCloudServices.Models;
+
     [ServiceContract]
     public interface IRESTServicesV2
     {
@@ -16,7 +14,7 @@ namespace AndroCloudWCFServices
         Stream GetHost(string applicationId);
 
         [OperationContract]
-        Stream GetMenu(string siteId, string applicationId);
+        Stream GetMenu(string siteId, string applicationId, string version);
 
         [OperationContract]
         Stream GetMenuImages(string siteId, string applicationId);
@@ -93,5 +91,14 @@ namespace AndroCloudWCFServices
 
         [OperationContract]
         Stream GetSite3(string siteId, string applicationId, int gotMenuVersion, string statusCheck);
+
+
+        /// <summary>
+        /// New call for AW 2.0. Retrieves all sites for an application with most of their details
+        /// </summary>
+        /// <param name="applicationId"></param>
+        /// <returns></returns>
+        [OperationContract(Name = "SitesWithDetails")]
+        IEnumerable<AcsSiteDetails> GetSites(string applicationId);
     }
 }
